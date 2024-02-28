@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -46,11 +46,11 @@ namespace mscl
         enum SampleMode
         {
             sampleMode_first                = 0x00,
-            
+
             sampleMode_legacy                = 0x00,
             sampleMode_burst                = 0x01,
             sampleMode_continuous            = 0x02,
-            
+
             sampleMode_last                    = 0x02
         };
 

@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -226,7 +226,7 @@ namespace mscl
         WirelessTypes::CommProtocol communicationProtocol() const;
 
         //Function: firmwareVersion
-        //    Gets the firmware <Version> of the Node. 
+        //    Gets the firmware <Version> of the Node.
         //
         //Exceptions:
         //    - <Error_NotSupported>: Attempted to read an unsupported option. The device firmware is not compatible with this version of MSCL.
@@ -401,7 +401,7 @@ namespace mscl
         WirelessTypes::WirelessSampleRate getSampleRate() const;
 
         //Function: getNumSweeps
-        //    Gets the number of sweeps currently set on the Node, which affects the duration of sampling if unlimited duration is disabled, 
+        //    Gets the number of sweeps currently set on the Node, which affects the duration of sampling if unlimited duration is disabled,
         //    or the duration of each burst if the sampling mode is Sync Sampling Burst.
         //
         //Exceptions:
@@ -861,7 +861,7 @@ namespace mscl
         virtual bool sleep();
 
         //Function: cyclePower
-        //    Cycles the power on the Node. 
+        //    Cycles the power on the Node.
         //    Many configuration changes that are applied to the node do not take affect until the power is cycled.
         //
         //Exceptions:
@@ -871,7 +871,7 @@ namespace mscl
         virtual void cyclePower();
 
         //Function: resetRadio
-        //    Resets the radio on the Node. 
+        //    Resets the radio on the Node.
         //
         //Exceptions:
         //    - <Error_NodeCommunication>: Failed to reset the Node.

@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -14,7 +14,7 @@
 #include "mscl/MicroStrain/Wireless/Configuration/EepromLocation.h"
 
 namespace mscl
-{    
+{
     //API Class: ChannelGroup
     //    Represents a group of channels that have combined settings.
     class ChannelGroup

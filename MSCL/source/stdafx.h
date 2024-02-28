@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #ifdef _MSC_VER
@@ -13,7 +13,7 @@
 #include <boost/circular_buffer.hpp>                               //for boost circular buffer
 #include <boost/date_time.hpp>                                     //for boost::posix_time::from_time_t
 #include <boost/date_time/posix_time/posix_time_duration.hpp>      //for boost::posix_time::nanosec
-#include <boost/date_time/posix_time/ptime.hpp>                    //for boost ptime    
+#include <boost/date_time/posix_time/ptime.hpp>                    //for boost ptime
 #include <boost/detail/endian.hpp>                                 //for endianess
 #include <boost/numeric/conversion/cast.hpp>                       //for boost::numeric_cast
 #include <boost/optional.hpp>                                      //for boost::optional

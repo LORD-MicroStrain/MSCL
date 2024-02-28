@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -19,17 +19,17 @@ namespace mscl
     class WirelessPacketCollector
     {
     public:
-        //Typedefs: 
+        //Typedefs:
         //    circular_data_buffer - Typedef for a circular buffer of a <WirelessDataPacket>
         //    circular_discovery_buffer - Typedef for a circular buffer of <NodeDiscovery> objects
         typedef boost::circular_buffer_space_optimized<WirelessDataPacket> circular_data_buffer;
         typedef boost::circular_buffer_space_optimized<NodeDiscovery> circular_discovery_buffer;
 
     private:
-        //Constants: 
+        //Constants:
         //    MAX_DATA_BUFFER_SIZE        - 1024 * 100    -The maximum number of data packets that can be stored in the circular buffer
         //    MAX_DISCOVERY_BUFFER_SIZE    - 100            -The maximum number of node discovery packets that can be stored in the circular buffer
-        static const uint32 MAX_DATA_BUFFER_SIZE        = 1024 * 100; 
+        static const uint32 MAX_DATA_BUFFER_SIZE        = 1024 * 100;
         static const uint32 MAX_DISCOVERY_BUFFER_SIZE    = 100;
 
     public:
@@ -47,7 +47,7 @@ namespace mscl
 
     private:
         //Variable: m_dataPackets
-        //    A circular buffer that holds <WirelessDataPacket>s 
+        //    A circular buffer that holds <WirelessDataPacket>s
         circular_data_buffer m_dataPackets;
 
         //Variable: m_nodeDiscoveryPackets
@@ -88,7 +88,7 @@ namespace mscl
 
         //Function: getDataSweeps
         //    Gets up to the requested amount of data sweeps that have been collected.
-        //    
+        //
         //Parameters:
         //    sweeps - A vector of <DataSweep> objects to hold the result.
         //    timeout - The timeout, in milliseconds, to wait for data if necessary (default of 0).

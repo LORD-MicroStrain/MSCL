@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "mscl/MicroStrain/Wireless/Packets/SyncSamplingPacket_v2.h"
@@ -25,14 +25,14 @@ BOOST_AUTO_TEST_CASE(Sync16chPacket_Constructor_4ByteFloat)
     payloadBytes.push_back(0x12);    //sample mode / data type - 4 byte float
     payloadBytes.push_back(0);        //tick msb
     payloadBytes.push_back(1);        //tick lsb
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
     payloadBytes.push_back(0);        //channel data b1
     payloadBytes.push_back(0);        //channel data b2
     payloadBytes.push_back(0);        //channel data b3
@@ -60,7 +60,7 @@ BOOST_AUTO_TEST_CASE(Sync16chPacket_Constructor_4ByteFloat)
     BOOST_CHECK_EQUAL(sweeps.size(), 2);
 
     DataSweep sweep = sweeps.at(0);
-    
+
     //check that the sweep data matches the packet we added
     BOOST_CHECK_EQUAL(sweep.nodeAddress(), 345);
     BOOST_CHECK_EQUAL(sweep.tick(), 1);
@@ -71,7 +71,7 @@ BOOST_AUTO_TEST_CASE(Sync16chPacket_Constructor_4ByteFloat)
     BOOST_CHECK_EQUAL(sweep.data()[0].storedAs(), valueType_float);
 
     sweep = sweeps.at(1);
-    
+
     //check that the sweep data matches the packet we added
     BOOST_CHECK_EQUAL(sweep.nodeAddress(), 345);
     BOOST_CHECK_EQUAL(sweep.tick(), 2);    //check that the tick incremented (by MSCL, not by the packet)
@@ -88,14 +88,14 @@ BOOST_AUTO_TEST_CASE(Sync16chPacket_Constructor_2ByteUint)
     payloadBytes.push_back(0x23);    //sample mode / data type - 2 byte uint
     payloadBytes.push_back(0);        //tick msb
     payloadBytes.push_back(1);        //tick lsb
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
     payloadBytes.push_back(0);        //channel data b1
     payloadBytes.push_back(254);    //channel data b2
 
@@ -117,7 +117,7 @@ BOOST_AUTO_TEST_CASE(Sync16chPacket_Constructor_2ByteUint)
     BOOST_CHECK_EQUAL(sweeps.size(), 1);
 
     DataSweep sweep = sweeps.at(0);
-    
+
     //check that the sweep data matches the packet we added
     BOOST_CHECK_EQUAL(sweep.nodeAddress(), 345);
     BOOST_CHECK_EQUAL(sweep.tick(), 1);
@@ -232,14 +232,14 @@ BOOST_AUTO_TEST_CASE(Sync16chPacket_Constructor_2ByteUintShifted)
     payloadBytes.push_back(0x21);    //data type - 2 byte uint shifted
     payloadBytes.push_back(0);        //tick msb
     payloadBytes.push_back(1);        //tick lsb
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
     payloadBytes.push_back(0);        //channel data b1
     payloadBytes.push_back(254);    //channel data b2
 
@@ -261,7 +261,7 @@ BOOST_AUTO_TEST_CASE(Sync16chPacket_Constructor_2ByteUintShifted)
     BOOST_CHECK_EQUAL(sweeps.size(), 1);
 
     DataSweep sweep = sweeps.at(0);
-    
+
     //check that the sweep data matches the packet we added
     BOOST_CHECK_EQUAL(sweep.nodeAddress(), 345);
     BOOST_CHECK_EQUAL(sweep.tick(), 1);
@@ -278,14 +278,14 @@ BOOST_AUTO_TEST_CASE(Sync16chPacket_Constructor_NoChannelMask)
     payloadBytes.push_back(0x23);    //sample mode / data type - 2 byte uint
     payloadBytes.push_back(0);        //tick msb
     payloadBytes.push_back(1);        //tick lsb
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
 
     //build a WirelessPacket
     WirelessPacket packet;
@@ -305,7 +305,7 @@ BOOST_AUTO_TEST_CASE(Sync16chPacket_Constructor_NoChannelMask)
     BOOST_CHECK_EQUAL(sweeps.size(), 1);
 
     DataSweep sweep = sweeps.at(0);
-    
+
     //check that the sweep data matches the packet we added
     BOOST_CHECK_EQUAL(sweep.nodeAddress(), 345);
     BOOST_CHECK_EQUAL(sweep.tick(), 1);
@@ -322,14 +322,14 @@ BOOST_AUTO_TEST_CASE(Sync16chPacket_IntegrityCheck_Valid)
     payloadBytes.push_back(0x22);    //app id / data type - 2 byte uint32 shifted
     payloadBytes.push_back(0);        //tick msb
     payloadBytes.push_back(1);        //tick lsb
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
     payloadBytes.push_back(0);        //channel data b1
     payloadBytes.push_back(0);        //channel data b2
 
@@ -375,14 +375,14 @@ BOOST_AUTO_TEST_CASE(Sync16chPacket_IntegrityCheck_BadAppID)
     payloadBytes.push_back(0x32);    //BAD app id / data type - 2 byte uint32 shifted
     payloadBytes.push_back(0);        //tick msb
     payloadBytes.push_back(1);        //tick lsb
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
     payloadBytes.push_back(0);        //channel data b1
     payloadBytes.push_back(0);        //channel data b2
 
@@ -408,14 +408,14 @@ BOOST_AUTO_TEST_CASE(Sync16chPacket_IntegrityCheck_BadStopFlags)
     payloadBytes.push_back(0x23);    //app id / data type - 2 byte uint32 shifted
     payloadBytes.push_back(0);        //tick msb
     payloadBytes.push_back(1);        //tick lsb
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
     payloadBytes.push_back(0);        //channel data b1
     payloadBytes.push_back(0);        //channel data b2
 
@@ -441,14 +441,14 @@ BOOST_AUTO_TEST_CASE(Sync16chPacket_IntegrityCheck_BadDataType)
     payloadBytes.push_back(0x28);    //(INVALID DATA TYPE)
     payloadBytes.push_back(0);        //tick msb
     payloadBytes.push_back(1);        //tick lsb
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
     payloadBytes.push_back(0);        //channel data b1
     payloadBytes.push_back(0);        //channel data b2
 
@@ -474,14 +474,14 @@ BOOST_AUTO_TEST_CASE(Sync16chPacket_IntegrityCheck_BadPacketType)
     payloadBytes.push_back(0x23);    //data type - 2 byte uint32 shifted
     payloadBytes.push_back(0);        //tick msb
     payloadBytes.push_back(1);        //tick lsb
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
     payloadBytes.push_back(0);        //channel data b1
     payloadBytes.push_back(0);        //channel data b2
 
@@ -507,13 +507,13 @@ BOOST_AUTO_TEST_CASE(Sync16chPacket_IntegrityCheck_NoChannelsActive)
     payloadBytes.push_back(0x23);    //data type - 2 byte uint32 shifted
     payloadBytes.push_back(0);        //tick msb
     payloadBytes.push_back(1);        //tick lsb
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
     payloadBytes.push_back(0);
 
     //build a WirelessPacket
@@ -538,14 +538,14 @@ BOOST_AUTO_TEST_CASE(Sync16chPacket_IntegrityCheck_InvalidPayloadBytes)
     payloadBytes.push_back(0x23);    //data type - 2 byte uint32 shifted
     payloadBytes.push_back(0);        //tick msb
     payloadBytes.push_back(1);        //tick lsb
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
     payloadBytes.push_back(0);        //channel data b1
     payloadBytes.push_back(0);        //channel data b2
 

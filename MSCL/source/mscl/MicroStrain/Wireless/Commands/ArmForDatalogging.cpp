@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "stdafx.h"
@@ -64,7 +64,7 @@ namespace mscl
             packet.nodeAddress() != m_nodeAddress ||                                //node address
             payload.size() != 0x03 ||                                               //payload length
             payload.read_uint16(0) != WirelessProtocol::cmdId_armForDatalog         //Command ID
-            )            
+            )
         {
             //failed to match some of the bytes
             return false;

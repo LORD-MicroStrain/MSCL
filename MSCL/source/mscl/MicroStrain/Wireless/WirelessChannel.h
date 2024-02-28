@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -511,7 +511,7 @@ namespace mscl
             channel_14_mmps                         = 240,
             channel_15_mmps                         = 241,
             channel_16_mmps                         = 242,
-            channel_diag_memoryFull                 = 243 
+            channel_diag_memoryFull                 = 243
         };
 
         WirelessChannel();    //default constructor
@@ -570,14 +570,14 @@ namespace mscl
 
         //API Function: id
         //    Gets the <WirelessChannel::ChannelId> of this channel.
-        //    
+        //
         //Returns:
         //    The <WirelessChannel::ChannelId> of this channel.
         WirelessChannel::ChannelId id() const;
 
         //API Function: type
         //    Gets the <WirelessTypes::ChannelType> of this channel.
-        //    
+        //
         //Returns:
         //    The <WirelessTypes::ChannelType> of this channel.
         WirelessTypes::ChannelType type() const;
@@ -590,21 +590,21 @@ namespace mscl
         std::string description() const;
 
         //API Function: adcResolution
-        //    Gets the ADC Resolution of this channel (Ex: 18 for 18-bit). 
+        //    Gets the ADC Resolution of this channel (Ex: 18 for 18-bit).
         //
         //Returns:
         //    The ADC Resolution of this channel.
         uint8 adcResolution() const;
 
         //API Function: adcMaxValue
-        //    Gets the maximum value output from the ADC for this channel (Ex: 2^18 for 18-bit). 
+        //    Gets the maximum value output from the ADC for this channel (Ex: 2^18 for 18-bit).
         //
         //Returns:
         //    The maximum value output from the ADC for this channel.
         uint32 adcMaxValue() const;
 
         //API Function: name
-        //    Gets the name of this channel. 
+        //    Gets the name of this channel.
         //    This is the universal name that should be used for uploading to SensorCloud.
         //
         //Returns:
@@ -616,7 +616,7 @@ namespace mscl
 
 #ifndef SWIG
         //Function: channelName
-        //    Gets the name of the channel. 
+        //    Gets the name of the channel.
         //    This is the universal name that should be used for uploading to SensorCloud.
         //
         //Returns:
@@ -627,7 +627,7 @@ namespace mscl
         static std::string channelName(WirelessChannel::ChannelId channelId);
 #endif
     };
-    
+
     //API Typedef: WirelessChannels
     //    A typedef for a vector of <WirelessChannel> objects.
     typedef std::vector<WirelessChannel> WirelessChannels;

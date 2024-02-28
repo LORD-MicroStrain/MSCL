@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "stdafx.h"
@@ -26,7 +26,7 @@ namespace mscl
         if((serviceEnd = m_url.find("://")) != std::string::npos)
         {
             pathStart = m_url.find_first_of("/?", serviceEnd + 3);
-            
+
             if(pathStart != std::string::npos)
             {
                 return m_url.substr(serviceEnd + 3, pathStart - (serviceEnd + 3));
@@ -40,12 +40,12 @@ namespace mscl
     {
         return 5000;
     }
-    
+
     std::string WsdaInfo::name() const
     {
         return m_serial;
     }
-    
+
 
     WsdaFinder::WsdaFinder()
     {

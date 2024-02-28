@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "mscl/MicroStrain/Wireless/SyncSamplingFormulas.h"
@@ -21,7 +21,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingFormulas_bytesPerSecond)
 
     BOOST_CHECK_CLOSE(SyncSamplingFormulas::bytesPerSecond(hz_1, 4, 2), 8.0, 0.1);
     BOOST_CHECK_CLOSE(SyncSamplingFormulas::bytesPerSecond(hz_1, 4, 4), 16.0, 0.1);
-    
+
     BOOST_CHECK_CLOSE(SyncSamplingFormulas::bytesPerSecond(hz_256, 4, 2), 2048.0, 0.1);
 
     BOOST_CHECK_CLOSE(SyncSamplingFormulas::bytesPerSecond(sec_10, 4, 2), 0.8, 0.1);

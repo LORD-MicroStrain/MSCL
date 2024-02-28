@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "stdafx.h"
@@ -321,7 +321,7 @@ namespace mscl
                 config.tdmaAddress(nodeInfo.m_tdmaAddress);
             }
 
-            //write the retransmission value 
+            //write the retransmission value
             config.retransmission(reTx_toWrite);
 
             //if lossless is enabled and we are in burst mode
@@ -353,7 +353,7 @@ namespace mscl
         if(!m_disabledBeacon)
         {
             //disable the beacon on the master base station
-            //    Note: The beacon is the key to starting the network. 
+            //    Note: The beacon is the key to starting the network.
             //          Each node should be sent the start command, then the beacon should be enabled.
             m_networkBase.disableBeacon();
             m_disabledBeacon = true;
@@ -361,7 +361,7 @@ namespace mscl
 
         //send the start sync sampling command to all nodes in the network
         sendStartToAllNodes();
-        
+
         //enable the beacon on the master base station, with the system time
         m_networkBase.enableBeacon();
     }
@@ -376,7 +376,7 @@ namespace mscl
         if(!m_disabledBeacon)
         {
             //disable the beacon on the master base station
-            //    Note: The beacon is the key to starting the network. 
+            //    Note: The beacon is the key to starting the network.
             //          Each node should be sent the start command, then the beacon should be enabled.
             m_networkBase.disableBeacon();
             m_disabledBeacon = true;
@@ -384,7 +384,7 @@ namespace mscl
 
         //send the start sync sampling command to all nodes in the network
         sendStartToAllNodes();
-        
+
         //enable the beacon on the master base station, with the user specified time
         m_networkBase.enableBeacon(static_cast<uint32>(startTime.seconds(Timestamp::UNIX)));
     }
@@ -701,7 +701,7 @@ namespace mscl
 
         float txPerSecond = 0.0f;
         bool legacyMode = inLegacyMode();
-        
+
         //update other values that were affected by txPerGroup changing
         for(auto nodeAddress : m_eventNodes)
         {
@@ -746,7 +746,7 @@ namespace mscl
             //don't include nodes that failed to communicate
             if(nodeInfo.m_status != SyncNetworkInfo::status_PoorCommunication)
             {
-                //add each node's bandwidth 
+                //add each node's bandwidth
                 m_percentBandwidth += nodeInfo.m_percentBandwidth;
             }
 
@@ -882,7 +882,7 @@ namespace mscl
         {
             checkSamplingDelay = SyncSamplingFormulas::checkSamplingDelay(config.samplingMode(), sampleRate, model);
         }
-        
+
         //find the sampling delay for this node
         uint32 samplingDelay = 0;
         if(checkSamplingDelay)
@@ -900,12 +900,12 @@ namespace mscl
         float txPerSecond = SyncSamplingFormulas::txPerSecond(txPerGroup, groupSize);
 
         //if there are no transmissions per second
-        if(txPerSecond <= 0.0f) 
-        { 
+        if(txPerSecond <= 0.0f)
+        {
             //set the TDMA address to 0 and return
             nodeInfo.m_tdmaAddress = 0;
             nodeInfo.m_status = SyncNetworkInfo::status_OK;
-            return true; 
+            return true;
         }
 
         //calculate the number of slots between each transmission
@@ -942,7 +942,7 @@ namespace mscl
 
         bool foundTakenSlot = false;
         uint16 resultSlot = 0;
-        
+
         uint16 slotItr;
         uint16 extraSlotItr;
         uint16 checkSlotsItr;
@@ -1040,7 +1040,7 @@ namespace mscl
                         //move the slotItr the number of slots between transmissions
                         slotItr += slotsBetweenTx;
                     }
-                    
+
                     //store the found TDMA address and return
                     nodeInfo.m_tdmaAddress = resultSlot;
                     nodeInfo.m_status = SyncNetworkInfo::status_OK;
@@ -1412,8 +1412,8 @@ namespace mscl
                 //change from microseconds to milliseconds
                 delayResult = static_cast<int>(delayInMicrosec / 1000.0);
 
-                if(delayResult > 1000)    
-                { 
+                if(delayResult > 1000)
+                {
                     //max delay is 1s, default to delay of 5ms
                     delayResult = 5;
                 }
@@ -1485,6 +1485,6 @@ namespace mscl
 
         return false;
     }
-    
+
     //TODO: possibly don't optimize nodes that already have extra bandwidth (are slow)
 }

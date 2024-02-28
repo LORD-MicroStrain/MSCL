@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -94,7 +94,7 @@ namespace mscl
         WirelessTypes::EepromMap getCache() const;
 
         //Function: importCache
-        //  Imports an existing EEPROM 
+        //  Imports an existing EEPROM
         void importCache(const WirelessTypes::EepromMap& eepromMap);
 
     protected:
@@ -143,7 +143,7 @@ namespace mscl
 
         //Function: readEeprom
         //    Attempts to read an eeprom value from a device.
-        //    If caching is enabled and there is a previously cached value available, this will 
+        //    If caching is enabled and there is a previously cached value available, this will
         //    just return the value from the cache and will not communicate with the device.
         //
         //Parameters:
@@ -176,7 +176,7 @@ namespace mscl
 
         //Function: readEeprom
         //    Attempts to read an eeprom value from a device.
-        //    If caching is enabled and there is a previously cached value available, this will 
+        //    If caching is enabled and there is a previously cached value available, this will
         //    just return the value from the cache and will not communicate with the device.
         //
         //Parameters:
@@ -189,7 +189,7 @@ namespace mscl
         //    - <Error_NotSupported>: Unsupported eeprom location.
         //    - <Error_Communication>: Failed to read the value from the BaseStation.
         //    - <Error_NodeCommunication>: Failed to read the value from the Node.
-        //    - <Error_Connection>: A connection error has occurred with the BaseStation. 
+        //    - <Error_Connection>: A connection error has occurred with the BaseStation.
         Value readEeprom(const EepromLocation& location);
 
         //Function: writeEeprom
@@ -210,7 +210,7 @@ namespace mscl
     private:
         //Function: readEeprom_float
         //    Attempts to read 2 eeprom values from a device and build them into a float.
-        //    If caching is enabled and there is a previously cached value available, this will 
+        //    If caching is enabled and there is a previously cached value available, this will
         //    just return the value from the cache and will not communicate with the device.
         //
         //Parameters:
@@ -228,7 +228,7 @@ namespace mscl
 
         //Function: readEeprom_uint32
         //    Attempts to read 2 eeprom values from a device and build them into a uint32.
-        //    If caching is enabled and there is a previously cached value available, this will 
+        //    If caching is enabled and there is a previously cached value available, this will
         //    just return the value from the cache and will not communicate with the device.
         //
         //Parameters:
@@ -246,7 +246,7 @@ namespace mscl
 
         //Function: readEeprom_int16
         //    Attempts to read an eeprom value from a device as a signed int16.
-        //    If caching is enabled and there is a previously cached value available, this will 
+        //    If caching is enabled and there is a previously cached value available, this will
         //    just return the value from the cache and will not communicate with the device.
         //
         //Parameters:

@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -69,7 +69,7 @@ namespace mscl
         //    or adds it to the appropriate handler depending on the packet type
         //
         //Parameters:
-        //    packet - A verified, valid <MipPacket> 
+        //    packet - A verified, valid <MipPacket>
         void processPacket(MipPacket& packet);
 
         //Function: findMatchingResponse
@@ -92,7 +92,7 @@ namespace mscl
 
     public:
         //Function: parseAsPacket
-        //    Takes a DataBuffer that has had its read position moved to the start of a packet 
+        //    Takes a DataBuffer that has had its read position moved to the start of a packet
         //    and verifies that the bytes form a valid MIP packet
         //
         //Parameters:
@@ -116,7 +116,7 @@ namespace mscl
         bool findPacketInBytes(DataBuffer& data);
 
         //Function: parse
-        //    Takes a <DataBuffer> and finds the next MIP Packet, 
+        //    Takes a <DataBuffer> and finds the next MIP Packet,
         //    or the next command response that is expected by the base station.
         //
         //    If a packet is found, the packet will be stored in the <MipPacketCollector>

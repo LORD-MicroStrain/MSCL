@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "mscl/MicroStrain/Wireless/Commands/LongPing.h"
@@ -35,7 +35,7 @@ BOOST_AUTO_TEST_CASE(PingResponse_Constructor)
     PingResponse r;
 
     int unknownRssi = WirelessTypes::UNKNOWN_RSSI;
-    
+
     //check that the default constructor initialized correctly (throws exceptions for all values)
     BOOST_CHECK_EQUAL(r.success(), false);
     BOOST_CHECK_EQUAL(r.nodeRssi(), unknownRssi);

@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -24,7 +24,7 @@ namespace mscl
         SerialConnection();                                        //default constructor disabled
         SerialConnection(const SerialConnection&);                //copy constructor disabled
         SerialConnection& operator=(const SerialConnection&);    //assignment operator disabled
-    
+
     private:
         //Constructor: SerialConnection
         //    Initializes the SerialConnection object.
@@ -47,7 +47,7 @@ namespace mscl
         //Variable: m_port
         //    The string name of the port (ex. "COM26")
         std::string m_port;
-        
+
         //Variable: m_baudRate
         //    The baud rate of the connection
         uint32 m_baudRate;

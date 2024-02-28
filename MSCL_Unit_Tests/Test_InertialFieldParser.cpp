@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "mscl/MicroStrain/MIP/Packets/MipFieldParser.h"
@@ -22,7 +22,7 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_parseField)
     bytes.append_float(0.0f);    //Accel 2 float
     bytes.append_float(0.0f);    //Accel 3 float
 
-    MipDataField field(MipTypes::CH_FIELD_SENSOR_RAW_ACCEL_VEC, bytes.data()); 
+    MipDataField field(MipTypes::CH_FIELD_SENSOR_RAW_ACCEL_VEC, bytes.data());
 
     MipDataPoints data;
 
@@ -44,7 +44,7 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_parseUnknown)
     bytes.append_uint32(0x00000000);    //Accel 2 float
     bytes.append_uint32(0x00000000);    //Accel 3 float
 
-    MipDataField field(0, bytes.data()); 
+    MipDataField field(0, bytes.data());
 
     MipDataPoints data;
 

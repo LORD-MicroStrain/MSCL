@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "stdafx.h"
@@ -172,7 +172,7 @@ namespace mscl
     WirelessTypes::SettlingTime SyncNodeConfig::filterSettlingTime(uint8 channelNumber)
     {
         ChannelMask mask;
-        
+
         //find the ChannelMask for the filterSettlingTime that contains the requested channel number
         auto groups = m_networkInfo->channelGroups();
         for(auto i : groups)

@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "stdafx.h"
@@ -15,7 +15,7 @@
 #include <MSTcpIP.h>
 #endif
 
-namespace mscl 
+namespace mscl
 {
     TcpIpConnection::TcpIpConnection(const std::string& serverAddress, uint16 serverPort, const std::string& interfaceAddress) :
         m_serverAddress(serverAddress),
@@ -25,9 +25,9 @@ namespace mscl
         m_deadlineTimer(nullptr)
     {
         m_type = Connection::connectionType_tcp;
-        establishConnection(); 
+        establishConnection();
     }
-    
+
     std::string TcpIpConnection::description()
     {
         return "TCP/IP, " + m_serverAddress + ":" + Utils::toStr(m_serverPort);

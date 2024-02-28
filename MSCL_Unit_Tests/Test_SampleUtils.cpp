@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "mscl/MicroStrain/SampleUtils.h"
@@ -82,7 +82,7 @@ BOOST_AUTO_TEST_CASE(SampleUtils_convertFromSampleRate)
     BOOST_CHECK_EQUAL(SampleUtils::convertFromSampleRate(SampleRate::Hertz(1)), 113);
     BOOST_CHECK_EQUAL(SampleUtils::convertFromSampleRate(SampleRate::Seconds(2)), 114);
     BOOST_CHECK_EQUAL(SampleUtils::convertFromSampleRate(SampleRate::Seconds(3600)), 123);
-    
+
 
     //check that an invalid sample rate throws an Error_UnknownSampleRate exception
     BOOST_CHECK_THROW(SampleUtils::convertFromSampleRate(SampleRate::Hertz(784)), Error_UnknownSampleRate);

@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -12,7 +12,7 @@
 namespace mscl
 {
     //API Class: ChannelMask
-    //    Represents the channel mask (active and inactive channels) for a WirelessNode. 
+    //    Represents the channel mask (active and inactive channels) for a WirelessNode.
     class ChannelMask
     {
     private:

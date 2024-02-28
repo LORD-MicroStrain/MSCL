@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -77,7 +77,7 @@ namespace mscl
             {
                 //opened the port successfully
                 success = true;
-            }            
+            }
         }
 
         //if we retried the max times and still didn't succeed
@@ -103,7 +103,7 @@ namespace mscl
             throw Error_Connection(last_error);
         }
 
-        //need to set the byte size to 8 
+        //need to set the byte size to 8
         //This is the whole reason for creating this function. Boost doesn't do this and at some points
         //the bytesize is set to a default of 7, which causes SetCommState to hang
         dcb.ByteSize = 8;
@@ -150,7 +150,7 @@ namespace mscl
             last_error = ::GetLastError();
 
             ::CloseHandle(handle);
-            
+
             throw Error_Connection(last_error);
         }
 

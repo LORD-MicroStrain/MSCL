@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "stdafx.h"
@@ -63,7 +63,7 @@ namespace mscl
         rec_mutex_lock_guard lock(m_cacheMutex);
 
         //keeps the old cache data for eeproms that aren't in the new eeprom map
-        
+
         for(const auto& i : eepromMap)
         {
             //update or add locations from the passed in eepromMap
@@ -88,7 +88,7 @@ namespace mscl
 
             return true;
         }
-        
+
         //we failed to find the eeprom in the cache
         return false;
     }
@@ -146,7 +146,7 @@ namespace mscl
                 return Value(type, readEeprom_int16(eepromLoc));
 
             default:
-                assert(false);    //we are trying to read a value with an invalid type? 
+                assert(false);    //we are trying to read a value with an invalid type?
                 return Value(type, readEeprom(eepromLoc));    //just default to uint16
         }
     }
@@ -177,7 +177,7 @@ namespace mscl
                 break;
 
             default:
-                assert(false);    //we are trying to write a value with an invalid type? 
+                assert(false);    //we are trying to write a value with an invalid type?
                 writeEeprom(eepromLoc, val.as_uint16());    //just default to uint16
         }
     }

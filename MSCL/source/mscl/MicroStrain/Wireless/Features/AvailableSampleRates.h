@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -92,7 +92,7 @@ namespace mscl
         //Constants: TC-Link-200 SampleRates
         //    continuous_tclink1ch - continuous sample rates for the TC-Link-200 node.
         static const WirelessTypes::WirelessSampleRates continuous_tclink200;
-        
+
         //Constants: RTD-Link-200 SampleRates
         //    continuous_rtdlink200 - continuous sample rates for the RTD-Link-200 node.
         static const WirelessTypes::WirelessSampleRates continuous_rtdlink200;

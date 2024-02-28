@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -21,7 +21,7 @@ namespace mscl
     public:
         TestNodeCommProtocol() = delete;                                        //default constructor disabled
         TestNodeCommProtocol(const TestNodeCommProtocol&) = delete;             //copy constructor disabled
-        TestNodeCommProtocol& operator=(const TestNodeCommProtocol&) = delete;  //assignment operator disabled 
+        TestNodeCommProtocol& operator=(const TestNodeCommProtocol&) = delete;  //assignment operator disabled
 
     public:
         //Function: buildCommand

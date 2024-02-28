@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "stdafx.h"
@@ -61,7 +61,7 @@ namespace mscl
         if(details.useExcitationVoltage)
         {
             inputRangeEepromVal = InputRangeHelper::inputRangeToEepromVal(info.inputRange, details.nodeType, details.chType, details.excitationVoltage);
-            
+
             // include excitation voltage if this is an sg-link-200 or torque-link with the firmware version that supports the extra parameter
             if ((details.nodeType == WirelessModels::node_sgLink200
                     || details.nodeType == WirelessModels::node_sgLink200_hbridge_1K || details.nodeType == WirelessModels::node_sgLink200_hbridge_350 || details.nodeType == WirelessModels::node_sgLink200_hbridge_120
@@ -271,7 +271,7 @@ namespace mscl
 
         //Pass/Fail Flag
         m_completionFlag = static_cast<WirelessTypes::AutoCalCompletionFlag>(payload.read_uint8(2));
-        
+
         //Info Bytes
         for(std::size_t i = 3; i < payloadLen; ++i)
         {

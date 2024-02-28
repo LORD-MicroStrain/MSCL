@@ -1,14 +1,14 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "stdafx.h"
 #include "WirelessTypes.h"
 
 namespace mscl
-{    
+{
     uint16 WirelessTypes::dataTypeSize(DataType type)
     {
         switch(type)
@@ -109,9 +109,9 @@ namespace mscl
         switch(time)
         {
             case settling_4ms:            return 4;
-            case settling_8ms:            return 8;        
+            case settling_8ms:            return 8;
             case settling_16ms:            return 16;
-            case settling_32ms:            return 32;        
+            case settling_32ms:            return 32;
             case settling_40ms:            return 40;
             case settling_48ms:            return 50;
             case settling_60ms:            return 60;
@@ -120,7 +120,7 @@ namespace mscl
             case settling_120ms_65db:    return 120;
             case settling_160ms_69db:    return 160;
             case settling_200ms:        return 200;
-                    
+
             default:                        return 0;
         }
     }

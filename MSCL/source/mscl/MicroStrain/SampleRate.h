@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -11,22 +11,22 @@
 
 namespace mscl
 {
-    
+
     //API Class: SampleRate
     //    Represents a MicroStrain sample rate (rate at which data is sampling)
     class SampleRate
-    {        
+    {
 #ifndef SWIG
         friend SampleRate operator*(const SampleRate& sampleRate, uint32 factor);
         friend SampleRate operator*(uint32 factor, const SampleRate& sampleRate);
         friend SampleRate operator/(const SampleRate& sampleRate, uint32 divisor);
         friend SampleRate operator/(uint32 divisor, const SampleRate& sampleRate);
 #endif
-        
+
     public:
         //=====================================================================================================
         //API Enums: RateType
-        //    rateType_seconds      - 0 - Sample rate type of seconds    (less than 1 Hz) 
+        //    rateType_seconds      - 0 - Sample rate type of seconds    (less than 1 Hz)
         //    rateType_hertz        - 1 - Sample rate type of Hertz        (1 Hz and above)
         //    rateType_event        - 2 - Event triggered, no sample rate
         //    rateType_decimation   - 3 - Every x sample sent, no sample rate
@@ -131,7 +131,7 @@ namespace mscl
         //    sampleRateBase - The base sample rate used to compute the decimation
         //
         //Returns:
-        //    The decimation of the current SampleRate 
+        //    The decimation of the current SampleRate
         uint16 toDecimation(uint16 sampleRateBase) const;
 
     public:
@@ -218,7 +218,7 @@ namespace mscl
     //API Typedef: SampleRates
     //    A typedef for a vector of <SampleRate> objects.
     typedef std::vector<SampleRate> SampleRates;
-    
+
 #ifndef SWIG
     SampleRate operator*(const SampleRate& sampleRate, uint32 factor);
     SampleRate operator*(uint32 factor, const SampleRate& sampleRate);

@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -13,7 +13,7 @@
 namespace mscl
 {
     //Class: ByteStream
-    //    A stream of bytes that is used to easily store and retrieve data 
+    //    A stream of bytes that is used to easily store and retrieve data
     class ByteStream
     {
     public:
@@ -57,7 +57,7 @@ namespace mscl
         //See Also:
         //    <read_uint8>
         uint8& operator[] (const std::size_t index);
-        const uint8& operator[] (const std::size_t index) const; 
+        const uint8& operator[] (const std::size_t index) const;
 
         //Operator: ==
         //    Checks that two ByteStream objects are equal by comparing their data vectors
@@ -340,7 +340,7 @@ namespace mscl
         void resize(std::size_t size);
 
         //Function: set
-        //    Sets the underlying bytes to the given <Bytes>. 
+        //    Sets the underlying bytes to the given <Bytes>.
         void set(const Bytes& bytes);
 
         //Function: begin

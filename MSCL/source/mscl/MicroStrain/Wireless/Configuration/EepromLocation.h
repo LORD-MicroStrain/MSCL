@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -55,7 +55,7 @@ namespace mscl
         bool operator==(const EepromLocation& other) const;
 
     private:
-        EepromLocation() = delete; //disabled default constructor 
+        EepromLocation() = delete; //disabled default constructor
 
     public:
         //Function: id

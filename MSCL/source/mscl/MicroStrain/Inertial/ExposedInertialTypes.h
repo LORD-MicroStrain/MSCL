@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -707,7 +707,7 @@ namespace mscl
             MSAS = 3,
             GAGAN = 4
         };
-        
+
         //API Enum: SbasInfoStatus
         //  Bitmasks for interpreting the SBAS Info (0x81,0x12) status bitfield
         //
@@ -959,7 +959,7 @@ namespace mscl
         //API Function: dataClassSupported
         //  [static] Checks whether the specified <MipTypes::DataClass> is supported for the specified <SentenceType> type.
         static bool dataClassSupported(MipTypes::DataClass dataClass, SentenceType sentenceType);
-        
+
         //API Function: supportedDataClasses
         //  [static] Returns a list of supported <MipTypes::DataClass> values for the specified <SentenceType> type.
         static MipTypes::MipDataClasses supportedDataClasses(SentenceType sentenceType);
@@ -2914,7 +2914,7 @@ namespace mscl
         //  Gets or sets the underlying value for the pin mode bitfield
         void pinModeValue(uint8 val) { pinMode.value(val); };
         uint8 pinModeValue() const { return static_cast<uint8>(pinMode.value()); };
-    
+
     private:
         friend class InertialNode;
 
@@ -3412,7 +3412,7 @@ namespace mscl
         void appendMipFieldValues(MipFieldValues& appendTo) const
         {
             appendTo.push_back(Value::UINT8(static_cast<uint8>(m_rotation.format())));
-            
+
             m_translation.appendMipFieldValues(appendTo);
             m_rotation.appendMipFieldValues(appendTo, false);
         }

@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "mscl/MicroStrain/Wireless/Configuration/BaseStationConfig.h"
@@ -39,7 +39,7 @@ BOOST_AUTO_TEST_CASE(BaseStationConfig_SetAndGet)
     c.transmitPower(WirelessTypes::power_10dBm);
     c.buttonLongPress(1, b1);
     BOOST_CHECK_EQUAL(c.transmitPower(), WirelessTypes::power_10dBm);
-    
+
     BaseStationButton b1Copy = c.buttonLongPress(1);
     BOOST_CHECK_EQUAL(b1Copy.command(), b1.command());
     BOOST_CHECK_EQUAL(b1Copy.nodeAddress(), b1.nodeAddress());
@@ -203,7 +203,7 @@ BOOST_AUTO_TEST_CASE(BaseStationConfig_legacyTransmitPower)
     BaseStation b(impl);
 
     std::unique_ptr<BaseStationFeatures> features;
-    
+
     //3.2 fw doesn't support the new transmit power values
     Version asppVer_lxrs(1, 7);
     Version asppVer_lxrsPlus(3, 0);

@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -90,7 +90,7 @@ namespace mscl
 
     private:
         //Function: parseEepromPage
-        //    Parses a page download result containing eeprom values. 
+        //    Parses a page download result containing eeprom values.
         //    The eeprom cache will be updated with all the parsed values.
         //
         //Parameters:
@@ -120,7 +120,7 @@ namespace mscl
 
         //Function: readEeprom
         //    Attempts to read an eeprom value from the Node.
-        //    If caching is enabled and there is a previously cached value available, this will 
+        //    If caching is enabled and there is a previously cached value available, this will
         //    just return the value from the cache and will not communicate with the Node.
         //
         //Parameters:

@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -14,7 +14,7 @@
 namespace mscl
 {
 
-#ifndef SWIG 
+#ifndef SWIG
 
     //Class: GeographicSource
     //    Contains the logic for the Inertial GeographicSource command.
@@ -92,11 +92,11 @@ namespace mscl
         uint8 m_fieldDataByte;
 
         //Variable: m_commandType
-        //    The command ID. 
+        //    The command ID.
         MipTypes::Command m_commandType;
 
         //Variable: m_commandName
-        //    The command name. 
+        //    The command name.
         std::string m_commandName;
 
     public:

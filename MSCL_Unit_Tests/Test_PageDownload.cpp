@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "mscl/MicroStrain/Wireless/Commands/PageDownload.h"
@@ -16,7 +16,7 @@ DataBuffer buildPageDownloadResponse()
 {
     Bytes resultBytes;
     resultBytes.push_back(0x05);    //command id
-    
+
     for(int i = 0; i < 264; i++)
     {
         resultBytes.push_back(0x00);//data points
@@ -34,15 +34,15 @@ DataBuffer buildPageDownloadResponse_BadChecksum()
 {
     Bytes resultBytes;
     resultBytes.push_back(0x05);    //command id
-    
+
     for(int i = 0; i < 264; i++)
     {
         resultBytes.push_back(0x00);//data points
     }
 
     //put a bad checksum byte
-    resultBytes.push_back(0x00);    
-    resultBytes.push_back(0x02);    
+    resultBytes.push_back(0x00);
+    resultBytes.push_back(0x02);
 
     DataBuffer result(resultBytes);
 
@@ -53,15 +53,15 @@ DataBuffer buildPageDownloadResponse_BadCommandId()
 {
     Bytes resultBytes;
     resultBytes.push_back(0x06);    //bad command id
-    
+
     for(int i = 0; i < 264; i++)
     {
         resultBytes.push_back(0x00);//data points
     }
 
     //checksum bytes
-    resultBytes.push_back(0x00);    
-    resultBytes.push_back(0x00);    
+    resultBytes.push_back(0x00);
+    resultBytes.push_back(0x00);
 
     DataBuffer result(resultBytes);
 
@@ -128,7 +128,7 @@ BOOST_AUTO_TEST_CASE(PageDownload_MatchFail_DataLenBad)
 
     Bytes resultBytes;
     resultBytes.push_back(0x05);    //command id
-    
+
     for(int i = 0; i < 50; i++)
     {
         resultBytes.push_back(0x00);//data points

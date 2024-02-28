@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "mscl/MicroStrain/Wireless/BaseStationAnalogPair.h"
@@ -44,7 +44,7 @@ BOOST_AUTO_TEST_CASE(BaseStationAnalogPair_outputVal_0V)
     //tests setting and getting outputVal_0V
 
     BaseStationAnalogPair pair = BaseStationAnalogPair::NonFloat(945, 6);
-    
+
     BOOST_CHECK_EQUAL(Utils::isNaN(pair.outputVal_0V()), true);
     BOOST_CHECK_EQUAL(Utils::isNaN(pair.outputVal_3V()), true);
     BOOST_CHECK_EQUAL(pair.expectFloatData(), false);
@@ -83,19 +83,19 @@ BOOST_AUTO_TEST_CASE(BaseStationAnalogPair_outputVal_3V)
     //disable the 3V value (NaN)
     pair.outputVal_3V(BaseStationAnalogPair::CHANNEL_NOT_FLOAT);
     BOOST_CHECK_EQUAL(Utils::isNaN(pair.outputVal_0V()), true);        //verify outputVal_0V got disabled as well
-    BOOST_CHECK_EQUAL(Utils::isNaN(pair.outputVal_3V()), true);        
+    BOOST_CHECK_EQUAL(Utils::isNaN(pair.outputVal_3V()), true);
     BOOST_CHECK_EQUAL(pair.expectFloatData(), false);
 
     //change the 3V output value to a real value
     pair.outputVal_3V(0.5f);
     BOOST_CHECK_CLOSE(pair.outputVal_0V(), -0.5, 0.0001);
-    BOOST_CHECK_CLOSE(pair.outputVal_3V(), 0.5, 0.0001);    
+    BOOST_CHECK_CLOSE(pair.outputVal_3V(), 0.5, 0.0001);
     BOOST_CHECK_EQUAL(pair.expectFloatData(), true);
 
     //change the 3V output value to another real value
     pair.outputVal_3V(905.0f);
     BOOST_CHECK_CLOSE(pair.outputVal_0V(), -0.5, 0.0001); //verify outputVal_0V didn't get changed
-    BOOST_CHECK_CLOSE(pair.outputVal_3V(), 905.0, 0.0001);    
+    BOOST_CHECK_CLOSE(pair.outputVal_3V(), 905.0, 0.0001);
     BOOST_CHECK_EQUAL(pair.expectFloatData(), true);
 }
 

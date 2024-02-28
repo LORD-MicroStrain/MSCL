@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -43,7 +43,7 @@ namespace mscl
         //Returns:
         //  A <FlashInfo> made for the SST25VF032B.
         static FlashInfo FLASH_SST25VF032B();
-        
+
         //Function: FLASH_IS25WP128
         //  Static function to create a FlashInfo object for the IS25WP128 Flash.
         //

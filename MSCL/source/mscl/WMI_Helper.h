@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -39,9 +39,9 @@ public:
     //    wmi_class - The string name of the WMI Class (ie. "Game")
     //
     //Exceptions:
-    //    std::exception - Thrown if any errors occur during the <connect> stage 
+    //    std::exception - Thrown if any errors occur during the <connect> stage
     WMI_Helper(std::string wmi_namespace, std::string wmi_class);
-    
+
     //Destructor: WMI_Helper
     //    Destroys the WMI_Helper object
     ~WMI_Helper();
@@ -86,4 +86,3 @@ private:
     //    The enumerator that holds all the information internally from the request
     IEnumWbemClassObject* m_enumerator;
 };
-

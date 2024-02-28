@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "mscl/Types.h"
@@ -107,7 +107,7 @@ BOOST_AUTO_TEST_CASE(ByteStream_Resize)
     ByteStream bytes;
 
     bytes.append_uint8(0x01);
-    
+
     //check that the bytestream has an initial size of 0
     BOOST_CHECK_EQUAL(bytes.size(), 1);
 
@@ -381,9 +381,9 @@ BOOST_AUTO_TEST_CASE(ByteStream_Read_int8)
     //check that the bytestream is empty to begin with
     BOOST_CHECK_EQUAL(bytes.size(), 0);
 
-    //adding overflowed values for an uint8 
+    //adding overflowed values for an uint8
     //which should cause the read_int8 to return the result of a negative value
-    bytes.append_uint8(128);    
+    bytes.append_uint8(128);
     bytes.append_uint8(150);
     bytes.append_uint8(45);
 

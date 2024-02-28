@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -141,7 +141,7 @@ namespace mscl
         //    WEEK_NUM_VALID   - b00000010 - The flag position for checking the GPS Week Number flag
         static const uint16 TOW_VALID = BOOST_BINARY(00000001);
         static const uint16 WEEK_NUM_VALID = BOOST_BINARY(00000010);
-    
+
     private:
         FieldParser_GpsTimestamp() {};        //default constructor disabled
 
@@ -271,7 +271,7 @@ namespace mscl
         //    This is used to call <registerParser> immediately
         static const bool REGISTERED;
     };
-    
+
     //Class: FieldParser_ExternalTimestamp
     //    The field parser for External Timestamp (0xFF,0xD7)
     class FieldParser_ExternalTimestamp : public MipSharedFieldParser

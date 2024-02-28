@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "stdafx.h"
@@ -25,7 +25,7 @@ namespace mscl
         addCalCoeffChannelGroup(7, "CJC Temperature", NodeEepromMap::CH_ACTION_SLOPE_7, NodeEepromMap::CH_ACTION_ID_7);
 
         static const ChannelMask THERMOCPL_CHS(BOOST_BINARY(00111111)); //ch1 - ch6
-        m_channelGroups.emplace_back(THERMOCPL_CHS, "Temperature", 
+        m_channelGroups.emplace_back(THERMOCPL_CHS, "Temperature",
                                      ChannelGroup::SettingsMap{
                                          {WirelessTypes::chSetting_inputRange, NodeEepromMap::HW_GAIN_1},
                                          {WirelessTypes::chSetting_filterSettlingTime, NodeEepromMap::FILTER_1},
@@ -40,7 +40,7 @@ namespace mscl
         m_channels.emplace_back(5, WirelessChannel::channel_5, WirelessTypes::chType_diffTemperature, "Temperature", 24);
         m_channels.emplace_back(6, WirelessChannel::channel_6, WirelessTypes::chType_diffTemperature, "Temperature", 24);
         m_channels.emplace_back(7, WirelessChannel::channel_7, WirelessTypes::chType_temperature, "CJC Temperature", 12);
-        
+
         if(info.model() != WirelessModels::node_tcLink_6ch_ip67)
         {
             m_channels.emplace_back(8, WirelessChannel::channel_8, WirelessTypes::chType_rh, "Relative Humidity");

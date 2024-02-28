@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "stdafx.h"
@@ -30,7 +30,7 @@ namespace mscl
     {
         return listDevices(TYPE_BASESTATION);
     }
-        
+
     Devices::DeviceList Devices::listInertialDevices()
     {
         return listDevices(TYPE_INERTIALDEVICE);
@@ -104,7 +104,7 @@ namespace mscl
         else
         {
             //this is a WSDA without an SAP number
-            
+
             uint32 linkTxSerial = 0;
 
             for(uint16 i = 15; i >= 10; i--)
@@ -133,7 +133,7 @@ namespace mscl
     }
 
 #ifdef _WIN32
-    
+
     Devices::DeviceList Devices::listDevices(DeviceType devType)
     {
         DeviceList result;
@@ -326,7 +326,7 @@ namespace mscl
 
             fs::path serialFilePath = deviceInfoPath / fs::path("serial");
 
-            //if the "serial" file does not exist 
+            //if the "serial" file does not exist
             if(!fs::exists(serialFilePath))
             {
                 //try to move up another directory and find it
@@ -334,7 +334,7 @@ namespace mscl
                 serialFilePath = deviceInfoPath / fs::path("serial");
             }
 
-            //open the /serial file and read the first line 
+            //open the /serial file and read the first line
             std::ifstream serialStream(serialFilePath.string().c_str());
             std::getline(serialStream, serial);
 

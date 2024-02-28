@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "mscl/MicroStrain/Matrix.h"
@@ -62,7 +62,7 @@ BOOST_AUTO_TEST_CASE(Matrix_atFloat)
 
     //create a 2x3 Matrix
     Matrix m(2, 3, valueType_float, b);
-    
+
     //check that the values are correct at the given indices
     BOOST_CHECK_CLOSE(m.as_floatAt(0, 0), 1.0, 0.001);
     BOOST_CHECK_CLOSE(m.as_floatAt(0, 1), 2.0, 0.001);
@@ -91,7 +91,7 @@ BOOST_AUTO_TEST_CASE(Matrix_atUint16)
 
     //create a 4x2 Matrix
     Matrix m(4, 2, valueType_uint16, b);
-    
+
     //check that the values are correct at the given indices
     BOOST_CHECK_EQUAL(m.as_uint16At(0, 0), 1);
     BOOST_CHECK_EQUAL(m.as_uint16At(0, 1), 2);

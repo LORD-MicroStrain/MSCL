@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -20,7 +20,7 @@
 #include "NodeInfo.h"
 
 namespace mscl
-{    
+{
     //forward declarations
     class ChannelMask;
 
@@ -100,12 +100,12 @@ namespace mscl
         void addCalCoeffChannelGroup_withFactoryCal(uint8 channelNumber, const std::string& name, const EepromLocation& slopeEeprom, const EepromLocation& actionIdEeprom, const EepromLocation& factorySlopeEeprom, const EepromLocation& factoryActionIdEeprom);
 
         //Function: maxFilterSettlingTime_A
-        //    Gets the max filter settling time allowed by the given <SampleRate>. 
+        //    Gets the max filter settling time allowed by the given <SampleRate>.
         //    This is version A of this function. Different nodes use different versions.
         static WirelessTypes::SettlingTime maxFilterSettlingTime_A(const SampleRate& rate);
 
         //Function: maxFilterSettlingTime_B
-        //    Gets the max filter settling time allowed by the given <SampleRate>. 
+        //    Gets the max filter settling time allowed by the given <SampleRate>.
         //    This is version B of this function. Different nodes use different versions.
         static WirelessTypes::SettlingTime maxFilterSettlingTime_B(const SampleRate& rate);
 
@@ -226,7 +226,7 @@ namespace mscl
 
         //API Function: supportsInputRange
         //    Checks if the Node supports Input Range for any of its <ChannelGroups>.
-        //    
+        //
         //Returns:
         //    true if the Node supports Input Range for at least one <ChannelGroup>, false otherwise.
         virtual bool supportsInputRange() const;
@@ -234,14 +234,14 @@ namespace mscl
         //API Function: supportsInputRange
         //  Checks if the Node supports Input Range for any of its <ChannelGroups>,
         //  and has different input ranges depending on a configurable excitation voltage.
-        //    
+        //
         //Returns:
         //  true if the Node supports Input Range for at least one <ChannelGroup>, false otherwise.
         virtual bool supportsInputRangePerExcitationVoltage() const;
 
         //API Function: supportsHardwareOffset
         //    Checks if the Node supports Hardware Offset for any of its <ChannelGroups>.
-        //    
+        //
         //Returns:
         //    true if the Node supports Hardware Offset for at least one <ChannelGroup>, false otherwise.
         virtual bool supportsHardwareOffset() const;
@@ -595,7 +595,7 @@ namespace mscl
         //API Function: supportsTransducerType
         //  Checks if a <WirelessTypes::TransducerType> is supported by this Node.
         //
-        //Parameters 
+        //Parameters
         //  transducerType - The <WirelessTypes::TransducerType> to check if supported.
         //
         //Returns:
@@ -810,7 +810,7 @@ namespace mscl
         virtual uint32 minSweeps() const;
 
         //API Function: maxSweeps
-        //    Gets the maximum number of sweeps that can be assigned for a given <WirelessTypes::SamplingMode>. 
+        //    Gets the maximum number of sweeps that can be assigned for a given <WirelessTypes::SamplingMode>.
         //    This is the duration of each burst if in Burst Sync Sampling mode, or the total duration of sampling in other sampling modes.
         //
         //Parameters:

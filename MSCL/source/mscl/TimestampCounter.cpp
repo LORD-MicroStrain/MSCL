@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "stdafx.h"
@@ -45,7 +45,7 @@ namespace mscl
             case SampleRate::rateType_hertz:
                 m_sampleCount += n;
                 if(m_sampleCount >= m_sampleRate.samples())
-                { 
+                {
                     // overrun a second
                     m_time += TimeSpan::NANOSECONDS_PER_SECOND * (m_sampleCount / m_sampleRate.samples());
                     m_sampleCount = m_sampleCount % m_sampleRate.samples();

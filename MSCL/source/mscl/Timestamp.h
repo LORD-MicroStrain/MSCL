@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -13,7 +13,7 @@
 namespace mscl
 {
     //API Class: Timestamp
-    //    Represents a date/time object 
+    //    Represents a date/time object
     class Timestamp
     {
     public:
@@ -83,7 +83,7 @@ namespace mscl
     public:
 #ifndef SWIG
         //Operator: -
-        //    Gets the <TimeSpan> representing the distance (always positive) between two Timestamps. 
+        //    Gets the <TimeSpan> representing the distance (always positive) between two Timestamps.
         //
         //Returns:
         //    A <TimeSpan> representing the difference between the 2 Timestamps.

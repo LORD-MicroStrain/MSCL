@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -34,15 +34,15 @@ namespace mscl
     //    typedef for an 8-byte signed integer.
     typedef std::int64_t int64;
 
-    //API Typedef: uint8 
+    //API Typedef: uint8
     //    typedef for a 1-byte unsigned integer.
     typedef std::uint8_t uint8;
 
-    //API Typedef: uint16 
+    //API Typedef: uint16
     //    typedef for a 2-byte unsigned integer.
     typedef std::uint16_t uint16;
 
-    //API Typedef: uint32 
+    //API Typedef: uint32
     //    typedef for a 4-byte unsigned integer.
     typedef std::uint32_t uint32;
 
@@ -55,7 +55,7 @@ namespace mscl
     typedef std::uint32_t NodeAddress;
 
 #ifndef SWIG
-    
+
     //verify some standard information at compile time
     static_assert(sizeof(int) >= 4, "int is less than 4 bytes");
     static_assert(sizeof(std::int8_t) == sizeof(signed char), "int8_t != signed char");
@@ -120,7 +120,7 @@ namespace mscl
     //API Typedef: BytesCollection
     //    A vector of <Bytes> objects.
     typedef std::vector<Bytes> BytesCollection;
-    
+
     //================================================================================================================
     //API Enums: ValueType
     //  valueType_float                     - 0     - The value is stored as a 4-byte float .

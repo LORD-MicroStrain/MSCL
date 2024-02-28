@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -11,7 +11,7 @@
 #include "mscl/MicroStrain/Wireless/BaseStationInfo.h"
 
 namespace mscl
-{    
+{
     //API Class: BaseStationFeatures
     //    Contains information on which features are supported by a <BaseStation>.
     class BaseStationFeatures
@@ -78,7 +78,7 @@ namespace mscl
 
         //API Function: supportsButtons
         //    Checks if the BaseStation supports Button configuration.
-        //    
+        //
         //Returns:
         //    true if the BaseStation supports Button configuration, false otherwise.
         virtual bool supportsButtons() const;

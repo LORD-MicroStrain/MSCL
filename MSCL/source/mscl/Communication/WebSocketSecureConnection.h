@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -16,14 +16,14 @@
 
 #include <string>
 
-namespace mscl 
+namespace mscl
 {
     //Class: WebSocketSecureConnection
     //    A <Connection_Impl> derived class that represents a secure web socket connection.
     class WebSocketSecureConnection final : public Connection_Impl<boost::beast::websocket::stream<boost::asio::ssl::stream<boost::asio::ip::tcp::socket>>>
     {
         friend Connection Connection::WebSocket(const std::string& host, uint16 port);
-    
+
     public:
         //Function: description
         //    Gets a description of the connection.
@@ -51,7 +51,7 @@ namespace mscl
         //Exceptions:
         //    - <Error_InvalidTcpServer>: the specified server address and/or server port is invalid.
         virtual void establishConnection();
-    
+
     private:
         typedef boost::asio::ip::tcp tcp;
 

@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "stdafx.h"
@@ -89,7 +89,7 @@ namespace mscl
     void ByteStream::append_uint32(uint32 value, Utils::Endianness endian /*= Utils::bigEndian*/)
     {
         uint8 b1, b2, b3, b4;
-         
+
         //split the value into 4 bytes
         Utils::split_uint32(value, b1, b2, b3, b4, endian);
 
@@ -405,7 +405,7 @@ namespace mscl
     uint16 ByteStream::calculateSimpleChecksum(std::size_t from, std::size_t to) const
     {
         assert(from <= to);                //Start position is after the End position
-        
+
         std::size_t numBytesToRead = (to + 1) - from;
 
         //check for out of bounds

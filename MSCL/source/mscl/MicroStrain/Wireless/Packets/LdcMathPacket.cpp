@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "stdafx.h"
@@ -104,7 +104,7 @@ namespace mscl
                     {std::make_pair(WirelessDataPoint::channelPropertyId_derivedFrom, Value(valueType_ChannelMask, propertyChMask))},
                     {std::make_pair(WirelessDataPoint::channelPropertyId_derivedAlgorithmId, Value(valueType_uint8, static_cast<uint8>(alg.algorithmId)))}
                 });
-                
+
                 chData.emplace_back(channelId, chItr, valueType_float, anyType(payload.read_float()), properties);
             }
         }

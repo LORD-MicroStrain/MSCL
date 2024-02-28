@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "mscl/MicroStrain/SampleRate.h"
@@ -257,7 +257,7 @@ BOOST_AUTO_TEST_CASE(SampleRate_Multiply)
     SampleRate leftMult2 = 10 * initial;
     SampleRate rightMult3 = initial * 100;
     SampleRate leftMult3 = 100 * initial;
-    
+
     BOOST_CHECK(rightMult1 == SampleRate::Seconds(2));
     BOOST_CHECK(leftMult1 == SampleRate::Seconds(2));
     BOOST_CHECK(rightMult2 == SampleRate::Hertz(1));
@@ -275,7 +275,7 @@ BOOST_AUTO_TEST_CASE(SampleRate_Divide)
     SampleRate leftDiv2 = 10 / initial;
     SampleRate rightDiv3 = initial / 100;
     SampleRate leftDiv3 = 100 / initial;
-    
+
     BOOST_CHECK(rightDiv1 == SampleRate::Hertz(2));
     BOOST_CHECK(leftDiv1 == SampleRate::Hertz(2));
     BOOST_CHECK(rightDiv2 == SampleRate::Seconds(1));

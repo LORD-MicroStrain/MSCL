@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -76,7 +76,7 @@ namespace mscl
         bool complete(uint64 timeout = 10);
 
         //API Function: cancel
-        //    Cancels the Stop Node operation that this SetToIdleResult belongs to. 
+        //    Cancels the Stop Node operation that this SetToIdleResult belongs to.
         //    If the Stop Node operation has already been completed/canceled, this will have no effect.
         //
         //Exceptions:

@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "mscl/MicroStrain/MIP/Packets/MipDataPacket.h"
@@ -93,7 +93,7 @@ BOOST_AUTO_TEST_CASE(InertialDataPacket_ParseValidData_multipleFields)
     BOOST_CHECK_EQUAL(packet.data()[0].as_float(), 0.0);
     BOOST_CHECK_EQUAL(packet.data()[1].as_float(), 0.0);
     BOOST_CHECK_EQUAL(packet.data()[2].as_float(), 0.0);
-    
+
     BOOST_CHECK_CLOSE(packet.data()[3].as_float(), 1.234, 0.0001);
     BOOST_CHECK_EQUAL(packet.data()[4].as_float(), 0.0);
     BOOST_CHECK_EQUAL(packet.data()[5].as_float(), 0.0);

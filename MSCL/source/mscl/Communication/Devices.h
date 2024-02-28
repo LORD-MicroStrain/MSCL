@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -89,7 +89,7 @@ namespace mscl
         //  The <ConnectionType> of the device.
         ConnectionType connectionType() const;
     };
-    
+
 
     //API Class: Devices
     //    Contains helper functions for accessing attached devices
@@ -124,7 +124,7 @@ namespace mscl
         //    Note that this is solely going by listed devices that use our driver, so this may pick up similar devices that are not BaseStations.
         //
         //Returns:
-        //    A <DeviceList> representing the COM ports that were found that match MicroStrain BaseStations. 
+        //    A <DeviceList> representing the COM ports that were found that match MicroStrain BaseStations.
         //    If none were found, the list will be empty.
         static DeviceList listBaseStations();
 
@@ -132,7 +132,7 @@ namespace mscl
         //    Gets a list of all the attached (USB) InertialDevices.
         //
         //Returns:
-        //    A <DeviceList> representing the COM ports that were found that match MicroStrain InertialDevices. 
+        //    A <DeviceList> representing the COM ports that were found that match MicroStrain InertialDevices.
         //    If none were found, the list will be empty.
         static DeviceList listInertialDevices();
 
@@ -140,7 +140,7 @@ namespace mscl
         //    Gets a simple list of all serial ports and their availability.
         //
         //Returns:
-        //    A <DeviceList> representing the ports that were found and their availability. 
+        //    A <DeviceList> representing the ports that were found and their availability.
         //    If none were found, the list will be empty.
         static DeviceList listPorts();
 
@@ -180,7 +180,7 @@ namespace mscl
         //Returns:
         //    true if the string matches the given <DeviceType>, false otherwise
         static bool matchesDevice(const std::string& manufacturer, const std::string& vendorId, DeviceType devType, uint32& baudRate, DeviceInfo::ConnectionType& type);
-        
+
         //Function: getDeviceInfo
         //    Gets information about the attached device
         //

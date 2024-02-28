@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -40,7 +40,7 @@ namespace mscl
     //API Class: BaseStation
     //    Represents a MicroStrain Base Station object
     class BaseStation
-    { 
+    {
     public:
         //=====================================================================================================
         //API Constants: Default Timeouts
@@ -59,7 +59,7 @@ namespace mscl
         //  Creates a BaseStation object.
         //  Note: this will use a default timeout of <BASE_COMMANDS_DEFAULT_TIMEOUT> for serial connections
         //        and a default timeout of <ETHERNET_BASE_COMMANDS_DEFAULT_TIMEOUT> for ethernet/websocket connections
-        //    
+        //
         //Parameters:
         //    connection - The <Connection> object used for communication
         //
@@ -69,7 +69,7 @@ namespace mscl
 
         //API Constructor: BaseStation
         //  Creates a BaseStation object.
-        //    
+        //
         //Parameters:
         //    connection - The <Connection> object used for communication
         //    baseTimeout - The timeout to use for base station commands
@@ -327,7 +327,7 @@ namespace mscl
         //    maxSweeps - The maximum number of sweeps to return. If this is 0 (default), all sweeps will be returned.
         //
         //Returns:
-        //    A <DataSweeps> object containing all the data sweeps that are available up to the requested number of max sweeps. 
+        //    A <DataSweeps> object containing all the data sweeps that are available up to the requested number of max sweeps.
         //
         //Exceptions:
         //    - <Error_Connection>: A connection error has occurred with the BaseStation
@@ -436,7 +436,7 @@ namespace mscl
         //    Enables the beacon on the base station using the given UTC timestamp.
         //
         //Parameters:
-        //    utcTime - The start time for the beacon in UTC seconds from the Unix Epoch (01/01/1970) 
+        //    utcTime - The start time for the beacon in UTC seconds from the Unix Epoch (01/01/1970)
         //
         //Returns:
         //    A <Timestamp> representing the initial time that was sent to start the beacon
@@ -568,7 +568,7 @@ namespace mscl
 
         //API Function: applyConfig
         //    Applies a <BaseStationConfig> to the Node.
-        //    Note: This applies all options that have been set in the <BaseStationConfig>. 
+        //    Note: This applies all options that have been set in the <BaseStationConfig>.
         //          Before applying, the options will be validated. It is recommended that you perform
         //          this validation yourself first by using <verifyConfig>.
         //

@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "mscl/MicroStrain/MIP/Packets/MipFieldParser.h"
@@ -44,7 +44,7 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_RawAccelVector_parse)
     BOOST_CHECK_EQUAL(data.at(1).storedAs(), valueType_float);
     BOOST_CHECK_CLOSE(data.at(1).as_float(), 0.0, 0.0001);
     BOOST_CHECK_NO_THROW(data.at(1).channelName());
- 
+
     BOOST_CHECK_EQUAL(data.at(2).field(), MipTypes::CH_FIELD_SENSOR_RAW_ACCEL_VEC);
     BOOST_CHECK_EQUAL(data.at(2).qualifier(), MipTypes::CH_Z);
     BOOST_CHECK_EQUAL(data.at(2).storedAs(), valueType_float);
@@ -61,7 +61,7 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_RawGyroVector_parse)
     bytes.append_float(1.234f);    //Gyro 2 float
     bytes.append_float(0.0f);    //Gyro 3 float
 
-    //Create the Data Field 
+    //Create the Data Field
     MipDataField field(MipTypes::CH_FIELD_SENSOR_RAW_GYRO_VEC, bytes.data());
 
     MipDataPoints data;
@@ -98,7 +98,7 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_RawMagVector_parse)
     bytes.append_float(0.0f);    //Mag 2 float
     bytes.append_float(2.345f);    //Mag 3 float
 
-    //Create the Data Field 
+    //Create the Data Field
     MipDataField field(MipTypes::CH_FIELD_SENSOR_RAW_MAG_VEC, bytes.data());
 
     MipDataPoints data;
@@ -170,7 +170,7 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_ScaledGyroVector_parse)
     //add bytes to the ByteStream
     bytes.append_float(2.345f);    //X Gyro float
     bytes.append_float(0.0f);    //Y Gyro float
-    bytes.append_float(0.0f);    //Z Gyro float    
+    bytes.append_float(0.0f);    //Z Gyro float
 
     //Create the Data Field
     MipDataField field(MipTypes::CH_FIELD_SENSOR_SCALED_GYRO_VEC, bytes.data());
@@ -207,7 +207,7 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_ScaledMagVector_parse)
     //add bytes to the ByteStream
     bytes.append_float(2.345f);    //X Mag float
     bytes.append_float(0.0f);    //Y Mag float
-    bytes.append_float(0.0f);    //Z Mag float    
+    bytes.append_float(0.0f);    //Z Mag float
 
     //Create the Data Field
     MipDataField field(MipTypes::CH_FIELD_SENSOR_SCALED_MAG_VEC, bytes.data());
@@ -244,9 +244,9 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_DeltaThetaVector_parse)
     //add bytes to the ByteStream
     bytes.append_float(2.345f);    //X Delta Theta float
     bytes.append_float(0.0f);    //Y Delta Theta float
-    bytes.append_float(0.0f);    //Z Delta Theta float    
+    bytes.append_float(0.0f);    //Z Delta Theta float
 
-    //Create the Data Field 
+    //Create the Data Field
     MipDataField field(MipTypes::CH_FIELD_SENSOR_DELTA_THETA_VEC, bytes.data());
 
     MipDataPoints data;
@@ -281,7 +281,7 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_DeltaVelocityVector_parse)
     //add bytes to the ByteStream
     bytes.append_float(2.345f);    //X Delta Velocity float
     bytes.append_float(0.0f);    //Y Delta Velocity float
-    bytes.append_float(0.0f);    //Z Delta Velocity float    
+    bytes.append_float(0.0f);    //Z Delta Velocity float
 
     //Create the Data Field
     MipDataField field(MipTypes::CH_FIELD_SENSOR_DELTA_VELOCITY_VEC, bytes.data());
@@ -357,7 +357,7 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_Quaternion_parse)
     //add bytes to the ByteStream
     bytes.append_float(2.345f);    //q0
     bytes.append_float(0.0f);    //q1
-    bytes.append_float(0.0f);    //q2    
+    bytes.append_float(0.0f);    //q2
     bytes.append_float(0.0f);    //q3
 
     //Create the Data Field
@@ -510,7 +510,7 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_StabilizedMagVector_parse)
     //add bytes to the ByteStream
     bytes.append_float(2.345f);    //X Stab Mag float
     bytes.append_float(0.0f);    //Y Stab Mag float
-    bytes.append_float(0.0f);    //Z Stab Mag float    
+    bytes.append_float(0.0f);    //Z Stab Mag float
 
     //Create the Data Field
     MipDataField field(MipTypes::CH_FIELD_SENSOR_STABILIZED_MAG_VEC, bytes.data());
@@ -547,7 +547,7 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_StabilizedAccelVector_parse)
     //add bytes to the ByteStream
     bytes.append_float(2.345f);    //X Stab Accel float
     bytes.append_float(0.0f);    //Y Stab Accel float
-    bytes.append_float(0.0f);    //Z Stab Accel float    
+    bytes.append_float(0.0f);    //Z Stab Accel float
 
     //Create the Data Field
     MipDataField field(MipTypes::CH_FIELD_SENSOR_STABILIZED_ACCEL_VEC, bytes.data());

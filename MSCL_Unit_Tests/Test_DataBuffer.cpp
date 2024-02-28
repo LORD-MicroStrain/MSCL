@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "mscl/MicroStrain/DataBuffer.h"
@@ -32,7 +32,7 @@ BOOST_AUTO_TEST_CASE(DataBuffer_Bytes_Constructor)
 
     //check that readByte() returns the correct byte
     BOOST_CHECK_EQUAL(b.read_uint8(), 0x01);
-    
+
     //check that readWord() returns the correct word
     BOOST_CHECK_EQUAL(b.read_uint16(), 0x0203);
 
@@ -68,7 +68,7 @@ BOOST_AUTO_TEST_CASE(DataBuffer_ByteStream_Constructor)
 
     //check that readByte() returns the correct byte
     BOOST_CHECK_EQUAL(b.read_uint8(), 0x01);
-    
+
     //check that readWord() returns the correct word
     BOOST_CHECK_EQUAL(b.read_uint16(), 0x0203);
 
@@ -201,12 +201,12 @@ BOOST_AUTO_TEST_CASE(DataBuffer_Read)
     bw.buffer()[5] = 0x06;
     bw.buffer()[6] = 0x07;
     bw.commit(7);
-    
+
     BOOST_CHECK_EQUAL(bw.size(), 7);
 
     //check that readByte() returns the correct byte
     BOOST_CHECK_EQUAL(b.read_uint8(), 0x01);
-    
+
     //check that readWord() returns the correct word
     BOOST_CHECK_EQUAL(b.read_uint16(), 0x0203);
 
@@ -221,12 +221,12 @@ BOOST_AUTO_TEST_CASE(DataBuffer_Read_int8)
     bw.buffer()[0] = 150;
     bw.buffer()[1] = 45;
     bw.commit(2);
-    
+
     BOOST_CHECK_EQUAL(bw.size(), 2);
 
     //check that read_int8() returns the correct byte
     BOOST_CHECK_EQUAL(static_cast<int16>(b.read_int8()), -106);
-    
+
     //check that read_int8() returns the correct word
     BOOST_CHECK_EQUAL(static_cast<int16>(b.read_int8()), 45);
 
@@ -312,7 +312,7 @@ BOOST_AUTO_TEST_CASE(DataBuffer_Peek)
 
     //check that there are 2 bytes remaining
     BOOST_CHECK_EQUAL(b.bytesRemaining(), 2);
-    
+
     //check that calling peekByte returns the first byte
     BOOST_CHECK_EQUAL(b.peekByte(), 0x01);
 

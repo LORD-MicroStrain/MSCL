@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "stdafx.h"
@@ -119,7 +119,7 @@ namespace mscl
         //send any byte to the Base Station to cancel the operation
         static const Bytes cancel{0x01};
         m_baseStation.connection().write(cancel);
-        
+
         //retry to cancel a few times unless the status changes
         const uint8 MAX_RETRIES = 3;
         uint8 retryCount = 0;

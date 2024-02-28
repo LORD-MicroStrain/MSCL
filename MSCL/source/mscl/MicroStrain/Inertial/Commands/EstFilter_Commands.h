@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -96,10 +96,10 @@ namespace mscl
         static ByteStream buildCommand_get();
 
         //Function: buildCommand_set
-        //    Builds the bytes for the "set" command. 
+        //    Builds the bytes for the "set" command.
         //
         //Parameters:
-        //    channels - The <MipChannels> holding the channels to be set. This should only contain channels that are in the Estimation Filter (0x82) descriptor set 
+        //    channels - The <MipChannels> holding the channels to be set. This should only contain channels that are in the Estimation Filter (0x82) descriptor set
         //    sampleRateBase - The base sample rate for the estimation filter command set.
         //
         //Returns:
@@ -115,7 +115,7 @@ namespace mscl
         //Returns:
         //    A <ByteStream> that holds the bytes that make up the command
         static ByteStream buildCommand_save();
-        
+
         class Response : public GenericMipCommand::Response
         {
         protected:
@@ -142,7 +142,7 @@ namespace mscl
 
     public:
         //Function: buildCommand
-        //    Builds the bytes for the command. 
+        //    Builds the bytes for the command.
         static ByteStream buildCommand();
 
         class Response: public GenericMipCommand::Response
@@ -169,7 +169,7 @@ namespace mscl
 
     public:
         //Function: buildCommand
-        //    Builds the bytes for the command. 
+        //    Builds the bytes for the command.
         //
         //Parameters:
         //    attitude - The <EulerAngles> representing the initial attitude.
@@ -199,7 +199,7 @@ namespace mscl
 
     public:
         //Function: buildCommand
-        //    Builds the bytes for the command. 
+        //    Builds the bytes for the command.
         //
         //Parameters:
         //    heading - The heading value to set.
@@ -235,7 +235,7 @@ namespace mscl
         static ByteStream buildCommand_get();
 
         //Function: buildCommand_set
-        //    Builds the bytes for the "set" command. 
+        //    Builds the bytes for the "set" command.
         //
         //Parameters:
         //    enable - Whether to enable (true) or disable (false) altitude aiding.
@@ -273,7 +273,7 @@ namespace mscl
         static ByteStream buildCommand_get();
 
         //Function: buildCommand_set
-        //    Builds the bytes for the "set" command. 
+        //    Builds the bytes for the "set" command.
         //
         //Parameters:
         //    enable - Whether to enable (true) or disable (false) the pitch/roll aiding.
@@ -311,7 +311,7 @@ namespace mscl
         static ByteStream buildCommand_get();
 
         //Function: buildCommand_set
-        //    Builds the bytes for the "set" command. 
+        //    Builds the bytes for the "set" command.
         //
         //Parameters:
         //    settingsData - The ZUPTSettingsData object containing whether the command is enabled and the threshold.
@@ -349,7 +349,7 @@ namespace mscl
         static ByteStream buildCommand_get();
 
         //Function: buildCommand_set
-        //    Builds the bytes for the "set" command. 
+        //    Builds the bytes for the "set" command.
         //
         //Parameters:
         //    settingsData - The ZUPTSettingsData object containing whether the command is enabled and the threshold.
@@ -424,7 +424,7 @@ namespace mscl
         static ByteStream buildCommand_get();
 
         //Function: buildCommand_set
-        //    Builds the bytes for the "set" command. 
+        //    Builds the bytes for the "set" command.
         //
         //Parameters:
         //    enable - Whether to enable (true) or disable (false) the automatic initialization.
@@ -523,7 +523,7 @@ namespace mscl
         static ByteStream buildCommand_get();
 
         //Function: buildCommand_set
-        //    Builds the bytes for the "set" command. 
+        //    Builds the bytes for the "set" command.
         //
         //Parameters:
         //    angles-  The <EulerAngles> containing the roll, pitch, and yaw (in radians).
@@ -561,7 +561,7 @@ namespace mscl
         static ByteStream buildCommand_get();
 
         //Function: buildCommand_set
-        //    Builds the bytes for the "set" command. 
+        //    Builds the bytes for the "set" command.
         //
         //Parameters:
         //    offset -  The <PositionOffset> in meters.
@@ -599,7 +599,7 @@ namespace mscl
         static ByteStream buildCommand_get();
 
         //Function: buildCommand_set
-        //    Builds the bytes for the "set" command. 
+        //    Builds the bytes for the "set" command.
         //
         //Parameters:
         //    offset -  The <PositionOffset> in meters.

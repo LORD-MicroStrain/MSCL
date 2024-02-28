@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "mscl/MicroStrain/Vector.h"
@@ -34,7 +34,7 @@ BOOST_AUTO_TEST_CASE(Vector_size)
     Vector v(valueType_float, b);
 
     Vector v3;
-    
+
 
     //check that the size is 0
     BOOST_CHECK_EQUAL(v.size(), 0);
@@ -66,7 +66,7 @@ BOOST_AUTO_TEST_CASE(Vector_atFloat)
     b.append_float(7.0f);
     b.append_float(1.234f);
     Vector v(valueType_float, b);
-    
+
     //check that the values are correct at the given indices
     BOOST_CHECK_CLOSE(v.as_floatAt(0), 1.0, 0.001);
     BOOST_CHECK_CLOSE(v.as_floatAt(1), 2.0, 0.001);
@@ -92,7 +92,7 @@ BOOST_AUTO_TEST_CASE(Vector_atUint16)
     b.append_uint16(7);
     b.append_uint16(978);
     Vector v(valueType_uint16, b);
-    
+
     //check that the values are correct at the given indices
     BOOST_CHECK_EQUAL(v.as_uint16At(0), 1);
     BOOST_CHECK_EQUAL(v.as_uint16At(1), 2);

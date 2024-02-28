@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "mscl/Types.h"
@@ -88,7 +88,7 @@ BOOST_AUTO_TEST_CASE(Utils_makeFloatBigEndian)
 {
 
 #if defined (BOOST_LITTLE_ENDIAN)
-    
+
     float val = Utils::make_float(0x42, 0xF6, 0xE9, 0xE0, Utils::bigEndian);
 
     BOOST_CHECK_CLOSE(val, 123.456789, 0.00001);
@@ -106,7 +106,7 @@ BOOST_AUTO_TEST_CASE(Utils_makeFloatLittleEndian)
 {
 
 #if defined (BOOST_LITTLE_ENDIAN)
-    
+
     float val = Utils::make_float(0xE0, 0xE9, 0xF6, 0x42, Utils::littleEndian);
 
     BOOST_CHECK_CLOSE(val, 123.456789, 0.00001);
@@ -186,7 +186,7 @@ BOOST_AUTO_TEST_CASE(Utils_makeDoubleBigEndian)
 {
 
 #if defined (BOOST_LITTLE_ENDIAN)
-    
+
     double val = Utils::make_double(0x40, 0x28, 0xb0, 0xfb, 0xa8, 0x82, 0x6a, 0xa9, Utils::bigEndian);
 
     BOOST_CHECK_CLOSE(val, 12.34567, 0.00001);
@@ -204,7 +204,7 @@ BOOST_AUTO_TEST_CASE(Utils_makeDoubleLittleEndian)
 {
 
 #if defined (BOOST_LITTLE_ENDIAN)
-    
+
     double val = Utils::make_double(0xa9, 0x6a, 0x82, 0xa8, 0xfb, 0xb0, 0x28, 0x40, Utils::littleEndian);
 
     BOOST_CHECK_CLOSE(val, 12.34567, 0.00001);
@@ -234,7 +234,7 @@ BOOST_AUTO_TEST_CASE(Utils_splitWord)
     //verify that the lsb is now 0x34
     BOOST_CHECK_EQUAL(lsb, 0x34);
 
-    
+
     value = 0x56;
 
     //convert the word value into 2 bytes

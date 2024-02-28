@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "stdafx.h"
@@ -96,8 +96,8 @@ namespace mscl
     }
 
     void BaseStation::useEepromCache(bool useCache)
-    { 
-        m_impl->useEepromCache(useCache); 
+    {
+        m_impl->useEepromCache(useCache);
     }
 
     void BaseStation::readWriteRetries(uint8 numRetries)
@@ -116,8 +116,8 @@ namespace mscl
     }
 
     WirelessTypes::Frequency BaseStation::frequency() const
-    { 
-        return m_impl->frequency(); 
+    {
+        return m_impl->frequency();
     }
 
     WirelessTypes::CommProtocol BaseStation::communicationProtocol() const
@@ -156,22 +156,22 @@ namespace mscl
     }
 
     uint32 BaseStation::totalData()
-    { 
-        return m_impl->totalData(); 
+    {
+        return m_impl->totalData();
     }
 
     NodeDiscoveries BaseStation::getNodeDiscoveries()
-    { 
-        return m_impl->getNodeDiscoveries(); 
+    {
+        return m_impl->getNodeDiscoveries();
     }
 
     void BaseStation::timeout(uint64 timeout)
-    { 
+    {
         m_impl->timeout(timeout);
     }
 
     uint64 BaseStation::timeout() const
-    { 
+    {
         return m_impl->timeout();
     }
 
@@ -187,33 +187,33 @@ namespace mscl
     //                                    BASE STATION COMMANDS
     //================================================================================================
 
-    bool BaseStation::ping()                                                            
-    { 
-        return m_impl->ping(); 
+    bool BaseStation::ping()
+    {
+        return m_impl->ping();
     }
 
     uint16 BaseStation::readEeprom(uint16 eepromAddress) const
     {
-        return m_impl->readEeprom(eepromAddress); 
+        return m_impl->readEeprom(eepromAddress);
     }
 
     void BaseStation::writeEeprom(uint16 eepromAddress, uint16 value)
-    { 
+    {
         m_impl->writeEeprom(eepromAddress, value);
     }
 
     Timestamp BaseStation::enableBeacon()
-    { 
+    {
         return m_impl->enableBeacon();
     }
 
     Timestamp BaseStation::enableBeacon(uint32 utcTime)
-    { 
+    {
         return m_impl->enableBeacon(utcTime);
     }
 
     void BaseStation::disableBeacon()
-    { 
+    {
         m_impl->disableBeacon();
     }
 
@@ -223,7 +223,7 @@ namespace mscl
     }
 
     void BaseStation::cyclePower(bool checkComm)
-    { 
+    {
         m_impl->cyclePower(checkComm);
     }
 
@@ -243,7 +243,7 @@ namespace mscl
     }
 
     void BaseStation::changeFrequency(WirelessTypes::Frequency frequency)
-    { 
+    {
         m_impl->changeFrequency(frequency);
     }
 
@@ -313,7 +313,7 @@ namespace mscl
     //================================================================================================
 
     PingResponse BaseStation::node_ping(const WirelessProtocol& nodeProtocol, NodeAddress nodeAddress)
-    { 
+    {
         return m_impl->node_ping(nodeProtocol, nodeAddress);
     }
 
@@ -328,27 +328,27 @@ namespace mscl
     }
 
     bool BaseStation::node_sleep(const WirelessProtocol& nodeProtocol, NodeAddress nodeAddress)
-    { 
+    {
         return m_impl->node_sleep(nodeProtocol, nodeAddress);
     }
 
     SetToIdleStatus BaseStation::node_setToIdle(NodeAddress nodeAddress)
-    { 
+    {
         return m_impl->node_setToIdle(nodeAddress, *this);
     }
 
     bool BaseStation::node_readEeprom(const WirelessProtocol& protocol, NodeAddress nodeAddress, uint16 eepromAddress, uint16& eepromValue)
-    { 
+    {
         return m_impl->node_readEeprom(protocol, nodeAddress, eepromAddress, eepromValue);
     }
 
     bool BaseStation::node_writeEeprom(const WirelessProtocol& protocol, NodeAddress nodeAddress, uint16 eepromAddress, uint16 value)
-    { 
+    {
         return m_impl->node_writeEeprom(protocol, nodeAddress, eepromAddress, value);
     }
 
     bool BaseStation::node_pageDownload(const WirelessProtocol& protocol, NodeAddress nodeAddress, uint16 pageIndex, ByteStream& data)
-    { 
+    {
         return m_impl->node_pageDownload(protocol, nodeAddress, pageIndex, data);
     }
 
@@ -373,12 +373,12 @@ namespace mscl
     }
 
     bool BaseStation::node_startSyncSampling(const WirelessProtocol& protocol, NodeAddress nodeAddress)
-    { 
+    {
         return m_impl->node_startSyncSampling(protocol, nodeAddress);
     }
 
     bool BaseStation::node_startNonSyncSampling(const WirelessProtocol& protocol, NodeAddress nodeAddress)
-    { 
+    {
         return m_impl->node_startNonSyncSampling(protocol, nodeAddress);
     }
 

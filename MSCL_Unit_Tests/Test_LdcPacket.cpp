@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "mscl/MicroStrain/Wireless/Packets/LdcPacket.h"
@@ -48,7 +48,7 @@ BOOST_AUTO_TEST_CASE(LdcPacket_Constructor_4ByteFloat)
     BOOST_CHECK_EQUAL(sweeps.size(), 1);
 
     DataSweep sweep = sweeps.at(0);
-    
+
     //check that the sweep data matches the packet we added
     BOOST_CHECK_EQUAL(sweep.nodeAddress(), 345);
     BOOST_CHECK_EQUAL(sweep.tick(), 1);
@@ -85,7 +85,7 @@ BOOST_AUTO_TEST_CASE(LdcPacket_Constructor_2byteUint_Shifted)
     BOOST_CHECK_EQUAL(sweeps.size(), 1);
 
     DataSweep sweep = sweeps.at(0);
-    
+
     //check that the sweep data matches the packet we added
     BOOST_CHECK_EQUAL(sweep.nodeAddress(), 345);
     BOOST_CHECK_EQUAL(sweep.tick(), 1);
@@ -122,7 +122,7 @@ BOOST_AUTO_TEST_CASE(LdcPacket_Constructor_2byteUint)
     BOOST_CHECK_EQUAL(sweeps.size(), 1);
 
     DataSweep sweep = sweeps.at(0);
-    
+
     //check that the sweep data matches the packet we added
     BOOST_CHECK_EQUAL(sweep.nodeAddress(), 345);
     BOOST_CHECK_EQUAL(sweep.tick(), 1);

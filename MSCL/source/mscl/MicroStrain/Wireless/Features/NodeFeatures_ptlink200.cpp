@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "stdafx.h"
@@ -101,12 +101,12 @@ namespace mscl
         assert(false);
         return rates.at(rates.size() - 1);
     }
-    
+
     const WirelessTypes::VoltageType NodeFeatures_ptlink200::adcVoltageInputType() const
     {
         return WirelessTypes::VoltageType::voltageType_differential;
     }
-    
+
     bool NodeFeatures_ptlink200::supportsPoll() const
     {
         return true;
@@ -138,7 +138,7 @@ namespace mscl
         {
             throw Error_NotSupported("Sensor Delay is not supported by this Node.");
         }
-        
+
         return static_cast<uint32>(TimeSpan::MilliSeconds(5).getMicroseconds());    //5 milliseconds
     }
 

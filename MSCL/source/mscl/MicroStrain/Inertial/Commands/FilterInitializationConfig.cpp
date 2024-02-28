@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "stdafx.h"
@@ -53,7 +53,7 @@ namespace mscl
 		data.autoInitialize = !(buffer.read_uint8() > 0);
         data.initialValuesSource = static_cast<FilterInitialValuesSource>(buffer.read_uint8());
         data.autoHeadingAlignmentMethod = HeadingAlignmentMethod(buffer.read_uint8());
-        
+
         float heading = buffer.read_float();
         float pitch = buffer.read_float();
         float roll = buffer.read_float();
@@ -70,7 +70,7 @@ namespace mscl
         data.referenceFrame = static_cast<PositionVelocityReferenceFrame>(buffer.read_uint8());
         data.initialPosition = Position(posX, posY, posZ, data.referenceFrame);
         data.initialVelocity = GeometricVector(velX, velY, velZ, data.referenceFrame);
-        
+
         return data;
     }
 

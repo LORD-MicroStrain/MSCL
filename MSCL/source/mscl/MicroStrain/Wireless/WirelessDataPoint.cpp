@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "stdafx.h"
@@ -12,7 +12,7 @@
 namespace mscl
 {
     //WirelessDataPoint default constructor
-    WirelessDataPoint::WirelessDataPoint(): 
+    WirelessDataPoint::WirelessDataPoint():
         DataPoint(valueType_float, anyType(0.0f)),
         m_channelId(WirelessChannel::channel_unknown),
         m_channelNumber(0),

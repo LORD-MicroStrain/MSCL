@@ -1,11 +1,11 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "mscl/MicroStrain/Wireless/ChannelMask.h"
-#include <boost/utility/binary.hpp>    
+#include <boost/utility/binary.hpp>
 
 #include <boost/test/unit_test.hpp>
 using namespace mscl;
@@ -33,7 +33,7 @@ BOOST_AUTO_TEST_CASE(ChannelMask_constructor)
 
 BOOST_AUTO_TEST_CASE(ChannelMask_fromMask)
 {
-    uint16 mask = 42529; //1010011000100001 
+    uint16 mask = 42529; //1010011000100001
 
     ChannelMask chs;
 
@@ -49,7 +49,7 @@ BOOST_AUTO_TEST_CASE(ChannelMask_fromMask)
 
 BOOST_AUTO_TEST_CASE(ChannelMask_enabled)
 {
-    uint16 mask = 42529; //1010011000100001 
+    uint16 mask = 42529; //1010011000100001
 
     ChannelMask chs(mask);
 
@@ -116,7 +116,7 @@ BOOST_AUTO_TEST_CASE(ChannelMask_enable)
 
 BOOST_AUTO_TEST_CASE(ChannelMask_lastChEnabled)
 {
-    ChannelMask chs(42529); //1010011000100001 
+    ChannelMask chs(42529); //1010011000100001
 
     BOOST_CHECK_EQUAL(chs.lastChEnabled(), 16);
 

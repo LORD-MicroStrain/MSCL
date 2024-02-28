@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "mscl/MicroStrain/MIP/MipNodeFeatures.h"
@@ -28,7 +28,7 @@ BOOST_AUTO_TEST_CASE(InertialNodeInfo_loadNodeInfo)
     info.deviceOptions = "ABCDABCDABCDABCD";
 
     //make the getDeviceInfo command return the response we created
-    MOCK_EXPECT(impl->getDeviceInfo).once().returns(info);    
+    MOCK_EXPECT(impl->getDeviceInfo).once().returns(info);
 
 
     std::vector<uint16> fields;
@@ -40,7 +40,7 @@ BOOST_AUTO_TEST_CASE(InertialNodeInfo_loadNodeInfo)
     fields.push_back(MipTypes::CH_FIELD_ESTFILTER_ESTIMATED_ORIENT_MATRIX);
     fields.push_back(MipTypes::CH_FIELD_ESTFILTER_ESTIMATED_NED_UNCERT);
     fields.push_back(MipTypes::CH_FIELD_ESTFILTER_FILTER_STATUS);
-    
+
     //make the getDescriptorSets command return the response we created
     MOCK_EXPECT(impl->getDescriptorSets).once().returns(fields);
 
@@ -56,10 +56,10 @@ BOOST_AUTO_TEST_CASE(InertialNodeInfo_loadNodeInfo)
     BOOST_CHECK_EQUAL(node.features().supportsCategory(MipTypes::CLASS_ESTFILTER), true);
     BOOST_CHECK_EQUAL(node.features().supportsCategory(MipTypes::CLASS_GNSS), false);
     BOOST_CHECK_EQUAL(node.features().supportsCategory(MipTypes::CLASS_AHRS_IMU), true);
-    
+
     MipTypes::MipChannelFields estFilterChs = node.features().supportedChannelFields(MipTypes::CLASS_ESTFILTER);
     MipTypes::MipChannelFields sensorChs = node.features().supportedChannelFields(MipTypes::CLASS_AHRS_IMU);
-    
+
     BOOST_CHECK_THROW(node.features().supportedChannelFields(MipTypes::CLASS_GNSS), Error_NotSupported);
 
     BOOST_CHECK_EQUAL(estFilterChs.at(0), MipTypes::CH_FIELD_ESTFILTER_ESTIMATED_ORIENT_MATRIX);

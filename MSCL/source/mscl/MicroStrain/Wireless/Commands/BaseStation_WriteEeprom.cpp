@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "stdafx.h"
@@ -40,15 +40,15 @@ namespace mscl
         ReadBufferSavePoint savePoint(&data);
 
         //if there aren't enough bytes in the buffer to match the response
-        if(data.bytesRemaining() < TOTAL_SUCCESS_BYTES) 
-        { 
-            return false; 
+        if(data.bytesRemaining() < TOTAL_SUCCESS_BYTES)
+        {
+            return false;
         }
 
         //if the first byte isn't the command byte
         if(data.read_uint8() != WirelessProtocol::cmdId_base_writeEeprom)
-        { 
-            return false; 
+        {
+            return false;
         }
 
         //the next two bytes should be the eeprom value we wrote in the command
@@ -66,9 +66,9 @@ namespace mscl
         checksum.append_uint16(eepromVal);    //eeprom value
 
         //if the checksum doesn't match
-        if(data.read_uint16() != checksum.simpleChecksum()) 
-        { 
-            return false; 
+        if(data.read_uint16() != checksum.simpleChecksum())
+        {
+            return false;
         }
 
 
@@ -88,15 +88,15 @@ namespace mscl
         ReadBufferSavePoint savePoint(&data);
 
         //if there aren't enough bytes in the buffer to match the response
-        if(data.bytesRemaining() < TOTAL_FAILURE_BYTES) 
+        if(data.bytesRemaining() < TOTAL_FAILURE_BYTES)
         {
-            return false; 
+            return false;
         }
 
         //if the first byte isn't the fail byte
-        if(data.read_uint8() != 0x21) 
-        { 
-            return false; 
+        if(data.read_uint8() != 0x21)
+        {
+            return false;
         }
 
         //if we made it this far, we successfully matched everything

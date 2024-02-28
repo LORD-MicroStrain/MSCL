@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "stdafx.h"
@@ -39,7 +39,7 @@ void WMI_Helper::connect()
     // Step 1: --------------------------------------------------
     // Initialize COM. ------------------------------------------
 
-    hres =  CoInitializeEx(0, COINIT_MULTITHREADED); 
+    hres =  CoInitializeEx(0, COINIT_MULTITHREADED);
 
     //if we failed to intialize COM library
     if (FAILED(hres))
@@ -57,18 +57,18 @@ void WMI_Helper::connect()
     // parameter of CoInitializeSecurity ------------------------
 
     hres =  CoInitializeSecurity(
-        NULL, 
+        NULL,
         -1,                          // COM authentication
         NULL,                        // Authentication services
         NULL,                        // Reserved
-        RPC_C_AUTHN_LEVEL_DEFAULT,   // Default authentication 
-        RPC_C_IMP_LEVEL_IMPERSONATE, // Default Impersonation  
+        RPC_C_AUTHN_LEVEL_DEFAULT,   // Default authentication
+        RPC_C_IMP_LEVEL_IMPERSONATE, // Default Impersonation
         NULL,                        // Authentication info
-        EOAC_NONE,                   // Additional capabilities 
+        EOAC_NONE,                   // Additional capabilities
         NULL                         // Reserved
         );
 
-              
+
     //if we failed to initialize security
     if (FAILED(hres) && (hres != RPC_E_TOO_LATE))
     {
@@ -85,11 +85,11 @@ void WMI_Helper::connect()
     IWbemLocator *pLoc = NULL;
 
     hres = CoCreateInstance(
-        CLSID_WbemLocator,             
-        0, 
-        CLSCTX_INPROC_SERVER, 
+        CLSID_WbemLocator,
+        0,
+        CLSCTX_INPROC_SERVER,
         IID_IWbemLocator, (LPVOID *) &pLoc);
- 
+
     //if we failed to create the initial locator to WMI
     if (FAILED(hres))
     {
@@ -104,7 +104,7 @@ void WMI_Helper::connect()
     // Connect to WMI through the IWbemLocator::ConnectServer method
 
     IWbemServices *pSvc = NULL;
- 
+
     // Connect to a namespace with
     // the current user and obtain pointer pSvc
     // to make IWbemServices calls.
@@ -115,13 +115,13 @@ void WMI_Helper::connect()
          0,                                    // Locale. NULL indicates current
          NULL,                                // Security flags.
          0,                                    // Authority (for example, Kerberos)
-         0,                                    // Context object 
+         0,                                    // Context object
          &pSvc                                // pointer to IWbemServices proxy
          );
-    
+
     if (FAILED(hres))
     {
-        pLoc->Release();     
+        pLoc->Release();
         CoUninitialize();
 
         //throw an exception, program has failed
@@ -136,17 +136,17 @@ void WMI_Helper::connect()
        pSvc,                        // Indicates the proxy to set
        RPC_C_AUTHN_WINNT,           // RPC_C_AUTHN_xxx
        RPC_C_AUTHZ_NONE,            // RPC_C_AUTHZ_xxx
-       NULL,                        // Server principal name 
-       RPC_C_AUTHN_LEVEL_CALL,      // RPC_C_AUTHN_LEVEL_xxx 
+       NULL,                        // Server principal name
+       RPC_C_AUTHN_LEVEL_CALL,      // RPC_C_AUTHN_LEVEL_xxx
        RPC_C_IMP_LEVEL_IMPERSONATE, // RPC_C_IMP_LEVEL_xxx
        NULL,                        // client identity
-       EOAC_NONE                    // proxy capabilities 
+       EOAC_NONE                    // proxy capabilities
     );
 
     if (FAILED(hres))
     {
         pSvc->Release();
-        pLoc->Release();     
+        pLoc->Release();
         CoUninitialize();
 
         //throw an exception, Program has failed.
@@ -164,12 +164,12 @@ void WMI_Helper::connect()
     m_enumerator = NULL;
 
     hres = pSvc->ExecQuery(
-        bstr_t("WQL"), 
+        bstr_t("WQL"),
         bstr_t(query.str().c_str()),
-        WBEM_FLAG_RETURN_IMMEDIATELY, 
+        WBEM_FLAG_RETURN_IMMEDIATELY,
         NULL,
         &m_enumerator);
-    
+
     if (FAILED(hres))
     {
         pSvc->Release();
@@ -183,7 +183,7 @@ void WMI_Helper::connect()
 
     // Cleanup
     // ========
-    
+
     pSvc->Release();
     pLoc->Release();
 }
@@ -197,7 +197,7 @@ void WMI_Helper::requestThread(std::vector<std::string> valuesToGet)
 
     //reset the enumerator back to the start, to allow for multiple requests
     m_enumerator->Reset();
-   
+
     //loop through every item that was found
     while (m_enumerator)
     {
@@ -208,7 +208,7 @@ void WMI_Helper::requestThread(std::vector<std::string> valuesToGet)
         {
             break;
         }
-       
+
         wmiValue valueToAdd;
 
         //for each value that the user requested
@@ -229,7 +229,7 @@ void WMI_Helper::requestThread(std::vector<std::string> valuesToGet)
                 error << "Failed to find value for " << valueName;
                 throw std::exception(error.str().c_str());
             }
-            
+
             //add to the map
             valueToAdd[valueName] = vtProp;
         }

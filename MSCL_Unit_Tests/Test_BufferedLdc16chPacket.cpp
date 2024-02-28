@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "mscl/MicroStrain/Wireless/Packets/BufferedLdcPacket_v2.h"
@@ -24,7 +24,7 @@ BOOST_AUTO_TEST_CASE(BufferedLdc16ch_Constructor_4ByteFloat)
     payloadBytes.push_back(112);    //sample rate
     payloadBytes.push_back(0x22);    //data type - 4 byte float
     payloadBytes.push_back(0);        //tick msb
-    payloadBytes.push_back(1);        //tick lsb    
+    payloadBytes.push_back(1);        //tick lsb
     payloadBytes.push_back(0);        //channel data b1
     payloadBytes.push_back(0);        //channel data b2
     payloadBytes.push_back(0);        //channel data b3
@@ -52,14 +52,14 @@ BOOST_AUTO_TEST_CASE(BufferedLdc16ch_Constructor_4ByteFloat)
     BOOST_CHECK_EQUAL(sweeps.size(), 2);
 
     DataSweep sweep = sweeps.at(0);
-    
+
     //check that the sweep data matches the packet we added
     BOOST_CHECK_EQUAL(sweep.nodeAddress(), 345);
     BOOST_CHECK_EQUAL(sweep.tick(), 1);
     BOOST_CHECK_EQUAL(sweep.data()[0].storedAs(), valueType_float);
 
     sweep = sweeps.at(1);
-    
+
     //check that the sweep data matches the packet we added
     BOOST_CHECK_EQUAL(sweep.nodeAddress(), 345);
     BOOST_CHECK_EQUAL(sweep.tick(), 2);    //check that the tick incremented (by MSCL, not by the packet)
@@ -96,7 +96,7 @@ BOOST_AUTO_TEST_CASE(BufferedLdc16ch_Constructor_2ByteUint)
     BOOST_CHECK_EQUAL(sweeps.size(), 1);
 
     DataSweep sweep = sweeps.at(0);
-    
+
     //check that the sweep data matches the packet we added
     BOOST_CHECK_EQUAL(sweep.nodeAddress(), 345);
     BOOST_CHECK_EQUAL(sweep.tick(), 1);
@@ -134,7 +134,7 @@ BOOST_AUTO_TEST_CASE(BufferedLdc16ch_Constructor_2ByteUintShifted)
     BOOST_CHECK_EQUAL(sweeps.size(), 1);
 
     DataSweep sweep = sweeps.at(0);
-    
+
     //check that the sweep data matches the packet we added
     BOOST_CHECK_EQUAL(sweep.nodeAddress(), 345);
     BOOST_CHECK_EQUAL(sweep.tick(), 1);
@@ -170,7 +170,7 @@ BOOST_AUTO_TEST_CASE(BufferedLdc16ch_Constructor_NoChannelMask)
     BOOST_CHECK_EQUAL(sweeps.size(), 1);
 
     DataSweep sweep = sweeps.at(0);
-    
+
     //check that the sweep data matches the packet we added
     BOOST_CHECK_EQUAL(sweep.nodeAddress(), 345);
     BOOST_CHECK_EQUAL(sweep.tick(), 1);
@@ -180,12 +180,12 @@ BOOST_AUTO_TEST_CASE(BufferedLdc16ch_Constructor_NoChannelMask)
 BOOST_AUTO_TEST_CASE(BufferedLdc16ch_IntegrityCheck_Good)
 {
     Bytes payloadBytes;
-    payloadBytes.push_back(0);        
+    payloadBytes.push_back(0);
     payloadBytes.push_back(1);        //channel mask - 1 channel
     payloadBytes.push_back(112);    //sample rate
     payloadBytes.push_back(0x23);    //data type - 2 byte uint32 shifted
     payloadBytes.push_back(0);        //tick msb
-    payloadBytes.push_back(1);        //tick lsb    
+    payloadBytes.push_back(1);        //tick lsb
     payloadBytes.push_back(0);        //channel data b1
     payloadBytes.push_back(0);        //channel data b2
 
@@ -225,12 +225,12 @@ BOOST_AUTO_TEST_CASE(BufferedLdc16ch_IntegrityCheck_SmallPayload)
 BOOST_AUTO_TEST_CASE(BufferedLdc16ch_IntegrityCheck_BadAppID)
 {
     Bytes payloadBytes;
-    payloadBytes.push_back(0);        
+    payloadBytes.push_back(0);
     payloadBytes.push_back(1);        //channel mask - 1 channel
     payloadBytes.push_back(112);    //sample rate
     payloadBytes.push_back(0xA3);    //BAD app id / data type - 2 byte uint32 shifted
     payloadBytes.push_back(0);        //tick msb
-    payloadBytes.push_back(1);        //tick lsb    
+    payloadBytes.push_back(1);        //tick lsb
     payloadBytes.push_back(0);        //channel data b1
     payloadBytes.push_back(0);        //channel data b2
 
@@ -255,7 +255,7 @@ BOOST_AUTO_TEST_CASE(BufferedLdc16ch_IntegrityCheck_BadStopFlags)
     payloadBytes.push_back(112);    //sample rate
     payloadBytes.push_back(0x23);    //data type - 2 byte uint32 shifted
     payloadBytes.push_back(0);        //tick msb
-    payloadBytes.push_back(1);        //tick lsb    
+    payloadBytes.push_back(1);        //tick lsb
     payloadBytes.push_back(0);        //channel data b1
     payloadBytes.push_back(0);        //channel data b2
 
@@ -305,7 +305,7 @@ BOOST_AUTO_TEST_CASE(BufferedLdc16ch_IntegrityCheck_BadPacketType)
     payloadBytes.push_back(112);    //sample rate
     payloadBytes.push_back(0x23);    //data type - 2 byte uint32 shifted
     payloadBytes.push_back(0);        //tick msb
-    payloadBytes.push_back(1);        //tick lsb    
+    payloadBytes.push_back(1);        //tick lsb
     payloadBytes.push_back(0);        //channel data b1
     payloadBytes.push_back(0);        //channel data b2
 

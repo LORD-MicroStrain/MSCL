@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "stdafx.h"
@@ -617,7 +617,7 @@ namespace mscl
             NodeCommTimes::updateCommTime(nodeAddress);
 
             //update the device state to idle
-            //Note: this isn't always true, as the command that was just sent could have put the node to sleep or started 
+            //Note: this isn't always true, as the command that was just sent could have put the node to sleep or started
             //      it sampling, but those commands will update the device state separately immediately after this function
             NodeCommTimes::updateDeviceState(nodeAddress, DeviceState::deviceState_idle);
 
@@ -968,7 +968,7 @@ namespace mscl
 
         //build the set to idle command to send
         ByteStream setToIdleCmd;
-        
+
         switch(asppVer)
         {
             case WirelessPacket::aspp_v3:

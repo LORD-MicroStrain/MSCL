@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "mscl/MicroStrain/Wireless/Packets/ShmPacket.h"
@@ -28,7 +28,7 @@ BOOST_AUTO_TEST_CASE(ShmPacket_Constructor)
     payloadBytes.append_uint32(25);        //uptime
     payloadBytes.append_float(0.622558944f);    //angle    (in radians)
     payloadBytes.append_float(20.6f);    //life
-    
+
     //there are 21 bins in each packet
     for(int i = 0; i < 21; i++)
     {
@@ -53,7 +53,7 @@ BOOST_AUTO_TEST_CASE(ShmPacket_Constructor)
     BOOST_CHECK_EQUAL(sweeps.size(), 1);
 
     DataSweep sweep = sweeps.at(0);
-    
+
     //check that the sweep data matches the packet we added
     BOOST_CHECK_EQUAL(sweep.nodeAddress(), 345);
     BOOST_CHECK_EQUAL(sweep.tick(), 16);
@@ -69,7 +69,7 @@ BOOST_AUTO_TEST_CASE(ShmPacket_Constructor)
     BOOST_CHECK_EQUAL(sh.uptime(), 25);
     BOOST_CHECK_CLOSE(sh.angle(), 35.67, 0.0001);
     BOOST_CHECK_CLOSE(sh.damage(), 20.6, 0.0001);
-    
+
     mscl::Bins bins = sh.histogram().bins();
     mscl::Bin bin = bins.at(0);
     BOOST_CHECK_EQUAL(sh.histogram().binsStart().as_uint32(), 10);
@@ -93,7 +93,7 @@ BOOST_AUTO_TEST_CASE(ShmPacket2_Constructor)
     payloadBytes.append_float(42.17663f);    //angle (in degrees)
     payloadBytes.append_float(20.36f);    //damage
     payloadBytes.append_uint16(10);        //bin start
-    payloadBytes.append_uint16(5);        //bin size    
+    payloadBytes.append_uint16(5);        //bin size
 
     //there are 21 bins in each packet
     for(int i = 0; i < 21; i++)

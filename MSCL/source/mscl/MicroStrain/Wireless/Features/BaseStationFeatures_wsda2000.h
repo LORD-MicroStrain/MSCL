@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -9,7 +9,7 @@
 #include "BaseStationFeatures.h"
 
 namespace mscl
-{    
+{
     //Class: BaseStationFeatures_wsda2000
     //    Contains information on features for the WSDA-2000.
     class BaseStationFeatures_wsda2000 : public BaseStationFeatures

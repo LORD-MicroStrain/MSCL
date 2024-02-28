@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -15,14 +15,14 @@
 
 #include <string>
 
-namespace mscl 
+namespace mscl
 {
     //Class: TcpIpConnection
     //    A <Connection_Impl> derived class that represents a tcp/ip connection.
     class TcpIpConnection final : public Connection_Impl<boost::asio::ip::tcp::socket>
     {
         friend Connection Connection::TcpIp(const std::string& serverAddress, uint16 serverPort, const std::string& interfaceAddress);
-    
+
     public:
         //Function: description
         //    Gets a description of the connection.
@@ -61,7 +61,7 @@ namespace mscl
         virtual void establishConnection();
 
         void checkDeadline(const boost::system::error_code& error);
-    
+
     private:
         typedef boost::asio::ip::tcp tcp;
 

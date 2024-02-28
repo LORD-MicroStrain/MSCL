@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -48,7 +48,7 @@ namespace mscl
     class FieldParser_TimeSyncStatus : public MipFieldParser
     {
         FieldParser_TimeSyncStatus() {}    //default constructor disabled
-    
+
     public:
         //Function: parse
         //    Parses a <MipDataField> for <MipDataPoints> and stores them in the valid or invalid result vectors

@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -102,7 +102,7 @@ namespace mscl
 
         //API Function: floatData
         //    Checks whether floating point data is expected in this object.
-        //    
+        //
         //Returns:
         //    True if floating point data is expected, false if it is not.
         bool expectFloatData() const;
@@ -126,7 +126,7 @@ namespace mscl
         //API Function: outputVal_0V
         //    Sets the output value that represents 0 Volts.
         //    Note: Setting this to a NaN (<CHANNEL_NOT_FLOAT>) disables the float expectation and sets outputVal_3V to <CHANNEL_NOT_FLOAT> as well.
-        //    Note: If outputVal_3V is set to <CHANNEL_NOT_FLOAT> when this is called with a real value, outputVal_3V will be updated to (value + 1.0). 
+        //    Note: If outputVal_3V is set to <CHANNEL_NOT_FLOAT> when this is called with a real value, outputVal_3V will be updated to (value + 1.0).
         //
         //Parameters:
         //    value - The output value to represent 0 Volts.
@@ -142,7 +142,7 @@ namespace mscl
         //API Function: outputVal_3V
         //    Sets the output value that represents 3 Volts.
         //    Note: Setting this to a NaN (<CHANNEL_NOT_FLOAT>) disables the float expectation and sets outputVal_0V to <CHANNEL_NOT_FLOAT> as well.
-        //    Note: If outputVal_0V is set to <CHANNEL_NOT_FLOAT> when this is called with a real value, outputVal_0V will be updated to (value - 1.0). 
+        //    Note: If outputVal_0V is set to <CHANNEL_NOT_FLOAT> when this is called with a real value, outputVal_0V will be updated to (value - 1.0).
         //
         //Parameters:
         //    value - The output value to represent 3 Volts.

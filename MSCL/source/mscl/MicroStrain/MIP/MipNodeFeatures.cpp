@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "stdafx.h"
@@ -455,7 +455,7 @@ namespace mscl
         {
             return HeadingAlignmentMethod(0);
         }
-        
+
         MipModel model(nodeInfo().deviceInfo().modelNumber);
         switch (model.baseModel().nodeModel())
         {
@@ -875,7 +875,7 @@ namespace mscl
                 { GpioConfiguration::Feature::ENCODER_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::ENCODER_FEATURE) },
                 { GpioConfiguration::Feature::UART_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::UART_FEATURE) }
         };
-        
+
         // build pin options
         GpioPinOptions pinOptions;
         for (uint8 pinId : supportedPins)
@@ -923,7 +923,7 @@ namespace mscl
             default:
                 break;
             }
-            
+
             // add features for target id to pin options
             pinOptions.emplace(pinId, features);
         }

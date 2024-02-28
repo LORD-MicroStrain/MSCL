@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -33,7 +33,7 @@ namespace mscl
         //    options - The options to send with the command (advanced, used internally).
         //
         //Returns:
-        //    A <ByteStream> containing the base station beacon status command.        
+        //    A <ByteStream> containing the base station beacon status command.
         static ByteStream buildCommand(WirelessPacket::AsppVersion asppVer, uint32 min, uint32 max, uint32 interval, uint16 options);
 
         //Class: Response

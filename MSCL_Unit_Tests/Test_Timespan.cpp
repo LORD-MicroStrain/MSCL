@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "mscl/TimeSpan.h"
@@ -118,7 +118,7 @@ BOOST_AUTO_TEST_CASE(TimeSpan_Multiplication)
     TimeSpan leftFactor1 = 4 * span;
     TimeSpan rightFactor2 = span * 1000000000;
     TimeSpan leftFactor2 = 1000000000 * span;
-    
+
     BOOST_CHECK_EQUAL(rightFactor1.getNanoseconds(), 2000);
     BOOST_CHECK_EQUAL(leftFactor1.getNanoseconds(), 2000);
     BOOST_CHECK_EQUAL(rightFactor2.getSeconds(), 500);
@@ -132,7 +132,7 @@ BOOST_AUTO_TEST_CASE(TimeSpan_Division)
     TimeSpan leftFactor1 = 4 / span;
     TimeSpan rightFactor2 = span / 1000000000;
     TimeSpan leftFactor2 = 1000000000 / span;
-    
+
     BOOST_CHECK_EQUAL(rightFactor1.getSeconds(), 250);
     BOOST_CHECK_EQUAL(leftFactor1.getSeconds(), 250);
     BOOST_CHECK_EQUAL(rightFactor2.getNanoseconds(), 1000);

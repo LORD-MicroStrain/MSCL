@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "stdafx.h"
@@ -18,7 +18,7 @@
 
 namespace mscl
 {
-    DisplacementNode::DisplacementNode(Connection connection): 
+    DisplacementNode::DisplacementNode(Connection connection):
         m_impl(std::make_shared<MipNode_Impl>(connection))
     {
     }
@@ -34,7 +34,7 @@ namespace mscl
     }
 
     MipDataPackets DisplacementNode::getDataPackets(uint32 timeout, uint32 maxPackets)
-    { 
+    {
         MipDataPackets packets;
         m_impl->getDataPackets(packets, timeout, maxPackets);
         return packets;
@@ -109,14 +109,14 @@ namespace mscl
         return m_impl->deviceOptions();
     }
 
-    uint32 DisplacementNode::totalPackets()                                                            
-    { 
-        return m_impl->totalPackets(); 
+    uint32 DisplacementNode::totalPackets()
+    {
+        return m_impl->totalPackets();
     }
 
-    void DisplacementNode::timeout(uint64 timeout)                                        
-    { 
-        m_impl->timeout(timeout); 
+    void DisplacementNode::timeout(uint64 timeout)
+    {
+        m_impl->timeout(timeout);
     }
 
     uint64 DisplacementNode::timeout() const
@@ -130,8 +130,8 @@ namespace mscl
     }
 
     bool DisplacementNode::ping()
-    { 
-        return m_impl->ping(); 
+    {
+        return m_impl->ping();
     }
 
     void DisplacementNode::setToIdle()

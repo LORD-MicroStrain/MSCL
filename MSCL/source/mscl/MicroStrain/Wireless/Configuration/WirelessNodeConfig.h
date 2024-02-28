@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -46,7 +46,7 @@ namespace mscl
         //    Creates a blank WirelessNodeConfig.
         WirelessNodeConfig();
 
-        //API Constant: 
+        //API Constant:
         //  SENSOR_DELAY_ALWAYS_ON - 0xFFFFFFFF - Value representing that the sensor delay is always on.
         static const uint32 SENSOR_DELAY_ALWAYS_ON = 0xFFFFFFFF;
 
@@ -426,7 +426,7 @@ namespace mscl
                 throw Error_NoData("The " + valueName + " option has not been set for this ChannelMask.");
             }
         }
-        
+
         //Function: setChannelMapVal
         //    Sets the value in the given map for the provided channel mask.
         //    This will update it if it already exists, and add an item to the map if it does not.

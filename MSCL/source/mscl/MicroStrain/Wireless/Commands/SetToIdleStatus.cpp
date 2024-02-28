@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "stdafx.h"
@@ -29,7 +29,7 @@ namespace mscl
             //perform a wait on the response object for the specified timeout
             m_complete = m_response->wait(timeout);
         }
-        
+
         //return the result
         return m_complete;
     }

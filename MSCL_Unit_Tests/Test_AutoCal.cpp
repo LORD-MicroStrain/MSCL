@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "mscl/MicroStrain/Wireless/Commands/AutoCalResult.h"
@@ -59,7 +59,7 @@ BOOST_AUTO_TEST_SUITE(AutoCal_shmLink_Test)
 BOOST_AUTO_TEST_CASE(AutoCalResult_shmLink_Constructor)
 {
     AutoCalResult_shmLink r;
-    
+
     //check that the default constructor initialized correctly
     BOOST_CHECK_EQUAL(r.completionFlag(), WirelessTypes::autocal_notComplete);
     BOOST_CHECK_EQUAL(r.errorFlagCh1(), WirelessTypes::autocalError_none);

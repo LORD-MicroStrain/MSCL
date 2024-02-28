@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -20,7 +20,7 @@ namespace mscl
     {
     private:
         DeviceStatusFlags() {};                //default constructor disabled
-        
+
          //Constants: Packet Bytes
          // FIELD_DATA_BYTE - Descriptor byte for the Field data.
         static const uint8 FIELD_DATA_BYTE = 0x81;
@@ -42,4 +42,3 @@ namespace mscl
         };
     };
 }
-

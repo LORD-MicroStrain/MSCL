@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "stdafx.h"
@@ -18,7 +18,7 @@ namespace mscl
         //build the command ByteStream
         ByteStream cmd;
         cmd.append_uint16(WirelessProtocol::cmdId_base_setBeacon_v1);
-        cmd.append_uint32(beaconTime);                    
+        cmd.append_uint32(beaconTime);
 
         return cmd;
     }
@@ -38,15 +38,15 @@ namespace mscl
         ReadBufferSavePoint savePoint(&data);
 
         //if there aren't enough bytes in the buffer to match the response
-        if(data.bytesRemaining() < TOTAL_SUCCESS_BYTES) 
-        { 
-            return false; 
+        if(data.bytesRemaining() < TOTAL_SUCCESS_BYTES)
+        {
+            return false;
         }
 
         //if it doesn't match the command Id
         if(data.read_uint16() != WirelessProtocol::cmdId_base_setBeacon_v1)
-        { 
-            return false; 
+        {
+            return false;
         }
 
         //if we made it this far, we successfully matched everything

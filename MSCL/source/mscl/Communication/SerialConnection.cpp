@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "stdafx.h"
@@ -43,7 +43,7 @@ namespace mscl
         serial_port_base::flow_control::type flowControl = serial_port_base::flow_control::none;
 
         //for now we are assuming a buad rate of 3000000 enables hardware flow controls
-        //TODO: we may need to reassess this in the future 
+        //TODO: we may need to reassess this in the future
         if(m_baudRate == 3000000)
         {
             flowControl = serial_port_base::flow_control::hardware;

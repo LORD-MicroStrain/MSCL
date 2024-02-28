@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -60,7 +60,7 @@ namespace mscl
         void throwIfFailed();
 
         //API Function: success
-        //    Gets whether or not the command was a success. 
+        //    Gets whether or not the command was a success.
         //
         //Returns:
         //    true if the command was a success, false otherwise

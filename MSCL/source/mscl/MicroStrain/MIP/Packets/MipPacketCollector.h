@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -40,7 +40,7 @@ namespace mscl
 
     private:
         //Variable: m_dataPackets
-        //    A circular buffer that holds <MipDataPacket>s 
+        //    A circular buffer that holds <MipDataPacket>s
         circular_data_buffer m_dataPackets;
 
         //Variable: m_packetMutex

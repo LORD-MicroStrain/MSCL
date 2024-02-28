@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -10,7 +10,7 @@
 
 namespace mscl
 {
-    
+
     //API Class: TimeSpan
     //    Represents a range of time
     class TimeSpan
@@ -20,7 +20,7 @@ namespace mscl
         friend TimeSpan operator*(uint32 factor, TimeSpan timeSpan);
         friend TimeSpan operator/(TimeSpan timeSpan, uint32 divisor);
         friend TimeSpan operator/(uint32 divisor, TimeSpan timeSpan);
-#endif        
+#endif
 
     public:
         //===========================================================================================
@@ -170,7 +170,7 @@ namespace mscl
         //    A TimeSpan object representative of the passed in value
         static TimeSpan Days(int days);
     };
-    
+
 #ifndef SWIG
     TimeSpan operator*(TimeSpan timeSpan, uint32 factor);
     TimeSpan operator*(uint32 factor, TimeSpan timeSpan);

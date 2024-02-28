@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "stdafx.h"
@@ -66,7 +66,7 @@ namespace mscl
                 retries++;
             }
         }
-        
+
     }
 
     WirelessTypes::Frequency NodeEepromHelper::read_frequency() const
@@ -113,7 +113,7 @@ namespace mscl
         {
             uint16 fwValue2 = read(NodeEepromMap::FIRMWARE_VER2).as_uint16();
 
-            //make the svn revision from the lsb of the first fw value, and the entire second fw value 
+            //make the svn revision from the lsb of the first fw value, and the entire second fw value
             uint32 svnRevision = Utils::make_uint32(0, Utils::lsb(fwValue1), Utils::msb(fwValue2), Utils::lsb(fwValue2));
 
             return Version(major, svnRevision);
@@ -182,7 +182,7 @@ namespace mscl
             //doesn't support the comm protocol eeprom
             return WirelessTypes::commProtocol_lxrs;
         }
-        
+
         uint16 commProtocol = 0;
         try
         {
@@ -253,7 +253,7 @@ namespace mscl
 
     std::string NodeEepromHelper::read_serial() const
     {
-        //read the serial number 
+        //read the serial number
         uint32 serial = read(NodeEepromMap::SERIAL_ID).as_uint32();
 
         //if the serial stored in eeprom is invalid (uninitialized)
@@ -574,7 +574,7 @@ namespace mscl
                 }
             }
         }
-        
+
         switch (m_node->features().sensorDelayVersion())
         {
             //Milliseconds only
@@ -673,7 +673,7 @@ namespace mscl
                 //0b01 - Milliseconds
                 if (Utils::bitIsSet(eeVal, 14))
                 {
-                    //ignore the top 2 bits 
+                    //ignore the top 2 bits
                     Utils::setBit(eeVal, 15, false);
                     Utils::setBit(eeVal, 14, false);
 
@@ -779,7 +779,7 @@ namespace mscl
                 syncMode = WirelessTypes::syncMode_burst;
             }
 
-            //write the sync sampling mode 
+            //write the sync sampling mode
             write_syncSamplingMode(syncMode);
         }
     }
@@ -792,7 +792,7 @@ namespace mscl
         //if the sampling mode value is not set (uninitialized, legacy nodes)
         if(samplingModeVal == 0 || samplingModeVal == 0xFFFF || samplingModeVal == 0xAAAA)
         {
-            if(m_node->features().supportsSamplingMode(WirelessTypes::samplingMode_sync) || 
+            if(m_node->features().supportsSamplingMode(WirelessTypes::samplingMode_sync) ||
                m_node->features().supportsSamplingMode(WirelessTypes::samplingMode_syncBurst))
             {
                 //need to check if burst is enabled
@@ -972,7 +972,7 @@ namespace mscl
     WirelessTypes::TransmitPower NodeEepromHelper::read_transmitPower() const
     {
         //TODO: this is currently defined as an int16 so that negative dBm values
-        //      can be supported in the future. 
+        //      can be supported in the future.
 
         int16 val = read(NodeEepromMap::TX_POWER_LEVEL).as_int16();
 
@@ -1497,7 +1497,7 @@ namespace mscl
         {
             return static_cast<WirelessTypes::FatigueMode>(read(NodeEepromMap::FATIGUE_MODE).as_uint16());
         }
-        
+
         return WirelessTypes::fatigueMode_angleStrain;
     }
 
@@ -1863,7 +1863,7 @@ namespace mscl
                 ChannelGroups groups = m_node->features().channelGroups();
                 for(const auto& group : groups)
                 {
-                    if(group.hasSetting(WirelessTypes::ChannelGroupSetting::chSetting_linearEquation) && 
+                    if(group.hasSetting(WirelessTypes::ChannelGroupSetting::chSetting_linearEquation) &&
                        group.channels().enabled(triggerChannel))
                     {
                         //read the current linear equation set on the Node
@@ -2003,7 +2003,7 @@ namespace mscl
         uint16 minutes = read(NodeEepromMap::LOST_BEACON_TIMEOUT).as_uint16();
 
         if(minutes == 1)
-        {    
+        {
             //the minimum timeouts is 2 minutes
             //the node changes 1 minute to 2 minutes
             minutes = MIN_LOST_BEACON_TIMEOUT;

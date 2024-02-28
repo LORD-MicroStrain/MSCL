@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "mscl/MicroStrain/MIP/MipParser.h"
@@ -35,7 +35,7 @@ BOOST_AUTO_TEST_CASE(InertialParser_parseAsPacket_NotEnoughData)
     MipParser parser(&packetCollector, responseCollector, &rawBytePacketCollector);
     MipPacket packet;
 
-    //check that the result is mipParserResult_notEnoughData b/c there isn't enough data to be a MIP packet 
+    //check that the result is mipParserResult_notEnoughData b/c there isn't enough data to be a MIP packet
     BOOST_CHECK_EQUAL(parser.parseAsPacket(buffer, packet), mipParserResult_notEnoughData);
 
     b.append_uint8(0x80);
@@ -105,7 +105,7 @@ BOOST_AUTO_TEST_CASE(InertialParser_parseAsPacket_CompletePacket)
     b.append_uint32(0x00000000);
     b.append_uint32(0x00000000);
     b.append_uint32(0x00000000);
-    
+
     ChecksumBuilder check;
     check.appendByteStream(b);
     uint16 checksum = check.fletcherChecksum();
@@ -212,7 +212,7 @@ BOOST_AUTO_TEST_CASE(InertialParser_parse_validDataPacket)
     b.append_uint32(0x00000000);
     b.append_uint32(0x00000000);
     b.append_uint32(0x00000000);
-    
+
     ChecksumBuilder check;
     check.appendByteStream(b);
     uint16 checksum = check.fletcherChecksum();
@@ -252,7 +252,7 @@ BOOST_AUTO_TEST_CASE(InertialParser_parse_responsePacket_notExpected)
     b.append_uint8(0xF1);
     b.append_uint8(0x01);
     b.append_uint8(0x00);
-    
+
     ChecksumBuilder check;
     check.appendByteStream(b);
     uint16 checksum = check.fletcherChecksum();
@@ -330,7 +330,7 @@ BOOST_AUTO_TEST_CASE(InertialParser_parse_notEnoughData)
     ChecksumBuilder check;
     check.appendByteStream(b);
     uint16 checksum = check.fletcherChecksum();
-    b.append_uint16(checksum);//append the valid checksum 
+    b.append_uint16(checksum);//append the valid checksum
 
     //add another part of a valid packet, but missing the checksum
     b.append_uint16(0x7565);

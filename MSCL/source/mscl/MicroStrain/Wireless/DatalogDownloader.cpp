@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "stdafx.h"
@@ -559,7 +559,7 @@ namespace mscl
     void DatalogDownloader::parseDerivedMetaData(uint8 numActiveAlgorithms)
     {
         m_mathMetaDeta.clear();
-        
+
         WirelessTypes::DerivedDataPacketAlgorithmId id;
         uint16 channelMask = 0;
         uint8 algItr = 0;

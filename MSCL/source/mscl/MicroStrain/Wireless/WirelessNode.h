@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -93,10 +93,10 @@ namespace mscl
         WirelessNode(std::shared_ptr<WirelessNode_Impl> impl); //constructor with direct underlying implementation for this class.
 
         //changes/sets the underlying implementation for this class.
-        void setImpl(std::shared_ptr<WirelessNode_Impl> impl);    
+        void setImpl(std::shared_ptr<WirelessNode_Impl> impl);
 
         //gets a reference to the NodeEepromHelper for the Node.
-        NodeEepromHelper& eepromHelper() const;    
+        NodeEepromHelper& eepromHelper() const;
 
         //gets a reference to the WirelessProtocol for the Node for the given CommProtocol.
         const WirelessProtocol& protocol(WirelessTypes::CommProtocol commProtocol) const;
@@ -372,7 +372,7 @@ namespace mscl
         bool sleep();
 
         //API Function: cyclePower
-        //    Cycles the power on the Node. 
+        //    Cycles the power on the Node.
         //    Many configuration changes that are applied to the node do not take affect until the power is cycled.
         //
         //Exceptions:
@@ -412,7 +412,7 @@ namespace mscl
         //    may be used to determine the current status of the Set to Idle operation.
         //
         //Returns:
-        //    A <SetToIdleStatus> object which can be used to get the current status of the 
+        //    A <SetToIdleStatus> object which can be used to get the current status of the
         //    ongoing Set to Idle operation, as well as cancel the operation altogether.
         //
         //Exceptions:
@@ -423,7 +423,7 @@ namespace mscl
         //API Function: erase
         //    Erases all logged data on the Node.
         //    Note: Erasing the data on the Node may take up to 30 seconds to complete for some devices.
-        //          This command will return immediately while the Node is being erased. 
+        //          This command will return immediately while the Node is being erased.
         //          If you wish to check the status of the Erase operation, you can continuously ping the Node. A successful ping means the erase has completed.
         //
         //Exceptions:
@@ -470,7 +470,7 @@ namespace mscl
         //API Function: autoBalance
         //    Performs an Auto Balance command on a specified channel on the Node.
         //    This adjusts the sensor offset for differential channels to affect range.
-        //    
+        //
         //    See Also: <getHardwareOffset>, <WirelessNodeConfig::hardwareOffset>
         //
         //Parameters:
@@ -628,7 +628,7 @@ namespace mscl
 
         //API Function: applyConfig
         //    Applies a <WirelessNodeConfig> to the Node.
-        //    Note: This applies all options that have been set in the <WirelessNodeConfig>. 
+        //    Note: This applies all options that have been set in the <WirelessNodeConfig>.
         //          Before applying, the options will be validated. It is recommended that you perform
         //          this validation yourself first by using <verifyConfig>.
         //
@@ -754,7 +754,7 @@ namespace mscl
         WirelessTypes::WirelessSampleRate getSampleRate() const;
 
         //API Function: getNumSweeps
-        //    Gets the number of sweeps currently set on the Node, which affects the duration of sampling if unlimited duration is disabled, 
+        //    Gets the number of sweeps currently set on the Node, which affects the duration of sampling if unlimited duration is disabled,
         //    or the duration of each burst if the sampling mode is Sync Sampling Burst.
         //
         //Returns:
@@ -804,7 +804,7 @@ namespace mscl
         WirelessTypes::DataCollectionMethod getDataCollectionMethod() const;
 
         //API Function: getTimeBetweenBursts
-        //    Gets the amount of time between each burst currently set on the Node. 
+        //    Gets the amount of time between each burst currently set on the Node.
         //    This is only used if the sampling mode is Synchronized Sampling Burst.
         //
         //Returns:
@@ -1282,7 +1282,7 @@ namespace mscl
         //  Note: A value of <WirelessNodeConfig::SENSOR_DELAY_ALWAYS_ON> indicates that the sensor is always on.
         //
         //Returns:
-        //  The sensor delay (in microseconds) that the sensor delay is set for. 
+        //  The sensor delay (in microseconds) that the sensor delay is set for.
         //  This will be <WirelessNodeConfig::SENSOR_DELAY_ALWAYS_ON> if the sensor is set to Always On.
         //
         //Exceptions:

@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -646,7 +646,7 @@ namespace mscl
         //Constants: Valid Flags
         //    VALID_FLAG        - b00000001 - The flag position for checking the Mag Bias flag
         static const uint16 VALID_FLAG = BOOST_BINARY(00000001);
-        
+
         FieldParser_MagBias() {};        //default constructor disabled
 
     public:

@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -106,7 +106,7 @@ namespace mscl
         float offsetCh3() const;
 
         //API Function: temperature
-        //    Gets the temperature (in °C) at the time of the calibration.
+        //    Gets the temperature (in ?C) at the time of the calibration.
         float temperature() const;
 
     protected:
@@ -201,7 +201,7 @@ namespace mscl
         float offsetCh3() const;
 
         //API Function: temperature
-        //    Gets the temperature (in °C) at the time of the calibration.
+        //    Gets the temperature (in ?C) at the time of the calibration.
         float temperature() const;
 
     protected:
@@ -230,23 +230,23 @@ namespace mscl
         //Variable: m_baseMedian
         //  The median of the baseline data sampled during the shunt calibration.
         float m_baseMedian;
-        
+
         //Variable: m_baseMin
         //  The minimum of the baseline data sampled during the shunt calibration.
         float m_baseMin;
-        
+
         //Variable: m_baseMax
         //  The maximum of the baseline data sampled during the shunt calibration.
         float m_baseMax;
-        
+
         //Variable: m_shuntMedian
         //  The median of the shunted data sampled during the shunt calibration.
         float m_shuntMedian;
-        
+
         //Variable: m_shuntMin
         //  The minimum of the shunted data sampled during the shunt calibration.
         float m_shuntMin;
-        
+
         //Variable: m_shuntMax
         //  The maximum of the shunted data sampled during the shunt calibration.
         float m_shuntMax;
@@ -268,27 +268,27 @@ namespace mscl
         //  Gets the offset result of the shunt calibration.
         //  Note: This value was not applied to the Node. You will need to manually apply if desired.
         float offset() const;
-        
+
         //API Function: baseMedian
         //  Gets the median of the baseline data sampled during the shunt calibration.
         float baseMedian() const;
-        
+
         //API Function: baseMin
         //  Gets the minimum of the baseline data sampled during the shunt calibration.
         float baseMin() const;
-        
+
         //API Function: baseMax
         //  Gets the maximum of the baseline data sampled during the shunt calibration.
         float baseMax() const;
-        
+
         //API Function: shuntMedian
         //  Gets the median of the shunted data sampled during the shunt calibration.
         float shuntMedian() const;
-        
+
         //API Function: shuntMin
         //  Gets the minimum of the shunted data sampled during the shunt calibration.
         float shuntMin() const;
-        
+
         //API Function: shuntMax
         //  Gets the maximum of the shunted data sampled during the shunt calibration.
         float shuntMax() const;

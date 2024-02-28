@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "stdafx.h"
@@ -71,7 +71,7 @@ namespace mscl
         uint64 shiftMap = mask;
         uint8 count = 0;
 
-        if (shiftMap == 0) 
+        if (shiftMap == 0)
         {
             throw Error_NoData("The bitfield mask is unset");
         }
@@ -84,7 +84,7 @@ namespace mscl
                 count++;
             }
         }
-    
+
         return count;
     }
 }

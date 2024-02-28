@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "stdafx.h"
@@ -10,26 +10,26 @@
 
 namespace mscl
 {
-    BufferWriter::BufferWriter(uint8* buffer, std::size_t size, std::size_t* offset) : 
+    BufferWriter::BufferWriter(uint8* buffer, std::size_t size, std::size_t* offset) :
           m_buffer(buffer),
           m_size(size),
           m_writeOffset(offset)
     {}
 
-    uint8* BufferWriter::buffer() 
-    { 
-        return m_buffer; 
+    uint8* BufferWriter::buffer()
+    {
+        return m_buffer;
     }
 
-    std::size_t BufferWriter::size() 
-    { 
-        return m_size; 
+    std::size_t BufferWriter::size()
+    {
+        return m_size;
     }
 
-    void BufferWriter::commit(std::size_t numBytesAdded) 
-    { 
+    void BufferWriter::commit(std::size_t numBytesAdded)
+    {
         //move the position of the underlying DataBuffer's write offset (append position)
-        *m_writeOffset += numBytesAdded; 
+        *m_writeOffset += numBytesAdded;
     }
 
 
@@ -283,7 +283,7 @@ namespace mscl
     std::size_t DataBuffer::shiftExtraToStart()
     {
         std::size_t startReadPos = m_readPosition;
-        
+
         //the number of extra bytes that need to be moved
         std::size_t numExtraBytes = m_appendPosition - m_readPosition;
 
@@ -324,7 +324,7 @@ namespace mscl
         }
 
         //create a BufferWriter using the current DataBuffer's information
-        return BufferWriter(writeBuffer, 
+        return BufferWriter(writeBuffer,
                             writeBufferSize,
                             &m_appendPosition);
     }

@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "stdafx.h"
@@ -32,7 +32,7 @@ namespace mscl
         }
 
         const ChannelMask ACCEL_CHS(BOOST_BINARY(00000111)); //ch1 - ch3
-        m_channelGroups.emplace_back(ACCEL_CHS, "Acceleration X,Y,Z", 
+        m_channelGroups.emplace_back(ACCEL_CHS, "Acceleration X,Y,Z",
                                      ChannelGroup::SettingsMap {
                                          {WirelessTypes::chSetting_lowPassFilter, NodeEepromMap::LOW_PASS_FILTER_1},
                                          {WirelessTypes::chSetting_highPassFilter, NodeEepromMap::HIGH_PASS_FILTER_1},
@@ -73,7 +73,7 @@ namespace mscl
             }
 
         case WirelessTypes::samplingMode_sync:
-            if(dataCollectionMethod == WirelessTypes::collectionMethod_logOnly) 
+            if(dataCollectionMethod == WirelessTypes::collectionMethod_logOnly)
             {
                 return AvailableSampleRates::continuous_log_glink200;
             }
@@ -140,13 +140,13 @@ namespace mscl
     const WirelessTypes::SensorOutputModes NodeFeatures_glink200::sensorOutputModes() const
     {
         WirelessTypes::SensorOutputModes modes;
-        
+
         if(m_nodeInfo.firmwareVersion() >= VER_TILT_SUPPORTED)
         {
             modes.push_back(WirelessTypes::sensorOutputMode_accel);
             modes.push_back(WirelessTypes::sensorOutputMode_tilt);
         }
-        
+
         return modes;
     }
 }

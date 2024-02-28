@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -15,7 +15,7 @@ namespace mscl
 {
     //Class: TimedCondition
     //    Class that acts as a simple wrapper around a std::condition_variable.
-    //    Used for one process waiting on a certain condition to be met or a timeout, 
+    //    Used for one process waiting on a certain condition to be met or a timeout,
     //    in which case the other process is notified of the action.
     class TimedCondition
     {
@@ -43,7 +43,7 @@ namespace mscl
 
     public:
         //Function: timedWait
-        //    Blocks until the condition is met by calling notify() or until the timeout has expired. 
+        //    Blocks until the condition is met by calling notify() or until the timeout has expired.
         //    Also returns true immediately if the condition has already been notified.
         //
         //Parameters:

@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "stdafx.h"
@@ -41,7 +41,7 @@ namespace mscl
         //add the command selector byte
         fieldData.append_uint8(static_cast<uint8>(MipTypes::READ_BACK_CURRENT_SETTINGS));
 
-        //"get" has no channels, so add 0 
+        //"get" has no channels, so add 0
         fieldData.append_uint8(0);
 
         //build and return the command bytes
@@ -85,7 +85,7 @@ namespace mscl
         //add the command selector byte
         fieldData.append_uint8(static_cast<uint8>(MipTypes::SAVE_CURRENT_SETTINGS));
 
-        // no channels, so add 0 
+        // no channels, so add 0
         fieldData.append_uint8(0);
 
         //build and return the command bytes

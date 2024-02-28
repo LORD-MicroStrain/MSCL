@@ -1,7 +1,7 @@
 /*****************************************************************************************
 **          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "mscl/MicroStrain/Wireless/Configuration/DataModeMask.h"
@@ -606,7 +606,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_filterSettlingTime)
         BOOST_CHECK_EQUAL(issues.at(0).id(), ConfigIssue::CONFIG_FILTER_SETTLING_TIME);
         BOOST_CHECK_EQUAL(issues.at(1).id(), ConfigIssue::CONFIG_SAMPLE_RATE);
     }
-    
+
     //tests settling time failing due to not supported
     {
         std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl());
@@ -665,7 +665,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_filterSettlingTime)
         ConfigIssues issues;
         BOOST_CHECK_EQUAL(node.verifyConfig(c, issues), true);
     }
-    
+
 }
 
 BOOST_AUTO_TEST_CASE(WirelessNodeConfig_thermocoupleType)
@@ -842,7 +842,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_verify_eventTrigger)
     //test good sampling mode with triggers disabled
     c.eventTriggerOptions(opts);
     c.samplingMode(WirelessTypes::samplingMode_sync);
-   
+
     BOOST_CHECK_EQUAL(node.verifyConfig(c, issues), true);
 
     //test good sampling mode with triggers enabled
