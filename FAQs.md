@@ -2,7 +2,7 @@
 
 The following are some frequently asked questions from MSCL users. It can also be useful to view previous [Issues](https://github.com/LORD-MicroStrain/MSCL/issues?utf8=%E2%9C%93&q=)
 
-If you need more help, please [Create a New Issue](https://github.com/LORD-MicroStrain/MSCL/issues/new)~~~~
+If you need more help, please [Create a New Issue](https://github.com/LORD-MicroStrain/MSCL/issues/new)
 
 ### How do I set up a connection to a WSDA-2000 / WSDA-1500 ethernet BaseStation?
 
