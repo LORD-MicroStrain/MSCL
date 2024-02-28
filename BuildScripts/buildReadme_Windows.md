@@ -3,166 +3,116 @@
 ## Hold up!
 Most users will not need to build MSCL themselves!
 
-A pre-built version is available for download. To get it, head over to the [MSCL Releases Page](https://github.com/LORD-MicroStrain/MSCL/releases), for the latest release. Under the `Downloads` section of that release, you will find the C++, Python, and .NET versions of MSCL, as well as Example Code and Documentation.
+Pre-built versions are available for download. To get it, head over to the
+[MSCL Releases Page](https://github.com/LORD-MicroStrain/MSCL/releases), for the latest release.
+Under the `Downloads` section of that release, you will find the C++, Python, and C# versions of MSCL,
+as well as Example Code and Documentation.
 
 ## I really want to build it myself
-Ok, if you are making changes to MSCL's source code, or need to build MSCL from scratch for any other reason, here are the steps to build for Windows:
+Ok, if you are making changes to MSCL's source code, or need to build MSCL from scratch for any other reason,
+here are the steps to build for Windows:
 
 #### Dependencies
 
-- \>= Visual Studio 2015 (msvc-14.0) or MSBuild equivalent
-- \>= [Boost 1.68](http://www.boost.org/)
-- \>= [OpenSSL 1.1.0](https://www.npcglib.org/~stathis/blog/precompiled-openssl/) (optional, see below)
-- = [SWIG 4.0.0](http://swig.org/download.html) (for .NET and Python builds)
-- \>= [Python 2.7 or 3.6](https://www.python.org/downloads/) (for Python build)
-- [Boost.Build](http://www.boost.org/build/) (for Python build)
+For more information on how to configure the build to use, or not use the optional dependencies see [this section](#configuring-the-build)
 
-Create an environment variable, `LIB_PATH`, that points to a folder containing the following dependencies like so:
-  - `%LIB_PATH%\boost\boost_1_68_0`
-  - `%LIB_PATH%\openssl`
-  - `%LIB_PATH%\swig\swigwin-3.0.6` (for .NET and Python builds)
+##### Required
+- \>= [Visual Studio 2015](https://visualstudio.microsoft.com/downloads/) (msvc-14.0) or MSBuild equivalent
+- \>= [cmake 3.16](https://cmake.org/download/)
+- &nbsp;&nbsp;\= [Boost 1.68](https://www.boost.org/users/download/)
 
-OpenSSL and Beast are optional and are used for creating secure WebSocket connections to an ethernet connected WSDA from anywhere in the world. If this is a feature you do not want, you can avoid adding these extra dependencies by defining the following before compiling:
-```cpp
-#define MSCL_DISABLE_SSL            //removes OpenSSL dependency
+##### Optional
+- \>= [OpenSSL 1.1.0](https://www.npcglib.org/~stathis/blog/precompiled-openssl/)
+- \>= [SWIG 4.0.0](https://swig.org/download.html) (for Python2, Python3, or .NET builds)
+- \>= [Python 2.7](https://www.python.org/downloads/)
+- \>= [Python 3.6](https://www.python.org/downloads/)
+- \>= [NaturalDocs 2.0](https://www.naturaldocs.org/)
 
-#define MSCL_DISABLE_WEBSOCKETS     //removes Beast dependency
-```
+Since Windows has no standard path for libraries to be installed in,
+we will refer to `LIB_PATH` as the location that you will install dependencies.
+Each of these paths can be configured at build time, but for reference,
+this is what a common `LIB_PATH` directory will look like:
+  - `LIB_PATH/boost/boost_1_68_0`
+  - `LIB_PATH/openssl`
+  - `LIB_PATH/swig/swigwin-4.0.0` (for .NET and Python builds)
+  - `LIB_PATH/NaturalDocs`
 
-#### Installing Boost and Boost.Build
 
-SourceForge hosts some [Pre-Built Boost binaries for Windows](https://sourceforge.net/projects/boost/files/boost-binaries/1.68.0/). Simply installing these for your specific compiler will make it so you do not need to build Boost yourself, which can be time consuming. 
+#### Installing Boost
 
-If you want to install Boost yourself, you can follow the instructions on [Boost's Getting Started page](http://www.boost.org/doc/libs/1_68_0/more/getting_started/windows.html). 
+SourceForge hosts some [Pre-Built Boost binaries for Windows](https://sourceforge.net/projects/boost/files/boost-binaries/1.68.0/).
+Simply installing these for your specific compiler will make it so you do not need to build Boost yourself, which can be time-consuming.
 
-Boost.Build is required for building MSCL for Python. Instructions on how to install it can be found [here](http://www.boost.org/build/doc/html/bbv2/installation.html). 
-
-**Note**: Unfortunately, it seems there might be an issue in newer versions of bjam that come with Boost 1.61+ when using msvc ([see this Stack Overflow](http://stackoverflow.com/questions/29450634/compile-boost-python-tutorial-with-vs-2015-ctp-5-and-python-3-5a-on-windows-10-t)). From our internal build, it seems this fixes the issue:
-
-1. Edit the file `D:\boost\boost_1_61_0\tools\build\src\tools\msvc.jam`
-2. Change this (lines 1358-1363) from: 
-``` 
-     generators.register [ new msvc-linking-generator msvc.link.dll :
-         OBJ SEARCHED_LIB STATIC_LIB IMPORT_LIB : SHARED_LIB IMPORT_LIB :
-         <toolset>msvc <suppress-import-lib>false ] ;
-     generators.register [ new msvc-linking-generator msvc.link.dll :
-         OBJ SEARCHED_LIB STATIC_LIB IMPORT_LIB : SHARED_LIB :
-         <toolset>msvc <suppress-import-lib>true ] ;
-```
-to this:
-```
-     generators.register [ new msvc-linking-generator msvc.link.dll :
-        OBJ SEARCHED_LIB STATIC_LIB IMPORT_LIB : SHARED_LIB IMPORT_LIB :
-        <toolset>msvc ] ;
-```
-3. Remove this (line 1479):
-```
-toolset.flags msvc.link.dll LINKFLAGS <suppress-import-lib>true : /NOENTRY ;
-```
-
+If you want to install Boost yourself, you can follow the instructions on
+[Boost's Getting Started page](https://www.boost.org/doc/libs/1_68_0/more/getting_started/windows.html).
 
 ## Building MSCL for C++
 
-Run the following from the top level MSCL source directory:
+1. Clone or download the [MSCL repo](https://github.com/LORD-MicroStrain/MSCL).
+The location of MSCL will be referred to as `<Project Root>` for the rest of this guide.
+2. Create a build directory. We will refer to this directory as `build` for the rest of the documentation,
+and it will be located at `<Project Root>/build` but it can be named anything and put anywhere as long as
+you update the following steps accordingly.
+3. Open a new powershell terminal in `<Project Root>/build` and run the following command to configure the project.
+If you want to add options to build language bindings, or change configuration, see [this section](#configuring-the-build)
+and add the desired options as `-D` flags to the end of this command:
+    ```powershell
+    # Please note that you should change ".." to wherever the project is located if you did not put the "build" directory directly in <Project Root>
+    cmake ..
+    ```
+4. In the same terminal, run the following command to build all the requested targets:
+    ```powershell
+    cmake --build .
+    ```
+5. All build artifacts will be located in the `<Project Root>/build` directory in a somewhat unorderly directory structure,
+but the important artifacts such as the libraries, header files, etc. will be copied to `<Project Root>/Output`
+in a more orderly directory structure
+6. If you want to build the zip files run the following command after building:
+    ```powershell
+    cmake --build . --target zip
+    ```
 
-```
-"C:\Program Files (x86)\MSBuild\14.0\Bin\msbuild" "BuildScripts/msbuildConfig_CPP_NoTests.xml" /p:VisualStudioVersion=14.0
-```
+## Configuring the build
 
-Output: 
-```
-x64
-  Debug
-    MSCL.lib
-    MSCL.pdb
-  Release
-    MSCL.lib
-    MSCL.pdb
-x86
-  Debug
-    MSCL.lib
-    MSCL.pdb
-  Release
-    MSCL.lib
-    MSCL.pdb
-```
-
-Note: The default C++ build does not link in dependencies (such as Boost) directly. You will need to link the dependencies in when using MSCL.lib in your project.
-
-## Building MSCL for .NET
-
-Building the .NET library involves 3 steps:
-
-1. use SWIG to generate/update the `MSCL_Wrap.cpp` file and create the C# source files
-2. build the `MSCL` C++ project to generate a DLL
-3. build the `MSCL_Managed` C# project to generate the managed DLL
-
-These are all handled for you by running the following from the top level MSCL source directory:
-
-```
-"C:\Program Files (x86)\MSBuild\14.0\Bin\msbuild" "BuildScripts/msbuildConfig_DotNet.xml" /p:VisualStudioVersion=14.0
+The [`CMakeLists.txt`](../CMakeLists.txt) file exposes several parameters to the user to allow you to enable or disable different parts of the build.
+These options can be set in the configuration step documented above by prepending them with `-D` and setting them to the desired value.
+For example, to build python3, I would run the command:
+```powershell
+cmake .. -DBUILD_PYTHON3=ON
 ```
 
-Output: 
-```
-x64
-  Release
-    MSCL.dll
-    MSCL_Managed.dll
-x86
-  Release
-    MSCL.dll
-    MSCL_Managed.dll
-```
+##### Boolean Parameters
+The following table lists some parameters that can be set to `ON` or `OFF` to enable, or disable certain pieces of the build
 
-Note: The default .NET build statically links in all dependencies. In your project that uses MSCL, you can simply link in MSCL, and it's dependencies (such as Boost) will already be included.
+| Parameter           | Description                                                                                                                     | Default |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------- | ------- |
+| BUILD_SHARED_LIBS   | Build MSCL as a shared library as well as a static library                                                                      | OFF     |
+| BUILD_PYTHON2       | Build the Python2 bindings for MSCL. Note that this requires swig and python2 to be installed                                   | OFF     |
+| BUILD_PYTHON3       | Build the Python3 bindings for MSCL. Note that this requires swig and python3 to be installed                                   | OFF     |
+| BUILD_CSHARP        | Build the C# bindings for MSCL. Note that this requires swig and a csharp compiler to be installed                              | OFF     |
+| BUILD_TESTS         | Build the unit tests for MSCL. This also enables the `test` CMake target. Note that this also requires that turtle be installed | OFF     |
+| BUILD_EXAMPLES      | Build the examples in [`MSCL_Examples`](../MSCL_Examples/)                                                                      | OFF     |
+| BUILD_DOCUMENTATION | Builds the documentation using NaturalDocs.                                                                                     | OFF     |
+| WITH_SSL            | Whether to build with SSL support. Note that this requires openssl to be installed                                              | ON      |
+| WITH_WEBSOCKETS     | Whether to build with Websocket support                                                                                         | ON      |
 
-## Building MSCL for Python
+##### String Parameters
 
-Building the Python library involves using Boost.Build framework, using the `bjam` or `b2` command, and utilizing the provided Jamfiles.
+| Parameter          | Description                                                                                                                                                        | Default                 |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------- |
+| TURTLE_INCLUDE_DIR | Directory where the turtle include files are installed. Only required if include files are in a nonstandard place.                                                 | `C:/lib/turtle/include` |
+| NATURAL_DOCS_ROOT  | Directory to search for the `NaturalDocs` executable. Only required if `BUILD_DOCUMENTATION` is true, and `NaturalDocs` is installed somewhere nonstandard         | `C:/lib/NaturalDocs`    |
 
-Configure bjam by creating a [site-config.jam or user-config.jam file](https://boostorg.github.io/build/manual/develop/index.html#bbv2.overview.configuration) in your Home path or Boost Build Path. The contents of the file should look similar to this:
-```
-using msvc
-:
-:
-: <cxxflags>/D"WIN32"
-  <cxxflags>/D"_WINDOWS"
-  <cxxflags>/D"_USRDLL"
-  <cxxflags>/D"NOMINMAX"
-  <cxxflags>/D"_WIN32_WINNT=0x0501"
-  <cxxflags>/D"_USING_V110_SDK71_"
-  <cxxflags>/D"_UNICODE"
-  <cxxflags>/D"UNICODE"
-;
-```
+##### Other parameters
 
-Run the following command from the top level MSCL source directory.
+MSCL uses existing `find_package` calls to find other packages such as boost, OpenSSL, etc.
+which all expose their own variables that can be overridden in the same way as the above parameters.
+See the following documentation for more information on how to configure the `find_package` call for those modules:
 
-For 32-bit Python:
-```
-"BuildScripts\build_Python_x86.cmd" "E:\Python27"
-
-REM To add custom compile and link flags
-"BuildScripts\build_Python_x86.cmd" "E:\Python27" "/I:C:\dir" "/LIBPATH:C:\dir"
-```
-
-For 64-bit Python:
-```
-"BuildScripts\build_Python_x64.cmd" "E:\Python27"
-
-REM To add custom compile and link flags
-"BuildScripts\build_Python_x64.cmd" "E:\Python27_64" "/I:C:\dir" "/LIBPATH:C:\dir"
-```
-
-Output: 
-```
-x64
-  mscl.py
-  _mscl.pyd
-x86
-  mscl.py
-  _mscl.pyd
-```
-
-Note: The default Python build statically links in all dependencies. In your project that uses MSCL, you can simply link in MSCL, and it's dependencies (such as Boost) will already be included.
+* [FindGit](https://cmake.org/cmake/help/latest/module/FindGit.html)
+* [FindBoost](https://cmake.org/cmake/help/latest/module/FindBoost.html)
+* [FindThreads](https://cmake.org/cmake/help/latest/module/FindThreads.html)
+* [FindOpenSSL](https://cmake.org/cmake/help/latest/module/FindOpenSSL.html)
+* [FindSWIG](https://cmake.org/cmake/help/latest/module/FindSWIG.html)
+* [FindPython2](https://cmake.org/cmake/help/latest/module/FindPython2.html)
+* [FindPython3](https://cmake.org/cmake/help/latest/module/FindPython3.html)

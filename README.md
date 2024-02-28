@@ -50,14 +50,14 @@ RPM:
 If the pre-built packages aren't available on your platform, you can build MSCL from source.
 
 Instructions can be found here:
-[Building MSCL on Windows](https://github.com/LORD-MicroStrain/MSCL/blob/master/BuildScripts/buildReadme_Windows.md) | 
-[Building MSCL on Linux](https://github.com/LORD-MicroStrain/MSCL/blob/master/BuildScripts/buildReadme_Linux.md)
+[Building MSCL on Windows](BuildScripts/buildReadme_Windows.md) | 
+[Building MSCL on Linux](BuildScripts/buildReadme_Linux.md)
 
 ---
 
 ### Documentation
 
-[How to use MSCL](https://github.com/LORD-MicroStrain/MSCL/blob/master/HowToUseMSCL.md)
+[How to use MSCL](HowToUseMSCL.md)
 
 [Quick Start Guide](http://lord-microstrain.github.io/MSCL/Documentation/Getting%20Started/index.html)
 
@@ -65,18 +65,18 @@ Instructions can be found here:
 
 [Full Documentation](http://lord-microstrain.github.io/MSCL/Documentation/MSCL%20Documentation/index.html) - Full Documentation of everything in MSCL (useful when editing the source).
 
-[Example Code](https://github.com/LORD-MicroStrain/MSCL/tree/master/MSCL_Examples)
+[Example Code](MSCL_Examples)
   * Note: LabVIEW example code is provided in the [LabVIEW-MSCL VI package](https://github.com/LORD-MicroStrain/LabVIEW-MSCL).
   
-[FAQs](https://github.com/LORD-MicroStrain/MSCL/blob/master/FAQs.md)
+[FAQs](FAQs.md)
 
 #### Included Libraries
 
-OpenSSL - This product includes software developed by the OpenSSL Project for use in the OpenSSL Toolkit (http://www.openssl.org/) - see the `License_OpenSSL.txt` file in the source distribution.
+OpenSSL - This product includes software developed by the OpenSSL Project for use in the OpenSSL Toolkit (http://www.openssl.org/) - see the [License_OpenSSL.txt](License_OpenSSL.txt) file in the source distribution.
 
-Boost - see the `License_Boost.txt` file in the source distribution.
+Boost - see the [License_Boost.txt](License_Boost.txt) file in the source distribution.
 
 #### License
-MSCL is released under the MIT License - see the `LICENSE` file in the source distribution.
+MSCL is released under the MIT License - see the [LICENSE](LICENSE) file in the source distribution.
 
 Copyright (C) 2015-2022 Parker Hannifin Corp. All Rights Reserved.
