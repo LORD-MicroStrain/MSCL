@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "stdafx.h"
@@ -145,20 +145,20 @@ namespace mscl
     }
 
     uint8 GenericMipCommand::Response::descSetByte() const
-    { 
+    {
         //the descriptor set byte is the MSB of the commandId value
         return Utils::msb(static_cast<uint16>(m_command));
     }
 
     uint8 GenericMipCommand::Response::cmdByte() const
-    { 
+    {
         //the command byte is the LSB of the commandId value
         return Utils::lsb(static_cast<uint16>(m_command));
     }
 
-    uint8 GenericMipCommand::Response::fieldAckNackByte() const 
-    { 
-        return FIELD_ACK_NACK_BYTE; 
+    uint8 GenericMipCommand::Response::fieldAckNackByte() const
+    {
+        return FIELD_ACK_NACK_BYTE;
     }
 
     bool GenericMipCommand::Response::match(const MipDataField& field)

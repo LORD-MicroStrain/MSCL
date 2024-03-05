@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "stdafx.h"
@@ -27,13 +27,13 @@ namespace mscl
     }
 
     bool DeliveryStopFlags::operator==(const DeliveryStopFlags& src) const
-    { 
-        return compare(src); 
+    {
+        return compare(src);
     }
 
     bool DeliveryStopFlags::operator!=(const DeliveryStopFlags& src) const
     {
-        return !compare(src); 
+        return !compare(src);
     }
 
     bool DeliveryStopFlags::compare(const DeliveryStopFlags& src) const
@@ -69,7 +69,7 @@ namespace mscl
 
     uint8 DeliveryStopFlags::toInvertedByte() const
     {
-        // The inverted dsf byte sets a bit to 0 to indicate take action and to 1 to indicate ignore.  
+        // The inverted dsf byte sets a bit to 0 to indicate take action and to 1 to indicate ignore.
         // So true maps to 0 and false maps to 1
         uint8 dsf = 0x0F;   //upper nibble mapped to all 0's by mistake in protocol
         if(pc)          { dsf &= 0xF7; }  //trunc off bit 4   0xF7 => 1111 0111
@@ -82,7 +82,7 @@ namespace mscl
 
     uint8 DeliveryStopFlags::toByte() const
     {
-        // The dsf byte sets a bit to 1 to indicate take action and 0 to indicate ignore. 
+        // The dsf byte sets a bit to 1 to indicate take action and 0 to indicate ignore.
         uint8 dsf = 0x00;
         if(pc)          { dsf |= 0x08; }  //trunc off bit 4   0x08 => 0000 1000
         if(appBoard)    { dsf |= 0x04; }  //trunc off bit 3   0x04 => 0000 0100

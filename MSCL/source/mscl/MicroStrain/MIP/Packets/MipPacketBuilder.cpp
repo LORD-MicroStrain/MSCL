@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "stdafx.h"
@@ -33,8 +33,8 @@ namespace mscl
         {
             //field length = (1 field len byte + 1 field desc byte + n field data bytes)
             size_t fieldLen = (1 + 1 + field.fieldData().size());
-            
-            //increase the payload length 
+
+            //increase the payload length
             payloadLen += static_cast<uint8>(fieldLen);
 
             //add the field length byte to the payloadBytes

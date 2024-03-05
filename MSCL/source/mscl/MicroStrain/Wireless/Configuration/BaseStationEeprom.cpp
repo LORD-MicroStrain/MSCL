@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "stdafx.h"
@@ -69,7 +69,7 @@ namespace mscl
 
         rec_mutex_lock_guard lock(m_cacheMutex);    //locking here so cache doesn't change between updateCacheFromDevice and readCache
 
-        //attempt to read the value from the device 
+        //attempt to read the value from the device
         if(updateCacheFromDevice(location))
         {
             //successfully read from the device, the cache has been updated so read from it

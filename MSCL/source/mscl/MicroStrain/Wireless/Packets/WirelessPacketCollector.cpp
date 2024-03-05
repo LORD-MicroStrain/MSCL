@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "stdafx.h"
@@ -153,7 +153,7 @@ namespace mscl
             //wait for the timeout or data to come in
             m_emptyBufferCondition.wait_for(lock, std::chrono::milliseconds(timeout));
         }
-        
+
         //make sure there are packets in the container
         if(m_dataPackets.size() <= 0)
         {
@@ -166,7 +166,7 @@ namespace mscl
         //remove this packet from the front of the circular buffer (moves everything else in the array down one)
         m_dataPackets.pop_front();
 
-        //return the WirelessDataPacket 
+        //return the WirelessDataPacket
         return resultPacket;
     }
 
@@ -183,7 +183,7 @@ namespace mscl
             //if there are no more sweeps in the current packet
             if(!m_currentDataPacket.moreSweeps())
             {
-                //if there are no packets 
+                //if there are no packets
                 if(m_dataPackets.size() <= 0)
                 {
                     //if there is a timeout and we haven't received any data
@@ -229,7 +229,7 @@ namespace mscl
         //create a scoped_lock for thread safety
         mutex_lock_guard lock(m_packetMutex);
 
-        //add the sweeps that are left to be read in the current data packet 
+        //add the sweeps that are left to be read in the current data packet
         total += m_currentDataPacket.numSweepsRemaining();
 
         circular_data_buffer::iterator itr;

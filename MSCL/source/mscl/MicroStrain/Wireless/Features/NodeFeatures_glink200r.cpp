@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "stdafx.h"
@@ -44,7 +44,7 @@ namespace mscl
 
         case WirelessTypes::samplingMode_sync:
         case WirelessTypes::samplingMode_syncEvent:
-            if(dataCollectionMethod == WirelessTypes::collectionMethod_logOnly) 
+            if(dataCollectionMethod == WirelessTypes::collectionMethod_logOnly)
             {
                 return AvailableSampleRates::continuous_log_glink200r;
             }

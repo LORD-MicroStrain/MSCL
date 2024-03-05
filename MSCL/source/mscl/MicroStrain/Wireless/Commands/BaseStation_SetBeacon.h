@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -63,7 +63,7 @@ namespace mscl
             virtual bool matchSuccessResponse(DataBuffer& data) override;
 
             //Function: beaconStartTime
-            //    Gets the start time that was sent to enable the beacon 
+            //    Gets the start time that was sent to enable the beacon
             //
             //Returns:
             //    a <Timestamp> representing the start time that was sent to enable the beacon

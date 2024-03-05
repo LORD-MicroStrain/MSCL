@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "stdafx.h"
@@ -140,7 +140,7 @@ namespace mscl
         {
             //if there are no more packets
             if(m_dataPackets.size() <= 0)
-            {    
+            {
                 //if there is a timeout and we haven't recevied any data
                 if(timeout > 0 && packetCount == 0)
                 {

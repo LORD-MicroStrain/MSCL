@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "mscl/MicroStrain/Wireless/BaseStation.h"
@@ -56,7 +56,7 @@ BOOST_AUTO_TEST_CASE(BaseStation_frequency)
     expectRead(baseImpl, BaseStationEepromMap::FREQUENCY, Value::UINT16(13));
 
     //check the frequency is what we expect
-    BOOST_CHECK_EQUAL(b.frequency(), 13); 
+    BOOST_CHECK_EQUAL(b.frequency(), 13);
 }
 
 BOOST_AUTO_TEST_CASE(BaseStation_firmwareVersion)
@@ -468,7 +468,7 @@ BOOST_AUTO_TEST_CASE(BaseStation_node_startSyncSampling)
     data.append_uint8(0x02);
     data.append_uint16(data.calculateSimpleChecksum(1, 8));    //checksum
     connImpl->setResponseBytes(data);
-    
+
     BOOST_CHECK_EQUAL(base.node_startSyncSampling(*(WirelessProtocol::v1_0().get()), 327), true);
 
     //send the command again, but fail this time

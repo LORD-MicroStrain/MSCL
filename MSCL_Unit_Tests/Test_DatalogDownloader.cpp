@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "mscl/MicroStrain/Wireless/DatalogDownloader.h"
@@ -68,7 +68,7 @@ BOOST_AUTO_TEST_CASE(DatalogDownloader_getNextData_v1_0)
     data.append_uint8(0x01);    //header version major
     data.append_uint8(0x00);    //header version minor
     data.append_uint16(0x0A);    //# of bytes before channel data
-    data.append_uint16(500);    //samples per data set 
+    data.append_uint16(500);    //samples per data set
     data.append_uint16(0x01);    //session index
     data.append_uint16(0x01);    //channel mask
     data.append_uint16(WirelessTypes::sampleRate_32Hz);    //sample rate
@@ -150,7 +150,7 @@ BOOST_AUTO_TEST_CASE(DatalogDownloader_getNextData_v2_0)
     data.append_uint8(0x02);    //header version major
     data.append_uint8(0x00);    //header version minor
     data.append_uint16(0x0C);    //# of bytes before channel data
-    data.append_uint16(500);    //samples per data set 
+    data.append_uint16(500);    //samples per data set
     data.append_uint16(0x01);    //session index
     data.append_uint16(0x01);    //channel mask
     data.append_uint16(WirelessTypes::sampleRate_32Hz);    //sample rate
@@ -239,7 +239,7 @@ BOOST_AUTO_TEST_CASE(DatalogDownloader_getNextData_v2_1)
     data.append_uint8(0x02);    //header version major
     data.append_uint8(0x01);    //header version minor
     data.append_uint16(0x0C);    //# of bytes before channel data
-    data.append_uint16(500);//samples per data set 
+    data.append_uint16(500);//samples per data set
     data.append_uint16(0x01);    //session index
     data.append_uint16(0x01);    //channel mask
     data.append_uint16(WirelessTypes::sampleRate_32Hz);//sample rate
@@ -330,7 +330,7 @@ BOOST_AUTO_TEST_CASE(DatalogDownloader_getNextData_v2_1_fastSampleRates)
     data.append_uint8(0x02);    //header version major
     data.append_uint8(0x01);    //header version minor
     data.append_uint16(0x0C);    //# of bytes before channel data
-    data.append_uint16(500);//samples per data set 
+    data.append_uint16(500);//samples per data set
     data.append_uint16(0x01);    //session index
     data.append_uint16(0x01);    //channel mask
     data.append_uint16(WirelessTypes::sampleRate_1024Hz);//sample rate

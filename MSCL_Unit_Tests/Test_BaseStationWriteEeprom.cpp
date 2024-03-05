@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "mscl/MicroStrain/Wireless/Commands/BaseStation_WriteEeprom.h"
@@ -22,7 +22,7 @@ Bytes buildBaseWriteEepromResponseV1(uint16 valueWritten)
 
     //build success response
     Bytes bytes;
-    bytes.push_back(0x78);    
+    bytes.push_back(0x78);
     bytes.push_back(Utils::msb(valueWritten));
     bytes.push_back(Utils::lsb(valueWritten));
     bytes.push_back(Utils::msb(checksum.simpleChecksum()));
@@ -76,7 +76,7 @@ BOOST_AUTO_TEST_CASE(BaseStationWriteEeprom_BuildCommand)
     //check all the bytes in the ByteStream
     BOOST_CHECK_EQUAL(b.read_uint8(0), 0x78);
     BOOST_CHECK_EQUAL(b.read_uint16(1), 112);
-    BOOST_CHECK_EQUAL(b.read_uint16(3), 1234);    
+    BOOST_CHECK_EQUAL(b.read_uint16(3), 1234);
     BOOST_CHECK_EQUAL(b.read_uint16(5), 326);//verify the checksum
 }
 

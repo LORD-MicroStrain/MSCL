@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -278,7 +278,7 @@ namespace mscl
         std::string name();
 
         //API Function: ping
-        //    Pings the Node to check for communication. 
+        //    Pings the Node to check for communication.
         //    Sends the "Ping" command to the device.
         //
         //Returns:
@@ -332,7 +332,7 @@ namespace mscl
         virtual uint8 getCommunicationMode() = 0;
 
         //API Function: setCommunicationMode
-        //    Sets the communication mode for the node. 
+        //    Sets the communication mode for the node.
         //    Note: The node info will be reset when doing this and therefore will require being fetched again the next time it is requested.
         //
         //Parameters:

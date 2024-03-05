@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -56,7 +56,7 @@ namespace mscl
             CLASS_GNSS4 = 0x94,
             CLASS_GNSS5 = 0x95,
 
-            CLASS_SYSTEM = 0xA0 
+            CLASS_SYSTEM = 0xA0
         };
 
         //API Enums: FunctionSelector
@@ -1332,7 +1332,7 @@ namespace mscl
             CH_BIT_GNSS_GENERAL             = 254,
             CH_BIT_GNSS_RECEIVERS           = 255
         };
-        
+
         //API Typedef: MipChannelFields
         //    A vector of <ChannelField> enums.
         typedef std::vector<ChannelField> MipChannelFields;
@@ -1576,7 +1576,7 @@ namespace mscl
             PRESSURE     = 0x04,
             MAGNETOMETER = 0x05,
             SPEED        = 0x06,
-            
+
             AIDING_POS_ECEF     = 0x21,
             AIDING_POS_LLH      = 0x22,
             AIDING_VEL_ECEF     = 0x28,
@@ -2120,7 +2120,7 @@ namespace mscl
             HEIGHT = 4,
             ALTITUDE = 4
         };
-        
+
     protected:
         //Variable: m_position
         //  Position measurement value.
@@ -2193,7 +2193,7 @@ namespace mscl
         //Returns:
         //  <PositionVelocityReferenceFrame> - reference frame ID of the measurement
         PositionVelocityReferenceFrame referenceFrame() const { return m_position.referenceFrame; }
-        
+
         //API Function: referenceFrame
         //  Set the <PositionVelocityReferenceFrame> of this measurement.
         //
@@ -2210,7 +2210,7 @@ namespace mscl
         //Returns:
         //  bool - true if valid
         bool valid(ValidFlags val) const { return m_validFlags.checkBit(static_cast<uint8>(val)); }
-        
+
         //API Function: valid
         //  Sets the validity of the specified value.
         //
@@ -2492,7 +2492,7 @@ namespace mscl
         enum Type
         {
             PRIMARY = 0,
-            AUX     = 1, 
+            AUX     = 1,
             GPIO    = 2
         };
 
@@ -2563,7 +2563,7 @@ namespace mscl
         };
 
         //API Variable: query
-        //  Type of information 
+        //  Type of information
         Query query;
 
         //API Variable: maxInstances

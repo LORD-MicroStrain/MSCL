@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -246,7 +246,7 @@ namespace mscl
         //  cmdId_longPing_v1               - 0x0002    - Long Ping (v1)
         //  cmdId_readSingleSensor          - 0x03      - Read Single Sensor
         //  cmdId_readEeprom_v1             - 0x0003    - Read Eeprom (v1)
-        //  cmdId_writeEeprom_v1            - 0x0004    - Write Eeprom (v1) 
+        //  cmdId_writeEeprom_v1            - 0x0004    - Write Eeprom (v1)
         //  cmdId_pageDownload              - 0x05      - Page Download
         //  cmdId_erase                     - 0x06      - Erase (v1)
         //  cmdId_writeEeprom_v2            - 0x0008    - Write Eeprom (v2)

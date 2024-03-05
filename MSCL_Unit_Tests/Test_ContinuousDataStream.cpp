@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "mscl/MicroStrain/MIP/MipDataField.h"
@@ -55,7 +55,7 @@ BOOST_AUTO_TEST_CASE(ContinuousDataStream_get_Match_Success)
     Bytes dataField;
     dataField.push_back(0x02);
     dataField.push_back(0x01);
-    
+
     Bytes ackField;
     ackField.push_back(0x11);
     ackField.push_back(0x00);
@@ -112,8 +112,8 @@ BOOST_AUTO_TEST_CASE(ContinuousDataStream_get_Match_Fail_WrongDeviceSelector)
 
     Bytes fieldData1;
     fieldData1.push_back(0x01);    //invalid device selector (device category)
-    fieldData1.push_back(0x01);    
-    MipDataField field1(0x0C85, fieldData1); 
+    fieldData1.push_back(0x01);
+    MipDataField field1(0x0C85, fieldData1);
 
     //check that the match fails
     BOOST_CHECK_EQUAL(response.match(field1), false);

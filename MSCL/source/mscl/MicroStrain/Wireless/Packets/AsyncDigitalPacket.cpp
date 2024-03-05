@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "stdafx.h"
@@ -90,20 +90,20 @@ namespace mscl
             ChannelMask digitalDataMask(digitalData);
 
             //build this sweep's timestamp
-            sweep.timestamp(Timestamp(packetTimestamp + ((timeOffset * TimeSpan::NANOSECONDS_PER_SECOND) / 32768) ));            
+            sweep.timestamp(Timestamp(packetTimestamp + ((timeOffset * TimeSpan::NANOSECONDS_PER_SECOND) / 32768) ));
 
             //get this sweep's node and base rssi values
             sweep.nodeRssi(m_nodeRSSI);
             sweep.baseRssi(m_baseRSSI);
             sweep.calApplied(true);
-        
+
             ChannelData chData;
 
             uint8 lastActiveCh = channels.lastChEnabled();
 
             //loop through all the channels
             for(uint8 chItr = 1; chItr <= lastActiveCh; ++chItr)
-            {    
+            {
                 //if the current channel is enabled
                 if(channels.enabled(chItr))
                 {
@@ -125,7 +125,7 @@ namespace mscl
 
     WirelessChannel::ChannelId AsyncDigitalPacket::wirelessChannelFromChNum(int channelNum)
     {
-        //the offset into the WirelessChannel::ChannelId enum 
+        //the offset into the WirelessChannel::ChannelId enum
         const int DIGITAL_CHANNEL_OFFSET = WirelessChannel::channel_digital_1 - 1;
 
         //call the WirelessDataPacket's same function with the new offset

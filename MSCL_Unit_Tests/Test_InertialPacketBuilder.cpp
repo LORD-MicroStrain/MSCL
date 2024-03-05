@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "mscl/MicroStrain/MIP/Packets/MipPacketBuilder.h"
@@ -20,7 +20,7 @@ BOOST_AUTO_TEST_CASE(InertialPacketBuilder_Constructor)
 
     //create the builder
     MipPacketBuilder builder(0x01, field);
-    
+
     //build the packet
     ByteStream bytes = builder.buildPacket();
 
@@ -46,7 +46,7 @@ BOOST_AUTO_TEST_CASE(InertialPacketBuilder_WithFieldData)
 
     //create the builder
     MipPacketBuilder builder(0x0C, field);
-    
+
     //build the packet
     ByteStream bytes = builder.buildPacket();
 
@@ -96,7 +96,7 @@ BOOST_AUTO_TEST_CASE(InertialPacketBuilder_MultipleFields)
 
     builder.addField(field2);
 
-    
+
     //build the packet
     ByteStream bytes = builder.buildPacket();
 
@@ -143,7 +143,7 @@ BOOST_AUTO_TEST_CASE(InertialPacketBuilder_InertialFieldCopyConstructor)
 
     //create the builder
     MipPacketBuilder builder(0x0C, field2);
-    
+
     //build the packet
     ByteStream bytes = builder.buildPacket();
 
@@ -174,7 +174,7 @@ BOOST_AUTO_TEST_CASE(InertialPacketBuilder_InertialFieldAssignmentOperator)
 
     //create the builder
     MipPacketBuilder builder(0x0C, field2);
-    
+
     //build the packet
     ByteStream bytes = builder.buildPacket();
 

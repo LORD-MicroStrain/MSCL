@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -154,7 +154,7 @@ namespace mscl
         //Returns:
         //  uint64 - the delta reference time value
         uint64 deltaReferenceTime() const;
-        
+
         //API Function: hasExternalTimestamp
         //  Checks whether the packet contains the External Timestamp field
         //

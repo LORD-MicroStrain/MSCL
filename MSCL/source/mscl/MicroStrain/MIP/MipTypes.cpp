@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "stdafx.h"
@@ -23,14 +23,14 @@ namespace mscl
         {
             keyField = MipTypes::getChannelField_baseDataClass(field);
             prepend = MipTypes::getChannelNamePrependText(field);
-            
+
             // only get append string if field not already differentiated by class by prepend string
             if (prepend == "")
             {
                 append = MipTypes::getChannelNameAppendText(field);
             }
         }
-        
+
         //try to find the channel in the map
         auto result = CHANNEL_NAMES.find(ChannelId(keyField, qualifier));
 
@@ -203,7 +203,7 @@ namespace mscl
         { ChannelId(CH_FIELD_GNSS_CLOCK_INFO_2, CH_DRIFT_ACCURACY_ESTIMATE), "gpsClockDriftAccuracy" },
 
         { ChannelId(CH_FIELD_GNSS_GPS_LEAP_SECONDS, CH_SECONDS), "gpsLeapSeconds" },
-        
+
         { ChannelId(CH_FIELD_GNSS_SBAS_INFO, CH_TIME_OF_WEEK), "sbasInfo_tow" },
         { ChannelId(CH_FIELD_GNSS_SBAS_INFO, CH_WEEK_NUMBER), "sbasInfo_weekNumber" },
         { ChannelId(CH_FIELD_GNSS_SBAS_INFO, CH_SYSTEM_ID), "sbasInfo_system" },
@@ -338,7 +338,7 @@ namespace mscl
         {ChannelId(CH_FIELD_ESTFILTER_ESTIMATED_GRAVITY_VECTOR, CH_X), "estGravityVectorX"},
         {ChannelId(CH_FIELD_ESTFILTER_ESTIMATED_GRAVITY_VECTOR, CH_Y), "estGravityVectorY"},
         {ChannelId(CH_FIELD_ESTFILTER_ESTIMATED_GRAVITY_VECTOR, CH_Z), "estGravityVectorZ"},
-        
+
         {ChannelId(CH_FIELD_ESTFILTER_HEADING_UPDATE_SOURCE, CH_HEADING), "estHeading"},
         {ChannelId(CH_FIELD_ESTFILTER_HEADING_UPDATE_SOURCE, CH_HEADING_UNCERTAINTY), "estHeadingUncert"},
         {ChannelId(CH_FIELD_ESTFILTER_HEADING_UPDATE_SOURCE, CH_SOURCE), "estHeadingSource"},
@@ -396,7 +396,7 @@ namespace mscl
         {ChannelId(CH_FIELD_ESTFILTER_MAG_BIAS_UNCERT, CH_Z), "estMagBiasOffsetZUncert"},
 
         {ChannelId(CH_FIELD_ESTFILTER_MAG_AUTO_SOFT_IRON_MATRIX_UNCERT, CH_MATRIX), "estMagAutoSoftIronMatrixUncert"},
-        
+
         {ChannelId(CH_FIELD_ESTFILTER_MAG_COVARIANCE_MATRIX, CH_MATRIX), "estMagCovarianceMatrix"},
 
         {ChannelId(CH_FIELD_ESTFILTER_MAG_RESIDUAL_VECTOR, CH_X), "estMagResidualVector_x"},

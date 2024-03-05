@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "stdafx.h"
@@ -58,7 +58,7 @@ namespace mscl
         std::size_t numBins = m_payload.size() - PAYLOAD_OFFSET_CHANNEL_DATA;
 
         for(std::size_t binItr = 0; binItr < numBins; ++binItr)
-        {            
+        {
             //add the bin to the sweep (each value needs to be made negative before stored)
             rfSweep[curFreq] = static_cast<int16>(m_payload.read_uint8(PAYLOAD_OFFSET_CHANNEL_DATA + binItr)) * -1;
 

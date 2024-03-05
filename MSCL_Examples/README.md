@@ -3,9 +3,9 @@
 Example projects are provided for some MSCL use cases. This does not encompass all features of MSCL.
 Please refer to the [MSCL documentation](https://lord-microstrain.github.io/MSCL/Documentation/MSCL%20API%20Documentation/index.html) for more details.
 
-Open the **Wireless** directory to view example code for LORD's Wireless product line.
-Open the **Inertial** directory to view example code for LORD's Inertial product line.
-Open the **Displacement** directory to view example code for LORD's Inertial product line.
+Open the **Wireless** directory to view example code for MicroStrain's Wireless product line.
+Open the **Inertial** directory to view example code for MicroStrain's Inertial product line.
+Open the **Displacement** directory to view example code for MicroStrain's Inertial product line.
 
 To compile and run the example code, you will need to copy the **C++**, **DotNet**, or **Python** libraries for MSCL to a **dependencies** directory (preferably within the project directory).\
 If not building for multiple configurations, the architecture and build type can be omitted from the folder structure.\

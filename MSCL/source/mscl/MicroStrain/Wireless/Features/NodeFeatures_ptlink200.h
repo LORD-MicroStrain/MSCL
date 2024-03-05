@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -31,7 +31,7 @@ namespace mscl
         virtual const WirelessTypes::Filters lowPassFilters() const override;
 
         virtual WirelessTypes::WirelessSampleRate maxSampleRateForLowPassFilter(WirelessTypes::Filter lowPassFilter, WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode, const ChannelMask& channels) const override;
-        
+
         virtual const WirelessTypes::VoltageType adcVoltageInputType() const override;
 
         virtual bool supportsPoll() const override;
@@ -43,4 +43,3 @@ namespace mscl
         const uint32 defaultSensorDelay() const override;
     };
 }
-

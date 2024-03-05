@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "stdafx.h"
@@ -87,7 +87,7 @@ namespace mscl
             byteItr += DIGITAL_LEN;
 
             //build this sweep's timestamp
-            sweep.timestamp(Timestamp(packetTimestamp + ((timeOffset * TimeSpan::NANOSECONDS_PER_SECOND) / 32768) ));            
+            sweep.timestamp(Timestamp(packetTimestamp + ((timeOffset * TimeSpan::NANOSECONDS_PER_SECOND) / 32768) ));
 
             //get this sweep's node and base rssi values
             sweep.nodeRssi(m_nodeRSSI);
@@ -148,7 +148,7 @@ namespace mscl
 
     WirelessChannel::ChannelId AsyncDigitalAnalogPacket::wirelessChannelFromDigitalChNum(int channelNum)
     {
-        //the offset into the WirelessChannel::ChannelId enum 
+        //the offset into the WirelessChannel::ChannelId enum
         const int DIGITAL_CHANNEL_OFFSET = WirelessChannel::channel_digital_1 - 1;
 
         //call the WirelessDataPacket's same function with the new offset

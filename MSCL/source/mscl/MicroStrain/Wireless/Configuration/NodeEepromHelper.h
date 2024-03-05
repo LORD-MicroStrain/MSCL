@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -134,7 +134,7 @@ namespace mscl
         WirelessTypes::RegionCode read_regionCode() const;
 
         //Function: read_fwVersion
-        //    Gets the firmware version of the Node. 
+        //    Gets the firmware version of the Node.
         //
         //Returns:
         //    A <Version> representing the firmware version of the Node.
@@ -1480,7 +1480,7 @@ namespace mscl
 
         //Function: write_lostBeaconTimeout
         //    Writes the lost beacon timeout value, in minutes, to the Node.
-        //    This assumes the value is within range of a valid value. 
+        //    This assumes the value is within range of a valid value.
         //
         //Parameters:
         //    minutes - The lost beacon timeout value in minutes.

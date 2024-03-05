@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -112,7 +112,7 @@ namespace mscl
         //  Indicates whether or not this data point has additional data identifiers.
         //
         //Returns:
-        //  true if additional <MipChannelIdentifiers> have been assigned to this data point. 
+        //  true if additional <MipChannelIdentifiers> have been assigned to this data point.
         bool hasAddlIdentifiers() const;
 
         //API Function: addlIdentifiers
@@ -141,7 +141,7 @@ namespace mscl
         bool valid() const;
 
         //API Function: channelName
-        //    Gets the name of the channel. 
+        //    Gets the name of the channel.
         //    This is the universal channel name that should be used for uploading to SensorCloud.
         //
         //Parameters:

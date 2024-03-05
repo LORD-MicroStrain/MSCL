@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "stdafx.h"
@@ -12,7 +12,7 @@
 namespace mscl
 {
                 /////  MipCommand  /////
-        
+
     std::shared_ptr<GenericMipCommand::Response> MipCommand::createResponse(std::weak_ptr<ResponseCollector> collector)
     {
         std::shared_ptr<GenericMipCommand::Response> responseToSend(new GenericMipCommand::Response(commandType(),
@@ -222,7 +222,7 @@ namespace mscl
             // check that the identifier is echoed back in the response
             matchData.emplace(0, m_data[0]);
             break;
-            
+
             // 0x13
         case MipTypes::CMD_AIDING_POS_ECEF:
         case MipTypes::CMD_AIDING_POS_LLH:
@@ -702,7 +702,7 @@ namespace mscl
         //case MipTypes::CMD_AIDING_DELTA_ATTITUDE: return{};
         //case MipTypes::CMD_AIDING_ANGULAR_RATE_LOCAL: return{};
 
-        
+
         // Single Bool
             // 0x0D
         case MipTypes::CMD_EF_VERTICAL_GYRO_CONSTRAINT:
@@ -810,7 +810,7 @@ namespace mscl
                 ValueType::valueType_uint8,
                 ValueType::valueType_float
             };
-            
+
         case MipTypes::CMD_AIDING_FRAME_CONFIG:
             return{
                 ValueType::valueType_float

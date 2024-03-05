@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -22,7 +22,7 @@ namespace mscl
     private:
         GetDatalogSessionInfo() = delete;                                          //default constructor disabled
         GetDatalogSessionInfo(const GetDatalogSessionInfo&) = delete;              //copy constructor disabled
-        GetDatalogSessionInfo& operator=(const GetDatalogSessionInfo&) = delete;   //assignment operator disabled 
+        GetDatalogSessionInfo& operator=(const GetDatalogSessionInfo&) = delete;   //assignment operator disabled
 
     public:
         //Function: buildCommand

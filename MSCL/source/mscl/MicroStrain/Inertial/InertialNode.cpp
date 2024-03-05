@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "stdafx.h"
@@ -441,7 +441,7 @@ namespace mscl
     {
         m_impl->setComplementaryFilterSettings(data);
     }
-    
+
     ComplementaryFilterData InertialNode::getComplementaryFilterSettings()
     {
         return m_impl->getComplementaryFilterSettings();
@@ -776,7 +776,7 @@ namespace mscl
     {
         MipFieldValues data = m_impl->get(MipTypes::CMD_EF_AIDING_MEASUREMENT_ENABLE,
             { Value::UINT16(static_cast<uint16>(aidingSource)) });
-        
+
         // command echoes aiding source and current enabled setting - only need to return enabled
         return data[1].as_bool();
     }
@@ -1254,18 +1254,18 @@ namespace mscl
     EventTriggerStatus InertialNode::getEventTriggerStatus(const std::vector<uint8> instances/*= std::vector<uint8>()*/) const
     {
         std::vector<Value> specifier = { Value::UINT8(static_cast<uint8>(instances.size())) };
-        
+
         for (const uint8& instance : instances)
         {
             specifier.push_back(Value::UINT8(instance));
         }
-        
+
         const MipFieldValues data = m_impl->get(MipTypes::CMD_EVENT_TRIGGER_STATUS, specifier);
-        
+
         const uint8 count = data[0].as_uint8();
-        
+
         EventTriggerStatus status;
-        
+
         // Data values start at index 1 and have 2 data entries
         for (int index = 1; index < count * 2 + 1; index += 2)
         {
@@ -1280,7 +1280,7 @@ namespace mscl
                 data[index + 1].as_uint8()                                            // status
             });
         }
-        
+
         return status;
     }
 

@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "stdafx.h"
@@ -12,8 +12,8 @@
 
 namespace mscl
 {
-    //the classes in this file do not get referenced anywhere, therefore the 
-    //linker will not include this compilation unit when statically 
+    //the classes in this file do not get referenced anywhere, therefore the
+    //linker will not include this compilation unit when statically
     //linking to an executable. Defining this variable, and then using it
     //elsewhere, will force this file to be included
     bool _forceLibraryToIncludeCompilationUnit_Shared;
@@ -127,7 +127,7 @@ namespace mscl
         //get whether points are valid or invalid from the flags
         bool towValid = pointIsValid(flags, TOW_VALID);
         bool weekNumValid = pointIsValid(flags, WEEK_NUM_VALID);
-        
+
         MipTypes::ChannelField chField = static_cast<MipTypes::ChannelField>(field.fieldId());
 
         //add all the data points we just collected

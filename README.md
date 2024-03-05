@@ -1,6 +1,6 @@
 # MSCL - The MicroStrain Communication Library
 
-MSCL is developed by [LORD Sensing - Microstrain](http://microstrain.com) in Williston, VT. It was created to make it simple to interact with our [Wireless](http://www.microstrain.com/wireless), [Inertial](http://www.microstrain.com/inertial), and digital [Displacement](https://www.microstrain.com/displacement/nodes) sensors.
+MSCL is developed by [MicroStrain by HBK](https://microstrain.com) in Williston, VT. It was created to make it simple to interact with our [Wireless](https://www.microstrain.com/wireless), [Inertial](https://www.microstrain.com/inertial), and digital [Displacement](https://www.microstrain.com/displacement/nodes) sensors.
 
 [![Latest](https://img.shields.io/github/v/release/LORD-MicroStrain/MSCL?color=bright&label=Latest%20Release)](https://github.com/LORD-MicroStrain/MSCL/releases/latest/)
 
@@ -59,11 +59,11 @@ Instructions can be found here:
 
 [How to use MSCL](HowToUseMSCL.md)
 
-[Quick Start Guide](http://lord-microstrain.github.io/MSCL/Documentation/Getting%20Started/index.html)
+[Quick Start Guide](https://lord-microstrain.github.io/MSCL/Documentation/Getting%20Started/index.html)
 
-[Public Documentation](http://lord-microstrain.github.io/MSCL/Documentation/MSCL%20API%20Documentation/index.html) - Documentation for all the public functionality of MSCL.
+[Public Documentation](https://lord-microstrain.github.io/MSCL/Documentation/MSCL%20API%20Documentation/index.html) - Documentation for all the public functionality of MSCL.
 
-[Full Documentation](http://lord-microstrain.github.io/MSCL/Documentation/MSCL%20Documentation/index.html) - Full Documentation of everything in MSCL (useful when editing the source).
+[Full Documentation](https://lord-microstrain.github.io/MSCL/Documentation/MSCL%20Documentation/index.html) - Full Documentation of everything in MSCL (useful when editing the source).
 
 [Example Code](MSCL_Examples)
   * Note: LabVIEW example code is provided in the [LabVIEW-MSCL VI package](https://github.com/LORD-MicroStrain/LabVIEW-MSCL).
@@ -72,11 +72,11 @@ Instructions can be found here:
 
 #### Included Libraries
 
-OpenSSL - This product includes software developed by the OpenSSL Project for use in the OpenSSL Toolkit (http://www.openssl.org/) - see the [License_OpenSSL.txt](License_OpenSSL.txt) file in the source distribution.
+OpenSSL - This product includes software developed by the OpenSSL Project for use in the OpenSSL Toolkit (https://www.openssl.org/) - see the `License_OpenSSL.txt` file in the source distribution.
 
 Boost - see the [License_Boost.txt](License_Boost.txt) file in the source distribution.
 
 #### License
 MSCL is released under the MIT License - see the [LICENSE](LICENSE) file in the source distribution.
 
-Copyright (C) 2015-2022 Parker Hannifin Corp. All Rights Reserved.
+Copyright (C) 2015-2024 MicroStrain by HBK. All Rights Reserved.

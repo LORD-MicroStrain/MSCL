@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -52,7 +52,7 @@ namespace mscl
 
     private:
         //Variable: m_dataSweeps
-        //    Contains one or more data sweeps 
+        //    Contains one or more data sweeps
         std::vector<DataSweep> m_dataSweeps;
 
         //Variable: m_sweepPos
@@ -116,7 +116,7 @@ namespace mscl
     public:
         //Function: timestampWithinRange
         //  Checks if a timestamp is within the valid range that MSCL accepts.
-        //  
+        //
         //Parameters:
         //  timestamp - The <Timestamp> to check for valid range.
         //
@@ -126,7 +126,7 @@ namespace mscl
 
         //Function: angleWithinRange
         //  Checks if an angle from a Wireless Packet is within the valid range that MSCL accepts.
-        //  
+        //
         //Parameters:
         //  angle - The angle (in degrees) to check if its within range.
         //

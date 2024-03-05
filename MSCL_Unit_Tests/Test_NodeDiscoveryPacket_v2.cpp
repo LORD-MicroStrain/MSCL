@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "mscl/MicroStrain/Wireless/Packets/NodeDiscoveryPacket_v3.h"
@@ -15,7 +15,7 @@ BOOST_AUTO_TEST_SUITE(NodeDiscoveryPacket_v3_Test)
 BOOST_AUTO_TEST_CASE(NodeDiscovery_v3_IntegrityCheck_Fail_PayloadSize)
 {
     Bytes payloadBytes;
-    payloadBytes.push_back(12);        
+    payloadBytes.push_back(12);
     payloadBytes.push_back(1);
 
     //build a WirelessPacket
@@ -158,7 +158,7 @@ BOOST_AUTO_TEST_CASE(NodeDiscovery_v3_IntegrityCheck_Success)
     WirelessPacket packet;
     packet.nodeAddress(345);
     packet.deliveryStopFlags(DeliveryStopFlags::fromInvertedByte(0x07));
-    packet.type(WirelessPacket::packetType_nodeDiscovery_v3);                
+    packet.type(WirelessPacket::packetType_nodeDiscovery_v3);
     packet.nodeRSSI(1);
     packet.baseRSSI(1);
     packet.payload(payloadBytes);    //give the packet the payload bytes we created

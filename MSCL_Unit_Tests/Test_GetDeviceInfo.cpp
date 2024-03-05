@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "mscl/MicroStrain/MIP/Commands/GetDeviceInfo.h"
@@ -137,7 +137,7 @@ BOOST_AUTO_TEST_CASE(GetDeviceInfo_Match_Success_OnlyDeviceInfo)
 
     ByteStream bytes;
     bytes.append_uint16(1117);    //firmware version
-    
+
     //add the 5 strings to the payload
     for(int x = 0; x < 5; x++)
     {
@@ -154,7 +154,7 @@ BOOST_AUTO_TEST_CASE(GetDeviceInfo_Match_Success_OnlyDeviceInfo)
     MipDataField field2(0x0181, bytes.data()); //good device info field
 
     //check that the match succeeds
-    BOOST_CHECK_EQUAL(response.match(field2), true); 
+    BOOST_CHECK_EQUAL(response.match(field2), true);
     BOOST_CHECK_EQUAL(response.fullyMatched(), true);    //even though we didnt get an ACK/NACK, we still fully matched because the device info is enough to match
     BOOST_CHECK_EQUAL(response.result().success(), true);
     BOOST_CHECK_EQUAL(response.result().errorCode(), mscl::MipPacket::MIP_ACK_NACK_ERROR_NONE);
@@ -167,7 +167,7 @@ BOOST_AUTO_TEST_CASE(GetDeviceInfo_Match_Success)
 
     ByteStream bytes;
     bytes.append_uint16(1117);    //firemware version
-    
+
     //add the 5 strings to the payload
     for(int x = 0; x < 5; x++)
     {
@@ -193,7 +193,7 @@ BOOST_AUTO_TEST_CASE(GetDeviceInfo_Match_Success)
     MipDataField field2(0x0181, bytes.data()); //good device info field
 
     //check that the match succeeds
-    BOOST_CHECK_EQUAL(response.match(field2), true); 
+    BOOST_CHECK_EQUAL(response.match(field2), true);
     BOOST_CHECK_EQUAL(response.fullyMatched(), true);    //we  fully matched because the device info is enough to match
     BOOST_CHECK_EQUAL(response.result().success(), true);
     BOOST_CHECK_EQUAL(response.result().errorCode(), mscl::MipPacket::MIP_ACK_NACK_ERROR_NONE);

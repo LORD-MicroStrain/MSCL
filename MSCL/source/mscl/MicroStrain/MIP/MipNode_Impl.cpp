@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "stdafx.h"
@@ -66,7 +66,7 @@
 
 namespace mscl
 {
-    MipNode_Impl::MipNode_Impl(Connection connection): 
+    MipNode_Impl::MipNode_Impl(Connection connection):
         m_connection(connection),
         m_commandsTimeout(COMMANDS_DEFAULT_TIMEOUT),
         m_sensorRateBase(0),
@@ -261,7 +261,7 @@ namespace mscl
 
         m_rawBytePacketCollector.addRawBytePacket(rawBytePacket);
         response.setResponseCollector(m_responseCollector);
-        
+
         if(verifySupported)
         {
             //verify that this command is supported
@@ -628,7 +628,7 @@ namespace mscl
         };
 
         MipCommandParameters params;
-        
+
         //all param will not work for any device that uses legacy data set identifiers for datastream control
         bool legacyDevice = features().useLegacyIdsForEnableDataStream();
         bool allParam = useAllParam && !legacyDevice;
@@ -903,7 +903,7 @@ namespace mscl
 
         // build command set in numeric order by command id
         std::sort(descriptors.begin(), descriptors.end());
-        
+
         for (size_t i = 0; i < descriptors.size(); i++)
         {
             // only add commands
@@ -1652,7 +1652,7 @@ namespace mscl
             }
 
             case MipTypes::CLASS_ESTFILTER:
-            default:                
+            default:
             {
                 //set the expected response
                 EstFilterMessageFormat::Response r(m_responseCollector, false);
@@ -1785,7 +1785,7 @@ namespace mscl
 
     void MipNode_Impl::tareOrientation(const TareAxisValues& axisValue) {
         TareOrientation::Response r(m_responseCollector, false);
-        
+
         doCommand(r, TareOrientation::buildCommand_set(axisValue));
     }
 

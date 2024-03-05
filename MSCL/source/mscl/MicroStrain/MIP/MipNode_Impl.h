@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -114,7 +114,7 @@ namespace mscl
         void parseData(DataBuffer& data);
 
         //Function: info
-        //    Gets the <MipNodeInfo> for this Node. 
+        //    Gets the <MipNodeInfo> for this Node.
         //    The first time this function is called, it will send multiple commands to the device to get all required information.
         //
         //Returns:
@@ -295,7 +295,7 @@ namespace mscl
 
         //Function: getGnssReceiverInfo
         //    Gets the GNSS receiver info for this node, representing available GNSS receiver ports and the data set over which each is output.
-        //    Sends the "Get GNSS Receiver Info" command to the device. 
+        //    Sends the "Get GNSS Receiver Info" command to the device.
         //
         //Returns:
         //    The supported GNSS receiver info retrieved from the "Get GNSS Receiver Info" command.
@@ -321,7 +321,7 @@ namespace mscl
 
         //Function: getDescriptorSets
         //    Gets the supported descriptor sets for this node, representing which commands and data sets are available.
-        //    Sends the "Get Device Descriptor Sets" command to the device. 
+        //    Sends the "Get Device Descriptor Sets" command to the device.
         //
         //Returns:
         //    The supported descriptors retrieved from the "Get Device Descriptor Sets" command.
@@ -427,7 +427,7 @@ namespace mscl
 
     public:
         //Function: ping
-        //    Pings the node to check for communication. 
+        //    Pings the node to check for communication.
         //    Sends the "Ping" command to the device.
         //
         //Returns:
@@ -521,7 +521,7 @@ namespace mscl
         virtual uint16 getDataRateBase(MipTypes::DataClass dataClass) const;
 
         //Function: getMessageFormat
-        //    Gets the current message format of the specified <MipTypes::DataClass>'s data packet. 
+        //    Gets the current message format of the specified <MipTypes::DataClass>'s data packet.
         //
         //Parameters:
         //    dataClass - The <MipTypes::DataClass> to get the current message format for.
@@ -581,7 +581,7 @@ namespace mscl
         virtual uint8 getCommunicationMode() const;
 
         //Function: setCommunicationMode
-        //    Sets the communication mode for the node. 
+        //    Sets the communication mode for the node.
         //    Note: The node info will be reset when doing this and therefore will require being fetched again the next time it is requested.
         //
         //Parameters:
@@ -1109,7 +1109,7 @@ namespace mscl
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         GeometricVector getGyroBias() const;
-        
+
         //Function: captureGyroBias
         //    Runs the Gyro Bias capture routine on the inertial device.
         //
@@ -1873,7 +1873,7 @@ namespace mscl
         SampleRate getDisplacementOutputDataRate() const;
 
         //Function: setDeviceTime
-        //  Seeds the device time with the current system time. 
+        //  Seeds the device time with the current system time.
         //
         //Exceptions:
         //    - <Error_NotSupported>: The command is not supported by this Node.

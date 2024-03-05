@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -22,7 +22,7 @@ namespace mscl
         //API Default Constructor: SnCurveSegment
         //    Creates a default constructed SnCurveSegment.
         SnCurveSegment();
-        
+
         //API Constructor: SnCurveSegment
         //    Creates an SnCurveSegment.
         //
@@ -164,7 +164,7 @@ namespace mscl
         //    Gets the debug mode flag set in this options object.
         //    This determines whether raw angle data that builds the Histograms will be sent when sampling.
         bool debugMode() const;
-        
+
         //API Function: debugMode
         //    Sets the debug mode flag in this options object.
         //    This determines whether raw angle data that builds the Histograms will be sent when sampling.
@@ -278,7 +278,7 @@ namespace mscl
 
         //API Function: histogramEnable
         //    Sets whether sending Histograms is enabled or disabled, in this options object.
-        //    
+        //
         //Parameters:
         //    enable - Whehter to enable or disable sending Histograms.
         void histogramEnable(bool enable);

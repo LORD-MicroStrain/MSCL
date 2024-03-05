@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -39,7 +39,7 @@ namespace mscl
         //    Creates a <Rotation> object with this object's roll, pitch, and yaw values
         operator Rotation() const;
 #endif //SWIG
-        
+
     public:
         //API Function: asMipFieldValues
         //  Gets the current euler angles values formatted as a <MipFieldValues> object.
@@ -109,7 +109,7 @@ namespace mscl
         //    Creates a <Rotation> object with this object's values
         operator Rotation() const;
 #endif //SWIG
-        
+
     public:
         //API Function: asMipFieldValues
         //  Gets the current quaternion values formatted as a <MipFieldValues> object
@@ -124,7 +124,7 @@ namespace mscl
         //Parameters:
         //  appendTo - (reference) the <MipFieldValues> collection to append to
         void appendMipFieldValues(MipFieldValues& appendTo) const;
-        
+
         //API Function: normalize
         // normalize the quaternion value
         void normalize();
@@ -266,7 +266,7 @@ namespace mscl
         //Variable: m_format
         //  The <Format> this Rotation object represents
         Format m_format;
-        
+
     public:
         //API Function: format
         //  Gets the <Format> of this Rotation object.

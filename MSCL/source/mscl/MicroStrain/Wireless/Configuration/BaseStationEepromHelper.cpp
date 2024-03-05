@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "stdafx.h"
@@ -173,7 +173,7 @@ namespace mscl
         {
             uint16 fwValue2 = read(BaseStationEepromMap::FIRMWARE_VER2).as_uint16();
 
-            //make the svn revision from the lsb of the first fw value, and the entire second fw value 
+            //make the svn revision from the lsb of the first fw value, and the entire second fw value
             uint32 svnRevision = Utils::make_uint32(0, Utils::lsb(fwValue1), Utils::msb(fwValue2), Utils::lsb(fwValue2));
 
             return Version(major, svnRevision);
@@ -213,7 +213,7 @@ namespace mscl
 
     std::string BaseStationEepromHelper::read_serial() const
     {
-        //read the serial number 
+        //read the serial number
         uint32 serial = read(BaseStationEepromMap::SERIAL_ID).as_uint32();
 
         //if the serial stored in eeprom is invalid (uninitialized)

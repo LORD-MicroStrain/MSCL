@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -10,7 +10,7 @@
 #include "Bin.h"
 
 namespace mscl
-{    
+{
     //API Class: Histogram
     //    Represents a Histogram object.
     class Histogram
@@ -31,7 +31,7 @@ namespace mscl
         //Variable: m_binsStart
         //    The value of the start of the first Bin in the Histogram.
         Value m_binsStart;
-        
+
         //Variable: m_binsSize
         //    The size of each Bin in the Histogram.
         Value m_binsSize;

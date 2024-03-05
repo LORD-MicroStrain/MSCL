@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "mscl/MicroStrain/Wireless/WirelessNode.h"
@@ -75,7 +75,7 @@ BOOST_AUTO_TEST_CASE(NodeEepromHelper_writeNumSweeps)
     //make the features() function return the NodeFeatures we want
     std::unique_ptr<NodeFeatures> features = NodeFeatures::create(info);
     MOCK_EXPECT(impl->features).returns(std::ref(*(features.get())));
-    
+
 
     MOCK_EXPECT(impl->writeEeprom).with(NodeEepromMap::NUM_SWEEPS, Value(valueType_uint16, static_cast<uint16>(979)));
 
@@ -93,7 +93,7 @@ BOOST_AUTO_TEST_CASE(NodeEepromHelper_readNumSweeps)
 
     std::unique_ptr<NodeFeatures> features;
     expectNodeFeatures(features, impl);
-    
+
     uint16 val = 979;
 
     MOCK_EXPECT(impl->readEeprom).with(NodeEepromMap::NUM_SWEEPS).returns(Value(valueType_uint16, val));
@@ -110,7 +110,7 @@ BOOST_AUTO_TEST_CASE(NodeEepromHelper_writeUnlimitedDuration)
 
     std::unique_ptr<NodeFeatures> features;
     expectNodeFeatures(features, impl);
-    
+
     uint16 val = 1;
     MOCK_EXPECT(impl->writeEeprom).with(NodeEepromMap::UNLIMITED_SAMPLING, Value(valueType_uint16, val));
 
@@ -126,7 +126,7 @@ BOOST_AUTO_TEST_CASE(NodeEepromHelper_writeUnlimitedDuration_datalogging)
 
     std::unique_ptr<NodeFeatures> features;
     expectNodeFeatures(features, impl);
-    
+
     uint16 val = 0;
     MOCK_EXPECT(impl->writeEeprom).with(NodeEepromMap::UNLIMITED_DATALOG, Value(valueType_uint16, val));
 
@@ -142,7 +142,7 @@ BOOST_AUTO_TEST_CASE(NodeEepromHelper_readUnlimitedDuration)
 
     std::unique_ptr<NodeFeatures> features;
     expectNodeFeatures(features, impl);
-    
+
     uint16 val = 1;
     MOCK_EXPECT(impl->readEeprom).with(NodeEepromMap::UNLIMITED_SAMPLING).returns(Value::UINT16(val));
 
@@ -158,7 +158,7 @@ BOOST_AUTO_TEST_CASE(NodeEepromHelper_readUnlimitedDuration_datalogging)
 
     std::unique_ptr<NodeFeatures> features;
     expectNodeFeatures(features, impl);
-    
+
     uint16 val = 0;
     MOCK_EXPECT(impl->readEeprom).with(NodeEepromMap::UNLIMITED_DATALOG).returns(Value::UINT16(val));
 
@@ -174,7 +174,7 @@ BOOST_AUTO_TEST_CASE(NodeEepromHelper_writeSampleRate)
 
     std::unique_ptr<NodeFeatures> features;
     expectNodeFeatures(features, impl);
-    
+
     uint16 rate1 = 104, rate2 = 75;
     expectWrite(impl, NodeEepromMap::SAMPLE_RATE, Value::UINT16(rate1));
     expectWrite(impl, NodeEepromMap::DATALOG_SAMPLE_RATE, Value::UINT16(rate2));
@@ -193,7 +193,7 @@ BOOST_AUTO_TEST_CASE(NodeEepromHelper_readSampleRate)
 
     std::unique_ptr<NodeFeatures> features;
     expectNodeFeatures(features, impl);
-    
+
     uint16 rate1 = 123, rate2 = 114;
     expectRead(impl, NodeEepromMap::SAMPLE_RATE, Value::UINT16(rate1));
     expectRead(impl, NodeEepromMap::DATALOG_SAMPLE_RATE, Value::UINT16(rate2));
@@ -213,7 +213,7 @@ BOOST_AUTO_TEST_CASE(NodeEepromHelper_writeDataFormat)
 
     std::unique_ptr<NodeFeatures> features;
     expectNodeFeatures(features, impl);
-    
+
     expectWrite(impl, NodeEepromMap::DATA_FORMAT, Value::UINT16(static_cast<uint16>(2)));
 
     BOOST_CHECK_NO_THROW(node.eepromHelper().write_dataFormat(WirelessTypes::dataFormat_cal_float));
@@ -228,7 +228,7 @@ BOOST_AUTO_TEST_CASE(NodeEepromHelper_readDataFormat)
 
     std::unique_ptr<NodeFeatures> features;
     expectNodeFeatures(features, impl);
-    
+
     uint16 val = 1;
     expectRead(impl, NodeEepromMap::DATA_FORMAT, Value::UINT16(val));
 
@@ -244,7 +244,7 @@ BOOST_AUTO_TEST_CASE(NodeEepromHelper_writeCollectionMode)
 
     std::unique_ptr<NodeFeatures> features;
     expectNodeFeatures(features, impl);
-    
+
     uint16 val = 2;
     expectWrite(impl, NodeEepromMap::COLLECTION_MODE, Value::UINT16(val));
 
@@ -260,7 +260,7 @@ BOOST_AUTO_TEST_CASE(NodeEepromHelper_readCollectionMode)
 
     std::unique_ptr<NodeFeatures> features;
     expectNodeFeatures(features, impl);
-    
+
     uint16 val = 3;
     expectRead(impl, NodeEepromMap::COLLECTION_MODE, Value::UINT16(val));
 
@@ -276,7 +276,7 @@ BOOST_AUTO_TEST_CASE(NodeEepromHelper_convertFromDataloggingRate)
 
     std::unique_ptr<NodeFeatures> features;
     expectNodeFeatures(features, impl);
-    
+
     uint16 val = 2;
     expectRead(impl, NodeEepromMap::DATALOG_SAMPLE_RATE, Value::UINT16(val));
 
@@ -293,7 +293,7 @@ BOOST_AUTO_TEST_CASE(NodeEepromHelper_convertToDataloggingRate)
 
     std::unique_ptr<NodeFeatures> features;
     expectNodeFeatures(features, impl);
-    
+
     uint16 val = 3;
     expectWrite(impl, NodeEepromMap::DATALOG_SAMPLE_RATE, Value::UINT16(val));
 
@@ -309,7 +309,7 @@ BOOST_AUTO_TEST_CASE(NodeEepromHelper_getChannelCalCoefficients)
 
     std::unique_ptr<NodeFeatures> features;
     expectNodeFeatures(features, impl);
-    
+
     //reading channel 1
     expectRead(impl, NodeEepromMap::CH_ACTION_SLOPE_1, Value::FLOAT(12.789f));                        //slope
     expectRead(impl, NodeEepromMap::CH_ACTION_OFFSET_1, Value::FLOAT(-48.001f));                    //offset
@@ -335,7 +335,7 @@ BOOST_AUTO_TEST_CASE(NodeEepromHelper_setChannelCalCoefficients)
 
     std::unique_ptr<NodeFeatures> features;
     expectNodeFeatures(features, impl);
-    
+
 
     //we expect the following values to get written
     expectWrite(impl, NodeEepromMap::CH_ACTION_SLOPE_3, Value::FLOAT(2.345f));        //slope
@@ -361,7 +361,7 @@ BOOST_AUTO_TEST_CASE(NodeEepromHelper_getNumDatalogSessions)
 
     std::unique_ptr<NodeFeatures> features;
     expectNodeFeatures(features, impl);
-    
+
 
     NodeEepromHelper c(node.eepromHelper());
 

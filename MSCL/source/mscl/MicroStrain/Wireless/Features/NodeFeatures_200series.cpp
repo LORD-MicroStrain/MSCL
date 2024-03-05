@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "stdafx.h"
@@ -21,7 +21,7 @@ namespace mscl
     {
         return AvailableTransmitPowers::get200series(m_nodeInfo, commProtocol);
     }
-    
+
     const WirelessTypes::TransmitPowers NodeFeatures_200series::transmitPowers(WirelessTypes::RegionCode region, WirelessTypes::CommProtocol commProtocol) const
     {
         //make a NodeInfo object with all the actual node's info, but with the given region instead

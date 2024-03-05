@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "stdafx.h"
@@ -49,7 +49,7 @@ namespace mscl
             packet.nodeAddress() != m_nodeAddress ||                        //node address
             payload.size() != 0x02 ||                                       //payload length
             payload.read_uint16(0) != WirelessProtocol::cmdId_writeEeprom   //cmd id
-            )            
+            )
         {
             //failed to match some of the bytes
             return false;

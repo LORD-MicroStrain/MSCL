@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -16,7 +16,7 @@ namespace mscl
     //Class: MockBaseStation_Impl
     //    Contains the Mock implementation for a <BaseStation> object.
     class MockBaseStation_Impl : public BaseStation_Impl
-    { 
+    {
     public:
         //Constructor: MockBaseStation_Impl
         //  Creates a MockBaseStation_Impl object.

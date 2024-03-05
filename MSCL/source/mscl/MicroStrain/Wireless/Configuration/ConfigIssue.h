@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -162,7 +162,7 @@ namespace mscl
         //Variable: m_optionId
         //    The <ConfigOption> identifying the configuration option for which the issue occurred.
         ConfigOption m_optionId;
-        
+
         //Variable: m_description
         //    The description of the issue.
         std::string m_description;
@@ -182,7 +182,7 @@ namespace mscl
         //Returns:
         //    A <ConfigOption> identifying the configuration option for which the issue occurred.
         ConfigIssue::ConfigOption id() const;
-        
+
         //API Function: description
         //    Gets a description of the issue.
         //

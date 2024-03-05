@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -21,7 +21,7 @@ namespace mscl
     public:
         Erase_v2() = delete;                             //default constructor disabled
         Erase_v2(const Erase_v2&) = delete;              //copy constructor disabled
-        Erase_v2& operator=(const Erase_v2&) = delete;   //assignment operator disabled 
+        Erase_v2& operator=(const Erase_v2&) = delete;   //assignment operator disabled
 
     public:
         //Function: buildCommand

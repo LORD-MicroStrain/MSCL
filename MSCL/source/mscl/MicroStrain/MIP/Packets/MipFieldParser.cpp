@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "stdafx.h"
@@ -35,7 +35,7 @@ namespace mscl
 
         extern bool _forceLibraryToIncludeCompilationUnit_System;
         _forceLibraryToIncludeCompilationUnit_System = true;
-    
+
         return true;
     }
 
@@ -84,7 +84,7 @@ namespace mscl
         }
         //if we failed to find a parser for this field type
         else
-        {            
+        {
             //just add a data point of this whole field as bytes
             result.push_back(MipDataPoint(chField, MipTypes::CH_UNKNOWN, valueType_Bytes, anyType(field.fieldData().data()), true));
         }

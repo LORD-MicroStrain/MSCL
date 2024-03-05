@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -45,7 +45,7 @@ namespace mscl
 
         //Function: msb
         //    Gets the Most Significant Byte from the 2-Byte unsigned integer
-        //    
+        //
         //Parameters:
         //    value - the 2-Byte unsigned integer (in system endianness) to find the MSB from
         //
@@ -55,7 +55,7 @@ namespace mscl
 
         //Function: lsb
         //    Gets the Least Significant Byte from the 2-Byte unsigned integer
-        //    
+        //
         //Parameters:
         //    value - the 2-Byte unsigned integer (in system endianness) to find the LSB from
         //
@@ -150,7 +150,7 @@ namespace mscl
         //
         //Parameters:
         //    value - the 4 byte uint32 (in system endianness) to convert into bytes
-        //    low - holds the low memory location result 
+        //    low - holds the low memory location result
         //    byte2 - holds the second byte result
         //    byte3 - holds the third byte result
         //    high - holds the high memory location result
@@ -163,7 +163,7 @@ namespace mscl
         //
         //Parameters:
         //    value - the 4 byte uint32 (in system endianness) to convert into bytes
-        //    low - holds the low memory location result 
+        //    low - holds the low memory location result
         //    byte2 - holds the second byte result
         //    byte3 - holds the third byte result
         //    byte4 - holds the fourth byte result
@@ -390,7 +390,7 @@ namespace mscl
         //
         //Returns:
         //    Vector of each sequential string within basicString matching the pattern.
-        // 
+        //
         std::vector<std::string> regexFindAll(const std::string& basicString, const std::regex& pattern = std::regex(R"([^,]+)"));
 
         //Function: tokenize

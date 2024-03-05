@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "stdafx.h"
@@ -1197,7 +1197,7 @@ namespace mscl
         {
             throw Error_NotSupported("Sensor Delay is not supported by this Node.");
         }
-        
+
         return static_cast<uint32>(TimeSpan::MilliSeconds(1).getMicroseconds());    //1 millisecond
     }
 
@@ -1393,7 +1393,7 @@ namespace mscl
         {
             result.push_back(WirelessTypes::defaultMode_datalog);
         }
-        
+
         if(supportsSamplingMode(WirelessTypes::samplingMode_sync) ||
            supportsSamplingMode(WirelessTypes::samplingMode_syncBurst) ||
            supportsSamplingMode(WirelessTypes::samplingMode_syncEvent))
@@ -1415,7 +1415,7 @@ namespace mscl
 
         return result;
     }
-    
+
     const WirelessTypes::DataFormats NodeFeatures::dataFormats() const
     {
         //build and return the data formats that are supported (all for generic)
@@ -1466,7 +1466,7 @@ namespace mscl
         case WirelessTypes::samplingMode_nonSyncEvent:
         case WirelessTypes::samplingMode_syncEvent:
             return AvailableSampleRates::continuous;
-        
+
         case WirelessTypes::samplingMode_syncBurst:
             return AvailableSampleRates::burst;
 
@@ -1743,7 +1743,7 @@ namespace mscl
         return (m_nodeInfo.firmwareVersion() >= MIN_STORAGE_LIMIT_FW);
     }
 
-    
+
     uint8 NodeFeatures::datalogDownloadVersion() const
     {
         static const Version DL_V2(10, 31758);

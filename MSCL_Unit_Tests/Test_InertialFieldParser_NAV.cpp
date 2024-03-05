@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "mscl/MicroStrain/MIP/Packets/MipFieldParser.h"
@@ -194,7 +194,7 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_EstimatedQuaternion_parse)
     //add bytes to the ByteStream
     bytes.append_float(2.345f);    //q0
     bytes.append_float(0.0f);    //q1
-    bytes.append_float(0.0f);    //q2    
+    bytes.append_float(0.0f);    //q2
     bytes.append_float(0.0f);    //q3
     bytes.append_uint16(1);        //flags
 
@@ -839,7 +839,7 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_MagneticModelSln_parse)
     MipFieldParser::parseField(field, data);
 
     BOOST_CHECK_EQUAL(data.size(), 5);
-    
+
     //intensity vector
     BOOST_CHECK_EQUAL(data.at(0).field(), MipTypes::CH_FIELD_ESTFILTER_MAGNETIC_MODEL_SLN);
     BOOST_CHECK_EQUAL(data.at(0).qualifier(), MipTypes::CH_NORTH);

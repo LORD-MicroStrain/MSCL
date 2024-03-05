@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -15,7 +15,7 @@ namespace mscl
     //API Class: WirelessDataPoint
     //    Represents a single channel's data point within a sweep
     //
-    //See Also: 
+    //See Also:
     //    <DataPoint>, <Value>
     class WirelessDataPoint : public DataPoint
     {
@@ -28,7 +28,7 @@ namespace mscl
         //Constructor: WirelessDataPoint
         //    Builds a WirelessDataPoint object.
         //    The channel name will be automatically generated from the given channel id.
-        //    
+        //
         //Parameters:
         //    channelId - The <WirelessChannel::ChannelId> of the the data point
         //    channelNumber - The channel number associated with the data point (ch1 = 1, ch8 = 8).
@@ -44,7 +44,7 @@ namespace mscl
 
         //Constructor: WirelessDataPoint
         //    Builds a WirelessDataPoint object.
-        //    
+        //
         //Parameters:
         //    channelId - The <WirelessChannel::ChannelId> of the the data point
         //    channelNumber - The channel number associated with the data point (ch1 = 1, ch8 = 8).
@@ -60,7 +60,7 @@ namespace mscl
             const anyType& value,
             const ChannelProperties& channelProperties = ChannelProperties());
 #endif
-    
+
     private:
         //Variable: m_channelId
         //    The <WirelessChannel::ChannelId> representing information about the channel this data point is associated with
@@ -86,7 +86,7 @@ namespace mscl
         //    Gets the channel number associated with the data point (ch1 = 1, ch8 = 8), when applicable.
         //    Otherwise, this will return a 0 (for example, a Structural Health data point doesn't relate
         //    an actual channel on the Wireless Node, so this will be a 0).
-        //    This number can be used to relate to the Node's <WirelessChannel> in the 
+        //    This number can be used to relate to the Node's <WirelessChannel> in the
         //    map returned from calling <WirelessNode::channels>().
         //
         //Returns:
@@ -94,7 +94,7 @@ namespace mscl
         uint8 channelNumber() const;
 
         //API Function: channelName
-        //    Gets the name of the channel. 
+        //    Gets the name of the channel.
         //    This is the universal channel name that should be used for uploading to SensorCloud.
         //
         //Returns:
