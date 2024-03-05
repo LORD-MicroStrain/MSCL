@@ -1,6 +1,6 @@
 # MSCL - The MicroStrain Communication Library
 
-MSCL is developed by [MicroStrain by HBK](https://microstrain.com) in Williston, VT. It was created to make it simple to interact with our [Wireless](https://www.microstrain.com/wireless), [Inertial](https://www.microstrain.com/inertial), and digital [Displacement](https://www.microstrain.com/displacement/nodes) sensors.
+MSCL is developed by [MicroStrain](https://microstrain.com) in Williston, VT. It was created to make it simple to interact with our [Wireless](https://www.microstrain.com/wireless), [Inertial](https://www.microstrain.com/inertial), and digital [Displacement](https://www.microstrain.com/displacement/nodes) sensors.
 
 [![Latest](https://img.shields.io/github/v/release/LORD-MicroStrain/MSCL?color=bright&label=Latest%20Release)](https://github.com/LORD-MicroStrain/MSCL/releases/latest/)
 
