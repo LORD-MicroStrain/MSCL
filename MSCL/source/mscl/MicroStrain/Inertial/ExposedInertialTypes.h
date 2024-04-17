@@ -496,13 +496,16 @@ namespace mscl
         //API Enum: AidingMeasurementSource
         //    The enum to represent the different available aiding measurement sources
         //
-        //      GNSS_POS_VEL_AIDING     - 0x0000
-        //      GNSS_HEADING_AIDING     - 0x0001
-        //      ALTIMETER_AIDING        - 0x0002
-        //      ODOMETER_AIDING         - 0x0003
-        //      MAGNETOMETER_AIDING     - 0x0004
-        //      EXTERNAL_HEADING_AIDING - 0x0005
-        //      ALL_AIDING_MEASUREMENTS - 0xFFFF
+        //      GNSS_POS_VEL_AIDING             - 0x0000
+        //      GNSS_HEADING_AIDING             - 0x0001
+        //      ALTIMETER_AIDING                - 0x0002
+        //      ODOMETER_AIDING                 - 0x0003
+        //      MAGNETOMETER_AIDING             - 0x0004
+        //      EXTERNAL_HEADING_AIDING         - 0x0005
+        //      EXTERNAL_ALTIMETER_AIDING       - 0x0006
+        //      EXTERNAL_MAGNETOMETER_AIDING    - 0x0007
+        //      VEHICLE_FRAME_VEL_AIDING        - 0x0008
+        //      ALL_AIDING_MEASUREMENTS         - 0xFFFF
         enum AidingMeasurementSource
         {
             GNSS_POS_VEL_AIDING = 0x0000,
@@ -511,6 +514,9 @@ namespace mscl
             ODOMETER_AIDING = 0x0003,
             MAGNETOMETER_AIDING = 0x0004,
             EXTERNAL_HEADING_AIDING = 0x0005,
+            EXTERNAL_ALTIMETER_AIDING = 0x0006,
+            EXTERNAL_MAGNETOMETER_AIDING = 0x0007,
+            VEHICLE_FRAME_VEL_AIDING = 0x0008,
             ALL_AIDING_MEASUREMENTS = 0xFFFF
         };
 
@@ -3375,6 +3381,9 @@ namespace mscl
             Rotation::Format format = static_cast<Rotation::Format>(data[offset].as_uint8());
             uint8 index = offset + 1;
 
+            m_errorTrackingEnabled = data[index].as_bool();
+            index += 1;
+
             m_translation.fromMipFieldValues(data, index);
             m_translation.referenceFrame = PositionVelocityReferenceFrame::VEHICLE;
             index += 3;
@@ -3413,6 +3422,8 @@ namespace mscl
         {
             appendTo.push_back(Value::UINT8(static_cast<uint8>(m_rotation.format())));
 
+            appendTo.push_back(Value::BOOL(m_errorTrackingEnabled));
+
             m_translation.appendMipFieldValues(appendTo);
             m_rotation.appendMipFieldValues(appendTo, false);
         }
@@ -3425,6 +3436,10 @@ namespace mscl
         //Variable: m_rotation
         //  The <Rotation> of this reference frame.
         Rotation m_rotation;
+
+        //Variable: m_enableErrorTracking
+        //  Indicates whether error tracking is enabled for this reference frame
+        bool m_errorTrackingEnabled;
 
     public:
         //API Function: translation
@@ -3454,6 +3469,20 @@ namespace mscl
         //Parameters:
         //  rotation - the <Rotation> to set
         void rotation(const Rotation& rotation) { m_rotation = rotation; }
+
+        //API Function: errorTrackingEnabled()
+        //  Indicates whether error tracking is enabled for this reference frame.
+        //
+        //Returns:
+        //  bool - the error tracking enabled value
+        bool errorTrackingEnabled() const { return m_errorTrackingEnabled; }
+
+        //API Function: enableErrorTracking
+        //  Enable/Disable error tracking for this reference frame.
+        //
+        //Parameters:
+        //  enable - bool (default true) - true: enable error tracking, false: disable error tracking
+        void enableErrorTracking(bool enable = true) { m_errorTrackingEnabled = enable; }
     };
 
     //API Typedef: MeasurementReferenceFrames

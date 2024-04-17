@@ -654,7 +654,10 @@ namespace mscl
                     InertialTypes::AidingMeasurementSource::GNSS_POS_VEL_AIDING,
                     InertialTypes::AidingMeasurementSource::ALTIMETER_AIDING,
                     InertialTypes::AidingMeasurementSource::MAGNETOMETER_AIDING,
-                    InertialTypes::AidingMeasurementSource::EXTERNAL_HEADING_AIDING
+                    InertialTypes::AidingMeasurementSource::EXTERNAL_HEADING_AIDING,
+                    InertialTypes::AidingMeasurementSource::EXTERNAL_ALTIMETER_AIDING,
+                    InertialTypes::AidingMeasurementSource::EXTERNAL_MAGNETOMETER_AIDING,
+                    InertialTypes::AidingMeasurementSource::VEHICLE_FRAME_VEL_AIDING
                 };
 
             default:
@@ -664,7 +667,10 @@ namespace mscl
                     InertialTypes::AidingMeasurementSource::ALTIMETER_AIDING,
                     InertialTypes::AidingMeasurementSource::ODOMETER_AIDING,
                     InertialTypes::AidingMeasurementSource::MAGNETOMETER_AIDING,
-                    InertialTypes::AidingMeasurementSource::EXTERNAL_HEADING_AIDING
+                    InertialTypes::AidingMeasurementSource::EXTERNAL_HEADING_AIDING,
+                    InertialTypes::AidingMeasurementSource::EXTERNAL_ALTIMETER_AIDING,
+                    InertialTypes::AidingMeasurementSource::EXTERNAL_MAGNETOMETER_AIDING,
+                    InertialTypes::AidingMeasurementSource::VEHICLE_FRAME_VEL_AIDING
                 };
         }
     }

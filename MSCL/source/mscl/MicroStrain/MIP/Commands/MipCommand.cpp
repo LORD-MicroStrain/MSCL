@@ -630,6 +630,7 @@ namespace mscl
             return{
                 ValueType::valueType_uint8, // frame id
                 ValueType::valueType_uint8, // format
+                ValueType::valueType_bool,  // error tracking enabled
                 ValueType::valueType_float, // translation
                 ValueType::valueType_float,
                 ValueType::valueType_float,
