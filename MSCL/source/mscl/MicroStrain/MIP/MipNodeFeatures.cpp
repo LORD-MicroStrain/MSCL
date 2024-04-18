@@ -660,6 +660,16 @@ namespace mscl
                     InertialTypes::AidingMeasurementSource::VEHICLE_FRAME_VEL_AIDING
                 };
 
+            case MipModels::node_3dm_gq7:
+                return{
+                    InertialTypes::AidingMeasurementSource::GNSS_POS_VEL_AIDING,
+                    InertialTypes::AidingMeasurementSource::GNSS_HEADING_AIDING,
+                    InertialTypes::AidingMeasurementSource::ALTIMETER_AIDING,
+                    InertialTypes::AidingMeasurementSource::ODOMETER_AIDING,
+                    InertialTypes::AidingMeasurementSource::MAGNETOMETER_AIDING,
+                    InertialTypes::AidingMeasurementSource::EXTERNAL_HEADING_AIDING
+                };
+
             default:
                 return {
                     InertialTypes::AidingMeasurementSource::GNSS_POS_VEL_AIDING,
