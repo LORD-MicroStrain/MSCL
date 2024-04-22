@@ -20,7 +20,7 @@ try {
     }
   }
   if (-not ${windows_version}) {
-    $windows_version = $PSVersionTable.BuildVersion
+    $windows_version = "ltsc2022"
   }
 
   Write-Host "${windows_version_table}"
