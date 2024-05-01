@@ -66,7 +66,7 @@ pipeline {
           }
         }
         stage('DEB ARM64') {
-          agent { label 'linux-amd64' }
+          agent { label 'linux-arm64' }
           options {
             skipDefaultCheckout()
             timeout(time: 20, activity: true, unit: 'MINUTES')
@@ -79,7 +79,7 @@ pipeline {
           }
         }
         stage('DEB ARM32') {
-          agent { label 'linux-amd64' }
+          agent { label 'linux-arm64' }
           options {
             skipDefaultCheckout()
             timeout(time: 20, activity: true, unit: 'MINUTES')
