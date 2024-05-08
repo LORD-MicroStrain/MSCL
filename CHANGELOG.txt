@@ -33,6 +33,7 @@ Forthcoming
     - NmeaMessageFormat changes:
         - Added max configurations count
         - Made supportedDataClasses() public
+		- CHANGED SentenceTypes PKRR and PKRA to MSRR and MSRA, respectively
     - Added MipDataClasses as a typedef for a vector of MipTypes::DataClass
     - Added UART feature for GPIO configuration
     - Added Aiding Measurements command set (0x13)

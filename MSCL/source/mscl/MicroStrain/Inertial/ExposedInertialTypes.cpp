@@ -77,8 +77,8 @@ namespace mscl
         switch (sentenceType)
         {
         case SentenceType::GSV:
-        case SentenceType::PKRA:
-        case SentenceType::PKRR:
+        case SentenceType::MSRA:
+        case SentenceType::MSRR:
             return false;
 
         default:
@@ -114,12 +114,12 @@ namespace mscl
                 MipTypes::DataClass::CLASS_GNSS2
             };
 
-        case SentenceType::PKRA:
+        case SentenceType::MSRA:
             return{
                 MipTypes::DataClass::CLASS_ESTFILTER
             };
 
-        case SentenceType::PKRR:
+        case SentenceType::MSRR:
             return{
                 MipTypes::DataClass::CLASS_AHRS_IMU
             };
