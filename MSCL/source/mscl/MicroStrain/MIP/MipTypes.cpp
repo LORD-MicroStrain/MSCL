@@ -999,12 +999,15 @@ namespace mscl
         { TypeId(AIDING_MEASUREMENT_TYPE, MAGNETOMETER), "mag" },
         { TypeId(AIDING_MEASUREMENT_TYPE, SPEED),        "speed" },
 
-        { TypeId(AIDING_MEASUREMENT_TYPE, AIDING_POS_ECEF    ), "posEcef" },
-        { TypeId(AIDING_MEASUREMENT_TYPE, AIDING_POS_LLH     ), "posLlh" },
-        { TypeId(AIDING_MEASUREMENT_TYPE, AIDING_VEL_ECEF    ), "velEcef" },
-        { TypeId(AIDING_MEASUREMENT_TYPE, AIDING_VEL_NED     ), "velNed" },
-        { TypeId(AIDING_MEASUREMENT_TYPE, AIDING_VEL_ODOM    ), "velOdom" },
-        { TypeId(AIDING_MEASUREMENT_TYPE, AIDING_HEADING_TRUE), "headingTrue" },
+        { TypeId(AIDING_MEASUREMENT_TYPE, AIDING_POS_ECEF              ), "aidingPosEcef" },
+        { TypeId(AIDING_MEASUREMENT_TYPE, AIDING_POS_LLH               ), "aidingPosLlh" },
+        { TypeId(AIDING_MEASUREMENT_TYPE, AIDING_HEIGHT_ABOVE_ELLIPSOID), "aidingHeightAboveEllipsoid" },
+        { TypeId(AIDING_MEASUREMENT_TYPE, AIDING_VEL_ECEF              ), "aidingVelEcef" },
+        { TypeId(AIDING_MEASUREMENT_TYPE, AIDING_VEL_NED               ), "aidingVelNed" },
+        { TypeId(AIDING_MEASUREMENT_TYPE, AIDING_VEL_VEHICLE_RELATIVE  ), "aidingVelVehicleRelative" },
+        { TypeId(AIDING_MEASUREMENT_TYPE, AIDING_HEADING_TRUE          ), "aidingHeadingTrue" },
+        { TypeId(AIDING_MEASUREMENT_TYPE, AIDING_MAGNETIC_FIELD        ), "aidingMagField" },
+        { TypeId(AIDING_MEASUREMENT_TYPE, AIDING_PRESSURE              ), "aidingPressure" },
 
         { TypeId(GNSS_CONSTELLATION, GPS),     "gps" },
         { TypeId(GNSS_CONSTELLATION, GLONASS), "glonass" },
@@ -1164,7 +1167,7 @@ namespace mscl
         values.push_back(Value::UINT8(0x01)); // reserved
         values.push_back(Value::UINT64(m_timestamp.nanoseconds()));
 
-        values.push_back(Value::UINT8(m_sensorId));
+        values.push_back(Value::UINT8(m_frameId));
 
         appendMipFieldValues(values);
 
@@ -1176,7 +1179,7 @@ namespace mscl
     void AidingMeasurementInput::parseMipFieldValues(const MipFieldValues& values)
     {
         m_timestamp = Timestamp(values[2].as_uint64(), static_cast<Timestamp::Epoch>(values[0].as_uint8()));
-        m_sensorId = values[3].as_uint8();
+        m_frameId = values[3].as_uint8();
 
         m_validFlags = Bitfield(values[values.size() - 1].as_uint16());
     }
@@ -1217,6 +1220,28 @@ namespace mscl
         values.push_back(Value::FLOAT(m_unc.x()));
         values.push_back(Value::FLOAT(m_unc.y()));
         values.push_back(Value::FLOAT(m_unc.z()));
+    }
+
+    AidingMeasurementHeight::AidingMeasurementHeight(const MipFieldValues& values) :
+        AidingMeasurementInput(),
+        m_reference(AidingMeasurementHeight::Reference::HEIGHT_ABOVE_ELLIPSOID)
+    {
+        parseMipFieldValues(values);
+    }
+
+    void AidingMeasurementHeight::parseMipFieldValues(const MipFieldValues& values)
+    {
+        // parse out base values (timestamp, sensor id, valid flags)
+        AidingMeasurementInput::parseMipFieldValues(values);
+
+        m_height = values[4].as_float();
+        m_unc = values[5].as_float();
+    }
+
+    void AidingMeasurementHeight::appendMipFieldValues(MipFieldValues& values) const
+    {
+        values.push_back(Value::FLOAT(m_height));
+        values.push_back(Value::FLOAT(m_unc));
     }
 
     AidingMeasurementVelocity::AidingMeasurementVelocity(PositionVelocityReferenceFrame referenceFrame, const MipFieldValues& values) :
@@ -1263,6 +1288,27 @@ namespace mscl
         parseMipFieldValues(values);
     }
 
+    AidingMeasurementMagneticField::AidingMeasurementMagneticField(const MipFieldValues& values) :
+        AidingMeasurementInput()
+    {
+        parseMipFieldValues(values);
+    }
+
+    void AidingMeasurementMagneticField::parseMipFieldValues(const MipFieldValues& values)
+    {
+        // parse out base values (timestamp, sensor id, valid flags)
+        AidingMeasurementInput::parseMipFieldValues(values);
+
+        m_magField.fromMipFieldValues(values, 4);
+        m_unc.fromMipFieldValues(values, 7);
+    }
+
+    void AidingMeasurementMagneticField::appendMipFieldValues(MipFieldValues& values) const
+    {
+        m_magField.appendMipFieldValues(values);
+        m_unc.appendMipFieldValues(values);
+    }
+
     void AidingMeasurementHeading::parseMipFieldValues(const MipFieldValues& values)
     {
         // parse out base values (timestamp, sensor id, valid flags)
@@ -1275,6 +1321,27 @@ namespace mscl
     void AidingMeasurementHeading::appendMipFieldValues(MipFieldValues& values) const
     {
         values.push_back(Value::FLOAT(m_heading));
+        values.push_back(Value::FLOAT(m_unc));
+    }
+
+    AidingMeasurementPressure::AidingMeasurementPressure(const MipFieldValues& values) :
+        AidingMeasurementInput()
+    {
+        parseMipFieldValues(values);
+    }
+
+    void AidingMeasurementPressure::parseMipFieldValues(const MipFieldValues& values)
+    {
+        // parse out base values (timestamp, sensor id, valid flags)
+        AidingMeasurementInput::parseMipFieldValues(values);
+
+        m_pressure = values[4].as_float();
+        m_unc = values[5].as_float();
+    }
+
+    void AidingMeasurementPressure::appendMipFieldValues(MipFieldValues& values) const
+    {
+        values.push_back(Value::FLOAT(m_pressure));
         values.push_back(Value::FLOAT(m_unc));
     }
 

@@ -2462,22 +2462,28 @@ namespace mscl
         //  Send a commanded aiding measurement to the device (command set 0x13).
         //
         //Parameters:
-        //  measurement - <AidingMeasurementPosition>, <AidingMeasurementVelocity>, or <AidingMeasurementHeading> to send to the device.
+        //  measurement - any <AidingMeasurementInput> to send to the device.
         void sendAidingMeasurement(AidingMeasurementPosition measurement) const;
+        void sendAidingMeasurement(AidingMeasurementHeight measurement) const;
         void sendAidingMeasurement(AidingMeasurementVelocity measurement) const;
         void sendAidingMeasurement(AidingMeasurementHeading measurement) const;
+        void sendAidingMeasurement(AidingMeasurementMagneticField measurement) const;
+        void sendAidingMeasurement(AidingMeasurementPressure measurement) const;
 
         //API Function: sendAidingMeasurement_readEcho
         //  Send a commanded aiding measurement to the device (command set 0x13) and read out the echoed measurement.
         //  Important: only use this function if the Aiding Measurement Response Mode is set to <AidingMeasurementInput::ResponseMode::ECHO_INPUT> - otherwise use sendAidingMeasurement().
         //
         //Parameters:
-        //  measurement - <AidingMeasurementPosition>, <AidingMeasurementVelocity>, or <AidingMeasurementHeading> to send to the device.
+        //  measurement - any <AidingMeasurementInput> to send to the device.
         //
         //Returns:
         //  The aiding measurement echo read from the device response (<AidingMeasurementPosition>, <AidingMeasurementVelocity>, or <AidingMeasurementHeading>)
-        AidingMeasurementPosition sendAidingMeasurement_readEcho(AidingMeasurementPosition positionUpdate) const;
-        AidingMeasurementVelocity sendAidingMeasurement_readEcho(AidingMeasurementVelocity velocityUpdate) const;
-        AidingMeasurementHeading sendAidingMeasurement_readEcho(AidingMeasurementHeading headingUpdate) const;
+        AidingMeasurementPosition sendAidingMeasurement_readEcho(AidingMeasurementPosition measurement) const;
+        AidingMeasurementHeight sendAidingMeasurement_readEcho(AidingMeasurementHeight measurement) const;
+        AidingMeasurementVelocity sendAidingMeasurement_readEcho(AidingMeasurementVelocity measurement) const;
+        AidingMeasurementHeading sendAidingMeasurement_readEcho(AidingMeasurementHeading measurement) const;
+        AidingMeasurementMagneticField sendAidingMeasurement_readEcho(AidingMeasurementMagneticField measurement) const;
+        AidingMeasurementPressure sendAidingMeasurement_readEcho(AidingMeasurementPressure measurement) const;
     };
 }

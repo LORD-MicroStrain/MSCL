@@ -105,17 +105,13 @@ namespace mscl
         // 0x13
         case MipTypes::CMD_AIDING_POS_ECEF:
         case MipTypes::CMD_AIDING_POS_LLH:
-        case MipTypes::CMD_AIDING_POS_LOCAL:
-        case MipTypes::CMD_AIDING_HEIGHT_ABS:
-        case MipTypes::CMD_AIDING_HEIGHT_REL:
+        case MipTypes::CMD_AIDING_HEIGHT_ABOVE_ELLIPSOID:
         case MipTypes::CMD_AIDING_VEL_ECEF:
         case MipTypes::CMD_AIDING_VEL_NED:
-        case MipTypes::CMD_AIDING_VEL_ODOM:
-        case MipTypes::CMD_AIDING_WHEELSPEED:
+        case MipTypes::CMD_AIDING_VEL_VEHICLE_RELATIVE:
         case MipTypes::CMD_AIDING_HEADING_TRUE:
-        case MipTypes::CMD_AIDING_DELTA_POSITION:
-        case MipTypes::CMD_AIDING_DELTA_ATTITUDE:
-        case MipTypes::CMD_AIDING_ANGULAR_RATE_LOCAL:
+        case MipTypes::CMD_AIDING_MAGNETIC_FIELD:
+        case MipTypes::CMD_AIDING_PRESSURE:
             return {};
 
         /****   Read, Write     ****/
@@ -161,7 +157,6 @@ namespace mscl
         case MipTypes::CMD_GNSS_RTK_CONFIG:
         // 0x13
         case MipTypes::CMD_AIDING_FRAME_CONFIG:
-        case MipTypes::CMD_AIDING_SENSOR_FRAME_MAP:
         case MipTypes::CMD_AIDING_ECHO_CONTROL:
             return {
                 MipTypes::FunctionSelector::USE_NEW_SETTINGS,
@@ -218,7 +213,6 @@ namespace mscl
         case MipTypes::CMD_EF_LEVER_ARM_OFFSET_REF:
             //0x13
         case MipTypes::CMD_AIDING_FRAME_CONFIG:
-        case MipTypes::CMD_AIDING_SENSOR_FRAME_MAP:
             // check that the identifier is echoed back in the response
             matchData.emplace(0, m_data[0]);
             break;
@@ -226,19 +220,15 @@ namespace mscl
             // 0x13
         case MipTypes::CMD_AIDING_POS_ECEF:
         case MipTypes::CMD_AIDING_POS_LLH:
-        case MipTypes::CMD_AIDING_POS_LOCAL:
-        case MipTypes::CMD_AIDING_HEIGHT_ABS:
-        case MipTypes::CMD_AIDING_HEIGHT_REL:
+        case MipTypes::CMD_AIDING_HEIGHT_ABOVE_ELLIPSOID:
         case MipTypes::CMD_AIDING_VEL_ECEF:
         case MipTypes::CMD_AIDING_VEL_NED:
-        case MipTypes::CMD_AIDING_VEL_ODOM:
-        case MipTypes::CMD_AIDING_WHEELSPEED:
+        case MipTypes::CMD_AIDING_VEL_VEHICLE_RELATIVE:
         case MipTypes::CMD_AIDING_HEADING_TRUE:
-        case MipTypes::CMD_AIDING_DELTA_POSITION:
-        case MipTypes::CMD_AIDING_DELTA_ATTITUDE:
-        case MipTypes::CMD_AIDING_ANGULAR_RATE_LOCAL:
-            // check that the sensor id is echoed back in the response
-            matchData.emplace(3, m_data[3]);
+        case MipTypes::CMD_AIDING_MAGNETIC_FIELD:
+        case MipTypes::CMD_AIDING_PRESSURE:
+            // check that the frame id is echoed back in the response
+            matchData.emplace(10, m_data[3]);
             break;
 
         default:
@@ -337,36 +327,26 @@ namespace mscl
         // 0x13
         case MipTypes::CMD_AIDING_FRAME_CONFIG:
             return "AidingMeasurementReferenceFrameConfig";
-        case MipTypes::CMD_AIDING_SENSOR_FRAME_MAP:
-            return "AidingMeasurementSensorFrameMap";
         case MipTypes::CMD_AIDING_ECHO_CONTROL:
             return "AidingMeasurementEchoControl";
         case MipTypes::CMD_AIDING_POS_ECEF:
             return "AidingMeasurementEcefPosition";
         case MipTypes::CMD_AIDING_POS_LLH:
             return "AidingMeasurementLlhPosition";
-        case MipTypes::CMD_AIDING_POS_LOCAL:
-            return "AidingMeasurementLocalPosition";
-        case MipTypes::CMD_AIDING_HEIGHT_ABS:
-            return "AidingMeasurementAbsoluteHeight";
-        case MipTypes::CMD_AIDING_HEIGHT_REL:
-            return "AidingMeasurementRelativeHeight";
+        case MipTypes::CMD_AIDING_HEIGHT_ABOVE_ELLIPSOID:
+            return "AidingMeasurementHeightAboveEllipsoid";
         case MipTypes::CMD_AIDING_VEL_ECEF:
             return "AidingMeasurementEcefVelocity";
         case MipTypes::CMD_AIDING_VEL_NED:
             return "AidingMeasurementNedVelocity";
-        case MipTypes::CMD_AIDING_VEL_ODOM:
-            return "AidingMeasurementOdomVelocity";
-        case MipTypes::CMD_AIDING_WHEELSPEED:
-            return "AidingMeasurementWheelspeed";
+        case MipTypes::CMD_AIDING_VEL_VEHICLE_RELATIVE:
+            return "AidingMeasurementVehicelFrameVelocity";
         case MipTypes::CMD_AIDING_HEADING_TRUE:
             return "AidingMeasurementTrueHeading";
-        case MipTypes::CMD_AIDING_DELTA_POSITION:
-            return "AidingMeasurementDeltaPosition";
-        case MipTypes::CMD_AIDING_DELTA_ATTITUDE:
-            return "AidingMeasurementDeltaAttitude";
-        case MipTypes::CMD_AIDING_ANGULAR_RATE_LOCAL:
-            return "AidingMeasurementLocalAngularRate";
+        case MipTypes::CMD_AIDING_MAGNETIC_FIELD:
+            return "AidingMeasurementMagneticField";
+        case MipTypes::CMD_AIDING_PRESSURE:
+            return "AidingMeasurementPressure";
 
         default:
             return "";
@@ -636,11 +616,6 @@ namespace mscl
                 ValueType::valueType_float,
                 ValueType::valueType_Vector, // rotation (ve3 for euler, vec4 for quat)
             };
-        case MipTypes::CMD_AIDING_SENSOR_FRAME_MAP:
-            return{
-                ValueType::valueType_uint8, // sensor id
-                ValueType::valueType_uint8  // frame id
-            };
         case MipTypes::CMD_AIDING_ECHO_CONTROL:
             return{
                 ValueType::valueType_uint8
@@ -653,7 +628,7 @@ namespace mscl
                 ValueType::valueType_uint8,     // reserved
                 ValueType::valueType_uint64,    // nanoseconds since timebase epoch
 
-                ValueType::valueType_uint8,     // sensor id
+                ValueType::valueType_uint8,     // frame id
 
                 ValueType::valueType_double,    // pos
                 ValueType::valueType_double,
@@ -664,17 +639,29 @@ namespace mscl
 
                 ValueType::valueType_uint16,    // valid flags
             };
-        //case MipTypes::CMD_AIDING_HEIGHT_ABS: return{};
-        //case MipTypes::CMD_AIDING_HEIGHT_REL: return{};
-        case MipTypes::CMD_AIDING_VEL_ECEF:
-        case MipTypes::CMD_AIDING_VEL_NED:
-        case MipTypes::CMD_AIDING_VEL_ODOM:
+        case MipTypes::CMD_AIDING_HEIGHT_ABOVE_ELLIPSOID:
             return{
                 ValueType::valueType_uint8,     // timebase
                 ValueType::valueType_uint8,     // reserved
                 ValueType::valueType_uint64,    // nanoseconds since timebase epoch
 
-                ValueType::valueType_uint8,     // sensor id
+                ValueType::valueType_uint8,     // frame id
+
+                ValueType::valueType_float,     // height
+                ValueType::valueType_float,     // unc
+
+                ValueType::valueType_uint16,    // valid flags
+            };
+        //case MipTypes::CMD_AIDING_HEIGHT_REL: return{};
+        case MipTypes::CMD_AIDING_VEL_ECEF:
+        case MipTypes::CMD_AIDING_VEL_NED:
+        case MipTypes::CMD_AIDING_VEL_VEHICLE_RELATIVE:
+            return{
+                ValueType::valueType_uint8,     // timebase
+                ValueType::valueType_uint8,     // reserved
+                ValueType::valueType_uint64,    // nanoseconds since timebase epoch
+
+                ValueType::valueType_uint8,     // frame id
 
                 ValueType::valueType_float,     // vel
                 ValueType::valueType_float,
@@ -692,9 +679,39 @@ namespace mscl
                 ValueType::valueType_uint8,     // reserved
                 ValueType::valueType_uint64,    // nanoseconds since timebase epoch
 
-                ValueType::valueType_uint8,     // sensor id
+                ValueType::valueType_uint8,     // frame id
 
                 ValueType::valueType_float,     // heading
+                ValueType::valueType_float,     // unc
+
+                ValueType::valueType_uint16,    // valid flags
+            };
+        case MipTypes::CMD_AIDING_MAGNETIC_FIELD:
+            return{
+                ValueType::valueType_uint8,     // timebase
+                ValueType::valueType_uint8,     // reserved
+                ValueType::valueType_uint64,    // nanoseconds since timebase epoch
+
+                ValueType::valueType_uint8,     // frame id
+
+                ValueType::valueType_float,     // mag field
+                ValueType::valueType_float,
+                ValueType::valueType_float,
+                ValueType::valueType_float,     // unc
+                ValueType::valueType_float,
+                ValueType::valueType_float,
+
+                ValueType::valueType_uint16,    // valid flags
+            };
+        case MipTypes::CMD_AIDING_PRESSURE:
+            return{
+                ValueType::valueType_uint8,     // timebase
+                ValueType::valueType_uint8,     // reserved
+                ValueType::valueType_uint64,    // nanoseconds since timebase epoch
+
+                ValueType::valueType_uint8,     // frame id
+
+                ValueType::valueType_float,     // pressure
                 ValueType::valueType_float,     // unc
 
                 ValueType::valueType_uint16,    // valid flags

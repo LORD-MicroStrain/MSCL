@@ -10,24 +10,50 @@
 
 namespace mscl
 {
+    Vec3f::Vec3f(float x, float y, float z) :
+        vec_0(x),
+        vec_1(y),
+        vec_2(z)
+    { }
+
+    void Vec3f::fromMipFieldValues(const MipFieldValues& data, uint8 offset)
+    {
+        uint8 index = offset;
+
+        vec_0 = data[index].as_float();
+        vec_1 = data[++index].as_float();
+        vec_2 = data[++index].as_float();
+    }
+
+    MipFieldValues Vec3f::asMipFieldValues() const
+    {
+        MipFieldValues m;
+        appendMipFieldValues(m);
+
+        return m;
+    }
+
+    void Vec3f::appendMipFieldValues(MipFieldValues& appendTo) const
+    {
+        appendTo.push_back(Value::FLOAT(vec_0));
+        appendTo.push_back(Value::FLOAT(vec_1));
+        appendTo.push_back(Value::FLOAT(vec_2));
+    }
+
     GeometricVector::GeometricVector(float x_init, float y_init, float z_init, PositionVelocityReferenceFrame ref) :
-        vec_0(x_init),
-        vec_1(y_init),
-        vec_2(z_init),
+        Vec3f(x_init, y_init, z_init),
         referenceFrame(ref)
     { }
 
     GeometricVector::GeometricVector() :
-        vec_0(0),
-        vec_1(0),
-        vec_2(0),
+        Vec3f(),
         referenceFrame(PositionVelocityReferenceFrame::ECEF)
     { }
 
     GeometricVector::~GeometricVector()
     { }
 
-    void GeometricVector::fromMipFieldValues(const MipFieldValues& data, uint8 offset, bool includesFrame)
+    void GeometricVector::fromMipFieldValues(const MipFieldValues& data, bool includesFrame, uint8 offset)
     {
         uint8 index = offset;
         if (includesFrame)
@@ -36,9 +62,7 @@ namespace mscl
             index++;
         }
 
-        vec_0 = data[index].as_float();
-        vec_1 = data[++index].as_float();
-        vec_2 = data[++index].as_float();
+        Vec3f::fromMipFieldValues(data, index);
     }
 
     MipFieldValues GeometricVector::asMipFieldValues(bool includeFrame) const
@@ -56,8 +80,6 @@ namespace mscl
             appendTo.push_back(Value::UINT8(static_cast<uint8>(referenceFrame)));
         }
 
-        appendTo.push_back(Value::FLOAT(vec_0));
-        appendTo.push_back(Value::FLOAT(vec_1));
-        appendTo.push_back(Value::FLOAT(vec_2));
+        Vec3f::appendMipFieldValues(appendTo);
     }
 }

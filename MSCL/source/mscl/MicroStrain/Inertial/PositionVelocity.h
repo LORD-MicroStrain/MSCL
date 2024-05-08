@@ -12,6 +12,49 @@ namespace mscl
 {
     typedef std::vector<Value> MipFieldValues;
 
+    class Vec3f
+    {
+    protected:
+        //API Variable: vec_0, _1, _2
+        //  The vector values.
+        float vec_0, vec_1, vec_2;
+
+    public:
+        //API Constructor: Vec3f
+        //    Creates a Vec3f object.
+        //
+        //Parameters:
+        //    x - initial x coordinate
+        //    y - initial y coordinate
+        //    z - initial z coordinate
+        Vec3f(float x, float y, float z);
+
+        //API Constructor: Vec3f
+        //    Creates a zero-filled Vec3f object.
+        Vec3f() {};
+
+        //API Destructor: ~Vec3f
+        ~Vec3f() {};
+
+    public:
+        void fromMipFieldValues(const MipFieldValues& data, uint8 offset = 0);
+        MipFieldValues asMipFieldValues() const;
+        void appendMipFieldValues(MipFieldValues& appendTo) const;
+
+    public:
+        //API Function: x
+        float x() const { return vec_0; }
+        void x(float x) { vec_0 = x; };
+
+        //API Function: y
+        float y() const { return vec_1; }
+        void y(float y) { vec_1 = y; };
+
+        //API Function: z
+        float z() const { return vec_2; }
+        void z(float z) { vec_2 = z; };
+    };
+
     //API Enum: PositionVelocityReferenceFrame
     //    Enum representing position and velocity reference frame options.
     //
@@ -29,7 +72,7 @@ namespace mscl
 
     //API Class: GeometricVector
     //    Defines a 3 dimensional, spatial vector.
-    class GeometricVector
+    class GeometricVector : public Vec3f
     {
     public:
         //API Function: VectorECEF
@@ -70,30 +113,15 @@ namespace mscl
         ~GeometricVector();
 
     public:
-        void fromMipFieldValues(const MipFieldValues& data, uint8 offset = 0, bool includesFrame = false);
-        MipFieldValues asMipFieldValues(bool includeFrame = false) const;
-        void appendMipFieldValues(MipFieldValues& appendTo, bool includeFrame = false) const;
+        void fromMipFieldValues(const MipFieldValues& data, bool includesFrame, uint8 offset = 0);
+        MipFieldValues asMipFieldValues(bool includeFrame) const;
+        void appendMipFieldValues(MipFieldValues& appendTo, bool includeFrame) const;
 
     public:
         //API Variable: referenceFrame
         //    The <PositionVelocityReferenceFrame> of this vector.
         //    Default: ECEF
         PositionVelocityReferenceFrame referenceFrame;
-
-        //API Function: x
-        // Only valid if referenceFrame is ECEF
-        float x() const { return vec_0; }
-        void x(float x) { vec_0 = x; };
-
-        //API Function: y
-        // Only valid if referenceFrame is ECEF
-        float y() const { return vec_1; }
-        void y(float y) { vec_1 = y; };
-
-        //API Function: z
-        // Only valid if referenceFrame is ECEF
-        float z() const { return vec_2; }
-        void z(float z) { vec_2 = z; };
 
         //API Function: north
         // Only valid if referenceFrame is LLH_NED
@@ -109,11 +137,6 @@ namespace mscl
         // Only valid if referenceFrame is LLH_NED
         float down() const { return vec_2; }
         void down(float down) { vec_2 = down; }
-
-    private:
-        //API Variable: vec_0, _1, _2
-        //  The vector values.
-        float vec_0, vec_1, vec_2;
     };
 
     //API Class: PositionOffset

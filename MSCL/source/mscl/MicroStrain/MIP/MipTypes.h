@@ -236,16 +236,18 @@ namespace mscl
         //  CMD_AIDING_FRAME_CONFIG                     - 0x1301    - Configure Aiding Measurement Reference Frames
         //  CMD_AIDING_SENSOR_FRAME_MAP                 - 0x1302    - Map Reference Frames to Sensor Inputs
         //  CMD_AIDING_ECHO_CONTROL                     - 0x131F    - Enable/Disable Aiding Measurement Echo in Response
-        //  CMD_AIDING_POS_LOCAL                        - 0x1320    - ECEF Position Input
-        //  CMD_AIDING_POS_ECEF                         - 0x1321    - LLH Position Input
-        //  CMD_AIDING_POS_LLH                          - 0x1322    - Local Position Input
-        //  CMD_AIDING_HEIGHT_ABS                       - 0x1323    - Absolute Height Input
+        //  CMD_AIDING_POS_LOCAL                        - 0x1320    - Local Position Input
+        //  CMD_AIDING_POS_ECEF                         - 0x1321    - ECEF Position Input
+        //  CMD_AIDING_POS_LLH                          - 0x1322    - LLH Position Input
+        //  CMD_AIDING_HEIGHT_ABOVE_ELLIPSOID           - 0x1323    - Height Above Ellipsoid Input
         //  CMD_AIDING_HEIGHT_REL                       - 0x1324    - Relative Height Input
         //  CMD_AIDING_VEL_ECEF                         - 0x1328    - ECEF Velocity Input
         //  CMD_AIDING_VEL_NED                          - 0x1329    - NED Velocity Input
-        //  CMD_AIDING_VEL_ODOM                         - 0x132A    - Velocity Input (Relative to the Vehicle Frame)
+        //  CMD_AIDING_VEL_VEHICLE_RELATIVE             - 0x132A    - Velocity Input Relative to the Vehicle Frame
         //  CMD_AIDING_WHEELSPEED                       - 0x132B    - Wheel Speed Input
         //  CMD_AIDING_HEADING_TRUE                     - 0x1331    - True Heading Input
+        //  CMD_AIDING_MAGNETIC_FIELD                   - 0x1332    - Magnetic Field Input (External Magnetometer)
+        //  CMD_AIDING_PRESSURE                         - 0x1333    - External Pressure Input
         //  CMD_AIDING_DELTA_POSITION                   - 0x1338    - Delta Position Input
         //  CMD_AIDING_DELTA_ATTITUDE                   - 0x1339    - Delta Attitude Input
         //  CMD_AIDING_ANGULAR_RATE_LOCAL               - 0x133A    - Local Angular Rate Input
@@ -382,21 +384,16 @@ namespace mscl
             CMD_RTK_DEVICE_STATUS_FLAGS             = 0x0F01,
             CMD_RTK_ACTIVATION_CODE                 = 0x0F07,
             CMD_AIDING_FRAME_CONFIG                 = 0x1301,
-            CMD_AIDING_SENSOR_FRAME_MAP             = 0x1302,
             CMD_AIDING_ECHO_CONTROL                 = 0x131F,
-            CMD_AIDING_POS_LOCAL                    = 0x1320,
             CMD_AIDING_POS_ECEF                     = 0x1321,
             CMD_AIDING_POS_LLH                      = 0x1322,
-            CMD_AIDING_HEIGHT_ABS                   = 0x1323,
-            CMD_AIDING_HEIGHT_REL                   = 0x1324,
+            CMD_AIDING_HEIGHT_ABOVE_ELLIPSOID       = 0x1323,
             CMD_AIDING_VEL_ECEF                     = 0x1328,
             CMD_AIDING_VEL_NED                      = 0x1329,
-            CMD_AIDING_VEL_ODOM                     = 0x132A,
-            CMD_AIDING_WHEELSPEED                   = 0x132B,
+            CMD_AIDING_VEL_VEHICLE_RELATIVE         = 0x132A,
             CMD_AIDING_HEADING_TRUE                 = 0x1331,
-            CMD_AIDING_DELTA_POSITION               = 0x1338,
-            CMD_AIDING_DELTA_ATTITUDE               = 0x1339,
-            CMD_AIDING_ANGULAR_RATE_LOCAL           = 0x133A,
+            CMD_AIDING_MAGNETIC_FIELD               = 0x1332,
+            CMD_AIDING_PRESSURE                     = 0x1333, 
         };
 
         //====================================================================================================
@@ -1556,18 +1553,21 @@ namespace mscl
         //API Enum: AidingMeasurementTypes
         //  ID definitions when Type is <MipChannelIdentifier::AIDING_MEASUREMENT_TYPE>
         //
-        //      GNSS                    - 0x01 - GNSS
-        //      DUAL_ANTENNA            - 0x02 - Dual Antenna
-        //      HEADING                 - 0x03 - Heading
-        //      PRESSURE                - 0x04 - Pressure
-        //      MAGNETOMETER            - 0x05 - Magnetometer
-        //      SPEED                   - 0x06 - Speed
-        //      AIDING_POS_ECEF         - 0x21 - <MipTypes::Command::CMD_AIDING_POS_ECEF>
-        //      AIDING_POS_LLH          - 0x22 - <MipTypes::Command::CMD_AIDING_POS_LLH>
-        //      AIDING_VEL_ECEF         - 0x28 - <MipTypes::Command::CMD_AIDING_VEL_ECEF>
-        //      AIDING_VEL_NED          - 0x29 - <MipTypes::Command::CMD_AIDING_VEL_NED>
-        //      AIDING_VEL_ODOM         - 0x2A - <MipTypes::Command::CMD_AIDING_VEL_ODOM>
-        //      AIDING_HEADING_TRUE     - 0x31 - <MipTypes::Command::CMD_AIDING_HEADING_TRUE>
+        //      GNSS                            - 0x01 - GNSS
+        //      DUAL_ANTENNA                    - 0x02 - Dual Antenna
+        //      HEADING                         - 0x03 - Heading
+        //      PRESSURE                        - 0x04 - Pressure
+        //      MAGNETOMETER                    - 0x05 - Magnetometer
+        //      SPEED                           - 0x06 - Speed
+        //      AIDING_POS_ECEF                 - 0x21 - <MipTypes::Command::CMD_AIDING_POS_ECEF>
+        //      AIDING_POS_LLH                  - 0x22 - <MipTypes::Command::CMD_AIDING_POS_LLH>
+        //      AIDING_HEIGHT_ABOVE_ELLIPSOID   - 0x23 - <MipTypes::Command::CMD_HEIGHT_ABOVE_ELLIPSOID>
+        //      AIDING_VEL_ECEF                 - 0x28 - <MipTypes::Command::CMD_AIDING_VEL_ECEF>
+        //      AIDING_VEL_NED                  - 0x29 - <MipTypes::Command::CMD_AIDING_VEL_NED>
+        //      AIDING_VEL_VEHICLE_RELATIVE     - 0x2A - <MipTypes::Command::CMD_AIDING_VEL_VEHICLE_RELATIVE>
+        //      AIDING_HEADING_TRUE             - 0x31 - <MipTypes::Command::CMD_AIDING_HEADING_TRUE>
+        //      AIDING_MAGNETIC_FIELD           - 0x32 - <MipTypes::Command::CMD_AIDING_MAGNETIC_FIELD>
+        //      AIDING_PRESSURE                 - 0x33 - <MipTypes::Command::CMD_AIDING_PRESSURE>
         enum AidingMeasurementTypes
         {
             GNSS         = 0x01,
@@ -1577,12 +1577,15 @@ namespace mscl
             MAGNETOMETER = 0x05,
             SPEED        = 0x06,
 
-            AIDING_POS_ECEF     = 0x21,
-            AIDING_POS_LLH      = 0x22,
-            AIDING_VEL_ECEF     = 0x28,
-            AIDING_VEL_NED      = 0x29,
-            AIDING_VEL_ODOM     = 0x2A,
-            AIDING_HEADING_TRUE = 0x31,
+            AIDING_POS_ECEF                 = 0x21,
+            AIDING_POS_LLH                  = 0x22,
+            AIDING_HEIGHT_ABOVE_ELLIPSOID   = 0x23,
+            AIDING_VEL_ECEF                 = 0x28,
+            AIDING_VEL_NED                  = 0x29,
+            AIDING_VEL_VEHICLE_RELATIVE     = 0x2A,
+            AIDING_HEADING_TRUE             = 0x31,
+            AIDING_MAGNETIC_FIELD           = 0x32,
+            AIDING_PRESSURE                 = 0x33,
         };
 
         //API Enum: GnssConstellationIds
@@ -1993,9 +1996,9 @@ namespace mscl
         //  The <Timestamp> of this measurement.
         Timestamp m_timestamp;
 
-        //Variable: m_sensorId
-        //  The ID of the source sensor for this measurement.
-        uint8 m_sensorId;
+        //Variable: m_frameId
+        //  The ID of the aiding frame for this measurement.
+        uint8 m_frameId;
 
         //Variable: m_validFlags
         //  The <Bitfield> valid flags of this measurement.
@@ -2006,8 +2009,8 @@ namespace mscl
         //  Constructs an AidingMeasurementInput object with default values
         AidingMeasurementInput() :
             m_timestamp(0),
-            m_sensorId(0),
-            m_validFlags(0)
+            m_frameId(0),
+            m_validFlags(0xFFFF)
         {}
 
         //Constructor: AidingMeasurementInput
@@ -2064,19 +2067,19 @@ namespace mscl
         //  <Timestamp::Epoch> - timebase/epoch of the timestamp
         Timestamp::Epoch timebase() const { return m_timestamp.storedEpoch(); }
 
-        //API Function: sensorId
-        //  Get the data source sensor ID of this measurement.
+        //API Function: frameId
+        //  Get the aiding frame ID of this measurement.
         //
         //Returns:
-        //  uint8 - sensor ID
-        uint8 sensorId() const { return m_sensorId; }
+        //  uint8 - frame ID
+        uint8 frameId() const { return m_frameId; }
 
-        //API Function: sensorId
-        //  Set the data source sensor ID of this measurement.
+        //API Function: frameId
+        //  Set the aiding frame ID of this measurement.
         //
         //Parameters:
-        //  id - uint8 sensor ID
-        void sensorId(uint8 id) { m_sensorId = id; }
+        //  id - uint8 frame ID
+        void frameId(uint8 id) { m_frameId = id; }
 
         //API Function: validFlags
         //  Get the valid flags of this measurement.
@@ -2218,6 +2221,108 @@ namespace mscl
         //  val - <ValidFlags> value bitmask
         //  valid - bool indicating whether the value is valid
         void valid(ValidFlags val, bool valid) { m_validFlags.set(val, valid ? 1 : 0); }
+    };
+
+    //API Class: AidingMeasurementHeight
+    //  A class that represents height aiding measurement inputs. Extends <AidingMeasurementInput>.
+    class AidingMeasurementHeight : public AidingMeasurementInput
+    {
+    protected:
+        //Enum: Reference
+        //  The zero reference for the height measurement
+        //
+        //  HEIGHT_ABOVE_ELLIPSOID  - 0x1323
+        enum Reference
+        {
+            HEIGHT_ABOVE_ELLIPSOID = MipTypes::Command::CMD_AIDING_HEIGHT_ABOVE_ELLIPSOID
+        };
+
+    protected:
+        //Variable: m_reference
+        //  The height measurement reference
+        Reference m_reference;
+
+        //Variable: m_height
+        // The height measurement
+        float m_height;
+
+        //Variable: m_unc
+        // The uncertainty of the height measurement
+        float m_unc;
+
+    public:
+        //API Constructor: AidingMeasurementHeight
+        //  Constructs an AidingMeasurementHeight object with default values
+        AidingMeasurementHeight() : AidingMeasurementInput(),
+            m_reference(Reference::HEIGHT_ABOVE_ELLIPSOID)
+        {}
+
+        //API Constructor: AidingMeasurementHeight
+        //  Constructs an AidingMeasurementHeight object from the <MipFieldValues> parameter list returned from the device.
+        //
+        //Parameters:
+        //  values - the <MipFieldValues> parameter list to build this object from
+        AidingMeasurementHeight(const MipFieldValues& values);
+
+        ~AidingMeasurementHeight() {}
+
+    protected:
+        //Function: parseMipFieldValues
+        //  Populates measurement values based on the <MipFieldValues> parameter list.
+        //
+        //Parameters:
+        //  values - <MipFieldValues> parameter list
+        virtual void parseMipFieldValues(const MipFieldValues& values) override;
+
+        //Function: appendMipFieldValues
+        //  Appends the velocity measurement info to the provided <MipFieldValues> parameter list.
+        //
+        //Parameters:
+        //  values - the <MipFieldValues> parameter list to append to
+        virtual void appendMipFieldValues(MipFieldValues& values) const override;
+
+    public:
+        //API Function: height
+        //  Get the height measurement value.
+        //
+        //Returns:
+        //  float - the height measurement value
+        float height() const { return m_height; }
+
+        //API Function: height
+        //  Sets the height measurement value.
+        //
+        //Parameters:
+        //  height - float height measurement
+        void height(float height) { m_height = height; }
+
+        //API Function: uncertainty
+        //  Get the height measurement uncertainty.
+        //
+        //Returns:
+        //  float - height measurement uncertainty
+        float uncertainty() const { return m_unc; }
+
+        //API Function: uncertainty
+        //  Set the height measurement uncertainty.
+        //
+        //Parameters:
+        //  uncertainty - float measurement uncertainty
+        void uncertainty(float uncertainty) { m_unc = uncertainty; }
+
+        //API Function: valid
+        //  Check whether the height measurement is valid
+        //
+        //Returns:
+        //  bool - true if valid
+        bool valid() const { return m_validFlags.value() > 0; }
+
+        //API Function: valid
+        //  Set the validity of the height measurement.
+        //
+        //Parameters:
+        //  valid - bool, true if valid
+        void valid(bool valid) { m_validFlags.value(valid ? 1 : 0); }
     };
 
     //API Class: AidingMeasurementVelocity
@@ -2427,6 +2532,194 @@ namespace mscl
 
         //API Function: valid
         //  Set the validity of the heading measurement.
+        //
+        //Parameters:
+        //  valid - bool, true if valid
+        void valid(bool valid) { m_validFlags.value(valid ? 1 : 0); }
+    };
+
+    //API Class: AidingMeasurementMagneticField
+    //  A class that represents magnetic field aiding measurement input. Extends <AidingMeasurementInput>.
+    class AidingMeasurementMagneticField : public AidingMeasurementInput
+    {
+    public:
+        //API Enum: ValidFlags
+        //  Bitmask for each position value in the valid flags.
+        //
+        //  X           - 0x01
+        //  Y           - 0x02
+        //  Z           - 0x04
+        enum ValidFlags
+        {
+            X = 1,
+            Y = 2,
+            Z = 4,
+        };
+
+    protected:
+        //Variable: m_magField
+        // The magnetic field measurement
+        Vec3f m_magField;
+
+        //Variable: m_unc
+        // The uncertainty of the height measurement
+        Vec3f m_unc;
+
+    public:
+        //API Constructor: AidingMeasurementMagneticField
+        //  Constructs an AidingMeasurementMagneticField object with default values
+        AidingMeasurementMagneticField() : AidingMeasurementInput() {}
+
+        //API Constructor: AidingMeasurementMagneticField
+        //  Constructs an AidingMeasurementMagneticField object from the <MipFieldValues> parameter list returned from the device.
+        //
+        //Parameters:
+        //  values - the <MipFieldValues> parameter list to build this object from
+        AidingMeasurementMagneticField(const MipFieldValues& values);
+
+        ~AidingMeasurementMagneticField() {}
+
+    protected:
+        //Function: parseMipFieldValues
+        //  Populates measurement values based on the <MipFieldValues> parameter list.
+        //
+        //Parameters:
+        //  values - <MipFieldValues> parameter list
+        virtual void parseMipFieldValues(const MipFieldValues& values) override;
+
+        //Function: appendMipFieldValues
+        //  Appends the velocity measurement info to the provided <MipFieldValues> parameter list.
+        //
+        //Parameters:
+        //  values - the <MipFieldValues> parameter list to append to
+        virtual void appendMipFieldValues(MipFieldValues& values) const override;
+
+    public:
+        //API Function: magneticField
+        //  Get the magnetic field measurement.
+        //
+        //Returns:
+        //  <Vec3f> - magnetic field data of this object
+        Vec3f magneticField() const { return m_magField; }
+
+        //API Function: magneticField
+        //  Set the magneticField measurement.
+        void magneticField(Vec3f magField) { m_magField = magField; }
+
+        //API Function: uncertainty
+        //  Get the measurement uncertainty
+        //
+        //Returns:
+        //  <Vec3f> - the uncertainty of the magnetic field measurement
+        Vec3f uncertainty() const { return m_unc; }
+
+        //API Function: uncertainty
+        //  Sets the measurement uncertainty.
+        //
+        //Parameters:
+        //  uncertainty - <Vec3f> the uncertainty of the measurement
+        void uncertainty(Vec3f uncertainty) { m_unc = uncertainty; }
+
+        //API Function: valid
+        //  Checks whether the specified value is valid.
+        //
+        //Parameters:
+        //  <ValidFlags> value bitmask
+        //
+        //Returns:
+        //  bool - true if valid
+        bool valid(ValidFlags val) const { return m_validFlags.checkBit(static_cast<uint8>(val)); }
+
+        //API Function: valid
+        //  Sets the validity of the specified value.
+        //
+        //Parameters:
+        //  val - <ValidFlags> value bitmask
+        //  valid - bool indicating whether the value is valid
+        void valid(ValidFlags val, bool valid) { m_validFlags.set(val, valid ? 1 : 0); }
+    };
+
+    //API Class: AidingMeasurementPressure
+    //  A class that represents pressure aiding measurement input. Extends <AidingMeasurementInput>.
+    class AidingMeasurementPressure : public AidingMeasurementInput
+    {
+    protected:
+        //Variable: m_pressure
+        // The pressure measurement
+        float m_pressure;
+
+        //Variable: m_unc
+        // The uncertainty of the measurement
+        float m_unc;
+
+    public:
+        //API Constructor: AidingMeasurementPressure
+        //  Constructs an AidingMeasurementPressure object with default values
+        AidingMeasurementPressure() : AidingMeasurementInput()
+        {}
+
+        //API Constructor: AidingMeasurementPressure
+        //  Constructs an AidingMeasurementPressure object from the <MipFieldValues> parameter list returned from the device.
+        //
+        //Parameters:
+        //  values - the <MipFieldValues> parameter list to build this object from
+        AidingMeasurementPressure(const MipFieldValues& values);
+
+        ~AidingMeasurementPressure() {}
+
+    protected:
+        //Function: parseMipFieldValues
+        //  Populates measurement values based on the <MipFieldValues> parameter list.
+        //
+        //Parameters:
+        //  values - <MipFieldValues> parameter list
+        virtual void parseMipFieldValues(const MipFieldValues& values) override;
+
+        //Function: appendMipFieldValues
+        //  Appends the velocity measurement info to the provided <MipFieldValues> parameter list.
+        //
+        //Parameters:
+        //  values - the <MipFieldValues> parameter list to append to
+        virtual void appendMipFieldValues(MipFieldValues& values) const override;
+
+    public:
+        //API Function: pressure
+        //  Get the pressure measurement value.
+        //
+        //Returns:
+        //  float - the pressure measurement value
+        float pressure() const { return m_pressure; }
+
+        //API Function: pressure
+        //  Sets the pressure measurement value.
+        //
+        //Parameters:
+        //  pressure - float pressure measurement
+        void pressure(float pressure) { m_pressure = pressure; }
+
+        //API Function: uncertainty
+        //  Get the height measurement uncertainty.
+        //
+        //Returns:
+        //  float - height measurement uncertainty
+        float uncertainty() const { return m_unc; }
+
+        //API Function: uncertainty
+        //  Set the height measurement uncertainty.
+        //
+        //Parameters:
+        //  uncertainty - float measurement uncertainty
+        void uncertainty(float uncertainty) { m_unc = uncertainty; }
+
+        //API Function: valid
+        //  Check whether the height measurement is valid
+        //
+        //Returns:
+        //  bool - true if valid
+        bool valid() const { return m_validFlags.value() > 0; }
+
+        //API Function: valid
+        //  Set the validity of the height measurement.
         //
         //Parameters:
         //  valid - bool, true if valid

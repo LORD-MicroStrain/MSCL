@@ -3424,7 +3424,7 @@ namespace mscl
 
             appendTo.push_back(Value::BOOL(m_errorTrackingEnabled));
 
-            m_translation.appendMipFieldValues(appendTo);
+            m_translation.appendMipFieldValues(appendTo, false);
             m_rotation.appendMipFieldValues(appendTo, false);
         }
 

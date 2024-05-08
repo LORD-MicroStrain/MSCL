@@ -1408,16 +1408,16 @@ namespace mscl
         m_impl->set(MipTypes::CMD_AIDING_ECHO_CONTROL, params);
     }
 
-    void InertialNode::sendAidingMeasurement(AidingMeasurementPosition positionUpdate) const
+    void InertialNode::sendAidingMeasurement(AidingMeasurementPosition measurement) const
     {
-        switch (positionUpdate.referenceFrame())
+        switch (measurement.referenceFrame())
         {
         case PositionVelocityReferenceFrame::ECEF:
-            m_impl->run(MipTypes::CMD_AIDING_POS_ECEF, positionUpdate.toMipFieldValues());
+            m_impl->run(MipTypes::CMD_AIDING_POS_ECEF, measurement.toMipFieldValues());
             return;
 
         case PositionVelocityReferenceFrame::LLH_NED:
-            m_impl->run(MipTypes::CMD_AIDING_POS_LLH, positionUpdate.toMipFieldValues());
+            m_impl->run(MipTypes::CMD_AIDING_POS_LLH, measurement.toMipFieldValues());
             return;
 
         default:
@@ -1427,20 +1427,25 @@ namespace mscl
         throw Error_NotSupported("The specified reference frame is not supported");
     }
 
-    void InertialNode::sendAidingMeasurement(AidingMeasurementVelocity velocityUpdate) const
+    void InertialNode::sendAidingMeasurement(AidingMeasurementHeight measurement) const
     {
-        switch (velocityUpdate.referenceFrame())
+        m_impl->run(MipTypes::CMD_AIDING_HEIGHT_ABOVE_ELLIPSOID, measurement.toMipFieldValues());
+    }
+
+    void InertialNode::sendAidingMeasurement(AidingMeasurementVelocity measurement) const
+    {
+        switch (measurement.referenceFrame())
         {
         case PositionVelocityReferenceFrame::ECEF:
-            m_impl->run(MipTypes::CMD_AIDING_VEL_ECEF, velocityUpdate.toMipFieldValues());
+            m_impl->run(MipTypes::CMD_AIDING_VEL_ECEF, measurement.toMipFieldValues());
             return;
 
         case PositionVelocityReferenceFrame::LLH_NED:
-            m_impl->run(MipTypes::CMD_AIDING_VEL_NED, velocityUpdate.toMipFieldValues());
+            m_impl->run(MipTypes::CMD_AIDING_VEL_NED, measurement.toMipFieldValues());
             return;
 
         case PositionVelocityReferenceFrame::VEHICLE:
-            m_impl->run(MipTypes::CMD_AIDING_VEL_ODOM, velocityUpdate.toMipFieldValues());
+            m_impl->run(MipTypes::CMD_AIDING_VEL_VEHICLE_RELATIVE, measurement.toMipFieldValues());
             return;
 
         default:
@@ -1450,59 +1455,87 @@ namespace mscl
         throw Error_NotSupported("The specified reference frame is not supported");
     }
 
-    void InertialNode::sendAidingMeasurement(AidingMeasurementHeading headingUpdate) const
+    void InertialNode::sendAidingMeasurement(AidingMeasurementHeading measurement) const
     {
-        m_impl->run(MipTypes::CMD_AIDING_HEADING_TRUE, headingUpdate.toMipFieldValues());
+        m_impl->run(MipTypes::CMD_AIDING_HEADING_TRUE, measurement.toMipFieldValues());
     }
 
-    AidingMeasurementPosition InertialNode::sendAidingMeasurement_readEcho(AidingMeasurementPosition positionUpdate) const
+    void InertialNode::sendAidingMeasurement(AidingMeasurementMagneticField measurement) const
+    {
+        m_impl->run(MipTypes::CMD_AIDING_MAGNETIC_FIELD, measurement.toMipFieldValues());
+    }
+
+    void InertialNode::sendAidingMeasurement(AidingMeasurementPressure measurement) const
+    {
+        m_impl->run(MipTypes::CMD_AIDING_PRESSURE, measurement.toMipFieldValues());
+    }
+
+    AidingMeasurementPosition InertialNode::sendAidingMeasurement_readEcho(AidingMeasurementPosition measurement) const
     {
         MipFieldValues vals;
-        switch (positionUpdate.referenceFrame())
+        switch (measurement.referenceFrame())
         {
         case PositionVelocityReferenceFrame::ECEF:
-            vals = m_impl->get(MipTypes::CMD_AIDING_POS_ECEF, positionUpdate.toMipFieldValues());
+            vals = m_impl->get(MipTypes::CMD_AIDING_POS_ECEF, measurement.toMipFieldValues());
             break;
 
         case PositionVelocityReferenceFrame::LLH_NED:
-            vals = m_impl->get(MipTypes::CMD_AIDING_POS_LLH, positionUpdate.toMipFieldValues());
+            vals = m_impl->get(MipTypes::CMD_AIDING_POS_LLH, measurement.toMipFieldValues());
             break;
 
         default:
             throw Error_NotSupported("The specified reference frame is not supported");
         }
 
-        return AidingMeasurementPosition(positionUpdate.referenceFrame(), vals);
+        return AidingMeasurementPosition(measurement.referenceFrame(), vals);
     }
 
-    AidingMeasurementVelocity InertialNode::sendAidingMeasurement_readEcho(AidingMeasurementVelocity velocityUpdate) const
+    AidingMeasurementHeight InertialNode::sendAidingMeasurement_readEcho(AidingMeasurementHeight measurement) const
+    {
+        MipFieldValues vals = m_impl->get(MipTypes::CMD_AIDING_HEIGHT_ABOVE_ELLIPSOID, measurement.toMipFieldValues());
+        return AidingMeasurementHeight(vals);
+    }
+
+    AidingMeasurementVelocity InertialNode::sendAidingMeasurement_readEcho(AidingMeasurementVelocity measurement) const
     {
         MipFieldValues vals;
 
-        switch (velocityUpdate.referenceFrame())
+        switch (measurement.referenceFrame())
         {
         case PositionVelocityReferenceFrame::ECEF:
-            vals = m_impl->get(MipTypes::CMD_AIDING_VEL_ECEF, velocityUpdate.toMipFieldValues());
+            vals = m_impl->get(MipTypes::CMD_AIDING_VEL_ECEF, measurement.toMipFieldValues());
             break;
 
         case PositionVelocityReferenceFrame::LLH_NED:
-            vals = m_impl->get(MipTypes::CMD_AIDING_VEL_NED, velocityUpdate.toMipFieldValues());
+            vals = m_impl->get(MipTypes::CMD_AIDING_VEL_NED, measurement.toMipFieldValues());
             break;
 
         case PositionVelocityReferenceFrame::VEHICLE:
-            vals = m_impl->get(MipTypes::CMD_AIDING_VEL_ODOM, velocityUpdate.toMipFieldValues());
+            vals = m_impl->get(MipTypes::CMD_AIDING_VEL_VEHICLE_RELATIVE, measurement.toMipFieldValues());
             break;
 
         default:
             throw Error_NotSupported("The specified reference frame is not supported");
         }
 
-        return AidingMeasurementVelocity(velocityUpdate.referenceFrame(), vals);
+        return AidingMeasurementVelocity(measurement.referenceFrame(), vals);
     }
 
-    AidingMeasurementHeading InertialNode::sendAidingMeasurement_readEcho(AidingMeasurementHeading headingUpdate) const
+    AidingMeasurementHeading InertialNode::sendAidingMeasurement_readEcho(AidingMeasurementHeading measurement) const
     {
-        MipFieldValues vals = m_impl->get(MipTypes::CMD_AIDING_HEADING_TRUE, headingUpdate.toMipFieldValues());
+        MipFieldValues vals = m_impl->get(MipTypes::CMD_AIDING_HEADING_TRUE, measurement.toMipFieldValues());
         return AidingMeasurementHeading(vals);
+    }
+
+    AidingMeasurementMagneticField InertialNode::sendAidingMeasurement_readEcho(AidingMeasurementMagneticField measurement) const
+    {
+        MipFieldValues vals = m_impl->get(MipTypes::CMD_AIDING_MAGNETIC_FIELD, measurement.toMipFieldValues());
+        return AidingMeasurementMagneticField(vals);
+    }
+
+    AidingMeasurementPressure InertialNode::sendAidingMeasurement_readEcho(AidingMeasurementPressure measurement) const
+    {
+        MipFieldValues vals = m_impl->get(MipTypes::CMD_AIDING_PRESSURE, measurement.toMipFieldValues());
+        return AidingMeasurementPressure(vals);
     }
 }
