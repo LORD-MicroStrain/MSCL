@@ -113,9 +113,9 @@ namespace mscl
         ~GeometricVector();
 
     public:
-        void fromMipFieldValues(const MipFieldValues& data, bool includesFrame, uint8 offset = 0);
-        MipFieldValues asMipFieldValues(bool includeFrame) const;
-        void appendMipFieldValues(MipFieldValues& appendTo, bool includeFrame) const;
+        void fromMipFieldValues_includesFrame(const MipFieldValues& data, uint8 offset = 0);
+        MipFieldValues asMipFieldValues_includeFrame() const;
+        void appendMipFieldValues_includeFrame(MipFieldValues& appendTo) const;
 
     public:
         //API Variable: referenceFrame
@@ -184,6 +184,15 @@ namespace mscl
         //    east - initial y coordinate
         //    down - initial z coordinate
         static Velocity NED(float north, float east, float down) { return Velocity(north, east, down, PositionVelocityReferenceFrame::LLH_NED); }
+
+        //API Function: VEHICLE
+        //    Creates a Velocity vector with the reference frame set to Vehicle
+        //
+        //Parameters:
+        //    x - initial x coordinate
+        //    y - initial y coordinate
+        //    z - initial z coordinate
+        static Velocity NED(float x, float y, float z) { return Velocity(x, y, z, PositionVelocityReferenceFrame::VEHICLE); }
     };
 
     //API Typedef: GeometricVectors
