@@ -185,14 +185,14 @@ namespace mscl
         //    down - initial z coordinate
         static Velocity NED(float north, float east, float down) { return Velocity(north, east, down, PositionVelocityReferenceFrame::LLH_NED); }
 
-        //API Function: VEHICLE
+        //API Function: Vehicle
         //    Creates a Velocity vector with the reference frame set to Vehicle
         //
         //Parameters:
         //    x - initial x coordinate
         //    y - initial y coordinate
         //    z - initial z coordinate
-        static Velocity NED(float x, float y, float z) { return Velocity(x, y, z, PositionVelocityReferenceFrame::VEHICLE); }
+        static Velocity Vehicle(float x, float y, float z) { return Velocity(x, y, z, PositionVelocityReferenceFrame::VEHICLE); }
     };
 
     //API Typedef: GeometricVectors
