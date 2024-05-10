@@ -504,7 +504,7 @@ namespace mscl
         //      EXTERNAL_HEADING_AIDING         - 0x0005
         //      EXTERNAL_ALTIMETER_AIDING       - 0x0006
         //      EXTERNAL_MAGNETOMETER_AIDING    - 0x0007
-        //      VEHICLE_FRAME_VEL_AIDING        - 0x0008
+        //      BODY_FRAME_VEL_AIDING           - 0x0008
         //      ALL_AIDING_MEASUREMENTS         - 0xFFFF
         enum AidingMeasurementSource
         {
@@ -516,7 +516,7 @@ namespace mscl
             EXTERNAL_HEADING_AIDING = 0x0005,
             EXTERNAL_ALTIMETER_AIDING = 0x0006,
             EXTERNAL_MAGNETOMETER_AIDING = 0x0007,
-            VEHICLE_FRAME_VEL_AIDING = 0x0008,
+            BODY_FRAME_VEL_AIDING = 0x0008,
             ALL_AIDING_MEASUREMENTS = 0xFFFF
         };
 

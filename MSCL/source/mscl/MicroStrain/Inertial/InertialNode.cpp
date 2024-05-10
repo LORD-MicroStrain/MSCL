@@ -1445,7 +1445,7 @@ namespace mscl
             return;
 
         case PositionVelocityReferenceFrame::VEHICLE:
-            m_impl->run(MipTypes::CMD_AIDING_VEL_VEHICLE_RELATIVE, measurement.toMipFieldValues());
+            m_impl->run(MipTypes::CMD_AIDING_VEL_BODY_FRAME, measurement.toMipFieldValues());
             return;
 
         default:
@@ -1511,7 +1511,7 @@ namespace mscl
             break;
 
         case PositionVelocityReferenceFrame::VEHICLE:
-            vals = m_impl->get(MipTypes::CMD_AIDING_VEL_VEHICLE_RELATIVE, measurement.toMipFieldValues());
+            vals = m_impl->get(MipTypes::CMD_AIDING_VEL_BODY_FRAME, measurement.toMipFieldValues());
             break;
 
         default:

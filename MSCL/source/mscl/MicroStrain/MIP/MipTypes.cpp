@@ -1004,7 +1004,7 @@ namespace mscl
         { TypeId(AIDING_MEASUREMENT_TYPE, AIDING_HEIGHT_ABOVE_ELLIPSOID), "aidingHeightAboveEllipsoid" },
         { TypeId(AIDING_MEASUREMENT_TYPE, AIDING_VEL_ECEF              ), "aidingVelEcef" },
         { TypeId(AIDING_MEASUREMENT_TYPE, AIDING_VEL_NED               ), "aidingVelNed" },
-        { TypeId(AIDING_MEASUREMENT_TYPE, AIDING_VEL_VEHICLE_RELATIVE  ), "aidingVelVehicleRelative" },
+        { TypeId(AIDING_MEASUREMENT_TYPE, AIDING_VEL_BODY_FRAME        ), "aidingVelBodyFrame" },
         { TypeId(AIDING_MEASUREMENT_TYPE, AIDING_HEADING_TRUE          ), "aidingHeadingTrue" },
         { TypeId(AIDING_MEASUREMENT_TYPE, AIDING_MAGNETIC_FIELD        ), "aidingMagField" },
         { TypeId(AIDING_MEASUREMENT_TYPE, AIDING_PRESSURE              ), "aidingPressure" },

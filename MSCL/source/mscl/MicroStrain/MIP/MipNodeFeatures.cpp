@@ -657,7 +657,7 @@ namespace mscl
                     InertialTypes::AidingMeasurementSource::EXTERNAL_HEADING_AIDING,
                     InertialTypes::AidingMeasurementSource::EXTERNAL_ALTIMETER_AIDING,
                     InertialTypes::AidingMeasurementSource::EXTERNAL_MAGNETOMETER_AIDING,
-                    InertialTypes::AidingMeasurementSource::VEHICLE_FRAME_VEL_AIDING
+                    InertialTypes::AidingMeasurementSource::BODY_FRAME_VEL_AIDING
                 };
 
             case MipModels::node_3dm_gq7:
@@ -680,7 +680,7 @@ namespace mscl
                     InertialTypes::AidingMeasurementSource::EXTERNAL_HEADING_AIDING,
                     InertialTypes::AidingMeasurementSource::EXTERNAL_ALTIMETER_AIDING,
                     InertialTypes::AidingMeasurementSource::EXTERNAL_MAGNETOMETER_AIDING,
-                    InertialTypes::AidingMeasurementSource::VEHICLE_FRAME_VEL_AIDING
+                    InertialTypes::AidingMeasurementSource::BODY_FRAME_VEL_AIDING
                 };
         }
     }

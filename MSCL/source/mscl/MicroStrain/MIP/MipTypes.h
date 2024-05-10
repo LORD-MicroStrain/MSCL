@@ -243,7 +243,7 @@ namespace mscl
         //  CMD_AIDING_HEIGHT_REL                       - 0x1324    - Relative Height Input
         //  CMD_AIDING_VEL_ECEF                         - 0x1328    - ECEF Velocity Input
         //  CMD_AIDING_VEL_NED                          - 0x1329    - NED Velocity Input
-        //  CMD_AIDING_VEL_VEHICLE_RELATIVE             - 0x132A    - Velocity Input Relative to the Vehicle Frame
+        //  CMD_AIDING_VEL_BODY_FRAME                   - 0x132A    - Velocity Input Relative to the Body/Vehicle Frame
         //  CMD_AIDING_WHEELSPEED                       - 0x132B    - Wheel Speed Input
         //  CMD_AIDING_HEADING_TRUE                     - 0x1331    - True Heading Input
         //  CMD_AIDING_MAGNETIC_FIELD                   - 0x1332    - Magnetic Field Input (External Magnetometer)
@@ -390,7 +390,7 @@ namespace mscl
             CMD_AIDING_HEIGHT_ABOVE_ELLIPSOID       = 0x1323,
             CMD_AIDING_VEL_ECEF                     = 0x1328,
             CMD_AIDING_VEL_NED                      = 0x1329,
-            CMD_AIDING_VEL_VEHICLE_RELATIVE         = 0x132A,
+            CMD_AIDING_VEL_BODY_FRAME               = 0x132A,
             CMD_AIDING_HEADING_TRUE                 = 0x1331,
             CMD_AIDING_MAGNETIC_FIELD               = 0x1332,
             CMD_AIDING_PRESSURE                     = 0x1333, 
@@ -1564,7 +1564,7 @@ namespace mscl
         //      AIDING_HEIGHT_ABOVE_ELLIPSOID   - 0x23 - <MipTypes::Command::CMD_HEIGHT_ABOVE_ELLIPSOID>
         //      AIDING_VEL_ECEF                 - 0x28 - <MipTypes::Command::CMD_AIDING_VEL_ECEF>
         //      AIDING_VEL_NED                  - 0x29 - <MipTypes::Command::CMD_AIDING_VEL_NED>
-        //      AIDING_VEL_VEHICLE_RELATIVE     - 0x2A - <MipTypes::Command::CMD_AIDING_VEL_VEHICLE_RELATIVE>
+        //      AIDING_VEL_BODY_FRAME           - 0x2A - <MipTypes::Command::CMD_AIDING_VEL_BODY_FRAME>
         //      AIDING_HEADING_TRUE             - 0x31 - <MipTypes::Command::CMD_AIDING_HEADING_TRUE>
         //      AIDING_MAGNETIC_FIELD           - 0x32 - <MipTypes::Command::CMD_AIDING_MAGNETIC_FIELD>
         //      AIDING_PRESSURE                 - 0x33 - <MipTypes::Command::CMD_AIDING_PRESSURE>
@@ -1582,7 +1582,7 @@ namespace mscl
             AIDING_HEIGHT_ABOVE_ELLIPSOID   = 0x23,
             AIDING_VEL_ECEF                 = 0x28,
             AIDING_VEL_NED                  = 0x29,
-            AIDING_VEL_VEHICLE_RELATIVE     = 0x2A,
+            AIDING_VEL_BODY_FRAME           = 0x2A,
             AIDING_HEADING_TRUE             = 0x31,
             AIDING_MAGNETIC_FIELD           = 0x32,
             AIDING_PRESSURE                 = 0x33,

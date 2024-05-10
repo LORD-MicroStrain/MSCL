@@ -108,7 +108,7 @@ namespace mscl
         case MipTypes::CMD_AIDING_HEIGHT_ABOVE_ELLIPSOID:
         case MipTypes::CMD_AIDING_VEL_ECEF:
         case MipTypes::CMD_AIDING_VEL_NED:
-        case MipTypes::CMD_AIDING_VEL_VEHICLE_RELATIVE:
+        case MipTypes::CMD_AIDING_VEL_BODY_FRAME:
         case MipTypes::CMD_AIDING_HEADING_TRUE:
         case MipTypes::CMD_AIDING_MAGNETIC_FIELD:
         case MipTypes::CMD_AIDING_PRESSURE:
@@ -223,7 +223,7 @@ namespace mscl
         case MipTypes::CMD_AIDING_HEIGHT_ABOVE_ELLIPSOID:
         case MipTypes::CMD_AIDING_VEL_ECEF:
         case MipTypes::CMD_AIDING_VEL_NED:
-        case MipTypes::CMD_AIDING_VEL_VEHICLE_RELATIVE:
+        case MipTypes::CMD_AIDING_VEL_BODY_FRAME:
         case MipTypes::CMD_AIDING_HEADING_TRUE:
         case MipTypes::CMD_AIDING_MAGNETIC_FIELD:
         case MipTypes::CMD_AIDING_PRESSURE:
@@ -339,7 +339,7 @@ namespace mscl
             return "AidingMeasurementEcefVelocity";
         case MipTypes::CMD_AIDING_VEL_NED:
             return "AidingMeasurementNedVelocity";
-        case MipTypes::CMD_AIDING_VEL_VEHICLE_RELATIVE:
+        case MipTypes::CMD_AIDING_VEL_BODY_FRAME:
             return "AidingMeasurementVehicelFrameVelocity";
         case MipTypes::CMD_AIDING_HEADING_TRUE:
             return "AidingMeasurementTrueHeading";
@@ -655,7 +655,7 @@ namespace mscl
         //case MipTypes::CMD_AIDING_HEIGHT_REL: return{};
         case MipTypes::CMD_AIDING_VEL_ECEF:
         case MipTypes::CMD_AIDING_VEL_NED:
-        case MipTypes::CMD_AIDING_VEL_VEHICLE_RELATIVE:
+        case MipTypes::CMD_AIDING_VEL_BODY_FRAME:
             return{
                 ValueType::valueType_uint8,     // timebase
                 ValueType::valueType_uint8,     // reserved
