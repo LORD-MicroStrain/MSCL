@@ -909,9 +909,14 @@ namespace mscl
             case MipModels::node_3dm_cv7_ar:
             case MipModels::node_3dm_gv7_ahrs:
             case MipModels::node_3dm_gv7_ar:
+                // CV7 and GV7 all pins support the same features
+                features.emplace(GpioConfiguration::Feature::PPS_FEATURE, availableBehaviors.at(GpioConfiguration::Feature::PPS_FEATURE));
+                features.emplace(GpioConfiguration::Feature::EVENT_TIMESTAMP_FEATURE, availableBehaviors.at(GpioConfiguration::Feature::EVENT_TIMESTAMP_FEATURE));
+                break;
+
             case MipModels::node_3dm_gv7_ins:
             case MipModels::node_3dm_cv7_ins:
-                // CV7 and GV7 all pins support the same features (PPS, Event Timestamp)
+                // CV7 and GV7 all pins support the same features
                 features.emplace(GpioConfiguration::Feature::PPS_FEATURE, availableBehaviors.at(GpioConfiguration::Feature::PPS_FEATURE));
                 features.emplace(GpioConfiguration::Feature::EVENT_TIMESTAMP_FEATURE, availableBehaviors.at(GpioConfiguration::Feature::EVENT_TIMESTAMP_FEATURE));
                 features.emplace(GpioConfiguration::Feature::UART_FEATURE, availableBehaviors.at(GpioConfiguration::Feature::UART_FEATURE));
