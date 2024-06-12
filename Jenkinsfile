@@ -65,19 +65,19 @@ pipeline {
             archiveArtifacts artifacts: 'build_centos_amd64/*.rpm'
           }
         }
-//         stage('DEB ARM64') {
-//           agent { label 'linux-arm64' }
-//           options {
-//             skipDefaultCheckout()
-//             timeout(time: 20, activity: true, unit: 'MINUTES')
-//           }
-//           steps {
-//             cleanWs()
-//             checkout scm
-//             sh '.devcontainer/docker_build_debs.sh --arch arm64v8 --python3Versions "' + python3Versions() + '"'
-//             archiveArtifacts artifacts: 'build_ubuntu_arm64v8/*.deb'
-//           }
-//         }
+        stage('DEB ARM64') {
+          agent { label 'linux-arm64' }
+          options {
+            skipDefaultCheckout()
+            timeout(time: 20, activity: true, unit: 'MINUTES')
+          }
+          steps {
+            cleanWs()
+            checkout scm
+            sh '.devcontainer/docker_build_debs.sh --arch arm64v8 --python3Versions "' + python3Versions() + '"'
+            archiveArtifacts artifacts: 'build_ubuntu_arm64v8/*.deb'
+          }
+        }
 //         stage('DEB ARM32') {
 //           agent { label 'linux-arm64' }
 //           options {
