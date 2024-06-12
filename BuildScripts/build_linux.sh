@@ -47,6 +47,8 @@ cmake -S "${project_dir}" -B "${build_dir}" \
   -DBUILD_TESTS="ON" \
   -DBUILD_EXAMPLES="ON" \
   -DBUILD_DOCUMENTATION="OFF" \
+  -DWITH_SSL="OFF" \
+  -DWITH_WEBSOCKETS="OFF" \
   -DBUILD_PACKAGE="ON" \
   -DLINK_STATIC_DEPS="OFF"
 cmake --build "${build_dir}" -j$(nproc)
@@ -69,6 +71,8 @@ for python3Dir in "${python3Dirs[@]}"; do
     -DBUILD_TESTS="OFF" \
     -DBUILD_EXAMPLES="OFF" \
     -DBUILD_DOCUMENTATION="OFF" \
+    -DWITH_SSL="OFF" \
+    -DWITH_WEBSOCKETS="OFF" \
     -DBUILD_PACKAGE="ON" \
     -DLINK_STATIC_DEPS="ON" \
     \
@@ -93,6 +97,8 @@ for python2Dir in "${python2Dirs[@]}"; do
     -DBUILD_TESTS="OFF" \
     -DBUILD_EXAMPLES="OFF" \
     -DBUILD_DOCUMENTATION="OFF" \
+    -DWITH_SSL="OFF" \
+    -DWITH_WEBSOCKETS="OFF" \
     -DBUILD_PACKAGE="ON" \
     -DLINK_STATIC_DEPS="ON" \
     \
