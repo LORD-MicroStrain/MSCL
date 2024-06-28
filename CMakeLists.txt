@@ -60,9 +60,9 @@ set(Boost_REQUESTED_VERSION "1.68.0" CACHE INTERNAL "Required version of boost")
 if(WIN32)
   string(REPLACE "." "_" Boost_REQUESTED_VERSION_UNDERSCORE ${Boost_REQUESTED_VERSION})
   set(DEFAULT_BOOST_ROOT "${MICROSTRAIN_LIB_DIR}/boost")
-  if(MSCL_X64)
+  if(${MSCL_X64})
     set(DEFAULT_OPENSSL_ROOT_DIR "${MICROSTRAIN_LIB_DIR}/openssl/lib64")
-  elseif(MSCL_X86)
+  elseif(${MSCL_X86})
     set(DEFAULT_OPENSSL_ROOT_DIR "${MICROSTRAIN_LIB_DIR}/openssl/lib")
   endif()
   set(DEFAULT_SWIG_ROOT "${MICROSTRAIN_LIB_DIR}/swig/swigwin-4.0.0")
@@ -147,7 +147,7 @@ set(Boost_STATIC_LIBRARIES ${Boost_LIBRARIES})
 message(STATUS "Boost_STATIC_LIBRARIES: " ${Boost_LIBRARIES})
 
 # Optionally find some boost testing libraries
-if(BUILD_TESTS)
+if(${BUILD_TESTS})
   set(Boost_USE_STATIC_LIBS ON)
   set(Boost_USE_STATIC_RUNTIME ON)
   find_package(Boost ${Boost_REQUESTED_VERSION} EXACT REQUIRED COMPONENTS unit_test_framework test_exec_monitor)
@@ -155,7 +155,7 @@ if(BUILD_TESTS)
 endif()
 
 # Find the shared version of boost
-if(BUILD_SHARED_LIBS OR (UNIX AND BUILD_PYTHON3) OR (UNIX AND BUILD_PYTHON2))
+if(BUILD_SHARED_LIBS OR (UNIX AND ${BUILD_PYTHON3}) OR (UNIX AND ${BUILD_PYTHON2}))
   set(Boost_USE_STATIC_LIBS OFF)
   set(Boost_USE_STATIC_RUNTIME OFF)
   find_package(Boost ${Boost_REQUESTED_VERSION} EXACT REQUIRED COMPONENTS ${Boost_REQUESTED_COMPONENTS})
@@ -170,9 +170,9 @@ if(${WITH_SSL})
   # Ultra mega hack since we are finding the lib path of OpenSSL, we need to manually set the include path...
   if(NOT DEFINED OPENSSL_ROOT_DIR)
     set(OPENSSL_ROOT_DIR "${DEFAULT_OPENSSL_ROOT_DIR}")
-    if(MSCL_X64)
+    if(${MSCL_X64})
       set(OPENSSL_INCLUDE_DIR ${DEFAULT_OPENSSL_ROOT_DIR}/../include64 CACHE INTERNAL "")
-    elseif(MSCL_X86)
+    elseif(${MSCL_X86})
       set(OPENSSL_INCLUDE_DIR ${DEFAULT_OPENSSL_ROOT_DIR}/../include CACHE INTERNAL "")
     endif()
   endif()
@@ -216,24 +216,24 @@ if(${WITH_SSL})
   endif()
 
   # Find language libraries if building them
-  if(BUILD_PYTHON3)
+  if(${BUILD_PYTHON3})
     set(Python3_USE_STATIC_LIBS OFF)
     find_package(Python3 REQUIRED COMPONENTS Interpreter Development)
   endif()
-  if(BUILD_PYTHON2)
+  if(${BUILD_PYTHON2})
     set(Python2_USE_STATIC_LIBS OFF)
     find_package(Python2 REQUIRED COMPONENTS Interpreter Development)
   endif()
-  if(BUILD_CSHARP)
+  if(${BUILD_CSHARP})
     enable_language(CSharp)
   endif()
 endif()
 
-if(BUILD_PYTHON2 OR BUILD_PYTHON3 OR BUILD_CSHARP)
+if(${BUILD_PYTHON2} OR ${BUILD_PYTHON3} OR ${BUILD_CSHARP})
   # Make sure we can find swig
   cmake_policy(SET CMP0078 NEW)
   cmake_policy(SET CMP0086 NEW)
-  if(BUILD_CSHARP AND WIN32)
+  if(${BUILD_CSHARP} AND WIN32)
     cmake_policy(SET CMP0122 NEW)
   endif()
 
@@ -253,7 +253,7 @@ if(BUILD_PYTHON2 OR BUILD_PYTHON3 OR BUILD_CSHARP)
 endif()
 
 # If we were asked to build the docs, try to find NaturalDocs
-if(BUILD_DOCUMENTATION)
+if(${BUILD_DOCUMENTATION})
   find_program(NaturalDocs_EXECUTABLE
     NAMES NaturalDocs
     PATHS ${NATURAL_DOCS_ROOT}
@@ -267,7 +267,7 @@ if(BUILD_DOCUMENTATION)
 endif()
 
 # If we were asked to package, find the generators we can use
-if(BUILD_PACKAGE AND UNIX AND NOT APPLE)
+if(${BUILD_PACKAGE} AND UNIX AND NOT APPLE)
   set(FOUND_CPACK_GENERATORS "")
   find_program(DPKG_EXECUTABLE
     NAMES dpkg
@@ -292,7 +292,7 @@ endif()
 
 # Add the underlying CMake files
 add_subdirectory(MSCL)
-if(BUILD_EXAMPLES)
+if(${BUILD_EXAMPLES})
   add_subdirectory(MSCL_Examples)
 
   # Also copy the test source and build files to the output directory so it can be compressed
@@ -314,7 +314,7 @@ if(BUILD_EXAMPLES)
   )
   add_dependencies(${MSCL_ZIP_TARGET} MSCL_Examples_Zip)
 endif()
-if(BUILD_TESTS)
+if(${BUILD_TESTS})
   enable_testing()
   add_subdirectory(MSCL_Unit_Tests)
 endif()

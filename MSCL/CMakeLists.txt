@@ -228,7 +228,7 @@ endif()
 
 # Shared linker options
 if(BUILD_SHARED_LIBS)
-  if(UNIX AND LINK_STATIC_DEPS)
+  if(UNIX AND ${LINK_STATIC_DEPS})
     target_link_libraries(${LIB_NAME_SHARED} ${LIB_STATIC_LIBRARIES})
   else()
     target_link_libraries(${LIB_NAME_SHARED} ${LIB_SHARED_LIBRARIES})
@@ -236,7 +236,7 @@ if(BUILD_SHARED_LIBS)
 endif()
 
 # Optionally generate the language bindings using swig
-if(BUILD_PYTHON2 OR BUILD_PYTHON3 OR BUILD_CSHARP)
+if(${BUILD_PYTHON2} OR ${BUILD_PYTHON3} OR ${BUILD_CSHARP})
   include(UseSWIG)
   include(${CMAKE_CURRENT_SOURCE_DIR}/../cmake/mscl_python_swig.cmake)
 
@@ -256,12 +256,12 @@ if(BUILD_PYTHON2 OR BUILD_PYTHON3 OR BUILD_CSHARP)
   set(PYTHON_COMPILE_OPTIONS $<$<CXX_COMPILER_ID:MSVC>:/bigobj /MT$<$<CONFIG:Debug>:d>>)
   set(PYTHON_LINK_OPTIONS $<$<CXX_COMPILER_ID:GNU>:-Wl,--no-as-needed>)
   set(PYTHON_LINK_LIBRARIES ${LIB_NAME_STATIC})
-  if((UNIX AND LINK_STATIC_DEPS) OR WIN32)
+  if((UNIX AND ${LINK_STATIC_DEPS}) OR WIN32)
     list(APPEND PYTHON_LINK_LIBRARIES ${Boost_STATIC_LIBRARIES})
   else()
     list(APPEND PYTHON_LINK_LIBRARIES ${Boost_SHARED_LIBRARIES})
   endif()
-  if(WITH_SSL)
+  if(${WITH_SSL})
     if((UNIX AND PYTHON_STATIC_DEPS) OR WIN32)
       list(APPEND PYTHON_LINK_LIBRARIES ${OPENSSL_STATIC_LIBRARIES})
     else()
@@ -270,7 +270,7 @@ if(BUILD_PYTHON2 OR BUILD_PYTHON3 OR BUILD_CSHARP)
   endif()
 
   # Build for python3
-  if(BUILD_PYTHON3)
+  if(${BUILD_PYTHON3})
     set(PYTHON3_MODULE_NAME MSCL_Python3)
     set(MSCL_PYTHON3_VERSION ${Python3_VERSION_MAJOR}.${Python3_VERSION_MINOR})
     mscl_python_swig(
@@ -291,7 +291,7 @@ if(BUILD_PYTHON2 OR BUILD_PYTHON3 OR BUILD_CSHARP)
   endif()
 
   # Build for python2
-  if(BUILD_PYTHON2)
+  if(${BUILD_PYTHON2})
     set(PYTHON2_MODULE_NAME MSCL_Python2)
     set(MSCL_PYTHON2_VERSION ${Python2_VERSION_MAJOR}.${Python2_VERSION_MINOR})
     mscl_python_swig(
@@ -313,7 +313,7 @@ if(BUILD_PYTHON2 OR BUILD_PYTHON3 OR BUILD_CSHARP)
 
   # Build C# on Windows
   # Wish we could generate it the same as python, but we need to get the list of CSharp files
-  if(BUILD_CSHARP)
+  if(${BUILD_CSHARP})
     set(CSHARP_MODULE_NAME MSCL_CSharp)
 
     # Hack of all hacks, but we need to generate the source separately so we can determine the source files at configure time
@@ -345,7 +345,7 @@ if(BUILD_PYTHON2 OR BUILD_PYTHON3 OR BUILD_CSHARP)
     target_link_libraries(${CSHARP_MODULE_NAME} PRIVATE
       ${LIB_NAME_STATIC} ${Boost_STATIC_LIBRARIES}
     )
-    if(WITH_SSL)
+    if(${WITH_SSL})
       target_link_libraries(${CSHARP_MODULE_NAME} PRIVATE
         ${OPENSSL_STATIC_LIBRARIES}
       )
@@ -378,7 +378,7 @@ if(BUILD_PYTHON2 OR BUILD_PYTHON3 OR BUILD_CSHARP)
   endif()
 
   # Build the documentation
-  if(BUILD_DOCUMENTATION)
+  if(${BUILD_DOCUMENTATION})
     set(MSCL_DOCS_OUTPUT_DIR ${MSCL_OUTPUT_DIR}/Documentation/MSCL_Docs)
     set(MSCL_API_DOCS_OUTPUT_DIR ${MSCL_OUTPUT_DIR}/Documentation/MSCL_API_Docs)
     add_custom_target(MSCL_Docs
@@ -397,7 +397,7 @@ endif()
 
 
 # If we were asked to build packages, include CPack and set up packaging
-if(BUILD_PACKAGE)
+if(${BUILD_PACKAGE})
   # Try to determine what architecture we are building for based on the compiler output
   if(MSVC)
     # Detect if this is a x64 or x86 build
@@ -442,10 +442,10 @@ if(BUILD_PACKAGE)
   if(BUILD_SHARED_LIBS)
     list(APPEND CPACK_COMPONENTS_ALL shared)
   endif()
-  if(BUILD_PYTHON3)
+  if(${BUILD_PYTHON3})
     list(APPEND CPACK_COMPONENTS_ALL python${MSCL_PYTHON3_VERSION})
   endif()
-  if(BUILD_PYTHON2)
+  if(${BUILD_PYTHON2})
     list(APPEND CPACK_COMPONENTS_ALL python${MSCL_PYTHON2_VERSION})
   endif()
 
@@ -474,7 +474,7 @@ if(BUILD_PACKAGE)
 
   # Most packages share these dependencies
   set(CPACK_DEBIAN_COMMON_DEPS libboost-system-dev libboost-filesystem-dev)
-  if(WITH_SSL)
+  if(${WITH_SSL})
     list(APPEND CPACK_DEBIAN_COMMON_DEPS libssl-dev)
   endif()
   string(REPLACE ";" ", " CPACK_DEBIAN_COMMON_DEPS "${CPACK_DEBIAN_COMMON_DEPS}")
@@ -483,12 +483,12 @@ if(BUILD_PACKAGE)
   set(CPACK_DEBIAN_STATIC_PACKAGE_DEPENDS "${CPACK_DEBIAN_COMMON_DEPS}")
   set(CPACK_DEBIAN_SHARED_PACKAGE_DEPENDS "${CPACK_DEBIAN_COMMON_DEPS}")
   set(CPACK_DEBIAN_PYTHON${MSCL_PYTHON3_VERSION}_PACKAGE_DEPENDS "python${MSCL_PYTHON3_VERSION}")
-  if(NOT LINK_STATIC_DEPS)
+  if(NOT ${LINK_STATIC_DEPS})
     list(APPEND CPACK_DEBIAN_PYTHON${MSCL_PYTHON3_VERSION}_PACKAGE_DEPENDS "${CPACK_DEBIAN_COMMON_DEPS}")
     string(REPLACE ";" ", " CPACK_DEBIAN_PYTHON${MSCL_PYTHON3_VERSION}_PACKAGE_DEPENDS "${CPACK_DEBIAN_PYTHON${MSCL_PYTHON3_VERSION}_PACKAGE_DEPENDS}")
   endif()
   set(CPACK_DEBIAN_PYTHON${MSCL_PYTHON2_VERSION}_PACKAGE_DEPENDS "python${MSCL_PYTHON2_VERSION}")
-  if(NOT LINK_STATIC_DEPS)
+  if(NOT ${LINK_STATIC_DEPS})
     list(APPEND CPACK_DEBIAN_PYTHON${MSCL_PYTHON2_VERSION}_PACKAGE_DEPENDS "${CPACK_DEBIAN_COMMON_DEPS}")
     string(REPLACE ";" ", " CPACK_DEBIAN_PYTHON${MSCL_PYTHON2_VERSION}_PACKAGE_DEPENDS "${CPACK_DEBIAN_PYTHON${MSCL_PYTHON2_VERSION}_PACKAGE_DEPENDS}")
   endif()
@@ -504,7 +504,7 @@ if(BUILD_PACKAGE)
 
   # Most packages share these dependencies
   set(CPACK_RPM_COMMON_DEPS boost-filesystem boost-system boost-devel)
-  if(WITH_SSL)
+  if(${WITH_SSL})
     list(APPEND CPACK_RPM_COMMON_DEPS openssl-devel)
   endif()
   string(REPLACE ";" ", " CPACK_RPM_COMMON_DEPS "${CPACK_RPM_COMMON_DEPS}")
@@ -513,12 +513,12 @@ if(BUILD_PACKAGE)
   set(CPACK_RPM_STATIC_PACKAGE_REQUIRES "${CPACK_RPM_COMMON_DEPS}")
   set(CPACK_RPM_SHARED_PACKAGE_REQUIRES "${CPACK_RPM_COMMON_DEPS}")
   set(CPACK_RPM_PYTHON${MSCL_PYTHON3_VERSION}_PACKAGE_REQUIRES "python3")
-  if(NOT LINK_STATIC_DEPS)
+  if(NOT ${LINK_STATIC_DEPS})
     list(APPEND CPACK_RPM_PYTHON${MSCL_PYTHON3_VERSION}_PACKAGE_REQUIRES "${CPACK_RPM_COMMON_DEPS}")
     string(REPLACE ";" ", " CPACK_RPM_PYTHON${MSCL_PYTHON3_VERSION}_PACKAGE_REQUIRES "${CPACK_RPM_PYTHON${MSCL_PYTHON3_VERSION}_PACKAGE_REQUIRES}")
   endif()
   set(CPACK_RPM_PYTHON${MSCL_PYTHON2_VERSION}_PACKAGE_REQUIRES "python2")
-  if(NOT LINK_STATIC_DEPS)
+  if(NOT ${LINK_STATIC_DEPS})
     list(APPEND CPACK_RPM_PYTHON${MSCL_PYTHON2_VERSION}_PACKAGE_REQUIRES "${CPACK_RPM_COMMON_DEPS}")
     string(REPLACE ";" ", " CPACK_RPM_PYTHON${MSCL_PYTHON2_VERSION}_PACKAGE_REQUIRES "${CPACK_RPM_PYTHON${MSCL_PYTHON2_VERSION}_PACKAGE_REQUIRES}")
   endif()
@@ -543,13 +543,13 @@ if(BUILD_PACKAGE)
       GROUP shared
     )
   endif()
-  if(BUILD_PYTHON3)
+  if(${BUILD_PYTHON3})
     cpack_add_component(python${MSCL_PYTHON3_VERSION}
       DESCRIPTION "MSCL python bindings for ${MSCL_PYTHON3_VERSION}"
       GROUP python${MSCL_PYTHON3_VERSION}
     )
   endif()
-  if(BUILD_PYTHON2)
+  if(${BUILD_PYTHON2})
     cpack_add_component(python${MSCL_PYTHON2_VERSION}
       DESCRIPTION "MSCL python bindings for ${MSCL_PYTHON2_VERSION}"
       GROUP python${MSCL_PYTHON2_VERSION}
