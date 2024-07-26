@@ -213,7 +213,7 @@ endif()
 
 # Compiler definitions
 target_compile_definitions(${LIB_NAME_STATIC} PRIVATE ${LIB_DEFINES})
-target_include_directories(${LIB_NAME_STATIC} PRIVATE ${LIB_INCLUDE_DIRS})
+target_include_directories(${LIB_NAME_STATIC} PUBLIC ${LIB_INCLUDE_DIRS})
 target_compile_options(${LIB_NAME_STATIC} PRIVATE
   $<$<CXX_COMPILER_ID:GNU>:-fPIC>  # Normally static libraries aren't compiled with this flag, but we need it to compile our bindings properly
   $<$<CXX_COMPILER_ID:MSVC>:/MT$<$<CONFIG:Debug>:d>>
@@ -223,15 +223,15 @@ if(BUILD_SHARED_LIBS)
     $<$<CXX_COMPILER_ID:MSVC>:/MD$<$<CONFIG:Debug>:d>>
   )
   target_compile_definitions(${LIB_NAME_SHARED} PRIVATE ${LIB_DEFINES})
-  target_include_directories(${LIB_NAME_SHARED} PRIVATE ${LIB_INCLUDE_DIRS})
+  target_include_directories(${LIB_NAME_SHARED} PUBLIC ${LIB_INCLUDE_DIRS})
 endif()
 
 # Shared linker options
 if(BUILD_SHARED_LIBS)
   if(UNIX AND LINK_STATIC_DEPS)
-    target_link_libraries(${LIB_NAME_SHARED} ${LIB_STATIC_LIBRARIES})
+    target_link_libraries(${LIB_NAME_SHARED} PUBLIC ${LIB_STATIC_LIBRARIES})
   else()
-    target_link_libraries(${LIB_NAME_SHARED} ${LIB_SHARED_LIBRARIES})
+    target_link_libraries(${LIB_NAME_SHARED} PUBLIC ${LIB_SHARED_LIBRARIES})
   endif()
 endif()
 
@@ -338,7 +338,7 @@ if(BUILD_PYTHON2 OR BUILD_PYTHON3 OR BUILD_CSHARP)
     target_compile_definitions(${CSHARP_MODULE_NAME} PRIVATE
       ${LIB_DEFINES}
     )
-    target_include_directories(${CSHARP_MODULE_NAME} PRIVATE
+    target_include_directories(${CSHARP_MODULE_NAME} PUBLIC
       ${LIB_INCLUDE_DIRS}
       ${CMAKE_CURRENT_SOURCE_DIR}/source/mscl/Wrapper  # Temp fix for bad include path
     )
@@ -366,7 +366,7 @@ if(BUILD_PYTHON2 OR BUILD_PYTHON3 OR BUILD_CSHARP)
     )
     set(MSCL_Managed_NAME MSCL_Managed)
     add_library(${MSCL_Managed_NAME} SHARED ${MSCL_CSHARP_SOURCE})
-    target_link_libraries(${MSCL_Managed_NAME} ${CSHARP_MODULE_NAME})
+    target_link_libraries(${MSCL_Managed_NAME} PUBLIC ${CSHARP_MODULE_NAME})
 
     # Copy the library to an Output directory
     set(MSCL_Managed_OUTPUT_DIR ${MSCL_OUTPUT_DIR}/DotNet/${MSCL_ARCH_NAME}/$<CONFIG>)
