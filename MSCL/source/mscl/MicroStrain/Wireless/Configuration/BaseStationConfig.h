@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -139,7 +139,7 @@ namespace mscl
         bool verify(const BaseStationFeatures& features, const BaseStationEepromHelper& eeprom, ConfigIssues& outIssues) const;
 
         //Function: apply
-        //    Writes all of the configuration values that are set to a WirelessNode. 
+        //    Writes all of the configuration values that are set to a WirelessNode.
         //
         //Parameters:
         //    features - The <BaseStationFeatures> of the BaseStation to write the config to.
@@ -218,7 +218,7 @@ namespace mscl
         bool analogPairingEnable() const;
 
         //API Function: analogPairingEnable
-        //    Sets the Analog Pairing Enabled value in the Config. 
+        //    Sets the Analog Pairing Enabled value in the Config.
         //    This controls whether all of the other analog pairing settings have any affect.
         //
         //Parameters:
@@ -234,7 +234,7 @@ namespace mscl
         uint16 analogTimeoutTime() const;
 
         //API Function: analogTimeoutTime
-        //    Sets the Analog Timeout Time value (in seconds) in the Config. 
+        //    Sets the Analog Timeout Time value (in seconds) in the Config.
         //    If this is 0, Analog Timeout is disabled.
         //
         //Parameters:
@@ -249,7 +249,7 @@ namespace mscl
         float analogTimeoutVoltage() const;
 
         //API Function: analogTimeoutVoltage
-        //    Sets the Analog Timeout Voltage in the Config. 
+        //    Sets the Analog Timeout Voltage in the Config.
         //    If this is 0, Analog Timeout is disabled.
         //
         //Parameters:
@@ -264,7 +264,7 @@ namespace mscl
         bool analogExceedanceEnable();
 
         //API Function: analogExceedanceEnable
-        //    Sets the Analog Exceedance Enabled value in the Config. 
+        //    Sets the Analog Exceedance Enabled value in the Config.
         //
         //Parameters:
         //    enable - Whether to enable or disable analog exceedance in the Config.

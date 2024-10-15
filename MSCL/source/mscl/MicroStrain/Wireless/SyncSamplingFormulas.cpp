@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "stdafx.h"
@@ -14,7 +14,7 @@ namespace mscl
 {
 
 #ifndef SWIG
-    
+
 namespace SyncSamplingFormulas
 {
     double bytesPerSecond(const SampleRate& sampleRate, uint16 numChs, uint8 bytesPerSample)
@@ -256,7 +256,7 @@ namespace SyncSamplingFormulas
     }
 
     uint32 minTimeBetweenBursts(uint32 totalNeededTx, double sampleDuration, bool lossless)
-    { 
+    {
         //Note: this does not consider possible benefits of LXRS+ - could update to have values be 128 (no lossless) and 64 (lossless)
 
         float txPerSec = 64.0f;
@@ -339,7 +339,7 @@ namespace SyncSamplingFormulas
         {
             return 1.05f;
         }
-        
+
         return 1.0f;
     }
 }

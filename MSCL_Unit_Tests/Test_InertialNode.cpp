@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "mscl/Communication/SerialConnection.h"
@@ -34,7 +34,7 @@ void expectNodeInfo_InertialNode(std::shared_ptr<mock_InertialNodeImpl> node, co
     info.deviceOptions = "ABCDABCDABCDABCD";
 
     //make the getDeviceInfo command return the response we created
-    MOCK_EXPECT(node->getDeviceInfo).returns(info);    
+    MOCK_EXPECT(node->getDeviceInfo).returns(info);
     //========================================================================================
 
     //========================================================================================
@@ -43,7 +43,7 @@ void expectNodeInfo_InertialNode(std::shared_ptr<mock_InertialNodeImpl> node, co
     fields.push_back(MipTypes::CMD_GET_SENSOR_RATE_BASE);
     fields.push_back(MipTypes::CMD_GET_EF_RATE_BASE);
     fields.push_back(MipTypes::CMD_GET_GNSS_RATE_BASE);
-    
+
     //make the getDescriptorSets command return the response we created
     MOCK_EXPECT(node->getDescriptorSets).returns(fields);
     //========================================================================================
@@ -108,7 +108,7 @@ BOOST_AUTO_TEST_CASE(InertialNode_Ping_Success)
 
     //create the InertialNode object
     InertialNode node(conn);
-    
+
     //add bytes to the ByteStream
     ByteStream bytes;
     bytes.append_uint16(0x7565);        //start of packet bytes

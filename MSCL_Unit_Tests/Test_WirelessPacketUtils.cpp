@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
@@ -373,7 +373,7 @@ BOOST_AUTO_TEST_CASE(WirelessPacketUtils_CorrectPacketType_TCLink)
 
     BufferWriter bw = b.getBufferWriter();
 
-    //a valid ASPP packet that has a TC-LinkLDC type, but actually is a sync sampling packet 
+    //a valid ASPP packet that has a TC-LinkLDC type, but actually is a sync sampling packet
     bw.buffer()[0]    = 0xAA;
     bw.buffer()[1]    = 0x07;
     bw.buffer()[2]    = 0x09;        //TC-LinkLDC type

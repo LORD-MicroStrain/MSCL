@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "stdafx.h"
@@ -62,7 +62,7 @@ namespace mscl
             return findMatchingResponse(packet, lastReadPos);
         }
     }
-    
+
     bool WirelessParser::findMatchingResponse(DataBuffer& data)
     {
         //attempt to get the pointer from the weak_ptr
@@ -172,7 +172,7 @@ namespace mscl
                         //savepoint.revert();
 
                         //Push the "in packet" raw bytes into the debugPacket buffer as a ConnectionDebugData
-                        
+
                         processPacket(packet, lastReadPosition);
                         addRawBytePacket(rawBytes, true, true, packet.type());
                         savepoint.commit();
@@ -181,7 +181,7 @@ namespace mscl
                     case parsePacketResult_duplicate:
                         savepoint.commit();
                         continue;    //packet is a duplicate, but byte position has been moved. Move to the next byte after the packet
-                    
+
                     //somethings incorrect in the packet, move passed the AA and start looking for the next packet
                     case parsePacketResult_invalidPacket:
                     case parsePacketResult_badChecksum:
@@ -203,30 +203,30 @@ namespace mscl
                 }
             }
 
-                
+
             //data is not a packet at this point
 
             bytesRemaining = data.bytesRemaining();
 
             //check if the bytes we currently have match an expected response
-            //    This isn't perfect (could possibly use part of a partial ASPP packet as a cmd response), 
+            //    This isn't perfect (could possibly use part of a partial ASPP packet as a cmd response),
             //    but unfortunately its the best we can do with single byte responses being part of our protocol
             if(findMatchingResponse(data))
             {
                 //the bytes have already moved, don't move to the next byte in the next iteration
-                savepoint.commit();        
+                savepoint.commit();
                 moveToNextByte = false;
             }
             else
             {
-                //failed to match 
+                //failed to match
 
                 //if we didn't have enough data for a full packet, and it didn't match any expected responses
                 if(notEnoughData)
                 {
                     //look for packets after the current byte.
                     //    Even though this looks like it could be the start of an ASPP packet,
-                    //    if we find any full ASPP packets inside of the these bytes, we need 
+                    //    if we find any full ASPP packets inside of the these bytes, we need
                     //    to pick them up and move on.
                     WirelessPacket::PacketType type = findPacketInBytes(data, freq);
                     if (type == WirelessPacket::PacketType::packetType_NotFound)
@@ -260,7 +260,7 @@ namespace mscl
                         savepoint.commit();
 
                         addRawBytePacket(rawBytes, true, true, type);
-                        
+
                     }
                 }
             }
@@ -356,7 +356,7 @@ namespace mscl
 
         //verify that the first byte is the Start Of Packet
         if(startOfPacket != WirelessPacket::ASPP_V1_SOP)
-        {    
+        {
             //Invalid Packet
             return parsePacketResult_invalidPacket;
         }
@@ -373,7 +373,7 @@ namespace mscl
         //read byte 6
         uint8 payloadLength = data.read_uint8();                       //Payload Length (max of 255)
 
-        //determine the full packet length 
+        //determine the full packet length
         uint32 packetLength = payloadLength + WirelessPacket::ASPP_V1_NUM_BYTES_BEFORE_PAYLOAD + WirelessPacket::ASPP_V1_NUM_BYTES_AFTER_PAYLOAD;
 
         //the DataBuffer must be large enough to hold the rest of the packet
@@ -396,7 +396,7 @@ namespace mscl
 
         //read the node RSSI
         int16 nodeRSSI = data.read_int8();                                //Node RSSI
-        
+
         //read the base station rssi
         int16 baseRSSI = data.read_int8();                                //Base RSSI
 
@@ -498,13 +498,13 @@ namespace mscl
         //read byte 3
         uint8 appDataType = data.read_uint8();                          //App Data Type
 
-        //read bytes 4 - 7 
+        //read bytes 4 - 7
         uint32 nodeAddress = data.read_uint32();                        //Node Address
 
         //read bytes 8 and 9
         uint16 payloadLength = data.read_uint16();                      //Payload Length
 
-        //determine the full packet length 
+        //determine the full packet length
         size_t packetLength = payloadLength + WirelessPacket::ASPP_V2_NUM_BYTES_BEFORE_PAYLOAD + WirelessPacket::ASPP_V2_NUM_BYTES_AFTER_PAYLOAD;
 
         //the DataBuffer must be large enough to hold the rest of the packet
@@ -631,13 +631,13 @@ namespace mscl
         //read byte 3
         uint8 appDataType = data.read_uint8();                          //App Data Type
 
-        //read bytes 4 - 7 
+        //read bytes 4 - 7
         uint32 nodeAddress = data.read_uint32();                        //Node Address
 
         //read bytes 8 and 9
         uint16 payloadLength = data.read_uint16();                      //Payload Length
 
-        //determine the full packet length 
+        //determine the full packet length
         size_t packetLength = payloadLength + WirelessPacket::ASPP_V3_NUM_BYTES_BEFORE_PAYLOAD + WirelessPacket::ASPP_V3_NUM_BYTES_AFTER_PAYLOAD;
 
         //the DataBuffer must be large enough to hold the rest of the packet

@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "mscl/MicroStrain/Wireless/Packets/AsyncDigitalAnalogPacket.h"
@@ -108,14 +108,14 @@ BOOST_AUTO_TEST_CASE(AsyncDigitalAnalogPacket_Constructor_2byteUint)
     payloadBytes.push_back(3);        //data type - uint16
     payloadBytes.push_back(0);        //tick msb
     payloadBytes.push_back(1);        //tick lsb
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
     payloadBytes.push_back(0);        //timestamp offset msb
     payloadBytes.push_back(1);        //timestamp offset lsb
     payloadBytes.push_back(0);        //digital data b1 (0000 0000)
@@ -142,7 +142,7 @@ BOOST_AUTO_TEST_CASE(AsyncDigitalAnalogPacket_Constructor_2byteUint)
     BOOST_CHECK_EQUAL(sweeps.size(), 1);
 
     DataSweep sweep = sweeps.at(0);
-    
+
     //check that the sweep data matches the packet we added
     BOOST_CHECK_EQUAL(sweep.nodeAddress(), 345);
     BOOST_CHECK_EQUAL(sweep.tick(), 1);
@@ -162,14 +162,14 @@ BOOST_AUTO_TEST_CASE(AsyncDigitalAnalogPacket_IntegrityCheck_Good)
     payloadBytes.push_back(3);        //data type - uint16
     payloadBytes.push_back(0);        //tick msb
     payloadBytes.push_back(1);        //tick lsb
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
     payloadBytes.push_back(0);        //timestamp offset msb
     payloadBytes.push_back(1);        //timestamp offset lsb
     payloadBytes.push_back(0);        //digital data b1 (0000 0000)
@@ -218,14 +218,14 @@ BOOST_AUTO_TEST_CASE(AsyncDigitalAnalogPacket_IntegrityCheck_BadStopFlags)
     payloadBytes.push_back(3);        //data type - uint16
     payloadBytes.push_back(0);        //tick msb
     payloadBytes.push_back(1);        //tick lsb
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
     payloadBytes.push_back(0);        //timestamp offset msb
     payloadBytes.push_back(1);        //timestamp offset lsb
     payloadBytes.push_back(0);        //digital data b1 (0000 0000)
@@ -254,14 +254,14 @@ BOOST_AUTO_TEST_CASE(AsyncDigitalPacket_IntegrityCheck_BadPacketType)
     payloadBytes.push_back(3);        //data type - uint16
     payloadBytes.push_back(0);        //tick msb
     payloadBytes.push_back(1);        //tick lsb
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
     payloadBytes.push_back(0);        //timestamp offset msb
     payloadBytes.push_back(1);        //timestamp offset lsb
     payloadBytes.push_back(0);        //digital data b1 (0000 0000)
@@ -290,14 +290,14 @@ BOOST_AUTO_TEST_CASE(AsyncDigitalAnalogPacket_IntegrityCheck_NoChannelsActive)
     payloadBytes.push_back(3);        //data type - uint16
     payloadBytes.push_back(0);        //tick msb
     payloadBytes.push_back(1);        //tick lsb
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
 
     //build a WirelessPacket
     WirelessPacket packet;
@@ -320,14 +320,14 @@ BOOST_AUTO_TEST_CASE(AsyncDigitalAnalogPacket_IntegrityCheck_BadDataType)
     payloadBytes.push_back(17);        //data type - BAD
     payloadBytes.push_back(0);        //tick msb
     payloadBytes.push_back(1);        //tick lsb
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
     payloadBytes.push_back(0);        //timestamp offset msb
     payloadBytes.push_back(1);        //timestamp offset lsb
     payloadBytes.push_back(0);        //digital data b1 (0000 0000)

@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -99,7 +99,7 @@ namespace mscl
 
         //Function: write
         //    Writes bytes to the port via the BoostCommunication object.
-        //    
+        //
         //Parameters:
         //    data - the bytes that will be written to the port.
         //
@@ -130,7 +130,7 @@ namespace mscl
         virtual std::size_t byteAppendPos() const = 0;
 
         //Function: rawByteMode
-        //    Puts the connection into "Raw Byte Mode." 
+        //    Puts the connection into "Raw Byte Mode."
         //    "Raw Byte Mode" stops the data from being sent/parsed from any attached devices (BaseStation, InertialNode, etc.)
         //    and instead sends all data into a raw circular data buffer that can be accessed by calling <getRawBytes> on this Connection object.
         //    Disabling this mode will start sending all data back to the previous attached device, if still available.
@@ -158,7 +158,7 @@ namespace mscl
         virtual void getRawBytesWithPattern(Bytes& bytes, const uint8* pattern, size_t length, uint32 timeout = 0) = 0;
 
         //Function: debugMode
-        //  Puts the connection into "Debug Mode." 
+        //  Puts the connection into "Debug Mode."
         //  "Debug Mode Mode" adds an additional container that gets filled when any write or read operations occur.
         //  Once debug mode is enabled, you can access this data with the <getDebugData> function.
         //  This does not interfere with standard data collection.
@@ -202,14 +202,14 @@ namespace mscl
 
 
     //Class: Connection_Impl
-    //    An Abstract Base Class for various connection types. 
+    //    An Abstract Base Class for various connection types.
     //    This class uses a template for the Comm Object and contains default functionality for connection types.
     //
     //See Also:
     //  <SerialConnection>
     template <typename Comm_Object>
     class Connection_Impl : public Connection_Impl_Base
-    {    
+    {
     protected:
         Connection_Impl();    //protected default constructor
 
@@ -351,7 +351,7 @@ namespace mscl
 
         //Function: write
         //    Writes bytes to the port via the BoostCommunication object.
-        //    
+        //
         //Parameters:
         //    data - the bytes that will be written to the port.
         //
@@ -390,7 +390,7 @@ namespace mscl
         void stopIoThread();
 
         //Function: rawByteMode
-        //    Puts the connection into "Raw Byte Mode." 
+        //    Puts the connection into "Raw Byte Mode."
         //    "Raw Byte Mode" stops the data from being sent/parsed from any attached devices (BaseStation, InertialNode, etc.)
         //    and instead sends all data into a raw circular data buffer that can be accessed by calling <getRawBytes> on this Connection object.
         //    Disabling this mode will start sending all data back to the previous attached device, if still available.
@@ -420,7 +420,7 @@ namespace mscl
         virtual void getRawBytesWithPattern(Bytes& bytes, const uint8* pattern, size_t length, uint32 timeout = 0) final;
 
         //Function: debugMode
-        //  Puts the connection into "Debug Mode." 
+        //  Puts the connection into "Debug Mode."
         //  "Debug Mode Mode" adds an additional container that gets filled when any write or read operations occur.
         //  Once debug mode is enabled, you can access this data with the <getDebugData> function.
         //  This does not interfere with standard data collection.
@@ -524,7 +524,7 @@ namespace mscl
             m_connectionError = true;
             m_errorCode = e.code();
             m_errorMsg = e.what();
-            
+
             //throw the connection through
             throw;
         }
@@ -661,7 +661,7 @@ namespace mscl
             m_connectionError = true;
             m_errorMsg = e.what();
 
-            //buffer doesn't have more room to write, 
+            //buffer doesn't have more room to write,
             //shouldn't happen when starting the read thread
             assert(false);
         }

@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -11,12 +11,12 @@
 namespace mscl
 {
     //Class: WirelessPacketUtils
-    //    Contains useful utility functions for interfacing with MicroStrain's Wireless packets 
+    //    Contains useful utility functions for interfacing with MicroStrain's Wireless packets
     class WirelessPacketUtils
     {
     public:
         //Function: correctPacketType
-        //    Some packets are not properly identified. 
+        //    Some packets are not properly identified.
         //    This function looks for special cases of misidentified packets and corrects them.
         //
         //Parameters:

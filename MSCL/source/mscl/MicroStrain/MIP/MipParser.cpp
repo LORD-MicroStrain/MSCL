@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "stdafx.h"
@@ -17,7 +17,7 @@ namespace mscl
 {
     MipParser::MipParser(MipPacketCollector* packetCollector, std::weak_ptr<ResponseCollector> responseCollector, RawBytePacketCollector* rawBytePacketCollector):
         m_packetCollector(packetCollector),
-        m_responseCollector(responseCollector), 
+        m_responseCollector(responseCollector),
         m_rawBytePacketCollector(rawBytePacketCollector)
     {
     }
@@ -132,11 +132,11 @@ namespace mscl
             //read the next byte (doesn't move data's read position)
             uint8 currentByte = data.peekByte();
 
-            //if this is a MIP Start of Packet byte 
+            //if this is a MIP Start of Packet byte
             if(currentByte == MipPacketInfo::MIP_PACKET_SOP1)
             {
                 mscl::ReadBufferSavePoint savePoint(&data);
-                
+
                 //check if the packet is a valid MIP packet, starting at this byte
                 parseResult = parseAsPacket(data, packet);
 
@@ -147,7 +147,7 @@ namespace mscl
                 {
                     //good packet, process it and then look for the next
                     case mipParserResult_completePacket:
-                        if (rawBytes.size() > 0) 
+                        if (rawBytes.size() > 0)
                         {
                             addRawBytePacket(rawBytes, false, false);
                         }
@@ -156,7 +156,7 @@ namespace mscl
 
                         //Read out the "in packet" bytes into the rawBytes buffer...
                         nextByte = data.peekByte();
-                        while (data.readPosition() < position) 
+                        while (data.readPosition() < position)
                         {
                             rawBytes.push_back(data.read_uint8());
                         }
@@ -171,7 +171,7 @@ namespace mscl
                     //somethings incorrect in the packet, move passed this start byte and start looking for the next packet
                     case mipParserResult_invalidPacket:
                     case mipParserResult_badChecksum:
-                        if (rawBytes.size() > 0) 
+                        if (rawBytes.size() > 0)
                         {
                             addRawBytePacket(rawBytes, false, true);
                         }
@@ -196,7 +196,7 @@ namespace mscl
                 mscl::ReadBufferSavePoint savePoint(&data);
                 //look for packets after the current byte.
                 //    Even though this looks like it could be the start of a MIP packet,
-                //    if we find any full MIP packets inside of the these bytes, we need 
+                //    if we find any full MIP packets inside of the these bytes, we need
                 //    to pick them up and move on.
                 if(!findPacketInBytes(data))
                 {
@@ -206,7 +206,7 @@ namespace mscl
 
                 size_t position = data.readPosition();
 
-                if (rawBytes.size() > 0) 
+                if (rawBytes.size() > 0)
                 {
                     addRawBytePacket(rawBytes, false, false);
                 }
@@ -232,18 +232,18 @@ namespace mscl
         }
     }
 
-    void MipParser::addRawBytePacket(Bytes& rawBytePacket, bool valid = true, bool packetFound = true) 
+    void MipParser::addRawBytePacket(Bytes& rawBytePacket, bool valid = true, bool packetFound = true)
     {
 
         RawBytePacket packet;
         packet.payload(rawBytePacket);
 
-        if (valid) 
+        if (valid)
         {
             uint8 descriptor = getCommandDescriptor(rawBytePacket);
             packet.type(MipPacket::isDataPacket(descriptor) ? RawBytePacket::DATA_PACKET : RawBytePacket::COMMAND_PACKET);
         }
-        else 
+        else
         {
             packet.type(packetFound ? RawBytePacket::INVALID_PACKET : RawBytePacket::NO_PACKET_FOUND);
         }
@@ -252,9 +252,9 @@ namespace mscl
         rawBytePacket.clear();
     }
 
-    uint8 MipParser::getCommandDescriptor(Bytes packet) 
+    uint8 MipParser::getCommandDescriptor(Bytes packet)
     {
-        if (packet.size() >= MipPacketInfo::MIP_MIN_PACKET_SIZE) 
+        if (packet.size() >= MipPacketInfo::MIP_MIN_PACKET_SIZE)
         {
             return packet[MipPacketInfo::MIP_DESCRIPTOR_BYTE];
         }

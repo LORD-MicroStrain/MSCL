@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -64,7 +64,7 @@ namespace mscl
 
     //Class: DataBuffer
     //    A buffer of bytes extending from the ByteStream class that is used
-    //    for holding bytes read in from the connection 
+    //    for holding bytes read in from the connection
     //
     //See Also:
     //    <ByteStream>
@@ -89,7 +89,7 @@ namespace mscl
         DataBuffer();//    Disabled default constructor
 
     public:
-        //Constructor: DataBuffer 
+        //Constructor: DataBuffer
         //    Constructor to create a DataBuffer object
         //
         //Parameters:
@@ -152,7 +152,7 @@ namespace mscl
         //Function: read_int16
         //    Reads the next 2-byte signed integer from the buffer
         //
-        //Returns: 
+        //Returns:
         //    The next int16 in the buffer, based on its current position
         //
         //Exceptions:
@@ -162,7 +162,7 @@ namespace mscl
         //Function: read_uint16
         //    Reads the next 2-byte unsigned integer from the buffer
         //
-        //Returns: 
+        //Returns:
         //    The next uint16 in the buffer, based on its current position
         //
         //Exceptions:
@@ -256,9 +256,9 @@ namespace mscl
         //Returns:
         //    true if m_moreToRead is true, false otherwise
         bool moreToRead() const;
-        
+
         //Function: shiftExtraToStart
-        //    Copies any unparsed data in the DataBuffer to the front of the buffer. 
+        //    Copies any unparsed data in the DataBuffer to the front of the buffer.
         //    Also resets the readPosition and moves the appendPosition to immediately after the data that was moved.
         //
         //Returns:

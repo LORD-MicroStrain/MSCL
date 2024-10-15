@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -87,7 +87,7 @@ namespace mscl
         static ByteStream buildCommand_get();
 
         //Function: buildCommand_set
-        //    Builds the bytes for the "set" command. 
+        //    Builds the bytes for the "set" command.
         //
         //Parameters:
         //    channels - The <MipChannels> holding the channels to be set. This should only contain channels that are in the GPS (0x81) descriptor set.
@@ -101,7 +101,7 @@ namespace mscl
         static ByteStream buildCommand_set(const MipChannels& channels, uint16 sampleRateBase);
 
         //Function: buildCommand_save
-        //    Builds the bytes for the "save" command. 
+        //    Builds the bytes for the "save" command.
         //
         //Parameters:
         //    channels - The <MipChannels> holding the channels to be saved. This should only contain channels that are in the GPS (0x81) descriptor set.
@@ -109,7 +109,7 @@ namespace mscl
         //Returns:
         //    A <ByteStream> that holds the bytes that make up the command
         static ByteStream buildCommand_save();
-            
+
         class Response : public GenericMipCommand::Response
         {
         protected:

@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "stdafx.h"
@@ -145,8 +145,8 @@ namespace mscl
         result->m_writeBaseEeprom       = std::bind(&BaseStation_Impl::protocol_write_v2, _1, ASPP1, _2, _3);
         result->m_enableBeacon          = std::bind(&BaseStation_Impl::protocol_enableBeacon_v2, _1, ASPP1, _2);
         result->m_beaconStatus          = std::bind(&BaseStation_Impl::protocol_beaconStatus_v1, _1, ASPP1);
-    
-        //Node Commands 
+
+        //Node Commands
         result->m_readNodeEeprom        = std::bind(&BaseStation_Impl::protocol_node_readEeprom_v2, _1, ASPP1, _2, _3, _4);
         result->m_writeNodeEeprom       = std::bind(&BaseStation_Impl::protocol_node_writeEeprom_v2, _1, ASPP1, _2, _3, _4);
 
@@ -179,7 +179,7 @@ namespace mscl
         std::unique_ptr<WirelessProtocol> result = WirelessProtocol::v1_2();
 
         //changes from v1.2
-        
+
         //BaseStation Commands
         result->m_startRfSweep = std::bind(&BaseStation_Impl::protocol_startRfSweepMode_v1, _1, ASPP1, _2, _3, _4, _5);
 

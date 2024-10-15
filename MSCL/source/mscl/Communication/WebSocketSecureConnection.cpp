@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "stdafx.h"
@@ -21,7 +21,7 @@ DISABLE_WARNING_BOOST_START
 #include <boost/asio/ssl.hpp>
 DISABLE_WARNING_BOOST_END
 
-namespace mscl 
+namespace mscl
 {
     WebSocketSecureConnection::WebSocketSecureConnection(const std::string& serverAddress, uint16 serverPort) :
         m_host(serverAddress),
@@ -29,19 +29,19 @@ namespace mscl
         m_sslContext(boost::asio::ssl::context::sslv23_client)
     {
         m_type = Connection::connectionType_webSocket;
-        establishConnection(); 
+        establishConnection();
     }
-    
+
     std::string WebSocketSecureConnection::description()
     {
         return "Secure WebSocket";
     }
-    
+
     void WebSocketSecureConnection::establishConnection()
     {
         namespace websocket = boost::beast::websocket;
         namespace ssl = boost::asio::ssl;
-        
+
         //if the connection has not been established
         if(!m_established)
         {

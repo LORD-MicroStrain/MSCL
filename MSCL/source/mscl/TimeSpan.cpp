@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "stdafx.h"
@@ -28,7 +28,7 @@ namespace mscl
         //get the difference between the nanoseconds of the TimeSpan
         int64 difference = m_nanoseconds - other.m_nanoseconds;
 
-        //return the difference 
+        //return the difference
         return difference;
     }
 
@@ -59,25 +59,25 @@ namespace mscl
     TimeSpan TimeSpan::Minutes(int minutes)                { return TimeSpan(static_cast<uint64>(minutes)        * 1000000000 * 60); }
     TimeSpan TimeSpan::Hours(int hours)                    { return TimeSpan(static_cast<uint64>(hours)        * 1000000000 * 60 * 60); }
     TimeSpan TimeSpan::Days(int days)                    { return TimeSpan(static_cast<uint64>(days)            * 1000000000 * 60 * 60 * 24); }
-    
+
     TimeSpan operator*(TimeSpan timeSpan, uint32 factor)
     {
         timeSpan.m_nanoseconds *= factor;
         return timeSpan;
     }
-    
+
     TimeSpan operator*(uint32 factor, TimeSpan timeSpan)
     {
         timeSpan.m_nanoseconds *= factor;
         return timeSpan;
     }
-    
+
     TimeSpan operator/(TimeSpan timeSpan, uint32 divisor)
     {
         timeSpan.m_nanoseconds /= divisor;
         return timeSpan;
     }
-    
+
     TimeSpan operator/(uint32 divisor, TimeSpan timeSpan)
     {
         timeSpan.m_nanoseconds /= divisor;

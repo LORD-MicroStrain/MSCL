@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "stdafx.h"
@@ -441,7 +441,7 @@ namespace mscl
     {
         m_impl->setComplementaryFilterSettings(data);
     }
-    
+
     ComplementaryFilterData InertialNode::getComplementaryFilterSettings()
     {
         return m_impl->getComplementaryFilterSettings();
@@ -776,7 +776,7 @@ namespace mscl
     {
         MipFieldValues data = m_impl->get(MipTypes::CMD_EF_AIDING_MEASUREMENT_ENABLE,
             { Value::UINT16(static_cast<uint16>(aidingSource)) });
-        
+
         // command echoes aiding source and current enabled setting - only need to return enabled
         return data[1].as_bool();
     }
@@ -891,12 +891,7 @@ namespace mscl
     {
         MipFieldValues data = m_impl->get(MipTypes::CMD_GPIO_CONFIGURATION, {
             Value::UINT8(pin) });
-        GpioConfiguration config;
-        config.pin = data[0].as_uint8();
-        config.feature = static_cast<GpioConfiguration::Feature>(data[1].as_uint8());
-        config.behavior = data[2].as_uint8();
-        config.pinModeValue(data[3].as_uint8());
-        return config;
+        return GpioConfiguration::fromCommandResponse(data);
     }
 
     void InertialNode::setGpioConfig(GpioConfiguration config)
@@ -1259,18 +1254,18 @@ namespace mscl
     EventTriggerStatus InertialNode::getEventTriggerStatus(const std::vector<uint8> instances/*= std::vector<uint8>()*/) const
     {
         std::vector<Value> specifier = { Value::UINT8(static_cast<uint8>(instances.size())) };
-        
+
         for (const uint8& instance : instances)
         {
             specifier.push_back(Value::UINT8(instance));
         }
-        
+
         const MipFieldValues data = m_impl->get(MipTypes::CMD_EVENT_TRIGGER_STATUS, specifier);
-        
+
         const uint8 count = data[0].as_uint8();
-        
+
         EventTriggerStatus status;
-        
+
         // Data values start at index 1 and have 2 data entries
         for (int index = 1; index < count * 2 + 1; index += 2)
         {
@@ -1285,7 +1280,7 @@ namespace mscl
                 data[index + 1].as_uint8()                                            // status
             });
         }
-        
+
         return status;
     }
 
@@ -1345,5 +1340,202 @@ namespace mscl
     {
         const MipFieldValues params = NmeaMessageFormat::toCommandParameters(nmeaFormats);
         m_impl->set(MipTypes::CMD_NMEA_MESSAGE_FORMAT, params);
+    }
+
+    MeasurementReferenceFrames InertialNode::getAidingMeasurementReferenceFrames(Rotation::Format rotationFormat) const
+    {
+        MeasurementReferenceFrames ret;
+
+        uint8 maxFrameId = features().maxMeasurementReferenceFrameId();
+        for (uint8 id = 1; id <= maxFrameId; id++)
+        {
+            try
+            {
+                ret.emplace(id, getAidingMeasurementReferenceFrame(id, rotationFormat));
+            }
+            catch (const Error_MipCmdFailed&) { /*ignore*/ }
+        }
+
+        return ret;
+    }
+
+    void InertialNode::setAidingMeasurementRefrenceFrames(const MeasurementReferenceFrames& frames, bool clearExcludedIds) const
+    {
+        MeasurementReferenceFrame clearFrame;
+
+        uint8 maxFrameId = features().maxMeasurementReferenceFrameId();
+        for (uint8 id = 1; id <= maxFrameId; id++)
+        {
+            if (frames.find(id) != frames.end())
+            {
+                setAidingMeasurementReferenceFrame(id, frames.at(id));
+            }
+            else if (clearExcludedIds)
+            {
+                try
+                {
+                    setAidingMeasurementReferenceFrame(id, clearFrame);
+                }
+                catch (const Error_MipCmdFailed&) { /*ignore*/ }
+            }
+        }
+    }
+
+    MeasurementReferenceFrame InertialNode::getAidingMeasurementReferenceFrame(uint8 id, Rotation::Format rotationFormat) const
+    {
+        MipFieldValues data = m_impl->get(MipTypes::CMD_AIDING_FRAME_CONFIG, { Value::UINT8(id), Value::UINT8(static_cast<uint8>(rotationFormat)) });
+
+        return MeasurementReferenceFrame(data, 1);
+    }
+
+    void InertialNode::setAidingMeasurementReferenceFrame(uint8 id, const MeasurementReferenceFrame& frame) const
+    {
+        MipFieldValues params = { Value::UINT8(id) };
+        frame.appendMipFieldValues(params);
+
+        m_impl->set(MipTypes::CMD_AIDING_FRAME_CONFIG, params);
+    }
+
+    AidingMeasurementInput::ResponseMode InertialNode::getAidingMeasurementResponseMode() const
+    {
+        const MipFieldValues resData = m_impl->get(MipTypes::CMD_AIDING_ECHO_CONTROL);
+        return static_cast<AidingMeasurementInput::ResponseMode>(resData[0].as_uint8());
+    }
+
+    void InertialNode::setAidingMeasurementResponseMode(AidingMeasurementInput::ResponseMode mode) const
+    {
+        const MipFieldValues params = { Value::UINT8(static_cast<uint8>(mode)) };
+        m_impl->set(MipTypes::CMD_AIDING_ECHO_CONTROL, params);
+    }
+
+    void InertialNode::sendAidingMeasurement(AidingMeasurementPosition measurement) const
+    {
+        switch (measurement.referenceFrame())
+        {
+        case PositionVelocityReferenceFrame::ECEF:
+            m_impl->run(MipTypes::CMD_AIDING_POS_ECEF, measurement.toMipFieldValues());
+            return;
+
+        case PositionVelocityReferenceFrame::LLH_NED:
+            m_impl->run(MipTypes::CMD_AIDING_POS_LLH, measurement.toMipFieldValues());
+            return;
+
+        default:
+            break;
+        }
+
+        throw Error_NotSupported("The specified reference frame is not supported");
+    }
+
+    void InertialNode::sendAidingMeasurement(AidingMeasurementHeight measurement) const
+    {
+        m_impl->run(MipTypes::CMD_AIDING_HEIGHT_ABOVE_ELLIPSOID, measurement.toMipFieldValues());
+    }
+
+    void InertialNode::sendAidingMeasurement(AidingMeasurementVelocity measurement) const
+    {
+        switch (measurement.referenceFrame())
+        {
+        case PositionVelocityReferenceFrame::ECEF:
+            m_impl->run(MipTypes::CMD_AIDING_VEL_ECEF, measurement.toMipFieldValues());
+            return;
+
+        case PositionVelocityReferenceFrame::LLH_NED:
+            m_impl->run(MipTypes::CMD_AIDING_VEL_NED, measurement.toMipFieldValues());
+            return;
+
+        case PositionVelocityReferenceFrame::VEHICLE:
+            m_impl->run(MipTypes::CMD_AIDING_VEL_BODY_FRAME, measurement.toMipFieldValues());
+            return;
+
+        default:
+            break;
+        }
+
+        throw Error_NotSupported("The specified reference frame is not supported");
+    }
+
+    void InertialNode::sendAidingMeasurement(AidingMeasurementHeading measurement) const
+    {
+        m_impl->run(MipTypes::CMD_AIDING_HEADING_TRUE, measurement.toMipFieldValues());
+    }
+
+    void InertialNode::sendAidingMeasurement(AidingMeasurementMagneticField measurement) const
+    {
+        m_impl->run(MipTypes::CMD_AIDING_MAGNETIC_FIELD, measurement.toMipFieldValues());
+    }
+
+    void InertialNode::sendAidingMeasurement(AidingMeasurementPressure measurement) const
+    {
+        m_impl->run(MipTypes::CMD_AIDING_PRESSURE, measurement.toMipFieldValues());
+    }
+
+    AidingMeasurementPosition InertialNode::sendAidingMeasurement_readEcho(AidingMeasurementPosition measurement) const
+    {
+        MipFieldValues vals;
+        switch (measurement.referenceFrame())
+        {
+        case PositionVelocityReferenceFrame::ECEF:
+            vals = m_impl->get(MipTypes::CMD_AIDING_POS_ECEF, measurement.toMipFieldValues());
+            break;
+
+        case PositionVelocityReferenceFrame::LLH_NED:
+            vals = m_impl->get(MipTypes::CMD_AIDING_POS_LLH, measurement.toMipFieldValues());
+            break;
+
+        default:
+            throw Error_NotSupported("The specified reference frame is not supported");
+        }
+
+        return AidingMeasurementPosition(measurement.referenceFrame(), vals);
+    }
+
+    AidingMeasurementHeight InertialNode::sendAidingMeasurement_readEcho(AidingMeasurementHeight measurement) const
+    {
+        MipFieldValues vals = m_impl->get(MipTypes::CMD_AIDING_HEIGHT_ABOVE_ELLIPSOID, measurement.toMipFieldValues());
+        return AidingMeasurementHeight(vals);
+    }
+
+    AidingMeasurementVelocity InertialNode::sendAidingMeasurement_readEcho(AidingMeasurementVelocity measurement) const
+    {
+        MipFieldValues vals;
+
+        switch (measurement.referenceFrame())
+        {
+        case PositionVelocityReferenceFrame::ECEF:
+            vals = m_impl->get(MipTypes::CMD_AIDING_VEL_ECEF, measurement.toMipFieldValues());
+            break;
+
+        case PositionVelocityReferenceFrame::LLH_NED:
+            vals = m_impl->get(MipTypes::CMD_AIDING_VEL_NED, measurement.toMipFieldValues());
+            break;
+
+        case PositionVelocityReferenceFrame::VEHICLE:
+            vals = m_impl->get(MipTypes::CMD_AIDING_VEL_BODY_FRAME, measurement.toMipFieldValues());
+            break;
+
+        default:
+            throw Error_NotSupported("The specified reference frame is not supported");
+        }
+
+        return AidingMeasurementVelocity(measurement.referenceFrame(), vals);
+    }
+
+    AidingMeasurementHeading InertialNode::sendAidingMeasurement_readEcho(AidingMeasurementHeading measurement) const
+    {
+        MipFieldValues vals = m_impl->get(MipTypes::CMD_AIDING_HEADING_TRUE, measurement.toMipFieldValues());
+        return AidingMeasurementHeading(vals);
+    }
+
+    AidingMeasurementMagneticField InertialNode::sendAidingMeasurement_readEcho(AidingMeasurementMagneticField measurement) const
+    {
+        MipFieldValues vals = m_impl->get(MipTypes::CMD_AIDING_MAGNETIC_FIELD, measurement.toMipFieldValues());
+        return AidingMeasurementMagneticField(vals);
+    }
+
+    AidingMeasurementPressure InertialNode::sendAidingMeasurement_readEcho(AidingMeasurementPressure measurement) const
+    {
+        MipFieldValues vals = m_impl->get(MipTypes::CMD_AIDING_PRESSURE, measurement.toMipFieldValues());
+        return AidingMeasurementPressure(vals);
     }
 }

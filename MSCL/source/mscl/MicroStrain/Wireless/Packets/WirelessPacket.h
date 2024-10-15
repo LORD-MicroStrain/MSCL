@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -51,7 +51,7 @@ namespace mscl
 
         //=====================================================================================================
         //Enums: PacketType
-        
+
         //  packetType_NotFound                     - -2   - No Packet Found
         //  packetType_unknown                      - -1   - Unknown Packet Type
         //  packetType_nodeCommand                  - 0x00 - Node Command Packet
@@ -91,7 +91,7 @@ namespace mscl
         {
             packetType_NotFound                     = -2,
             packetType_unknown                      = -1,
-        
+
             packetType_nodeCommand                  = 0x00,
             packetType_nodeErrorReply               = 0x02,
             packetType_LDC                          = 0x04,
@@ -250,11 +250,11 @@ namespace mscl
 
         //Function: deliveryStopFlags
         //    Sets the delivery stop flags to the passed in flags
-        //    
+        //
         //Parameters:
         //    flags - the delivery stop flags to set
         void deliveryStopFlags(DeliveryStopFlags flags);
-        
+
         //Function: type
         //    Gets the packet type of the packet
         //
@@ -280,7 +280,7 @@ namespace mscl
         //    Sets the node address of the packet
         //
         //Parameters:
-        //    address - The node address to set 
+        //    address - The node address to set
         void nodeAddress(NodeAddress address);
 
         //Function: nodeRSSI

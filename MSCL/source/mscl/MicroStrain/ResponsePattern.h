@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -91,7 +91,7 @@ namespace mscl
         mutable std::mutex m_parsingMutex;
 
         //Variable: m_fullyMatched
-        //    Whether or not the ResponsePattern has been fully matched. 
+        //    Whether or not the ResponsePattern has been fully matched.
         //    Some commands have multiple parts to their response. This will not be true until all required parts have been matched.
         bool m_fullyMatched;
 
@@ -165,7 +165,7 @@ namespace mscl
         bool fullyMatched() const;
 
         //Function: success
-        //    Gets whether or not the command was a success (a success response was matched). 
+        //    Gets whether or not the command was a success (a success response was matched).
         //
         //Returns:
         //    true if the command was a success, false otherwise.

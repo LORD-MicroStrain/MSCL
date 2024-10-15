@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "stdafx.h"
@@ -15,21 +15,21 @@
 #include <MSTcpIP.h>
 #endif
 
-namespace mscl 
+namespace mscl
 {
     WebSocketConnection::WebSocketConnection(const std::string& serverAddress, uint16 serverPort) :
         m_host(serverAddress),
         m_port(serverPort)
     {
         m_type = Connection::connectionType_webSocket;
-        establishConnection(); 
+        establishConnection();
     }
-    
+
     std::string WebSocketConnection::description()
     {
         return "WebSocket";
     }
-    
+
     void WebSocketConnection::establishConnection()
     {
         namespace websocket = boost::beast::websocket;

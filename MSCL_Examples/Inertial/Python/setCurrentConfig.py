@@ -1,9 +1,15 @@
-#import the mscl library
+# Updated: 2/21/2024
+
 import sys
-sys.path.append("../../dependencies/Python")
+
+# TODO: change this path to match your setup
+# import the mscl library.
+arch = sys.maxsize > 2**32 and "x64" or "x32"
+sys.path.append("../../../Output/Python{sys.version_info.major}.{sys.version_info.minor}/{arch}/Release")
+
 import mscl
 
-#TODO: change these constants to match your setup
+# TODO: change these constants to match your setup
 COM_PORT = "COM4"
 
 try:
@@ -48,5 +54,5 @@ try:
     offset = mscl.PositionOffset(0.0, 0.0, 0.0)
     node.setAntennaOffset(offset)
 
-except mscl.Error, e:
-    print "Error:", e
+except mscl.Error as e:
+    print("Error:", e)

@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "stdafx.h"
@@ -21,8 +21,8 @@ DISABLE_WARNING_BOOST_END
 
 namespace mscl
 {
-    //the classes in this file do not get referenced anywhere, therefore the 
-    //linker will not include this compilation unit when statically 
+    //the classes in this file do not get referenced anywhere, therefore the
+    //linker will not include this compilation unit when statically
     //linking to an executable. Defining this variable, and then using it
     //elsewhere, will force this file to be included
     bool _forceLibraryToIncludeCompilationUnit_AHRS;
@@ -468,7 +468,7 @@ namespace mscl
 
         bool tsValid = pointIsValid(timestampFlags, TS_FLAG);
 
-        //add data points 
+        //add data points
         result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_TIME_OF_WEEK, valueType_double, anyType(gpsTimeOfWeek), tsValid));
         result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_WEEK_NUMBER, valueType_uint16, anyType(gpsWeekNumber), tsValid));
         result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_FLAGS, valueType_uint16, anyType(timestampFlags)));
@@ -495,7 +495,7 @@ namespace mscl
         float maxTemp = bytes.read_float();
         float meanTemp = bytes.read_float();
 
-        //add data points 
+        //add data points
         result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_MIN_TEMP, valueType_float, anyType(minTemp)));
         result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_MAX_TEMP, valueType_float, anyType(maxTemp)));
         result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_MEAN_TEMP, valueType_float, anyType(meanTemp)));
@@ -520,7 +520,7 @@ namespace mscl
         //get the data
         float ambientPressure = bytes.read_float();
 
-        //add data points 
+        //add data points
         result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_PRESSURE, valueType_float, anyType(ambientPressure)));
     }
 
@@ -572,7 +572,7 @@ namespace mscl
         //get the data
         float ambientPressure = bytes.read_float();
 
-        //add data points 
+        //add data points
         result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_PRESSURE, valueType_float, anyType(ambientPressure)));
     }
 
@@ -600,7 +600,7 @@ namespace mscl
         float unc = bytes.read_float();
         bool valid = bytes.read_uint16() > 0;
 
-        //add data points 
+        //add data points
         result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_SPEED, valueType_float, anyType(speed), valid));
         result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_SPEED_ACCURACY, valueType_float, anyType(unc), valid));
     }

@@ -1,13 +1,19 @@
 # MSCL Example: BaseStationBeacon
-#   This example shows how to Enable and Disable the 
+#   This example shows how to Enable and Disable the
 #   beacon (used for Synchronized Sampling) on a base station
+#
+# Updated: 2/21/2024
+
+import sys
+
+# TODO: change this path to match your setup
+# import the mscl library.
+arch = sys.maxsize > 2**32 and "x64" or "x32"
+sys.path.append("../../../Output/Python{sys.version_info.major}.{sys.version_info.minor}/{arch}/Release")
+
+import mscl
 
 from time import sleep
-
-# import the mscl library
-import sys
-sys.path.append("../../dependencies/Python")
-import mscl
 
 # TODO: change these constants to match your setup
 COM_PORT = "COM3"
@@ -21,30 +27,30 @@ try:
 
     # make sure we can ping the base station
     if not baseStation.ping():
-        print "Failed to ping the Base Station"
+        print("Failed to ping the Base Station")
 
     if baseStation.features().supportsBeaconStatus():
         status = baseStation.beaconStatus()
-        print "Beacon current status: Enabled?", status.enabled(), "Time:", status.timestamp()
+        print("Beacon current status: Enabled?", status.enabled(), "Time:", status.timestamp())
 
-    print "Attempting to enable the beacon..."
+    print("Attempting to enable the beacon...")
 
     # enable the beacon on the Base Station using the PC time
     startTime = baseStation.enableBeacon()
 
     # if we got here, no exception was thrown, so enableBeacon was successful
-    print "Successfully enabled the beacon on the Base Station"
-    print "Beacon's initial Timestamp:", startTime
+    print("Successfully enabled the beacon on the Base Station")
+    print("Beacon's initial Timestamp:", startTime)
 
-    print "Beacon is active"
-    print "Sleeping for 3 seconds..."
+    print("Beacon is active")
+    print("Sleeping for 3 seconds...")
     sleep(3)
 
     # disable the beacon on the Base Station
     baseStation.disableBeacon()
 
     # if we got here, no exception was thrown, so disableBeacon was successful
-    print "Successfully disabled the beacon on the Base Station"
+    print("Successfully disabled the beacon on the Base Station")
 
-except Exception, e:
-    print "Error:", e
+except Exception as e:
+    print("Error:", e)

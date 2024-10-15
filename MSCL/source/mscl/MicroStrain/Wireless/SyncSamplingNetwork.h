@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -71,10 +71,10 @@ namespace mscl
         WirelessTypes::CommProtocol m_commProtocol;
 
         //Variable: m_percentBandwidth
-        //    The percent of bandwidth for the entire Sync Sampling Network. 
+        //    The percent of bandwidth for the entire Sync Sampling Network.
         //    This includes nodes that could not find TDMA slots, but does not include nodes who failed to communicate.
         float m_percentBandwidth;
-        
+
         //Variable: m_networkOk
         //    Whether the Sync Sampling Network is OK (true) or has problems (false).
         bool m_networkOk;
@@ -152,7 +152,7 @@ namespace mscl
         bool ok() const;
 
         //API Function: refresh
-        //    Refreshes the Sync Sampling Network. 
+        //    Refreshes the Sync Sampling Network.
         //    This function must be called when any WirelessNode has changed its configuration after being added to the network!
         //
         //Exceptions:
@@ -165,7 +165,7 @@ namespace mscl
         //    Gets whether the lossless option is enabled or not for the entire network (default of enabled).
         //    The lossless feature enables buffering and retransmissions in order to provide 100% packet success rate under most operating conditions.
         //    This does, however, have a possible increase in latency, especially in poor RF environments.
-        //    
+        //
         //Returns:
         //    true if the lossless option is enabled, false if it is disabled.
         bool lossless() const;
@@ -271,7 +271,7 @@ namespace mscl
 
     private:
         //Function: addNodeToNetwork
-        //    Adds a <WirelessNode> to the Sync Sampling network, with or without a given pending <WirelessNodeConfig>. 
+        //    Adds a <WirelessNode> to the Sync Sampling network, with or without a given pending <WirelessNodeConfig>.
         //    If the Node already exists in the network, it will not be added.
         //    The Node's parent <BaseStation> should be the same as the network's master <BaseStation>.
         //    The Node should have its sampling configuration, or the provided pending configuration, set to a Synchronized Sampling mode prior to adding to be successfully added.
@@ -330,7 +330,7 @@ namespace mscl
         bool sortingFunction(NodeAddress address1, NodeAddress address2);
 
         //Function: findSlotsForNodes
-        //    Finds TDMA slots for every Node in the given vector of nodes. 
+        //    Finds TDMA slots for every Node in the given vector of nodes.
         //    Note that this clears m_slots before finding new slots for all of the Nodes.
         //
         //Parameters:
@@ -359,7 +359,7 @@ namespace mscl
         bool getTdmaSlot(NodeAddress nodeAddress);
 
         //Function: optimizeBandwidth
-        //    Tries to optimize the bandwidth to give lossless nodes more time to transmit. 
+        //    Tries to optimize the bandwidth to give lossless nodes more time to transmit.
         //    Nodes may be given different slots and the network order rearranged.
         //
         //Exceptions:

@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -133,7 +133,7 @@ namespace mscl
         //Returns:
         //    A <ByteStream> containing the MIP command packet built from the given bytes
         static ByteStream buildCommand(MipTypes::Command commandId, const Bytes& fieldData = Bytes());
-        
+
         //Function: peekCommandId
         //    Read the descriptor set and field descriptor from the provided command bytes.
         //    Note: The provided command bytes are assumed to be formatted properly, no validation occurs.

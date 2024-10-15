@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -133,7 +133,7 @@ namespace mscl
         bool isDuplicate(const WirelessPacket& packet);
 
         //Function: parseAsPacket_ASPP_v1
-        //    Takes a DataBuffer that has had its read position moved to the start of a packet 
+        //    Takes a DataBuffer that has had its read position moved to the start of a packet
         //    and verifies that the bytes form a valid ASPP v1 packet.
         //
         //Parameters:
@@ -146,7 +146,7 @@ namespace mscl
         WirelessParser::ParsePacketResult parseAsPacket_ASPP_v1(DataBuffer& data, WirelessPacket& packet, WirelessTypes::Frequency freq);
 
         //Function: parseAsPacket_ASPP_v2
-        //    Takes a DataBuffer that has had its read position moved to the start of a packet 
+        //    Takes a DataBuffer that has had its read position moved to the start of a packet
         //    and verifies that the bytes form a valid ASPP v2 packet.
         //
         //Parameters:
@@ -159,7 +159,7 @@ namespace mscl
         WirelessParser::ParsePacketResult parseAsPacket_ASPP_v2(DataBuffer& data, WirelessPacket& packet, WirelessTypes::Frequency freq);
 
         //Function: parseAsPacket_ASPP_v3
-        //    Takes a DataBuffer that has had its read position moved to the start of a packet 
+        //    Takes a DataBuffer that has had its read position moved to the start of a packet
         //    and verifies that the bytes form a valid ASPP v3 packet.
         //
         //Parameters:
@@ -173,7 +173,7 @@ namespace mscl
 
     public:
         //Function: parseAsPacket
-        //    Takes a DataBuffer that has had its read position moved to the start of a packet 
+        //    Takes a DataBuffer that has had its read position moved to the start of a packet
         //    and verifies that the bytes form a valid ASPP v1 or v2 packet.
         //
         //Parameters:
@@ -199,7 +199,7 @@ namespace mscl
         WirelessPacket::PacketType findPacketInBytes(DataBuffer& data, WirelessTypes::Frequency freq);
 
         //Function: parse
-        //    Takes a <DataBuffer> and finds the next ASPP Wireless Packet, 
+        //    Takes a <DataBuffer> and finds the next ASPP Wireless Packet,
         //    or the next command response that is expected by the base station.
         //
         //    If an ASPP packet is found, the packet will be stored in the <WirelessPacketCollector>.

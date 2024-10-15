@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "mscl/Types.h"
@@ -238,7 +238,7 @@ BOOST_AUTO_TEST_CASE(Utils_splitWord)
     //verify that the lsb is now 0x34
     BOOST_CHECK_EQUAL(lsb, 0x34);
 
-    
+
     value = 0x56;
 
     //convert the word value into 2 bytes
