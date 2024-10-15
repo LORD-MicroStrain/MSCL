@@ -69,7 +69,7 @@ if(WIN32)
 endif()
 
 set(TURTLE_INCLUDE_DIR "${MICROSTRAIN_LIB_DIR}/turtle/include" CACHE STRING "Location to search for the turtle include files. Only used when building tests")
-set(NATURAL_DOCS_ROOT "${MICROSTRAIN_LIB_DIR}/NaturalDocs" CACHE STRING "Location of NaturalDocs used to generate the docmentation")
+set(NATURAL_DOCS_ROOT "${MICROSTRAIN_LIB_DIR}/NaturalDocs" CACHE STRING "Location of NaturalDocs used to generate the documentation")
 
 if(UNIX AND NOT APPLE)
   set(DPKG_ROOT "" CACHE STRING "Location of the dpkg executable")

@@ -18,7 +18,7 @@ tcpConnection = mscl.Connection.TcpIp("192.100.26.1", 5000)
 baseStation = mscl.BaseStation(tcpConnection)
 ```
 
-### I am using a WSDA-2000 ethernet BaseStation, but am having trouble communicating with it / Wireless Nodes.
+### I am using a WSDA-2000 ethernet BaseStation, but having trouble communicating with it / Wireless Nodes.
 
 Depending on your network latency, you may need to adjust the timeout for communicating with the BaseStation:
 
@@ -31,7 +31,7 @@ baseStation.timeout(2000)
 
 ### My Wireless Node won't respond to commands.
 
-In order to communicate with a Wireless Node, all of the following must be true:
+In order to communicate with a Wireless Node, all the following must be true:
 - The Node is powered on, and within range of the BaseStation
 - The Node is on the same frequency as the BaseStation
 - The Node is in Idle Mode (not sampling, and not sleeping)

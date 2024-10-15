@@ -58,7 +58,7 @@ and add the desired options as `-D` flags to the end of this command:
     ```bash
     cmake --build . -j$(nproc)
     ```
-5. All build artifacts will be located in the `<Project Root>/build` directory in a somewhat unorderly directory structure,
+5. All build artifacts will be located in the `<Project Root>/build` directory in a somewhat disorderly directory structure,
 but the important artifacts such as the libraries, header files, etc. will be copied to `<Project Root>/Output`
 in a more orderly directory structure
 6. If you want to build the packages (`.deb` for debian/Ubuntu, `.rpm` for RedHat/CentOS) run the following command after building:
