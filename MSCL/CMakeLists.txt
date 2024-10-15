@@ -66,10 +66,10 @@ endforeach()
 
 # Configure some compiler flags
 set(LIB_DEFINES "")
-if(NOT ${WITH_SSL})
+if(NOT WITH_SSL)
   list(APPEND LIB_DEFINES MSCL_DISABLE_SSL)
 endif()
-if(NOT ${WITH_WEBSOCKETS})
+if(NOT WITH_WEBSOCKETS)
   list(APPEND LIB_DEFINES MSCL_DISABLE_WEBSOCKETS)
 endif()
 if(UNIX)
@@ -81,7 +81,7 @@ set(LIB_INCLUDE_DIRS
   ${Boost_INCLUDE_DIRS}
   ${CMAKE_CURRENT_SOURCE_DIR}/source
 )
-if(${WITH_SSL})
+if(WITH_SSL)
   list(APPEND LIB_INCLUDE_DIRS ${OPENSSL_INCLUDE_DIR})
 endif()
 
@@ -90,7 +90,7 @@ if(BUILD_SHARED_LIBS)
   set(LIB_SHARED_LIBRARIES
     ${Boost_SHARED_LIBRARIES}
   )
-  if(${WITH_SSL})
+  if(WITH_SSL)
     list(APPEND LIB_SHARED_LIBRARIES ${OPENSSL_SHARED_LIBRARIES})
   endif()
 endif()
@@ -99,7 +99,7 @@ endif()
 set(LIB_STATIC_LIBRARIES
   ${Boost_STATIC_LIBRARIES}
 )
-if(${WITH_SSL})
+if(WITH_SSL)
   list(APPEND LIB_STATIC_LIBRARIES ${OPENSSL_STATIC_LIBRARIES})
 endif()
 
