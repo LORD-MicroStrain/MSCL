@@ -78,32 +78,32 @@ pipeline {
             archiveArtifacts artifacts: 'build_ubuntu_arm64v8/*.deb'
           }
         }
-//         stage('DEB ARM32') {
-//           agent { label 'linux-arm64' }
-//           options {
-//             skipDefaultCheckout()
-//             timeout(time: 20, activity: true, unit: 'MINUTES')
-//           }
-//           steps {
-//             cleanWs()
-//             checkout scm
-//             sh '.devcontainer/docker_build_debs.sh --arch arm32v7 --python3Versions "' + python3Versions() + '"'
-//             archiveArtifacts artifacts: 'build_ubuntu_arm32v7/*.deb'
-//           }
-//         }
-//         stage('RPM ARM64') {
-//           agent { label 'linux-arm64' }
-//           options {
-//             skipDefaultCheckout()
-//             timeout(time: 20, activity: true, unit: 'MINUTES')
-//           }
-//           steps {
-//             cleanWs()
-//             checkout scm
-//             sh '.devcontainer/docker_build_rpms.sh --arch arm64v8 --python3Versions "' + python3Versions() + '"'
-//             archiveArtifacts artifacts: 'build_centos_arm64v8/*.rpm'
-//           }
-//         }
+        stage('DEB ARM32') {
+          agent { label 'linux-arm64' }
+          options {
+            skipDefaultCheckout()
+            timeout(time: 20, activity: true, unit: 'MINUTES')
+          }
+          steps {
+            cleanWs()
+            checkout scm
+            sh '.devcontainer/docker_build_debs.sh --arch arm32v7 --python3Versions "' + python3Versions() + '"'
+            archiveArtifacts artifacts: 'build_ubuntu_arm32v7/*.deb'
+          }
+        }
+        stage('RPM ARM64') {
+          agent { label 'linux-arm64' }
+          options {
+            skipDefaultCheckout()
+            timeout(time: 20, activity: true, unit: 'MINUTES')
+          }
+          steps {
+            cleanWs()
+            checkout scm
+            sh '.devcontainer/docker_build_rpms.sh --arch arm64v8 --python3Versions "' + python3Versions() + '"'
+            archiveArtifacts artifacts: 'build_centos_arm64v8/*.rpm'
+          }
+        }
       }
     }
   }

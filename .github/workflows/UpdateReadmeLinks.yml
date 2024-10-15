@@ -14,7 +14,7 @@ jobs:
       # Grab the latest tag i.e. v1.2.3
       - name: Get latest tag
         run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
-      # Modifies all the version numbers in the links. Remove the preceeding 'v' from the tag
+      # Modifies all the version numbers in the links. Remove the preceding 'v' from the tag
       - name: Modify README
         run: sed -i -r "s/[0-9]+\.[0-9]+\.[0-9]+_/${RELEASE_VERSION//[Vv]}_/g" README.md
       - name: Update author name
