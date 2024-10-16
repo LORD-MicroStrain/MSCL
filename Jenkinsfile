@@ -94,15 +94,7 @@ pipeline {
       }
     }
   }
-  post {
-    success {
-      script {
-        agent { label 'windows10' }
-        timeout(time: 20, activity: true, unit: 'MINUTES')
-        powershell 'BuildScripts/zip_win.ps1'
-        archiveArtifacts artifacts: 'build_windows/*.zip'        
-      }
-    }
+//   post {
 //     failure {
 //       script {
 //         if (BRANCH_NAME && (BRANCH_NAME == 'main' || BRANCH_NAME == 'master')) {
@@ -125,5 +117,5 @@ pipeline {
 //         }
 //       }
 //     }
-  }
+//   }
 }

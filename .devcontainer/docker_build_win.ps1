@@ -81,6 +81,7 @@ try {
       git config --global --add safe.directory C:/projects/mscl; `
       git fetch origin --tags; `
       & 'C:\Projects\MSCL\BuildScripts\build_win.ps1' -arch ${cmake_arch} -buildDir C:\projects\mscl\docker_build\${cmake_arch} ${python2_build_script_flags} ${python3_build_script_flags}; `
+      & 'C:\Projects\MSCL\BuildScripts\zip_win.ps1' -arch ${arch}; `
     "
 }
 catch {
