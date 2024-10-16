@@ -26,7 +26,7 @@ pipeline {
     stage('Build') {
       // Run the windows and linux builds in parallel
       parallel {
-        stage('Windows') {
+        stage('Windows x64') {
           agent { label 'windows10' }
           options {
             skipDefaultCheckout()
@@ -35,8 +35,21 @@ pipeline {
           steps {
             cleanWs()
             checkout scm
-            powershell '.devcontainer/docker_build_win.ps1 -python3_versions "' + python3Versions() + '"'
-            archiveArtifacts artifacts: 'build_windows/*.zip'
+            powershell '.devcontainer/docker_build_win.ps1 -arch x64 -python3_versions "' + python3Versions() + '"'
+            archiveArtifacts artifacts: 'build_windows_x64/*.zip'
+          }
+        }
+        stage('Windows x86') {
+          agent { label 'windows10' }
+          options {
+            skipDefaultCheckout()
+            timeout(time: 20, activity: true, unit: 'MINUTES')
+          }
+          steps {
+            cleanWs()
+            checkout scm
+            powershell '.devcontainer/docker_build_win.ps1 -arch x86 -python3_versions "' + python3Versions() + '"'
+            archiveArtifacts artifacts: 'build_windows_x86/*.zip'
           }
         }
         stage('DEB AMD64') {
@@ -61,8 +74,8 @@ pipeline {
           steps {
             cleanWs()
             checkout scm
-            sh '.devcontainer/docker_build_debs.sh --arch arm64v8 --python3Versions "' + python3Versions() + '"'
-            archiveArtifacts artifacts: 'build_ubuntu_arm64v8/*.deb'
+            sh '.devcontainer/docker_build_debs.sh --arch arm64 --python3Versions "' + python3Versions() + '"'
+            archiveArtifacts artifacts: 'build_ubuntu_arm64/*.deb'
           }
         }
         stage('DEB ARM32') {
@@ -74,14 +87,22 @@ pipeline {
           steps {
             cleanWs()
             checkout scm
-            sh '.devcontainer/docker_build_debs.sh --arch arm32v7 --python3Versions "' + python3Versions() + '"'
-            archiveArtifacts artifacts: 'build_ubuntu_arm32v7/*.deb'
+            sh '.devcontainer/docker_build_debs.sh --arch arm32 --python3Versions "' + python3Versions() + '"'
+            archiveArtifacts artifacts: 'build_ubuntu_arm32/*.deb'
           }
         }
       }
     }
   }
-//   post {
+  post {
+    success {
+      script {
+        agent { label 'windows10' }
+        timeout(time: 20, activity: true, unit: 'MINUTES')
+        powershell 'BuildScripts/zip_win.ps1'
+        archiveArtifacts artifacts: 'build_windows/*.zip'        
+      }
+    }
 //     failure {
 //       script {
 //         if (BRANCH_NAME && (BRANCH_NAME == 'main' || BRANCH_NAME == 'master')) {
@@ -104,5 +125,5 @@ pipeline {
 //         }
 //       }
 //     }
-//   }
+  }
 }
