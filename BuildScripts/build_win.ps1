@@ -1,7 +1,7 @@
 # Get arguments from the user
 param (
   [Parameter(Mandatory=$true,HelpMessage='The Directory to build MSCL in. Should be different than the MSCL source directory')][string]$buildDir,
-  [String]$arch = "Win32",
+  [String]$arch = "x64",
   [String]$generator = "Visual Studio 15 2017",
   [String]$toolset = "v140",
   [String[]]$python3Dirs,
