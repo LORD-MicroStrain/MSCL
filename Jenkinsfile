@@ -74,8 +74,8 @@ pipeline {
           steps {
             cleanWs()
             checkout scm
-            sh '.devcontainer/docker_build_debs.sh --arch arm64 --python3Versions "' + python3Versions() + '"'
-            archiveArtifacts artifacts: 'build_ubuntu_arm64/*.deb'
+            sh '.devcontainer/docker_build_debs.sh --arch arm64v8 --python3Versions "' + python3Versions() + '"'
+            archiveArtifacts artifacts: 'build_ubuntu_arm64v8/*.deb'
           }
         }
         stage('DEB ARM32') {
@@ -87,8 +87,8 @@ pipeline {
           steps {
             cleanWs()
             checkout scm
-            sh '.devcontainer/docker_build_debs.sh --arch arm32 --python3Versions "' + python3Versions() + '"'
-            archiveArtifacts artifacts: 'build_ubuntu_arm32/*.deb'
+            sh '.devcontainer/docker_build_debs.sh --arch arm32v7 --python3Versions "' + python3Versions() + '"'
+            archiveArtifacts artifacts: 'build_ubuntu_arm32v7/*.deb'
           }
         }
       }
