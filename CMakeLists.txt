@@ -47,15 +47,20 @@ endif()
 # Allow the user to override the location where most dependencies are installed on Windows
 if(WIN32)
   if(DEFINED ENV{LIB_PATH})
-    set(MICROSTRAIN_LIB_DIR "$ENV{LIB_PATH}" CACHE STRING "Directory where most dependencies are installed")
+    set(MICROSTRAIN_LIB_DIR "$ENV{LIB_PATH}" CACHE PATH "Directory where most dependencies are installed")
   else()
-    set(MICROSTRAIN_LIB_DIR "C:/lib" CACHE STRING "Directory where most dependencies are installed")
+    set(MICROSTRAIN_LIB_DIR "C:/lib" CACHE PATH "Directory where most dependencies are installed")
   endif()
 endif()
 
-# These flags can be passed string values. For example, -DOPENSSL_ROOT_DIR="/usr/lib"
-# Different default search paths for windows
-set(Boost_REQUESTED_VERSION "1.68.0" CACHE INTERNAL "Required version of boost")
+# Custom variables used in this CMake file, not used by FindBoost.cmake
+set(Boost_REQUESTED_VERSION "1.68.0" CACHE STRING "Requested version of boost")
+set(Boost_REQUIRED_VERSION "1.68.0")
+
+if("${Boost_REQUESTED_VERSION}" VERSION_LESS "${Boost_REQUIRED_VERSION}")
+  message(WARNING "MSCL requires a minimum Boost version of ${Boost_REQUIRED_VERSION}. We will search for ${Boost_REQUIRED_VERSION} instead")
+  set(Boost_REQUESTED_VERSION ${Boost_REQUIRED_VERSION})
+endif()
 
 if(WIN32)
   string(REPLACE "." "_" Boost_REQUESTED_VERSION_UNDERSCORE ${Boost_REQUESTED_VERSION})
@@ -132,7 +137,7 @@ endif()
 add_compile_definitions(BOOST_ALL_NO_LIB)
 
 # Custom variable used in this CMake file, not used by FindBoost.cmake
-set(Boost_REQUESTED_COMPONENTS system filesystem)
+set(Boost_REQUIRED_COMPONENTS system filesystem)
 
 # Setup the boost root variable
 if(NOT DEFINED Boost_ROOT)
@@ -142,15 +147,14 @@ endif()
 # Find the static version of boost
 set(Boost_USE_STATIC_LIBS ON)
 set(Boost_USE_STATIC_RUNTIME ON)
-find_package(Boost ${Boost_REQUESTED_VERSION} EXACT REQUIRED COMPONENTS ${Boost_REQUESTED_COMPONENTS})
+find_package(Boost ${Boost_REQUESTED_VERSION} REQUIRED COMPONENTS ${Boost_REQUIRED_COMPONENTS})
 set(Boost_STATIC_LIBRARIES ${Boost_LIBRARIES})
-message(STATUS "Boost_STATIC_LIBRARIES: " ${Boost_LIBRARIES})
 
 # Optionally find some boost testing libraries
 if(BUILD_TESTS)
   set(Boost_USE_STATIC_LIBS ON)
   set(Boost_USE_STATIC_RUNTIME ON)
-  find_package(Boost ${Boost_REQUESTED_VERSION} EXACT REQUIRED COMPONENTS unit_test_framework test_exec_monitor)
+  find_package(Boost ${Boost_REQUESTED_VERSION} REQUIRED COMPONENTS unit_test_framework test_exec_monitor)
   set(Boost_TEST_LIBRARIES ${Boost_LIBRARIES})
 endif()
 
@@ -158,7 +162,7 @@ endif()
 if(BUILD_SHARED_LIBS OR (UNIX AND BUILD_PYTHON3) OR (UNIX AND BUILD_PYTHON2))
   set(Boost_USE_STATIC_LIBS OFF)
   set(Boost_USE_STATIC_RUNTIME OFF)
-  find_package(Boost ${Boost_REQUESTED_VERSION} EXACT REQUIRED COMPONENTS ${Boost_REQUESTED_COMPONENTS})
+  find_package(Boost ${Boost_REQUESTED_VERSION} REQUIRED COMPONENTS ${Boost_REQUIRED_COMPONENTS})
   set(Boost_SHARED_LIBRARIES ${Boost_LIBRARIES})  # Save the shared libraries, so they will not be overridden when we find the static libraries
 endif()
 
