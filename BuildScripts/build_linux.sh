@@ -116,7 +116,7 @@ done
 # Renaming makes it easier for the release process
 # Create the new directory
 mkdir -p "${release_build_dir}"
-for deb_package in "${build_dir}/*.deb" ; do
+for deb_package in "${build_dir}"/*.deb ; do
   release_package_name=$(basename "${deb_package}") # Get the name of the file
   release_package_name="${release_package_name%_*}.deb" # Remove the version number
   cp "${deb_package}" "${release_build_dir}/${release_package_name}" # Copy into a release directory
