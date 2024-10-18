@@ -110,3 +110,11 @@ for python2Dir in "${python2Dirs[@]}"; do
   cmake --build "${build_dir}" -j$(nproc)
   cmake --build "${build_dir}" --target "package"
 done
+
+# Copy and rename all the packages into a release directory
+# Renaming makes it easier for the release process
+for deb_package in "${build_dir}/*.deb" ; do
+  release_package_name=$(basename "${deb_package}") # Get the name of the file
+  release_package_name="${release_package_name%_*}.deb" # Remove the version number
+  cp "${deb_package}" "${build_dir}_for_release/${release_package_name}" # Copy into a release directory
+done
