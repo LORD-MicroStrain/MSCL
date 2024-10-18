@@ -11,6 +11,7 @@ script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" &> /dev/null && pwd)"
 # Define some important directories
 project_dir="${script_dir}/.."
 build_dir="${project_dir}/jenkins_build"
+release_build_dir="${build_dir}_release"
 
 # Get some arguments from the user
 python2Dirs=()
@@ -113,8 +114,10 @@ done
 
 # Copy and rename all the packages into a release directory
 # Renaming makes it easier for the release process
+# Create the new directory
+mkdir -p "${release_build_dir}"
 for deb_package in "${build_dir}/*.deb" ; do
   release_package_name=$(basename "${deb_package}") # Get the name of the file
   release_package_name="${release_package_name%_*}.deb" # Remove the version number
-  cp "${deb_package}" "${build_dir}_for_release/${release_package_name}" # Copy into a release directory
+  cp "${deb_package}" "${release_build_dir}/${release_package_name}" # Copy into a release directory
 done
