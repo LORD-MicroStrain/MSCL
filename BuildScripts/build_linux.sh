@@ -11,7 +11,6 @@ script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" &> /dev/null && pwd)"
 # Define some important directories
 project_dir="${script_dir}/.."
 build_dir="${project_dir}/jenkins_build"
-release_build_dir="${build_dir}_release"
 
 # Get some arguments from the user
 python2Dirs=()
@@ -30,12 +29,14 @@ while [[ $# -gt 0 ]]; do
       ;;
     --buildDir)
       build_dir="${2}"
-      release_build_dir="${build_dir}_release"
       shift # past argument
       shift # past value
       ;;
   esac
 done
+
+# TODO: Add option to build for release instead of copying release artifacts all the time
+release_build_dir="${build_dir}_for_release"
 
 # Build MSCL with everything except python2 and python3
 mkdir -p "${build_dir}"
@@ -117,13 +118,8 @@ done
 # Renaming makes it easier for the release process
 # Create the new directory
 mkdir -p "${release_build_dir}"
-for deb_package in "${build_dir}"/*".deb" ; do
-  if [[ -f "$deb_package" ]]; then
-    printf("Handling file: ${deb_package}\n")
+for deb_package in "${build_dir}"/*.deb; do
     release_package_name=$(basename "${deb_package}")                  # Get the name of the file
     release_package_name="${release_package_name%_*}.deb"              # Remove the version number
     cp "${deb_package}" "${release_build_dir}/${release_package_name}" # Copy into a release directory
-  else
-    printf("Error with file: ${deb_package}\n")
-  fi
 done
