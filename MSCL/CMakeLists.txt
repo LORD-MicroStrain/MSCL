@@ -381,23 +381,23 @@ if(BUILD_PYTHON2 OR BUILD_PYTHON3 OR BUILD_CSHARP)
       COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${CSHARP_MODULE_NAME}> ${MSCL_Managed_OUTPUT_DIR}
     )
   endif()
+endif()
 
-  # Build the documentation
-  if(BUILD_DOCUMENTATION)
-    set(MSCL_DOCS_OUTPUT_DIR ${MSCL_OUTPUT_DIR}/Documentation/MSCL_Docs)
-    set(MSCL_API_DOCS_OUTPUT_DIR ${MSCL_OUTPUT_DIR}/Documentation/MSCL_API_Docs)
-    add_custom_target(MSCL_Docs
-      ALL
-      DEPENDS ${SRC_FILES}
-      COMMAND ${CMAKE_COMMAND} -E remove_directory "${MSCL_OUTPUT_DIR}/Documentation"
-      COMMAND ${CMAKE_COMMAND} -E make_directory "${MSCL_DOCS_OUTPUT_DIR}"
-      COMMAND ${CMAKE_COMMAND} -E remove_directory "${CMAKE_CURRENT_SOURCE_DIR}/../BuildScripts/NaturalDocsProjects/MSCL_Docs_Project/Working Data"
-      COMMAND ${CMAKE_COMMAND} -E env ${NaturalDocs_EXECUTABLE} -i "${CMAKE_CURRENT_SOURCE_DIR}/source/mscl" -o FramedHTML "${MSCL_DOCS_OUTPUT_DIR}" -p "${CMAKE_CURRENT_SOURCE_DIR}/../BuildScripts/NaturalDocsProjects/MSCL_Docs_Project" -s msclDocsStyle
-      COMMAND ${CMAKE_COMMAND} -E make_directory "${MSCL_API_DOCS_OUTPUT_DIR}"
-      COMMAND ${CMAKE_COMMAND} -E remove_directory "${CMAKE_CURRENT_SOURCE_DIR}/../BuildScripts/NaturalDocsProjects/MSCL_API_Docs_Project/Working Data"
-      COMMAND ${CMAKE_COMMAND} -E env ${NaturalDocs_EXECUTABLE} -i "${CMAKE_CURRENT_SOURCE_DIR}/source/mscl" -o FramedHTML "${MSCL_API_DOCS_OUTPUT_DIR}" -p "${CMAKE_CURRENT_SOURCE_DIR}/../BuildScripts/NaturalDocsProjects/MSCL_API_Docs_Project" -s msclDocsStyle
-    )
-  endif()
+# Build the documentation
+if(BUILD_DOCUMENTATION)
+  set(MSCL_DOCS_OUTPUT_DIR ${MSCL_OUTPUT_DIR}/Documentation/MSCL_Docs)
+  set(MSCL_API_DOCS_OUTPUT_DIR ${MSCL_OUTPUT_DIR}/Documentation/MSCL_API_Docs)
+  add_custom_target(MSCL_Docs
+    ALL
+    DEPENDS ${SRC_FILES}
+    COMMAND ${CMAKE_COMMAND} -E remove_directory "${MSCL_OUTPUT_DIR}/Documentation"
+    COMMAND ${CMAKE_COMMAND} -E make_directory "${MSCL_DOCS_OUTPUT_DIR}"
+    COMMAND ${CMAKE_COMMAND} -E remove_directory "${CMAKE_CURRENT_SOURCE_DIR}/../BuildScripts/NaturalDocsProjects/MSCL_Docs_Project/Working Data"
+    COMMAND ${CMAKE_COMMAND} -E env ${NaturalDocs_EXECUTABLE} -i "${CMAKE_CURRENT_SOURCE_DIR}/source/mscl" -o FramedHTML "${MSCL_DOCS_OUTPUT_DIR}" -p "${CMAKE_CURRENT_SOURCE_DIR}/../BuildScripts/NaturalDocsProjects/MSCL_Docs_Project" -s msclDocsStyle
+    COMMAND ${CMAKE_COMMAND} -E make_directory "${MSCL_API_DOCS_OUTPUT_DIR}"
+    COMMAND ${CMAKE_COMMAND} -E remove_directory "${CMAKE_CURRENT_SOURCE_DIR}/../BuildScripts/NaturalDocsProjects/MSCL_API_Docs_Project/Working Data"
+    COMMAND ${CMAKE_COMMAND} -E env ${NaturalDocs_EXECUTABLE} -i "${CMAKE_CURRENT_SOURCE_DIR}/source/mscl" -o FramedHTML "${MSCL_API_DOCS_OUTPUT_DIR}" -p "${CMAKE_CURRENT_SOURCE_DIR}/../BuildScripts/NaturalDocsProjects/MSCL_API_Docs_Project" -s msclDocsStyle
+  )
 endif()
 
 
