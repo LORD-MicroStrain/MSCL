@@ -118,7 +118,7 @@ done
 # Create the new directory
 mkdir -p "${release_build_dir}"
 for deb_package in "${build_dir}"/*".deb" ; do
-  if [[ -file "$deb_package" ]]; then
+  if [[ -f "$deb_package" ]]; then
     printf("Handling file: ${deb_package}\n")
     release_package_name=$(basename "${deb_package}")                  # Get the name of the file
     release_package_name="${release_package_name%_*}.deb"              # Remove the version number
