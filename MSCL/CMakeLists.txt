@@ -217,11 +217,15 @@ target_include_directories(${LIB_NAME_STATIC} PRIVATE ${LIB_INCLUDE_DIRS})
 target_compile_options(${LIB_NAME_STATIC} PRIVATE
   $<$<CXX_COMPILER_ID:GNU>:-fPIC>  # Normally static libraries aren't compiled with this flag, but we need it to compile our bindings properly
   $<$<CXX_COMPILER_ID:MSVC>:/MT$<$<CONFIG:Debug>:d>>
+  $<$<CXX_COMPILER_ID:MSVC>:/MP>
 )
 if(BUILD_SHARED_LIBS)
-  target_compile_options(${LIB_NAME_SHARED} PRIVATE
-    $<$<CXX_COMPILER_ID:MSVC>:/MD$<$<CONFIG:Debug>:d>>
-  )
+  if(MSVC)
+    target_compile_options(${LIB_NAME_SHARED} PRIVATE
+      /MD$<$<CONFIG:Debug>:d>
+      /MP
+    )
+  endif()
   target_compile_definitions(${LIB_NAME_SHARED} PRIVATE ${LIB_DEFINES})
   target_include_directories(${LIB_NAME_SHARED} PRIVATE ${LIB_INCLUDE_DIRS})
 endif()
@@ -334,6 +338,7 @@ if(BUILD_PYTHON2 OR BUILD_PYTHON3 OR BUILD_CSHARP)
     target_compile_options(${CSHARP_MODULE_NAME} PRIVATE
       /bigobj
       /MT$<$<CONFIG:Debug>:d>
+      /MP
     )
     target_compile_definitions(${CSHARP_MODULE_NAME} PRIVATE
       ${LIB_DEFINES}
@@ -376,23 +381,23 @@ if(BUILD_PYTHON2 OR BUILD_PYTHON3 OR BUILD_CSHARP)
       COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${CSHARP_MODULE_NAME}> ${MSCL_Managed_OUTPUT_DIR}
     )
   endif()
+endif()
 
-  # Build the documentation
-  if(BUILD_DOCUMENTATION)
-    set(MSCL_DOCS_OUTPUT_DIR ${MSCL_OUTPUT_DIR}/Documentation/MSCL_Docs)
-    set(MSCL_API_DOCS_OUTPUT_DIR ${MSCL_OUTPUT_DIR}/Documentation/MSCL_API_Docs)
-    add_custom_target(MSCL_Docs
-      ALL
-      DEPENDS ${SRC_FILES}
-      COMMAND ${CMAKE_COMMAND} -E remove_directory "${MSCL_OUTPUT_DIR}/Documentation"
-      COMMAND ${CMAKE_COMMAND} -E make_directory "${MSCL_DOCS_OUTPUT_DIR}"
-      COMMAND ${CMAKE_COMMAND} -E remove_directory "${CMAKE_CURRENT_SOURCE_DIR}/../BuildScripts/NaturalDocsProjects/MSCL_Docs_Project/Working Data"
-      COMMAND ${CMAKE_COMMAND} -E env ${NaturalDocs_EXECUTABLE} -i "${CMAKE_CURRENT_SOURCE_DIR}/source/mscl" -o FramedHTML "${MSCL_DOCS_OUTPUT_DIR}" -p "${CMAKE_CURRENT_SOURCE_DIR}/../BuildScripts/NaturalDocsProjects/MSCL_Docs_Project" -s msclDocsStyle
-      COMMAND ${CMAKE_COMMAND} -E make_directory "${MSCL_API_DOCS_OUTPUT_DIR}"
-      COMMAND ${CMAKE_COMMAND} -E remove_directory "${CMAKE_CURRENT_SOURCE_DIR}/../BuildScripts/NaturalDocsProjects/MSCL_API_Docs_Project/Working Data"
-      COMMAND ${CMAKE_COMMAND} -E env ${NaturalDocs_EXECUTABLE} -i "${CMAKE_CURRENT_SOURCE_DIR}/source/mscl" -o FramedHTML "${MSCL_API_DOCS_OUTPUT_DIR}" -p "${CMAKE_CURRENT_SOURCE_DIR}/../BuildScripts/NaturalDocsProjects/MSCL_API_Docs_Project" -s msclDocsStyle
-    )
-  endif()
+# Build the documentation
+if(BUILD_DOCUMENTATION)
+  set(MSCL_DOCS_OUTPUT_DIR ${MSCL_OUTPUT_DIR}/Documentation/MSCL_Docs)
+  set(MSCL_API_DOCS_OUTPUT_DIR ${MSCL_OUTPUT_DIR}/Documentation/MSCL_API_Docs)
+  add_custom_target(MSCL_Docs
+    ALL
+    DEPENDS ${SRC_FILES}
+    COMMAND ${CMAKE_COMMAND} -E remove_directory "${MSCL_OUTPUT_DIR}/Documentation"
+    COMMAND ${CMAKE_COMMAND} -E make_directory "${MSCL_DOCS_OUTPUT_DIR}"
+    COMMAND ${CMAKE_COMMAND} -E remove_directory "${CMAKE_CURRENT_SOURCE_DIR}/../BuildScripts/NaturalDocsProjects/MSCL_Docs_Project/Working Data"
+    COMMAND ${CMAKE_COMMAND} -E env ${NaturalDocs_EXECUTABLE} -i "${CMAKE_CURRENT_SOURCE_DIR}/source/mscl" -o FramedHTML "${MSCL_DOCS_OUTPUT_DIR}" -p "${CMAKE_CURRENT_SOURCE_DIR}/../BuildScripts/NaturalDocsProjects/MSCL_Docs_Project" -s msclDocsStyle
+    COMMAND ${CMAKE_COMMAND} -E make_directory "${MSCL_API_DOCS_OUTPUT_DIR}"
+    COMMAND ${CMAKE_COMMAND} -E remove_directory "${CMAKE_CURRENT_SOURCE_DIR}/../BuildScripts/NaturalDocsProjects/MSCL_API_Docs_Project/Working Data"
+    COMMAND ${CMAKE_COMMAND} -E env ${NaturalDocs_EXECUTABLE} -i "${CMAKE_CURRENT_SOURCE_DIR}/source/mscl" -o FramedHTML "${MSCL_API_DOCS_OUTPUT_DIR}" -p "${CMAKE_CURRENT_SOURCE_DIR}/../BuildScripts/NaturalDocsProjects/MSCL_API_Docs_Project" -s msclDocsStyle
+  )
 endif()
 
 
@@ -437,7 +442,7 @@ if(BUILD_PACKAGE)
   # NOTE: CPack requires all these variables to be set before importing the module. Do not move them after the include(CPack) line
   set(CPACK_GENERATOR "${FOUND_CPACK_GENERATORS}")
   set(CPACK_PACKAGE_VENDOR "MicroStrain by HBK")
-  set(CPACK_PACKAGE_CONTACT "Rob Fisher <rob.fisher@hbkworld.com>")
+  set(CPACK_PACKAGE_CONTACT "MicroStrain Support <microstrainsupport@hbkworld.com>")
   set(CPACK_COMPONENTS_ALL "static")
   if(BUILD_SHARED_LIBS)
     list(APPEND CPACK_COMPONENTS_ALL shared)
