@@ -33,16 +33,21 @@ function Compress-Files
         return
     }
 
-    # Copy the files to a temp dir to zip for release
-    $full_release_package_name = "${release_build_output_dir}/MSCL_Windows_${arch}_${package_name}"
-    $temp_zip_dir = "${full_release_package_name}_${mscl_git_release_version}"
-    $zip_file = "${full_release_package_name}.zip"
-    Copy-Item -Path "${package_output_dir}" -Destination "${temp_zip_dir}" -Recurse
+    # TODO: Move documentation build to separate build process
+    # Documentation isn't needed to be copied
+    if (-Not ("${package_name}" -eq "Documentation"))
+    {
+        # Copy the files to a temp dir to zip for release
+        $full_release_package_name = "${release_build_output_dir}/MSCL_Windows_${arch}_${package_name}"
+        $temp_zip_dir = "${full_release_package_name}_${mscl_git_release_version}"
+        $zip_file = "${full_release_package_name}.zip"
+        Copy-Item -Path "${package_output_dir}" -Destination "${temp_zip_dir}" -Recurse
 
-    # Compress the temp directory and then remove it
-    echo "Compressing ${temp_zip_dir} to ${zip_file} for release"
-    Compress-Archive -Force -Path "${temp_zip_dir}" -DestinationPath "${zip_file}"
-    Remove-Item "${temp_zip_dir}" -Recurse -Force
+        # Compress the temp directory and then remove it
+        echo "Compressing ${temp_zip_dir} to ${zip_file} for release"
+        Compress-Archive -Force -Path "${temp_zip_dir}" -DestinationPath "${zip_file}"
+        Remove-Item "${temp_zip_dir}" -Recurse -Force
+    }
 
     # Compress the files with the git version
     $full_package_name = "${build_output_dir}/MSCL_Windows_${arch}_${package_name}"
@@ -88,9 +93,9 @@ Compress-Files -package_name "Examples" -package_output_dir "${examples_output_d
 $python_output_dir = "${output_dir}/Python"
 
 # Test to make sure Python libraries were built
-if (-Not (Test-Path -Path "${python_output_dir}"))
+if ((-Not (Test-Path -Path "${python_output_dir}")) -or (Get-ChildItem -Path "$python_output_dir" | Measure-Object).Count -eq 0)
 {
-    echo "Python packages were not built. Cannot find directory: ${python_output_dir}"
+    echo "Python packages were not built"
     exit 1
 }
 
