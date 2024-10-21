@@ -442,7 +442,7 @@ if(BUILD_PACKAGE)
   # NOTE: CPack requires all these variables to be set before importing the module. Do not move them after the include(CPack) line
   set(CPACK_GENERATOR "${FOUND_CPACK_GENERATORS}")
   set(CPACK_PACKAGE_VENDOR "MicroStrain by HBK")
-  set(CPACK_PACKAGE_CONTACT "Rob Fisher <rob.fisher@hbkworld.com>")
+  set(CPACK_PACKAGE_CONTACT "MicroStrain Support <microstrainsupport@hbkworld.com>")
   set(CPACK_COMPONENTS_ALL "static")
   if(BUILD_SHARED_LIBS)
     list(APPEND CPACK_COMPONENTS_ALL shared)

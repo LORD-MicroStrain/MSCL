@@ -16,7 +16,7 @@ REMOVED - A function/class has been removed.
 
 Forthcoming
 
-66.0.0 - 2024-10-18
+66.0.0 - 2024-10-21
 - CHANGED Switched to CMake build system
     - Updated READMEs to reflect new build system
     - Updated example code for Python to conform more to Python3
