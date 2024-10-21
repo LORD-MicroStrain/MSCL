@@ -30,6 +30,7 @@ while [[ $# -gt 0 ]]; do
       ;;
     --buildDir)
       build_dir="${2}"
+      release_build_dir="${build_dir}_release"
       shift # past argument
       shift # past value
       ;;
@@ -116,8 +117,13 @@ done
 # Renaming makes it easier for the release process
 # Create the new directory
 mkdir -p "${release_build_dir}"
-for deb_package in "${build_dir}"/*.deb ; do
-  release_package_name=$(basename "${deb_package}") # Get the name of the file
-  release_package_name="${release_package_name%_*}.deb" # Remove the version number
-  cp "${deb_package}" "${release_build_dir}/${release_package_name}" # Copy into a release directory
+for deb_package in "${build_dir}"/*".deb" ; do
+  if [[ -file "$deb_package" ]]; then
+    printf("Handling file: ${deb_package}\n")
+    release_package_name=$(basename "${deb_package}")                  # Get the name of the file
+    release_package_name="${release_package_name%_*}.deb"              # Remove the version number
+    cp "${deb_package}" "${release_build_dir}/${release_package_name}" # Copy into a release directory
+  else
+    printf("Error with file: ${deb_package}\n")
+  fi
 done
