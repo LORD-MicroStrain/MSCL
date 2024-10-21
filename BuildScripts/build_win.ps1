@@ -21,21 +21,52 @@ try
     # Make sure the build directory exists
     New-Item "${buildDir}" -ItemType Directory -Force
 
-    # Configure MSCL to build with everything except python2 and python3
+    # Configure MSCL to build the documentation only on x64 release
+    if ("$arch" -eq "x64")
+    {
+        cmake -S "${project_dir}" -B "${buildDir}" -G "${generator}" -A "${arch}" -T "${toolset}" `
+        -DBUILD_SHARED_LIBS="OFF" `
+        -DBUILD_PYTHON2="OFF" `
+        -DBUILD_PYTHON3="OFF" `
+        -DBUILD_CSHARP="OFF" `
+        -DBUILD_TESTS="OFF" `
+        -DBUILD_EXAMPLES="OFF" `
+        -DBUILD_DOCUMENTATION="ON"
+
+        cmake --build "${buildDir}" --config "Release"
+    }
+
+    # Configure MSCL to build with everything except csharp, python2, and python3
     cmake -S "${project_dir}" -B "${buildDir}" -G "${generator}" -A "${arch}" -T "${toolset}" `
         -DBUILD_SHARED_LIBS="ON" `
         -DBUILD_PYTHON2="OFF" `
         -DBUILD_PYTHON3="OFF" `
-        -DBUILD_CSHARP="ON" `
+        -DBUILD_CSHARP="OFF" `
         -DBUILD_TESTS="ON" `
         -DBUILD_EXAMPLES="ON" `
-        -DBUILD_DOCUMENTATION="ON"
+        -DBUILD_DOCUMENTATION="OFF"
 
     # Build multiple configurations
     foreach ($config in ${configs})
     {
         cmake --build "${buildDir}" --config "${config}"
         cmake --build "${buildDir}" --config "${config}" --target "RUN_TESTS"
+    }
+
+    # Build CSharp
+    cmake -S "${project_dir}" -B "${buildDir}" -G "${generator}" -A "${arch}" -T "${toolset}" `
+        -DBUILD_SHARED_LIBS="ON" `
+        -DBUILD_PYTHON2="OFF" `
+        -DBUILD_PYTHON3="OFF" `
+        -DBUILD_CSHARP="ON" `
+        -DBUILD_TESTS="OFF" `
+        -DBUILD_EXAMPLES="ON" `
+        -DBUILD_DOCUMENTATION="OFF"
+
+    # Build multiple configurations for CSharp
+    foreach ($config in ${configs})
+    {
+        cmake --build "${buildDir}" --config "${config}"
     }
 
     # Build python3
