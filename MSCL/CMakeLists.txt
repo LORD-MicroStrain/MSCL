@@ -217,11 +217,15 @@ target_include_directories(${LIB_NAME_STATIC} PRIVATE ${LIB_INCLUDE_DIRS})
 target_compile_options(${LIB_NAME_STATIC} PRIVATE
   $<$<CXX_COMPILER_ID:GNU>:-fPIC>  # Normally static libraries aren't compiled with this flag, but we need it to compile our bindings properly
   $<$<CXX_COMPILER_ID:MSVC>:/MT$<$<CONFIG:Debug>:d>>
+  $<$<CXX_COMPILER_ID:MSVC>:/MP>
 )
 if(BUILD_SHARED_LIBS)
-  target_compile_options(${LIB_NAME_SHARED} PRIVATE
-    $<$<CXX_COMPILER_ID:MSVC>:/MD$<$<CONFIG:Debug>:d>>
-  )
+  if(MSVC)
+    target_compile_options(${LIB_NAME_SHARED} PRIVATE
+      /MD$<$<CONFIG:Debug>:d>
+      /MP
+    )
+  endif()
   target_compile_definitions(${LIB_NAME_SHARED} PRIVATE ${LIB_DEFINES})
   target_include_directories(${LIB_NAME_SHARED} PRIVATE ${LIB_INCLUDE_DIRS})
 endif()
@@ -334,6 +338,7 @@ if(BUILD_PYTHON2 OR BUILD_PYTHON3 OR BUILD_CSHARP)
     target_compile_options(${CSHARP_MODULE_NAME} PRIVATE
       /bigobj
       /MT$<$<CONFIG:Debug>:d>
+      /MP
     )
     target_compile_definitions(${CSHARP_MODULE_NAME} PRIVATE
       ${LIB_DEFINES}

@@ -29,5 +29,8 @@ target_compile_definitions(${PROJECT_NAME} PRIVATE BOOST_ALL_NO_LIB)
 
 if(MSVC)
   # On windows, we need to set the runtime library to the same as MSCL
-  target_compile_options(${PROJECT_NAME} PRIVATE /MT$<$<CONFIG:Debug>:d>)
+  target_compile_options(${PROJECT_NAME} PRIVATE
+    /MT$<$<CONFIG:Debug>:d>
+    /MP
+  )
 endif()
