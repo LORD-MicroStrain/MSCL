@@ -37,6 +37,7 @@ pipeline {
             checkout scm
             powershell '.devcontainer/docker_build_win.ps1 -arch x64 -python3_versions "' + python3Versions() + '"'
             archiveArtifacts artifacts: 'build_windows_x64/*.zip'
+            archiveArtifacts artifacts: 'build_windows_x64_for_release/*.zip'
           }
         }
         stage('Windows x86') {
@@ -50,6 +51,7 @@ pipeline {
             checkout scm
             powershell '.devcontainer/docker_build_win.ps1 -arch x86 -python3_versions "' + python3Versions() + '"'
             archiveArtifacts artifacts: 'build_windows_x86/*.zip'
+            archiveArtifacts artifacts: 'build_windows_x86_for_release/*.zip'
           }
         }
         stage('DEB AMD64') {
@@ -63,6 +65,7 @@ pipeline {
             checkout scm
             sh '.devcontainer/docker_build_debs.sh --arch amd64 --python3Versions "' + python3Versions() + '"'
             archiveArtifacts artifacts: 'build_ubuntu_amd64/*.deb'
+            archiveArtifacts artifacts: 'build_ubuntu_amd64_for_release/*.deb'
           }
         }
         stage('DEB ARM64') {
@@ -76,6 +79,7 @@ pipeline {
             checkout scm
             sh '.devcontainer/docker_build_debs.sh --arch arm64v8 --python3Versions "' + python3Versions() + '"'
             archiveArtifacts artifacts: 'build_ubuntu_arm64v8/*.deb'
+            archiveArtifacts artifacts: 'build_ubuntu_arm64v8_for_release/*.deb'
           }
         }
         stage('DEB ARM32') {
@@ -89,6 +93,7 @@ pipeline {
             checkout scm
             sh '.devcontainer/docker_build_debs.sh --arch arm32v7 --python3Versions "' + python3Versions() + '"'
             archiveArtifacts artifacts: 'build_ubuntu_arm32v7/*.deb'
+            archiveArtifacts artifacts: 'build_ubuntu_arm32v7_for_release/*.deb'
           }
         }
       }
