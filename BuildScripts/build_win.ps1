@@ -104,7 +104,7 @@ try
             cmake -S "${project_dir}" -B "${buildDir}" -G "${generator}" -A "${arch}" -T "${toolset}" `
                 -DBUILD_SHARED_LIBS="OFF" `
                 -DBUILD_PYTHON2="ON" `
-                -DBUILD_PYTHON3="OFf" `
+                -DBUILD_PYTHON3="OFF" `
                 -DBUILD_CSHARP="OFF" `
                 -DBUILD_TESTS="OFF" `
                 -DBUILD_EXAMPLES="OFF" `
