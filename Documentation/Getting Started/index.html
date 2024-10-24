@@ -112,9 +112,8 @@
       <div id="toc">
       </div>
         <ul class="toc-footer">
-            <li><a href='http://www.microstrain.com/'>microstrain.com</a></li>
-            <li><a href='http://www.sensorcloud.com/'>sensorcloud.com</a></li>
-            <li><a href='http://www.lord.com/'>lord.com</a></li>
+            <li><a href='https://www.microstrain.com/'>microstrain.com</a></li>
+            <li><a href='https://www.sensorcloud.com/'>sensorcloud.com</a></li>
         </ul>
     </div>
     <div class="page-wrapper">
@@ -129,13 +128,13 @@
 </code></pre>
 <p>Welcome to the MSCL (MicroStrain Communication Library) Quick Start Guide! </p>
 
-<p>You can use MSCL to interact with sensors developed by <a href="http://www.microstrain.com/">LORD Sensing</a>.</p>
+<p>You can use MSCL to interact with sensors developed by <a href="https://www.microstrain.com/">MicroStrain by HBK</a>.</p>
 
 <p>MSCL has language bindings in C++, .NET (C#, VB, LabView, MATLAB), and Python! You can view code examples in the area to the right, and you can switch the programming language of the examples with the tabs above that.</p>
 
 <p>This guide will help get you started with using MSCL. It does not encompass everything that MSCL can do. Please see the complete Documentation for a list of all functionality.</p>
 
-<p>For simplicity, the examples below do not show the necessary error handling that should be performed when using MSCL. Please see the <a href="http://lord-microstrain.github.io/MSCL/Documentation/MSCL%20API%20Documentation/index.html">API Documentation</a> for details on Exceptions that each function can throw.</p>
+<p>For simplicity, the examples below do not show the necessary error handling that should be performed when using MSCL. Please see the <a href="https://lord-microstrain.github.io/MSCL/Documentation/MSCL%20API%20Documentation/index.html">API Documentation</a> for details on Exceptions that each function can throw.</p>
 <h1 id='wireless'>Wireless</h1><h2 id='creating-a-basestation'>Creating a BaseStation</h2><pre class="highlight cpp tab-cpp"><code><span class="cp">#include "mscl/mscl.h"
 </span>
 <span class="c1">//create the connection object with port and baud rate
@@ -160,7 +159,7 @@
 <p>Make sure to replace <code>COM3</code> and <code>921600</code> with your own port settings.</p>
 </blockquote>
 
-<p>To interface with a wireless device, you will first need to create a <code>BaseStation</code> that represents a physical <a href="http://www.microstrain.com/wireless/gateways">BaseStation or Gateway</a>.</p>
+<p>To interface with a wireless device, you will first need to create a <code>BaseStation</code> that represents a physical <a href="https://www.microstrain.com/wireless/gateways">BaseStation or Gateway</a>.</p>
 
 <p>A <code>BaseStation</code> takes a <code>Connection</code> as a parameter. </p>
 
@@ -181,7 +180,7 @@ As soon as the Connection object is created, the port will be opened.
 <p>Make sure to replace <code>31849</code> with the Node Address of your Wireless Node.</p>
 </blockquote>
 
-<p>To communicate with any <a href="http://www.microstrain.com/wireless/sensors">Wireless Node</a>, create a <code>WirelessNode</code> instance, providing the Node Address of the physical Node, and the <code>BaseStation</code> that you wish to communicate to the Node with.</p>
+<p>To communicate with any <a href="https://www.microstrain.com/wireless/sensors">Wireless Node</a>, create a <code>WirelessNode</code> instance, providing the Node Address of the physical Node, and the <code>BaseStation</code> that you wish to communicate to the Node with.</p>
 
 <aside class="notice">
 If a Wireless Node is already sampling and all you would like to do is collect data, you don't need to create a WirelessNode object.
@@ -191,7 +190,7 @@ See the Collecting Data section for more info.
 </span><span class="n">mscl</span><span class="o">::</span><span class="n">PingResponse</span> <span class="n">response</span> <span class="o">=</span> <span class="n">node</span><span class="p">.</span><span class="n">ping</span><span class="p">();</span>
 
 <span class="c1">//if the ping response was a success
-</span><span class="k">if</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="n">success</span><span class="p">())</span> 
+</span><span class="k">if</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="n">success</span><span class="p">())</span>
 <span class="p">{</span>
     <span class="n">response</span><span class="p">.</span><span class="n">baseRssi</span><span class="p">();</span> <span class="c1">//the BaseStation RSSI
 </span>    <span class="n">response</span><span class="p">.</span><span class="n">nodeRssi</span><span class="p">();</span> <span class="c1">//the Node RSSI
@@ -313,7 +312,7 @@ See the Collecting Data section for more info.
 
 <p>The Set to Idle operation uses all of the BaseStation&#39;s bandwidth to attempt to stop/wake the Node. Thus, this can only be performed on a single Node at a time. Once started, the operation will continue until canceled by calling the <code>cancel()</code> function on the <code>SetToIdleStatus</code> object returned from the <code>setToIdle()</code> function.</p>
 <h2 id='configuring-a-node'>Configuring a Node</h2><h3 id='getting-current-config'>Getting Current Config</h3><pre class="highlight cpp tab-cpp"><code><span class="c1">//get the number of datalogging sessions stored on the node
-</span><span class="n">node</span><span class="p">.</span><span class="n">getNumDatalogSessions</span><span class="p">();</span>  
+</span><span class="n">node</span><span class="p">.</span><span class="n">getNumDatalogSessions</span><span class="p">();</span>
 
 <span class="c1">//get the user inactivity timeout in seconds
 </span><span class="n">node</span><span class="p">.</span><span class="n">getInactivityTimeout</span><span class="p">();</span>
@@ -331,7 +330,7 @@ See the Collecting Data section for more info.
 </span>    <span class="n">node</span><span class="p">.</span><span class="n">getThermocoupleType</span><span class="p">();</span>
 <span class="p">}</span>
 </code></pre><pre class="highlight csharp tab-csharp"><code><span class="c1">//get the number of datalogging sessions stored on the node</span>
-<span class="n">node</span><span class="p">.</span><span class="nf">getNumDatalogSessions</span><span class="p">();</span>  
+<span class="n">node</span><span class="p">.</span><span class="nf">getNumDatalogSessions</span><span class="p">();</span>
 
 <span class="c1">//get the user inactivity timeout in seconds</span>
 <span class="n">node</span><span class="p">.</span><span class="nf">getInactivityTimeout</span><span class="p">();</span>
@@ -607,7 +606,7 @@ The <b>startSampling( )</b> function will arm all of the Nodes for sampling and 
 
 <aside class="notice">
 Most types can be converted between each other. For example, if the data was stored as valueType_uint16 (2-byte unsigned integer), you can still use the as_float() function and the uint16 will be converted to a float and returned.
-However, some types such as valueType_Vector cannot be converted to other values and will throw an Error_BadDataType exception if an invalid function is used to retrieve it (using as_float() instead of as_Vector()). 
+However, some types such as valueType_Vector cannot be converted to other values and will throw an Error_BadDataType exception if an invalid function is used to retrieve it (using as_float() instead of as_Vector()).
 </aside>
 <h1 id='inertial'>Inertial</h1><h2 id='creating-an-inertialnode'>Creating an InertialNode</h2><pre class="highlight cpp tab-cpp"><code><span class="cp">#include "mscl/mscl.h"
 </span>
@@ -633,7 +632,7 @@ However, some types such as valueType_Vector cannot be converted to other values
 <p>Make sure to replace <code>COM3</code> and <code>115200</code> with your own port settings.</p>
 </blockquote>
 
-<p>To interace with an <a href="http://www.microstrain.com/lord-microstrain-inertial-sensors-all-products">Inertial Node</a>, create an <code>InertialNode</code> object.</p>
+<p>To interace with an <a href="https://www.microstrain.com/inertial">Inertial Node</a>, create an <code>InertialNode</code> object.</p>
 
 <p>An <code>InertialNode</code> takes a <code>Connection</code> as a parameter. </p>
 
@@ -857,7 +856,7 @@ As soon as the Connection object is created, the port will be opened.
 
 <aside class="notice">
 Most types can be converted between each other. For example, if the data was stored as valueType_uint16 (2-byte unsigned integer), you can still use the as_float() function and the uint16 will be converted to a float and returned.
-However, some types such as valueType_Vector cannot be converted to other values and will throw an Error_BadDataType exception if an invalid function is used to retrieve it (using as_float() instead of as_Vector()). 
+However, some types such as valueType_Vector cannot be converted to other values and will throw an Error_BadDataType exception if an invalid function is used to retrieve it (using as_float() instead of as_Vector()).
 </aside>
 <h1 id='displacement'>Displacement</h1><h2 id='creating-a-displacementnode'>Creating a DisplacementNode</h2><pre class="highlight cpp tab-cpp"><code><span class="cp">#include "mscl/mscl.h"
 </span>
@@ -1025,7 +1024,7 @@ As soon as the Connection object is created, the port will be opened.
 
 <aside class="notice">
 Most types can be converted between each other. For example, if the data was stored as valueType_uint16 (2-byte unsigned integer), you can still use the as_float() function and the uint16 will be converted to a float and returned.
-However, some types such as valueType_Vector cannot be converted to other values and will throw an Error_BadDataType exception if an invalid function is used to retrieve it (using as_float() instead of as_Vector()). 
+However, some types such as valueType_Vector cannot be converted to other values and will throw an Error_BadDataType exception if an invalid function is used to retrieve it (using as_float() instead of as_Vector()).
 </aside>
 
           <h1 id='exceptions'>Exceptions</h1>

@@ -1,1 +1,1 @@
-NDSummary.OnToolTipsLoaded("CClass:DescriptorSet",{2991:"<div class=\"NDToolTip TStruct LC\"><div class=\"TTSummary\">Contains enums representing Descriptor sets for Inertial Packets</div></div>"});
+NDSummary.OnToolTipsLoaded("CClass:DescriptorSet",{3049:"<div class=\"NDToolTip TStruct LC\"><div class=\"TTSummary\">Contains enums representing Descriptor sets for Inertial Packets</div></div>"});

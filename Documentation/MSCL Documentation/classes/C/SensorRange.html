@@ -8,83 +8,83 @@
 
 <body onload="NDLoader.OnLoad('Content');" class="NDPage NDContentPage">
 
-<a name="Topic3911"></a><div class="CTopic TClass LC first">
+<a name="Topic4159"></a><div class="CTopic TClass LC first">
  <div class="CTitle">SensorRange</div>
- <div class="NDClassPrototype" id="NDClassPrototype3911"><div class="CPEntry TClass Current"><div class="CPName">SensorRange</div></div></div>
+ <div class="NDClassPrototype" id="NDClassPrototype4159"><div class="CPEntry TClass Current"><div class="CPName">SensorRange</div></div></div>
  <div class="CBody"><p>An object representing a configurable sensor range option</p></div>
 </div>
 
-<a name="Types"></a><a name="Topic3912"></a><div class="CTopic TGroup LC">
+<a name="Types"></a><a name="Topic4160"></a><div class="CTopic TGroup LC">
  <div class="CTitle">Types</div>
 </div>
 
-<a name="Type"></a><a name="Topic3913"></a><div class="CTopic TEnumeration LC">
+<a name="Type"></a><a name="Topic4161"></a><div class="CTopic TEnumeration LC">
  <div class="CTitle">Type</div>
  <div class="CBody"><p>Sensor and unit identifiers for configurable Sensor Range command (0x0C,0x52) ALL&nbsp; - 0x00 - All (save as startup, load startup, reset to default only) ACCEL_MS2&nbsp; - 0x01 - Accelerometer in m/s^2 GYRO_DPS&nbsp; - 0x02 - Gyroscope in degrees per second MAG_MG&nbsp; - 0x03 - Magnetometer in mG PRESSURE_HPA - 0x04 - Pressure in hPa</p></div>
 </div>
 
-<a name="Variables"></a><a name="Topic3914"></a><div class="CTopic TGroup LC">
+<a name="Variables"></a><a name="Topic4162"></a><div class="CTopic TGroup LC">
  <div class="CTitle">Variables</div>
 </div>
 
-<a name="type"></a><a name="Topic3915"></a><div class="CTopic TVariable LC">
+<a name="type"></a><a name="Topic4163"></a><div class="CTopic TVariable LC">
  <div class="CTitle">type</div>
- <div id="NDPrototype3915" class="NDPrototype NoParameterForm"><a href="../../index.html#CClass:SensorRange:Type" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3913);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >Type</a> m_type</div>
+ <div id="NDPrototype4163" class="NDPrototype NoParameterForm"><a href="../../index.html#CClass:SensorRange:Type" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,4161);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >Type</a> m_type</div>
  <div class="CBody"><p>The SensorRange::Type of this range</p></div>
 </div>
 
-<a name="range"></a><a name="Topic3916"></a><div class="CTopic TVariable LC">
+<a name="range"></a><a name="Topic4164"></a><div class="CTopic TVariable LC">
  <div class="CTitle">range</div>
- <div id="NDPrototype3916" class="NDPrototype NoParameterForm"><span class="SHKeyword">float</span> m_range</div>
- <div class="CBody"><p>This will only be set and valid if read from <a href="../../index.html#CClass:SupportedSensorRanges" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3926);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >SupportedSensorRanges</a> object Default: -1 (invalid)</p></div>
+ <div id="NDPrototype4164" class="NDPrototype NoParameterForm"><span class="SHKeyword">float</span> m_range</div>
+ <div class="CBody"><p>This will only be set and valid if read from <a href="../../index.html#CClass:SupportedSensorRanges" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,4174);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >SupportedSensorRanges</a> object Default: -1 (invalid)</p></div>
 </div>
 
-<a name="id"></a><a name="Topic3917"></a><div class="CTopic TVariable LC">
+<a name="id"></a><a name="Topic4165"></a><div class="CTopic TVariable LC">
  <div class="CTitle">id</div>
- <div id="NDPrototype3917" class="NDPrototype NoParameterForm"><span class="SHKeyword">uint8</span> m_id</div>
+ <div id="NDPrototype4165" class="NDPrototype NoParameterForm"><span class="SHKeyword">uint8</span> m_id</div>
  <div class="CBody"><p>The index ID of this range according to device manual</p></div>
 </div>
 
-<a name="Functions"></a><a name="Topic3918"></a><div class="CTopic TGroup LC">
+<a name="Functions"></a><a name="Topic4166"></a><div class="CTopic TGroup LC">
  <div class="CTitle">Functions</div>
 </div>
 
-<a name="SensorRange"></a><a name="Topic3919"></a><div class="CTopic TFunction LC">
+<a name="SensorRange"></a><a name="Topic4167"></a><div class="CTopic TFunction LC">
  <div class="CTitle">SensorRange</div>
- <div id="NDPrototype3919" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters">SensorRange(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PType first"><a href="../../index.html#CClass:SensorRange:Type" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3913);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >Type</a>&nbsp;</td><td class="PName">rangeType,</td><td></td><td class="last"></td></tr><tr><td class="PType first"><span class="SHKeyword">uint8</span>&nbsp;</td><td class="PName">index,</td><td></td><td class="last"></td></tr><tr><td class="PType first"><span class="SHKeyword">float</span>&nbsp;</td><td class="PName">rangeValue&nbsp;</td><td class="PDefaultValueSeparator">=&nbsp;</td><td class="PDefaultValue last"><span class="SHNumber">-1.0f</span></td></tr></table></td><td class="PAfterParameters">) : m_type(rangeType), m_range(rangeValue), m_id(index)</td></tr></table></div>
+ <div id="NDPrototype4167" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters">SensorRange(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PType first"><a href="../../index.html#CClass:SensorRange:Type" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,4161);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >Type</a>&nbsp;</td><td class="PName">rangeType,</td><td></td><td class="last"></td></tr><tr><td class="PType first"><span class="SHKeyword">uint8</span>&nbsp;</td><td class="PName">index,</td><td></td><td class="last"></td></tr><tr><td class="PType first"><span class="SHKeyword">float</span>&nbsp;</td><td class="PName">rangeValue&nbsp;</td><td class="PDefaultValueSeparator">=&nbsp;</td><td class="PDefaultValue last"><span class="SHNumber">-1.0f</span></td></tr></table></td><td class="PAfterParameters">) : m_type(rangeType), m_range(rangeValue), m_id(index)</td></tr></table></div>
  <div class="CBody"><p>Construct a SensorRange object with specified range This object should not be constructed directly by users</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">type</td><td class="CDLDefinition"><p>SensorRange::Type of this range</p></td></tr><tr><td class="CDLEntry">range</td><td class="CDLDefinition"><p>Range value</p></td></tr></table></div>
 </div>
 
-<a name="type(2)"></a><a name="Topic3920"></a><div class="CTopic TFunction LC">
+<a name="type(2)"></a><a name="Topic4168"></a><div class="CTopic TFunction LC">
  <div class="CTitle">type</div>
- <div id="NDPrototype3920" class="NDPrototype NoParameterForm"><a href="../../index.html#CClass:SensorRange:Type" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3913);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >Type</a> type() <span class="SHKeyword">const</span></div>
+ <div id="NDPrototype4168" class="NDPrototype NoParameterForm"><a href="../../index.html#CClass:SensorRange:Type" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,4161);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >Type</a> type() <span class="SHKeyword">const</span></div>
  <div class="CBody"><p>The SensorRange::Type of this range</p></div>
 </div>
 
-<a name="range(2)"></a><a name="Topic3921"></a><div class="CTopic TFunction LC">
+<a name="range(2)"></a><a name="Topic4169"></a><div class="CTopic TFunction LC">
  <div class="CTitle">range</div>
- <div id="NDPrototype3921" class="NDPrototype NoParameterForm"><span class="SHKeyword">float</span> range() <span class="SHKeyword">const</span></div>
- <div class="CBody"><p>This will only be set and valid if read from <a href="../../index.html#CClass:SupportedSensorRanges" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3926);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >SupportedSensorRanges</a> object</p></div>
+ <div id="NDPrototype4169" class="NDPrototype NoParameterForm"><span class="SHKeyword">float</span> range() <span class="SHKeyword">const</span></div>
+ <div class="CBody"><p>This will only be set and valid if read from <a href="../../index.html#CClass:SupportedSensorRanges" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,4174);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >SupportedSensorRanges</a> object</p></div>
 </div>
 
-<a name="id(2)"></a><a name="Topic3922"></a><div class="CTopic TFunction LC">
+<a name="id(2)"></a><a name="Topic4170"></a><div class="CTopic TFunction LC">
  <div class="CTitle">id</div>
- <div id="NDPrototype3922" class="NDPrototype NoParameterForm"><span class="SHKeyword">uint8</span> id() <span class="SHKeyword">const</span></div>
+ <div id="NDPrototype4170" class="NDPrototype NoParameterForm"><span class="SHKeyword">uint8</span> id() <span class="SHKeyword">const</span></div>
  <div class="CBody"><p>The index ID of this range according to device manual</p></div>
 </div>
 
-<a name="Types(2)"></a><a name="Topic3923"></a><div class="CTopic TGroup LC">
+<a name="Types(2)"></a><a name="Topic4171"></a><div class="CTopic TGroup LC">
  <div class="CTitle">Types</div>
 </div>
 
-<a name="SensorRanges"></a><a name="Topic3924"></a><div class="CTopic TType LC">
+<a name="SensorRanges"></a><a name="Topic4172"></a><div class="CTopic TType LC">
  <div class="CTitle">SensorRanges</div>
- <div class="CBody"><p>A vector of <a href="../../index.html#CClass:SensorRange:SensorRange" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3919);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >SensorRange</a> values</p></div>
+ <div class="CBody"><p>A vector of <a href="../../index.html#CClass:SensorRange:SensorRange" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,4167);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >SensorRange</a> values</p></div>
 </div>
 
-<a name="SensorRangeOptions"></a><a name="Topic3925"></a><div class="CTopic TType LC last">
+<a name="SensorRangeOptions"></a><a name="Topic4173"></a><div class="CTopic TType LC last">
  <div class="CTitle">SensorRangeOptions</div>
- <div class="CBody"><p>A collection of <a href="../../index.html#CClass:SensorRange:Type" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3913);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >SensorRange::Type</a> values mapped to associated <a href="../../index.html#CClass:SensorRange:SensorRange" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3919);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >SensorRange</a> objects</p></div>
+ <div class="CBody"><p>A collection of <a href="../../index.html#CClass:SensorRange:Type" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,4161);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >SensorRange::Type</a> values mapped to associated <a href="../../index.html#CClass:SensorRange:SensorRange" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,4167);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >SensorRange</a> objects</p></div>
 </div>
 
 </body></html>

@@ -8,78 +8,72 @@
 
 <body onload="NDLoader.OnLoad('Content');" class="NDPage NDContentPage">
 
-<a name="Topic1355"></a><div class="CTopic TStruct LC first">
+<a name="Topic2200"></a><div class="CTopic TStruct LC first">
  <div class="CTitle">CV7ContinuousBIT_System_Process</div>
- <div class="CBody"><p>Continuous Built-In Test flags for system process information</p><p>Bits 16-23 of the original 128 bit Continuous Built-In Test flags</p></div>
+ <div class="CBody"><p>Continuous Built-In Test flags for system process information</p><p>Bits 16-31 of the original 128 bit Continuous Built-In Test flags</p></div>
 </div>
 
-<a name="CV7ContinuousBIT_System_Process"></a><a name="Topic1356"></a><div class="CTopic TFunction LC">
+<a name="CV7ContinuousBIT_System_Process"></a><a name="Topic2201"></a><div class="CTopic TFunction LC">
  <div class="CTitle">CV7ContinuousBIT_System_Process</div>
- <div id="NDPrototype1356" class="NDPrototype NoParameterForm">CV7ContinuousBIT_System_Process()</div>
+ <div id="NDPrototype2201" class="NDPrototype NoParameterForm">CV7ContinuousBIT_System_Process() : <a href="../../index.html#CClass:ContinuousBIT_System_Process" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,2133);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ContinuousBIT_System_Process</a>()</div>
 </div>
 
-<a name="CV7ContinuousBIT_System_Process(2)"></a><a name="Topic1357"></a><div class="CTopic TFunction LC">
+<a name="CV7ContinuousBIT_System_Process(2)"></a><a name="Topic2202"></a><div class="CTopic TFunction LC">
  <div class="CTitle">CV7ContinuousBIT_System_Process</div>
- <div id="NDPrototype1357" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters">CV7ContinuousBIT_System_Process(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PModifierQualifier first"><span class="SHKeyword">const</span>&nbsp;</td><td class="PType"><span class="SHKeyword">uint8</span>&nbsp;</td><td class="PName last">bits</td></tr></table></td><td class="PAfterParameters">) : Bitfield(static_cast&lt;<span class="SHKeyword">uint64</span>&gt;(bits))</td></tr></table></div>
- <div class="CBody"><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">bits<div class="CDLParameterType"><span class="SHKeyword">const</span> <span class="SHKeyword">uint8</span></div></td><td class="CDLDefinition"><p>Bits 16-23 of the original 128 bit Continuous Built-In Test flags</p></td></tr></table></div>
+ <div id="NDPrototype2202" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">explicit</span> CV7ContinuousBIT_System_Process(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PModifierQualifier first"><span class="SHKeyword">const</span>&nbsp;</td><td class="PType"><span class="SHKeyword">uint16</span>&nbsp;</td><td class="PName last">bits</td></tr></table></td><td class="PAfterParameters">) : <a href="../../index.html#CClass:ContinuousBIT_System_Process" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,2133);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ContinuousBIT_System_Process</a>(bits)</td></tr></table></div>
+ <div class="CBody"><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">bits<div class="CDLParameterType"><span class="SHKeyword">const</span> <span class="SHKeyword">uint16</span></div></td><td class="CDLDefinition"><p>Bits 16-31 of the original 128 bit Continuous Built-In Test flags</p></td></tr></table></div>
 </div>
 
-<a name="Bitmasks"></a><a name="Topic1358"></a><div class="CTopic TConstant LC">
+<a name="Bitmasks"></a><a name="Topic2203"></a><div class="CTopic TConstant LC">
  <div class="CTitle">Bitmasks</div>
- <div class="CBody"><p>Bitmasks for system process information flags</p><div class="CHeading">Note</div><p>These masks are shifted 16 bits to the right from the original 128 bitmask to have a 0 index at bit 16</p><table class="CDefinitionList"><tr><td class="CDLEntry"><a name="IMU_PROCESS_FAULT"></a><a name="Topic1359"></a>IMU_PROCESS_FAULT</td><td class="CDLDefinition"><p>0x01 - The IMU subsystem is unresponsive or not operating normally</p></td></tr><tr><td class="CDLEntry"><a name="IMU_RATE_MISMATCH"></a><a name="Topic1360"></a>IMU_RATE_MISMATCH</td><td class="CDLDefinition"><p>0x02 - Faster/slower than expected base rate</p></td></tr><tr><td class="CDLEntry"><a name="IMU_DROPPED_DATA"></a><a name="Topic1361"></a>IMU_DROPPED_DATA</td><td class="CDLDefinition"><p>0x04 - At least 1 dropped frame / overrun</p></td></tr><tr><td class="CDLEntry"><a name="IMU_STUCK"></a><a name="Topic1362"></a>IMU_STUCK</td><td class="CDLDefinition"><p>0x08 - No IMU data received in 1 second</p></td></tr><tr><td class="CDLEntry"><a name="FILTER_PROCESS_FAULT"></a><a name="Topic1363"></a>FILTER_PROCESS_FAULT</td><td class="CDLDefinition"><p>0x10 - The Filter subsystem is unresponsive or not operating normally</p></td></tr><tr><td class="CDLEntry"><a name="FILTER_DROPPED_DATA"></a><a name="Topic1364"></a>FILTER_DROPPED_DATA</td><td class="CDLDefinition"><p>0x20 - Filter samples not equal to IMU samples</p></td></tr><tr><td class="CDLEntry"><a name="FILTER_RATE_MISMATCH"></a><a name="Topic1365"></a>FILTER_RATE_MISMATCH</td><td class="CDLDefinition"><p>0x40 - Filter major cycle rate mismatch</p></td></tr><tr><td class="CDLEntry"><a name="FILTER_STUCK"></a><a name="Topic1366"></a>FILTER_STUCK</td><td class="CDLDefinition"><p>0x80 - No filter data received in 1 second</p></td></tr></table></div>
+ <div class="CBody"><p>Bitmasks for system process information flags</p><div class="CHeading">Note</div><p>These masks are shifted 16 bits to the right from the original 128 bitmask to have a 0 index at bit 16</p><table class="CDefinitionList"><tr><td class="CDLEntry"><a name="IMU_PROCESS_FAULT"></a><a name="Topic2204"></a>IMU_PROCESS_FAULT</td><td class="CDLDefinition"><p>0x8000 - The IMU subsystem is unresponsive or not operating normally</p></td></tr><tr><td class="CDLEntry"><a name="IMU_RATE_MISMATCH"></a><a name="Topic2205"></a>IMU_RATE_MISMATCH</td><td class="CDLDefinition"><p>0x4000 - Faster/slower than expected base rate</p></td></tr><tr><td class="CDLEntry"><a name="IMU_DROPPED_DATA"></a><a name="Topic2206"></a>IMU_DROPPED_DATA</td><td class="CDLDefinition"><p>0x2000 - At least 1 dropped frame / overrun</p></td></tr><tr><td class="CDLEntry"><a name="IMU_STUCK"></a><a name="Topic2207"></a>IMU_STUCK</td><td class="CDLDefinition"><p>0x1000 - No IMU data received in 1 second</p></td></tr><tr><td class="CDLEntry"><a name="FILTER_PROCESS_FAULT"></a><a name="Topic2208"></a>FILTER_PROCESS_FAULT</td><td class="CDLDefinition"><p>0x0800 - The Filter subsystem is unresponsive or not operating normally</p></td></tr><tr><td class="CDLEntry"><a name="FILTER_DROPPED_DATA"></a><a name="Topic2209"></a>FILTER_DROPPED_DATA</td><td class="CDLDefinition"><p>0x0400 - Filter samples not equal to IMU samples</p></td></tr><tr><td class="CDLEntry"><a name="FILTER_RATE_MISMATCH"></a><a name="Topic2210"></a>FILTER_RATE_MISMATCH</td><td class="CDLDefinition"><p>0x0200 - Filter major cycle rate mismatch</p></td></tr><tr><td class="CDLEntry"><a name="FILTER_STUCK"></a><a name="Topic2211"></a>FILTER_STUCK</td><td class="CDLDefinition"><p>0x0100 - No filter data received in 1 second</p></td></tr></table></div>
 </div>
 
-<a name="flags"></a><a name="Topic1367"></a><div class="CTopic TFunction LC">
- <div class="CTitle">flags</div>
- <div id="NDPrototype1367" class="NDPrototype NoParameterForm"><span class="SHKeyword">uint8</span> flags() <span class="SHKeyword">const</span></div>
- <div class="CBody"><p>Gets the value of the process system flags (bits 16-23)</p><div class="CHeading">Returns</div><table class="CDefinitionList"><tr><td class="CDLEntry">uint8</td><td class="CDLDefinition"><p>Value of the process system flags</p></td></tr></table></div>
-</div>
-
-<a name="imuProcessFault"></a><a name="Topic1368"></a><div class="CTopic TFunction LC">
+<a name="imuProcessFault"></a><a name="Topic2212"></a><div class="CTopic TFunction LC">
  <div class="CTitle">imuProcessFault</div>
- <div id="NDPrototype1368" class="NDPrototype NoParameterForm"><span class="SHKeyword">bool</span> imuProcessFault() <span class="SHKeyword">const</span></div>
- <div class="CBody"><p>Gets the value of the Imu Process Fault bit</p><div class="CHeading">Returns</div><table class="CDefinitionList"><tr><td class="CDLEntry">bool</td><td class="CDLDefinition"><p>true: The IMU subsystem is unresponsive or not operating normally</p></td></tr></table></div>
+ <div id="NDPrototype2212" class="NDPrototype NoParameterForm"><span class="SHKeyword">bool</span> imuProcessFault() <span class="SHKeyword">const</span></div>
+ <div class="CBody"><p>Gets the value of the IMU Process Fault bit (bit 16)</p><div class="CHeading">Returns</div><table class="CDefinitionList"><tr><td class="CDLEntry">bool</td><td class="CDLDefinition"><p>true: The IMU subsystem is unresponsive or not operating normally</p></td></tr></table></div>
 </div>
 
-<a name="imuDataRateMismatch"></a><a name="Topic1369"></a><div class="CTopic TFunction LC">
+<a name="imuDataRateMismatch"></a><a name="Topic2213"></a><div class="CTopic TFunction LC">
  <div class="CTitle">imuDataRateMismatch</div>
- <div class="CBody"><p>Gets the value of the Imu Data Rate Mismatch bit</p><div class="CHeading">Returns</div><table class="CDefinitionList"><tr><td class="CDLEntry">bool</td><td class="CDLDefinition"><p>true: Faster/slower than expected base rate</p></td></tr></table></div>
+ <div class="CBody"><p>Gets the value of the IMU Data Rate Mismatch bit (bit 17)</p><div class="CHeading">Returns</div><table class="CDefinitionList"><tr><td class="CDLEntry">bool</td><td class="CDLDefinition"><p>true: Faster/slower than expected base rate</p></td></tr></table></div>
 </div>
 
-<a name="imuDroppedData"></a><a name="Topic1370"></a><div class="CTopic TFunction LC">
+<a name="imuDroppedData"></a><a name="Topic2214"></a><div class="CTopic TFunction LC">
  <div class="CTitle">imuDroppedData</div>
- <div id="NDPrototype1370" class="NDPrototype NoParameterForm"><span class="SHKeyword">bool</span> imuDroppedData() <span class="SHKeyword">const</span></div>
- <div class="CBody"><p>Gets the value of the Imu Overrun Dropped Data bit</p><div class="CHeading">Returns</div><table class="CDefinitionList"><tr><td class="CDLEntry">bool</td><td class="CDLDefinition"><p>true: At least 1 dropped frame / overrun</p></td></tr></table></div>
+ <div id="NDPrototype2214" class="NDPrototype NoParameterForm"><span class="SHKeyword">bool</span> imuDroppedData() <span class="SHKeyword">const</span></div>
+ <div class="CBody"><p>Gets the value of the IMU Overrun Dropped Data bit (bit 18)</p><div class="CHeading">Returns</div><table class="CDefinitionList"><tr><td class="CDLEntry">bool</td><td class="CDLDefinition"><p>true: At least 1 dropped frame / overrun</p></td></tr></table></div>
 </div>
 
-<a name="imuStuck"></a><a name="Topic1371"></a><div class="CTopic TFunction LC">
+<a name="imuStuck"></a><a name="Topic2215"></a><div class="CTopic TFunction LC">
  <div class="CTitle">imuStuck</div>
- <div id="NDPrototype1371" class="NDPrototype NoParameterForm"><span class="SHKeyword">bool</span> imuStuck() <span class="SHKeyword">const</span></div>
- <div class="CBody"><p>Gets the value of the Imu Stuck bit</p><div class="CHeading">Returns</div><table class="CDefinitionList"><tr><td class="CDLEntry">bool</td><td class="CDLDefinition"><p>true: No IMU data received in 1 second</p></td></tr></table></div>
+ <div id="NDPrototype2215" class="NDPrototype NoParameterForm"><span class="SHKeyword">bool</span> imuStuck() <span class="SHKeyword">const</span></div>
+ <div class="CBody"><p>Gets the value of the IMU Stuck bit (bit 19)</p><div class="CHeading">Returns</div><table class="CDefinitionList"><tr><td class="CDLEntry">bool</td><td class="CDLDefinition"><p>true: No IMU data received in 1 second</p></td></tr></table></div>
 </div>
 
-<a name="filterProcessFault"></a><a name="Topic1372"></a><div class="CTopic TFunction LC">
+<a name="filterProcessFault"></a><a name="Topic2216"></a><div class="CTopic TFunction LC">
  <div class="CTitle">filterProcessFault</div>
- <div id="NDPrototype1372" class="NDPrototype NoParameterForm"><span class="SHKeyword">bool</span> filterProcessFault() <span class="SHKeyword">const</span></div>
- <div class="CBody"><p>Gets the value of the Filter Process Fault bit</p><div class="CHeading">Returns</div><table class="CDefinitionList"><tr><td class="CDLEntry">bool</td><td class="CDLDefinition"><p>true: The Filter subsystem is unresponsive or not operating normally</p></td></tr></table></div>
+ <div id="NDPrototype2216" class="NDPrototype NoParameterForm"><span class="SHKeyword">bool</span> filterProcessFault() <span class="SHKeyword">const</span></div>
+ <div class="CBody"><p>Gets the value of the Filter Process Fault bit (bit 20)</p><div class="CHeading">Returns</div><table class="CDefinitionList"><tr><td class="CDLEntry">bool</td><td class="CDLDefinition"><p>true: The Filter subsystem is unresponsive or not operating normally</p></td></tr></table></div>
 </div>
 
-<a name="filterDroppedData"></a><a name="Topic1373"></a><div class="CTopic TFunction LC">
+<a name="filterDroppedData"></a><a name="Topic2217"></a><div class="CTopic TFunction LC">
  <div class="CTitle">filterDroppedData</div>
- <div id="NDPrototype1373" class="NDPrototype NoParameterForm"><span class="SHKeyword">bool</span> filterDroppedData() <span class="SHKeyword">const</span></div>
- <div class="CBody"><p>Gets the value of the Filter Dropped Data bit</p><div class="CHeading">Returns</div><table class="CDefinitionList"><tr><td class="CDLEntry">bool</td><td class="CDLDefinition"><p>true: Filter samples not equal to IMU samples</p></td></tr></table></div>
+ <div id="NDPrototype2217" class="NDPrototype NoParameterForm"><span class="SHKeyword">bool</span> filterDroppedData() <span class="SHKeyword">const</span></div>
+ <div class="CBody"><p>Gets the value of the Filter Dropped Data bit (bit 21)</p><div class="CHeading">Returns</div><table class="CDefinitionList"><tr><td class="CDLEntry">bool</td><td class="CDLDefinition"><p>true: Filter samples not equal to IMU samples</p></td></tr></table></div>
 </div>
 
-<a name="filterRateMismatch"></a><a name="Topic1374"></a><div class="CTopic TFunction LC">
+<a name="filterRateMismatch"></a><a name="Topic2218"></a><div class="CTopic TFunction LC">
  <div class="CTitle">filterRateMismatch</div>
- <div id="NDPrototype1374" class="NDPrototype NoParameterForm"><span class="SHKeyword">bool</span> filterRateMismatch() <span class="SHKeyword">const</span></div>
- <div class="CBody"><p>Gets the value of the Filter Rate Mismatch bit</p><div class="CHeading">Returns</div><table class="CDefinitionList"><tr><td class="CDLEntry">bool</td><td class="CDLDefinition"><p>true: Filter major cycle rate mismatch</p></td></tr></table></div>
+ <div id="NDPrototype2218" class="NDPrototype NoParameterForm"><span class="SHKeyword">bool</span> filterRateMismatch() <span class="SHKeyword">const</span></div>
+ <div class="CBody"><p>Gets the value of the Filter Rate Mismatch bit (bit 22)</p><div class="CHeading">Returns</div><table class="CDefinitionList"><tr><td class="CDLEntry">bool</td><td class="CDLDefinition"><p>true: Filter major cycle rate mismatch</p></td></tr></table></div>
 </div>
 
-<a name="filterStuck"></a><a name="Topic1375"></a><div class="CTopic TFunction LC last">
+<a name="filterStuck"></a><a name="Topic2219"></a><div class="CTopic TFunction LC last">
  <div class="CTitle">filterStuck</div>
- <div id="NDPrototype1375" class="NDPrototype NoParameterForm"><span class="SHKeyword">bool</span> filterStuck() <span class="SHKeyword">const</span></div>
- <div class="CBody"><p>Gets the value of the Filter Stuck bit</p><div class="CHeading">Returns</div><table class="CDefinitionList"><tr><td class="CDLEntry">bool</td><td class="CDLDefinition"><p>true: No filter data received in 1 second</p></td></tr></table></div>
+ <div id="NDPrototype2219" class="NDPrototype NoParameterForm"><span class="SHKeyword">bool</span> filterStuck() <span class="SHKeyword">const</span></div>
+ <div class="CBody"><p>Gets the value of the Filter Stuck bit (bit 23)</p><div class="CHeading">Returns</div><table class="CDefinitionList"><tr><td class="CDLEntry">bool</td><td class="CDLDefinition"><p>true: No filter data received in 1 second</p></td></tr></table></div>
 </div>
 
 </body></html>

@@ -1,1 +1,1 @@
-NDSearch.OnPrefixDataLoaded("at",["Function"],[["at",,[["Matrix_3x3",,,,0,"File:MicroStrain/Inertial/ExposedInertialTypes.h:Matrix_3x3.at","CClass:Matrix_3x3:at"],["Quaternion",,,,0,"File:MicroStrain/Inertial/ExposedInertialTypes.h:Quaternion.at","CClass:Quaternion:at"]]]]);
+NDSearch.OnPrefixDataLoaded("at",["Function"],[["at",,[["Matrix_3x3",,,,0,"File:MicroStrain/Inertial/ExposedInertialTypes.h:Matrix_3x3.at","CClass:Matrix_3x3:at"]]]]);

@@ -8,130 +8,130 @@
 
 <body onload="NDLoader.OnLoad('Content');" class="NDPage NDContentPage">
 
-<a name="PollData"></a><a name="Topic467"></a><div class="CTopic TSection LC first">
+<a name="PollData"></a><a name="Topic482"></a><div class="CTopic TSection LC first">
  <div class="CTitle">PollData</div>
 </div>
 
-<a name="PollImuData"></a><a name="Topic468"></a><div class="CTopic TClass LC">
+<a name="PollImuData"></a><a name="Topic483"></a><div class="CTopic TClass LC">
  <div class="CTitle">PollImuData</div>
- <div class="NDClassPrototype" id="NDClassPrototype468"><div class="CPEntry TClass Current"><div class="CPName">PollImuData</div></div></div>
+ <div class="NDClassPrototype" id="NDClassPrototype483"><div class="CPEntry TClass Current"><div class="CPName">PollImuData</div></div></div>
  <div class="CBody"><p>Contains the logic for the Poll IMU Data command</p></div>
 </div>
 
-<a name="PollImuData.Constants"></a><a name="Topic469"></a><div class="CTopic TGroup LC">
+<a name="PollImuData.Constants"></a><a name="Topic484"></a><div class="CTopic TGroup LC">
  <div class="CTitle">Constants</div>
 </div>
 
-<a name="PollImuData.Packet_Bytes"></a><a name="Topic470"></a><div class="CTopic TConstant LC">
+<a name="PollImuData.Packet_Bytes"></a><a name="Topic485"></a><div class="CTopic TConstant LC">
  <div class="CTitle">Packet Bytes</div>
- <div class="CBody"><table class="CDefinitionList"><tr><td class="CDLEntry"><a name="PollImuData.CMD_ID"></a><a name="Topic471"></a>CMD_ID</td><td class="CDLDefinition"><p>CMD_POLL_SENSOR_DATA&nbsp; - The <a href="../../../../index.html#File:MicroStrain/MIP/MipTypes.h:MipTypes.Command" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3123);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipTypes::Command</a> for this command</p></td></tr></table></div>
+ <div class="CBody"><table class="CDefinitionList"><tr><td class="CDLEntry"><a name="PollImuData.CMD_ID"></a><a name="Topic486"></a>CMD_ID</td><td class="CDLDefinition"><p>CMD_POLL_SENSOR_DATA&nbsp; - The <a href="../../../../index.html#File:MicroStrain/MIP/MipTypes.h:MipTypes.Command" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3194);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipTypes::Command</a> for this command</p></td></tr></table></div>
 </div>
 
-<a name="PollImuData.Functions"></a><a name="Topic472"></a><div class="CTopic TGroup LC">
+<a name="PollImuData.Functions"></a><a name="Topic487"></a><div class="CTopic TGroup LC">
  <div class="CTitle">Functions</div>
 </div>
 
-<a name="PollImuData.buildCommand"></a><a name="Topic473"></a><div class="CTopic TFunction LC">
+<a name="PollImuData.buildCommand"></a><a name="Topic488"></a><div class="CTopic TFunction LC">
  <div class="CTitle">buildCommand</div>
- <div id="NDPrototype473" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">static</span> <a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9405);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> buildCommand(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PModifierQualifier first"><span class="SHKeyword">const</span> MipTypes::</td><td class="PType">MipChannelFields&nbsp;</td><td class="PNamePrefix">&amp;</td><td class="PName last">fields</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
- <div class="CBody"><p>Builds the bytes in the command</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">fields<div class="CDLParameterType"><span class="SHKeyword">const</span> MipTypes::MipChannelFields&amp;</div></td><td class="CDLDefinition"><p>The &lt;MipTypes::MipChannelFields&gt; to poll. If this is empty, the message format stored on the device will be used.</p></td></tr></table><div class="CHeading">Returns</div><p>A <a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9405);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> that holds the bytes that make up the command</p></div>
+ <div id="NDPrototype488" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">static</span> <a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9867);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> buildCommand(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PModifierQualifier first"><span class="SHKeyword">const</span> <a href="../../../../index.html#File:MicroStrain/MIP/MipTypes.h:MipTypes.MipChannelFields" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3802);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipTypes::</a></td><td class="PType"><a href="../../../../index.html#File:MicroStrain/MIP/MipTypes.h:MipTypes.MipChannelFields" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3802);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipChannelFields</a>&nbsp;</td><td class="PNamePrefix">&amp;</td><td class="PName last">fields</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
+ <div class="CBody"><p>Builds the bytes in the command</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">fields<div class="CDLParameterType"><span class="SHKeyword">const</span> <a href="../../../../index.html#File:MicroStrain/MIP/MipTypes.h:MipTypes.MipChannelFields" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3802);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipTypes::MipChannelFields</a>&amp;</div></td><td class="CDLDefinition"><p>The <a href="../../../../index.html#File:MicroStrain/MIP/MipTypes.h:MipTypes.MipChannelFields" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3802);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipTypes::MipChannelFields</a> to poll. If this is empty, the message format stored on the device will be used.</p></td></tr></table><div class="CHeading">Returns</div><p>A <a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9867);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> that holds the bytes that make up the command</p></div>
 </div>
 
-<a name="Response"></a><a name="Topic474"></a><div class="CTopic TClass LC">
+<a name="Response"></a><a name="Topic489"></a><div class="CTopic TClass LC">
  <div class="CTitle">Response</div>
- <div class="NDClassPrototype HasParents" id="NDClassPrototype474"><div class="CPEntry Parent TClass"><div class="CPModifiers"><span class="SHKeyword">public</span></div><div class="CPName"><span class="Qualifier">GenericMipCommand.</span>&#8203;Response</div></div><a class="CPEntry Parent TClass" href="../../../../index.html#File:MicroStrain/ResponsePattern.h:ResponsePattern" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9002);" onmouseout="NDContentPage.OnLinkMouseOut(event);" ><div class="CPName">ResponsePattern</div></a><a class="CPEntry Parent TClass" href="../../../../index.html#File:MicroStrain/Wireless/Commands/WirelessResponsePattern.h:WirelessResponsePattern" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,4346);" onmouseout="NDContentPage.OnLinkMouseOut(event);" ><div class="CPName">WirelessResponsePattern</div></a><div class="CPEntry Parent TClass"><div class="CPName"><span class="Qualifier">SetToIdle.</span>&#8203;Response</div></div><div class="CPEntry TClass Current"><div class="CPName">Response</div></div></div>
+ <div class="NDClassPrototype HasParents" id="NDClassPrototype489"><div class="CPEntry Parent TClass"><div class="CPModifiers"><span class="SHKeyword">public</span></div><div class="CPName"><span class="Qualifier">GenericMipCommand.</span>&#8203;Response</div></div><a class="CPEntry Parent TClass" href="../../../../index.html#File:MicroStrain/ResponsePattern.h:ResponsePattern" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9709);" onmouseout="NDContentPage.OnLinkMouseOut(event);" ><div class="CPName">ResponsePattern</div></a><a class="CPEntry Parent TClass" href="../../../../index.html#File:MicroStrain/Wireless/Commands/WirelessResponsePattern.h:WirelessResponsePattern" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,4661);" onmouseout="NDContentPage.OnLinkMouseOut(event);" ><div class="CPName">WirelessResponsePattern</div></a><div class="CPEntry Parent TClass"><div class="CPName"><span class="Qualifier">SetToIdle.</span>&#8203;Response</div></div><div class="CPEntry TClass Current"><div class="CPName">Response</div></div></div>
  <div class="CBody"><p>Handles the response to the command</p><div class="CHeading">See Also</div><p>&lt;GenericMipCommand::Response&gt;</p></div>
 </div>
 
-<a name="Response.Functions"></a><a name="Topic475"></a><div class="CTopic TGroup LC">
+<a name="Response.Functions"></a><a name="Topic490"></a><div class="CTopic TGroup LC">
  <div class="CTitle">Functions</div>
 </div>
 
-<a name="Response.Response"></a><a name="Topic476"></a><div class="CTopic TFunction LC">
+<a name="Response.Response"></a><a name="Topic491"></a><div class="CTopic TFunction LC">
  <div class="CTitle">Response</div>
- <div id="NDPrototype476" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters">Response(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PModifierQualifier first">std::</td><td class="PType">weak_ptr&lt;<a href="../../../../index.html#File:MicroStrain/ResponseCollector.h:ResponseCollector" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9168);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ResponseCollector</a>&gt;&nbsp;</td><td class="PName last">collector</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
+ <div id="NDPrototype491" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters">Response(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PModifierQualifier first">std::</td><td class="PType">weak_ptr&lt;<a href="../../../../index.html#File:MicroStrain/ResponseCollector.h:ResponseCollector" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9734);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ResponseCollector</a>&gt;&nbsp;</td><td class="PName last">collector</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
  <div class="CBody"><p>Creates the Response object</p></div>
 </div>
 
-<a name="PollGnssData"></a><a name="Topic477"></a><div class="CTopic TClass LC">
+<a name="PollGnssData"></a><a name="Topic492"></a><div class="CTopic TClass LC">
  <div class="CTitle">PollGnssData</div>
- <div class="NDClassPrototype" id="NDClassPrototype477"><div class="CPEntry TClass Current"><div class="CPName">PollGnssData</div></div></div>
+ <div class="NDClassPrototype" id="NDClassPrototype492"><div class="CPEntry TClass Current"><div class="CPName">PollGnssData</div></div></div>
  <div class="CBody"><p>Contains the logic for the Poll GNSS Data command</p></div>
 </div>
 
-<a name="PollGnssData.Constants"></a><a name="Topic478"></a><div class="CTopic TGroup LC">
+<a name="PollGnssData.Constants"></a><a name="Topic493"></a><div class="CTopic TGroup LC">
  <div class="CTitle">Constants</div>
 </div>
 
-<a name="PollGnssData.Packet_Bytes"></a><a name="Topic479"></a><div class="CTopic TConstant LC">
+<a name="PollGnssData.Packet_Bytes"></a><a name="Topic494"></a><div class="CTopic TConstant LC">
  <div class="CTitle">Packet Bytes</div>
- <div class="CBody"><table class="CDefinitionList"><tr><td class="CDLEntry"><a name="PollGnssData.CMD_ID"></a><a name="Topic480"></a>CMD_ID</td><td class="CDLDefinition"><p>CMD_POLL_GNSS_DATA&nbsp; - The <a href="../../../../index.html#File:MicroStrain/MIP/MipTypes.h:MipTypes.Command" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3123);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipTypes::Command</a> for this command</p></td></tr></table></div>
+ <div class="CBody"><table class="CDefinitionList"><tr><td class="CDLEntry"><a name="PollGnssData.CMD_ID"></a><a name="Topic495"></a>CMD_ID</td><td class="CDLDefinition"><p>CMD_POLL_GNSS_DATA&nbsp; - The <a href="../../../../index.html#File:MicroStrain/MIP/MipTypes.h:MipTypes.Command" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3194);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipTypes::Command</a> for this command</p></td></tr></table></div>
 </div>
 
-<a name="PollGnssData.Functions"></a><a name="Topic481"></a><div class="CTopic TGroup LC">
+<a name="PollGnssData.Functions"></a><a name="Topic496"></a><div class="CTopic TGroup LC">
  <div class="CTitle">Functions</div>
 </div>
 
-<a name="PollGnssData.buildCommand"></a><a name="Topic482"></a><div class="CTopic TFunction LC">
+<a name="PollGnssData.buildCommand"></a><a name="Topic497"></a><div class="CTopic TFunction LC">
  <div class="CTitle">buildCommand</div>
- <div id="NDPrototype482" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">static</span> <a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9405);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> buildCommand(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PModifierQualifier first"><span class="SHKeyword">const</span> MipTypes::</td><td class="PType">MipChannelFields&nbsp;</td><td class="PNamePrefix">&amp;</td><td class="PName last">fields</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
- <div class="CBody"><p>Builds the bytes in the command</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">fields<div class="CDLParameterType"><span class="SHKeyword">const</span> MipTypes::MipChannelFields&amp;</div></td><td class="CDLDefinition"><p>The &lt;MipTypes::MipChannelFields&gt; to poll. If this is empty, the message format stored on the device will be used.</p></td></tr></table><div class="CHeading">Returns</div><p>A <a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9405);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> that holds the bytes that make up the command</p></div>
+ <div id="NDPrototype497" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">static</span> <a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9867);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> buildCommand(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PModifierQualifier first"><span class="SHKeyword">const</span> <a href="../../../../index.html#File:MicroStrain/MIP/MipTypes.h:MipTypes.MipChannelFields" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3802);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipTypes::</a></td><td class="PType"><a href="../../../../index.html#File:MicroStrain/MIP/MipTypes.h:MipTypes.MipChannelFields" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3802);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipChannelFields</a>&nbsp;</td><td class="PNamePrefix">&amp;</td><td class="PName last">fields</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
+ <div class="CBody"><p>Builds the bytes in the command</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">fields<div class="CDLParameterType"><span class="SHKeyword">const</span> <a href="../../../../index.html#File:MicroStrain/MIP/MipTypes.h:MipTypes.MipChannelFields" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3802);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipTypes::MipChannelFields</a>&amp;</div></td><td class="CDLDefinition"><p>The <a href="../../../../index.html#File:MicroStrain/MIP/MipTypes.h:MipTypes.MipChannelFields" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3802);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipTypes::MipChannelFields</a> to poll. If this is empty, the message format stored on the device will be used.</p></td></tr></table><div class="CHeading">Returns</div><p>A <a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9867);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> that holds the bytes that make up the command</p></div>
 </div>
 
-<a name="Response(2)"></a><a name="Topic483"></a><div class="CTopic TClass LC">
+<a name="Response(2)"></a><a name="Topic498"></a><div class="CTopic TClass LC">
  <div class="CTitle">Response</div>
- <div class="NDClassPrototype HasParents" id="NDClassPrototype483"><div class="CPEntry Parent TClass"><div class="CPModifiers"><span class="SHKeyword">public</span></div><div class="CPName"><span class="Qualifier">GenericMipCommand.</span>&#8203;Response</div></div><a class="CPEntry Parent TClass" href="../../../../index.html#File:MicroStrain/ResponsePattern.h:ResponsePattern" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9002);" onmouseout="NDContentPage.OnLinkMouseOut(event);" ><div class="CPName">ResponsePattern</div></a><a class="CPEntry Parent TClass" href="../../../../index.html#File:MicroStrain/Wireless/Commands/WirelessResponsePattern.h:WirelessResponsePattern" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,4346);" onmouseout="NDContentPage.OnLinkMouseOut(event);" ><div class="CPName">WirelessResponsePattern</div></a><div class="CPEntry Parent TClass"><div class="CPName"><span class="Qualifier">SetToIdle.</span>&#8203;Response</div></div><div class="CPEntry TClass Current"><div class="CPName">Response</div></div></div>
+ <div class="NDClassPrototype HasParents" id="NDClassPrototype498"><div class="CPEntry Parent TClass"><div class="CPModifiers"><span class="SHKeyword">public</span></div><div class="CPName"><span class="Qualifier">GenericMipCommand.</span>&#8203;Response</div></div><a class="CPEntry Parent TClass" href="../../../../index.html#File:MicroStrain/ResponsePattern.h:ResponsePattern" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9709);" onmouseout="NDContentPage.OnLinkMouseOut(event);" ><div class="CPName">ResponsePattern</div></a><a class="CPEntry Parent TClass" href="../../../../index.html#File:MicroStrain/Wireless/Commands/WirelessResponsePattern.h:WirelessResponsePattern" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,4661);" onmouseout="NDContentPage.OnLinkMouseOut(event);" ><div class="CPName">WirelessResponsePattern</div></a><div class="CPEntry Parent TClass"><div class="CPName"><span class="Qualifier">SetToIdle.</span>&#8203;Response</div></div><div class="CPEntry TClass Current"><div class="CPName">Response</div></div></div>
  <div class="CBody"><p>Handles the response to the command</p><div class="CHeading">See Also</div><p>&lt;GenericMipCommand::Response&gt;</p></div>
 </div>
 
-<a name="Response.Functions(2)"></a><a name="Topic484"></a><div class="CTopic TGroup LC">
+<a name="Response.Functions(2)"></a><a name="Topic499"></a><div class="CTopic TGroup LC">
  <div class="CTitle">Functions</div>
 </div>
 
-<a name="Response.Response(2)"></a><a name="Topic485"></a><div class="CTopic TFunction LC">
+<a name="Response.Response(2)"></a><a name="Topic500"></a><div class="CTopic TFunction LC">
  <div class="CTitle">Response</div>
- <div id="NDPrototype485" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters">Response(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PModifierQualifier first">std::</td><td class="PType">weak_ptr&lt;<a href="../../../../index.html#File:MicroStrain/ResponseCollector.h:ResponseCollector" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9168);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ResponseCollector</a>&gt;&nbsp;</td><td class="PName last">collector</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
+ <div id="NDPrototype500" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters">Response(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PModifierQualifier first">std::</td><td class="PType">weak_ptr&lt;<a href="../../../../index.html#File:MicroStrain/ResponseCollector.h:ResponseCollector" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9734);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ResponseCollector</a>&gt;&nbsp;</td><td class="PName last">collector</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
  <div class="CBody"><p>Creates the Response object</p></div>
 </div>
 
-<a name="PollEstFilterData"></a><a name="Topic486"></a><div class="CTopic TClass LC">
+<a name="PollEstFilterData"></a><a name="Topic501"></a><div class="CTopic TClass LC">
  <div class="CTitle">PollEstFilterData</div>
- <div class="NDClassPrototype" id="NDClassPrototype486"><div class="CPEntry TClass Current"><div class="CPName">PollEstFilterData</div></div></div>
+ <div class="NDClassPrototype" id="NDClassPrototype501"><div class="CPEntry TClass Current"><div class="CPName">PollEstFilterData</div></div></div>
  <div class="CBody"><p>Contains the logic for the Poll Estimation Filter Data command</p></div>
 </div>
 
-<a name="PollEstFilterData.Constants"></a><a name="Topic487"></a><div class="CTopic TGroup LC">
+<a name="PollEstFilterData.Constants"></a><a name="Topic502"></a><div class="CTopic TGroup LC">
  <div class="CTitle">Constants</div>
 </div>
 
-<a name="PollEstFilterData.Packet_Bytes"></a><a name="Topic488"></a><div class="CTopic TConstant LC">
+<a name="PollEstFilterData.Packet_Bytes"></a><a name="Topic503"></a><div class="CTopic TConstant LC">
  <div class="CTitle">Packet Bytes</div>
- <div class="CBody"><table class="CDefinitionList"><tr><td class="CDLEntry"><a name="PollEstFilterData.CMD_ID"></a><a name="Topic489"></a>CMD_ID</td><td class="CDLDefinition"><p>CMD_POLL_EF_DATA&nbsp; - The <a href="../../../../index.html#File:MicroStrain/MIP/MipTypes.h:MipTypes.Command" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3123);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipTypes::Command</a> for this command</p></td></tr></table></div>
+ <div class="CBody"><table class="CDefinitionList"><tr><td class="CDLEntry"><a name="PollEstFilterData.CMD_ID"></a><a name="Topic504"></a>CMD_ID</td><td class="CDLDefinition"><p>CMD_POLL_EF_DATA&nbsp; - The <a href="../../../../index.html#File:MicroStrain/MIP/MipTypes.h:MipTypes.Command" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3194);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipTypes::Command</a> for this command</p></td></tr></table></div>
 </div>
 
-<a name="PollEstFilterData.Functions"></a><a name="Topic490"></a><div class="CTopic TGroup LC">
+<a name="PollEstFilterData.Functions"></a><a name="Topic505"></a><div class="CTopic TGroup LC">
  <div class="CTitle">Functions</div>
 </div>
 
-<a name="PollEstFilterData.buildCommand"></a><a name="Topic491"></a><div class="CTopic TFunction LC">
+<a name="PollEstFilterData.buildCommand"></a><a name="Topic506"></a><div class="CTopic TFunction LC">
  <div class="CTitle">buildCommand</div>
- <div id="NDPrototype491" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">static</span> <a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9405);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> buildCommand(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PModifierQualifier first"><span class="SHKeyword">const</span> MipTypes::</td><td class="PType">MipChannelFields&nbsp;</td><td class="PNamePrefix">&amp;</td><td class="PName last">fields</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
- <div class="CBody"><p>Builds the bytes in the command</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">fields<div class="CDLParameterType"><span class="SHKeyword">const</span> MipTypes::MipChannelFields&amp;</div></td><td class="CDLDefinition"><p>The &lt;MipTypes::MipChannelFields&gt; to poll. If this is empty, the message format stored on the device will be used.</p></td></tr></table><div class="CHeading">Returns</div><p>A <a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9405);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> that holds the bytes that make up the command</p></div>
+ <div id="NDPrototype506" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">static</span> <a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9867);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> buildCommand(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PModifierQualifier first"><span class="SHKeyword">const</span> <a href="../../../../index.html#File:MicroStrain/MIP/MipTypes.h:MipTypes.MipChannelFields" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3802);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipTypes::</a></td><td class="PType"><a href="../../../../index.html#File:MicroStrain/MIP/MipTypes.h:MipTypes.MipChannelFields" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3802);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipChannelFields</a>&nbsp;</td><td class="PNamePrefix">&amp;</td><td class="PName last">fields</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
+ <div class="CBody"><p>Builds the bytes in the command</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">fields<div class="CDLParameterType"><span class="SHKeyword">const</span> <a href="../../../../index.html#File:MicroStrain/MIP/MipTypes.h:MipTypes.MipChannelFields" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3802);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipTypes::MipChannelFields</a>&amp;</div></td><td class="CDLDefinition"><p>The <a href="../../../../index.html#File:MicroStrain/MIP/MipTypes.h:MipTypes.MipChannelFields" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3802);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipTypes::MipChannelFields</a> to poll. If this is empty, the message format stored on the device will be used.</p></td></tr></table><div class="CHeading">Returns</div><p>A <a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9867);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> that holds the bytes that make up the command</p></div>
 </div>
 
-<a name="Response(3)"></a><a name="Topic492"></a><div class="CTopic TClass LC">
+<a name="Response(3)"></a><a name="Topic507"></a><div class="CTopic TClass LC">
  <div class="CTitle">Response</div>
- <div class="NDClassPrototype HasParents" id="NDClassPrototype492"><div class="CPEntry Parent TClass"><div class="CPModifiers"><span class="SHKeyword">public</span></div><div class="CPName"><span class="Qualifier">GenericMipCommand.</span>&#8203;Response</div></div><a class="CPEntry Parent TClass" href="../../../../index.html#File:MicroStrain/ResponsePattern.h:ResponsePattern" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9002);" onmouseout="NDContentPage.OnLinkMouseOut(event);" ><div class="CPName">ResponsePattern</div></a><a class="CPEntry Parent TClass" href="../../../../index.html#File:MicroStrain/Wireless/Commands/WirelessResponsePattern.h:WirelessResponsePattern" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,4346);" onmouseout="NDContentPage.OnLinkMouseOut(event);" ><div class="CPName">WirelessResponsePattern</div></a><div class="CPEntry Parent TClass"><div class="CPName"><span class="Qualifier">SetToIdle.</span>&#8203;Response</div></div><div class="CPEntry TClass Current"><div class="CPName">Response</div></div></div>
+ <div class="NDClassPrototype HasParents" id="NDClassPrototype507"><div class="CPEntry Parent TClass"><div class="CPModifiers"><span class="SHKeyword">public</span></div><div class="CPName"><span class="Qualifier">GenericMipCommand.</span>&#8203;Response</div></div><a class="CPEntry Parent TClass" href="../../../../index.html#File:MicroStrain/ResponsePattern.h:ResponsePattern" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9709);" onmouseout="NDContentPage.OnLinkMouseOut(event);" ><div class="CPName">ResponsePattern</div></a><a class="CPEntry Parent TClass" href="../../../../index.html#File:MicroStrain/Wireless/Commands/WirelessResponsePattern.h:WirelessResponsePattern" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,4661);" onmouseout="NDContentPage.OnLinkMouseOut(event);" ><div class="CPName">WirelessResponsePattern</div></a><div class="CPEntry Parent TClass"><div class="CPName"><span class="Qualifier">SetToIdle.</span>&#8203;Response</div></div><div class="CPEntry TClass Current"><div class="CPName">Response</div></div></div>
  <div class="CBody"><p>Handles the response to the command</p><div class="CHeading">See Also</div><p>&lt;GenericMipCommand::Response&gt;</p></div>
 </div>
 
-<a name="Response.Functions(3)"></a><a name="Topic493"></a><div class="CTopic TGroup LC">
+<a name="Response.Functions(3)"></a><a name="Topic508"></a><div class="CTopic TGroup LC">
  <div class="CTitle">Functions</div>
 </div>
 
-<a name="Response.Response(3)"></a><a name="Topic494"></a><div class="CTopic TFunction LC last">
+<a name="Response.Response(3)"></a><a name="Topic509"></a><div class="CTopic TFunction LC last">
  <div class="CTitle">Response</div>
- <div id="NDPrototype494" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters">Response(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PModifierQualifier first">std::</td><td class="PType">weak_ptr&lt;<a href="../../../../index.html#File:MicroStrain/ResponseCollector.h:ResponseCollector" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9168);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ResponseCollector</a>&gt;&nbsp;</td><td class="PName last">collector</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
+ <div id="NDPrototype509" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters">Response(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PModifierQualifier first">std::</td><td class="PType">weak_ptr&lt;<a href="../../../../index.html#File:MicroStrain/ResponseCollector.h:ResponseCollector" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9734);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ResponseCollector</a>&gt;&nbsp;</td><td class="PName last">collector</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
  <div class="CBody"><p>Creates the Response object</p></div>
 </div>
 

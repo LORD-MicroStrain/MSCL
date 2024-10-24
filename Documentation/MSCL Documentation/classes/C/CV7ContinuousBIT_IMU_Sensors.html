@@ -8,115 +8,24 @@
 
 <body onload="NDLoader.OnLoad('Content');" class="NDPage NDContentPage">
 
-<a name="Topic4215"></a><div class="CTopic TStruct LC first">
+<a name="Topic5107"></a><div class="CTopic TStruct LC first">
  <div class="CTitle">CV7ContinuousBIT_IMU_Sensors</div>
  <div class="CBody"><p>Continuous Built-In Test flags for IMU sensors information</p><p>Bits 40-55 of the original 128 bit Continuous Built-In Test flags</p></div>
 </div>
 
-<a name="Functions"></a><a name="Topic4216"></a><div class="CTopic TGroup LC">
+<a name="Functions"></a><a name="Topic5108"></a><div class="CTopic TGroup LC">
  <div class="CTitle">Functions</div>
 </div>
 
-<a name="CV7ContinuousBIT_IMU_Sensors"></a><a name="Topic4217"></a><div class="CTopic TFunction LC">
+<a name="CV7ContinuousBIT_IMU_Sensors"></a><a name="Topic5109"></a><div class="CTopic TFunction LC">
  <div class="CTitle">CV7ContinuousBIT_IMU_Sensors</div>
- <div id="NDPrototype4217" class="NDPrototype NoParameterForm">CV7ContinuousBIT_IMU_Sensors()</div>
+ <div id="NDPrototype5109" class="NDPrototype NoParameterForm">CV7ContinuousBIT_IMU_Sensors() = default</div>
 </div>
 
-<a name="CV7ContinuousBIT_IMU_Sensors(2)"></a><a name="Topic4218"></a><div class="CTopic TFunction LC">
+<a name="CV7ContinuousBIT_IMU_Sensors(2)"></a><a name="Topic5110"></a><div class="CTopic TFunction LC last">
  <div class="CTitle">CV7ContinuousBIT_IMU_Sensors</div>
- <div id="NDPrototype4218" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters">CV7ContinuousBIT_IMU_Sensors(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PModifierQualifier first"><span class="SHKeyword">const</span>&nbsp;</td><td class="PType"><span class="SHKeyword">uint16</span>&nbsp;</td><td class="PName last">bits</td></tr></table></td><td class="PAfterParameters">) : <a href="../../index.html#CClass:Bitfield" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9391);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >Bitfield</a>(static_cast&lt;<span class="SHKeyword">uint64</span>&gt;(bits))</td></tr></table></div>
+ <div id="NDPrototype5110" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">explicit</span> CV7ContinuousBIT_IMU_Sensors(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PModifierQualifier first"><span class="SHKeyword">const</span>&nbsp;</td><td class="PType"><span class="SHKeyword">uint16</span>&nbsp;</td><td class="PName last">bits</td></tr></table></td><td class="PAfterParameters">) : <a href="../../index.html#CClass:ContinuousBIT_IMU_Sensors" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,5007);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ContinuousBIT_IMU_Sensors</a>(bits)</td></tr></table></div>
  <div class="CBody"><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">bits<div class="CDLParameterType"><span class="SHKeyword">const</span> <span class="SHKeyword">uint16</span></div></td><td class="CDLDefinition"><p>Bits 40-55 of the original 128 bit Continuous Built-In Test flags</p></td></tr></table></div>
-</div>
-
-<a name="Constants"></a><a name="Topic4219"></a><div class="CTopic TGroup LC">
- <div class="CTitle">Constants</div>
-</div>
-
-<a name="Bitmasks"></a><a name="Topic4220"></a><div class="CTopic TConstant LC">
- <div class="CTitle">Bitmasks</div>
- <div class="CBody"><p>Bitmasks for IMU sensors flags</p><div class="CHeading">Note</div><p>These masks are shifted 40 bits to the right from the original 128 bitmask to have a 0 index at bit 40</p><table class="CDefinitionList"><tr><td class="CDLEntry"><a name="ACCEL_GENERAL_FAULT"></a><a name="Topic4221"></a>ACCEL_GENERAL_FAULT</td><td class="CDLDefinition"><p>0x0100 - Accelerometer will not initialize</p></td></tr><tr><td class="CDLEntry"><a name="ACCEL_OVERRANGE"></a><a name="Topic4222"></a>ACCEL_OVERRANGE</td><td class="CDLDefinition"><p>0x0200 - One or more axes subjected to accelerations near or outside the selected range</p></td></tr><tr><td class="CDLEntry"><a name="ACCEL_SELF_TEST_FAIL"></a><a name="Topic4223"></a>ACCEL_SELF_TEST_FAIL</td><td class="CDLDefinition"><p>0x0400 - The internal self-test of the accelerometer failed</p></td></tr><tr><td class="CDLEntry"><a name="GYRO_GENERAL_FAULT"></a><a name="Topic4224"></a>GYRO_GENERAL_FAULT</td><td class="CDLDefinition"><p>0x1000 - Gyroscope will not initialize</p></td></tr><tr><td class="CDLEntry"><a name="GYRO_OVERRANGE"></a><a name="Topic4225"></a>GYRO_OVERRANGE</td><td class="CDLDefinition"><p>0x2000 - One or more axes subjected to rotational rates near or outside the selected range</p></td></tr><tr><td class="CDLEntry"><a name="GYRO_SELF_TEST_FAIL"></a><a name="Topic4226"></a>GYRO_SELF_TEST_FAIL</td><td class="CDLDefinition"><p>0x4000 - The internal self-test of the gyroscope failed</p></td></tr><tr><td class="CDLEntry"><a name="MAG_GENERAL_FAULT"></a><a name="Topic4227"></a>MAG_GENERAL_FAULT</td><td class="CDLDefinition"><p>0x0001 - Magnetometer will not initialize</p></td></tr><tr><td class="CDLEntry"><a name="MAG_OVERRANGE"></a><a name="Topic4228"></a>MAG_OVERRANGE</td><td class="CDLDefinition"><p>0x0002 - One or more axes subjected to magnetic fields strengths near or outside the supported range</p></td></tr><tr><td class="CDLEntry"><a name="MAG_SELF_TEST_FAIL"></a><a name="Topic4229"></a>MAG_SELF_TEST_FAIL</td><td class="CDLDefinition"><p>0x0004 - The internal self-test of the magnetometer failed</p></td></tr><tr><td class="CDLEntry"><a name="PRESSURE_GENERAL_FAULT"></a><a name="Topic4230"></a>PRESSURE_GENERAL_FAULT</td><td class="CDLDefinition"><p>0x0010 - Pressure sensor won't initialize</p></td></tr><tr><td class="CDLEntry"><a name="PRESSURE_OVERRANGE"></a><a name="Topic4231"></a>PRESSURE_OVERRANGE</td><td class="CDLDefinition"><p>0x0020 - Pressure sensor subjected to pressures above or below the supported range</p></td></tr><tr><td class="CDLEntry"><a name="PRESSURE_SELF_TEST_FAIL"></a><a name="Topic4232"></a>PRESSURE_SELF_TEST_FAIL</td><td class="CDLDefinition"><p>0x0040 - The internal self-test of the pressure sensor failed</p></td></tr></table></div>
-</div>
-
-<a name="Functions(2)"></a><a name="Topic4233"></a><div class="CTopic TGroup LC">
- <div class="CTitle">Functions</div>
-</div>
-
-<a name="flags"></a><a name="Topic4234"></a><div class="CTopic TFunction LC">
- <div class="CTitle">flags</div>
- <div id="NDPrototype4234" class="NDPrototype NoParameterForm"><span class="SHKeyword">uint16</span> flags() <span class="SHKeyword">const</span></div>
- <div class="CBody"><p>Gets the value of the the IMU sensors flags (bits 40-55)</p><div class="CHeading">Returns</div><table class="CDefinitionList"><tr><td class="CDLEntry">uint16</td><td class="CDLDefinition"><p>Value of the IMU sensors flags</p></td></tr></table></div>
-</div>
-
-<a name="accelGeneralFault"></a><a name="Topic4235"></a><div class="CTopic TFunction LC">
- <div class="CTitle">accelGeneralFault</div>
- <div id="NDPrototype4235" class="NDPrototype NoParameterForm"><span class="SHKeyword">bool</span> accelGeneralFault() <span class="SHKeyword">const</span></div>
- <div class="CBody"><p>Gets the value of the Accelerometer General Fault bit</p><div class="CHeading">Returns</div><table class="CDefinitionList"><tr><td class="CDLEntry">bool</td><td class="CDLDefinition"><p>true: Accelerometer will not initialize</p></td></tr></table></div>
-</div>
-
-<a name="accelOverrange"></a><a name="Topic4236"></a><div class="CTopic TFunction LC">
- <div class="CTitle">accelOverrange</div>
- <div id="NDPrototype4236" class="NDPrototype NoParameterForm"><span class="SHKeyword">bool</span> accelOverrange() <span class="SHKeyword">const</span></div>
- <div class="CBody"><p>Gets the value of the Accelerometer Overrange bit</p><div class="CHeading">Returns</div><table class="CDefinitionList"><tr><td class="CDLEntry">bool</td><td class="CDLDefinition"><p>true: One or more axes subjected to accelerations near or outside the selected range</p></td></tr></table></div>
-</div>
-
-<a name="accelSelfTest"></a><a name="Topic4237"></a><div class="CTopic TFunction LC">
- <div class="CTitle">accelSelfTest</div>
- <div id="NDPrototype4237" class="NDPrototype NoParameterForm"><span class="SHKeyword">bool</span> accelSelfTestFail() <span class="SHKeyword">const</span></div>
- <div class="CBody"><p>Gets the value of the Accelerometer Self Test bit</p><div class="CHeading">Returns</div><table class="CDefinitionList"><tr><td class="CDLEntry">bool</td><td class="CDLDefinition"><p>true: The internal self-test of the accelerometer failed</p></td></tr></table></div>
-</div>
-
-<a name="gyroGeneralFault"></a><a name="Topic4238"></a><div class="CTopic TFunction LC">
- <div class="CTitle">gyroGeneralFault</div>
- <div id="NDPrototype4238" class="NDPrototype NoParameterForm"><span class="SHKeyword">bool</span> gyroGeneralFault() <span class="SHKeyword">const</span></div>
- <div class="CBody"><p>Gets the value of the Gyroscope General Fault bit</p><div class="CHeading">Returns</div><table class="CDefinitionList"><tr><td class="CDLEntry">bool</td><td class="CDLDefinition"><p>true: Gyroscope will not initialize</p></td></tr></table></div>
-</div>
-
-<a name="gyroOverrange"></a><a name="Topic4239"></a><div class="CTopic TFunction LC">
- <div class="CTitle">gyroOverrange</div>
- <div id="NDPrototype4239" class="NDPrototype NoParameterForm"><span class="SHKeyword">bool</span> gyroOverrange() <span class="SHKeyword">const</span></div>
- <div class="CBody"><p>Gets the value of the Gyroscope Overrange bit</p><div class="CHeading">Returns</div><table class="CDefinitionList"><tr><td class="CDLEntry">bool</td><td class="CDLDefinition"><p>true: One or more axes subjected to rotational rates near or outside the selected range</p></td></tr></table></div>
-</div>
-
-<a name="gyroSelfTest"></a><a name="Topic4240"></a><div class="CTopic TFunction LC">
- <div class="CTitle">gyroSelfTest</div>
- <div id="NDPrototype4240" class="NDPrototype NoParameterForm"><span class="SHKeyword">bool</span> gyroSelfTestFail() <span class="SHKeyword">const</span></div>
- <div class="CBody"><p>Gets the value of the Gyroscope Self Test bit</p><div class="CHeading">Returns</div><table class="CDefinitionList"><tr><td class="CDLEntry">bool</td><td class="CDLDefinition"><p>true: The internal self-test of the gyroscope failed</p></td></tr></table></div>
-</div>
-
-<a name="magGeneralFault"></a><a name="Topic4241"></a><div class="CTopic TFunction LC">
- <div class="CTitle">magGeneralFault</div>
- <div id="NDPrototype4241" class="NDPrototype NoParameterForm"><span class="SHKeyword">bool</span> magGeneralFault() <span class="SHKeyword">const</span></div>
- <div class="CBody"><p>Gets the value of the Magnetometer General Fault bit</p><div class="CHeading">Returns</div><table class="CDefinitionList"><tr><td class="CDLEntry">bool</td><td class="CDLDefinition"><p>true: Magnetometer will not initialize</p></td></tr></table></div>
-</div>
-
-<a name="magOverrange"></a><a name="Topic4242"></a><div class="CTopic TFunction LC">
- <div class="CTitle">magOverrange</div>
- <div id="NDPrototype4242" class="NDPrototype NoParameterForm"><span class="SHKeyword">bool</span> magOverrange() <span class="SHKeyword">const</span></div>
- <div class="CBody"><p>Gets the value of the Magnetometer Overrange bit</p><div class="CHeading">Returns</div><table class="CDefinitionList"><tr><td class="CDLEntry">bool</td><td class="CDLDefinition"><p>true: One or more axes subjected to magnetic fields strengths near or outside the supported range</p></td></tr></table></div>
-</div>
-
-<a name="magSelfTest"></a><a name="Topic4243"></a><div class="CTopic TFunction LC">
- <div class="CTitle">magSelfTest</div>
- <div id="NDPrototype4243" class="NDPrototype NoParameterForm"><span class="SHKeyword">bool</span> magSelfTestFail() <span class="SHKeyword">const</span></div>
- <div class="CBody"><p>Gets the value of the Magnetometer Self Test bit</p><div class="CHeading">Returns</div><table class="CDefinitionList"><tr><td class="CDLEntry">bool</td><td class="CDLDefinition"><p>true: The internal self-test of the magnetometer failed</p></td></tr></table></div>
-</div>
-
-<a name="pressureGeneralFault"></a><a name="Topic4244"></a><div class="CTopic TFunction LC">
- <div class="CTitle">pressureGeneralFault</div>
- <div id="NDPrototype4244" class="NDPrototype NoParameterForm"><span class="SHKeyword">bool</span> pressureGeneralFault() <span class="SHKeyword">const</span></div>
- <div class="CBody"><p>Gets the value of the Pressure General Fault bit</p><div class="CHeading">Returns</div><table class="CDefinitionList"><tr><td class="CDLEntry">bool</td><td class="CDLDefinition"><p>true: Pressure sensor won't initialize</p></td></tr></table></div>
-</div>
-
-<a name="pressureOverrange"></a><a name="Topic4245"></a><div class="CTopic TFunction LC">
- <div class="CTitle">pressureOverrange</div>
- <div id="NDPrototype4245" class="NDPrototype NoParameterForm"><span class="SHKeyword">bool</span> pressureOverrange() <span class="SHKeyword">const</span></div>
- <div class="CBody"><p>Gets the value of the Pressure Overrange bit</p><div class="CHeading">Returns</div><table class="CDefinitionList"><tr><td class="CDLEntry">bool</td><td class="CDLDefinition"><p>true: Pressure sensor subjected to pressures above or below the supported range</p></td></tr></table></div>
-</div>
-
-<a name="pressureSelfTest"></a><a name="Topic4246"></a><div class="CTopic TFunction LC last">
- <div class="CTitle">pressureSelfTest</div>
- <div id="NDPrototype4246" class="NDPrototype NoParameterForm"><span class="SHKeyword">bool</span> pressureSelfTestFail() <span class="SHKeyword">const</span></div>
- <div class="CBody"><p>Gets the value of the Pressure Self Test bit</p><div class="CHeading">Returns</div><table class="CDefinitionList"><tr><td class="CDLEntry">bool</td><td class="CDLDefinition"><p>true: The internal self-test of the pressure sensor failed</p></td></tr></table></div>
 </div>
 
 </body></html>

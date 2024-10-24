@@ -8,40 +8,225 @@
 
 <body onload="NDLoader.OnLoad('Content');" class="NDPage NDContentPage">
 
-<a name="EulerAngles"></a><a name="Topic268"></a><div class="CTopic TClass LC first">
+<a name="EulerAngles"></a><a name="Topic140"></a><div class="CTopic TClass LC first">
  <div class="CTitle">EulerAngles</div>
- <div class="NDClassPrototype" id="NDClassPrototype268"><div class="CPEntry TClass Current"><div class="CPName">EulerAngles</div></div></div>
+ <div class="NDClassPrototype HasParents" id="NDClassPrototype140"><a class="CPEntry Parent TClass" href="../../../index.html#File:MicroStrain/Vector.h:Vector" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,4358);" onmouseout="NDContentPage.OnLinkMouseOut(event);" ><div class="CPModifiers"><span class="SHKeyword">public</span></div><div class="CPName">Vector</div></a><div class="CPEntry TClass Current"><div class="CPName">EulerAngles</div></div></div>
  <div class="CBody"><p>Represents generic Euler Angles (roll, pitch, yaw).</p></div>
 </div>
 
-<a name="EulerAngles.EulerAngles"></a><a name="Topic269"></a><div class="CTopic TFunction LC">
+<a name="EulerAngles.EulerAngles"></a><a name="Topic141"></a><div class="CTopic TFunction LC">
  <div class="CTitle">EulerAngles</div>
- <div id="NDPrototype269" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters">EulerAngles(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PType first"><span class="SHKeyword">float</span>&nbsp;</td><td class="PName last">roll,</td></tr><tr><td class="PType first"><span class="SHKeyword">float</span>&nbsp;</td><td class="PName last">pitch,</td></tr><tr><td class="PType first"><span class="SHKeyword">float</span>&nbsp;</td><td class="PName last">yaw</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
+ <div id="NDPrototype141" class="NDPrototype NoParameterForm">EulerAngles()</div>
  <div class="CBody"><p>Creates an EulerAngles object.</p></div>
 </div>
 
-<a name="EulerAngles.roll"></a><a name="Topic270"></a><div class="CTopic TFunction LC">
+<a name="EulerAngles.EulerAngles(2)"></a><a name="Topic142"></a><div class="CTopic TFunction LC">
+ <div class="CTitle">EulerAngles</div>
+ <div id="NDPrototype142" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters">EulerAngles(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PType first"><span class="SHKeyword">float</span>&nbsp;</td><td class="PName last">roll,</td></tr><tr><td class="PType first"><span class="SHKeyword">float</span>&nbsp;</td><td class="PName last">pitch,</td></tr><tr><td class="PType first"><span class="SHKeyword">float</span>&nbsp;</td><td class="PName last">yaw</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
+ <div class="CBody"><p>Creates an EulerAngles object with the specified roll, pitch, and yaw/heading.</p></div>
+</div>
+
+<a name="EulerAngles.EulerAngles(3)"></a><a name="Topic143"></a><div class="CTopic TFunction LC">
+ <div class="CTitle">EulerAngles</div>
+ <div id="NDPrototype143" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters">EulerAngles(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PModifierQualifier first"><span class="SHKeyword">const</span>&nbsp;</td><td class="PType">MipFieldValues&nbsp;</td><td class="PNamePrefix">&amp;</td><td class="PName">data,</td><td></td><td class="last"></td></tr><tr><td class="first"></td><td class="PType"><span class="SHKeyword">uint8</span>&nbsp;</td><td></td><td class="PName">offset&nbsp;</td><td class="PDefaultValueSeparator">=&nbsp;</td><td class="PDefaultValue last"><span class="SHNumber">0</span></td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
+ <div class="CBody"><p>Creates a EulerAngles object based on specified &lt;MipFieldValues&gt; data</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">&lt;MipFieldValues&gt;</td><td class="CDLDefinition"><p>format must be 3 floats</p></td></tr><tr><td class="CDLEntry">offset<div class="CDLParameterType"><span class="SHKeyword">uint8</span></div></td><td class="CDLDefinition"><p>default: 0 - uint8 index offset to start reading from</p></td></tr></table></div>
+</div>
+
+<a name="EulerAngles.operator_Rotation()"></a><a name="Topic144"></a><div class="CTopic TFunction LC">
+ <div class="CTitle">operator Rotation() (cast)</div>
+ <div id="NDPrototype144" class="NDPrototype NoParameterForm"><span class="SHKeyword">operator</span> Rotation() <span class="SHKeyword">const</span></div>
+ <div class="CBody"><p>Creates a <a href="../../../index.html#File:MicroStrain/Inertial/EulerAngles.h:Rotation" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,162);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >Rotation</a> object with this object's roll, pitch, and yaw values</p></div>
+</div>
+
+<a name="EulerAngles.asMipFieldValues"></a><a name="Topic145"></a><div class="CTopic TFunction LC">
+ <div class="CTitle">asMipFieldValues</div>
+ <div id="NDPrototype145" class="NDPrototype NoParameterForm">MipFieldValues asMipFieldValues() <span class="SHKeyword">const</span></div>
+ <div class="CBody"><p>Gets the current euler angles values formatted as a &lt;MipFieldValues&gt; object.</p><div class="CHeading">Returns</div><table class="CDefinitionList"><tr><td class="CDLEntry">&lt;MipFieldValues&gt;</td><td class="CDLDefinition"><p>collection of values that represents this object.</p></td></tr></table></div>
+</div>
+
+<a name="EulerAngles.appendMipFieldValues"></a><a name="Topic146"></a><div class="CTopic TFunction LC">
+ <div class="CTitle">appendMipFieldValues</div>
+ <div id="NDPrototype146" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">void</span> appendMipFieldValues(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PType first">MipFieldValues&nbsp;</td><td class="PNamePrefix">&amp;</td><td class="PName last">appendTo</td></tr></table></td><td class="PAfterParameters">) <span class="SHKeyword">const</span></td></tr></table></div>
+ <div class="CBody"><p>Adds the properly formatted &lt;MipFieldValues&gt; that represent this object to the specified collection.</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">appendTo<div class="CDLParameterType">MipFieldValues&amp;</div></td><td class="CDLDefinition"><p>(reference) the &lt;MipFieldValues&gt; collection to append to</p></td></tr></table></div>
+</div>
+
+<a name="EulerAngles.roll"></a><a name="Topic147"></a><div class="CTopic TFunction LC">
  <div class="CTitle">roll</div>
- <div id="NDPrototype270" class="NDPrototype NoParameterForm"><span class="SHKeyword">float</span> roll() <span class="SHKeyword">const</span></div>
+ <div id="NDPrototype147" class="NDPrototype NoParameterForm"><span class="SHKeyword">float</span> roll() <span class="SHKeyword">const</span></div>
  <div class="CBody"><p>Gets the roll angle.</p><div class="CHeading">Returns</div><p>The roll Euler Angle.</p></div>
 </div>
 
-<a name="EulerAngles.pitch"></a><a name="Topic271"></a><div class="CTopic TFunction LC">
+<a name="EulerAngles.pitch"></a><a name="Topic148"></a><div class="CTopic TFunction LC">
  <div class="CTitle">pitch</div>
- <div id="NDPrototype271" class="NDPrototype NoParameterForm"><span class="SHKeyword">float</span> pitch() <span class="SHKeyword">const</span></div>
+ <div id="NDPrototype148" class="NDPrototype NoParameterForm"><span class="SHKeyword">float</span> pitch() <span class="SHKeyword">const</span></div>
  <div class="CBody"><p>Gets the pitch angle.</p><div class="CHeading">Returns</div><p>The pitch Euler Angle.</p></div>
 </div>
 
-<a name="EulerAngles.yaw"></a><a name="Topic272"></a><div class="CTopic TFunction LC">
+<a name="EulerAngles.yaw"></a><a name="Topic149"></a><div class="CTopic TFunction LC">
  <div class="CTitle">yaw</div>
- <div id="NDPrototype272" class="NDPrototype NoParameterForm"><span class="SHKeyword">float</span> yaw() <span class="SHKeyword">const</span></div>
+ <div id="NDPrototype149" class="NDPrototype NoParameterForm"><span class="SHKeyword">float</span> yaw() <span class="SHKeyword">const</span></div>
  <div class="CBody"><p>Gets the yaw (heading) angle.</p><div class="CHeading">Returns</div><p>The yaw (heading) Euler Angle.</p></div>
 </div>
 
-<a name="EulerAngles.heading"></a><a name="Topic273"></a><div class="CTopic TFunction LC last">
+<a name="EulerAngles.heading"></a><a name="Topic150"></a><div class="CTopic TFunction LC">
  <div class="CTitle">heading</div>
- <div id="NDPrototype273" class="NDPrototype NoParameterForm"><span class="SHKeyword">float</span> heading() <span class="SHKeyword">const</span></div>
+ <div id="NDPrototype150" class="NDPrototype NoParameterForm"><span class="SHKeyword">float</span> heading() <span class="SHKeyword">const</span></div>
  <div class="CBody"><p>Gets the heading (yaw) angle.</p><div class="CHeading">Returns</div><p>The heading (yaw) Euler Angle.</p></div>
+</div>
+
+<a name="Quaternion"></a><a name="Topic151"></a><div class="CTopic TClass LC">
+ <div class="CTitle">Quaternion</div>
+ <div class="NDClassPrototype HasParents" id="NDClassPrototype151"><a class="CPEntry Parent TClass" href="../../../index.html#File:MicroStrain/Vector.h:Vector" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,4358);" onmouseout="NDContentPage.OnLinkMouseOut(event);" ><div class="CPModifiers"><span class="SHKeyword">public</span></div><div class="CPName">Vector</div></a><div class="CPEntry TClass Current"><div class="CPName">Quaternion</div></div></div>
+ <div class="CBody"><table class="CDefinitionList"><tr><td class="CDLEntry">Represents generic Quaternion (q0-3, usually w, x, y, z</td><td class="CDLDefinition"><p>refer to protocol documentation).</p></td></tr></table></div>
+</div>
+
+<a name="Quaternion.Quaternion"></a><a name="Topic152"></a><div class="CTopic TFunction LC">
+ <div class="CTitle">Quaternion</div>
+ <div id="NDPrototype152" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters">Quaternion(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PType first"><span class="SHKeyword">float</span>&nbsp;</td><td class="PName last">q0,</td></tr><tr><td class="PType first"><span class="SHKeyword">float</span>&nbsp;</td><td class="PName last">q1,</td></tr><tr><td class="PType first"><span class="SHKeyword">float</span>&nbsp;</td><td class="PName last">q2,</td></tr><tr><td class="PType first"><span class="SHKeyword">float</span>&nbsp;</td><td class="PName last">q3</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
+ <div class="CBody"><p>Creates an Quaternion object.</p></div>
+</div>
+
+<a name="Quaternion.Quaternion(2)"></a><a name="Topic153"></a><div class="CTopic TFunction LC">
+ <div class="CTitle">Quaternion</div>
+ <div id="NDPrototype153" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters">Quaternion(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PModifierQualifier first"><span class="SHKeyword">const</span>&nbsp;</td><td class="PType">MipFieldValues&nbsp;</td><td class="PNamePrefix">&amp;</td><td class="PName">data,</td><td></td><td class="last"></td></tr><tr><td class="first"></td><td class="PType"><span class="SHKeyword">uint8</span>&nbsp;</td><td></td><td class="PName">offset&nbsp;</td><td class="PDefaultValueSeparator">=&nbsp;</td><td class="PDefaultValue last"><span class="SHNumber">0</span></td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
+ <div class="CBody"><p>Creates a Quaternion object based on specified &lt;MipFieldValues&gt; data</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">&lt;MipFieldValues&gt;</td><td class="CDLDefinition"><p>format must be 4 floats</p></td></tr><tr><td class="CDLEntry">offset<div class="CDLParameterType"><span class="SHKeyword">uint8</span></div></td><td class="CDLDefinition"><p>default: 0 - uint8 index offset to start reading from</p></td></tr></table></div>
+</div>
+
+<a name="Quaternion.operator_Rotation()"></a><a name="Topic154"></a><div class="CTopic TFunction LC">
+ <div class="CTitle">operator Rotation() (cast)</div>
+ <div id="NDPrototype154" class="NDPrototype NoParameterForm"><span class="SHKeyword">operator</span> Rotation() <span class="SHKeyword">const</span></div>
+ <div class="CBody"><p>Creates a <a href="../../../index.html#File:MicroStrain/Inertial/EulerAngles.h:Rotation" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,162);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >Rotation</a> object with this object's values</p></div>
+</div>
+
+<a name="Quaternion.asMipFieldValues"></a><a name="Topic155"></a><div class="CTopic TFunction LC">
+ <div class="CTitle">asMipFieldValues</div>
+ <div id="NDPrototype155" class="NDPrototype NoParameterForm">MipFieldValues asMipFieldValues() <span class="SHKeyword">const</span></div>
+ <div class="CBody"><p>Gets the current quaternion values formatted as a &lt;MipFieldValues&gt; object</p><div class="CHeading">Returns</div><table class="CDefinitionList"><tr><td class="CDLEntry">&lt;MipFieldValues&gt;</td><td class="CDLDefinition"><p>collection of values that represents this object.</p></td></tr></table></div>
+</div>
+
+<a name="Quaternion.appendMipFieldValues"></a><a name="Topic156"></a><div class="CTopic TFunction LC">
+ <div class="CTitle">appendMipFieldValues</div>
+ <div id="NDPrototype156" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">void</span> appendMipFieldValues(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PType first">MipFieldValues&nbsp;</td><td class="PNamePrefix">&amp;</td><td class="PName last">appendTo</td></tr></table></td><td class="PAfterParameters">) <span class="SHKeyword">const</span></td></tr></table></div>
+ <div class="CBody"><p>Adds the properly formatted &lt;MipFieldValues&gt; that represent this object to the specified collection.</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">appendTo<div class="CDLParameterType">MipFieldValues&amp;</div></td><td class="CDLDefinition"><p>(reference) the &lt;MipFieldValues&gt; collection to append to</p></td></tr></table></div>
+</div>
+
+<a name="Quaternion.normalize"></a><a name="Topic157"></a><div class="CTopic TFunction LC">
+ <div class="CTitle">normalize</div>
+ <div id="NDPrototype157" class="NDPrototype NoParameterForm"><span class="SHKeyword">void</span> normalize()</div>
+ <div class="CBody"><p>normalize the quaternion value</p></div>
+</div>
+
+<a name="Quaternion.q0"></a><a name="Topic158"></a><div class="CTopic TFunction LC">
+ <div class="CTitle">q0</div>
+ <div id="NDPrototype158" class="NDPrototype NoParameterForm"><span class="SHKeyword">float</span> q0() <span class="SHKeyword">const</span></div>
+ <div class="CBody"><p>Gets the 0-index value (usually w).</p><div class="CHeading">Returns</div><p>The 0-index value.</p></div>
+</div>
+
+<a name="Quaternion.q1"></a><a name="Topic159"></a><div class="CTopic TFunction LC">
+ <div class="CTitle">q1</div>
+ <div id="NDPrototype159" class="NDPrototype NoParameterForm"><span class="SHKeyword">float</span> q1() <span class="SHKeyword">const</span></div>
+ <div class="CBody"><p>Gets the 1-index value (usually x).</p><div class="CHeading">Returns</div><p>The 1-index value.</p></div>
+</div>
+
+<a name="Quaternion.q2"></a><a name="Topic160"></a><div class="CTopic TFunction LC">
+ <div class="CTitle">q2</div>
+ <div id="NDPrototype160" class="NDPrototype NoParameterForm"><span class="SHKeyword">float</span> q2() <span class="SHKeyword">const</span></div>
+ <div class="CBody"><p>Gets the 2-index value (usually y).</p><div class="CHeading">Returns</div><p>The 2-index value.</p></div>
+</div>
+
+<a name="Quaternion.q3"></a><a name="Topic161"></a><div class="CTopic TFunction LC">
+ <div class="CTitle">q3</div>
+ <div id="NDPrototype161" class="NDPrototype NoParameterForm"><span class="SHKeyword">float</span> q3() <span class="SHKeyword">const</span></div>
+ <div class="CBody"><p>Gets the 3-index value (usually z).</p><div class="CHeading">Returns</div><p>The 3-index value.</p></div>
+</div>
+
+<a name="Rotation"></a><a name="Topic162"></a><div class="CTopic TClass LC">
+ <div class="CTitle">Rotation</div>
+ <div class="NDClassPrototype HasParents" id="NDClassPrototype162"><a class="CPEntry Parent TClass" href="../../../index.html#File:MicroStrain/Vector.h:Vector" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,4358);" onmouseout="NDContentPage.OnLinkMouseOut(event);" ><div class="CPModifiers"><span class="SHKeyword">public</span></div><div class="CPName">Vector</div></a><div class="CPEntry TClass Current"><div class="CPName">Rotation</div></div></div>
+ <div class="CBody"><p>Structure that can represent either a <a href="../../../index.html#File:MicroStrain/Inertial/EulerAngles.h:Quaternion" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,151);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >Quaternion</a> or <a href="../../../index.html#File:MicroStrain/Inertial/EulerAngles.h:EulerAngles" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,140);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >EulerAngles</a> object.</p></div>
+</div>
+
+<a name="Rotation.Format"></a><a name="Topic163"></a><div class="CTopic TEnumeration LC">
+ <div class="CTitle">Format</div>
+ <div class="CBody"><p>Possible formats for the Rotation object.</p><table class="CDefinitionList"><tr><td class="CDLEntry"><a name="Rotation.EULER_ANGLES"></a><a name="Topic164"></a>EULER_ANGLES</td><td class="CDLDefinition"><p>1 - EulerAngles format</p></td></tr><tr><td class="CDLEntry"><a name="Rotation.QUATERINION"></a><a name="Topic165"></a>QUATERINION</td><td class="CDLDefinition"><p>2 - Quaternion format</p></td></tr></table></div>
+</div>
+
+<a name="Rotation.Rotation"></a><a name="Topic166"></a><div class="CTopic TFunction LC">
+ <div class="CTitle">Rotation</div>
+ <div id="NDPrototype166" class="NDPrototype NoParameterForm">Rotation() : <a href="../../../index.html#File:MicroStrain/Inertial/EulerAngles.h:Rotation" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,162);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >Rotation</a>(<a href="../../../index.html#File:MicroStrain/Inertial/EulerAngles.h:EulerAngles" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,140);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >EulerAngles</a>(<span class="SHNumber">0</span>, <span class="SHNumber">0</span>, <span class="SHNumber">0</span>))</div>
+ <div class="CBody"><p>Constructs a Rotation object with default values.</p></div>
+</div>
+
+<a name="Rotation.Rotation(2)"></a><a name="Topic167"></a><div class="CTopic TFunction LC">
+ <div class="CTitle">Rotation</div>
+ <div id="NDPrototype167" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters">Rotation(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PModifierQualifier first"><span class="SHKeyword">const</span>&nbsp;</td><td class="PType"><a href="../../../index.html#File:MicroStrain/Inertial/EulerAngles.h:EulerAngles" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,140);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >EulerAngles</a>&nbsp;</td><td class="PNamePrefix">&amp;</td><td class="PName last">angles</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
+ <div class="CBody"><p>Constructs a Rotation object based on the specified <a href="../../../index.html#File:MicroStrain/Inertial/EulerAngles.h:EulerAngles" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,140);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >EulerAngles</a>.</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">angles<div class="CDLParameterType"><span class="SHKeyword">const</span> <a href="../../../index.html#File:MicroStrain/Inertial/EulerAngles.h:EulerAngles" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,140);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >EulerAngles</a>&amp;</div></td><td class="CDLDefinition"><p><a href="../../../index.html#File:MicroStrain/Inertial/EulerAngles.h:EulerAngles" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,140);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >EulerAngles</a> object to populate rotation values from</p></td></tr></table></div>
+</div>
+
+<a name="Rotation.Rotation(3)"></a><a name="Topic168"></a><div class="CTopic TFunction LC">
+ <div class="CTitle">Rotation</div>
+ <div id="NDPrototype168" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters">Rotation(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PModifierQualifier first"><span class="SHKeyword">const</span>&nbsp;</td><td class="PType"><a href="../../../index.html#File:MicroStrain/Inertial/EulerAngles.h:Quaternion" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,151);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >Quaternion</a>&nbsp;</td><td class="PNamePrefix">&amp;</td><td class="PName last">quat</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
+ <div class="CBody"><p>Constructs a Rotation object based on the specified <a href="../../../index.html#File:MicroStrain/Inertial/EulerAngles.h:Quaternion" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,151);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >Quaternion</a>.</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">quat<div class="CDLParameterType"><span class="SHKeyword">const</span> <a href="../../../index.html#File:MicroStrain/Inertial/EulerAngles.h:Quaternion" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,151);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >Quaternion</a>&amp;</div></td><td class="CDLDefinition"><p><a href="../../../index.html#File:MicroStrain/Inertial/EulerAngles.h:Quaternion" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,151);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >Quaternion</a> object to populate rotation values from</p></td></tr></table></div>
+</div>
+
+<a name="Rotation.Rotation(4)"></a><a name="Topic169"></a><div class="CTopic TFunction LC">
+ <div class="CTitle">Rotation</div>
+ <div id="NDPrototype169" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters">Rotation(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PModifierQualifier first"><span class="SHKeyword">const</span>&nbsp;</td><td class="PType">MipFieldValues&nbsp;</td><td class="PNamePrefix">&amp;</td><td class="PName">data,</td><td></td><td class="last"></td></tr><tr><td class="first"></td><td class="PType"><span class="SHKeyword">uint8</span>&nbsp;</td><td></td><td class="PName">offset&nbsp;</td><td class="PDefaultValueSeparator">=&nbsp;</td><td class="PDefaultValue last"><span class="SHNumber">0</span></td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
+ <div class="CBody"><p>Creates a Rotation object based on specified &lt;MipFieldValues&gt; data</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">&lt;MipFieldValues&gt;</td><td class="CDLDefinition"><p>format must be a u8 format id and 3 or 4 floats</p></td></tr><tr><td class="CDLEntry">offset<div class="CDLParameterType"><span class="SHKeyword">uint8</span></div></td><td class="CDLDefinition"><p>default: 0 - uint8 index offset to start reading from</p></td></tr></table></div>
+</div>
+
+<a name="Rotation.FromEulerAngles"></a><a name="Topic170"></a><div class="CTopic TFunction LC">
+ <div class="CTitle">FromEulerAngles (static)</div>
+ <div id="NDPrototype170" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">static</span> <a href="../../../index.html#File:MicroStrain/Inertial/EulerAngles.h:Rotation" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,162);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >Rotation</a> FromEulerAngles(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PModifierQualifier first"><span class="SHKeyword">const</span>&nbsp;</td><td class="PType"><a href="../../../index.html#File:MicroStrain/Inertial/EulerAngles.h:EulerAngles" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,140);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >EulerAngles</a>&nbsp;</td><td class="PNamePrefix">&amp;</td><td class="PName last">angles</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
+ <div class="CBody"><p>Constructs a Rotation object based on the specified <a href="../../../index.html#File:MicroStrain/Inertial/EulerAngles.h:EulerAngles" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,140);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >EulerAngles</a>.</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">angles<div class="CDLParameterType"><span class="SHKeyword">const</span> <a href="../../../index.html#File:MicroStrain/Inertial/EulerAngles.h:EulerAngles" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,140);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >EulerAngles</a>&amp;</div></td><td class="CDLDefinition"><p><a href="../../../index.html#File:MicroStrain/Inertial/EulerAngles.h:EulerAngles" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,140);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >EulerAngles</a> object to populate rotation values from</p></td></tr></table></div>
+</div>
+
+<a name="Rotation.FromQuaternion"></a><a name="Topic171"></a><div class="CTopic TFunction LC">
+ <div class="CTitle">FromQuaternion (static)</div>
+ <div id="NDPrototype171" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">static</span> <a href="../../../index.html#File:MicroStrain/Inertial/EulerAngles.h:Rotation" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,162);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >Rotation</a> FromQuaternion(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PModifierQualifier first"><span class="SHKeyword">const</span>&nbsp;</td><td class="PType"><a href="../../../index.html#File:MicroStrain/Inertial/EulerAngles.h:Quaternion" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,151);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >Quaternion</a>&nbsp;</td><td class="PNamePrefix">&amp;</td><td class="PName last">quat</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
+ <div class="CBody"><p>Constructs a Rotation object based on the specified <a href="../../../index.html#File:MicroStrain/Inertial/EulerAngles.h:Quaternion" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,151);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >Quaternion</a>.</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">quat<div class="CDLParameterType"><span class="SHKeyword">const</span> <a href="../../../index.html#File:MicroStrain/Inertial/EulerAngles.h:Quaternion" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,151);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >Quaternion</a>&amp;</div></td><td class="CDLDefinition"><p><a href="../../../index.html#File:MicroStrain/Inertial/EulerAngles.h:Quaternion" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,151);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >Quaternion</a> object to populate rotation values from</p></td></tr></table></div>
+</div>
+
+<a name="Rotation.operator_EulerAngles()"></a><a name="Topic172"></a><div class="CTopic TFunction LC">
+ <div class="CTitle">operator EulerAngles() (cast)</div>
+ <div id="NDPrototype172" class="NDPrototype NoParameterForm"><span class="SHKeyword">operator</span> EulerAngles() <span class="SHKeyword">const</span></div>
+ <div class="CBody"><p>Creates an <a href="../../../index.html#File:MicroStrain/Inertial/EulerAngles.h:EulerAngles" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,140);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >EulerAngles</a> object with this object's rotation values.&nbsp; <a href="../../../index.html#File:Exceptions.h:Error_BadDataType" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,4600);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >Error_BadDataType</a> exception will be thrown if this Rotation object does not represent an EulerAngles rotation.</p></div>
+</div>
+
+<a name="Rotation.operator_Quaternion()"></a><a name="Topic173"></a><div class="CTopic TFunction LC">
+ <div class="CTitle">operator Quaternion() (cast)</div>
+ <div id="NDPrototype173" class="NDPrototype NoParameterForm"><span class="SHKeyword">operator</span> Quaternion() <span class="SHKeyword">const</span></div>
+ <div class="CBody"><p>Creates an <a href="../../../index.html#File:MicroStrain/Inertial/EulerAngles.h:Quaternion" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,151);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >Quaternion</a> object with this object's rotation values.&nbsp; <a href="../../../index.html#File:Exceptions.h:Error_BadDataType" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,4600);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >Error_BadDataType</a> exception will be thrown if this Rotation object does not represent an Quaternion rotation.</p></div>
+</div>
+
+<a name="Rotation.asEulerAngles"></a><a name="Topic174"></a><div class="CTopic TFunction LC">
+ <div class="CTitle">asEulerAngles</div>
+ <div id="NDPrototype174" class="NDPrototype NoParameterForm"><a href="../../../index.html#File:MicroStrain/Inertial/EulerAngles.h:EulerAngles" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,140);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >EulerAngles</a> asEulerAngles() <span class="SHKeyword">const</span></div>
+ <div class="CBody"><p>Creates an <a href="../../../index.html#File:MicroStrain/Inertial/EulerAngles.h:EulerAngles" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,140);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >EulerAngles</a> object with this object's rotation values.&nbsp; <a href="../../../index.html#File:Exceptions.h:Error_BadDataType" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,4600);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >Error_BadDataType</a> exception will be thrown if this Rotation object does not represent an EulerAngles rotation.</p></div>
+</div>
+
+<a name="Rotation.asQuaternion"></a><a name="Topic175"></a><div class="CTopic TFunction LC">
+ <div class="CTitle">asQuaternion</div>
+ <div id="NDPrototype175" class="NDPrototype NoParameterForm"><a href="../../../index.html#File:MicroStrain/Inertial/EulerAngles.h:Quaternion" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,151);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >Quaternion</a> asQuaternion() <span class="SHKeyword">const</span></div>
+ <div class="CBody"><p>Creates an <a href="../../../index.html#File:MicroStrain/Inertial/EulerAngles.h:Quaternion" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,151);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >Quaternion</a> object with this object's rotation values.&nbsp; <a href="../../../index.html#File:Exceptions.h:Error_BadDataType" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,4600);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >Error_BadDataType</a> exception will be thrown if this Rotation object does not represent an Quaternion rotation.</p></div>
+</div>
+
+<a name="Rotation.asMipFieldValues"></a><a name="Topic176"></a><div class="CTopic TFunction LC">
+ <div class="CTitle">asMipFieldValues</div>
+ <div id="NDPrototype176" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters">MipFieldValues asMipFieldValues(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PType first"><span class="SHKeyword">bool</span>&nbsp;</td><td class="PName">includeFormat&nbsp;</td><td class="PDefaultValueSeparator">=&nbsp;</td><td class="PDefaultValue last"><span class="SHKeyword">true</span></td></tr></table></td><td class="PAfterParameters">) <span class="SHKeyword">const</span></td></tr></table></div>
+ <div class="CBody"><p>Gets the current quaternion values formatted as a &lt;MipFieldValues&gt; object</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">includeFormat<div class="CDLParameterType"><span class="SHKeyword">bool</span></div></td><td class="CDLDefinition"><p>bool - default: true - indicate whether the uint8 format identifier should be included in the MipFieldValues</p></td></tr></table><div class="CHeading">Returns</div><table class="CDefinitionList"><tr><td class="CDLEntry">&lt;MipFieldValues&gt;</td><td class="CDLDefinition"><p>collection of values that represents this object.</p></td></tr></table></div>
+</div>
+
+<a name="Rotation.appendMipFieldValues"></a><a name="Topic177"></a><div class="CTopic TFunction LC">
+ <div class="CTitle">appendMipFieldValues</div>
+ <div id="NDPrototype177" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">void</span> appendMipFieldValues(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PType first">MipFieldValues&nbsp;</td><td class="PNamePrefix">&amp;</td><td class="PName">appendTo,</td><td></td><td class="last"></td></tr><tr><td class="PType first"><span class="SHKeyword">bool</span>&nbsp;</td><td></td><td class="PName">includeFormat&nbsp;</td><td class="PDefaultValueSeparator">=&nbsp;</td><td class="PDefaultValue last"><span class="SHKeyword">true</span></td></tr></table></td><td class="PAfterParameters">) <span class="SHKeyword">const</span></td></tr></table></div>
+ <div class="CBody"><p>Adds the properly formatted &lt;MipFieldValues&gt; that represent this object to the specified collection.</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">appendTo<div class="CDLParameterType">MipFieldValues&amp;</div></td><td class="CDLDefinition"><p>(reference) the &lt;MipFieldValues&gt; collection to append to</p></td></tr><tr><td class="CDLEntry">includeFormat<div class="CDLParameterType"><span class="SHKeyword">bool</span></div></td><td class="CDLDefinition"><p>bool - default: true - indicate whether the uint8 format identifier should be included in the MipFieldValues</p></td></tr></table></div>
+</div>
+
+<a name="Rotation.format"></a><a name="Topic178"></a><div class="CTopic TFunction LC last">
+ <div class="CTitle">format</div>
+ <div id="NDPrototype178" class="NDPrototype NoParameterForm"><a href="../../../index.html#File:MicroStrain/Inertial/EulerAngles.h:Rotation.Format" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,163);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >Format</a> format() <span class="SHKeyword">const</span></div>
+ <div class="CBody"><p>Gets the <a href="../../../index.html#File:MicroStrain/Inertial/EulerAngles.h:Rotation.Format" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,163);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >Format</a> of this Rotation object.</p></div>
 </div>
 
 </body></html>

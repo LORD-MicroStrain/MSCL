@@ -8,65 +8,74 @@
 
 <body onload="NDLoader.OnLoad('Content');" class="NDPage NDContentPage">
 
-<a name="Topic2075"></a><div class="CTopic TClass LC first">
+<a name="Topic2742"></a><div class="CTopic TClass LC first">
  <div class="CTitle">Quaternion</div>
- <div class="NDClassPrototype HasParents" id="NDClassPrototype2075"><a class="CPEntry Parent TClass" href="../../index.html#CClass:Matrix" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9181);" onmouseout="NDContentPage.OnLinkMouseOut(event);" ><div class="CPModifiers"><span class="SHKeyword">public</span></div><div class="CPName">Matrix</div></a><div class="CPEntry TClass Current"><div class="CPName">Quaternion</div></div></div>
- <div class="CBody"><p>A four-element implementation of <a href="../../index.html#CClass:Matrix" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9181);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >Matrix</a></p></div>
+ <div class="NDClassPrototype HasParents" id="NDClassPrototype2742"><a class="CPEntry Parent TClass" href="../../index.html#CClass:Vector" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9930);" onmouseout="NDContentPage.OnLinkMouseOut(event);" ><div class="CPModifiers"><span class="SHKeyword">public</span></div><div class="CPName">Vector</div></a><div class="CPEntry TClass Current"><div class="CPName">Quaternion</div></div></div>
+ <div class="CBody"><table class="CDefinitionList"><tr><td class="CDLEntry">Represents generic Quaternion (q0-3, usually w, x, y, z</td><td class="CDLDefinition"><p>refer to protocol documentation).</p></td></tr></table></div>
 </div>
 
-<a name="Functions"></a><a name="Topic2076"></a><div class="CTopic TGroup LC">
+<a name="Functions"></a><a name="Topic2743"></a><div class="CTopic TGroup LC">
  <div class="CTitle">Functions</div>
 </div>
 
-<a name="Quaternion"></a><a name="Topic2077"></a><div class="CTopic TFunction LC">
+<a name="Quaternion"></a><a name="Topic2744"></a><div class="CTopic TFunction LC">
  <div class="CTitle">Quaternion</div>
- <div id="NDPrototype2077" class="NDPrototype NoParameterForm">Quaternion()</div>
- <div class="CBody"><p>Creates a zero-filled Quaternion object</p></div>
+ <div id="NDPrototype2744" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters">Quaternion(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PType first"><span class="SHKeyword">float</span>&nbsp;</td><td class="PName last">q0,</td></tr><tr><td class="PType first"><span class="SHKeyword">float</span>&nbsp;</td><td class="PName last">q1,</td></tr><tr><td class="PType first"><span class="SHKeyword">float</span>&nbsp;</td><td class="PName last">q2,</td></tr><tr><td class="PType first"><span class="SHKeyword">float</span>&nbsp;</td><td class="PName last">q3</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
+ <div class="CBody"><p>Creates an Quaternion object.</p></div>
 </div>
 
-<a name="Quaternion(2)"></a><a name="Topic2078"></a><div class="CTopic TFunction LC">
+<a name="Quaternion(2)"></a><a name="Topic2745"></a><div class="CTopic TFunction LC">
  <div class="CTitle">Quaternion</div>
- <div id="NDPrototype2078" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters">Quaternion(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PType first"><span class="SHKeyword">float</span>&nbsp;</td><td class="PName last">q0,</td></tr><tr><td class="PType first"><span class="SHKeyword">float</span>&nbsp;</td><td class="PName last">q1,</td></tr><tr><td class="PType first"><span class="SHKeyword">float</span>&nbsp;</td><td class="PName last">q2,</td></tr><tr><td class="PType first"><span class="SHKeyword">float</span>&nbsp;</td><td class="PName last">q3</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
- <div class="CBody"><p>Creates a Quaternion object with the specified elements</p><div class="CHeading">Parameters</div><p>four floats representing the quaternion elements</p></div>
+ <div id="NDPrototype2745" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters">Quaternion(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PModifierQualifier first"><span class="SHKeyword">const</span>&nbsp;</td><td class="PType">MipFieldValues&nbsp;</td><td class="PNamePrefix">&amp;</td><td class="PName">data,</td><td></td><td class="last"></td></tr><tr><td class="first"></td><td class="PType"><span class="SHKeyword">uint8</span>&nbsp;</td><td></td><td class="PName">offset&nbsp;</td><td class="PDefaultValueSeparator">=&nbsp;</td><td class="PDefaultValue last"><span class="SHNumber">0</span></td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
+ <div class="CBody"><p>Creates a Quaternion object based on specified &lt;MipFieldValues&gt; data</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">&lt;MipFieldValues&gt;</td><td class="CDLDefinition"><p>format must be 4 floats</p></td></tr><tr><td class="CDLEntry">offset<div class="CDLParameterType"><span class="SHKeyword">uint8</span></div></td><td class="CDLDefinition"><p>default: 0 - uint8 index offset to start reading from</p></td></tr></table></div>
 </div>
 
-<a name="Quaternion(3)"></a><a name="Topic2079"></a><div class="CTopic TFunction LC">
- <div class="CTitle">Quaternion</div>
- <div id="NDPrototype2079" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters">Quaternion(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PType first">MipFieldValues&nbsp;</td><td class="PName last">data</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
- <div class="CBody"><p>Creates a Quaternion object based on specified &lt;MipFieldValues&gt; data</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">&lt;MipFieldValues&gt;</td><td class="CDLDefinition"><p>format must be 4 floats</p></td></tr></table></div>
+<a name="operator_Rotation()"></a><a name="Topic2746"></a><div class="CTopic TFunction LC">
+ <div class="CTitle">operator Rotation() (cast)</div>
+ <div id="NDPrototype2746" class="NDPrototype NoParameterForm"><span class="SHKeyword">operator</span> Rotation() <span class="SHKeyword">const</span></div>
+ <div class="CBody"><p>Creates a <a href="../../index.html#CClass:Rotation" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,2754);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >Rotation</a> object with this object's values</p></div>
 </div>
 
-<a name="at"></a><a name="Topic2080"></a><div class="CTopic TFunction LC">
- <div class="CTitle">at</div>
- <div id="NDPrototype2080" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">float</span> at(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PType first"><span class="SHKeyword">uint8</span>&nbsp;</td><td class="PName last">index</td></tr></table></td><td class="PAfterParameters">) <span class="SHKeyword">const</span></td></tr></table></div>
- <div class="CBody"><p>get the float element at the specified index</p></div>
+<a name="asMipFieldValues"></a><a name="Topic2747"></a><div class="CTopic TFunction LC">
+ <div class="CTitle">asMipFieldValues</div>
+ <div id="NDPrototype2747" class="NDPrototype NoParameterForm">MipFieldValues asMipFieldValues() <span class="SHKeyword">const</span></div>
+ <div class="CBody"><p>Gets the current quaternion values formatted as a &lt;MipFieldValues&gt; object</p><div class="CHeading">Returns</div><table class="CDefinitionList"><tr><td class="CDLEntry">&lt;MipFieldValues&gt;</td><td class="CDLDefinition"><p>collection of values that represents this object.</p></td></tr></table></div>
 </div>
 
-<a name="set"></a><a name="Topic2081"></a><div class="CTopic TFunction LC">
- <div class="CTitle">set</div>
- <div id="NDPrototype2081" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">void</span> <span class="SHKeyword">set</span>(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PType first"><span class="SHKeyword">uint8</span>&nbsp;</td><td class="PName last">index,</td></tr><tr><td class="PType first"><span class="SHKeyword">float</span>&nbsp;</td><td class="PName last">val</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
- <div class="CBody"><p>set the float element at the specified index</p></div>
+<a name="appendMipFieldValues"></a><a name="Topic2748"></a><div class="CTopic TFunction LC">
+ <div class="CTitle">appendMipFieldValues</div>
+ <div id="NDPrototype2748" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">void</span> appendMipFieldValues(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PType first">MipFieldValues&nbsp;</td><td class="PNamePrefix">&amp;</td><td class="PName last">appendTo</td></tr></table></td><td class="PAfterParameters">) <span class="SHKeyword">const</span></td></tr></table></div>
+ <div class="CBody"><p>Adds the properly formatted &lt;MipFieldValues&gt; that represent this object to the specified collection.</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">appendTo<div class="CDLParameterType">MipFieldValues&amp;</div></td><td class="CDLDefinition"><p>(reference) the &lt;MipFieldValues&gt; collection to append to</p></td></tr></table></div>
 </div>
 
-<a name="normalize"></a><a name="Topic2082"></a><div class="CTopic TFunction LC">
+<a name="normalize"></a><a name="Topic2749"></a><div class="CTopic TFunction LC">
  <div class="CTitle">normalize</div>
- <div id="NDPrototype2082" class="NDPrototype NoParameterForm"><span class="SHKeyword">void</span> normalize()</div>
+ <div id="NDPrototype2749" class="NDPrototype NoParameterForm"><span class="SHKeyword">void</span> normalize()</div>
  <div class="CBody"><p>normalize the quaternion value</p></div>
 </div>
 
-<a name="asMipFieldValues"></a><a name="Topic2083"></a><div class="CTopic TFunction LC">
- <div class="CTitle">asMipFieldValues</div>
- <div id="NDPrototype2083" class="NDPrototype NoParameterForm">MipFieldValues asMipFieldValues() <span class="SHKeyword">const</span></div>
- <div class="CBody"><p>Gets the current quaternion values formatted as a &lt;MipFieldValues&gt; object</p></div>
+<a name="q0"></a><a name="Topic2750"></a><div class="CTopic TFunction LC">
+ <div class="CTitle">q0</div>
+ <div id="NDPrototype2750" class="NDPrototype NoParameterForm"><span class="SHKeyword">float</span> q0() <span class="SHKeyword">const</span></div>
+ <div class="CBody"><p>Gets the 0-index value (usually w).</p><div class="CHeading">Returns</div><p>The 0-index value.</p></div>
 </div>
 
-<a name="Types"></a><a name="Topic2084"></a><div class="CTopic TGroup LC">
- <div class="CTitle">Types</div>
+<a name="q1"></a><a name="Topic2751"></a><div class="CTopic TFunction LC">
+ <div class="CTitle">q1</div>
+ <div id="NDPrototype2751" class="NDPrototype NoParameterForm"><span class="SHKeyword">float</span> q1() <span class="SHKeyword">const</span></div>
+ <div class="CBody"><p>Gets the 1-index value (usually x).</p><div class="CHeading">Returns</div><p>The 1-index value.</p></div>
 </div>
 
-<a name="PositionVelocityReferenceFrame"></a><a name="Topic2085"></a><div class="CTopic TEnumeration LC last">
- <div class="CTitle">PositionVelocityReferenceFrame</div>
- <div class="CBody"><p>Enum representing position and velocity reference frame options.</p><table class="CDefinitionList"><tr><td class="CDLEntry"><a name="ECEF"></a><a name="Topic2086"></a>ECEF</td><td class="CDLDefinition"><p>0x01&nbsp; -&nbsp; Earth-Centered, Earth-Fixed</p></td></tr><tr><td class="CDLEntry"><a name="LLH_NED"></a><a name="Topic2087"></a>LLH_NED</td><td class="CDLDefinition"><p>0x02&nbsp; -&nbsp; Position: Lat/Long/Height, Velocity: North/East/Down</p></td></tr></table></div>
+<a name="q2"></a><a name="Topic2752"></a><div class="CTopic TFunction LC">
+ <div class="CTitle">q2</div>
+ <div id="NDPrototype2752" class="NDPrototype NoParameterForm"><span class="SHKeyword">float</span> q2() <span class="SHKeyword">const</span></div>
+ <div class="CBody"><p>Gets the 2-index value (usually y).</p><div class="CHeading">Returns</div><p>The 2-index value.</p></div>
+</div>
+
+<a name="q3"></a><a name="Topic2753"></a><div class="CTopic TFunction LC last">
+ <div class="CTitle">q3</div>
+ <div id="NDPrototype2753" class="NDPrototype NoParameterForm"><span class="SHKeyword">float</span> q3() <span class="SHKeyword">const</span></div>
+ <div class="CBody"><p>Gets the 3-index value (usually z).</p><div class="CHeading">Returns</div><p>The 3-index value.</p></div>
 </div>
 
 </body></html>

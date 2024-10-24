@@ -8,81 +8,70 @@
 
 <body onload="NDLoader.OnLoad('Content');" class="NDPage NDContentPage">
 
-<a name="Topic4247"></a><div class="CTopic TStruct LC first">
+<a name="Topic5111"></a><div class="CTopic TStruct LC first">
  <div class="CTitle">CV7ContinuousBIT_IMU</div>
  <div class="CBody"><p>Continuous Built-In Test flags for IMU information</p><p>Bits 32-63 of the original 128 bit Continuous Built-In Test flags</p></div>
 </div>
 
-<a name="Functions"></a><a name="Topic4248"></a><div class="CTopic TGroup LC">
+<a name="Functions"></a><a name="Topic5112"></a><div class="CTopic TGroup LC">
  <div class="CTitle">Functions</div>
 </div>
 
-<a name="CV7ContinuousBIT_IMU"></a><a name="Topic4249"></a><div class="CTopic TFunction LC">
+<a name="CV7ContinuousBIT_IMU"></a><a name="Topic5113"></a><div class="CTopic TFunction LC">
  <div class="CTitle">CV7ContinuousBIT_IMU</div>
- <div id="NDPrototype4249" class="NDPrototype NoParameterForm">CV7ContinuousBIT_IMU()</div>
+ <div id="NDPrototype5113" class="NDPrototype NoParameterForm">CV7ContinuousBIT_IMU() = default</div>
 </div>
 
-<a name="CV7ContinuousBIT_IMU(2)"></a><a name="Topic4250"></a><div class="CTopic TFunction LC">
+<a name="CV7ContinuousBIT_IMU(2)"></a><a name="Topic5114"></a><div class="CTopic TFunction LC">
  <div class="CTitle">CV7ContinuousBIT_IMU</div>
- <div id="NDPrototype4250" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters">CV7ContinuousBIT_IMU(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PType first"><span class="SHKeyword">uint32</span>&nbsp;</td><td class="PName last">bits</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
+ <div id="NDPrototype5114" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">explicit</span> CV7ContinuousBIT_IMU(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PType first"><span class="SHKeyword">uint32</span>&nbsp;</td><td class="PName last">bits</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
  <div class="CBody"><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">bits<div class="CDLParameterType"><span class="SHKeyword">uint32</span></div></td><td class="CDLDefinition"><p>Value of bits 32-63 of the original 128 bit Continuous Built-In Test flags</p></td></tr></table></div>
 </div>
 
-<a name="Constants"></a><a name="Topic4251"></a><div class="CTopic TGroup LC">
+<a name="Constants"></a><a name="Topic5115"></a><div class="CTopic TGroup LC">
  <div class="CTitle">Constants</div>
 </div>
 
-<a name="RESPONSE_OFFSET"></a><a name="Topic4252"></a><div class="CTopic TConstant LC">
- <div class="CTitle">RESPONSE_OFFSET</div>
- <div class="CBody"><p>The offset of the 0 position of the value represented by this object in the overall BIT response Value: 32 bits</p></div>
-</div>
-
-<a name="Bitmasks"></a><a name="Topic4253"></a><div class="CTopic TConstant LC">
+<a name="Bitmasks"></a><a name="Topic5116"></a><div class="CTopic TConstant LC">
  <div class="CTitle">Bitmasks</div>
- <div class="CBody"><table class="CDefinitionList"><tr><td class="CDLEntry"><a name="GENERAL_FLAGS"></a><a name="Topic4254"></a>GENERAL_FLAGS</td><td class="CDLDefinition"><p>0xFF000000 - Bitmask for the general IMU bit flags (bits 32-39)</p></td></tr><tr><td class="CDLEntry"><a name="SENSORS_FLAGS"></a><a name="Topic4255"></a>SENSORS_FLAGS</td><td class="CDLDefinition"><p>0x00FFFF00 - Bitmask for the IMU sensors bit flags (40-55)</p></td></tr><tr><td class="CDLEntry"><a name="FACTORY_BITS_INVALID"></a><a name="Topic4256"></a>FACTORY_BITS_INVALID</td><td class="CDLDefinition"><p>0x00000001 - Factory settings invalid. Device unusable (56)</p></td></tr></table><div class="CHeading">Note</div><p>These masks are shifted 32 bits to the right from the original 128 bitmask to have a 0 index at bit 32</p></div>
+ <div class="CBody"><table class="CDefinitionList"><tr><td class="CDLEntry"><a name="FACTORY_BITS_INVALID"></a><a name="Topic5117"></a>FACTORY_BITS_INVALID</td><td class="CDLDefinition"><p>0x00000001 - Factory settings invalid. Device unusable (56)</p></td></tr></table><div class="CHeading">Note</div><p>These masks are shifted 32 bits to the right from the original 128 bitmask to have a 0 index at bit 32</p></div>
 </div>
 
-<a name="Functions(2)"></a><a name="Topic4257"></a><div class="CTopic TGroup LC">
+<a name="Functions(2)"></a><a name="Topic5118"></a><div class="CTopic TGroup LC">
  <div class="CTitle">Functions</div>
 </div>
 
-<a name="flags"></a><a name="Topic4258"></a><div class="CTopic TFunction LC">
- <div class="CTitle">flags</div>
- <div id="NDPrototype4258" class="NDPrototype NoParameterForm"><span class="SHKeyword">uint32</span> flags() <span class="SHKeyword">const</span></div>
- <div class="CBody"><p>Gets the value of the IMU flags (bits 32-63)</p><div class="CHeading">Returns</div><table class="CDefinitionList"><tr><td class="CDLEntry">uint32</td><td class="CDLDefinition"><p>Value of the IMU flags</p></td></tr></table></div>
-</div>
-
-<a name="general"></a><a name="Topic4259"></a><div class="CTopic TFunction LC">
+<a name="general"></a><a name="Topic5119"></a><div class="CTopic TFunction LC">
  <div class="CTitle">general</div>
- <div id="NDPrototype4259" class="NDPrototype NoParameterForm"><a href="../../index.html#CClass:CV7ContinuousBIT_IMU_General" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,4195);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >CV7ContinuousBIT_IMU_General</a> general() <span class="SHKeyword">const</span></div>
- <div class="CBody"><p>Gets information for general IMU flags (bits 32-39)</p><div class="CHeading">Returns</div><table class="CDefinitionList"><tr><td class="CDLEntry"><a href="../../index.html#CClass:CV7ContinuousBIT_IMU_General" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,4195);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >CV7ContinuousBIT_IMU_General</a></td><td class="CDLDefinition"><p>Information for general IMU flags</p></td></tr></table></div>
+ <div id="NDPrototype5119" class="NDPrototype NoParameterForm"><a href="../../index.html#CClass:CV7ContinuousBIT_IMU_General" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,5103);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >CV7ContinuousBIT_IMU_General</a> general() <span class="SHKeyword">const</span></div>
+ <div class="CBody"><p>Gets information for general IMU flags (bits 32-39)</p><div class="CHeading">Returns</div><table class="CDefinitionList"><tr><td class="CDLEntry"><a href="../../index.html#CClass:CV7ContinuousBIT_IMU_General" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,5103);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >CV7ContinuousBIT_IMU_General</a></td><td class="CDLDefinition"><p>Information for general IMU flags</p></td></tr></table></div>
 </div>
 
-<a name="sensors"></a><a name="Topic4260"></a><div class="CTopic TFunction LC">
+<a name="sensors"></a><a name="Topic5120"></a><div class="CTopic TFunction LC">
  <div class="CTitle">sensors</div>
- <div id="NDPrototype4260" class="NDPrototype NoParameterForm"><a href="../../index.html#CClass:CV7ContinuousBIT_IMU_Sensors" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,4215);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >CV7ContinuousBIT_IMU_Sensors</a> sensors() <span class="SHKeyword">const</span></div>
- <div class="CBody"><p>Gets information for IMU sensors flags (bits 40-55)</p><div class="CHeading">Returns</div><table class="CDefinitionList"><tr><td class="CDLEntry"><a href="../../index.html#CClass:CV7ContinuousBIT_IMU_Sensors" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,4215);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >CV7ContinuousBIT_IMU_Sensors</a></td><td class="CDLDefinition"><p>Information for IMU sensors flags</p></td></tr></table></div>
+ <div id="NDPrototype5120" class="NDPrototype NoParameterForm"><a href="../../index.html#CClass:CV7ContinuousBIT_IMU_Sensors" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,5107);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >CV7ContinuousBIT_IMU_Sensors</a> sensors() <span class="SHKeyword">const</span></div>
+ <div class="CBody"><p>Gets information for IMU sensors flags (bits 40-55)</p><div class="CHeading">Returns</div><table class="CDefinitionList"><tr><td class="CDLEntry"><a href="../../index.html#CClass:CV7ContinuousBIT_IMU_Sensors" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,5107);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >CV7ContinuousBIT_IMU_Sensors</a></td><td class="CDLDefinition"><p>Information for IMU sensors flags</p></td></tr></table></div>
 </div>
 
-<a name="factoryBitsInvalid"></a><a name="Topic4261"></a><div class="CTopic TFunction LC">
+<a name="factoryBitsInvalid"></a><a name="Topic5121"></a><div class="CTopic TFunction LC">
  <div class="CTitle">factoryBitsInvalid</div>
- <div id="NDPrototype4261" class="NDPrototype NoParameterForm"><span class="SHKeyword">bool</span> factoryBitsInvalid() <span class="SHKeyword">const</span></div>
- <div class="CBody"><p>Gets the value of the Factory Bits Invalid bit</p><div class="CHeading">Returns</div><table class="CDefinitionList"><tr><td class="CDLEntry">bool</td><td class="CDLDefinition"><p>true: Factory settings invalid. Device unusable</p></td></tr></table></div>
+ <div id="NDPrototype5121" class="NDPrototype NoParameterForm"><span class="SHKeyword">bool</span> factoryBitsInvalid() <span class="SHKeyword">const</span></div>
+ <div class="CBody"><p>Gets the value of the Factory Bits Invalid bit (bit 56)</p><div class="CHeading">Returns</div><table class="CDefinitionList"><tr><td class="CDLEntry">bool</td><td class="CDLDefinition"><p>true: Factory settings invalid. Device unusable</p></td></tr></table></div>
 </div>
 
-<a name="Variables"></a><a name="Topic4262"></a><div class="CTopic TGroup LC">
+<a name="Variables"></a><a name="Topic5122"></a><div class="CTopic TGroup LC">
  <div class="CTitle">Variables</div>
 </div>
 
-<a name="m_general"></a><a name="Topic4263"></a><div class="CTopic TVariable LC">
+<a name="m_general"></a><a name="Topic5123"></a><div class="CTopic TVariable LC">
  <div class="CTitle">m_general</div>
- <div id="NDPrototype4263" class="NDPrototype NoParameterForm"><a href="../../index.html#CClass:CV7ContinuousBIT_IMU_General" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,4195);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >CV7ContinuousBIT_IMU_General</a> m_general</div>
- <div class="CBody"><p><a href="../../index.html#CClass:CV7ContinuousBIT_IMU_General" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,4195);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >CV7ContinuousBIT_IMU_General</a> information for general IMU flags (bits 32-39)</p></div>
+ <div id="NDPrototype5123" class="NDPrototype NoParameterForm"><a href="../../index.html#CClass:CV7ContinuousBIT_IMU_General" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,5103);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >CV7ContinuousBIT_IMU_General</a> m_general</div>
+ <div class="CBody"><p><a href="../../index.html#CClass:CV7ContinuousBIT_IMU_General" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,5103);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >CV7ContinuousBIT_IMU_General</a> information for general IMU flags (bits 32-39)</p></div>
 </div>
 
-<a name="m_sensors_"></a><a name="Topic4264"></a><div class="CTopic TVariable LC last">
+<a name="m_sensors_"></a><a name="Topic5124"></a><div class="CTopic TVariable LC last">
  <div class="CTitle">m_sensors;</div>
- <div class="CBody"><p><a href="../../index.html#CClass:CV7ContinuousBIT_IMU_Sensors" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,4215);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >CV7ContinuousBIT_IMU_Sensors</a> information for IMU sensors flags (bits 40-55)</p></div>
+ <div class="CBody"><p><a href="../../index.html#CClass:CV7ContinuousBIT_IMU_Sensors" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,5107);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >CV7ContinuousBIT_IMU_Sensors</a> information for IMU sensors flags (bits 40-55)</p></div>
 </div>
 
 </body></html>

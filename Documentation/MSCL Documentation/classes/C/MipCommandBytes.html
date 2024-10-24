@@ -8,109 +8,109 @@
 
 <body onload="NDLoader.OnLoad('Content');" class="NDPage NDContentPage">
 
-<a name="Topic3849"></a><div class="CTopic TStruct LC first">
+<a name="Topic3955"></a><div class="CTopic TStruct LC first">
  <div class="CTitle">MipCommandBytes</div>
- <div class="CBody"><p>Contains an &lt;Command&gt; id and a <a href="../../index.html#File:Types.h:BytesCollection" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9558);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >BytesCollection</a> vector to store the actual bytes to send to the device for that command.</p></div>
+ <div class="CBody"><p>Contains an &lt;Command&gt; id and a <a href="../../index.html#File:Types.h:BytesCollection" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,10191);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >BytesCollection</a> vector to store the actual bytes to send to the device for that command.</p></div>
 </div>
 
-<a name="Variables"></a><a name="Topic3850"></a><div class="CTopic TGroup LC">
+<a name="Variables"></a><a name="Topic3956"></a><div class="CTopic TGroup LC">
  <div class="CTitle">Variables</div>
 </div>
 
-<a name="id"></a><a name="Topic3851"></a><div class="CTopic TVariable LC">
+<a name="id"></a><a name="Topic3957"></a><div class="CTopic TVariable LC">
  <div class="CTitle">id</div>
- <div id="NDPrototype3851" class="NDPrototype NoParameterForm"><a href="../../index.html#CClass:MipTypes:Command" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3123);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipTypes::Command</a> id</div>
- <div class="CBody"><p><a href="../../index.html#CClass:MipTypes:Command" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3123);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipTypes::Command</a> this object represents</p></div>
+ <div id="NDPrototype3957" class="NDPrototype NoParameterForm"><a href="../../index.html#CClass:MipTypes:Command" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3194);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipTypes::Command</a> id</div>
+ <div class="CBody"><p><a href="../../index.html#CClass:MipTypes:Command" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3194);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipTypes::Command</a> this object represents</p></div>
 </div>
 
-<a name="commands"></a><a name="Topic3852"></a><div class="CTopic TVariable LC">
+<a name="commands"></a><a name="Topic3958"></a><div class="CTopic TVariable LC">
  <div class="CTitle">commands</div>
- <div id="NDPrototype3852" class="NDPrototype NoParameterForm"><a href="../../index.html#File:Types.h:BytesCollection" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9558);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >BytesCollection</a> commands</div>
- <div class="CBody"><p><a href="../../index.html#File:Types.h:BytesCollection" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9558);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >BytesCollection</a> of raw command bytes</p></div>
+ <div id="NDPrototype3958" class="NDPrototype NoParameterForm"><a href="../../index.html#File:Types.h:BytesCollection" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,10191);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >BytesCollection</a> commands</div>
+ <div class="CBody"><p><a href="../../index.html#File:Types.h:BytesCollection" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,10191);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >BytesCollection</a> of raw command bytes</p></div>
 </div>
 
-<a name="buildCmdFailed"></a><a name="Topic3853"></a><div class="CTopic TVariable LC">
+<a name="buildCmdFailed"></a><a name="Topic3959"></a><div class="CTopic TVariable LC">
  <div class="CTitle">buildCmdFailed</div>
- <div id="NDPrototype3853" class="NDPrototype NoParameterForm"><span class="SHKeyword">bool</span> buildCmdFailed</div>
+ <div id="NDPrototype3959" class="NDPrototype NoParameterForm"><span class="SHKeyword">bool</span> buildCmdFailed</div>
  <div class="CBody"><table class="CDefinitionList"><tr><td class="CDLEntry">bool</td><td class="CDLDefinition"><p>indicates building command bytes was attempted but failed</p></td></tr><tr><td class="CDLEntry">false by default</td><td class="CDLDefinition"><p>set to true on failure</p></td></tr></table></div>
 </div>
 
-<a name="sendCmdFailed"></a><a name="Topic3854"></a><div class="CTopic TVariable LC">
+<a name="sendCmdFailed"></a><a name="Topic3960"></a><div class="CTopic TVariable LC">
  <div class="CTitle">sendCmdFailed</div>
- <div id="NDPrototype3854" class="NDPrototype NoParameterForm"><span class="SHKeyword">bool</span> sendCmdFailed</div>
+ <div id="NDPrototype3960" class="NDPrototype NoParameterForm"><span class="SHKeyword">bool</span> sendCmdFailed</div>
  <div class="CBody"><table class="CDefinitionList"><tr><td class="CDLEntry">bool</td><td class="CDLDefinition"><p>indicates sending the command bytes was attempted but failed</p></td></tr><tr><td class="CDLEntry">false by default</td><td class="CDLDefinition"><p>set to true on failure</p></td></tr></table></div>
 </div>
 
-<a name="Functions"></a><a name="Topic3855"></a><div class="CTopic TGroup LC">
+<a name="Functions"></a><a name="Topic3961"></a><div class="CTopic TGroup LC">
  <div class="CTitle">Functions</div>
 </div>
 
-<a name="MipCommandBytes"></a><a name="Topic3856"></a><div class="CTopic TFunction LC">
+<a name="MipCommandBytes"></a><a name="Topic3962"></a><div class="CTopic TFunction LC">
  <div class="CTitle">MipCommandBytes</div>
- <div id="NDPrototype3856" class="NDPrototype NoParameterForm">MipCommandBytes() : buildCmdFailed(<span class="SHKeyword">false</span>), sendCmdFailed(<span class="SHKeyword">false</span>)</div>
+ <div id="NDPrototype3962" class="NDPrototype NoParameterForm">MipCommandBytes() : buildCmdFailed(<span class="SHKeyword">false</span>), sendCmdFailed(<span class="SHKeyword">false</span>)</div>
  <div class="CBody"><p>Default constructor for MipCommandBytes object</p></div>
 </div>
 
-<a name="MipCommandBytes(2)"></a><a name="Topic3857"></a><div class="CTopic TFunction LC">
+<a name="MipCommandBytes(2)"></a><a name="Topic3963"></a><div class="CTopic TFunction LC">
  <div class="CTitle">MipCommandBytes</div>
- <div id="NDPrototype3857" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters">MipCommandBytes(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PModifierQualifier first"><a href="../../index.html#CClass:MipTypes:Command" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3123);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipTypes::</a></td><td class="PType"><a href="../../index.html#CClass:MipTypes:Command" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3123);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >Command</a>&nbsp;</td><td class="PName last">_id</td></tr></table></td><td class="PAfterParameters">) : id(_id), buildCmdFailed(<span class="SHKeyword">false</span>), sendCmdFailed(<span class="SHKeyword">false</span>)</td></tr></table></div>
- <div class="CBody"><p>Constructor for MipCommandBytes object</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">id</td><td class="CDLDefinition"><p><a href="../../index.html#CClass:MipTypes:Command" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3123);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipTypes::Command</a> this object represents</p></td></tr></table></div>
+ <div id="NDPrototype3963" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters">MipCommandBytes(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PModifierQualifier first"><a href="../../index.html#CClass:MipTypes:Command" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3194);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipTypes::</a></td><td class="PType"><a href="../../index.html#CClass:MipTypes:Command" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3194);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >Command</a>&nbsp;</td><td class="PName last">_id</td></tr></table></td><td class="PAfterParameters">) : id(_id), buildCmdFailed(<span class="SHKeyword">false</span>), sendCmdFailed(<span class="SHKeyword">false</span>)</td></tr></table></div>
+ <div class="CBody"><p>Constructor for MipCommandBytes object</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">id</td><td class="CDLDefinition"><p><a href="../../index.html#CClass:MipTypes:Command" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3194);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipTypes::Command</a> this object represents</p></td></tr></table></div>
 </div>
 
-<a name="MipCommandBytes(3)"></a><a name="Topic3858"></a><div class="CTopic TFunction LC">
+<a name="MipCommandBytes(3)"></a><a name="Topic3964"></a><div class="CTopic TFunction LC">
  <div class="CTitle">MipCommandBytes</div>
- <div id="NDPrototype3858" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters">MipCommandBytes(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PModifierQualifier first"><a href="../../index.html#CClass:MipTypes:Command" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3123);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipTypes::</a></td><td class="PType"><a href="../../index.html#CClass:MipTypes:Command" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3123);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >Command</a>&nbsp;</td><td class="PName last">_id,</td></tr><tr><td class="first"></td><td class="PType"><a href="../../index.html#File:Types.h:Bytes" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9557);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >Bytes</a>&nbsp;</td><td class="PName last">_cmd</td></tr></table></td><td class="PAfterParameters">) : id(_id), commands({ _cmd }), buildCmdFailed(<span class="SHKeyword">false</span>), sendCmdFailed(<span class="SHKeyword">false</span>)</td></tr></table></div>
- <div class="CBody"><p>Constructor for MipCommandBytes object</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">id</td><td class="CDLDefinition"><p><a href="../../index.html#CClass:MipTypes:Command" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3123);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipTypes::Command</a> this object represents</p></td></tr><tr><td class="CDLEntry">cmd</td><td class="CDLDefinition"><p>raw command <a href="../../index.html#File:Types.h:Bytes" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9557);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >Bytes</a> to add to the commands <a href="../../index.html#File:Types.h:BytesCollection" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9558);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >BytesCollection</a></p></td></tr></table></div>
+ <div id="NDPrototype3964" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters">MipCommandBytes(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PModifierQualifier first"><a href="../../index.html#CClass:MipTypes:Command" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3194);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipTypes::</a></td><td class="PType"><a href="../../index.html#CClass:MipTypes:Command" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3194);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >Command</a>&nbsp;</td><td class="PName last">_id,</td></tr><tr><td class="first"></td><td class="PType"><a href="../../index.html#File:Types.h:Bytes" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,10190);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >Bytes</a>&nbsp;</td><td class="PName last">_cmd</td></tr></table></td><td class="PAfterParameters">) : id(_id), commands({ _cmd }), buildCmdFailed(<span class="SHKeyword">false</span>), sendCmdFailed(<span class="SHKeyword">false</span>)</td></tr></table></div>
+ <div class="CBody"><p>Constructor for MipCommandBytes object</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">id</td><td class="CDLDefinition"><p><a href="../../index.html#CClass:MipTypes:Command" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3194);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipTypes::Command</a> this object represents</p></td></tr><tr><td class="CDLEntry">cmd</td><td class="CDLDefinition"><p>raw command <a href="../../index.html#File:Types.h:Bytes" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,10190);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >Bytes</a> to add to the commands <a href="../../index.html#File:Types.h:BytesCollection" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,10191);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >BytesCollection</a></p></td></tr></table></div>
 </div>
 
-<a name="MipCommandBytes(4)"></a><a name="Topic3859"></a><div class="CTopic TFunction LC">
+<a name="MipCommandBytes(4)"></a><a name="Topic3965"></a><div class="CTopic TFunction LC">
  <div class="CTitle">MipCommandBytes</div>
- <div id="NDPrototype3859" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters">MipCommandBytes(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PModifierQualifier first"><a href="../../index.html#CClass:MipTypes:Command" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3123);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipTypes::</a></td><td class="PType"><a href="../../index.html#CClass:MipTypes:Command" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3123);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >Command</a>&nbsp;</td><td class="PName last">_id,</td></tr><tr><td class="first"></td><td class="PType"><a href="../../index.html#File:Types.h:BytesCollection" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9558);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >BytesCollection</a>&nbsp;</td><td class="PName last">_cmds</td></tr></table></td><td class="PAfterParameters">) : id(_id), commands(_cmds), buildCmdFailed(<span class="SHKeyword">false</span>), sendCmdFailed(<span class="SHKeyword">false</span>)</td></tr></table></div>
- <div class="CBody"><p>Constructor for MipCommandBytes object</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">id</td><td class="CDLDefinition"><p><a href="../../index.html#CClass:MipTypes:Command" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3123);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipTypes::Command</a> this object represents</p></td></tr><tr><td class="CDLEntry">cmds</td><td class="CDLDefinition"><p>collection of raw command <a href="../../index.html#File:Types.h:Bytes" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9557);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >Bytes</a> to add to the commands <a href="../../index.html#File:Types.h:BytesCollection" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9558);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >BytesCollection</a></p></td></tr></table></div>
+ <div id="NDPrototype3965" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters">MipCommandBytes(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PModifierQualifier first"><a href="../../index.html#CClass:MipTypes:Command" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3194);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipTypes::</a></td><td class="PType"><a href="../../index.html#CClass:MipTypes:Command" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3194);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >Command</a>&nbsp;</td><td class="PName last">_id,</td></tr><tr><td class="first"></td><td class="PType"><a href="../../index.html#File:Types.h:BytesCollection" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,10191);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >BytesCollection</a>&nbsp;</td><td class="PName last">_cmds</td></tr></table></td><td class="PAfterParameters">) : id(_id), commands(_cmds), buildCmdFailed(<span class="SHKeyword">false</span>), sendCmdFailed(<span class="SHKeyword">false</span>)</td></tr></table></div>
+ <div class="CBody"><p>Constructor for MipCommandBytes object</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">id</td><td class="CDLDefinition"><p><a href="../../index.html#CClass:MipTypes:Command" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3194);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipTypes::Command</a> this object represents</p></td></tr><tr><td class="CDLEntry">cmds</td><td class="CDLDefinition"><p>collection of raw command <a href="../../index.html#File:Types.h:Bytes" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,10190);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >Bytes</a> to add to the commands <a href="../../index.html#File:Types.h:BytesCollection" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,10191);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >BytesCollection</a></p></td></tr></table></div>
 </div>
 
-<a name="add"></a><a name="Topic3860"></a><div class="CTopic TFunction LC">
+<a name="add"></a><a name="Topic3966"></a><div class="CTopic TFunction LC">
  <div class="CTitle">add</div>
- <div id="NDPrototype3860" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">void</span> add(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PType first"><a href="../../index.html#File:Types.h:Bytes" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9557);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >Bytes</a>&nbsp;</td><td class="PName last">cmd</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
- <div class="CBody"><p>Add raw command <a href="../../index.html#File:Types.h:Bytes" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9557);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >Bytes</a> to commands <a href="../../index.html#File:Types.h:BytesCollection" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9558);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >BytesCollection</a></p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">cmd<div class="CDLParameterType"><a href="../../index.html#File:Types.h:Bytes" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9557);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >Bytes</a></div></td><td class="CDLDefinition"><p>command <a href="../../index.html#File:Types.h:Bytes" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9557);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >Bytes</a> to add</p></td></tr></table></div>
+ <div id="NDPrototype3966" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">void</span> add(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PType first"><a href="../../index.html#File:Types.h:Bytes" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,10190);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >Bytes</a>&nbsp;</td><td class="PName last">cmd</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
+ <div class="CBody"><p>Add raw command <a href="../../index.html#File:Types.h:Bytes" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,10190);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >Bytes</a> to commands <a href="../../index.html#File:Types.h:BytesCollection" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,10191);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >BytesCollection</a></p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">cmd<div class="CDLParameterType"><a href="../../index.html#File:Types.h:Bytes" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,10190);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >Bytes</a></div></td><td class="CDLDefinition"><p>command <a href="../../index.html#File:Types.h:Bytes" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,10190);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >Bytes</a> to add</p></td></tr></table></div>
 </div>
 
-<a name="valid"></a><a name="Topic3861"></a><div class="CTopic TFunction LC">
+<a name="valid"></a><a name="Topic3967"></a><div class="CTopic TFunction LC">
  <div class="CTitle">valid</div>
- <div id="NDPrototype3861" class="NDPrototype NoParameterForm"><span class="SHKeyword">bool</span> valid()</div>
- <div class="CBody"><p>Indicates whether this object contains any relevant information, specifically whether it contains any command <a href="../../index.html#File:Types.h:Bytes" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9557);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >Bytes</a> or has been marked for failure.</p><div class="CHeading">Returns</div><table class="CDefinitionList"><tr><td class="CDLEntry">bool</td><td class="CDLDefinition"><p>true if commands size is at least one OR send command failed OR build command failed</p></td></tr></table></div>
+ <div id="NDPrototype3967" class="NDPrototype NoParameterForm"><span class="SHKeyword">bool</span> valid()</div>
+ <div class="CBody"><p>Indicates whether this object contains any relevant information, specifically whether it contains any command <a href="../../index.html#File:Types.h:Bytes" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,10190);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >Bytes</a> or has been marked for failure.</p><div class="CHeading">Returns</div><table class="CDefinitionList"><tr><td class="CDLEntry">bool</td><td class="CDLDefinition"><p>true if commands size is at least one OR send command failed OR build command failed</p></td></tr></table></div>
 </div>
 
-<a name="Types"></a><a name="Topic3862"></a><div class="CTopic TGroup LC">
+<a name="Types"></a><a name="Topic3968"></a><div class="CTopic TGroup LC">
  <div class="CTitle">Types</div>
 </div>
 
-<a name="MipCommandSet"></a><a name="Topic3863"></a><div class="CTopic TType LC">
+<a name="MipCommandSet"></a><a name="Topic3969"></a><div class="CTopic TType LC">
  <div class="CTitle">MipCommandSet</div>
- <div class="CBody"><p>A vector of <a href="../../index.html#CClass:MipCommandBytes:MipCommandBytes" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3856);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipCommandBytes</a></p></div>
+ <div class="CBody"><p>A vector of <a href="../../index.html#CClass:MipCommandBytes:MipCommandBytes" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3962);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipCommandBytes</a></p></div>
 </div>
 
-<a name="MipFieldFormat"></a><a name="Topic3864"></a><div class="CTopic TType LC">
+<a name="MipFieldFormat"></a><a name="Topic3970"></a><div class="CTopic TType LC">
  <div class="CTitle">MipFieldFormat</div>
- <div class="CBody"><p>A <a href="../../index.html#File:Types.h:ValueType" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9559);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ValueType</a> vector</p></div>
+ <div class="CBody"><p>A <a href="../../index.html#File:Types.h:ValueType" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,10192);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ValueType</a> vector</p></div>
 </div>
 
-<a name="MipFieldValues"></a><a name="Topic3865"></a><div class="CTopic TType LC">
+<a name="MipFieldValues"></a><a name="Topic3971"></a><div class="CTopic TType LC">
  <div class="CTitle">MipFieldValues</div>
- <div class="CBody"><p>A <a href="../../index.html#CClass:Value" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9501);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >Value</a> vector</p></div>
+ <div class="CBody"><p>A <a href="../../index.html#CClass:Value" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,10129);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >Value</a> vector</p></div>
 </div>
 
-<a name="MipCommandParameters"></a><a name="Topic3866"></a><div class="CTopic TType LC">
+<a name="MipCommandParameters"></a><a name="Topic3972"></a><div class="CTopic TType LC">
  <div class="CTitle">MipCommandParameters</div>
  <div class="CBody"><p>A list of &lt;MipCommandParameterList&gt; command/parameter definitions</p></div>
 </div>
 
-<a name="MipFunctionSelectors"></a><a name="Topic3867"></a><div class="CTopic TType LC">
+<a name="MipFunctionSelectors"></a><a name="Topic3973"></a><div class="CTopic TType LC">
  <div class="CTitle">MipFunctionSelectors</div>
- <div class="CBody"><p>A <a href="../../index.html#CClass:MipTypes:FunctionSelector" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3110);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipTypes::FunctionSelector</a> vector</p></div>
+ <div class="CBody"><p>A <a href="../../index.html#CClass:MipTypes:FunctionSelector" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3181);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipTypes::FunctionSelector</a> vector</p></div>
 </div>
 
-<a name="MipResponseMatchValues"></a><a name="Topic3868"></a><div class="CTopic TType LC last">
+<a name="MipResponseMatchValues"></a><a name="Topic3974"></a><div class="CTopic TType LC last">
  <div class="CTitle">MipResponseMatchValues</div>
  <div class="CBody"><p>A map of locations and values to match in a MIP response to determine success</p></div>
 </div>

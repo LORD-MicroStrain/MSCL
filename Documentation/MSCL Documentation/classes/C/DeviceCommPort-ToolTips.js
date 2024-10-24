@@ -1,1 +1,1 @@
-NDContentPage.OnToolTipsLoaded({3886:"<div class=\"NDToolTip TEnumeration LC\"><div class=\"TTSummary\">Available comm port type definitions PRIMARY - 0 AUX&nbsp; - 1</div></div>"});
+NDContentPage.OnToolTipsLoaded({4134:"<div class=\"NDToolTip TEnumeration LC\"><div class=\"TTSummary\">Available comm port type definitions PRIMARY - 0 AUX&nbsp; - 1 GPIO&nbsp; - 2</div></div>"});

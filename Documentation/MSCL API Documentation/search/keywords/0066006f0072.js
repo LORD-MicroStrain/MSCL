@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("for",["Function","Enumeration"],[["Format",,[["Rotation","format",,,0,"File:MicroStrain/Inertial/EulerAngles.h:Rotation.format","CClass:Rotation:format"],["Rotation",,,,1,"File:MicroStrain/Inertial/EulerAngles.h:Rotation.Format","CClass:Rotation:Format"]]]]);

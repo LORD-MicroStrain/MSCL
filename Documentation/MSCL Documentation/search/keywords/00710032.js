@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("q2",["Function"],[["q2",,[["Quaternion",,,,0,"File:MicroStrain/Inertial/EulerAngles.h:Quaternion.q2","CClass:Quaternion:q2"]]]]);

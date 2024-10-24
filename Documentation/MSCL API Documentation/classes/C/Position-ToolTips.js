@@ -1,1 +1,1 @@
-NDContentPage.OnToolTipsLoaded({1770:"<div class=\"NDToolTip TStruct LC\"><div class=\"TTSummary\">Defines a geographic position.</div></div>"});
+NDContentPage.OnToolTipsLoaded({103:"<div class=\"NDToolTip TEnumeration LC\"><div class=\"TTSummary\">Enum representing position and velocity reference frame options.</div></div>",124:"<div class=\"NDToolTip TStruct LC\"><div class=\"TTSummary\">Defines a geographic position.</div></div>"});

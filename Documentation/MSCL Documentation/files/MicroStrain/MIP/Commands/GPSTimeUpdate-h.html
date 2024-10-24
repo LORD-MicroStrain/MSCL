@@ -8,111 +8,111 @@
 
 <body onload="NDLoader.OnLoad('Content');" class="NDPage NDContentPage">
 
-<a name="GPSTimeUpdate"></a><a name="Topic2806"></a><div class="CTopic TClass LC first">
+<a name="GPSTimeUpdate"></a><a name="Topic2828"></a><div class="CTopic TClass LC first">
  <div class="CTitle">GPSTimeUpdate</div>
- <div class="NDClassPrototype HasParents" id="NDClassPrototype2806"><a class="CPEntry Parent TClass" href="../../../../index.html#File:MicroStrain/MIP/Commands/GenericMipCommand.h:GenericMipCommand(2)" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,2855);" onmouseout="NDContentPage.OnLinkMouseOut(event);" ><div class="CPModifiers"><span class="SHKeyword">private</span></div><div class="CPName">GenericMipCommand</div></a><div class="CPEntry TClass Current"><div class="CPName">GPSTimeUpdate</div></div></div>
+ <div class="NDClassPrototype HasParents" id="NDClassPrototype2828"><a class="CPEntry Parent TClass" href="../../../../index.html#File:MicroStrain/MIP/Commands/GenericMipCommand.h:GenericMipCommand(2)" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,2913);" onmouseout="NDContentPage.OnLinkMouseOut(event);" ><div class="CPModifiers"><span class="SHKeyword">private</span></div><div class="CPName">GenericMipCommand</div></a><div class="CPEntry TClass Current"><div class="CPName">GPSTimeUpdate</div></div></div>
  <div class="CBody"><p>Contains the logic for the Inertial GPSTimeUpdate command.</p></div>
 </div>
 
-<a name="GPSTimeUpdate.Functions"></a><a name="Topic2807"></a><div class="CTopic TGroup LC">
+<a name="GPSTimeUpdate.Functions"></a><a name="Topic2829"></a><div class="CTopic TGroup LC">
  <div class="CTitle">Functions</div>
 </div>
 
-<a name="GPSTimeUpdate.CommandId"></a><a name="Topic2808"></a><div class="CTopic TFunction LC">
+<a name="GPSTimeUpdate.CommandId"></a><a name="Topic2830"></a><div class="CTopic TFunction LC">
  <div class="CTitle">CommandId</div>
- <div id="NDPrototype2808" class="NDPrototype NoParameterForm"><span class="SHKeyword">virtual</span> <a href="../../../../index.html#File:MicroStrain/MIP/MipTypes.h:MipTypes.Command" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3123);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipTypes::Command</a> commandId() <span class="SHKeyword">const override</span></div>
+ <div id="NDPrototype2830" class="NDPrototype NoParameterForm"><span class="SHKeyword">virtual</span> <a href="../../../../index.html#File:MicroStrain/MIP/MipTypes.h:MipTypes.Command" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3194);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipTypes::Command</a> commandId() <span class="SHKeyword">const override</span></div>
  <div class="CBody"><div class="CHeading">Returns</div><table class="CDefinitionList"><tr><td class="CDLEntry">MipTypes::Command</td><td class="CDLDefinition"><p>the command ID.</p></td></tr></table></div>
 </div>
 
-<a name="GPSTimeUpdate.Types"></a><a name="Topic2809"></a><div class="CTopic TGroup LC">
+<a name="GPSTimeUpdate.Types"></a><a name="Topic2831"></a><div class="CTopic TGroup LC">
  <div class="CTitle">Types</div>
 </div>
 
-<a name="GPSTimeUpdate.TimeFieldSelector"></a><a name="Topic2810"></a><div class="CTopic TEnumeration LC">
+<a name="GPSTimeUpdate.TimeFieldSelector"></a><a name="Topic2832"></a><div class="CTopic TEnumeration LC">
  <div class="CTitle">TimeFieldSelector</div>
  <div class="CBody"><p>The enums to represnt type of time being sent/received.&nbsp; GPS_WEEK_NUMBER - used to identify time being sent or received as a week number type.&nbsp; GPS_SECONDS&nbsp; - used to identify time being sent or received as a seconds type.</p></div>
 </div>
 
-<a name="GPSTimeUpdate.Functions(2)"></a><a name="Topic2811"></a><div class="CTopic TGroup LC">
+<a name="GPSTimeUpdate.Functions(2)"></a><a name="Topic2833"></a><div class="CTopic TGroup LC">
  <div class="CTitle">Functions</div>
 </div>
 
-<a name="GPSTimeUpdate.GPSTimeUpdate"></a><a name="Topic2812"></a><div class="CTopic TFunction LC">
+<a name="GPSTimeUpdate.GPSTimeUpdate"></a><a name="Topic2834"></a><div class="CTopic TFunction LC">
  <div class="CTitle">GPSTimeUpdate</div>
- <div id="NDPrototype2812" class="NDPrototype NoParameterForm">GPSTimeUpdate()</div>
+ <div id="NDPrototype2834" class="NDPrototype NoParameterForm">GPSTimeUpdate()</div>
  <div class="CBody"><p>Creates a GPSTimeUpdate object.</p></div>
 </div>
 
-<a name="GPSTimeUpdate.~GPSTimeUpdate"></a><a name="Topic2813"></a><div class="CTopic TFunction LC">
+<a name="GPSTimeUpdate.~GPSTimeUpdate"></a><a name="Topic2835"></a><div class="CTopic TFunction LC">
  <div class="CTitle">~GPSTimeUpdate</div>
- <div id="NDPrototype2813" class="NDPrototype NoParameterForm"><span class="SHKeyword">virtual</span> ~GPSTimeUpdate()</div>
+ <div id="NDPrototype2835" class="NDPrototype NoParameterForm"><span class="SHKeyword">virtual</span> ~GPSTimeUpdate()</div>
 </div>
 
-<a name="GPSTimeUpdate.GetWeekValue"></a><a name="Topic2814"></a><div class="CTopic TFunction LC">
+<a name="GPSTimeUpdate.GetWeekValue"></a><a name="Topic2836"></a><div class="CTopic TFunction LC">
  <div class="CTitle">GetWeekValue</div>
- <div id="NDPrototype2814" class="NDPrototype NoParameterForm"><a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9405);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> GetWeekValue()</div>
- <div class="CBody"><p>Builds the bytes to get the GPS week value.</p><div class="CHeading">Returns</div><p>A <a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9405);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> containing the GPSTimeUpdate command packet</p></div>
+ <div id="NDPrototype2836" class="NDPrototype NoParameterForm"><a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9867);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> GetWeekValue()</div>
+ <div class="CBody"><p>Builds the bytes to get the GPS week value.</p><div class="CHeading">Returns</div><p>A <a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9867);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> containing the GPSTimeUpdate command packet</p></div>
 </div>
 
-<a name="GPSTimeUpdate.GetSecondsValue"></a><a name="Topic2815"></a><div class="CTopic TFunction LC">
+<a name="GPSTimeUpdate.GetSecondsValue"></a><a name="Topic2837"></a><div class="CTopic TFunction LC">
  <div class="CTitle">GetSecondsValue</div>
- <div id="NDPrototype2815" class="NDPrototype NoParameterForm"><a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9405);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> GetSecondsValue()</div>
- <div class="CBody"><p>Builds the bytes to get the GPS seconds value.</p><div class="CHeading">Returns</div><p>A <a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9405);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> containing the GPSTimeUpdate command packet</p></div>
+ <div id="NDPrototype2837" class="NDPrototype NoParameterForm"><a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9867);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> GetSecondsValue()</div>
+ <div class="CBody"><p>Builds the bytes to get the GPS seconds value.</p><div class="CHeading">Returns</div><p>A <a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9867);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> containing the GPSTimeUpdate command packet</p></div>
 </div>
 
-<a name="GPSTimeUpdate.SetWeekValue"></a><a name="Topic2816"></a><div class="CTopic TFunction LC">
+<a name="GPSTimeUpdate.SetWeekValue"></a><a name="Topic2838"></a><div class="CTopic TFunction LC">
  <div class="CTitle">SetWeekValue</div>
- <div id="NDPrototype2816" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters"><a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9405);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> SetWeekValue(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PType first"><span class="SHKeyword">uint32</span>&nbsp;</td><td class="PName last">timeData</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
- <div class="CBody"><p>Builds the bytes for the &quot;set&quot; command.</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">timeData<div class="CDLParameterType"><span class="SHKeyword">uint32</span></div></td><td class="CDLDefinition"><p>The week time to set.</p></td></tr></table><div class="CHeading">Returns</div><p>A <a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9405);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> containing the GPSTimeUpdate command packet</p></div>
+ <div id="NDPrototype2838" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters"><a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9867);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> SetWeekValue(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PType first"><span class="SHKeyword">uint32</span>&nbsp;</td><td class="PName last">timeData</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
+ <div class="CBody"><p>Builds the bytes for the &quot;set&quot; command.</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">timeData<div class="CDLParameterType"><span class="SHKeyword">uint32</span></div></td><td class="CDLDefinition"><p>The week time to set.</p></td></tr></table><div class="CHeading">Returns</div><p>A <a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9867);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> containing the GPSTimeUpdate command packet</p></div>
 </div>
 
-<a name="GPSTimeUpdate.SetSecondsValue"></a><a name="Topic2817"></a><div class="CTopic TFunction LC">
+<a name="GPSTimeUpdate.SetSecondsValue"></a><a name="Topic2839"></a><div class="CTopic TFunction LC">
  <div class="CTitle">SetSecondsValue</div>
- <div id="NDPrototype2817" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters"><a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9405);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> SetSecondsValue(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PType first"><span class="SHKeyword">uint32</span>&nbsp;</td><td class="PName last">timeData</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
- <div class="CBody"><p>Builds the bytes for the &quot;set&quot; command.</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">timeData<div class="CDLParameterType"><span class="SHKeyword">uint32</span></div></td><td class="CDLDefinition"><p>The seconds time to set.</p></td></tr></table><div class="CHeading">Returns</div><p>A <a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9405);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> containing the GPSTimeUpdate command packet</p></div>
+ <div id="NDPrototype2839" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters"><a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9867);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> SetSecondsValue(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PType first"><span class="SHKeyword">uint32</span>&nbsp;</td><td class="PName last">timeData</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
+ <div class="CBody"><p>Builds the bytes for the &quot;set&quot; command.</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">timeData<div class="CDLParameterType"><span class="SHKeyword">uint32</span></div></td><td class="CDLDefinition"><p>The seconds time to set.</p></td></tr></table><div class="CHeading">Returns</div><p>A <a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9867);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> containing the GPSTimeUpdate command packet</p></div>
 </div>
 
-<a name="GPSTimeUpdate.resetToFactorySettings"></a><a name="Topic2818"></a><div class="CTopic TFunction LC">
+<a name="GPSTimeUpdate.resetToFactorySettings"></a><a name="Topic2840"></a><div class="CTopic TFunction LC">
  <div class="CTitle">resetToFactorySettings</div>
- <div id="NDPrototype2818" class="NDPrototype NoParameterForm"><a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9405);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> resetToFactorySettings()</div>
- <div class="CBody"><p>Builds the bytes for the &quot;set&quot; command.</p><div class="CHeading">Returns</div><p>A <a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9405);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> containing the GPSTimeUpdate command packet</p></div>
+ <div id="NDPrototype2840" class="NDPrototype NoParameterForm"><a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9867);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> resetToFactorySettings()</div>
+ <div class="CBody"><p>Builds the bytes for the &quot;set&quot; command.</p><div class="CHeading">Returns</div><p>A <a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9867);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> containing the GPSTimeUpdate command packet</p></div>
 </div>
 
-<a name="Response"></a><a name="Topic2819"></a><div class="CTopic TClass LC">
+<a name="Response"></a><a name="Topic2841"></a><div class="CTopic TClass LC">
  <div class="CTitle">Response</div>
- <div class="NDClassPrototype HasParents" id="NDClassPrototype2819"><div class="CPEntry Parent TClass"><div class="CPModifiers"><span class="SHKeyword">public</span></div><div class="CPName"><span class="Qualifier">GenericMipCommand.</span>&#8203;Response</div></div><a class="CPEntry Parent TClass" href="../../../../index.html#File:MicroStrain/ResponsePattern.h:ResponsePattern" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9002);" onmouseout="NDContentPage.OnLinkMouseOut(event);" ><div class="CPName">ResponsePattern</div></a><a class="CPEntry Parent TClass" href="../../../../index.html#File:MicroStrain/Wireless/Commands/WirelessResponsePattern.h:WirelessResponsePattern" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,4346);" onmouseout="NDContentPage.OnLinkMouseOut(event);" ><div class="CPName">WirelessResponsePattern</div></a><div class="CPEntry Parent TClass"><div class="CPName"><span class="Qualifier">SetToIdle.</span>&#8203;Response</div></div><div class="CPEntry TClass Current"><div class="CPName">Response</div></div></div>
+ <div class="NDClassPrototype HasParents" id="NDClassPrototype2841"><div class="CPEntry Parent TClass"><div class="CPModifiers"><span class="SHKeyword">public</span></div><div class="CPName"><span class="Qualifier">GenericMipCommand.</span>&#8203;Response</div></div><a class="CPEntry Parent TClass" href="../../../../index.html#File:MicroStrain/ResponsePattern.h:ResponsePattern" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9709);" onmouseout="NDContentPage.OnLinkMouseOut(event);" ><div class="CPName">ResponsePattern</div></a><a class="CPEntry Parent TClass" href="../../../../index.html#File:MicroStrain/Wireless/Commands/WirelessResponsePattern.h:WirelessResponsePattern" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,4661);" onmouseout="NDContentPage.OnLinkMouseOut(event);" ><div class="CPName">WirelessResponsePattern</div></a><div class="CPEntry Parent TClass"><div class="CPName"><span class="Qualifier">SetToIdle.</span>&#8203;Response</div></div><div class="CPEntry TClass Current"><div class="CPName">Response</div></div></div>
  <div class="CBody"><p>Handles the response to the GPSTimeUpdate command.</p></div>
 </div>
 
-<a name="Response.Functions"></a><a name="Topic2820"></a><div class="CTopic TGroup LC">
+<a name="Response.Functions"></a><a name="Topic2842"></a><div class="CTopic TGroup LC">
  <div class="CTitle">Functions</div>
 </div>
 
-<a name="Response.fieldDataByte"></a><a name="Topic2821"></a><div class="CTopic TFunction LC">
+<a name="Response.fieldDataByte"></a><a name="Topic2843"></a><div class="CTopic TFunction LC">
  <div class="CTitle">fieldDataByte</div>
- <div id="NDPrototype2821" class="NDPrototype NoParameterForm"><span class="SHKeyword">virtual</span> <span class="SHKeyword">uint8</span> fieldDataByte() <span class="SHKeyword">const override</span></div>
+ <div id="NDPrototype2843" class="NDPrototype NoParameterForm"><span class="SHKeyword">virtual</span> <span class="SHKeyword">uint8</span> fieldDataByte() <span class="SHKeyword">const override</span></div>
  <div class="CBody"><p>Gets the data field descriptor byte</p></div>
 </div>
 
-<a name="Response.Response"></a><a name="Topic2822"></a><div class="CTopic TFunction LC">
+<a name="Response.Response"></a><a name="Topic2844"></a><div class="CTopic TFunction LC">
  <div class="CTitle">Response</div>
- <div id="NDPrototype2822" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters">Response(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PModifierQualifier first"><span class="SHKeyword">const</span>&nbsp;</td><td class="PType"><span class="SHKeyword">uint8</span>&nbsp;</td><td class="PName last">fieldDataByte,</td></tr><tr><td class="PModifierQualifier first">std::</td><td class="PType">weak_ptr&lt;<a href="../../../../index.html#File:MicroStrain/ResponseCollector.h:ResponseCollector" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9168);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ResponseCollector</a>&gt;&nbsp;</td><td class="PName last">collector,</td></tr><tr><td class="first"></td><td class="PType"><span class="SHKeyword">bool</span>&nbsp;</td><td class="PName last">ackNackExpected,</td></tr><tr><td class="first"></td><td class="PType"><span class="SHKeyword">bool</span>&nbsp;</td><td class="PName last">dataResponseExpected</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
- <div class="CBody"><p>Creates a GPSTimeUpdate Response object</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">collector<div class="CDLParameterType">std::weak_ptr&lt;<a href="../../../../index.html#File:MicroStrain/ResponseCollector.h:ResponseCollector" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9168);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ResponseCollector</a>&gt;</div></td><td class="CDLDefinition"><p>The <a href="../../../../index.html#File:MicroStrain/ResponseCollector.h:ResponseCollector" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9168);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ResponseCollector</a> used to register and unregister the response</p></td></tr></table></div>
+ <div id="NDPrototype2844" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters">Response(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PModifierQualifier first"><span class="SHKeyword">const</span>&nbsp;</td><td class="PType"><span class="SHKeyword">uint8</span>&nbsp;</td><td class="PName last">fieldDataByte,</td></tr><tr><td class="PModifierQualifier first">std::</td><td class="PType">weak_ptr&lt;<a href="../../../../index.html#File:MicroStrain/ResponseCollector.h:ResponseCollector" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9734);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ResponseCollector</a>&gt;&nbsp;</td><td class="PName last">collector,</td></tr><tr><td class="first"></td><td class="PType"><span class="SHKeyword">bool</span>&nbsp;</td><td class="PName last">ackNackExpected,</td></tr><tr><td class="first"></td><td class="PType"><span class="SHKeyword">bool</span>&nbsp;</td><td class="PName last">dataResponseExpected</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
+ <div class="CBody"><p>Creates a GPSTimeUpdate Response object</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">collector<div class="CDLParameterType">std::weak_ptr&lt;<a href="../../../../index.html#File:MicroStrain/ResponseCollector.h:ResponseCollector" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9734);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ResponseCollector</a>&gt;</div></td><td class="CDLDefinition"><p>The <a href="../../../../index.html#File:MicroStrain/ResponseCollector.h:ResponseCollector" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9734);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ResponseCollector</a> used to register and unregister the response</p></td></tr></table></div>
 </div>
 
-<a name="Response.parseResponse"></a><a name="Topic2823"></a><div class="CTopic TFunction LC">
+<a name="Response.parseResponse"></a><a name="Topic2845"></a><div class="CTopic TFunction LC">
  <div class="CTitle">parseResponse</div>
- <div id="NDPrototype2823" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">unsigned</span> <span class="SHKeyword">long</span> parseResponse(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PModifierQualifier first"><span class="SHKeyword">const</span>&nbsp;</td><td class="PType"><a href="../../../../index.html#File:MicroStrain/MIP/Commands/GenericMipCommand.h:GenericMipCmdResponse" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,2845);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >GenericMipCmdResponse</a>&nbsp;</td><td class="PNamePrefix">&amp;</td><td class="PName last">response</td></tr></table></td><td class="PAfterParameters">) <span class="SHKeyword">const</span></td></tr></table></div>
- <div class="CBody"><p>Parses the response, getting the assist time result</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">response<div class="CDLParameterType"><span class="SHKeyword">const</span> <a href="../../../../index.html#File:MicroStrain/MIP/Commands/GenericMipCommand.h:GenericMipCmdResponse" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,2845);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >GenericMipCmdResponse</a>&amp;</div></td><td class="CDLDefinition"><p>The <a href="../../../../index.html#File:MicroStrain/MIP/Commands/GenericMipCommand.h:GenericMipCmdResponse" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,2845);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >GenericMipCmdResponse</a> holding the response to parse</p></td></tr></table><div class="CHeading">Returns</div><p>The data rate base result</p></div>
+ <div id="NDPrototype2845" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">unsigned</span> <span class="SHKeyword">long</span> parseResponse(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PModifierQualifier first"><span class="SHKeyword">const</span>&nbsp;</td><td class="PType"><a href="../../../../index.html#File:MicroStrain/MIP/Commands/GenericMipCommand.h:GenericMipCmdResponse" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,2903);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >GenericMipCmdResponse</a>&nbsp;</td><td class="PNamePrefix">&amp;</td><td class="PName last">response</td></tr></table></td><td class="PAfterParameters">) <span class="SHKeyword">const</span></td></tr></table></div>
+ <div class="CBody"><p>Parses the response, getting the assist time result</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">response<div class="CDLParameterType"><span class="SHKeyword">const</span> <a href="../../../../index.html#File:MicroStrain/MIP/Commands/GenericMipCommand.h:GenericMipCmdResponse" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,2903);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >GenericMipCmdResponse</a>&amp;</div></td><td class="CDLDefinition"><p>The <a href="../../../../index.html#File:MicroStrain/MIP/Commands/GenericMipCommand.h:GenericMipCmdResponse" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,2903);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >GenericMipCmdResponse</a> holding the response to parse</p></td></tr></table><div class="CHeading">Returns</div><p>The data rate base result</p></div>
 </div>
 
-<a name="Response.Variables"></a><a name="Topic2824"></a><div class="CTopic TGroup LC">
+<a name="Response.Variables"></a><a name="Topic2846"></a><div class="CTopic TGroup LC">
  <div class="CTitle">Variables</div>
 </div>
 
-<a name="Response.m_fieldDataByte"></a><a name="Topic2825"></a><div class="CTopic TVariable LC last">
+<a name="Response.m_fieldDataByte"></a><a name="Topic2847"></a><div class="CTopic TVariable LC last">
  <div class="CTitle">m_fieldDataByte</div>
- <div id="NDPrototype2825" class="NDPrototype NoParameterForm"><span class="SHKeyword">const</span> <span class="SHKeyword">uint8</span> m_fieldDataByte</div>
+ <div id="NDPrototype2847" class="NDPrototype NoParameterForm"><span class="SHKeyword">const</span> <span class="SHKeyword">uint8</span> m_fieldDataByte</div>
  <div class="CBody"><p>uint8 byte to identify field data.</p></div>
 </div>
 

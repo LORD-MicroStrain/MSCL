@@ -8,64 +8,73 @@
 
 <body onload="NDLoader.OnLoad('Content');" class="NDPage NDContentPage">
 
-<a name="Topic2682"></a><div class="CTopic TClass LC first">
+<a name="Topic2730"></a><div class="CTopic TClass LC first">
  <div class="CTitle">EulerAngles</div>
- <div class="NDClassPrototype" id="NDClassPrototype2682"><div class="CPEntry TClass Current"><div class="CPName">EulerAngles</div></div></div>
+ <div class="NDClassPrototype HasParents" id="NDClassPrototype2730"><a class="CPEntry Parent TClass" href="../../index.html#CClass:Vector" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9930);" onmouseout="NDContentPage.OnLinkMouseOut(event);" ><div class="CPModifiers"><span class="SHKeyword">public</span></div><div class="CPName">Vector</div></a><div class="CPEntry TClass Current"><div class="CPName">EulerAngles</div></div></div>
  <div class="CBody"><p>Represents generic Euler Angles (roll, pitch, yaw).</p></div>
 </div>
 
-<a name="Variables"></a><a name="Topic2683"></a><div class="CTopic TGroup LC">
- <div class="CTitle">Variables</div>
-</div>
-
-<a name="m_roll_"></a><a name="Topic2684"></a><div class="CTopic TVariable LC">
- <div class="CTitle">m_roll;</div>
- <div class="CBody"><p>The roll value.</p></div>
-</div>
-
-<a name="m_pitch"></a><a name="Topic2685"></a><div class="CTopic TVariable LC">
- <div class="CTitle">m_pitch</div>
- <div id="NDPrototype2685" class="NDPrototype NoParameterForm"><span class="SHKeyword">float</span> m_pitch</div>
- <div class="CBody"><p>The pitch value.</p></div>
-</div>
-
-<a name="m_yaw"></a><a name="Topic2686"></a><div class="CTopic TVariable LC">
- <div class="CTitle">m_yaw</div>
- <div id="NDPrototype2686" class="NDPrototype NoParameterForm"><span class="SHKeyword">float</span> m_yaw</div>
- <div class="CBody"><p>The yaw value.</p></div>
-</div>
-
-<a name="Functions"></a><a name="Topic2687"></a><div class="CTopic TGroup LC">
+<a name="Functions"></a><a name="Topic2731"></a><div class="CTopic TGroup LC">
  <div class="CTitle">Functions</div>
 </div>
 
-<a name="EulerAngles"></a><a name="Topic2688"></a><div class="CTopic TFunction LC">
+<a name="EulerAngles"></a><a name="Topic2732"></a><div class="CTopic TFunction LC">
  <div class="CTitle">EulerAngles</div>
- <div id="NDPrototype2688" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters">EulerAngles(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PType first"><span class="SHKeyword">float</span>&nbsp;</td><td class="PName last">roll,</td></tr><tr><td class="PType first"><span class="SHKeyword">float</span>&nbsp;</td><td class="PName last">pitch,</td></tr><tr><td class="PType first"><span class="SHKeyword">float</span>&nbsp;</td><td class="PName last">yaw</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
+ <div id="NDPrototype2732" class="NDPrototype NoParameterForm">EulerAngles()</div>
  <div class="CBody"><p>Creates an EulerAngles object.</p></div>
 </div>
 
-<a name="roll"></a><a name="Topic2689"></a><div class="CTopic TFunction LC">
+<a name="EulerAngles(2)"></a><a name="Topic2733"></a><div class="CTopic TFunction LC">
+ <div class="CTitle">EulerAngles</div>
+ <div id="NDPrototype2733" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters">EulerAngles(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PType first"><span class="SHKeyword">float</span>&nbsp;</td><td class="PName last">roll,</td></tr><tr><td class="PType first"><span class="SHKeyword">float</span>&nbsp;</td><td class="PName last">pitch,</td></tr><tr><td class="PType first"><span class="SHKeyword">float</span>&nbsp;</td><td class="PName last">yaw</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
+ <div class="CBody"><p>Creates an EulerAngles object with the specified roll, pitch, and yaw/heading.</p></div>
+</div>
+
+<a name="EulerAngles(3)"></a><a name="Topic2734"></a><div class="CTopic TFunction LC">
+ <div class="CTitle">EulerAngles</div>
+ <div id="NDPrototype2734" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters">EulerAngles(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PModifierQualifier first"><span class="SHKeyword">const</span>&nbsp;</td><td class="PType">MipFieldValues&nbsp;</td><td class="PNamePrefix">&amp;</td><td class="PName">data,</td><td></td><td class="last"></td></tr><tr><td class="first"></td><td class="PType"><span class="SHKeyword">uint8</span>&nbsp;</td><td></td><td class="PName">offset&nbsp;</td><td class="PDefaultValueSeparator">=&nbsp;</td><td class="PDefaultValue last"><span class="SHNumber">0</span></td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
+ <div class="CBody"><p>Creates a EulerAngles object based on specified &lt;MipFieldValues&gt; data</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">&lt;MipFieldValues&gt;</td><td class="CDLDefinition"><p>format must be 3 floats</p></td></tr><tr><td class="CDLEntry">offset<div class="CDLParameterType"><span class="SHKeyword">uint8</span></div></td><td class="CDLDefinition"><p>default: 0 - uint8 index offset to start reading from</p></td></tr></table></div>
+</div>
+
+<a name="operator_Rotation()"></a><a name="Topic2735"></a><div class="CTopic TFunction LC">
+ <div class="CTitle">operator Rotation() (cast)</div>
+ <div id="NDPrototype2735" class="NDPrototype NoParameterForm"><span class="SHKeyword">operator</span> Rotation() <span class="SHKeyword">const</span></div>
+ <div class="CBody"><p>Creates a <a href="../../index.html#CClass:Rotation" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,2754);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >Rotation</a> object with this object's roll, pitch, and yaw values</p></div>
+</div>
+
+<a name="asMipFieldValues"></a><a name="Topic2736"></a><div class="CTopic TFunction LC">
+ <div class="CTitle">asMipFieldValues</div>
+ <div id="NDPrototype2736" class="NDPrototype NoParameterForm">MipFieldValues asMipFieldValues() <span class="SHKeyword">const</span></div>
+ <div class="CBody"><p>Gets the current euler angles values formatted as a &lt;MipFieldValues&gt; object.</p><div class="CHeading">Returns</div><table class="CDefinitionList"><tr><td class="CDLEntry">&lt;MipFieldValues&gt;</td><td class="CDLDefinition"><p>collection of values that represents this object.</p></td></tr></table></div>
+</div>
+
+<a name="appendMipFieldValues"></a><a name="Topic2737"></a><div class="CTopic TFunction LC">
+ <div class="CTitle">appendMipFieldValues</div>
+ <div id="NDPrototype2737" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">void</span> appendMipFieldValues(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PType first">MipFieldValues&nbsp;</td><td class="PNamePrefix">&amp;</td><td class="PName last">appendTo</td></tr></table></td><td class="PAfterParameters">) <span class="SHKeyword">const</span></td></tr></table></div>
+ <div class="CBody"><p>Adds the properly formatted &lt;MipFieldValues&gt; that represent this object to the specified collection.</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">appendTo<div class="CDLParameterType">MipFieldValues&amp;</div></td><td class="CDLDefinition"><p>(reference) the &lt;MipFieldValues&gt; collection to append to</p></td></tr></table></div>
+</div>
+
+<a name="roll"></a><a name="Topic2738"></a><div class="CTopic TFunction LC">
  <div class="CTitle">roll</div>
- <div id="NDPrototype2689" class="NDPrototype NoParameterForm"><span class="SHKeyword">float</span> roll() <span class="SHKeyword">const</span></div>
+ <div id="NDPrototype2738" class="NDPrototype NoParameterForm"><span class="SHKeyword">float</span> roll() <span class="SHKeyword">const</span></div>
  <div class="CBody"><p>Gets the roll angle.</p><div class="CHeading">Returns</div><p>The roll Euler Angle.</p></div>
 </div>
 
-<a name="pitch"></a><a name="Topic2690"></a><div class="CTopic TFunction LC">
+<a name="pitch"></a><a name="Topic2739"></a><div class="CTopic TFunction LC">
  <div class="CTitle">pitch</div>
- <div id="NDPrototype2690" class="NDPrototype NoParameterForm"><span class="SHKeyword">float</span> pitch() <span class="SHKeyword">const</span></div>
+ <div id="NDPrototype2739" class="NDPrototype NoParameterForm"><span class="SHKeyword">float</span> pitch() <span class="SHKeyword">const</span></div>
  <div class="CBody"><p>Gets the pitch angle.</p><div class="CHeading">Returns</div><p>The pitch Euler Angle.</p></div>
 </div>
 
-<a name="yaw"></a><a name="Topic2691"></a><div class="CTopic TFunction LC">
+<a name="yaw"></a><a name="Topic2740"></a><div class="CTopic TFunction LC">
  <div class="CTitle">yaw</div>
- <div id="NDPrototype2691" class="NDPrototype NoParameterForm"><span class="SHKeyword">float</span> yaw() <span class="SHKeyword">const</span></div>
+ <div id="NDPrototype2740" class="NDPrototype NoParameterForm"><span class="SHKeyword">float</span> yaw() <span class="SHKeyword">const</span></div>
  <div class="CBody"><p>Gets the yaw (heading) angle.</p><div class="CHeading">Returns</div><p>The yaw (heading) Euler Angle.</p></div>
 </div>
 
-<a name="heading"></a><a name="Topic2692"></a><div class="CTopic TFunction LC last">
+<a name="heading"></a><a name="Topic2741"></a><div class="CTopic TFunction LC last">
  <div class="CTitle">heading</div>
- <div id="NDPrototype2692" class="NDPrototype NoParameterForm"><span class="SHKeyword">float</span> heading() <span class="SHKeyword">const</span></div>
+ <div id="NDPrototype2741" class="NDPrototype NoParameterForm"><span class="SHKeyword">float</span> heading() <span class="SHKeyword">const</span></div>
  <div class="CBody"><p>Gets the heading (yaw) angle.</p><div class="CHeading">Returns</div><p>The heading (yaw) Euler Angle.</p></div>
 </div>
 

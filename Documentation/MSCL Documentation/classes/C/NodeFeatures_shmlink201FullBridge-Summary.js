@@ -1,1 +1,1 @@
-NDFramePage.OnPageTitleLoaded("CClass:NodeFeatures_shmlink201FullBridge","NodeFeatures_shmlink201FullBridge");NDSummary.OnSummaryLoaded("CClass:NodeFeatures_shmlink201FullBridge",[["C/C++","C"]],[["Classes","Class"]],[[6316,0,0,"NodeFeatures_shmlink201FullBridge"]]);
+NDFramePage.OnPageTitleLoaded("CClass:NodeFeatures_shmlink201FullBridge","NodeFeatures_shmlink201FullBridge");NDSummary.OnSummaryLoaded("CClass:NodeFeatures_shmlink201FullBridge",[["C/C++","C"]],[["Classes","Class"]],[[6881,0,0,"NodeFeatures_shmlink201FullBridge"]]);

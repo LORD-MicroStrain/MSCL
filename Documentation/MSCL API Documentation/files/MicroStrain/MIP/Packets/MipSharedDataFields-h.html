@@ -8,152 +8,152 @@
 
 <body onload="NDLoader.OnLoad('Content');" class="NDPage NDContentPage">
 
-<a name="MipSharedDataFields"></a><a name="Topic278"></a><div class="CTopic TClass LC first">
+<a name="MipSharedDataFields"></a><a name="Topic183"></a><div class="CTopic TClass LC first">
  <div class="CTitle">MipSharedDataFields</div>
- <div class="NDClassPrototype" id="NDClassPrototype278"><div class="CPEntry TClass Current"><div class="CPName">MipSharedDataFields</div></div></div>
+ <div class="NDClassPrototype" id="NDClassPrototype183"><div class="CPEntry TClass Current"><div class="CPName">MipSharedDataFields</div></div></div>
  <div class="CBody"><p>Object to more easily access shared data field information within a MipDataPacket</p></div>
 </div>
 
-<a name="MipSharedDataFields.EventSource"></a><a name="Topic279"></a><div class="CTopic TEnumeration LC">
+<a name="MipSharedDataFields.EventSource"></a><a name="Topic184"></a><div class="CTopic TEnumeration LC">
  <div class="CTitle">EventSource</div>
- <div class="CBody"><p>The event source value is the event trigger ID (1-based index) that caused the data packet to be output.&nbsp; If the event source is not an event trigger ID it will be one of the following:</p><table class="CDefinitionList"><tr><td class="CDLEntry"><a name="MipSharedDataFields.EVENT_SOURCE_NONE"></a><a name="Topic280"></a>EVENT_SOURCE_NONE</td><td class="CDLDefinition"><p>0x00 - This packet was output due to normal data streaming, was not triggered by an event</p></td></tr><tr><td class="CDLEntry"><a name="MipSharedDataFields.EVENT_SOURCE_UNKNOWN"></a><a name="Topic281"></a>EVENT_SOURCE_UNKNOWN</td><td class="CDLDefinition"><p>0xFF - The Event Source field was not found in this packet</p></td></tr></table></div>
+ <div class="CBody"><p>The event source value is the event trigger ID (1-based index) that caused the data packet to be output.&nbsp; If the event source is not an event trigger ID it will be one of the following:</p><table class="CDefinitionList"><tr><td class="CDLEntry"><a name="MipSharedDataFields.EVENT_SOURCE_NONE"></a><a name="Topic185"></a>EVENT_SOURCE_NONE</td><td class="CDLDefinition"><p>0x00 - This packet was output due to normal data streaming, was not triggered by an event</p></td></tr><tr><td class="CDLEntry"><a name="MipSharedDataFields.EVENT_SOURCE_UNKNOWN"></a><a name="Topic186"></a>EVENT_SOURCE_UNKNOWN</td><td class="CDLDefinition"><p>0xFF - The Event Source field was not found in this packet</p></td></tr></table></div>
 </div>
 
-<a name="MipSharedDataFields.MipSharedDataFields"></a><a name="Topic282"></a><div class="CTopic TFunction LC">
+<a name="MipSharedDataFields.MipSharedDataFields"></a><a name="Topic187"></a><div class="CTopic TFunction LC">
  <div class="CTitle">MipSharedDataFields</div>
- <div id="NDPrototype282" class="NDPrototype NoParameterForm">MipSharedDataFields()</div>
+ <div id="NDPrototype187" class="NDPrototype NoParameterForm">MipSharedDataFields()</div>
  <div class="CBody"><p>Create an empty MipSharedDataFields object</p></div>
 </div>
 
-<a name="MipSharedDataFields.hasEventSource"></a><a name="Topic283"></a><div class="CTopic TFunction LC">
+<a name="MipSharedDataFields.hasEventSource"></a><a name="Topic188"></a><div class="CTopic TFunction LC">
  <div class="CTitle">hasEventSource</div>
- <div id="NDPrototype283" class="NDPrototype NoParameterForm"><span class="SHKeyword">bool</span> hasEventSource() <span class="SHKeyword">const</span></div>
+ <div id="NDPrototype188" class="NDPrototype NoParameterForm"><span class="SHKeyword">bool</span> hasEventSource() <span class="SHKeyword">const</span></div>
  <div class="CBody"><p>Checks whether the packet contains the Event Source field</p><div class="CHeading">Returns</div><table class="CDefinitionList"><tr><td class="CDLEntry">bool</td><td class="CDLDefinition"><p>true if Event Source is present</p></td></tr></table></div>
 </div>
 
-<a name="MipSharedDataFields.eventSource"></a><a name="Topic284"></a><div class="CTopic TFunction LC">
+<a name="MipSharedDataFields.eventSource"></a><a name="Topic189"></a><div class="CTopic TFunction LC">
  <div class="CTitle">eventSource</div>
- <div id="NDPrototype284" class="NDPrototype NoParameterForm"><span class="SHKeyword">uint8</span> eventSource() <span class="SHKeyword">const</span></div>
+ <div id="NDPrototype189" class="NDPrototype NoParameterForm"><span class="SHKeyword">uint8</span> eventSource() <span class="SHKeyword">const</span></div>
  <div class="CBody"><p>Gets the Event Source value for the packet</p><div class="CHeading">Returns</div><table class="CDefinitionList"><tr><td class="CDLEntry">uint8</td><td class="CDLDefinition"><p>the event source trigger ID, 0x00 if not triggered by event, 0xFF if Event Source not present</p></td></tr></table></div>
 </div>
 
-<a name="MipSharedDataFields.hasTicks"></a><a name="Topic285"></a><div class="CTopic TFunction LC">
+<a name="MipSharedDataFields.hasTicks"></a><a name="Topic190"></a><div class="CTopic TFunction LC">
  <div class="CTitle">hasTicks</div>
- <div id="NDPrototype285" class="NDPrototype NoParameterForm"><span class="SHKeyword">bool</span> hasTicks() <span class="SHKeyword">const</span></div>
+ <div id="NDPrototype190" class="NDPrototype NoParameterForm"><span class="SHKeyword">bool</span> hasTicks() <span class="SHKeyword">const</span></div>
  <div class="CBody"><p>Checks whether the packet contains the Ticks field</p><div class="CHeading">Returns</div><table class="CDefinitionList"><tr><td class="CDLEntry">bool</td><td class="CDLDefinition"><p>true if Ticks is present</p></td></tr></table></div>
 </div>
 
-<a name="MipSharedDataFields.ticks"></a><a name="Topic286"></a><div class="CTopic TFunction LC">
+<a name="MipSharedDataFields.ticks"></a><a name="Topic191"></a><div class="CTopic TFunction LC">
  <div class="CTitle">ticks</div>
- <div id="NDPrototype286" class="NDPrototype NoParameterForm"><span class="SHKeyword">uint32</span> ticks() <span class="SHKeyword">const</span></div>
+ <div id="NDPrototype191" class="NDPrototype NoParameterForm"><span class="SHKeyword">uint32</span> ticks() <span class="SHKeyword">const</span></div>
  <div class="CBody"><p>Gets the Ticks value for the packet</p><div class="CHeading">Returns</div><table class="CDefinitionList"><tr><td class="CDLEntry">uint32</td><td class="CDLDefinition"><p>the ticks value</p></td></tr></table></div>
 </div>
 
-<a name="MipSharedDataFields.hasDeltaTicks"></a><a name="Topic287"></a><div class="CTopic TFunction LC">
+<a name="MipSharedDataFields.hasDeltaTicks"></a><a name="Topic192"></a><div class="CTopic TFunction LC">
  <div class="CTitle">hasDeltaTicks</div>
- <div id="NDPrototype287" class="NDPrototype NoParameterForm"><span class="SHKeyword">bool</span> hasDeltaTicks() <span class="SHKeyword">const</span></div>
+ <div id="NDPrototype192" class="NDPrototype NoParameterForm"><span class="SHKeyword">bool</span> hasDeltaTicks() <span class="SHKeyword">const</span></div>
  <div class="CBody"><p>Checks whether the packet contains the Delta Ticks field</p><div class="CHeading">Returns</div><table class="CDefinitionList"><tr><td class="CDLEntry">bool</td><td class="CDLDefinition"><p>true if Delta Ticks is present</p></td></tr></table></div>
 </div>
 
-<a name="MipSharedDataFields.deltaTicks"></a><a name="Topic288"></a><div class="CTopic TFunction LC">
+<a name="MipSharedDataFields.deltaTicks"></a><a name="Topic193"></a><div class="CTopic TFunction LC">
  <div class="CTitle">deltaTicks</div>
- <div id="NDPrototype288" class="NDPrototype NoParameterForm"><span class="SHKeyword">uint32</span> deltaTicks() <span class="SHKeyword">const</span></div>
+ <div id="NDPrototype193" class="NDPrototype NoParameterForm"><span class="SHKeyword">uint32</span> deltaTicks() <span class="SHKeyword">const</span></div>
  <div class="CBody"><p>Gets the Delta Ticks value for the packet</p><div class="CHeading">Returns</div><table class="CDefinitionList"><tr><td class="CDLEntry">uint32</td><td class="CDLDefinition"><p>the delta ticks value</p></td></tr></table></div>
 </div>
 
-<a name="MipSharedDataFields.hasGpsTimestamp"></a><a name="Topic289"></a><div class="CTopic TFunction LC">
+<a name="MipSharedDataFields.hasGpsTimestamp"></a><a name="Topic194"></a><div class="CTopic TFunction LC">
  <div class="CTitle">hasGpsTimestamp</div>
- <div id="NDPrototype289" class="NDPrototype NoParameterForm"><span class="SHKeyword">bool</span> hasGpsTimestamp() <span class="SHKeyword">const</span></div>
+ <div id="NDPrototype194" class="NDPrototype NoParameterForm"><span class="SHKeyword">bool</span> hasGpsTimestamp() <span class="SHKeyword">const</span></div>
  <div class="CBody"><p>Checks whether the packet contains the GPS Timestamp field</p><div class="CHeading">Returns</div><table class="CDefinitionList"><tr><td class="CDLEntry">bool</td><td class="CDLDefinition"><p>true if GPS Timestamp is present</p></td></tr></table></div>
 </div>
 
-<a name="MipSharedDataFields.gpsTimestamp"></a><a name="Topic290"></a><div class="CTopic TFunction LC">
+<a name="MipSharedDataFields.gpsTimestamp"></a><a name="Topic195"></a><div class="CTopic TFunction LC">
  <div class="CTitle">gpsTimestamp</div>
- <div id="NDPrototype290" class="NDPrototype NoParameterForm"><a href="../../../../index.html#File:Timestamp.h:Timestamp" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,4056);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >Timestamp</a> gpsTimestamp() <span class="SHKeyword">const</span></div>
- <div class="CBody"><p>Gets the GPS Timestamp value for the packet.&nbsp; Note: On Gen 7 products and later this will generally be the same value as <a href="../../../../index.html#File:MicroStrain/MIP/Packets/MipDataPacket.h:MipDataPacket.deviceTimestamp" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,321);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipDataPacket::deviceTimestamp()</a></p><div class="CHeading">Returns</div><table class="CDefinitionList"><tr><td class="CDLEntry"><a href="../../../../index.html#File:Timestamp.h:Timestamp" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,4056);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >Timestamp</a></td><td class="CDLDefinition"><p>the GPS timestamp value</p></td></tr></table></div>
+ <div id="NDPrototype195" class="NDPrototype NoParameterForm"><a href="../../../../index.html#File:Timestamp.h:Timestamp" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,4534);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >Timestamp</a> gpsTimestamp() <span class="SHKeyword">const</span></div>
+ <div class="CBody"><p>Gets the GPS Timestamp value for the packet.&nbsp; Note: On Gen 7 products and later this will generally be the same value as <a href="../../../../index.html#File:MicroStrain/MIP/Packets/MipDataPacket.h:MipDataPacket.deviceTimestamp" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,226);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipDataPacket::deviceTimestamp()</a></p><div class="CHeading">Returns</div><table class="CDefinitionList"><tr><td class="CDLEntry"><a href="../../../../index.html#File:Timestamp.h:Timestamp" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,4534);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >Timestamp</a></td><td class="CDLDefinition"><p>the GPS timestamp value</p></td></tr></table></div>
 </div>
 
-<a name="MipSharedDataFields.gpsTimestampValid"></a><a name="Topic291"></a><div class="CTopic TFunction LC">
+<a name="MipSharedDataFields.gpsTimestampValid"></a><a name="Topic196"></a><div class="CTopic TFunction LC">
  <div class="CTitle">gpsTimestampValid</div>
- <div id="NDPrototype291" class="NDPrototype NoParameterForm"><span class="SHKeyword">bool</span> gpsTimestampValid() <span class="SHKeyword">const</span></div>
- <div class="CBody"><p>Checks whether the GPS Timestamp value for the packet is valid.&nbsp; Note: On Gen 7 products and later this will generally be the same value as <a href="../../../../index.html#File:MicroStrain/MIP/Packets/MipDataPacket.h:MipDataPacket.deviceTimestamp" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,321);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipDataPacket::deviceTimestamp()</a></p><div class="CHeading">Returns</div><table class="CDefinitionList"><tr><td class="CDLEntry">bool</td><td class="CDLDefinition"><p>true if valid</p></td></tr></table></div>
+ <div id="NDPrototype196" class="NDPrototype NoParameterForm"><span class="SHKeyword">bool</span> gpsTimestampValid() <span class="SHKeyword">const</span></div>
+ <div class="CBody"><p>Checks whether the GPS Timestamp value for the packet is valid.&nbsp; Note: On Gen 7 products and later this will generally be the same value as <a href="../../../../index.html#File:MicroStrain/MIP/Packets/MipDataPacket.h:MipDataPacket.deviceTimestamp" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,226);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipDataPacket::deviceTimestamp()</a></p><div class="CHeading">Returns</div><table class="CDefinitionList"><tr><td class="CDLEntry">bool</td><td class="CDLDefinition"><p>true if valid</p></td></tr></table></div>
 </div>
 
-<a name="MipSharedDataFields.hasDeltaTime"></a><a name="Topic292"></a><div class="CTopic TFunction LC">
+<a name="MipSharedDataFields.hasDeltaTime"></a><a name="Topic197"></a><div class="CTopic TFunction LC">
  <div class="CTitle">hasDeltaTime</div>
- <div id="NDPrototype292" class="NDPrototype NoParameterForm"><span class="SHKeyword">bool</span> hasDeltaTime() <span class="SHKeyword">const</span></div>
+ <div id="NDPrototype197" class="NDPrototype NoParameterForm"><span class="SHKeyword">bool</span> hasDeltaTime() <span class="SHKeyword">const</span></div>
  <div class="CBody"><p>Checks whether the packet contains the Delta Time field</p><div class="CHeading">Returns</div><table class="CDefinitionList"><tr><td class="CDLEntry">bool</td><td class="CDLDefinition"><p>true if Delta Time is present</p></td></tr></table></div>
 </div>
 
-<a name="MipSharedDataFields.deltaTime"></a><a name="Topic293"></a><div class="CTopic TFunction LC">
+<a name="MipSharedDataFields.deltaTime"></a><a name="Topic198"></a><div class="CTopic TFunction LC">
  <div class="CTitle">deltaTime</div>
- <div id="NDPrototype293" class="NDPrototype NoParameterForm"><span class="SHKeyword">double</span> deltaTime() <span class="SHKeyword">const</span></div>
+ <div id="NDPrototype198" class="NDPrototype NoParameterForm"><span class="SHKeyword">double</span> deltaTime() <span class="SHKeyword">const</span></div>
  <div class="CBody"><p>Gets the Delta Time value for the packet</p><div class="CHeading">Returns</div><table class="CDefinitionList"><tr><td class="CDLEntry">double</td><td class="CDLDefinition"><p>the delta time value</p></td></tr></table></div>
 </div>
 
-<a name="MipSharedDataFields.hasReferenceTime"></a><a name="Topic294"></a><div class="CTopic TFunction LC">
+<a name="MipSharedDataFields.hasReferenceTime"></a><a name="Topic199"></a><div class="CTopic TFunction LC">
  <div class="CTitle">hasReferenceTime</div>
- <div id="NDPrototype294" class="NDPrototype NoParameterForm"><span class="SHKeyword">bool</span> hasReferenceTime() <span class="SHKeyword">const</span></div>
+ <div id="NDPrototype199" class="NDPrototype NoParameterForm"><span class="SHKeyword">bool</span> hasReferenceTime() <span class="SHKeyword">const</span></div>
  <div class="CBody"><p>Checks whether the packet contains the Reference Timestamp (nanoseconds since startup) field</p><div class="CHeading">Returns</div><table class="CDefinitionList"><tr><td class="CDLEntry">bool</td><td class="CDLDefinition"><p>true if Reference Time is present</p></td></tr></table></div>
 </div>
 
-<a name="MipSharedDataFields.referenceTime"></a><a name="Topic295"></a><div class="CTopic TFunction LC">
+<a name="MipSharedDataFields.referenceTime"></a><a name="Topic200"></a><div class="CTopic TFunction LC">
  <div class="CTitle">referenceTime</div>
- <div id="NDPrototype295" class="NDPrototype NoParameterForm"><span class="SHKeyword">uint64</span> referenceTime() <span class="SHKeyword">const</span></div>
+ <div id="NDPrototype200" class="NDPrototype NoParameterForm"><span class="SHKeyword">uint64</span> referenceTime() <span class="SHKeyword">const</span></div>
  <div class="CBody"><p>Gets the Reference Timestamp (nanoseconds since startup) for the packet</p><div class="CHeading">Returns</div><table class="CDefinitionList"><tr><td class="CDLEntry">uint64</td><td class="CDLDefinition"><p>the reference time value</p></td></tr></table></div>
 </div>
 
-<a name="MipSharedDataFields.hasDeltaReferenceTime"></a><a name="Topic296"></a><div class="CTopic TFunction LC">
+<a name="MipSharedDataFields.hasDeltaReferenceTime"></a><a name="Topic201"></a><div class="CTopic TFunction LC">
  <div class="CTitle">hasDeltaReferenceTime</div>
- <div id="NDPrototype296" class="NDPrototype NoParameterForm"><span class="SHKeyword">bool</span> hasDeltaReferenceTime() <span class="SHKeyword">const</span></div>
+ <div id="NDPrototype201" class="NDPrototype NoParameterForm"><span class="SHKeyword">bool</span> hasDeltaReferenceTime() <span class="SHKeyword">const</span></div>
  <div class="CBody"><p>Checks whether the packet contains the Delta Reference Timestamp (nanoseconds since last output) field</p><div class="CHeading">Returns</div><table class="CDefinitionList"><tr><td class="CDLEntry">bool</td><td class="CDLDefinition"><p>true if Delta Reference Time is present</p></td></tr></table></div>
 </div>
 
-<a name="MipSharedDataFields.deltaReferenceTime"></a><a name="Topic297"></a><div class="CTopic TFunction LC">
+<a name="MipSharedDataFields.deltaReferenceTime"></a><a name="Topic202"></a><div class="CTopic TFunction LC">
  <div class="CTitle">deltaReferenceTime</div>
- <div id="NDPrototype297" class="NDPrototype NoParameterForm"><span class="SHKeyword">uint64</span> deltaReferenceTime() <span class="SHKeyword">const</span></div>
+ <div id="NDPrototype202" class="NDPrototype NoParameterForm"><span class="SHKeyword">uint64</span> deltaReferenceTime() <span class="SHKeyword">const</span></div>
  <div class="CBody"><p>Gets the Delta Reference Timestamp (nanoseconds since last output) for the packet</p><div class="CHeading">Returns</div><table class="CDefinitionList"><tr><td class="CDLEntry">uint64</td><td class="CDLDefinition"><p>the delta reference time value</p></td></tr></table></div>
 </div>
 
-<a name="MipSharedDataFields.hasExternalTimestamp"></a><a name="Topic298"></a><div class="CTopic TFunction LC">
+<a name="MipSharedDataFields.hasExternalTimestamp"></a><a name="Topic203"></a><div class="CTopic TFunction LC">
  <div class="CTitle">hasExternalTimestamp</div>
- <div id="NDPrototype298" class="NDPrototype NoParameterForm"><span class="SHKeyword">bool</span> hasExternalTimestamp() <span class="SHKeyword">const</span></div>
+ <div id="NDPrototype203" class="NDPrototype NoParameterForm"><span class="SHKeyword">bool</span> hasExternalTimestamp() <span class="SHKeyword">const</span></div>
  <div class="CBody"><p>Checks whether the packet contains the External Timestamp field</p><div class="CHeading">Returns</div><table class="CDefinitionList"><tr><td class="CDLEntry">bool</td><td class="CDLDefinition"><p>true if External Timestamp is present</p></td></tr></table></div>
 </div>
 
-<a name="MipSharedDataFields.externalTimestamp"></a><a name="Topic299"></a><div class="CTopic TFunction LC">
+<a name="MipSharedDataFields.externalTimestamp"></a><a name="Topic204"></a><div class="CTopic TFunction LC">
  <div class="CTitle">externalTimestamp</div>
- <div id="NDPrototype299" class="NDPrototype NoParameterForm"><a href="../../../../index.html#File:Timestamp.h:Timestamp" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,4056);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >Timestamp</a> externalTimestamp() <span class="SHKeyword">const</span></div>
- <div class="CBody"><p>Gets the External Timestamp value for the packet.</p><div class="CHeading">Returns</div><table class="CDefinitionList"><tr><td class="CDLEntry"><a href="../../../../index.html#File:Timestamp.h:Timestamp" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,4056);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >Timestamp</a></td><td class="CDLDefinition"><p>the External Timestamp value</p></td></tr></table></div>
+ <div id="NDPrototype204" class="NDPrototype NoParameterForm"><a href="../../../../index.html#File:Timestamp.h:Timestamp" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,4534);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >Timestamp</a> externalTimestamp() <span class="SHKeyword">const</span></div>
+ <div class="CBody"><p>Gets the External Timestamp value for the packet.</p><div class="CHeading">Returns</div><table class="CDefinitionList"><tr><td class="CDLEntry"><a href="../../../../index.html#File:Timestamp.h:Timestamp" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,4534);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >Timestamp</a></td><td class="CDLDefinition"><p>the External Timestamp value</p></td></tr></table></div>
 </div>
 
-<a name="MipSharedDataFields.externalTimestampValid"></a><a name="Topic300"></a><div class="CTopic TFunction LC">
+<a name="MipSharedDataFields.externalTimestampValid"></a><a name="Topic205"></a><div class="CTopic TFunction LC">
  <div class="CTitle">externalTimestampValid</div>
- <div id="NDPrototype300" class="NDPrototype NoParameterForm"><span class="SHKeyword">bool</span> externalTimestampValid() <span class="SHKeyword">const</span></div>
+ <div id="NDPrototype205" class="NDPrototype NoParameterForm"><span class="SHKeyword">bool</span> externalTimestampValid() <span class="SHKeyword">const</span></div>
  <div class="CBody"><p>Checks whether the External Timestamp value for the packet is valid.</p><div class="CHeading">Returns</div><table class="CDefinitionList"><tr><td class="CDLEntry">bool</td><td class="CDLDefinition"><p>true if valid</p></td></tr></table></div>
 </div>
 
-<a name="MipSharedDataFields.hasDeltaExternalTime"></a><a name="Topic301"></a><div class="CTopic TFunction LC">
+<a name="MipSharedDataFields.hasDeltaExternalTime"></a><a name="Topic206"></a><div class="CTopic TFunction LC">
  <div class="CTitle">hasDeltaExternalTime</div>
- <div id="NDPrototype301" class="NDPrototype NoParameterForm"><span class="SHKeyword">bool</span> hasDeltaExternalTime() <span class="SHKeyword">const</span></div>
+ <div id="NDPrototype206" class="NDPrototype NoParameterForm"><span class="SHKeyword">bool</span> hasDeltaExternalTime() <span class="SHKeyword">const</span></div>
  <div class="CBody"><p>Checks whether the packet contains the Delta External Time field</p><div class="CHeading">Returns</div><table class="CDefinitionList"><tr><td class="CDLEntry">bool</td><td class="CDLDefinition"><p>true if Delta External Time is present</p></td></tr></table></div>
 </div>
 
-<a name="MipSharedDataFields.deltaExternalTimestamp"></a><a name="Topic302"></a><div class="CTopic TFunction LC">
+<a name="MipSharedDataFields.deltaExternalTimestamp"></a><a name="Topic207"></a><div class="CTopic TFunction LC">
  <div class="CTitle">deltaExternalTimestamp</div>
- <div class="CBody"><p>Gets the Delta External Time value for the packet.</p><div class="CHeading">Returns</div><table class="CDefinitionList"><tr><td class="CDLEntry"><a href="../../../../index.html#File:Types.h:uint64" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,4026);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >uint64</a></td><td class="CDLDefinition"><p>the Delta External Time value</p></td></tr></table></div>
+ <div class="CBody"><p>Gets the Delta External Time value for the packet.</p><div class="CHeading">Returns</div><table class="CDefinitionList"><tr><td class="CDLEntry"><a href="../../../../index.html#File:Types.h:uint64" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,4504);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >uint64</a></td><td class="CDLDefinition"><p>the Delta External Time value</p></td></tr></table></div>
 </div>
 
-<a name="MipSharedDataFields.deltaExternalTimeValid"></a><a name="Topic303"></a><div class="CTopic TFunction LC">
+<a name="MipSharedDataFields.deltaExternalTimeValid"></a><a name="Topic208"></a><div class="CTopic TFunction LC">
  <div class="CTitle">deltaExternalTimeValid</div>
- <div id="NDPrototype303" class="NDPrototype NoParameterForm"><span class="SHKeyword">bool</span> deltaExternalTimeValid() <span class="SHKeyword">const</span></div>
+ <div id="NDPrototype208" class="NDPrototype NoParameterForm"><span class="SHKeyword">bool</span> deltaExternalTimeValid() <span class="SHKeyword">const</span></div>
  <div class="CBody"><p>Checks whether the Delta External Time value for the packet is valid.</p><div class="CHeading">Returns</div><table class="CDefinitionList"><tr><td class="CDLEntry">bool</td><td class="CDLDefinition"><p>true if valid</p></td></tr></table></div>
 </div>
 
-<a name="MipSharedDataFields.get"></a><a name="Topic304"></a><div class="CTopic TFunction LC last">
+<a name="MipSharedDataFields.get"></a><a name="Topic209"></a><div class="CTopic TFunction LC last">
  <div class="CTitle">get</div>
- <div id="NDPrototype304" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">const</span> <a href="../../../../index.html#File:MicroStrain/MIP/MipDataPoint.h:MipDataPoint" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,1314);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipDataPoint</a>&amp; <span class="SHKeyword">get</span>(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PModifierQualifier first"><a href="../../../../index.html#File:MicroStrain/MIP/MipTypes.h:MipTypes.ChannelField" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,483);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipTypes::</a></td><td class="PType"><a href="../../../../index.html#File:MicroStrain/MIP/MipTypes.h:MipTypes.ChannelField" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,483);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ChannelField</a>&nbsp;</td><td class="PName">field,</td><td></td><td class="last"></td></tr><tr><td class="PModifierQualifier first"><a href="../../../../index.html#File:MicroStrain/MIP/MipTypes.h:MipTypes.ChannelQualifier" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,809);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipTypes::</a></td><td class="PType"><a href="../../../../index.html#File:MicroStrain/MIP/MipTypes.h:MipTypes.ChannelQualifier" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,809);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ChannelQualifier</a>&nbsp;</td><td class="PName">qualifier&nbsp;</td><td class="PDefaultValueSeparator">=&nbsp;</td><td class="PDefaultValue last">MipTypes::CH_UNKNOWN</td></tr></table></td><td class="PAfterParameters">) <span class="SHKeyword">const</span></td></tr></table></div>
- <div class="CBody"><p>Get the shared field <a href="../../../../index.html#File:MicroStrain/MIP/MipDataPoint.h:MipDataPoint" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,1314);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipDataPoint</a> with the specified field and qualifier.&nbsp; If qualifier is <a href="../../../../index.html#File:MicroStrain/MIP/MipTypes.h:MipTypes.CH_UNKNOWN" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,810);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipTypes::CH_UNKNOWN</a> and there is only one data point for the field, that field will be returned.&nbsp; Note: most users will not need to use this function</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">field<div class="CDLParameterType"><a href="../../../../index.html#File:MicroStrain/MIP/MipTypes.h:MipTypes.ChannelField" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,483);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipTypes::ChannelField</a></div></td><td class="CDLDefinition"><p>the <a href="../../../../index.html#File:MicroStrain/MIP/MipTypes.h:MipTypes.ChannelField" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,483);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipTypes::ChannelField</a> of the data point to get</p></td></tr><tr><td class="CDLEntry">qualifier<div class="CDLParameterType"><a href="../../../../index.html#File:MicroStrain/MIP/MipTypes.h:MipTypes.ChannelQualifier" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,809);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipTypes::ChannelQualifier</a></div></td><td class="CDLDefinition"><p>the <a href="../../../../index.html#File:MicroStrain/MIP/MipTypes.h:MipTypes.ChannelQualifier" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,809);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipTypes::ChannelQualifier</a> of the data point to get. Default: MipTypes::CH_UNKNOWN</p></td></tr></table><div class="CHeading">Returns</div><p><a href="../../../../index.html#File:MicroStrain/MIP/MipDataPoint.h:MipDataPoint" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,1314);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipDataPoint</a> reference to the shared data point found</p></div>
+ <div id="NDPrototype209" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">const</span> <a href="../../../../index.html#File:MicroStrain/MIP/MipDataPoint.h:MipDataPoint" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,2047);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipDataPoint</a>&amp; <span class="SHKeyword">get</span>(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PModifierQualifier first"><a href="../../../../index.html#File:MicroStrain/MIP/MipTypes.h:MipTypes.ChannelField" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,1101);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipTypes::</a></td><td class="PType"><a href="../../../../index.html#File:MicroStrain/MIP/MipTypes.h:MipTypes.ChannelField" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,1101);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ChannelField</a>&nbsp;</td><td class="PName">field,</td><td></td><td class="last"></td></tr><tr><td class="PModifierQualifier first"><a href="../../../../index.html#File:MicroStrain/MIP/MipTypes.h:MipTypes.ChannelQualifier" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,1429);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipTypes::</a></td><td class="PType"><a href="../../../../index.html#File:MicroStrain/MIP/MipTypes.h:MipTypes.ChannelQualifier" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,1429);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ChannelQualifier</a>&nbsp;</td><td class="PName">qualifier&nbsp;</td><td class="PDefaultValueSeparator">=&nbsp;</td><td class="PDefaultValue last">MipTypes::CH_UNKNOWN</td></tr></table></td><td class="PAfterParameters">) <span class="SHKeyword">const</span></td></tr></table></div>
+ <div class="CBody"><p>Get the shared field <a href="../../../../index.html#File:MicroStrain/MIP/MipDataPoint.h:MipDataPoint" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,2047);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipDataPoint</a> with the specified field and qualifier.&nbsp; If qualifier is <a href="../../../../index.html#File:MicroStrain/MIP/MipTypes.h:MipTypes.CH_UNKNOWN" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,1430);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipTypes::CH_UNKNOWN</a> and there is only one data point for the field, that field will be returned.&nbsp; Note: most users will not need to use this function</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">field<div class="CDLParameterType"><a href="../../../../index.html#File:MicroStrain/MIP/MipTypes.h:MipTypes.ChannelField" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,1101);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipTypes::ChannelField</a></div></td><td class="CDLDefinition"><p>the <a href="../../../../index.html#File:MicroStrain/MIP/MipTypes.h:MipTypes.ChannelField" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,1101);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipTypes::ChannelField</a> of the data point to get</p></td></tr><tr><td class="CDLEntry">qualifier<div class="CDLParameterType"><a href="../../../../index.html#File:MicroStrain/MIP/MipTypes.h:MipTypes.ChannelQualifier" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,1429);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipTypes::ChannelQualifier</a></div></td><td class="CDLDefinition"><p>the <a href="../../../../index.html#File:MicroStrain/MIP/MipTypes.h:MipTypes.ChannelQualifier" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,1429);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipTypes::ChannelQualifier</a> of the data point to get. Default: MipTypes::CH_UNKNOWN</p></td></tr></table><div class="CHeading">Returns</div><p><a href="../../../../index.html#File:MicroStrain/MIP/MipDataPoint.h:MipDataPoint" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,2047);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipDataPoint</a> reference to the shared data point found</p></div>
 </div>
 
 </body></html>

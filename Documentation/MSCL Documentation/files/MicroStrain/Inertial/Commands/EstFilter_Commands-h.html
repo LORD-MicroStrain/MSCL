@@ -8,501 +8,501 @@
 
 <body onload="NDLoader.OnLoad('Content');" class="NDPage NDContentPage">
 
-<a name="EstFilter_Commands"></a><a name="Topic802"></a><div class="CTopic TSection LC first">
+<a name="EstFilter_Commands"></a><a name="Topic820"></a><div class="CTopic TSection LC first">
  <div class="CTitle">EstFilter_Commands</div>
 </div>
 
-<a name="GetEstFilterDataRateBase"></a><a name="Topic803"></a><div class="CTopic TClass LC">
+<a name="GetEstFilterDataRateBase"></a><a name="Topic821"></a><div class="CTopic TClass LC">
  <div class="CTitle">GetEstFilterDataRateBase</div>
- <div class="NDClassPrototype" id="NDClassPrototype803"><div class="CPEntry TClass Current"><div class="CPName">GetEstFilterDataRateBase</div></div></div>
+ <div class="NDClassPrototype" id="NDClassPrototype821"><div class="CPEntry TClass Current"><div class="CPName">GetEstFilterDataRateBase</div></div></div>
  <div class="CBody"><p>Contains the logic for the &quot;Get Estimation Filter Data Rate Base&quot; command</p></div>
 </div>
 
-<a name="GetEstFilterDataRateBase.Constants"></a><a name="Topic804"></a><div class="CTopic TGroup LC">
+<a name="GetEstFilterDataRateBase.Constants"></a><a name="Topic822"></a><div class="CTopic TGroup LC">
  <div class="CTitle">Constants</div>
 </div>
 
-<a name="GetEstFilterDataRateBase.Packet_Bytes"></a><a name="Topic805"></a><div class="CTopic TConstant LC">
+<a name="GetEstFilterDataRateBase.Packet_Bytes"></a><a name="Topic823"></a><div class="CTopic TConstant LC">
  <div class="CTitle">Packet Bytes</div>
- <div class="CBody"><table class="CDefinitionList"><tr><td class="CDLEntry"><a name="GetEstFilterDataRateBase.CMD_ID"></a><a name="Topic806"></a>CMD_ID</td><td class="CDLDefinition"><p>CMD_GET_EF_RATE_BASE&nbsp; - The <a href="../../../../index.html#File:MicroStrain/MIP/MipTypes.h:MipTypes.Command" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3123);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipTypes::Command</a> for this command</p></td></tr><tr><td class="CDLEntry"><a name="GetEstFilterDataRateBase.FIELD_DATA_BYTE"></a><a name="Topic807"></a>FIELD_DATA_BYTE</td><td class="CDLDefinition"><p>0x8A&nbsp; - The Data Field Descriptor byte</p></td></tr></table></div>
+ <div class="CBody"><table class="CDefinitionList"><tr><td class="CDLEntry"><a name="GetEstFilterDataRateBase.CMD_ID"></a><a name="Topic824"></a>CMD_ID</td><td class="CDLDefinition"><p>CMD_GET_EF_RATE_BASE&nbsp; - The <a href="../../../../index.html#File:MicroStrain/MIP/MipTypes.h:MipTypes.Command" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3194);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipTypes::Command</a> for this command</p></td></tr><tr><td class="CDLEntry"><a name="GetEstFilterDataRateBase.FIELD_DATA_BYTE"></a><a name="Topic825"></a>FIELD_DATA_BYTE</td><td class="CDLDefinition"><p>0x8A&nbsp; - The Data Field Descriptor byte</p></td></tr></table></div>
 </div>
 
-<a name="GetEstFilterDataRateBase.Functions"></a><a name="Topic808"></a><div class="CTopic TGroup LC">
+<a name="GetEstFilterDataRateBase.Functions"></a><a name="Topic826"></a><div class="CTopic TGroup LC">
  <div class="CTitle">Functions</div>
 </div>
 
-<a name="GetEstFilterDataRateBase.buildCommand"></a><a name="Topic809"></a><div class="CTopic TFunction LC">
+<a name="GetEstFilterDataRateBase.buildCommand"></a><a name="Topic827"></a><div class="CTopic TFunction LC">
  <div class="CTitle">buildCommand</div>
- <div id="NDPrototype809" class="NDPrototype NoParameterForm"><span class="SHKeyword">static</span> <a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9405);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> buildCommand()</div>
- <div class="CBody"><p>Builds the bytes in the command</p><div class="CHeading">Returns</div><p>A <a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9405);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> that holds the bytes that make up the command</p></div>
+ <div id="NDPrototype827" class="NDPrototype NoParameterForm"><span class="SHKeyword">static</span> <a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9867);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> buildCommand()</div>
+ <div class="CBody"><p>Builds the bytes in the command</p><div class="CHeading">Returns</div><p>A <a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9867);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> that holds the bytes that make up the command</p></div>
 </div>
 
-<a name="Response"></a><a name="Topic810"></a><div class="CTopic TClass LC">
+<a name="Response"></a><a name="Topic828"></a><div class="CTopic TClass LC">
  <div class="CTitle">Response</div>
- <div class="NDClassPrototype HasParents" id="NDClassPrototype810"><div class="CPEntry Parent TClass"><div class="CPModifiers"><span class="SHKeyword">public</span></div><div class="CPName"><span class="Qualifier">GenericMipCommand.</span>&#8203;Response</div></div><a class="CPEntry Parent TClass" href="../../../../index.html#File:MicroStrain/ResponsePattern.h:ResponsePattern" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9002);" onmouseout="NDContentPage.OnLinkMouseOut(event);" ><div class="CPName">ResponsePattern</div></a><a class="CPEntry Parent TClass" href="../../../../index.html#File:MicroStrain/Wireless/Commands/WirelessResponsePattern.h:WirelessResponsePattern" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,4346);" onmouseout="NDContentPage.OnLinkMouseOut(event);" ><div class="CPName">WirelessResponsePattern</div></a><div class="CPEntry Parent TClass"><div class="CPName"><span class="Qualifier">SetToIdle.</span>&#8203;Response</div></div><div class="CPEntry TClass Current"><div class="CPName">Response</div></div></div>
+ <div class="NDClassPrototype HasParents" id="NDClassPrototype828"><div class="CPEntry Parent TClass"><div class="CPModifiers"><span class="SHKeyword">public</span></div><div class="CPName"><span class="Qualifier">GenericMipCommand.</span>&#8203;Response</div></div><a class="CPEntry Parent TClass" href="../../../../index.html#File:MicroStrain/ResponsePattern.h:ResponsePattern" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9709);" onmouseout="NDContentPage.OnLinkMouseOut(event);" ><div class="CPName">ResponsePattern</div></a><a class="CPEntry Parent TClass" href="../../../../index.html#File:MicroStrain/Wireless/Commands/WirelessResponsePattern.h:WirelessResponsePattern" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,4661);" onmouseout="NDContentPage.OnLinkMouseOut(event);" ><div class="CPName">WirelessResponsePattern</div></a><div class="CPEntry Parent TClass"><div class="CPName"><span class="Qualifier">SetToIdle.</span>&#8203;Response</div></div><div class="CPEntry TClass Current"><div class="CPName">Response</div></div></div>
  <div class="CBody"><p>Handles the response to the command</p><div class="CHeading">See Also</div><p>&lt;GenericMipCommand::Response&gt;</p></div>
 </div>
 
-<a name="Response.Functions"></a><a name="Topic811"></a><div class="CTopic TGroup LC">
+<a name="Response.Functions"></a><a name="Topic829"></a><div class="CTopic TGroup LC">
  <div class="CTitle">Functions</div>
 </div>
 
-<a name="Response.fieldId"></a><a name="Topic812"></a><div class="CTopic TFunction LC">
+<a name="Response.fieldId"></a><a name="Topic830"></a><div class="CTopic TFunction LC">
  <div class="CTitle">fieldId</div>
- <div class="CBody"><p>Gets the <a href="../../../../index.html#File:MicroStrain/MIP/MipTypes.h:MipTypes.Command" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3123);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipTypes::Command</a></p></div>
+ <div class="CBody"><p>Gets the <a href="../../../../index.html#File:MicroStrain/MIP/MipTypes.h:MipTypes.Command" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3194);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipTypes::Command</a></p></div>
 </div>
 
-<a name="Response.fieldDataByte"></a><a name="Topic813"></a><div class="CTopic TFunction LC">
+<a name="Response.fieldDataByte"></a><a name="Topic831"></a><div class="CTopic TFunction LC">
  <div class="CTitle">fieldDataByte</div>
- <div id="NDPrototype813" class="NDPrototype NoParameterForm"><span class="SHKeyword">virtual</span> <span class="SHKeyword">uint8</span> fieldDataByte() <span class="SHKeyword">const</span></div>
+ <div id="NDPrototype831" class="NDPrototype NoParameterForm"><span class="SHKeyword">virtual</span> <span class="SHKeyword">uint8</span> fieldDataByte() <span class="SHKeyword">const</span></div>
  <div class="CBody"><p>Gets the data field descriptor byte</p></div>
 </div>
 
-<a name="Response.Response"></a><a name="Topic814"></a><div class="CTopic TFunction LC">
+<a name="Response.Response"></a><a name="Topic832"></a><div class="CTopic TFunction LC">
  <div class="CTitle">Response</div>
- <div id="NDPrototype814" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters">Response(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PModifierQualifier first">std::</td><td class="PType">weak_ptr&lt;<a href="../../../../index.html#File:MicroStrain/ResponseCollector.h:ResponseCollector" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9168);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ResponseCollector</a>&gt;&nbsp;</td><td class="PName last">collector</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
+ <div id="NDPrototype832" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters">Response(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PModifierQualifier first">std::</td><td class="PType">weak_ptr&lt;<a href="../../../../index.html#File:MicroStrain/ResponseCollector.h:ResponseCollector" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9734);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ResponseCollector</a>&gt;&nbsp;</td><td class="PName last">collector</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
  <div class="CBody"><p>Creates the Response object</p></div>
 </div>
 
-<a name="Response.parseResponse"></a><a name="Topic815"></a><div class="CTopic TFunction LC">
+<a name="Response.parseResponse"></a><a name="Topic833"></a><div class="CTopic TFunction LC">
  <div class="CTitle">parseResponse</div>
- <div id="NDPrototype815" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">uint16</span> parseResponse(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PModifierQualifier first"><span class="SHKeyword">const</span>&nbsp;</td><td class="PType"><a href="../../../../index.html#File:MicroStrain/MIP/Commands/GenericMipCommand.h:GenericMipCmdResponse" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,2845);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >GenericMipCmdResponse</a>&nbsp;</td><td class="PNamePrefix">&amp;</td><td class="PName last">response</td></tr></table></td><td class="PAfterParameters">) <span class="SHKeyword">const</span></td></tr></table></div>
- <div class="CBody"><p>Parses the response, getting the data rate base result</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">response<div class="CDLParameterType"><span class="SHKeyword">const</span> <a href="../../../../index.html#File:MicroStrain/MIP/Commands/GenericMipCommand.h:GenericMipCmdResponse" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,2845);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >GenericMipCmdResponse</a>&amp;</div></td><td class="CDLDefinition"><p>The <a href="../../../../index.html#File:MicroStrain/MIP/Commands/GenericMipCommand.h:GenericMipCmdResponse" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,2845);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >GenericMipCmdResponse</a> holding the response to parse</p></td></tr></table><div class="CHeading">Returns</div><p>The data rate base result</p></div>
+ <div id="NDPrototype833" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">uint16</span> parseResponse(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PModifierQualifier first"><span class="SHKeyword">const</span>&nbsp;</td><td class="PType"><a href="../../../../index.html#File:MicroStrain/MIP/Commands/GenericMipCommand.h:GenericMipCmdResponse" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,2903);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >GenericMipCmdResponse</a>&nbsp;</td><td class="PNamePrefix">&amp;</td><td class="PName last">response</td></tr></table></td><td class="PAfterParameters">) <span class="SHKeyword">const</span></td></tr></table></div>
+ <div class="CBody"><p>Parses the response, getting the data rate base result</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">response<div class="CDLParameterType"><span class="SHKeyword">const</span> <a href="../../../../index.html#File:MicroStrain/MIP/Commands/GenericMipCommand.h:GenericMipCmdResponse" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,2903);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >GenericMipCmdResponse</a>&amp;</div></td><td class="CDLDefinition"><p>The <a href="../../../../index.html#File:MicroStrain/MIP/Commands/GenericMipCommand.h:GenericMipCmdResponse" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,2903);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >GenericMipCmdResponse</a> holding the response to parse</p></td></tr></table><div class="CHeading">Returns</div><p>The data rate base result</p></div>
 </div>
 
-<a name="EstFilterMessageFormat"></a><a name="Topic816"></a><div class="CTopic TClass LC">
+<a name="EstFilterMessageFormat"></a><a name="Topic834"></a><div class="CTopic TClass LC">
  <div class="CTitle">EstFilterMessageFormat</div>
- <div class="NDClassPrototype" id="NDClassPrototype816"><div class="CPEntry TClass Current"><div class="CPName">EstFilterMessageFormat</div></div></div>
+ <div class="NDClassPrototype" id="NDClassPrototype834"><div class="CPEntry TClass Current"><div class="CPName">EstFilterMessageFormat</div></div></div>
  <div class="CBody"><p>Contains the logic for the &quot;Estimation Filter Message Format&quot; command</p></div>
 </div>
 
-<a name="EstFilterMessageFormat.Constants"></a><a name="Topic817"></a><div class="CTopic TGroup LC">
+<a name="EstFilterMessageFormat.Constants"></a><a name="Topic835"></a><div class="CTopic TGroup LC">
  <div class="CTitle">Constants</div>
 </div>
 
-<a name="EstFilterMessageFormat.Packet_Bytes"></a><a name="Topic818"></a><div class="CTopic TConstant LC">
+<a name="EstFilterMessageFormat.Packet_Bytes"></a><a name="Topic836"></a><div class="CTopic TConstant LC">
  <div class="CTitle">Packet Bytes</div>
- <div class="CBody"><table class="CDefinitionList"><tr><td class="CDLEntry"><a name="EstFilterMessageFormat.CMD_ID"></a><a name="Topic819"></a>CMD_ID</td><td class="CDLDefinition"><p>CMD_EF_MESSAGE_FORMAT&nbsp; - The <a href="../../../../index.html#File:MicroStrain/MIP/MipTypes.h:MipTypes.Command" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3123);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipTypes::Command</a> for this command</p></td></tr><tr><td class="CDLEntry"><a name="EstFilterMessageFormat.FIELD_DATA_BYTE"></a><a name="Topic820"></a>FIELD_DATA_BYTE</td><td class="CDLDefinition"><p>0x82&nbsp; - The Data Field Descriptor byte</p></td></tr></table></div>
+ <div class="CBody"><table class="CDefinitionList"><tr><td class="CDLEntry"><a name="EstFilterMessageFormat.CMD_ID"></a><a name="Topic837"></a>CMD_ID</td><td class="CDLDefinition"><p>CMD_EF_MESSAGE_FORMAT&nbsp; - The <a href="../../../../index.html#File:MicroStrain/MIP/MipTypes.h:MipTypes.Command" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3194);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipTypes::Command</a> for this command</p></td></tr><tr><td class="CDLEntry"><a name="EstFilterMessageFormat.FIELD_DATA_BYTE"></a><a name="Topic838"></a>FIELD_DATA_BYTE</td><td class="CDLDefinition"><p>0x82&nbsp; - The Data Field Descriptor byte</p></td></tr></table></div>
 </div>
 
-<a name="EstFilterMessageFormat.Functions"></a><a name="Topic821"></a><div class="CTopic TGroup LC">
+<a name="EstFilterMessageFormat.Functions"></a><a name="Topic839"></a><div class="CTopic TGroup LC">
  <div class="CTitle">Functions</div>
 </div>
 
-<a name="EstFilterMessageFormat.buildCommand_get"></a><a name="Topic822"></a><div class="CTopic TFunction LC">
+<a name="EstFilterMessageFormat.buildCommand_get"></a><a name="Topic840"></a><div class="CTopic TFunction LC">
  <div class="CTitle">buildCommand_get</div>
- <div id="NDPrototype822" class="NDPrototype NoParameterForm"><span class="SHKeyword">static</span> <a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9405);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> buildCommand_get()</div>
- <div class="CBody"><p>Builds the bytes for the &quot;get&quot; command</p><div class="CHeading">Returns</div><p>A <a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9405);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> that holds the bytes that make up the command</p></div>
+ <div id="NDPrototype840" class="NDPrototype NoParameterForm"><span class="SHKeyword">static</span> <a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9867);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> buildCommand_get()</div>
+ <div class="CBody"><p>Builds the bytes for the &quot;get&quot; command</p><div class="CHeading">Returns</div><p>A <a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9867);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> that holds the bytes that make up the command</p></div>
 </div>
 
-<a name="EstFilterMessageFormat.buildCommand_set"></a><a name="Topic823"></a><div class="CTopic TFunction LC">
+<a name="EstFilterMessageFormat.buildCommand_set"></a><a name="Topic841"></a><div class="CTopic TFunction LC">
  <div class="CTitle">buildCommand_set</div>
- <div id="NDPrototype823" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">static</span> <a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9405);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> buildCommand_set(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PModifierQualifier first"><span class="SHKeyword">const</span>&nbsp;</td><td class="PType">MipChannels&nbsp;</td><td class="PNamePrefix">&amp;</td><td class="PName last">channels,</td></tr><tr><td class="first"></td><td class="PType"><span class="SHKeyword">uint16</span>&nbsp;</td><td></td><td class="PName last">sampleRateBase</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
- <div class="CBody"><p>Builds the bytes for the &quot;set&quot; command.</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">channels<div class="CDLParameterType"><span class="SHKeyword">const</span> MipChannels&amp;</div></td><td class="CDLDefinition"><p>The <a href="../../../../index.html#File:MicroStrain/MIP/MipChannel.h:MipChannel(2)" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,4119);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipChannels</a> holding the channels to be set. This should only contain channels that are in the Estimation Filter (0x82) descriptor set</p></td></tr><tr><td class="CDLEntry">sampleRateBase<div class="CDLParameterType"><span class="SHKeyword">uint16</span></div></td><td class="CDLDefinition"><p>The base sample rate for the estimation filter command set.</p></td></tr></table><div class="CHeading">Returns</div><p>A <a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9405);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> that holds the bytes that make up the command</p><div class="CHeading">Exceptions</div><ul><li><p><a href="../../../../index.html#File:Exceptions.h:Error" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9719);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >Error</a>: An <a href="../../../../index.html#File:MicroStrain/MIP/MipChannel.h:MipChannel(2)" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,4119);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipChannel</a> in the channels parameter is not part of the Sensor descriptor set</p></li></ul></div>
+ <div id="NDPrototype841" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">static</span> <a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9867);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> buildCommand_set(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PModifierQualifier first"><span class="SHKeyword">const</span>&nbsp;</td><td class="PType">MipChannels&nbsp;</td><td class="PNamePrefix">&amp;</td><td class="PName last">channels,</td></tr><tr><td class="first"></td><td class="PType"><span class="SHKeyword">uint16</span>&nbsp;</td><td></td><td class="PName last">sampleRateBase</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
+ <div class="CBody"><p>Builds the bytes for the &quot;set&quot; command.</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">channels<div class="CDLParameterType"><span class="SHKeyword">const</span> MipChannels&amp;</div></td><td class="CDLDefinition"><p>The <a href="../../../../index.html#File:MicroStrain/MIP/MipChannel.h:MipChannel(2)" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,4410);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipChannels</a> holding the channels to be set. This should only contain channels that are in the Estimation Filter (0x82) descriptor set</p></td></tr><tr><td class="CDLEntry">sampleRateBase<div class="CDLParameterType"><span class="SHKeyword">uint16</span></div></td><td class="CDLDefinition"><p>The base sample rate for the estimation filter command set.</p></td></tr></table><div class="CHeading">Returns</div><p>A <a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9867);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> that holds the bytes that make up the command</p><div class="CHeading">Exceptions</div><ul><li><p><a href="../../../../index.html#File:Exceptions.h:Error" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,10388);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >Error</a>: An <a href="../../../../index.html#File:MicroStrain/MIP/MipChannel.h:MipChannel(2)" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,4410);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipChannel</a> in the channels parameter is not part of the Sensor descriptor set</p></li></ul></div>
 </div>
 
-<a name="EstFilterMessageFormat.buildCommand_save"></a><a name="Topic824"></a><div class="CTopic TFunction LC">
+<a name="EstFilterMessageFormat.buildCommand_save"></a><a name="Topic842"></a><div class="CTopic TFunction LC">
  <div class="CTitle">buildCommand_save</div>
- <div id="NDPrototype824" class="NDPrototype NoParameterForm"><span class="SHKeyword">static</span> <a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9405);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> buildCommand_save()</div>
- <div class="CBody"><p>Builds the bytes for the &quot;save&quot; command</p><div class="CHeading">Returns</div><p>A <a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9405);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> that holds the bytes that make up the command</p></div>
+ <div id="NDPrototype842" class="NDPrototype NoParameterForm"><span class="SHKeyword">static</span> <a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9867);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> buildCommand_save()</div>
+ <div class="CBody"><p>Builds the bytes for the &quot;save&quot; command</p><div class="CHeading">Returns</div><p>A <a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9867);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> that holds the bytes that make up the command</p></div>
 </div>
 
-<a name="ResetFilter"></a><a name="Topic825"></a><div class="CTopic TClass LC">
+<a name="ResetFilter"></a><a name="Topic843"></a><div class="CTopic TClass LC">
  <div class="CTitle">ResetFilter</div>
- <div class="NDClassPrototype" id="NDClassPrototype825"><div class="CPEntry TClass Current"><div class="CPName">ResetFilter</div></div></div>
+ <div class="NDClassPrototype" id="NDClassPrototype843"><div class="CPEntry TClass Current"><div class="CPName">ResetFilter</div></div></div>
  <div class="CBody"><p>Contains the logic for the &quot;Reset Filter&quot; command</p></div>
 </div>
 
-<a name="ResetFilter.Constants"></a><a name="Topic826"></a><div class="CTopic TGroup LC">
+<a name="ResetFilter.Constants"></a><a name="Topic844"></a><div class="CTopic TGroup LC">
  <div class="CTitle">Constants</div>
 </div>
 
-<a name="ResetFilter.Packet_Bytes"></a><a name="Topic827"></a><div class="CTopic TConstant LC">
+<a name="ResetFilter.Packet_Bytes"></a><a name="Topic845"></a><div class="CTopic TConstant LC">
  <div class="CTitle">Packet Bytes</div>
- <div class="CBody"><table class="CDefinitionList"><tr><td class="CDLEntry"><a name="ResetFilter.CMD_ID"></a><a name="Topic828"></a>CMD_ID</td><td class="CDLDefinition"><p>CMD_EF_RESET_FILTER&nbsp; - The <a href="../../../../index.html#File:MicroStrain/MIP/MipTypes.h:MipTypes.Command" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3123);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipTypes::Command</a> for this command</p></td></tr></table></div>
+ <div class="CBody"><table class="CDefinitionList"><tr><td class="CDLEntry"><a name="ResetFilter.CMD_ID"></a><a name="Topic846"></a>CMD_ID</td><td class="CDLDefinition"><p>CMD_EF_RESET_FILTER&nbsp; - The <a href="../../../../index.html#File:MicroStrain/MIP/MipTypes.h:MipTypes.Command" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3194);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipTypes::Command</a> for this command</p></td></tr></table></div>
 </div>
 
-<a name="ResetFilter.Functions"></a><a name="Topic829"></a><div class="CTopic TGroup LC">
+<a name="ResetFilter.Functions"></a><a name="Topic847"></a><div class="CTopic TGroup LC">
  <div class="CTitle">Functions</div>
 </div>
 
-<a name="ResetFilter.buildCommand"></a><a name="Topic830"></a><div class="CTopic TFunction LC">
+<a name="ResetFilter.buildCommand"></a><a name="Topic848"></a><div class="CTopic TFunction LC">
  <div class="CTitle">buildCommand</div>
- <div id="NDPrototype830" class="NDPrototype NoParameterForm"><span class="SHKeyword">static</span> <a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9405);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> buildCommand()</div>
+ <div id="NDPrototype848" class="NDPrototype NoParameterForm"><span class="SHKeyword">static</span> <a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9867);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> buildCommand()</div>
  <div class="CBody"><p>Builds the bytes for the command.</p></div>
 </div>
 
-<a name="SetInitialAttitude"></a><a name="Topic831"></a><div class="CTopic TClass LC">
+<a name="SetInitialAttitude"></a><a name="Topic849"></a><div class="CTopic TClass LC">
  <div class="CTitle">SetInitialAttitude</div>
- <div class="NDClassPrototype" id="NDClassPrototype831"><div class="CPEntry TClass Current"><div class="CPName">SetInitialAttitude</div></div></div>
+ <div class="NDClassPrototype" id="NDClassPrototype849"><div class="CPEntry TClass Current"><div class="CPName">SetInitialAttitude</div></div></div>
  <div class="CBody"><p>Contains the logic for the &quot;Set Initial Attitude&quot; command</p></div>
 </div>
 
-<a name="SetInitialAttitude.Constants"></a><a name="Topic832"></a><div class="CTopic TGroup LC">
+<a name="SetInitialAttitude.Constants"></a><a name="Topic850"></a><div class="CTopic TGroup LC">
  <div class="CTitle">Constants</div>
 </div>
 
-<a name="SetInitialAttitude.Packet_Bytes"></a><a name="Topic833"></a><div class="CTopic TConstant LC">
+<a name="SetInitialAttitude.Packet_Bytes"></a><a name="Topic851"></a><div class="CTopic TConstant LC">
  <div class="CTitle">Packet Bytes</div>
- <div class="CBody"><table class="CDefinitionList"><tr><td class="CDLEntry"><a name="SetInitialAttitude.CMD_ID"></a><a name="Topic834"></a>CMD_ID</td><td class="CDLDefinition"><p>CMD_EF_INIT_ATTITUDE&nbsp; - The <a href="../../../../index.html#File:MicroStrain/MIP/MipTypes.h:MipTypes.Command" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3123);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipTypes::Command</a> for this command</p></td></tr></table></div>
+ <div class="CBody"><table class="CDefinitionList"><tr><td class="CDLEntry"><a name="SetInitialAttitude.CMD_ID"></a><a name="Topic852"></a>CMD_ID</td><td class="CDLDefinition"><p>CMD_EF_INIT_ATTITUDE&nbsp; - The <a href="../../../../index.html#File:MicroStrain/MIP/MipTypes.h:MipTypes.Command" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3194);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipTypes::Command</a> for this command</p></td></tr></table></div>
 </div>
 
-<a name="SetInitialAttitude.Functions"></a><a name="Topic835"></a><div class="CTopic TGroup LC">
+<a name="SetInitialAttitude.Functions"></a><a name="Topic853"></a><div class="CTopic TGroup LC">
  <div class="CTitle">Functions</div>
 </div>
 
-<a name="SetInitialAttitude.buildCommand"></a><a name="Topic836"></a><div class="CTopic TFunction LC">
+<a name="SetInitialAttitude.buildCommand"></a><a name="Topic854"></a><div class="CTopic TFunction LC">
  <div class="CTitle">buildCommand</div>
- <div id="NDPrototype836" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">static</span> <a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9405);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> buildCommand(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PModifierQualifier first"><span class="SHKeyword">const</span>&nbsp;</td><td class="PType"><a href="../../../../index.html#File:MicroStrain/Inertial/EulerAngles.h:EulerAngles" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,2682);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >EulerAngles</a>&nbsp;</td><td class="PNamePrefix">&amp;</td><td class="PName last">attitude</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
- <div class="CBody"><p>Builds the bytes for the command.</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">attitude<div class="CDLParameterType"><span class="SHKeyword">const</span> <a href="../../../../index.html#File:MicroStrain/Inertial/EulerAngles.h:EulerAngles" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,2682);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >EulerAngles</a>&amp;</div></td><td class="CDLDefinition"><p>The <a href="../../../../index.html#File:MicroStrain/Inertial/EulerAngles.h:EulerAngles" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,2682);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >EulerAngles</a> representing the initial attitude.</p></td></tr></table></div>
+ <div id="NDPrototype854" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">static</span> <a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9867);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> buildCommand(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PModifierQualifier first"><span class="SHKeyword">const</span>&nbsp;</td><td class="PType"><a href="../../../../index.html#File:MicroStrain/Inertial/EulerAngles.h:EulerAngles" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,2730);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >EulerAngles</a>&nbsp;</td><td class="PNamePrefix">&amp;</td><td class="PName last">attitude</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
+ <div class="CBody"><p>Builds the bytes for the command.</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">attitude<div class="CDLParameterType"><span class="SHKeyword">const</span> <a href="../../../../index.html#File:MicroStrain/Inertial/EulerAngles.h:EulerAngles" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,2730);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >EulerAngles</a>&amp;</div></td><td class="CDLDefinition"><p>The <a href="../../../../index.html#File:MicroStrain/Inertial/EulerAngles.h:EulerAngles" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,2730);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >EulerAngles</a> representing the initial attitude.</p></td></tr></table></div>
 </div>
 
-<a name="SetInitialHeading"></a><a name="Topic837"></a><div class="CTopic TClass LC">
+<a name="SetInitialHeading"></a><a name="Topic855"></a><div class="CTopic TClass LC">
  <div class="CTitle">SetInitialHeading</div>
- <div class="NDClassPrototype" id="NDClassPrototype837"><div class="CPEntry TClass Current"><div class="CPName">SetInitialHeading</div></div></div>
+ <div class="NDClassPrototype" id="NDClassPrototype855"><div class="CPEntry TClass Current"><div class="CPName">SetInitialHeading</div></div></div>
  <div class="CBody"><p>Contains the logic for the &quot;Set Initial Heading&quot; command</p></div>
 </div>
 
-<a name="SetInitialHeading.Constants"></a><a name="Topic838"></a><div class="CTopic TGroup LC">
+<a name="SetInitialHeading.Constants"></a><a name="Topic856"></a><div class="CTopic TGroup LC">
  <div class="CTitle">Constants</div>
 </div>
 
-<a name="SetInitialHeading.Packet_Bytes"></a><a name="Topic839"></a><div class="CTopic TConstant LC">
+<a name="SetInitialHeading.Packet_Bytes"></a><a name="Topic857"></a><div class="CTopic TConstant LC">
  <div class="CTitle">Packet Bytes</div>
- <div class="CBody"><table class="CDefinitionList"><tr><td class="CDLEntry"><a name="SetInitialHeading.CMD_ID"></a><a name="Topic840"></a>CMD_ID</td><td class="CDLDefinition"><p>CMD_EF_INIT_HEADING&nbsp; - The <a href="../../../../index.html#File:MicroStrain/MIP/MipTypes.h:MipTypes.Command" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3123);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipTypes::Command</a> for this command</p></td></tr></table></div>
+ <div class="CBody"><table class="CDefinitionList"><tr><td class="CDLEntry"><a name="SetInitialHeading.CMD_ID"></a><a name="Topic858"></a>CMD_ID</td><td class="CDLDefinition"><p>CMD_EF_INIT_HEADING&nbsp; - The <a href="../../../../index.html#File:MicroStrain/MIP/MipTypes.h:MipTypes.Command" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3194);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipTypes::Command</a> for this command</p></td></tr></table></div>
 </div>
 
-<a name="SetInitialHeading.Functions"></a><a name="Topic841"></a><div class="CTopic TGroup LC">
+<a name="SetInitialHeading.Functions"></a><a name="Topic859"></a><div class="CTopic TGroup LC">
  <div class="CTitle">Functions</div>
 </div>
 
-<a name="SetInitialHeading.buildCommand"></a><a name="Topic842"></a><div class="CTopic TFunction LC">
+<a name="SetInitialHeading.buildCommand"></a><a name="Topic860"></a><div class="CTopic TFunction LC">
  <div class="CTitle">buildCommand</div>
- <div id="NDPrototype842" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">static</span> <a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9405);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> buildCommand(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PType first"><span class="SHKeyword">float</span>&nbsp;</td><td class="PName last">heading</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
+ <div id="NDPrototype860" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">static</span> <a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9867);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> buildCommand(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PType first"><span class="SHKeyword">float</span>&nbsp;</td><td class="PName last">heading</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
  <div class="CBody"><p>Builds the bytes for the command.</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">heading<div class="CDLParameterType"><span class="SHKeyword">float</span></div></td><td class="CDLDefinition"><p>The heading value to set.</p></td></tr></table></div>
 </div>
 
-<a name="AltitudeAidControl"></a><a name="Topic843"></a><div class="CTopic TClass LC">
+<a name="AltitudeAidControl"></a><a name="Topic861"></a><div class="CTopic TClass LC">
  <div class="CTitle">AltitudeAidControl</div>
- <div class="NDClassPrototype" id="NDClassPrototype843"><div class="CPEntry TClass Current"><div class="CPName">AltitudeAidControl</div></div></div>
+ <div class="NDClassPrototype" id="NDClassPrototype861"><div class="CPEntry TClass Current"><div class="CPName">AltitudeAidControl</div></div></div>
  <div class="CBody"><p>Contains the logic for the &quot;Altitude Aid Control&quot; command</p></div>
 </div>
 
-<a name="AltitudeAidControl.Constants"></a><a name="Topic844"></a><div class="CTopic TGroup LC">
+<a name="AltitudeAidControl.Constants"></a><a name="Topic862"></a><div class="CTopic TGroup LC">
  <div class="CTitle">Constants</div>
 </div>
 
-<a name="AltitudeAidControl.Packet_Bytes"></a><a name="Topic845"></a><div class="CTopic TConstant LC">
+<a name="AltitudeAidControl.Packet_Bytes"></a><a name="Topic863"></a><div class="CTopic TConstant LC">
  <div class="CTitle">Packet Bytes</div>
- <div class="CBody"><table class="CDefinitionList"><tr><td class="CDLEntry"><a name="AltitudeAidControl.CMD_ID"></a><a name="Topic846"></a>CMD_ID</td><td class="CDLDefinition"><p>CMD_EF_ALTITUDE_AID_CTRL&nbsp; - The <a href="../../../../index.html#File:MicroStrain/MIP/MipTypes.h:MipTypes.Command" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3123);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipTypes::Command</a> for this command</p></td></tr><tr><td class="CDLEntry"><a name="AltitudeAidControl.FIELD_DATA_BYTE"></a><a name="Topic847"></a>FIELD_DATA_BYTE</td><td class="CDLDefinition"><p>0xB7&nbsp; - The Data Field Descriptor byte</p></td></tr></table></div>
+ <div class="CBody"><table class="CDefinitionList"><tr><td class="CDLEntry"><a name="AltitudeAidControl.CMD_ID"></a><a name="Topic864"></a>CMD_ID</td><td class="CDLDefinition"><p>CMD_EF_ALTITUDE_AID_CTRL&nbsp; - The <a href="../../../../index.html#File:MicroStrain/MIP/MipTypes.h:MipTypes.Command" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3194);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipTypes::Command</a> for this command</p></td></tr><tr><td class="CDLEntry"><a name="AltitudeAidControl.FIELD_DATA_BYTE"></a><a name="Topic865"></a>FIELD_DATA_BYTE</td><td class="CDLDefinition"><p>0xB7&nbsp; - The Data Field Descriptor byte</p></td></tr></table></div>
 </div>
 
-<a name="AltitudeAidControl.Functions"></a><a name="Topic848"></a><div class="CTopic TGroup LC">
+<a name="AltitudeAidControl.Functions"></a><a name="Topic866"></a><div class="CTopic TGroup LC">
  <div class="CTitle">Functions</div>
 </div>
 
-<a name="AltitudeAidControl.buildCommand_get"></a><a name="Topic849"></a><div class="CTopic TFunction LC">
+<a name="AltitudeAidControl.buildCommand_get"></a><a name="Topic867"></a><div class="CTopic TFunction LC">
  <div class="CTitle">buildCommand_get</div>
- <div id="NDPrototype849" class="NDPrototype NoParameterForm"><span class="SHKeyword">static</span> <a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9405);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> buildCommand_get()</div>
+ <div id="NDPrototype867" class="NDPrototype NoParameterForm"><span class="SHKeyword">static</span> <a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9867);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> buildCommand_get()</div>
  <div class="CBody"><p>Builds the bytes for the &quot;get&quot; command.</p></div>
 </div>
 
-<a name="AltitudeAidControl.buildCommand_set"></a><a name="Topic850"></a><div class="CTopic TFunction LC">
+<a name="AltitudeAidControl.buildCommand_set"></a><a name="Topic868"></a><div class="CTopic TFunction LC">
  <div class="CTitle">buildCommand_set</div>
- <div id="NDPrototype850" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">static</span> <a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9405);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> buildCommand_set(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PType first"><span class="SHKeyword">bool</span>&nbsp;</td><td class="PName last">enable</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
+ <div id="NDPrototype868" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">static</span> <a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9867);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> buildCommand_set(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PType first"><span class="SHKeyword">bool</span>&nbsp;</td><td class="PName last">enable</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
  <div class="CBody"><p>Builds the bytes for the &quot;set&quot; command.</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">enable<div class="CDLParameterType"><span class="SHKeyword">bool</span></div></td><td class="CDLDefinition"><p>Whether to enable (true) or disable (false) altitude aiding.</p></td></tr></table></div>
 </div>
 
-<a name="PitchRollAidControl"></a><a name="Topic851"></a><div class="CTopic TClass LC">
+<a name="PitchRollAidControl"></a><a name="Topic869"></a><div class="CTopic TClass LC">
  <div class="CTitle">PitchRollAidControl</div>
- <div class="NDClassPrototype" id="NDClassPrototype851"><div class="CPEntry TClass Current"><div class="CPName">PitchRollAidControl</div></div></div>
+ <div class="NDClassPrototype" id="NDClassPrototype869"><div class="CPEntry TClass Current"><div class="CPName">PitchRollAidControl</div></div></div>
  <div class="CBody"><p>Contains the logic for the &quot;Pitch/Roll Aid Control&quot; command</p></div>
 </div>
 
-<a name="PitchRollAidControl.Constants"></a><a name="Topic852"></a><div class="CTopic TGroup LC">
+<a name="PitchRollAidControl.Constants"></a><a name="Topic870"></a><div class="CTopic TGroup LC">
  <div class="CTitle">Constants</div>
 </div>
 
-<a name="PitchRollAidControl.Packet_Bytes"></a><a name="Topic853"></a><div class="CTopic TConstant LC">
+<a name="PitchRollAidControl.Packet_Bytes"></a><a name="Topic871"></a><div class="CTopic TConstant LC">
  <div class="CTitle">Packet Bytes</div>
- <div class="CBody"><table class="CDefinitionList"><tr><td class="CDLEntry"><a name="PitchRollAidControl.CMD_ID"></a><a name="Topic854"></a>CMD_ID</td><td class="CDLDefinition"><p>CMD_EF_PITCH_ROLL_AID_CTRL- The <a href="../../../../index.html#File:MicroStrain/MIP/MipTypes.h:MipTypes.Command" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3123);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipTypes::Command</a> for this command</p></td></tr><tr><td class="CDLEntry"><a name="PitchRollAidControl.FIELD_DATA_BYTE"></a><a name="Topic855"></a>FIELD_DATA_BYTE</td><td class="CDLDefinition"><p>0xBB&nbsp; - The Data Field Descriptor byte</p></td></tr></table></div>
+ <div class="CBody"><table class="CDefinitionList"><tr><td class="CDLEntry"><a name="PitchRollAidControl.CMD_ID"></a><a name="Topic872"></a>CMD_ID</td><td class="CDLDefinition"><p>CMD_EF_PITCH_ROLL_AID_CTRL- The <a href="../../../../index.html#File:MicroStrain/MIP/MipTypes.h:MipTypes.Command" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3194);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipTypes::Command</a> for this command</p></td></tr><tr><td class="CDLEntry"><a name="PitchRollAidControl.FIELD_DATA_BYTE"></a><a name="Topic873"></a>FIELD_DATA_BYTE</td><td class="CDLDefinition"><p>0xBB&nbsp; - The Data Field Descriptor byte</p></td></tr></table></div>
 </div>
 
-<a name="PitchRollAidControl.Functions"></a><a name="Topic856"></a><div class="CTopic TGroup LC">
+<a name="PitchRollAidControl.Functions"></a><a name="Topic874"></a><div class="CTopic TGroup LC">
  <div class="CTitle">Functions</div>
 </div>
 
-<a name="PitchRollAidControl.buildCommand_get"></a><a name="Topic857"></a><div class="CTopic TFunction LC">
+<a name="PitchRollAidControl.buildCommand_get"></a><a name="Topic875"></a><div class="CTopic TFunction LC">
  <div class="CTitle">buildCommand_get</div>
- <div id="NDPrototype857" class="NDPrototype NoParameterForm"><span class="SHKeyword">static</span> <a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9405);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> buildCommand_get()</div>
+ <div id="NDPrototype875" class="NDPrototype NoParameterForm"><span class="SHKeyword">static</span> <a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9867);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> buildCommand_get()</div>
  <div class="CBody"><p>Builds the bytes for the &quot;get&quot; command.</p></div>
 </div>
 
-<a name="PitchRollAidControl.buildCommand_set"></a><a name="Topic858"></a><div class="CTopic TFunction LC">
+<a name="PitchRollAidControl.buildCommand_set"></a><a name="Topic876"></a><div class="CTopic TFunction LC">
  <div class="CTitle">buildCommand_set</div>
- <div id="NDPrototype858" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">static</span> <a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9405);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> buildCommand_set(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PType first"><span class="SHKeyword">bool</span>&nbsp;</td><td class="PName last">enable</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
+ <div id="NDPrototype876" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">static</span> <a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9867);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> buildCommand_set(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PType first"><span class="SHKeyword">bool</span>&nbsp;</td><td class="PName last">enable</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
  <div class="CBody"><p>Builds the bytes for the &quot;set&quot; command.</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">enable<div class="CDLParameterType"><span class="SHKeyword">bool</span></div></td><td class="CDLDefinition"><p>Whether to enable (true) or disable (false) the pitch/roll aiding.</p></td></tr></table></div>
 </div>
 
-<a name="VelocityZUPTControl"></a><a name="Topic859"></a><div class="CTopic TClass LC">
+<a name="VelocityZUPTControl"></a><a name="Topic877"></a><div class="CTopic TClass LC">
  <div class="CTitle">VelocityZUPTControl</div>
- <div class="NDClassPrototype" id="NDClassPrototype859"><div class="CPEntry TClass Current"><div class="CPName">VelocityZUPTControl</div></div></div>
+ <div class="NDClassPrototype" id="NDClassPrototype877"><div class="CPEntry TClass Current"><div class="CPName">VelocityZUPTControl</div></div></div>
  <div class="CBody"><p>Contains the logic for the &quot;Velocity ZUPT Control&quot; command</p></div>
 </div>
 
-<a name="VelocityZUPTControl.Constants"></a><a name="Topic860"></a><div class="CTopic TGroup LC">
+<a name="VelocityZUPTControl.Constants"></a><a name="Topic878"></a><div class="CTopic TGroup LC">
  <div class="CTitle">Constants</div>
 </div>
 
-<a name="VelocityZUPTControl.Packet_Bytes"></a><a name="Topic861"></a><div class="CTopic TConstant LC">
+<a name="VelocityZUPTControl.Packet_Bytes"></a><a name="Topic879"></a><div class="CTopic TConstant LC">
  <div class="CTitle">Packet Bytes</div>
- <div class="CBody"><table class="CDefinitionList"><tr><td class="CDLEntry"><a name="VelocityZUPTControl.CMD_ID"></a><a name="Topic862"></a>CMD_ID</td><td class="CDLDefinition"><p>CMD_EF_ZERO_VEL_UPDATE_CTRL - The <a href="../../../../index.html#File:MicroStrain/MIP/MipTypes.h:MipTypes.Command" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3123);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipTypes::Command</a> for this command</p></td></tr><tr><td class="CDLEntry"><a name="VelocityZUPTControl.FIELD_DATA_BYTE"></a><a name="Topic863"></a>FIELD_DATA_BYTE</td><td class="CDLDefinition"><p>0x8D&nbsp; - The Data Field Descriptor byte</p></td></tr></table></div>
+ <div class="CBody"><table class="CDefinitionList"><tr><td class="CDLEntry"><a name="VelocityZUPTControl.CMD_ID"></a><a name="Topic880"></a>CMD_ID</td><td class="CDLDefinition"><p>CMD_EF_ZERO_VEL_UPDATE_CTRL - The <a href="../../../../index.html#File:MicroStrain/MIP/MipTypes.h:MipTypes.Command" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3194);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipTypes::Command</a> for this command</p></td></tr><tr><td class="CDLEntry"><a name="VelocityZUPTControl.FIELD_DATA_BYTE"></a><a name="Topic881"></a>FIELD_DATA_BYTE</td><td class="CDLDefinition"><p>0x8D&nbsp; - The Data Field Descriptor byte</p></td></tr></table></div>
 </div>
 
-<a name="VelocityZUPTControl.Functions"></a><a name="Topic864"></a><div class="CTopic TGroup LC">
+<a name="VelocityZUPTControl.Functions"></a><a name="Topic882"></a><div class="CTopic TGroup LC">
  <div class="CTitle">Functions</div>
 </div>
 
-<a name="VelocityZUPTControl.buildCommand_get"></a><a name="Topic865"></a><div class="CTopic TFunction LC">
+<a name="VelocityZUPTControl.buildCommand_get"></a><a name="Topic883"></a><div class="CTopic TFunction LC">
  <div class="CTitle">buildCommand_get</div>
- <div id="NDPrototype865" class="NDPrototype NoParameterForm"><span class="SHKeyword">static</span> <a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9405);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> buildCommand_get()</div>
+ <div id="NDPrototype883" class="NDPrototype NoParameterForm"><span class="SHKeyword">static</span> <a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9867);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> buildCommand_get()</div>
  <div class="CBody"><p>Builds the bytes for the &quot;get&quot; command.</p></div>
 </div>
 
-<a name="VelocityZUPTControl.buildCommand_set"></a><a name="Topic866"></a><div class="CTopic TFunction LC">
+<a name="VelocityZUPTControl.buildCommand_set"></a><a name="Topic884"></a><div class="CTopic TFunction LC">
  <div class="CTitle">buildCommand_set</div>
- <div id="NDPrototype866" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">static</span> <a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9405);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> buildCommand_set(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PModifierQualifier first"><span class="SHKeyword">const</span>&nbsp;</td><td class="PType"><a href="../../../../index.html#File:MicroStrain/Inertial/ExposedInertialTypes.h:ZUPTSettingsData" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,2137);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ZUPTSettingsData</a>&nbsp;</td><td class="PNamePrefix">&amp;</td><td class="PName last">settingsData</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
- <div class="CBody"><p>Builds the bytes for the &quot;set&quot; command.</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">settingsData<div class="CDLParameterType"><span class="SHKeyword">const</span> <a href="../../../../index.html#File:MicroStrain/Inertial/ExposedInertialTypes.h:ZUPTSettingsData" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,2137);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ZUPTSettingsData</a>&amp;</div></td><td class="CDLDefinition"><p>The ZUPTSettingsData object containing whether the command is enabled and the threshold.</p></td></tr></table></div>
+ <div id="NDPrototype884" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">static</span> <a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9867);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> buildCommand_set(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PModifierQualifier first"><span class="SHKeyword">const</span>&nbsp;</td><td class="PType"><a href="../../../../index.html#File:MicroStrain/Inertial/ExposedInertialTypes.h:ZUPTSettingsData" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,1784);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ZUPTSettingsData</a>&nbsp;</td><td class="PNamePrefix">&amp;</td><td class="PName last">settingsData</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
+ <div class="CBody"><p>Builds the bytes for the &quot;set&quot; command.</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">settingsData<div class="CDLParameterType"><span class="SHKeyword">const</span> <a href="../../../../index.html#File:MicroStrain/Inertial/ExposedInertialTypes.h:ZUPTSettingsData" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,1784);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ZUPTSettingsData</a>&amp;</div></td><td class="CDLDefinition"><p>The ZUPTSettingsData object containing whether the command is enabled and the threshold.</p></td></tr></table></div>
 </div>
 
-<a name="AngularRateZUPTControl"></a><a name="Topic867"></a><div class="CTopic TClass LC">
+<a name="AngularRateZUPTControl"></a><a name="Topic885"></a><div class="CTopic TClass LC">
  <div class="CTitle">AngularRateZUPTControl</div>
- <div class="NDClassPrototype" id="NDClassPrototype867"><div class="CPEntry TClass Current"><div class="CPName">AngularRateZUPTControl</div></div></div>
+ <div class="NDClassPrototype" id="NDClassPrototype885"><div class="CPEntry TClass Current"><div class="CPName">AngularRateZUPTControl</div></div></div>
  <div class="CBody"><p>Contains the logic for the &quot;Angular Rate ZUPT Control&quot; command</p></div>
 </div>
 
-<a name="AngularRateZUPTControl.Constants"></a><a name="Topic868"></a><div class="CTopic TGroup LC">
+<a name="AngularRateZUPTControl.Constants"></a><a name="Topic886"></a><div class="CTopic TGroup LC">
  <div class="CTitle">Constants</div>
 </div>
 
-<a name="AngularRateZUPTControl.Packet_Bytes"></a><a name="Topic869"></a><div class="CTopic TConstant LC">
+<a name="AngularRateZUPTControl.Packet_Bytes"></a><a name="Topic887"></a><div class="CTopic TConstant LC">
  <div class="CTitle">Packet Bytes</div>
- <div class="CBody"><table class="CDefinitionList"><tr><td class="CDLEntry"><a name="AngularRateZUPTControl.CMD_ID"></a><a name="Topic870"></a>CMD_ID</td><td class="CDLDefinition"><p>CMD_EF_CMDED_ZERO_ANG_RATE_UPDATE - The <a href="../../../../index.html#File:MicroStrain/MIP/MipTypes.h:MipTypes.Command" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3123);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipTypes::Command</a> for this command</p></td></tr><tr><td class="CDLEntry"><a name="AngularRateZUPTControl.FIELD_DATA_BYTE"></a><a name="Topic871"></a>FIELD_DATA_BYTE</td><td class="CDLDefinition"><p>0x8E&nbsp; - The Data Field Descriptor byte</p></td></tr></table></div>
+ <div class="CBody"><table class="CDefinitionList"><tr><td class="CDLEntry"><a name="AngularRateZUPTControl.CMD_ID"></a><a name="Topic888"></a>CMD_ID</td><td class="CDLDefinition"><p>CMD_EF_CMDED_ZERO_ANG_RATE_UPDATE - The <a href="../../../../index.html#File:MicroStrain/MIP/MipTypes.h:MipTypes.Command" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3194);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipTypes::Command</a> for this command</p></td></tr><tr><td class="CDLEntry"><a name="AngularRateZUPTControl.FIELD_DATA_BYTE"></a><a name="Topic889"></a>FIELD_DATA_BYTE</td><td class="CDLDefinition"><p>0x8E&nbsp; - The Data Field Descriptor byte</p></td></tr></table></div>
 </div>
 
-<a name="AngularRateZUPTControl.Functions"></a><a name="Topic872"></a><div class="CTopic TGroup LC">
+<a name="AngularRateZUPTControl.Functions"></a><a name="Topic890"></a><div class="CTopic TGroup LC">
  <div class="CTitle">Functions</div>
 </div>
 
-<a name="AngularRateZUPTControl.buildCommand_get"></a><a name="Topic873"></a><div class="CTopic TFunction LC">
+<a name="AngularRateZUPTControl.buildCommand_get"></a><a name="Topic891"></a><div class="CTopic TFunction LC">
  <div class="CTitle">buildCommand_get</div>
- <div id="NDPrototype873" class="NDPrototype NoParameterForm"><span class="SHKeyword">static</span> <a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9405);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> buildCommand_get()</div>
+ <div id="NDPrototype891" class="NDPrototype NoParameterForm"><span class="SHKeyword">static</span> <a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9867);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> buildCommand_get()</div>
  <div class="CBody"><p>Builds the bytes for the &quot;get&quot; command.</p></div>
 </div>
 
-<a name="AngularRateZUPTControl.buildCommand_set"></a><a name="Topic874"></a><div class="CTopic TFunction LC">
+<a name="AngularRateZUPTControl.buildCommand_set"></a><a name="Topic892"></a><div class="CTopic TFunction LC">
  <div class="CTitle">buildCommand_set</div>
- <div id="NDPrototype874" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">static</span> <a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9405);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> buildCommand_set(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PModifierQualifier first"><span class="SHKeyword">const</span>&nbsp;</td><td class="PType"><a href="../../../../index.html#File:MicroStrain/Inertial/ExposedInertialTypes.h:ZUPTSettingsData" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,2137);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ZUPTSettingsData</a>&nbsp;</td><td class="PNamePrefix">&amp;</td><td class="PName last">settingsData</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
- <div class="CBody"><p>Builds the bytes for the &quot;set&quot; command.</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">settingsData<div class="CDLParameterType"><span class="SHKeyword">const</span> <a href="../../../../index.html#File:MicroStrain/Inertial/ExposedInertialTypes.h:ZUPTSettingsData" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,2137);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ZUPTSettingsData</a>&amp;</div></td><td class="CDLDefinition"><p>The ZUPTSettingsData object containing whether the command is enabled and the threshold.</p></td></tr></table></div>
+ <div id="NDPrototype892" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">static</span> <a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9867);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> buildCommand_set(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PModifierQualifier first"><span class="SHKeyword">const</span>&nbsp;</td><td class="PType"><a href="../../../../index.html#File:MicroStrain/Inertial/ExposedInertialTypes.h:ZUPTSettingsData" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,1784);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ZUPTSettingsData</a>&nbsp;</td><td class="PNamePrefix">&amp;</td><td class="PName last">settingsData</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
+ <div class="CBody"><p>Builds the bytes for the &quot;set&quot; command.</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">settingsData<div class="CDLParameterType"><span class="SHKeyword">const</span> <a href="../../../../index.html#File:MicroStrain/Inertial/ExposedInertialTypes.h:ZUPTSettingsData" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,1784);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ZUPTSettingsData</a>&amp;</div></td><td class="CDLDefinition"><p>The ZUPTSettingsData object containing whether the command is enabled and the threshold.</p></td></tr></table></div>
 </div>
 
-<a name="TareOrientation"></a><a name="Topic875"></a><div class="CTopic TClass LC">
+<a name="TareOrientation"></a><a name="Topic893"></a><div class="CTopic TClass LC">
  <div class="CTitle">TareOrientation</div>
- <div class="NDClassPrototype" id="NDClassPrototype875"><div class="CPEntry TClass Current"><div class="CPName">TareOrientation</div></div></div>
+ <div class="NDClassPrototype" id="NDClassPrototype893"><div class="CPEntry TClass Current"><div class="CPName">TareOrientation</div></div></div>
  <div class="CBody"><p>Contains the logic for the &quot;Tare Orientation&quot; command</p></div>
 </div>
 
-<a name="TareOrientation.Constants"></a><a name="Topic876"></a><div class="CTopic TGroup LC">
+<a name="TareOrientation.Constants"></a><a name="Topic894"></a><div class="CTopic TGroup LC">
  <div class="CTitle">Constants</div>
 </div>
 
-<a name="TareOrientation.Packet_Bytes"></a><a name="Topic877"></a><div class="CTopic TConstant LC">
+<a name="TareOrientation.Packet_Bytes"></a><a name="Topic895"></a><div class="CTopic TConstant LC">
  <div class="CTitle">Packet Bytes</div>
- <div class="CBody"><table class="CDefinitionList"><tr><td class="CDLEntry"><a name="TareOrientation.CMD_ID"></a><a name="Topic878"></a>CMD_ID</td><td class="CDLDefinition"><p>CMD_EF_TARE_ORIENT - The <a href="../../../../index.html#File:MicroStrain/MIP/MipTypes.h:MipTypes.Command" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3123);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipTypes::Command</a> for this command</p></td></tr><tr><td class="CDLEntry"><a name="TareOrientation.FIELD_DATA_BYTE"></a><a name="Topic879"></a>FIELD_DATA_BYTE</td><td class="CDLDefinition"><p>0x00 - The Data Field Descriptor byte as there is no data field</p></td></tr></table></div>
+ <div class="CBody"><table class="CDefinitionList"><tr><td class="CDLEntry"><a name="TareOrientation.CMD_ID"></a><a name="Topic896"></a>CMD_ID</td><td class="CDLDefinition"><p>CMD_EF_TARE_ORIENT - The <a href="../../../../index.html#File:MicroStrain/MIP/MipTypes.h:MipTypes.Command" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3194);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipTypes::Command</a> for this command</p></td></tr><tr><td class="CDLEntry"><a name="TareOrientation.FIELD_DATA_BYTE"></a><a name="Topic897"></a>FIELD_DATA_BYTE</td><td class="CDLDefinition"><p>0x00 - The Data Field Descriptor byte as there is no data field</p></td></tr></table></div>
 </div>
 
-<a name="TareOrientation.Functions"></a><a name="Topic880"></a><div class="CTopic TGroup LC">
+<a name="TareOrientation.Functions"></a><a name="Topic898"></a><div class="CTopic TGroup LC">
  <div class="CTitle">Functions</div>
 </div>
 
-<a name="TareOrientation.buildCommand_set"></a><a name="Topic881"></a><div class="CTopic TFunction LC">
+<a name="TareOrientation.buildCommand_set"></a><a name="Topic899"></a><div class="CTopic TFunction LC">
  <div class="CTitle">buildCommand_set</div>
- <div id="NDPrototype881" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">static</span> <a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9405);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> buildCommand_set(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PModifierQualifier first"><span class="SHKeyword">const</span>&nbsp;</td><td class="PType"><a href="../../../../index.html#File:MicroStrain/Inertial/ExposedInertialTypes.h:TareAxisValues" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,2356);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >TareAxisValues</a>&nbsp;</td><td class="PNamePrefix">&amp;</td><td class="PName last">axisValue</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
- <div class="CBody"><p>Builds the bytes for the &quot;set&quot; command.</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">functionSelector</td><td class="CDLDefinition"><p>The function selector for how to load and save data.</p></td></tr><tr><td class="CDLEntry">axisValue<div class="CDLParameterType"><span class="SHKeyword">const</span> <a href="../../../../index.html#File:MicroStrain/Inertial/ExposedInertialTypes.h:TareAxisValues" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,2356);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >TareAxisValues</a>&amp;</div></td><td class="CDLDefinition"><p>The TareAxisValues for which axes to tare.</p></td></tr></table></div>
+ <div id="NDPrototype899" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">static</span> <a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9867);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> buildCommand_set(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PModifierQualifier first"><span class="SHKeyword">const</span>&nbsp;</td><td class="PType"><a href="../../../../index.html#File:MicroStrain/Inertial/ExposedInertialTypes.h:TareAxisValues" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,2004);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >TareAxisValues</a>&nbsp;</td><td class="PNamePrefix">&amp;</td><td class="PName last">axisValue</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
+ <div class="CBody"><p>Builds the bytes for the &quot;set&quot; command.</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">functionSelector</td><td class="CDLDefinition"><p>The function selector for how to load and save data.</p></td></tr><tr><td class="CDLEntry">axisValue<div class="CDLParameterType"><span class="SHKeyword">const</span> <a href="../../../../index.html#File:MicroStrain/Inertial/ExposedInertialTypes.h:TareAxisValues" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,2004);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >TareAxisValues</a>&amp;</div></td><td class="CDLDefinition"><p>The TareAxisValues for which axes to tare.</p></td></tr></table></div>
 </div>
 
-<a name="AutoInitializeControl"></a><a name="Topic882"></a><div class="CTopic TClass LC">
+<a name="AutoInitializeControl"></a><a name="Topic900"></a><div class="CTopic TClass LC">
  <div class="CTitle">AutoInitializeControl</div>
- <div class="NDClassPrototype" id="NDClassPrototype882"><div class="CPEntry TClass Current"><div class="CPName">AutoInitializeControl</div></div></div>
+ <div class="NDClassPrototype" id="NDClassPrototype900"><div class="CPEntry TClass Current"><div class="CPName">AutoInitializeControl</div></div></div>
  <div class="CBody"><p>Contains the logic for the &quot;Auto-Initialization Control&quot; command</p></div>
 </div>
 
-<a name="AutoInitializeControl.Constants"></a><a name="Topic883"></a><div class="CTopic TGroup LC">
+<a name="AutoInitializeControl.Constants"></a><a name="Topic901"></a><div class="CTopic TGroup LC">
  <div class="CTitle">Constants</div>
 </div>
 
-<a name="AutoInitializeControl.Packet_Bytes"></a><a name="Topic884"></a><div class="CTopic TConstant LC">
+<a name="AutoInitializeControl.Packet_Bytes"></a><a name="Topic902"></a><div class="CTopic TConstant LC">
  <div class="CTitle">Packet Bytes</div>
- <div class="CBody"><table class="CDefinitionList"><tr><td class="CDLEntry"><a name="AutoInitializeControl.CMD_ID"></a><a name="Topic885"></a>CMD_ID</td><td class="CDLDefinition"><p>CMD_EF_AUTO_INIT_CTRL&nbsp; - The <a href="../../../../index.html#File:MicroStrain/MIP/MipTypes.h:MipTypes.Command" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3123);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipTypes::Command</a> for this command</p></td></tr><tr><td class="CDLEntry"><a name="AutoInitializeControl.FIELD_DATA_BYTE"></a><a name="Topic886"></a>FIELD_DATA_BYTE</td><td class="CDLDefinition"><p>0x88&nbsp; - The Data Field Descriptor byte</p></td></tr></table></div>
+ <div class="CBody"><table class="CDefinitionList"><tr><td class="CDLEntry"><a name="AutoInitializeControl.CMD_ID"></a><a name="Topic903"></a>CMD_ID</td><td class="CDLDefinition"><p>CMD_EF_AUTO_INIT_CTRL&nbsp; - The <a href="../../../../index.html#File:MicroStrain/MIP/MipTypes.h:MipTypes.Command" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3194);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipTypes::Command</a> for this command</p></td></tr><tr><td class="CDLEntry"><a name="AutoInitializeControl.FIELD_DATA_BYTE"></a><a name="Topic904"></a>FIELD_DATA_BYTE</td><td class="CDLDefinition"><p>0x88&nbsp; - The Data Field Descriptor byte</p></td></tr></table></div>
 </div>
 
-<a name="AutoInitializeControl.Functions"></a><a name="Topic887"></a><div class="CTopic TGroup LC">
+<a name="AutoInitializeControl.Functions"></a><a name="Topic905"></a><div class="CTopic TGroup LC">
  <div class="CTitle">Functions</div>
 </div>
 
-<a name="AutoInitializeControl.buildCommand_get"></a><a name="Topic888"></a><div class="CTopic TFunction LC">
+<a name="AutoInitializeControl.buildCommand_get"></a><a name="Topic906"></a><div class="CTopic TFunction LC">
  <div class="CTitle">buildCommand_get</div>
- <div id="NDPrototype888" class="NDPrototype NoParameterForm"><span class="SHKeyword">static</span> <a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9405);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> buildCommand_get()</div>
+ <div id="NDPrototype906" class="NDPrototype NoParameterForm"><span class="SHKeyword">static</span> <a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9867);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> buildCommand_get()</div>
  <div class="CBody"><p>Builds the bytes for the &quot;get&quot; command.</p></div>
 </div>
 
-<a name="AutoInitializeControl.buildCommand_set"></a><a name="Topic889"></a><div class="CTopic TFunction LC">
+<a name="AutoInitializeControl.buildCommand_set"></a><a name="Topic907"></a><div class="CTopic TFunction LC">
  <div class="CTitle">buildCommand_set</div>
- <div id="NDPrototype889" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">static</span> <a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9405);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> buildCommand_set(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PType first"><span class="SHKeyword">bool</span>&nbsp;</td><td class="PName last">enable</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
+ <div id="NDPrototype907" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">static</span> <a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9867);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> buildCommand_set(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PType first"><span class="SHKeyword">bool</span>&nbsp;</td><td class="PName last">enable</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
  <div class="CBody"><p>Builds the bytes for the &quot;set&quot; command.</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">enable<div class="CDLParameterType"><span class="SHKeyword">bool</span></div></td><td class="CDLDefinition"><p>Whether to enable (true) or disable (false) the automatic initialization.</p></td></tr></table></div>
 </div>
 
-<a name="CmdedVelZupt"></a><a name="Topic890"></a><div class="CTopic TClass LC">
+<a name="CmdedVelZupt"></a><a name="Topic908"></a><div class="CTopic TClass LC">
  <div class="CTitle">CmdedVelZupt</div>
- <div class="NDClassPrototype" id="NDClassPrototype890"><div class="CPEntry TClass Current"><div class="CPName">CmdedVelZupt</div></div></div>
+ <div class="NDClassPrototype" id="NDClassPrototype908"><div class="CPEntry TClass Current"><div class="CPName">CmdedVelZupt</div></div></div>
  <div class="CBody"><p>Contains the logic for the &quot;Commanded Zero Velocity Update&quot; command</p></div>
 </div>
 
-<a name="CmdedVelZupt.Constants"></a><a name="Topic891"></a><div class="CTopic TGroup LC">
+<a name="CmdedVelZupt.Constants"></a><a name="Topic909"></a><div class="CTopic TGroup LC">
  <div class="CTitle">Constants</div>
 </div>
 
-<a name="CmdedVelZupt.Packet_Bytes"></a><a name="Topic892"></a><div class="CTopic TConstant LC">
+<a name="CmdedVelZupt.Packet_Bytes"></a><a name="Topic910"></a><div class="CTopic TConstant LC">
  <div class="CTitle">Packet Bytes</div>
- <div class="CBody"><table class="CDefinitionList"><tr><td class="CDLEntry"><a name="CmdedVelZupt.CMD_ID"></a><a name="Topic893"></a>CMD_ID</td><td class="CDLDefinition"><p>CMD_EF_CMDED_ZERO_VEL_UPDATE&nbsp; - The <a href="../../../../index.html#File:MicroStrain/MIP/MipTypes.h:MipTypes.Command" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3123);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipTypes::Command</a> for this command</p></td></tr><tr><td class="CDLEntry"><a name="CmdedVelZupt.FIELD_DATA_BYTE"></a><a name="Topic894"></a>FIELD_DATA_BYTE</td><td class="CDLDefinition"><p>0xF1&nbsp; - The Data Field Descriptor byte</p></td></tr></table></div>
+ <div class="CBody"><table class="CDefinitionList"><tr><td class="CDLEntry"><a name="CmdedVelZupt.CMD_ID"></a><a name="Topic911"></a>CMD_ID</td><td class="CDLDefinition"><p>CMD_EF_CMDED_ZERO_VEL_UPDATE&nbsp; - The <a href="../../../../index.html#File:MicroStrain/MIP/MipTypes.h:MipTypes.Command" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3194);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipTypes::Command</a> for this command</p></td></tr><tr><td class="CDLEntry"><a name="CmdedVelZupt.FIELD_DATA_BYTE"></a><a name="Topic912"></a>FIELD_DATA_BYTE</td><td class="CDLDefinition"><p>0xF1&nbsp; - The Data Field Descriptor byte</p></td></tr></table></div>
 </div>
 
-<a name="CmdedVelZupt.Functions"></a><a name="Topic895"></a><div class="CTopic TGroup LC">
+<a name="CmdedVelZupt.Functions"></a><a name="Topic913"></a><div class="CTopic TGroup LC">
  <div class="CTitle">Functions</div>
 </div>
 
-<a name="CmdedVelZupt.buildCommand_get"></a><a name="Topic896"></a><div class="CTopic TFunction LC">
+<a name="CmdedVelZupt.buildCommand_get"></a><a name="Topic914"></a><div class="CTopic TFunction LC">
  <div class="CTitle">buildCommand_get</div>
- <div id="NDPrototype896" class="NDPrototype NoParameterForm"><span class="SHKeyword">static</span> <a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9405);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> buildCommand_get()</div>
+ <div id="NDPrototype914" class="NDPrototype NoParameterForm"><span class="SHKeyword">static</span> <a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9867);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> buildCommand_get()</div>
  <div class="CBody"><p>Builds the bytes for the &quot;get&quot; command.</p></div>
 </div>
 
-<a name="CmdedAngularZupt"></a><a name="Topic897"></a><div class="CTopic TClass LC">
+<a name="CmdedAngularZupt"></a><a name="Topic915"></a><div class="CTopic TClass LC">
  <div class="CTitle">CmdedAngularZupt</div>
- <div class="NDClassPrototype" id="NDClassPrototype897"><div class="CPEntry TClass Current"><div class="CPName">CmdedAngularZupt</div></div></div>
+ <div class="NDClassPrototype" id="NDClassPrototype915"><div class="CPEntry TClass Current"><div class="CPName">CmdedAngularZupt</div></div></div>
  <div class="CBody"><p>Contains the logic for the &quot;Commanded Zero Angular Rate Update&quot; command</p></div>
 </div>
 
-<a name="CmdedAngularZupt.Constants"></a><a name="Topic898"></a><div class="CTopic TGroup LC">
+<a name="CmdedAngularZupt.Constants"></a><a name="Topic916"></a><div class="CTopic TGroup LC">
  <div class="CTitle">Constants</div>
 </div>
 
-<a name="CmdedAngularZupt.Packet_Bytes"></a><a name="Topic899"></a><div class="CTopic TConstant LC">
+<a name="CmdedAngularZupt.Packet_Bytes"></a><a name="Topic917"></a><div class="CTopic TConstant LC">
  <div class="CTitle">Packet Bytes</div>
- <div class="CBody"><table class="CDefinitionList"><tr><td class="CDLEntry"><a name="CmdedAngularZupt.CMD_ID"></a><a name="Topic900"></a>CMD_ID</td><td class="CDLDefinition"><p>CMD_EF_CMDED_ZERO_ANG_RATE_UPDATE&nbsp; - The <a href="../../../../index.html#File:MicroStrain/MIP/MipTypes.h:MipTypes.Command" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3123);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipTypes::Command</a> for this command</p></td></tr><tr><td class="CDLEntry"><a name="CmdedAngularZupt.FIELD_DATA_BYTE"></a><a name="Topic901"></a>FIELD_DATA_BYTE</td><td class="CDLDefinition"><p>0xF1&nbsp; - The Data Field Descriptor byte</p></td></tr></table></div>
+ <div class="CBody"><table class="CDefinitionList"><tr><td class="CDLEntry"><a name="CmdedAngularZupt.CMD_ID"></a><a name="Topic918"></a>CMD_ID</td><td class="CDLDefinition"><p>CMD_EF_CMDED_ZERO_ANG_RATE_UPDATE&nbsp; - The <a href="../../../../index.html#File:MicroStrain/MIP/MipTypes.h:MipTypes.Command" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3194);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipTypes::Command</a> for this command</p></td></tr><tr><td class="CDLEntry"><a name="CmdedAngularZupt.FIELD_DATA_BYTE"></a><a name="Topic919"></a>FIELD_DATA_BYTE</td><td class="CDLDefinition"><p>0xF1&nbsp; - The Data Field Descriptor byte</p></td></tr></table></div>
 </div>
 
-<a name="CmdedAngularZupt.Functions"></a><a name="Topic902"></a><div class="CTopic TGroup LC">
+<a name="CmdedAngularZupt.Functions"></a><a name="Topic920"></a><div class="CTopic TGroup LC">
  <div class="CTitle">Functions</div>
 </div>
 
-<a name="CmdedAngularZupt.buildCommand_get"></a><a name="Topic903"></a><div class="CTopic TFunction LC">
+<a name="CmdedAngularZupt.buildCommand_get"></a><a name="Topic921"></a><div class="CTopic TFunction LC">
  <div class="CTitle">buildCommand_get</div>
- <div id="NDPrototype903" class="NDPrototype NoParameterForm"><span class="SHKeyword">static</span> <a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9405);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> buildCommand_get()</div>
+ <div id="NDPrototype921" class="NDPrototype NoParameterForm"><span class="SHKeyword">static</span> <a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9867);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> buildCommand_get()</div>
  <div class="CBody"><p>Builds the bytes for the &quot;get&quot; command.</p></div>
 </div>
 
-<a name="SensorToVehicFrameTrans"></a><a name="Topic904"></a><div class="CTopic TClass LC">
+<a name="SensorToVehicFrameTrans"></a><a name="Topic922"></a><div class="CTopic TClass LC">
  <div class="CTitle">SensorToVehicFrameTrans</div>
- <div class="NDClassPrototype" id="NDClassPrototype904"><div class="CPEntry TClass Current"><div class="CPName">SensorToVehicFrameTrans</div></div></div>
+ <div class="NDClassPrototype" id="NDClassPrototype922"><div class="CPEntry TClass Current"><div class="CPName">SensorToVehicFrameTrans</div></div></div>
  <div class="CBody"><p>Contains the logic for the &quot;Sensor to Vehicle Frame Transformation&quot; command</p></div>
 </div>
 
-<a name="SensorToVehicFrameTrans.Constants"></a><a name="Topic905"></a><div class="CTopic TGroup LC">
+<a name="SensorToVehicFrameTrans.Constants"></a><a name="Topic923"></a><div class="CTopic TGroup LC">
  <div class="CTitle">Constants</div>
 </div>
 
-<a name="SensorToVehicFrameTrans.Packet_Bytes"></a><a name="Topic906"></a><div class="CTopic TConstant LC">
+<a name="SensorToVehicFrameTrans.Packet_Bytes"></a><a name="Topic924"></a><div class="CTopic TConstant LC">
  <div class="CTitle">Packet Bytes</div>
- <div class="CBody"><table class="CDefinitionList"><tr><td class="CDLEntry"><a name="SensorToVehicFrameTrans.CMD_ID"></a><a name="Topic907"></a>CMD_ID</td><td class="CDLDefinition"><p>CMD_EF_SENS_VEHIC_FRAME_ROTATION_EULER&nbsp; - The <a href="../../../../index.html#File:MicroStrain/MIP/MipTypes.h:MipTypes.Command" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3123);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipTypes::Command</a> for this command</p></td></tr><tr><td class="CDLEntry"><a name="SensorToVehicFrameTrans.FIELD_DATA_BYTE"></a><a name="Topic908"></a>FIELD_DATA_BYTE</td><td class="CDLDefinition"><p>0x81&nbsp; - The Data Field Descriptor byte</p></td></tr></table></div>
+ <div class="CBody"><table class="CDefinitionList"><tr><td class="CDLEntry"><a name="SensorToVehicFrameTrans.CMD_ID"></a><a name="Topic925"></a>CMD_ID</td><td class="CDLDefinition"><p>CMD_EF_SENS_VEHIC_FRAME_ROTATION_EULER&nbsp; - The <a href="../../../../index.html#File:MicroStrain/MIP/MipTypes.h:MipTypes.Command" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3194);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipTypes::Command</a> for this command</p></td></tr><tr><td class="CDLEntry"><a name="SensorToVehicFrameTrans.FIELD_DATA_BYTE"></a><a name="Topic926"></a>FIELD_DATA_BYTE</td><td class="CDLDefinition"><p>0x81&nbsp; - The Data Field Descriptor byte</p></td></tr></table></div>
 </div>
 
-<a name="SensorToVehicFrameTrans.Functions"></a><a name="Topic909"></a><div class="CTopic TGroup LC">
+<a name="SensorToVehicFrameTrans.Functions"></a><a name="Topic927"></a><div class="CTopic TGroup LC">
  <div class="CTitle">Functions</div>
 </div>
 
-<a name="SensorToVehicFrameTrans.buildCommand_get"></a><a name="Topic910"></a><div class="CTopic TFunction LC">
+<a name="SensorToVehicFrameTrans.buildCommand_get"></a><a name="Topic928"></a><div class="CTopic TFunction LC">
  <div class="CTitle">buildCommand_get</div>
- <div id="NDPrototype910" class="NDPrototype NoParameterForm"><span class="SHKeyword">static</span> <a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9405);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> buildCommand_get()</div>
+ <div id="NDPrototype928" class="NDPrototype NoParameterForm"><span class="SHKeyword">static</span> <a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9867);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> buildCommand_get()</div>
  <div class="CBody"><p>Builds the bytes for the &quot;get&quot; command.</p></div>
 </div>
 
-<a name="SensorToVehicFrameTrans.buildCommand_set"></a><a name="Topic911"></a><div class="CTopic TFunction LC">
+<a name="SensorToVehicFrameTrans.buildCommand_set"></a><a name="Topic929"></a><div class="CTopic TFunction LC">
  <div class="CTitle">buildCommand_set</div>
- <div id="NDPrototype911" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">static</span> <a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9405);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> buildCommand_set(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PModifierQualifier first"><span class="SHKeyword">const</span>&nbsp;</td><td class="PType"><a href="../../../../index.html#File:MicroStrain/Inertial/EulerAngles.h:EulerAngles" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,2682);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >EulerAngles</a>&nbsp;</td><td class="PNamePrefix">&amp;</td><td class="PName last">angles</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
- <div class="CBody"><p>Builds the bytes for the &quot;set&quot; command.</p><div class="CHeading">Parameters</div><p>angles-&nbsp; The <a href="../../../../index.html#File:MicroStrain/Inertial/EulerAngles.h:EulerAngles" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,2682);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >EulerAngles</a> containing the roll, pitch, and yaw (in radians).</p></div>
+ <div id="NDPrototype929" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">static</span> <a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9867);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> buildCommand_set(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PModifierQualifier first"><span class="SHKeyword">const</span>&nbsp;</td><td class="PType"><a href="../../../../index.html#File:MicroStrain/Inertial/EulerAngles.h:EulerAngles" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,2730);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >EulerAngles</a>&nbsp;</td><td class="PNamePrefix">&amp;</td><td class="PName last">angles</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
+ <div class="CBody"><p>Builds the bytes for the &quot;set&quot; command.</p><div class="CHeading">Parameters</div><p>angles-&nbsp; The <a href="../../../../index.html#File:MicroStrain/Inertial/EulerAngles.h:EulerAngles" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,2730);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >EulerAngles</a> containing the roll, pitch, and yaw (in radians).</p></div>
 </div>
 
-<a name="SensorToVehicFrameOffset"></a><a name="Topic912"></a><div class="CTopic TClass LC">
+<a name="SensorToVehicFrameOffset"></a><a name="Topic930"></a><div class="CTopic TClass LC">
  <div class="CTitle">SensorToVehicFrameOffset</div>
- <div class="NDClassPrototype" id="NDClassPrototype912"><div class="CPEntry TClass Current"><div class="CPName">SensorToVehicFrameOffset</div></div></div>
+ <div class="NDClassPrototype" id="NDClassPrototype930"><div class="CPEntry TClass Current"><div class="CPName">SensorToVehicFrameOffset</div></div></div>
  <div class="CBody"><p>Contains the logic for the &quot;Sensor to Vehicle Frame Offset&quot; command</p></div>
 </div>
 
-<a name="SensorToVehicFrameOffset.Constants"></a><a name="Topic913"></a><div class="CTopic TGroup LC">
+<a name="SensorToVehicFrameOffset.Constants"></a><a name="Topic931"></a><div class="CTopic TGroup LC">
  <div class="CTitle">Constants</div>
 </div>
 
-<a name="SensorToVehicFrameOffset.Packet_Bytes"></a><a name="Topic914"></a><div class="CTopic TConstant LC">
+<a name="SensorToVehicFrameOffset.Packet_Bytes"></a><a name="Topic932"></a><div class="CTopic TConstant LC">
  <div class="CTitle">Packet Bytes</div>
- <div class="CBody"><table class="CDefinitionList"><tr><td class="CDLEntry"><a name="SensorToVehicFrameOffset.CMD_ID"></a><a name="Topic915"></a>CMD_ID</td><td class="CDLDefinition"><p>CMD_EF_SENS_VEHIC_FRAME_OFFSET&nbsp; - The <a href="../../../../index.html#File:MicroStrain/MIP/MipTypes.h:MipTypes.Command" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3123);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipTypes::Command</a> for this command</p></td></tr><tr><td class="CDLEntry"><a name="SensorToVehicFrameOffset.FIELD_DATA_BYTE"></a><a name="Topic916"></a>FIELD_DATA_BYTE</td><td class="CDLDefinition"><p>0x82&nbsp; - The Data Field Descriptor byte</p></td></tr></table></div>
+ <div class="CBody"><table class="CDefinitionList"><tr><td class="CDLEntry"><a name="SensorToVehicFrameOffset.CMD_ID"></a><a name="Topic933"></a>CMD_ID</td><td class="CDLDefinition"><p>CMD_EF_SENS_VEHIC_FRAME_OFFSET&nbsp; - The <a href="../../../../index.html#File:MicroStrain/MIP/MipTypes.h:MipTypes.Command" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3194);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipTypes::Command</a> for this command</p></td></tr><tr><td class="CDLEntry"><a name="SensorToVehicFrameOffset.FIELD_DATA_BYTE"></a><a name="Topic934"></a>FIELD_DATA_BYTE</td><td class="CDLDefinition"><p>0x82&nbsp; - The Data Field Descriptor byte</p></td></tr></table></div>
 </div>
 
-<a name="SensorToVehicFrameOffset.Functions"></a><a name="Topic917"></a><div class="CTopic TGroup LC">
+<a name="SensorToVehicFrameOffset.Functions"></a><a name="Topic935"></a><div class="CTopic TGroup LC">
  <div class="CTitle">Functions</div>
 </div>
 
-<a name="SensorToVehicFrameOffset.buildCommand_get"></a><a name="Topic918"></a><div class="CTopic TFunction LC">
+<a name="SensorToVehicFrameOffset.buildCommand_get"></a><a name="Topic936"></a><div class="CTopic TFunction LC">
  <div class="CTitle">buildCommand_get</div>
- <div id="NDPrototype918" class="NDPrototype NoParameterForm"><span class="SHKeyword">static</span> <a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9405);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> buildCommand_get()</div>
+ <div id="NDPrototype936" class="NDPrototype NoParameterForm"><span class="SHKeyword">static</span> <a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9867);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> buildCommand_get()</div>
  <div class="CBody"><p>Builds the bytes for the &quot;get&quot; command.</p></div>
 </div>
 
-<a name="SensorToVehicFrameOffset.buildCommand_set"></a><a name="Topic919"></a><div class="CTopic TFunction LC">
+<a name="SensorToVehicFrameOffset.buildCommand_set"></a><a name="Topic937"></a><div class="CTopic TFunction LC">
  <div class="CTitle">buildCommand_set</div>
- <div id="NDPrototype919" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">static</span> <a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9405);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> buildCommand_set(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PModifierQualifier first"><span class="SHKeyword">const</span>&nbsp;</td><td class="PType"><a href="../../../../index.html#File:MicroStrain/Inertial/PositionOffset.h:PositionOffset" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,1588);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >PositionOffset</a>&nbsp;</td><td class="PNamePrefix">&amp;</td><td class="PName last">offset</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
- <div class="CBody"><p>Builds the bytes for the &quot;set&quot; command.</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">offset<div class="CDLParameterType"><span class="SHKeyword">const</span> <a href="../../../../index.html#File:MicroStrain/Inertial/PositionOffset.h:PositionOffset" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,1588);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >PositionOffset</a>&amp;</div></td><td class="CDLDefinition"><p>The <a href="../../../../index.html#File:MicroStrain/Inertial/PositionOffset.h:PositionOffset" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,1588);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >PositionOffset</a> in meters.</p></td></tr></table></div>
+ <div id="NDPrototype937" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">static</span> <a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9867);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> buildCommand_set(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PModifierQualifier first"><span class="SHKeyword">const</span>&nbsp;</td><td class="PType"><a href="../../../../index.html#File:MicroStrain/Inertial/PositionVelocity.h:PositionOffset" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,1442);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >PositionOffset</a>&nbsp;</td><td class="PNamePrefix">&amp;</td><td class="PName last">offset</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
+ <div class="CBody"><p>Builds the bytes for the &quot;set&quot; command.</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">offset<div class="CDLParameterType"><span class="SHKeyword">const</span> <a href="../../../../index.html#File:MicroStrain/Inertial/PositionVelocity.h:PositionOffset" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,1442);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >PositionOffset</a>&amp;</div></td><td class="CDLDefinition"><p>The <a href="../../../../index.html#File:MicroStrain/Inertial/PositionVelocity.h:PositionOffset" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,1442);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >PositionOffset</a> in meters.</p></td></tr></table></div>
 </div>
 
-<a name="AntennaOffset"></a><a name="Topic920"></a><div class="CTopic TClass LC">
+<a name="AntennaOffset"></a><a name="Topic938"></a><div class="CTopic TClass LC">
  <div class="CTitle">AntennaOffset</div>
- <div class="NDClassPrototype" id="NDClassPrototype920"><div class="CPEntry TClass Current"><div class="CPName">AntennaOffset</div></div></div>
+ <div class="NDClassPrototype" id="NDClassPrototype938"><div class="CPEntry TClass Current"><div class="CPName">AntennaOffset</div></div></div>
  <div class="CBody"><p>Contains the logic for the &quot;Antenna Offset&quot; command</p></div>
 </div>
 
-<a name="AntennaOffset.Constants"></a><a name="Topic921"></a><div class="CTopic TGroup LC">
+<a name="AntennaOffset.Constants"></a><a name="Topic939"></a><div class="CTopic TGroup LC">
  <div class="CTitle">Constants</div>
 </div>
 
-<a name="AntennaOffset.Packet_Bytes"></a><a name="Topic922"></a><div class="CTopic TConstant LC">
+<a name="AntennaOffset.Packet_Bytes"></a><a name="Topic940"></a><div class="CTopic TConstant LC">
  <div class="CTitle">Packet Bytes</div>
- <div class="CBody"><table class="CDefinitionList"><tr><td class="CDLEntry"><a name="AntennaOffset.CMD_ID"></a><a name="Topic923"></a>CMD_ID</td><td class="CDLDefinition"><p>CMD_EF_ANTENNA_OFFSET&nbsp; - The <a href="../../../../index.html#File:MicroStrain/MIP/MipTypes.h:MipTypes.Command" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3123);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipTypes::Command</a> for this command</p></td></tr><tr><td class="CDLEntry"><a name="AntennaOffset.FIELD_DATA_BYTE"></a><a name="Topic924"></a>FIELD_DATA_BYTE</td><td class="CDLDefinition"><p>0x83&nbsp; - The Data Field Descriptor byte</p></td></tr></table></div>
+ <div class="CBody"><table class="CDefinitionList"><tr><td class="CDLEntry"><a name="AntennaOffset.CMD_ID"></a><a name="Topic941"></a>CMD_ID</td><td class="CDLDefinition"><p>CMD_EF_ANTENNA_OFFSET&nbsp; - The <a href="../../../../index.html#File:MicroStrain/MIP/MipTypes.h:MipTypes.Command" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,3194);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >MipTypes::Command</a> for this command</p></td></tr><tr><td class="CDLEntry"><a name="AntennaOffset.FIELD_DATA_BYTE"></a><a name="Topic942"></a>FIELD_DATA_BYTE</td><td class="CDLDefinition"><p>0x83&nbsp; - The Data Field Descriptor byte</p></td></tr></table></div>
 </div>
 
-<a name="AntennaOffset.Functions"></a><a name="Topic925"></a><div class="CTopic TGroup LC">
+<a name="AntennaOffset.Functions"></a><a name="Topic943"></a><div class="CTopic TGroup LC">
  <div class="CTitle">Functions</div>
 </div>
 
-<a name="AntennaOffset.buildCommand_get"></a><a name="Topic926"></a><div class="CTopic TFunction LC">
+<a name="AntennaOffset.buildCommand_get"></a><a name="Topic944"></a><div class="CTopic TFunction LC">
  <div class="CTitle">buildCommand_get</div>
- <div id="NDPrototype926" class="NDPrototype NoParameterForm"><span class="SHKeyword">static</span> <a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9405);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> buildCommand_get()</div>
+ <div id="NDPrototype944" class="NDPrototype NoParameterForm"><span class="SHKeyword">static</span> <a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9867);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> buildCommand_get()</div>
  <div class="CBody"><p>Builds the bytes for the &quot;get&quot; command.</p></div>
 </div>
 
-<a name="AntennaOffset.buildCommand_set"></a><a name="Topic927"></a><div class="CTopic TFunction LC last">
+<a name="AntennaOffset.buildCommand_set"></a><a name="Topic945"></a><div class="CTopic TFunction LC last">
  <div class="CTitle">buildCommand_set</div>
- <div id="NDPrototype927" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">static</span> <a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9405);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> buildCommand_set(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PModifierQualifier first"><span class="SHKeyword">const</span>&nbsp;</td><td class="PType"><a href="../../../../index.html#File:MicroStrain/Inertial/PositionOffset.h:PositionOffset" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,1588);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >PositionOffset</a>&nbsp;</td><td class="PNamePrefix">&amp;</td><td class="PName last">offset</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
- <div class="CBody"><p>Builds the bytes for the &quot;set&quot; command.</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">offset<div class="CDLParameterType"><span class="SHKeyword">const</span> <a href="../../../../index.html#File:MicroStrain/Inertial/PositionOffset.h:PositionOffset" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,1588);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >PositionOffset</a>&amp;</div></td><td class="CDLDefinition"><p>The <a href="../../../../index.html#File:MicroStrain/Inertial/PositionOffset.h:PositionOffset" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,1588);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >PositionOffset</a> in meters.</p></td></tr></table></div>
+ <div id="NDPrototype945" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">static</span> <a href="../../../../index.html#File:MicroStrain/ByteStream.h:ByteStream" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,9867);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ByteStream</a> buildCommand_set(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PModifierQualifier first"><span class="SHKeyword">const</span>&nbsp;</td><td class="PType"><a href="../../../../index.html#File:MicroStrain/Inertial/PositionVelocity.h:PositionOffset" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,1442);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >PositionOffset</a>&nbsp;</td><td class="PNamePrefix">&amp;</td><td class="PName last">offset</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
+ <div class="CBody"><p>Builds the bytes for the &quot;set&quot; command.</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">offset<div class="CDLParameterType"><span class="SHKeyword">const</span> <a href="../../../../index.html#File:MicroStrain/Inertial/PositionVelocity.h:PositionOffset" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,1442);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >PositionOffset</a>&amp;</div></td><td class="CDLDefinition"><p>The <a href="../../../../index.html#File:MicroStrain/Inertial/PositionVelocity.h:PositionOffset" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,1442);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >PositionOffset</a> in meters.</p></td></tr></table></div>
 </div>
 
 </body></html>

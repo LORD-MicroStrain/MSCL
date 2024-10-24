@@ -8,49 +8,31 @@
 
 <body onload="NDLoader.OnLoad('Content');" class="NDPage NDContentPage">
 
-<a name="Topic1440"></a><div class="CTopic TStruct LC first">
+<a name="Topic2237"></a><div class="CTopic TStruct LC first">
  <div class="CTitle">CV7ContinuousBIT_Filter_General</div>
  <div class="CBody"><p>Continuous Built-In Test flags for general filter information</p><p>Bits 64-71 of the original 128 bit Continuous Built-In Test flags</p></div>
 </div>
 
-<a name="CV7ContinuousBIT_Filter_General"></a><a name="Topic1441"></a><div class="CTopic TFunction LC">
+<a name="CV7ContinuousBIT_Filter_General"></a><a name="Topic2238"></a><div class="CTopic TFunction LC">
  <div class="CTitle">CV7ContinuousBIT_Filter_General</div>
- <div id="NDPrototype1441" class="NDPrototype NoParameterForm">CV7ContinuousBIT_Filter_General()</div>
+ <div id="NDPrototype2238" class="NDPrototype NoParameterForm">CV7ContinuousBIT_Filter_General() = default</div>
 </div>
 
-<a name="CV7ContinuousBIT_Filter_General(2)"></a><a name="Topic1442"></a><div class="CTopic TFunction LC">
+<a name="CV7ContinuousBIT_Filter_General(2)"></a><a name="Topic2239"></a><div class="CTopic TFunction LC">
  <div class="CTitle">CV7ContinuousBIT_Filter_General</div>
- <div id="NDPrototype1442" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters">CV7ContinuousBIT_Filter_General(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PModifierQualifier first"><span class="SHKeyword">const</span>&nbsp;</td><td class="PType"><span class="SHKeyword">uint8</span>&nbsp;</td><td class="PName last">bits</td></tr></table></td><td class="PAfterParameters">) : Bitfield(static_cast&lt;<span class="SHKeyword">uint64</span>&gt;(bits))</td></tr></table></div>
+ <div id="NDPrototype2239" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">explicit</span> CV7ContinuousBIT_Filter_General(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PModifierQualifier first"><span class="SHKeyword">const</span>&nbsp;</td><td class="PType"><span class="SHKeyword">uint8</span>&nbsp;</td><td class="PName last">bits</td></tr></table></td><td class="PAfterParameters">) : <a href="../../index.html#CClass:ContinuousBIT_Filter_General" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,2186);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ContinuousBIT_Filter_General</a>(bits)</td></tr></table></div>
  <div class="CBody"><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">bits<div class="CDLParameterType"><span class="SHKeyword">const</span> <span class="SHKeyword">uint8</span></div></td><td class="CDLDefinition"><p>Bits 64-71 of the original 128 bit Continuous Built-In Test flags</p></td></tr></table></div>
 </div>
 
-<a name="Bitmasks"></a><a name="Topic1443"></a><div class="CTopic TConstant LC">
+<a name="Bitmasks"></a><a name="Topic2240"></a><div class="CTopic TConstant LC">
  <div class="CTitle">Bitmasks</div>
- <div class="CBody"><p>Bitmasks for general filter flags</p><div class="CHeading">Note</div><p>These masks are shifted 64 bits to the right from the original 128 bitmask to have a 0 index at bit 64</p><table class="CDefinitionList"><tr><td class="CDLEntry"><a name="FAULT"></a><a name="Topic1444"></a>FAULT</td><td class="CDLDefinition"><p>0x01 - Filter processes will not initialize</p></td></tr><tr><td class="CDLEntry"><a name="TIMING_OVERRUN"></a><a name="Topic1445"></a>TIMING_OVERRUN</td><td class="CDLDefinition"><p>0x04 - Filter processes are taking longer than their allotted time</p></td></tr><tr><td class="CDLEntry"><a name="TIMING_UNDERRUN"></a><a name="Topic1446"></a>TIMING_UNDERRUN</td><td class="CDLDefinition"><p>0x08 - Filter processes are being skipped</p></td></tr></table></div>
+ <div class="CBody"><p>Bitmasks for general filter flags</p><div class="CHeading">Note</div><p>These masks are shifted 64 bits to the right from the original 128 bitmask to have a 0 index at bit 64</p><table class="CDefinitionList"><tr><td class="CDLEntry"><a name="FAULT"></a><a name="Topic2241"></a>FAULT</td><td class="CDLDefinition"><p>0x01 - Filter processes will not initialize</p></td></tr></table></div>
 </div>
 
-<a name="flags"></a><a name="Topic1447"></a><div class="CTopic TFunction LC">
- <div class="CTitle">flags</div>
- <div id="NDPrototype1447" class="NDPrototype NoParameterForm"><span class="SHKeyword">uint8</span> flags() <span class="SHKeyword">const</span></div>
- <div class="CBody"><p>Gets the value of the general filter flags (bits 64-71)</p><div class="CHeading">Returns</div><table class="CDefinitionList"><tr><td class="CDLEntry">uint8</td><td class="CDLDefinition"><p>Value of the general filter flags</p></td></tr></table></div>
-</div>
-
-<a name="fault"></a><a name="Topic1448"></a><div class="CTopic TFunction LC">
+<a name="fault"></a><a name="Topic2242"></a><div class="CTopic TFunction LC last">
  <div class="CTitle">fault</div>
- <div id="NDPrototype1448" class="NDPrototype NoParameterForm"><span class="SHKeyword">bool</span> fault() <span class="SHKeyword">const</span></div>
- <div class="CBody"><p>Gets the value of the Filter Fault bit</p><div class="CHeading">Returns</div><table class="CDefinitionList"><tr><td class="CDLEntry">bool</td><td class="CDLDefinition"><p>true: Filter processes will not initialize</p></td></tr></table></div>
-</div>
-
-<a name="timingOverrun"></a><a name="Topic1449"></a><div class="CTopic TFunction LC">
- <div class="CTitle">timingOverrun</div>
- <div id="NDPrototype1449" class="NDPrototype NoParameterForm"><span class="SHKeyword">bool</span> timingOverrun() <span class="SHKeyword">const</span></div>
- <div class="CBody"><p>Gets the value of the Filter Timing Overrun bit</p><div class="CHeading">Returns</div><table class="CDefinitionList"><tr><td class="CDLEntry">bool</td><td class="CDLDefinition"><p>true: Filter processes are taking longer than their allotted time</p></td></tr></table></div>
-</div>
-
-<a name="timingUnderrun"></a><a name="Topic1450"></a><div class="CTopic TFunction LC last">
- <div class="CTitle">timingUnderrun</div>
- <div id="NDPrototype1450" class="NDPrototype NoParameterForm"><span class="SHKeyword">bool</span> timingUnderrun() <span class="SHKeyword">const</span></div>
- <div class="CBody"><p>Gets the value of the Filter Timing Underrun bit</p><div class="CHeading">Returns</div><table class="CDefinitionList"><tr><td class="CDLEntry">bool</td><td class="CDLDefinition"><p>true: Filter processes are being skipped</p></td></tr></table></div>
+ <div id="NDPrototype2242" class="NDPrototype NoParameterForm"><span class="SHKeyword">bool</span> fault() <span class="SHKeyword">const</span></div>
+ <div class="CBody"><p>Gets the value of the Filter Fault bit (bit 64)</p><div class="CHeading">Returns</div><table class="CDefinitionList"><tr><td class="CDLEntry">bool</td><td class="CDLDefinition"><p>true: Filter processes will not initialize</p></td></tr></table></div>
 </div>
 
 </body></html>

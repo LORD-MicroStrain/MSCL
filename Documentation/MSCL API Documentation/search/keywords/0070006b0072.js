@@ -1,1 +1,0 @@
-NDSearch.OnPrefixDataLoaded("pkr",["Enumeration"],[["PKRA",,[["NmeaMessageFormat",,,,0,"File:MicroStrain/Inertial/ExposedInertialTypes.h:NmeaMessageFormat.PKRA","CClass:NmeaMessageFormat:PKRA"]]],["PKRR",,[["NmeaMessageFormat",,,,0,"File:MicroStrain/Inertial/ExposedInertialTypes.h:NmeaMessageFormat.PKRR","CClass:NmeaMessageFormat:PKRR"]]]]);

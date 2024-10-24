@@ -8,60 +8,60 @@
 
 <body onload="NDLoader.OnLoad('Content');" class="NDPage NDContentPage">
 
-<a name="WsdaFinder"></a><a name="Topic1"></a><div class="CTopic TSection LC first">
+<a name="WsdaFinder"></a><a name="Topic72"></a><div class="CTopic TSection LC first">
  <div class="CTitle">WsdaFinder</div>
 </div>
 
-<a name="WsdaInfo"></a><a name="Topic2"></a><div class="CTopic TClass LC">
+<a name="WsdaInfo"></a><a name="Topic73"></a><div class="CTopic TClass LC">
  <div class="CTitle">WsdaInfo</div>
- <div class="NDClassPrototype" id="NDClassPrototype2"><div class="CPEntry TClass Current"><div class="CPName">WsdaInfo</div></div></div>
+ <div class="NDClassPrototype" id="NDClassPrototype73"><div class="CPEntry TClass Current"><div class="CPName">WsdaInfo</div></div></div>
  <div class="CBody"><p>Holds info on a discovered WSDA.</p></div>
 </div>
 
-<a name="WsdaInfo.ipAddress"></a><a name="Topic3"></a><div class="CTopic TFunction LC">
+<a name="WsdaInfo.ipAddress"></a><a name="Topic74"></a><div class="CTopic TFunction LC">
  <div class="CTitle">ipAddress</div>
- <div id="NDPrototype3" class="NDPrototype NoParameterForm">std::<span class="SHKeyword">string</span> ipAddress() <span class="SHKeyword">const</span></div>
+ <div id="NDPrototype74" class="NDPrototype NoParameterForm">std::<span class="SHKeyword">string</span> ipAddress() <span class="SHKeyword">const</span></div>
  <div class="CBody"><p>Gets the IP Address of the WSDA.</p></div>
 </div>
 
-<a name="WsdaInfo.port"></a><a name="Topic4"></a><div class="CTopic TFunction LC">
+<a name="WsdaInfo.port"></a><a name="Topic75"></a><div class="CTopic TFunction LC">
  <div class="CTitle">port</div>
- <div id="NDPrototype4" class="NDPrototype NoParameterForm"><span class="SHKeyword">uint16</span> port() <span class="SHKeyword">const</span></div>
+ <div id="NDPrototype75" class="NDPrototype NoParameterForm"><span class="SHKeyword">uint16</span> port() <span class="SHKeyword">const</span></div>
  <div class="CBody"><p>Gets the port number of the WSDA.</p></div>
 </div>
 
-<a name="WsdaInfo.name"></a><a name="Topic5"></a><div class="CTopic TFunction LC">
+<a name="WsdaInfo.name"></a><a name="Topic76"></a><div class="CTopic TFunction LC">
  <div class="CTitle">name</div>
- <div id="NDPrototype5" class="NDPrototype NoParameterForm">std::<span class="SHKeyword">string</span> name() <span class="SHKeyword">const</span></div>
+ <div id="NDPrototype76" class="NDPrototype NoParameterForm">std::<span class="SHKeyword">string</span> name() <span class="SHKeyword">const</span></div>
  <div class="CBody"><p>Gets the name of the WSDA.</p></div>
 </div>
 
-<a name="WsdaFinder(2)"></a><a name="Topic6"></a><div class="CTopic TClass LC">
+<a name="WsdaFinder(2)"></a><a name="Topic77"></a><div class="CTopic TClass LC">
  <div class="CTitle">WsdaFinder</div>
- <div class="NDClassPrototype" id="NDClassPrototype6"><div class="CPEntry TClass Current"><div class="CPName">WsdaFinder</div></div></div>
+ <div class="NDClassPrototype" id="NDClassPrototype77"><div class="CPEntry TClass Current"><div class="CPName">WsdaFinder</div></div></div>
  <div class="CBody"><p>Discovers upnp WSDA devices. (WINDOWS ONLY)</p></div>
 </div>
 
-<a name="WsdaFinder.WsdaMap"></a><a name="Topic7"></a><div class="CTopic TType LC">
+<a name="WsdaFinder.WsdaMap"></a><a name="Topic78"></a><div class="CTopic TType LC">
  <div class="CTitle">WsdaMap</div>
- <div class="CBody"><p>Typedef for a uuid to <a href="../../index.html#File:Communication/WsdaFinder.h:WsdaInfo" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,2);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >WsdaInfo</a> map.</p></div>
+ <div class="CBody"><p>Typedef for a uuid to <a href="../../index.html#File:Communication/WsdaFinder.h:WsdaInfo" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,73);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >WsdaInfo</a> map.</p></div>
 </div>
 
-<a name="WsdaFinder.~WsdaFinder"></a><a name="Topic8"></a><div class="CTopic TFunction LC">
+<a name="WsdaFinder.~WsdaFinder"></a><a name="Topic79"></a><div class="CTopic TFunction LC">
  <div class="CTitle">~WsdaFinder</div>
- <div id="NDPrototype8" class="NDPrototype NoParameterForm">~WsdaFinder()</div>
+ <div id="NDPrototype79" class="NDPrototype NoParameterForm">~WsdaFinder()</div>
  <div class="CBody"><p>Destroys the WsdaFinder object, stopping the search.</p></div>
 </div>
 
-<a name="WsdaFinder.found"></a><a name="Topic9"></a><div class="CTopic TFunction LC">
+<a name="WsdaFinder.found"></a><a name="Topic80"></a><div class="CTopic TFunction LC">
  <div class="CTitle">found</div>
- <div id="NDPrototype9" class="NDPrototype NoParameterForm"><a href="../../index.html#File:Communication/WsdaFinder.h:WsdaFinder.WsdaMap" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,7);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >WsdaFinder::WsdaMap</a> found()</div>
- <div class="CBody"><p>Gets a copy of the <a href="../../index.html#File:Communication/WsdaFinder.h:WsdaFinder.WsdaMap" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,7);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >WsdaMap</a> that contains the WSDAs as they are known on the local network. If a WSDA is removed from the network, it will also be removed from this map if it was previously found.</p><div class="CHeading">Returns</div><p>A <a href="../../index.html#File:Communication/WsdaFinder.h:WsdaFinder.WsdaMap" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,7);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >WsdaMap</a> of the WSDAs that were found on the network.</p></div>
+ <div id="NDPrototype80" class="NDPrototype NoParameterForm"><a href="../../index.html#File:Communication/WsdaFinder.h:WsdaFinder.WsdaMap" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,78);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >WsdaFinder::WsdaMap</a> found()</div>
+ <div class="CBody"><p>Gets a copy of the <a href="../../index.html#File:Communication/WsdaFinder.h:WsdaFinder.WsdaMap" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,78);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >WsdaMap</a> that contains the WSDAs as they are known on the local network. If a WSDA is removed from the network, it will also be removed from this map if it was previously found.</p><div class="CHeading">Returns</div><p>A <a href="../../index.html#File:Communication/WsdaFinder.h:WsdaFinder.WsdaMap" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,78);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >WsdaMap</a> of the WSDAs that were found on the network.</p></div>
 </div>
 
-<a name="WsdaFinder.restart"></a><a name="Topic10"></a><div class="CTopic TFunction LC last">
+<a name="WsdaFinder.restart"></a><a name="Topic81"></a><div class="CTopic TFunction LC last">
  <div class="CTitle">restart</div>
- <div id="NDPrototype10" class="NDPrototype NoParameterForm"><span class="SHKeyword">void</span> restart()</div>
+ <div id="NDPrototype81" class="NDPrototype NoParameterForm"><span class="SHKeyword">void</span> restart()</div>
  <div class="CBody"><p>Clears out the list of found WSDAs and forces a restart of the upnp search.</p></div>
 </div>
 

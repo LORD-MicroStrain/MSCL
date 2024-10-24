@@ -1,0 +1,1 @@
+NDFramePage.OnPageTitleLoaded("CClass:Velocity","Velocity");NDSummary.OnSummaryLoaded("CClass:Velocity",[["C/C++","C"]],[["Classes","Class"],["Functions","Function"],["Types","Type"]],[[119,0,0,"Velocity"],[120,0,1,"ECEF","ECEF"],[121,0,1,"NED","NED"],[122,0,1,"Vehicle","Vehicle"],[123,0,2,"GeometricVectors","GeometricVectors"]]);

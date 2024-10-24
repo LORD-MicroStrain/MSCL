@@ -8,47 +8,47 @@
 
 <body onload="NDLoader.OnLoad('Content');" class="NDPage NDContentPage">
 
-<a name="Topic9646"></a><div class="CTopic TClass LC first">
+<a name="Topic10372"></a><div class="CTopic TClass LC first">
  <div class="CTitle">ScopeHelper</div>
- <div class="NDClassPrototype" id="NDClassPrototype9646"><div class="CPEntry TClass Current"><div class="CPName">ScopeHelper</div></div></div>
+ <div class="NDClassPrototype" id="NDClassPrototype10372"><div class="CPEntry TClass Current"><div class="CPName">ScopeHelper</div></div></div>
  <div class="CBody"><p>Class that allows a function to be run when this object goes out of scope.</p></div>
 </div>
 
-<a name="Variables"></a><a name="Topic9647"></a><div class="CTopic TGroup LC">
+<a name="Variables"></a><a name="Topic10373"></a><div class="CTopic TGroup LC">
  <div class="CTitle">Variables</div>
 </div>
 
-<a name="m_outOfScopeFunction"></a><a name="Topic9648"></a><div class="CTopic TVariable LC">
+<a name="m_outOfScopeFunction"></a><a name="Topic10374"></a><div class="CTopic TVariable LC">
  <div class="CTitle">m_outOfScopeFunction</div>
- <div id="NDPrototype9648" class="NDPrototype NoParameterForm">std::<span class="SHKeyword">function</span>&lt;<span class="SHKeyword">void</span>()&gt; m_outOfScopeFunction</div>
+ <div id="NDPrototype10374" class="NDPrototype NoParameterForm">std::<span class="SHKeyword">function</span>&lt;<span class="SHKeyword">void</span>()&gt; m_outOfScopeFunction</div>
  <div class="CBody"><p>The function to run when the ScopeHelper goes out of scope.</p></div>
 </div>
 
-<a name="m_canceled"></a><a name="Topic9649"></a><div class="CTopic TVariable LC">
+<a name="m_canceled"></a><a name="Topic10375"></a><div class="CTopic TVariable LC">
  <div class="CTitle">m_canceled</div>
- <div id="NDPrototype9649" class="NDPrototype NoParameterForm"><span class="SHKeyword">bool</span> m_canceled</div>
+ <div id="NDPrototype10375" class="NDPrototype NoParameterForm"><span class="SHKeyword">bool</span> m_canceled</div>
  <div class="CBody"><p>Whether the scope function has been canceled or not.</p></div>
 </div>
 
-<a name="Functions"></a><a name="Topic9650"></a><div class="CTopic TGroup LC">
+<a name="Functions"></a><a name="Topic10376"></a><div class="CTopic TGroup LC">
  <div class="CTitle">Functions</div>
 </div>
 
-<a name="ScopeHelper"></a><a name="Topic9651"></a><div class="CTopic TFunction LC">
+<a name="ScopeHelper"></a><a name="Topic10377"></a><div class="CTopic TFunction LC">
  <div class="CTitle">ScopeHelper</div>
- <div id="NDPrototype9651" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters">ScopeHelper(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PModifierQualifier first">std::</td><td class="PType"><span class="SHKeyword">function</span>&lt;<span class="SHKeyword">void</span>()&gt;&nbsp;</td><td class="PName last">scopeFunction</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
+ <div id="NDPrototype10377" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters">ScopeHelper(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PModifierQualifier first">std::</td><td class="PType"><span class="SHKeyword">function</span>&lt;<span class="SHKeyword">void</span>()&gt;&nbsp;</td><td class="PName last">scopeFunction</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
  <div class="CBody"><p>Creates a ScopeHelper object.</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">scopeFunction<div class="CDLParameterType">std::<span class="SHKeyword">function</span>&lt;<span class="SHKeyword">void</span>()&gt;</div></td><td class="CDLDefinition"><p>The function to run when the ScopeHelper object is destroyed.</p></td></tr></table></div>
 </div>
 
-<a name="ScopeHelper(2)"></a><a name="Topic9652"></a><div class="CTopic TFunction LC">
+<a name="ScopeHelper(2)"></a><a name="Topic10378"></a><div class="CTopic TFunction LC">
  <div class="CTitle">ScopeHelper</div>
- <div id="NDPrototype9652" class="NDPrototype NoParameterForm">~ScopeHelper()</div>
+ <div id="NDPrototype10378" class="NDPrototype NoParameterForm">~ScopeHelper()</div>
  <div class="CBody"><p>Runs whatever function was assigned in the creation of the ScopeHelper.</p></div>
 </div>
 
-<a name="cancel"></a><a name="Topic9653"></a><div class="CTopic TFunction LC last">
+<a name="cancel"></a><a name="Topic10379"></a><div class="CTopic TFunction LC last">
  <div class="CTitle">cancel</div>
- <div id="NDPrototype9653" class="NDPrototype NoParameterForm"><span class="SHKeyword">void</span> cancel()</div>
+ <div id="NDPrototype10379" class="NDPrototype NoParameterForm"><span class="SHKeyword">void</span> cancel()</div>
  <div class="CBody"><p>Sets a flag that indicates the originally set function should NOT be run when the ScopeHelper is destroyed.</p></div>
 </div>
 
