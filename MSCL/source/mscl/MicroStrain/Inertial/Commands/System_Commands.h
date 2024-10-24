@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -26,7 +26,7 @@ namespace mscl
         //  FIELD_DATA_BYTE        - 0x90                        - The Data Field Descriptor byte
         static const MipTypes::Command CMD_ID    = MipTypes::CMD_COMMUNICATION_MODE;
         static const uint8 FIELD_DATA_BYTE            = 0x90;
-        
+
     private:
         CommunicationMode();    //disabled default constructor
 
@@ -39,7 +39,7 @@ namespace mscl
         static ByteStream buildCommand_get();
 
         //Function: buildCommand_set
-        //    Builds the bytes for the "set" command. 
+        //    Builds the bytes for the "set" command.
         //
         //Parameters:
         //    communicationMode - The communication mode to set. This is an advanced command, and therefore the communication modes for your device should be researched to determine what each communication mode is.

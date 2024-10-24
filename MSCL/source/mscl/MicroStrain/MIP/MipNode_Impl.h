@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -14,11 +14,10 @@
 #include "mscl/MicroStrain/MIP/Commands/GenericMipCommand.h"
 #include "mscl/MicroStrain/MIP/Commands/GetDeviceInfo.h"
 #include "mscl/MicroStrain/MIP/Packets/MipPacketCollector.h"
-#include "mscl/MicroStrain/MIP/NMEA/NmeaPacketCollector.h"
 #include "mscl/Communication/Connection.h"
 #include "mscl/MicroStrain/ResponseCollector.h"
 #include "mscl/MicroStrain/Inertial/EulerAngles.h"
-#include "mscl/MicroStrain/Inertial/PositionOffset.h"
+#include "mscl/MicroStrain/Inertial/PositionVelocity.h"
 #include "mscl/Timestamp.h"
 #include "mscl/MicroStrain/Inertial/ExposedInertialTypes.h"
 #include "mscl/MicroStrain/LinearEquation.h"
@@ -27,7 +26,6 @@ namespace mscl
 {
     //forward declarations
     class MipParser;
-    class NmeaParser;
     class MipNodeInfo;
     class MipNodeFeatures;
     class MipCommand;
@@ -71,10 +69,6 @@ namespace mscl
         //    The response collector used to find and store wireless command responses
         std::shared_ptr<ResponseCollector> m_responseCollector;
 
-        //Variable: m_nmeaPacketCollector
-        //    The <NmeaPacketCollector> used to store NMEA data packets
-        NmeaPacketCollector m_nmeaPacketCollector;
-
         //Variable: m_rawBytePacketCollector
         //    The <RawBytePacketCollector> associated with this parser and its parent device
         mutable RawBytePacketCollector m_rawBytePacketCollector;
@@ -82,14 +76,6 @@ namespace mscl
         //Variable: m_parser
         //    The <MipParser> in charge of parsing all incoming data to this device
         std::unique_ptr<MipParser> m_parser;
-
-        //Variable: m_nmeaParser
-        //    The <NmeaParser> in charge of parsing all incoming data to this device
-        std::unique_ptr<NmeaParser> m_nmeaParser;
-
-        //Variable: m_parseNmea
-        //    Indicates whether connection output should be run through the NMEA parser
-        bool m_parseNmea;
 
         //Variable: m_commandsTimeout
         //    The timeout to use for MIP commands
@@ -128,7 +114,7 @@ namespace mscl
         void parseData(DataBuffer& data);
 
         //Function: info
-        //    Gets the <MipNodeInfo> for this Node. 
+        //    Gets the <MipNodeInfo> for this Node.
         //    The first time this function is called, it will send multiple commands to the device to get all required information.
         //
         //Returns:
@@ -261,18 +247,6 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the Node.
         void getDataPackets(std::vector<MipDataPacket>& packets, uint32 timeout = 0, uint32 maxPackets = 0);
 
-        //Function: getNmeaPackets
-        //    Gets up to the requested amount of NMEA packets that have been collected.
-        //
-        //Parameters:
-        //    packets - A vector of <NmeaPacket> to hold the result.
-        //    timeout - the timeout, in milliseconds, to wait for the data if necessary (default of 0)
-        //    maxPackets - The maximum number of packets to return. If this is 0 (default), all packets will be returned.
-        //
-        //Exceptions:
-        //    - <Error_Connection>: A connection error has occurred with the Node.
-        void getNmeaPackets(NmeaPackets& packets, uint32 timeout = 0, uint32 maxPackets = 0);
-
         //Function: getRawBytePackets
         //    Gets up to the requested amount of raw byte packets that have been collected.
         //
@@ -291,13 +265,6 @@ namespace mscl
         //Returns:
         //    The total number of data packets that are currently in the buffer.
         uint32 totalPackets();
-
-        //Function: enableNmeaParsing
-        //    Enables/disables NMEA parsing on device output.
-        //
-        //Parameters:
-        //    enable - default true - enables NMEA parsing if true, disables if false
-        void enableNmeaParsing(bool enable = true);
 
         //Function: timeout
         //    Sets the timeout to use when waiting for responses from commands.
@@ -328,7 +295,7 @@ namespace mscl
 
         //Function: getGnssReceiverInfo
         //    Gets the GNSS receiver info for this node, representing available GNSS receiver ports and the data set over which each is output.
-        //    Sends the "Get GNSS Receiver Info" command to the device. 
+        //    Sends the "Get GNSS Receiver Info" command to the device.
         //
         //Returns:
         //    The supported GNSS receiver info retrieved from the "Get GNSS Receiver Info" command.
@@ -354,7 +321,7 @@ namespace mscl
 
         //Function: getDescriptorSets
         //    Gets the supported descriptor sets for this node, representing which commands and data sets are available.
-        //    Sends the "Get Device Descriptor Sets" command to the device. 
+        //    Sends the "Get Device Descriptor Sets" command to the device.
         //
         //Returns:
         //    The supported descriptors retrieved from the "Get Device Descriptor Sets" command.
@@ -460,7 +427,7 @@ namespace mscl
 
     public:
         //Function: ping
-        //    Pings the node to check for communication. 
+        //    Pings the node to check for communication.
         //    Sends the "Ping" command to the device.
         //
         //Returns:
@@ -554,7 +521,7 @@ namespace mscl
         virtual uint16 getDataRateBase(MipTypes::DataClass dataClass) const;
 
         //Function: getMessageFormat
-        //    Gets the current message format of the specified <MipTypes::DataClass>'s data packet. 
+        //    Gets the current message format of the specified <MipTypes::DataClass>'s data packet.
         //
         //Parameters:
         //    dataClass - The <MipTypes::DataClass> to get the current message format for.
@@ -614,7 +581,7 @@ namespace mscl
         virtual uint8 getCommunicationMode() const;
 
         //Function: setCommunicationMode
-        //    Sets the communication mode for the node. 
+        //    Sets the communication mode for the node.
         //    Note: The node info will be reset when doing this and therefore will require being fetched again the next time it is requested.
         //
         //Parameters:
@@ -1142,7 +1109,7 @@ namespace mscl
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         GeometricVector getGyroBias() const;
-        
+
         //Function: captureGyroBias
         //    Runs the Gyro Bias capture routine on the inertial device.
         //
@@ -1906,7 +1873,7 @@ namespace mscl
         SampleRate getDisplacementOutputDataRate() const;
 
         //Function: setDeviceTime
-        //  Seeds the device time with the current system time. 
+        //  Seeds the device time with the current system time.
         //
         //Exceptions:
         //    - <Error_NotSupported>: The command is not supported by this Node.
@@ -2100,14 +2067,13 @@ namespace mscl
         //
         //Parameter:
         //    cmdId - the <MipTypes::Command> to send.
-        //    ackNackExpected - default true - bool indicating whether to expect the device to send back an ACK/NACK response
         //
         //Exceptions:
         //    - <Error_NotSupported>: The command is not supported by this Node.
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        void run(MipTypes::Command cmdId, bool ackNackExpected = true) const;
+        void run(MipTypes::Command cmdId) const;
 
         //API Function: run
         //    Runs the specified command with the provided specifier values and no function selector. No data response expected.
@@ -2115,14 +2081,13 @@ namespace mscl
         //Parameter:
         //    cmdId - the <MipTypes::Command> to send.
         //    specifier - <MipFieldValues> containing any additional specifier values to send with the command.
-        //    ackNackExpected - default true - bool indicating whether to expect the device to send back an ACK/NACK response
         //
         //Exceptions:
         //    - <Error_NotSupported>: The command is not supported by this Node.
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        void run(MipTypes::Command cmdId, MipFieldValues specifier, bool ackNackExpected = true) const;
+        void run(MipTypes::Command cmdId, MipFieldValues specifier) const;
 
 private:
        //Function: SendCommand

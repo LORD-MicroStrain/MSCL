@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "stdafx.h"
@@ -12,8 +12,8 @@
 
 namespace mscl
 {
-    //the classes in this file do not get referenced anywhere, therefore the 
-    //linker will not include this compilation unit when statically 
+    //the classes in this file do not get referenced anywhere, therefore the
+    //linker will not include this compilation unit when statically
     //linking to an executable. Defining this variable, and then using it
     //elsewhere, will force this file to be included
     bool _forceLibraryToIncludeCompilationUnit_NAV;
@@ -1165,7 +1165,7 @@ namespace mscl
     void FieldParser_MagResidualVector::parse(const MipDataField& field, MipDataPoints& result) const
     {
         DataBuffer bytes(field.fieldData());
-        
+
         float x = bytes.read_float();
         float y = bytes.read_float();
         float z = bytes.read_float();
@@ -1402,7 +1402,7 @@ namespace mscl
         return MipFieldParser::registerParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
-    
+
     //=====================================================================================================================================================
     //                                                        FieldParser_EcefPositionUncert
     const MipTypes::ChannelField FieldParser_EcefPositionUncert::FIELD_TYPE = MipTypes::CH_FIELD_ESTFILTER_ECEF_POS_UNCERT;
@@ -1732,6 +1732,89 @@ namespace mscl
     bool FieldParser_DualAntennaStatus::registerParser()
     {
         static FieldParser_DualAntennaStatus p;
+        return MipFieldParser::registerParser(FIELD_TYPE, &p);
+    }
+    //=====================================================================================================================================================
+
+    //=====================================================================================================================================================
+    //                                                        FieldParser_FrameConfigError
+    const MipTypes::ChannelField FieldParser_FrameConfigError::FIELD_TYPE = MipTypes::CH_FIELD_ESTFILTER_FRAME_CONFIG_ERROR;
+    const bool FieldParser_FrameConfigError::REGISTERED = FieldParser_FrameConfigError::registerParser();    //register the parser immediately
+
+    void FieldParser_FrameConfigError::parse(const MipDataField& field, MipDataPoints& result) const
+    {
+        DataBuffer bytes(field.fieldData());
+
+        //read the data
+        uint8 frameId = bytes.read_uint8();
+
+        float x = bytes.read_float();
+        float y = bytes.read_float();
+        float z = bytes.read_float();
+
+        Bytes remaining = bytes.bytesToRead();
+        Vector quat(ValueType::valueType_float, ByteStream(remaining));
+
+        // additional identifiers
+        MipChannelIdentifiers addlIds = {
+            MipChannelIdentifier(MipChannelIdentifier::Type::AIDING_MEASUREMENT_FRAME_ID, frameId)
+        };
+
+        //create the data points and add them to the result container
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_X, addlIds, valueType_float, anyType(x)));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_Y, addlIds, valueType_float, anyType(y)));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_Z, addlIds, valueType_float, anyType(z)));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_QUATERNION, addlIds, valueType_Vector, anyType(quat)));
+    }
+
+    bool FieldParser_FrameConfigError::registerParser()
+    {
+        static FieldParser_FrameConfigError p;
+        return MipFieldParser::registerParser(FIELD_TYPE, &p);
+    }
+    //=====================================================================================================================================================
+
+    //=====================================================================================================================================================
+    //                                                        FieldParser_FrameConfigErrorUnc
+    const MipTypes::ChannelField FieldParser_FrameConfigErrorUnc::FIELD_TYPE = MipTypes::CH_FIELD_ESTFILTER_FRAME_CONFIG_ERROR_UNCERT;
+    const bool FieldParser_FrameConfigErrorUnc::REGISTERED = FieldParser_FrameConfigErrorUnc::registerParser();    //register the parser immediately
+
+    void FieldParser_FrameConfigErrorUnc::parse(const MipDataField& field, MipDataPoints& result) const
+    {
+        DataBuffer bytes(field.fieldData());
+
+        //read the data
+        uint8 frameId = bytes.read_uint8();
+
+        float x = bytes.read_float();
+        float y = bytes.read_float();
+        float z = bytes.read_float();
+
+        float roll = bytes.read_float();
+        float pitch = bytes.read_float();
+        float yaw = bytes.read_float();
+
+        Bytes remaining = bytes.bytesToRead();
+        Vector quat(ValueType::valueType_float, ByteStream(remaining));
+
+        // additional identifiers
+        MipChannelIdentifiers addlIds = {
+            MipChannelIdentifier(MipChannelIdentifier::Type::AIDING_MEASUREMENT_FRAME_ID, frameId)
+        };
+
+        //create the data points and add them to the result container
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_X, addlIds, valueType_float, anyType(x)));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_Y, addlIds, valueType_float, anyType(y)));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_Z, addlIds, valueType_float, anyType(z)));
+
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_ROLL, addlIds, valueType_float, anyType(roll)));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_PITCH, addlIds, valueType_float, anyType(pitch)));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_YAW, addlIds, valueType_float, anyType(yaw)));
+    }
+
+    bool FieldParser_FrameConfigErrorUnc::registerParser()
+    {
+        static FieldParser_FrameConfigErrorUnc p;
         return MipFieldParser::registerParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================

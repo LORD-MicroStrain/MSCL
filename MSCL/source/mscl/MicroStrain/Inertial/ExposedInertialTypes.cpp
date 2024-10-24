@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "stdafx.h"
@@ -14,17 +14,17 @@ namespace mscl
     //////////  NmeaMessageFormat  //////////
     const SampleRate NmeaMessageFormat::MAX_FREQUENCY = SampleRate::Hertz(10);
 
-    void NmeaMessageFormat::sentenceType(NmeaMessageFormat::SentenceType type)
+    void NmeaMessageFormat::sentenceType(const NmeaMessageFormat::SentenceType type)
     {
         m_sentenceType = type;
     }
 
-    void NmeaMessageFormat::talkerId(NmeaMessageFormat::Talker id)
+    void NmeaMessageFormat::talkerId(const NmeaMessageFormat::Talker id)
     {
         m_talkerId = id;
     }
 
-    void NmeaMessageFormat::sourceDataClass(MipTypes::DataClass dataClass, uint16 baseRate)
+    void NmeaMessageFormat::sourceDataClass(const MipTypes::DataClass dataClass, const uint16 baseRate)
     {
         m_sourceDescSet = dataClass;
         updateDecimation(baseRate);
@@ -35,7 +35,7 @@ namespace mscl
         return SampleRate::FromInertialRateDecimationInfo(m_baseRate, m_decimation);
     }
 
-    void NmeaMessageFormat::sampleRate(SampleRate rate, uint16 baseRate)
+    void NmeaMessageFormat::sampleRate(const SampleRate rate, const uint16 baseRate)
     {
         m_baseRate = baseRate == 0 ? m_baseRate : baseRate;
 
@@ -62,23 +62,23 @@ namespace mscl
         m_decimation = actualRate.toDecimation(m_baseRate);
     }
 
-    void NmeaMessageFormat::updateDecimation(uint16 newBaseRate)
+    void NmeaMessageFormat::updateDecimation(const uint16 newBaseRate)
     {
         // calculate sample rate based on current values
         const SampleRate currentRate = SampleRate::FromInertialRateDecimationInfo(m_baseRate, m_decimation);
-        
+
         // update decimation based on current sample rate and new base rate
         m_baseRate = newBaseRate;
         sampleRate(currentRate);
     }
 
-    bool NmeaMessageFormat::talkerIdRequired(SentenceType sentenceType)
+    bool NmeaMessageFormat::talkerIdRequired(const SentenceType sentenceType)
     {
         switch (sentenceType)
         {
         case SentenceType::GSV:
-        case SentenceType::PKRA:
-        case SentenceType::PKRR:
+        case SentenceType::MSRA:
+        case SentenceType::MSRR:
             return false;
 
         default:
@@ -86,13 +86,13 @@ namespace mscl
         }
     }
 
-    bool NmeaMessageFormat::dataClassSupported(MipTypes::DataClass dataClass, NmeaMessageFormat::SentenceType sentenceType)
+    bool NmeaMessageFormat::dataClassSupported(const MipTypes::DataClass dataClass, const NmeaMessageFormat::SentenceType sentenceType)
     {
         std::vector<MipTypes::DataClass> supported = NmeaMessageFormat::supportedDataClasses(sentenceType);
         return std::find(supported.begin(), supported.end(), dataClass) != supported.end();
     }
 
-    std::vector<MipTypes::DataClass> NmeaMessageFormat::supportedDataClasses(NmeaMessageFormat::SentenceType sentenceType)
+    MipTypes::MipDataClasses NmeaMessageFormat::supportedDataClasses(const NmeaMessageFormat::SentenceType sentenceType)
     {
         switch (sentenceType)
         {
@@ -114,12 +114,12 @@ namespace mscl
                 MipTypes::DataClass::CLASS_GNSS2
             };
 
-        case SentenceType::PKRA:
+        case SentenceType::MSRA:
             return{
                 MipTypes::DataClass::CLASS_ESTFILTER
             };
 
-        case SentenceType::PKRR:
+        case SentenceType::MSRR:
             return{
                 MipTypes::DataClass::CLASS_AHRS_IMU
             };
@@ -134,7 +134,7 @@ namespace mscl
         }
     }
 
-    NmeaMessageFormats NmeaMessageFormat::fromCommandResponse(const MipFieldValues& responseValues, uint8 startIndex)
+    NmeaMessageFormats NmeaMessageFormat::fromCommandResponse(const MipFieldValues& responseValues, const uint8 startIndex)
     {
         const uint8 count = responseValues[startIndex].as_uint8();
         const uint8 ELEMENTS_PER_FORMAT = 4;
@@ -209,7 +209,7 @@ namespace mscl
     {
         m_array[row][col] = value;
     }
-    
+
     float Matrix_3x3::operator() (uint8 row, uint8 col) const
     {
         return m_array.at(row).at(col);
@@ -268,109 +268,6 @@ namespace mscl
 
         return m;
     }
-
-    //////////  Quaternion  //////////
-    Quaternion::Quaternion() :
-        Matrix(1, 4, ValueType::valueType_float, ByteStream())
-    {
-        m_data.append_float(0);
-        m_data.append_float(0);
-        m_data.append_float(0);
-        m_data.append_float(0);
-    }
-
-    Quaternion::Quaternion(float q0, float q1, float q2, float q3) :
-        Matrix(1, 4, ValueType::valueType_float, ByteStream())
-    {
-        m_data.append_float(q0);
-        m_data.append_float(q1);
-        m_data.append_float(q2);
-        m_data.append_float(q3);
-    }
-
-    Quaternion::Quaternion(MipFieldValues data) :
-        Matrix(1, 4, ValueType::valueType_float, ByteStream())
-    {
-        for (int i = 0; i < 4; i++)
-        {
-            m_data.append_float(data[i].as_float());
-        }
-    }
-
-    float Quaternion::at(uint8 index) const
-    {
-        return as_floatAt(0, index);
-    }
-
-    void Quaternion::set(uint8 index, float val)
-    {
-        uint32 pos = getBytePos(0, index);
-        ByteStream valB;
-        valB.append_float(val);
-
-        for (uint32 i = 0; i < 4; i++)
-        {
-            uint32 replaceIndex = pos + i;
-            m_data.data()[replaceIndex] = valB[i];
-        }
-    }
-
-    void Quaternion::normalize()
-    {
-        float magnitude = 0.0f;
-        for (uint8 i = 0; i < 4; i++)
-        {
-            float val = at(i);
-            magnitude += val * val;
-        }
-
-        magnitude = sqrt(magnitude);
-
-        if (magnitude == 0)
-        {
-            return;
-        }
-
-        ByteStream b;
-        for (uint8 i = 0; i < 4; i++)
-        {
-            float val = at(i);
-            b.append_float(val / magnitude);
-        }
-
-        m_data = b;
-    }
-
-    MipFieldValues Quaternion::asMipFieldValues() const
-    {
-        MipFieldValues m;
-        for (uint8 i = 0; i < 4; i++)
-        {
-            m.push_back(Value::FLOAT(at(i)));
-        }
-
-        return m;
-    }
-
-    //////////  GeometricVector  //////////
-
-    GeometricVector::GeometricVector(float x_init, float y_init, float z_init, PositionVelocityReferenceFrame ref) :
-        vec_0(x_init),
-        vec_1(y_init),
-        vec_2(z_init),
-        referenceFrame(ref)
-    { }
-
-    GeometricVector::GeometricVector() :
-        vec_0(0),
-        vec_1(0),
-        vec_2(0),
-        referenceFrame(PositionVelocityReferenceFrame::ECEF)
-    { }
-
-    GeometricVector::~GeometricVector()
-    { }
-
 
 
     //////////  TimeUpdate  //////////
@@ -775,7 +672,7 @@ namespace mscl
         statusMap[ModelNumber] = mscl::Value::UINT16(modelNumber);
         statusMap[StatusStructure_Value] = mscl::Value::UINT8(static_cast<uint8>(statusStructure));
 
-        if (isSet(m_systemState)) 
+        if (isSet(m_systemState))
         {
             statusMap[SystemState_Value] = mscl::Value::UINT16(static_cast<uint16>(m_systemState.get()));
         }
@@ -1132,6 +1029,28 @@ namespace mscl
 
         float mPerRev = radius * 2 * boost::math::constants::pi<float>();
         m_scaling = resolution / mPerRev;
+    }
+
+    GpioConfiguration GpioConfiguration::fromCommandResponse(const MipFieldValues& responseValues, uint8 startIndex)
+    {
+        GpioConfiguration config;
+        config.pin = responseValues[startIndex].as_uint8();
+        config.feature = static_cast<GpioConfiguration::Feature>(responseValues[startIndex + 1].as_uint8());
+        config.behavior = responseValues[startIndex + 2].as_uint8();
+        config.pinModeValue(responseValues[startIndex + 3].as_uint8());
+
+        // for UART feature the behavior is formatted:
+        //  - first four bits is port # (0 can be used when setting to indicate default)
+        //  - second four bits is behavior
+        // so 0x21 is transmit over port 2
+        // current devices only support one port per pin so we don't need to worry about the port number
+        // strip it from the value for simplicity
+        if (config.feature == UART_FEATURE)
+        {
+            config.behavior = config.behavior & 0x0F;
+        }
+
+        return config;
     }
 
     void EventTriggerThresholdParameter::channel(const MipTypes::ChannelField channelField,

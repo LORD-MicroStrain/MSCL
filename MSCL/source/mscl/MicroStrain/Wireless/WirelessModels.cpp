@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "stdafx.h"
@@ -20,22 +20,22 @@ namespace mscl
         case 2420:    return node_sgLink_oem_S;
         case 2421:    return node_dvrtLink;
         case 2423:    return node_sgLink_oem;
-        case 2426:    return node_sgLink_rgd;        
-        case 2427:    return node_tcLink_6ch;            
-        case 2430:    return node_sgLink_herm;    
+        case 2426:    return node_sgLink_rgd;
+        case 2427:    return node_tcLink_6ch;
+        case 2430:    return node_sgLink_herm;
         case 2435:    return node_gLinkII_cust_in;
-        case 2432:    return node_gLinkII_2g_in;    
-        case 2436:    return node_gLinkII_10g_in;    
+        case 2432:    return node_gLinkII_2g_in;
+        case 2436:    return node_gLinkII_10g_in;
         case 2437:    return node_gLinkII_cust_ex;
-        case 2438:    return node_gLinkII_2g_ex;    
-        case 2439:    return node_gLinkII_10g_ex;    
-        case 2440:    return node_gLink_rgd_10g;    
+        case 2438:    return node_gLinkII_2g_ex;
+        case 2439:    return node_gLinkII_10g_ex;
+        case 2440:    return node_gLink_rgd_10g;
         case 2428:    return node_vLink_legacy;
         case 2433:    return node_vLink;
-        case 2622:    return node_tcLink_1ch;            
-        case 2624:    return node_envLink_mini;    
-        case 2625:    return node_rtdLink;        
-        case 2984:    return node_iepeLink;    
+        case 2622:    return node_tcLink_1ch;
+        case 2624:    return node_envLink_mini;
+        case 2625:    return node_rtdLink;
+        case 2984:    return node_iepeLink;
         case 2623:    return node_tcLink_3ch;
         case 2434:    return node_tcLink_6ch_ip67;
         case 2429:    return node_shmLink;

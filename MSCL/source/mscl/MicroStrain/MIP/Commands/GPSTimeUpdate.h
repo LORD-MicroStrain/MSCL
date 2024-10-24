@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -13,7 +13,7 @@
 namespace mscl
 {
 
-#ifndef SWIG 
+#ifndef SWIG
 
     //Class: GPSTimeUpdate
     //    Contains the logic for the Inertial GPSTimeUpdate command.
@@ -89,7 +89,7 @@ namespace mscl
         //Returns:
         //    A <ByteStream> containing the GPSTimeUpdate command packet
         ByteStream resetToFactorySettings();
-            
+
         //Class: Response
         //    Handles the response to the GPSTimeUpdate command.
         class Response : public GenericMipCommand::Response

@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "stdafx.h"
@@ -10,26 +10,26 @@
 
 namespace mscl
 {
-    BufferWriter::BufferWriter(uint8* buffer, std::size_t size, std::size_t* offset) : 
+    BufferWriter::BufferWriter(uint8* buffer, std::size_t size, std::size_t* offset) :
           m_buffer(buffer),
           m_size(size),
           m_writeOffset(offset)
     {}
 
-    uint8* BufferWriter::buffer() 
-    { 
-        return m_buffer; 
+    uint8* BufferWriter::buffer()
+    {
+        return m_buffer;
     }
 
-    std::size_t BufferWriter::size() 
-    { 
-        return m_size; 
+    std::size_t BufferWriter::size()
+    {
+        return m_size;
     }
 
-    void BufferWriter::commit(std::size_t numBytesAdded) 
-    { 
+    void BufferWriter::commit(std::size_t numBytesAdded)
+    {
         //move the position of the underlying DataBuffer's write offset (append position)
-        *m_writeOffset += numBytesAdded; 
+        *m_writeOffset += numBytesAdded;
     }
 
 
@@ -280,46 +280,10 @@ namespace mscl
         return (bytesRemaining() > 0);
     }
 
-    size_t DataBuffer::find_uint8(uint8 find, size_t endIndex) const
-    {
-        const size_t stopIndex = endIndex == 0 || endIndex > appendPosition()
-            ? appendPosition()
-            : endIndex;
-
-        size_t index;
-        for (index = readPosition(); index < stopIndex; index++)
-        {
-            if (find == m_data.read_uint8(index))
-            {
-                break;
-            }
-        }
-
-        return index;
-    }
-
-    size_t DataBuffer::find_uint16(uint16 find, size_t endIndex) const
-    {
-        const size_t stopIndex = endIndex == 0 || endIndex > appendPosition()
-            ? appendPosition()
-            : endIndex;
-
-        size_t index;
-        for(index = readPosition() + 1; index < stopIndex; index++)
-        {
-            if (find == m_data.read_uint16(index - 1))
-            {
-                break;
-            }
-        }
-
-        return index;
-    }
-
     std::size_t DataBuffer::shiftExtraToStart()
     {
         std::size_t startReadPos = m_readPosition;
-        
+
         //the number of extra bytes that need to be moved
         std::size_t numExtraBytes = m_appendPosition - m_readPosition;
 
@@ -360,7 +324,7 @@ namespace mscl
         }
 
         //create a BufferWriter using the current DataBuffer's information
-        return BufferWriter(writeBuffer, 
+        return BufferWriter(writeBuffer,
                             writeBufferSize,
                             &m_appendPosition);
     }
@@ -387,29 +351,6 @@ namespace mscl
     Bytes DataBuffer::bytesToRead(std::size_t startPos, std::size_t size) const
     {
         return Bytes(m_data.begin() + startPos, m_data.begin() + startPos + size);
-    }
-
-    void DataBuffer::copyBytesTo(DataBuffer& copyTo)
-    {
-        copyBytesTo(copyTo, m_readPosition, bytesRemaining());
-    }
-
-    void DataBuffer::copyBytesTo(DataBuffer& copyTo, std::size_t startPos, std::size_t size)
-    {
-
-        size_t actualSize = size > bytesRemaining() ? bytesRemaining() : size;
-
-        assert(actualSize <= (copyTo.size() - copyTo.appendPosition()));
-
-        BufferWriter writer = copyTo.getBufferWriter();
-        uint8* writeBuffer = writer.buffer();
-
-        for (size_t i = 0; i < actualSize; i++)
-        {
-            writeBuffer[i] = m_data[i + startPos];
-        }
-
-        writer.commit(actualSize);
     }
 
     //============================================================

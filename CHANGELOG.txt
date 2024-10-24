@@ -15,6 +15,42 @@ REMOVED - A function/class has been removed.
 ======================================================================================================
 
 Forthcoming
+
+66.0.0 - 2024-10-24
+- CHANGED Switched to CMake build system
+    - Updated READMEs to reflect new build system
+    - Updated example code for Python to conform more to Python3
+    - Changed some build file names to be more consistent across systems
+    - Builds now using Docker instead of standard build scripts
+- CHANGED Timestamp functions seconds() and nanoseconds() no longer default UNIX epoch - default epoch is now the storedEpoch() of the object
+- CHANGED Timestamp::Epoch enum values changed:
+    - UNIX is now 0x04
+    - GPS is now 0x03
+    - Added INTERNAL (0x01) and EXTERNAL (0x02) and UTC (0x04, same as UNIX)
+- Wireless
+    - Updated China transmit power limit to 10dBm
+- Inertial
+    - Added GV7-AR, -AHRS, -INS support
+    - Added CV7-INS support
+    - NmeaMessageFormat changes:
+        - Added max configurations count
+        - Made supportedDataClasses() public
+    - CHANGED SentenceTypes PKRR and PKRA to MSRR and MSRA, respectively
+    - Added MipDataClasses as a typedef for a vector of MipTypes::DataClass
+    - Added UART feature for GPIO configuration
+    - Added Aiding Measurements command set (0x13)
+        - InertialNode::sendAidingMeasurement()
+            - Types: AidingMeasurementPosition, AidingMeasurementHeight, AidingMeasurementVelocity, AidingMeasurementHeading, AidingMeasurementMagneticField, AidingMeasurementPressure
+        - InertialNode::get/setAidingMeasurementResponseMode()
+        - InertialNode::get/setAidingMeasurementReferenceFrames()
+    - Moved GeometricVector, Position, PositionOffset classes to PositionVelocity.h, added Vec3f base class
+    - Moved Quaternion class to EulerAngles.h, added Rotation class to represent either a Quaternion or EulerAngles object
+    - MIP Data:
+        - parsing for GQ7 Continuous Built-In Test (0xA0, 0x01)
+        - Aiding Frame Configuration Error (0x82,0x50)
+        - Aiding Frame Configuration Error Uncertainty(0x82,0x51)
+
+65.0.0 - 2022-11-18
 - Wireless
     - Added Taiwan region code for wireless devices
 - Inertial
@@ -23,13 +59,15 @@ Forthcoming
         - AdvancedLowPassFilterData -> LowPassFilterData
         - AdvancedLowPassFilterConfig -> LowPassFilterConfig
         - CHANGED data type AdvancedLowPassFilterData::cutoffFrequency uint16 -> float (truncates decimal when cast to uint16 for legacy command)
-    - Added MipNodeFeatures::supportedGnssSources() to lookup supported GNSS Aiding Source options
-    - Added MipNodeFeatures::supportedLowPassFilterChannelFields() to lookup supported channels to which low-pass filter settings can be applied
-    - Added MipNodeFeatures::supportedGnssSignalConfigurations() to lookup supported GNSS Signal configuration combinations
     - Updated GnssReceiverInfo to read new receiver fw information from description field
     - Updated GPS Ionospheric Corrections alpha and beta value types to Vector
     - Automatically detect and add required parameters for save as startup, load startup, and default settings command functions
     - Fix device info not fully cleared on InertialNode::clearDeviceInfo()
+    - MipNodeFeatures changes:
+        - Added supportedGnssSources() to lookup supported GNSS Aiding Source options
+        - Added supportedLowPassFilterChannelFields() to lookup supported channels to which low-pass filter settings can be applied
+        - Added supportedGnssSignalConfigurations() to lookup supported GNSS Signal configuration combinations
+        - Add command supported checks on getGnssReceiverInfo(), getEventInfo() so these are safe to check regardless of model (empty lists returned if unsupported)
     - Added support for MIP data:
         - Continuous Built-In Test (0xA0, 0x01)
         - SBAS Status (0x81,0x12) (0x91-95,0x12)
@@ -70,7 +108,7 @@ Forthcoming
 - Added support for storing and getting Timestamp class values in both GPS and Unix epochs - default behavior unchanged
 
 64.2.2 - 2022-03-08
-- Reverted defaul MIP command timeout to 250 ms
+- Reverted default MIP command timeout to 250 ms
 - Increased timeout for MipNode::saveSettingsAsStartup() to 2500 ms
 - Increased timeout for MipNode::loadFactoryDefaultSettings() to 1200 ms
 
@@ -96,7 +134,7 @@ Forthcoming
 63.1.0 - 2022-01-13
 - Added RTK (v2) 6285-0100 bitfield status support and set as default
 - Updated RTK (v1) 6285-0000 bitfield status to have _v1 suffix
-	
+
 63.0.1 - 2022-01-06
 - Increase default readWriteRetries for BaseStation and WirelessNode objects from 0
     - BaseStation default: 2
@@ -174,13 +212,13 @@ Forthcoming
 - Add RawBytePacket collection for Wireless Base Stations
     - Add RawBytePacket parsing to WirelessParser
     - Add RawBytePacketCollector to BaseStation
-    - Add function BaseStation::getRawBytePackets() to get raw byte packets 
+    - Add function BaseStation::getRawBytePackets() to get raw byte packets
 
 61.1.1 - 2020-01-05
 - Add RawBytePacket collection for MipNodes
     - Add RawBytePacket parsing to MipParser
     - Add RawBytePacketCollector to MipNode
-    - Add function MipNode::getRawBytePackets() to get raw byte packets 
+    - Add function MipNode::getRawBytePackets() to get raw byte packets
 
 61.1.0 - 2021-01-04
 - Add support for 3DM-CL5-15, -25
@@ -400,7 +438,7 @@ Forthcoming
 
 58.0.2 - 2020-08-03
 - Updated RTKDeviceStatusFlags to reflect bitfield definition changes
-- Changed MipTyes::CHANNEL_NAMES entries for GPS and GNSS Ionospheric Corrections channel field/qualifiers to ensure they're unique
+- Changed MipTypes::CHANNEL_NAMES entries for GPS and GNSS Ionospheric Corrections channel field/qualifiers to ensure they're unique
 
 58.0.1 - 2020-08-03
 - Update inertial field parsers for:
@@ -460,7 +498,7 @@ Forthcoming
 - updated inertial command Advanced Low-Pass Filter Settings (0x0C,0x50) to send 0 for cutoff frequency when automatic specified
 
 57.1.2 - 2020-07-14
-- Added response descriptor parameter to GenericMipCommand::Response constructor  
+- Added response descriptor parameter to GenericMipCommand::Response constructor
 
 57.1.1 - 2020-07-10
 - Added support for MIP Commands:
@@ -497,7 +535,7 @@ Forthcoming
 - Added class Quaternion (extends Matrix)
 
 55.0.4 - 2020-05-21
-- Added InertialNode::saveSettingsAsStartup that accepts a list of commmand IDs and saves only those specified
+- Added InertialNode::saveSettingsAsStartup that accepts a list of command IDs and saves only those specified
 
 55.0.3 - 2020-05-21
 - Added support for fields:
@@ -656,7 +694,7 @@ Forthcoming
 - RENAMED MipDataPacket::utcTimestamp() to MipDataPacket::deviceTimestamp()
 - RENAMED MipDataPacket::utcTimeValid() to MipDataPacket::deviceTimeValid()
 - RENAMED MipDataPacket::utcTimeFlags() to MipDataPacket::deviceTimeFlags()
-- parsing CH_FIELD_SENSOR_GPS_CORRELATION_TIMESTAMP, CH_FIELD_GNSS_GPS_TIME, and CH_FIELD_ESTFILTER_GPS_TIMESTAMP 
+- parsing CH_FIELD_SENSOR_GPS_CORRELATION_TIMESTAMP, CH_FIELD_GNSS_GPS_TIME, and CH_FIELD_ESTFILTER_GPS_TIMESTAMP
   fields into deviceTimestamp packet meta-data.
 - when deviceTimestamp fields are present, using this information to better set the MipDataPacket::collectedTimestamp()
   which helps prevent bunching up of points.
@@ -808,7 +846,7 @@ Forthcoming
 
 45.2.5 - 2018-09-24
 - WirelessNodeConfig verifying calibrated float with angle mode, in all sampling modes
-- changed deprecated boost::io_service to boost::io_context 
+- changed deprecated boost::io_service to boost::io_context
 
 45.2.4 - 2018-09-11
 - updates to Advanced Low-Pass Filter Settings command (0x0C, 0x50)
@@ -913,7 +951,7 @@ Forthcoming
 - corrected formatting of estimation control data
 
 43.2.2 - 2018-08-06
-- commenting updates for estimation controls 
+- commenting updates for estimation controls
 
 43.2.1 - 2018-08-02
 - fix for .NET build issue
@@ -942,13 +980,13 @@ Forthcoming
 
 42.4.4 - 2018-07-20
 - added MipTypes::HeadingUpdateEnableOption enum to represent available options for the Heading Update Control command
-- added function to MipNodeFeatures to get a list of supported heading update control options for the node (by model number) 
+- added function to MipNodeFeatures to get a list of supported heading update control options for the node (by model number)
 
 42.4.3 - 2018-07-20
 - corrected parameter names in zero update commands
 
 42.4.2 - 2018-07-20
-- corrected styling and documentation for the zero update commands 
+- corrected styling and documentation for the zero update commands
 
 42.4.1 - 2018-07-19
 - changed name of new ADC input voltage type enum to be more general
@@ -1210,7 +1248,7 @@ Forthcoming
 - updated transmit powers for Japan region for some products.
 
 33.5.0 - 2018-01-08
-- added the WirelessNode updateEepromCacheFromNodeDiscovery function to import NodeDiscovery 
+- added the WirelessNode updateEepromCacheFromNodeDiscovery function to import NodeDiscovery
   information into a Node's eeprom cache
 
 33.4.6 - 2018-01-03
@@ -1467,7 +1505,7 @@ Forthcoming
 - fix for BaseStation broadcastSetToIdle not working in LXRS+ mode.
 
 27.3.1 - 2017-07-25
-- updated WirelessParser to ignore ASPP packets found within potential other ASPP packets unless they are 
+- updated WirelessParser to ignore ASPP packets found within potential other ASPP packets unless they are
   data packets or match a response to a command that we are expecting.
 
 27.3.0 - 2017-07-24
@@ -1806,7 +1844,7 @@ Forthcoming
 - added WirelessTypes::CalCoef_Unit::unit_force_kg.
 
 20.0.0 - 2017-03-13
-- CHANGED InertialNode::doInertialCmd() to no longer require a command ID parameter. 
+- CHANGED InertialNode::doInertialCmd() to no longer require a command ID parameter.
 - RENAMED InertialNode::doInertialCmd() to doCommand().
 
 19.7.0 - 2017-03-10
@@ -1853,7 +1891,7 @@ Forthcoming
 - changed DataPoint::ChannelProperties to a map instead of an unordered_map, which
   seems to fix a crash when receiving a ShmPacket and requesting a channel property.
   This is still a mystery as to why it was crashing, as it was on the map->find() line
-  which is not suppossed to throw an exception, but threw a vector::out_of_range
+  which is not supposed to throw an exception, but threw a vector::out_of_range
 
 19.2.0 - 2017-02-27
 - support for the new Internal Temperature field in Diagnostic Packets.
@@ -1943,7 +1981,7 @@ Forthcoming
 16.0.0 - 2017-02-15
 - REMOVED InertialNode::info()
     - (functionality moved to InertialNode)
-- REMOVED public version of InertialNodeInfo class 
+- REMOVED public version of InertialNodeInfo class
 - REMOVED InertialNode::supportedSampleRates()
     - (moved to InertialNodeFeatures)
 - added InertialNode::firmwareVersion()
@@ -2339,7 +2377,7 @@ Forthcoming
 - CHANGED NodeModel::node_vLink2 to NodeModel::node_vLink200.
 
 6.1.3 - 2016-07-13
-- fixed a bug in Datalog Download not stopping when it should (error calulating bytes remaining).
+- fixed a bug in Datalog Download not stopping when it should (error calculating bytes remaining).
 - fixed a bug in Datalog Download reading out of range for checksums in some cases.
 
 6.1.2 - 2016-07-13
@@ -2386,7 +2424,7 @@ Forthcoming
 - fixed bug where new datalog data was being parsed in big endian when should be parsed in little endian.
 
 5.2.0 - 2016-06-24
-- added Endianness functionality. 
+- added Endianness functionality.
 
 5.1.2 - 2016-06-22
 - updated formula for new V-Link hardware gain settings.
@@ -2714,7 +2752,7 @@ Forthcoming
 - support for Sleep Interval eeprom on Nodes with firmware 10.0+.
 
 1.21.2 - 2015-11-19
-- fix for issues with min and max distributed angles throwing errors when they are valid. 
+- fix for issues with min and max distributed angles throwing errors when they are valid.
 
 1.21.1 - 2015-11-11
 - fixed bugs causing Raw Angle Strain packets to get parsed incorrectly.
@@ -2968,7 +3006,7 @@ Forthcoming
 - support for parsing Raw Base Board data.
 
 0.38.5 - 2015-08-14
-- fix for SetToIdle desctructor throwing exceptions.
+- fix for SetToIdle destructor throwing exceptions.
 - added some buffer time to the SetToIdleStatus cancel operation.
 
 0.38.4 - 2015-08-12
@@ -3204,7 +3242,7 @@ Forthcoming
 - changed channel() to channelId() in WirelessDataPoint.
 
 0.21.2 - 2015-04-06
-- changed maxSweeps, maxSweepsPerBurst, and minTimeBetweenBursts functions 
+- changed maxSweeps, maxSweepsPerBurst, and minTimeBetweenBursts functions
   to take an ActiveChannels object instead of channel count.
 
 0.21.1 - 2015-04-06
@@ -3406,14 +3444,14 @@ Forthcoming
 - added Error_InvalidNodeConfig exception that includes the node address of the WirelessNode.
 
 0.17.6 - 2014-12-05
-- Added InertilaNodeInfo model() function to get the model type as an enum.
+- Added InertialNodeInfo model() function to get the model type as an enum.
 - Throwing out LDC packets if the channel mask indicates there are 0 active channels.
 
 0.17.5 - 2014-11-26
 - Changed InertialNodeInfo's firmwareVersion from a uint16 to a Version object.
 
 0.17.4 - 2014-11-21
-- Fixed listBaseStations and listInertialDevices functions to correctly identify that a 
+- Fixed listBaseStations and listInertialDevices functions to correctly identify that a
   device has been unplugged even when mscl has a connection open for it.
 
 0.17.3 - 2014-11-20
@@ -3438,7 +3476,7 @@ Forthcoming
 
 0.16.1 - 2014-10-15
 - Fix for DatalogDownloader incorrectly parsing a Version 1.0 datalogging session header.
- 
+
 0.16.0 - 2014-10-15
 - Added DatalogDownloader and LoggedDataSweep classes used to download logged data from a WirelessNode.
 - Standardized exception names to all be in the form: Error_MyCustomError.
@@ -3599,7 +3637,7 @@ Forthcoming
 - Added supportedSampleRates function to get a list of all sample rates for a specific Inertial Channel Id.
 - Changed WirelessNode's setBaseStation function to take a constant BaseStation ref.
 
-0.10.3 - 2014-07-17 
+0.10.3 - 2014-07-17
 - Support for Ch4 on IEPE-Link.
 - Nodes with legacy serial numbers are identified correctly, instead of pulling from the new serial number location.
 
@@ -3618,7 +3656,7 @@ Forthcoming
 
 0.8.1 - 2014-07-02
 - Removed the InertialCommunicationType enum as it wasn't correct (each device uses different values).
-- Fixed issue where using the Communication object to create a BaseStation or InertialNode would 
+- Fixed issue where using the Communication object to create a BaseStation or InertialNode would
   immediately set the Raw Byte Mode parsing function to that device's parsing function.
 
 0.8.0 - 2014-07-02
@@ -3634,7 +3672,7 @@ Forthcoming
 
 0.7.1 - 2014-06-26
 - Support for 1 sample per 24 hours Wireless Sample Rate.
-- To fix the Connection bug below, the Connection objects now listen for data as soon as they are created. 
+- To fix the Connection bug below, the Connection objects now listen for data as soon as they are created.
   If no parsing function has been set for them (no BaseStation created), all incoming bytes will be thrown out.
 - Added LibVersion class that can be used to get the version of MSCL, including #defines and various helper functions.
 - Removed The .version() and .date() commands that were previously used to get the MSCL version.

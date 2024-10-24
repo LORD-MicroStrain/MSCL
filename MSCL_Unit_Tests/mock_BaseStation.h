@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -19,7 +19,7 @@ using namespace mscl;
 
 //declare a 'mock_baseStation class implementing the 'mockBaseStation' class
 MOCK_BASE_CLASS(mock_baseStationImpl, BaseStation_Impl)
-{    
+{
     mock_baseStationImpl():
         BaseStation_Impl(makeConnectionWithMockImpl(), 10)
     {

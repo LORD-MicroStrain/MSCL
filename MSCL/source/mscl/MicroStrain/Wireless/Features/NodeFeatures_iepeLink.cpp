@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "stdafx.h"
@@ -24,7 +24,7 @@ namespace mscl
         m_channelGroups.emplace_back(CH1, "Acceleration", ChannelGroup::SettingsMap{{WirelessTypes::chSetting_antiAliasingFilter, NodeEepromMap::ANTI_ALIASING_FILTER_1}});
 
         //Channels
-        //    Note: Channel 4 is unique in that it doesn't follow the sample rate of the node. 
+        //    Note: Channel 4 is unique in that it doesn't follow the sample rate of the node.
         //          Instead, it is sent once every burst, with a provided sample rate of once every 24 hours.
         m_channels.emplace_back(1, WirelessChannel::channel_1, WirelessTypes::chType_acceleration, "Acceleration", 23);
         m_channels.emplace_back(4, WirelessChannel::channel_4, WirelessTypes::chType_temperature, "Internal Temperature");
@@ -70,7 +70,7 @@ namespace mscl
     {
         //the list of sample rates varies for each sampling mode
         switch(samplingMode)
-        {        
+        {
         case WirelessTypes::samplingMode_syncBurst:
             return AvailableSampleRates::burst_iepeLink;
 

@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -71,7 +71,7 @@ namespace mscl
     public:
         //Constructor: BoostCommunication
         //    Initializes the BoostCommunication object
-        //    
+        //
         //Parameters:
         //    ioContext - boost io_context
         //    ioObj - boost io_object passed (Template)
@@ -148,7 +148,7 @@ namespace mscl
 
         //Function: readLoopHandler
         //    The read handler for the read loop, called when data comes in or the read operation has been canceled
-        //    
+        //
         //Parameters:
         //    error - boost error code
         //    bytes_transferred - number of bytes read in
@@ -190,7 +190,7 @@ namespace mscl
     BoostCommunication<IO_Object>::BoostCommunication(std::unique_ptr<boost::asio::io_context> ioContext, std::unique_ptr<IO_Object> ioObj):
         m_ioObject(std::move(ioObj)),
         m_ioContext(std::move(ioContext)),
-        m_readBuffer(CONNECTION_BUFFER_SIZE),
+        m_readBuffer(1024 * 1000),
         m_bufferWriter(m_readBuffer.getBufferWriter()),
         m_parseDataFunction(nullptr),
         m_debugDataFunction(nullptr)

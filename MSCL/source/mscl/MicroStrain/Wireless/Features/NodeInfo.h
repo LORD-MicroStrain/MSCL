@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -33,7 +33,7 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         NodeInfo(const WirelessNode_Impl* node);
 #endif
-        
+
         //Constructor: NodeInfo
         //    Creates a NodeInfo object.
         //

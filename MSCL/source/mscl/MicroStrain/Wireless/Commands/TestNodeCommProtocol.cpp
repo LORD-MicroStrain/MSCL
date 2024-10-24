@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "stdafx.h"
@@ -68,7 +68,7 @@ namespace mscl
 
         if(packet.asppVersion() == WirelessPacket::aspp_v3)
         {
-            if(payload.size() != 8 ||                                                       //payload length 
+            if(payload.size() != 8 ||                                                       //payload length
                payload.read_uint16(0) != WirelessProtocol::cmdId_testNodeCommProtocol ||    //command ID
                payload.read_uint32(2) != m_nodeAddress ||                                   //node address
                payload.read_uint16(6) != m_protocol                                         //protocol
@@ -79,7 +79,7 @@ namespace mscl
         }
         else
         {
-            if(payload.size() != 6 ||                                                       //payload length 
+            if(payload.size() != 6 ||                                                       //payload length
                payload.read_uint16(0) != WirelessProtocol::cmdId_testNodeCommProtocol ||    //command ID
                payload.read_uint16(2) != m_nodeAddress ||                                   //node address
                payload.read_uint16(4) != m_protocol                                         //protocol
@@ -108,7 +108,7 @@ namespace mscl
 
         if(packet.asppVersion() == WirelessPacket::aspp_v3)
         {
-            if(payload.size() != 9 ||                                                      //payload length 
+            if(payload.size() != 9 ||                                                      //payload length
                payload.read_uint16(0) != WirelessProtocol::cmdId_testNodeCommProtocol ||    //command ID
                payload.read_uint32(2) != m_nodeAddress ||                                   //node address
                payload.read_uint16(6) != m_protocol                                         //protocol
@@ -121,7 +121,7 @@ namespace mscl
         }
         else
         {
-            if(payload.size() != 6 ||                                                       //payload length 
+            if(payload.size() != 6 ||                                                       //payload length
                payload.read_uint16(0) != WirelessProtocol::cmdId_testNodeCommProtocol ||    //command ID
                payload.read_uint16(2) != m_nodeAddress ||                                   //node address
                payload.read_uint16(4) != m_protocol                                         //protocol

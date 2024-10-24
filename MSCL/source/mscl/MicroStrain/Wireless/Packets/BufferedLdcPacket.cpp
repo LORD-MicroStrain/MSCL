@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "stdafx.h"
@@ -95,7 +95,7 @@ namespace mscl
 
             //cals applied if the data type is float
             sweep.calApplied(WirelessTypes::isCalApplied(m_dataType));
-        
+
             ChannelData chData;
 
             //the index of the channel data
@@ -105,7 +105,7 @@ namespace mscl
 
             //loop through all the channels
             for(uint8 chItr = 1; chItr <= lastActiveCh; ++chItr)
-            {    
+            {
                 //if the current channel is enabled
                 if(channels.enabled(chItr))
                 {

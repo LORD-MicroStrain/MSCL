@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "stdafx.h"
@@ -35,6 +35,19 @@ namespace mscl
         boost::posix_time::ptime dateTime(boost::gregorian::date(year, month, day),
                                           boost::posix_time::hours(hour) + boost::posix_time::minutes(minute) + boost::posix_time::seconds(second) + boost::posix_time::milliseconds(milli));
         m_nanoseconds = (dateTime - boost::posix_time::from_time_t(0)).total_nanoseconds();
+    }
+
+    bool Timestamp::canConvertEpoch(Timestamp::Epoch epoch)
+    {
+        switch (epoch)
+        {
+        case UNIX:
+        case GPS:
+            return true;
+
+        default:
+            return false;
+        }
     }
 
     TimeSpan Timestamp::operator-(const Timestamp& other) const
@@ -88,10 +101,15 @@ namespace mscl
         return m_nanoseconds >= other.m_nanoseconds;
     }
 
-    //get the number of nanoseconds since epoch
-    uint64 Timestamp::nanoseconds(Timestamp::Epoch epoch /*=UNIX*/) const
+    uint64 Timestamp::nanoseconds() const
     {
-        if (m_epoch == epoch)
+        return nanoseconds(m_epoch);
+    }
+
+    //get the number of nanoseconds since epoch
+    uint64 Timestamp::nanoseconds(Timestamp::Epoch epoch) const
+    {
+        if (m_epoch == epoch || !canConvertEpoch(m_epoch))
         {
             return m_nanoseconds;
         }
@@ -107,12 +125,17 @@ namespace mscl
         }
     }
 
+    uint64 Timestamp::seconds() const
+    {
+        return seconds(m_epoch);
+    }
+
     //get the number of seconds since epoch
-    uint64 Timestamp::seconds(Timestamp::Epoch epoch /*=UNIX*/) const
+    uint64 Timestamp::seconds(Timestamp::Epoch epoch) const
     {
         uint64 ns = m_nanoseconds;
 
-        if (m_epoch != epoch)
+        if (m_epoch != epoch && canConvertEpoch(m_epoch))
         {
             switch (epoch)
             {

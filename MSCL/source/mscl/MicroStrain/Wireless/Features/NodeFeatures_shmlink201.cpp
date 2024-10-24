@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "stdafx.h"
@@ -52,7 +52,7 @@ namespace mscl
         m_channels.emplace_back(6, WirelessChannel::channel_6, WirelessTypes::chType_acceleration, "Acceleration Y", 24);
         m_channels.emplace_back(7, WirelessChannel::channel_7, WirelessTypes::chType_acceleration, "Acceleration Z", 24);
     }
-    
+
     const WirelessTypes::DataCollectionMethods NodeFeatures_shmlink201::dataCollectionMethods() const
     {
         //build and return the data collection methods that are supported
@@ -232,7 +232,7 @@ namespace mscl
         {
             throw Error_NotSupported("Sensor Delay is not supported by this Node.");
         }
-        
+
         return 350;     //350 microseconds
     }
 }

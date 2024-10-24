@@ -146,7 +146,7 @@
 #include "../MicroStrain/Wireless/Features/NodeInfo.h"
 #include "../MicroStrain/Wireless/Features/BaseStationFeatures.h"
 #include "../MicroStrain/Inertial/EulerAngles.h"
-#include "../MicroStrain/Inertial/PositionOffset.h"
+#include "../MicroStrain/Inertial/PositionVelocity.h"
 #include "../MicroStrain/MIP/MipModels.h"
 #include "../MicroStrain/Displacement/DisplacementModels.h"
 #include "../MicroStrain/MIP/MipTypes.h"
@@ -164,7 +164,6 @@
 #include "../MicroStrain/Displacement/DisplacementNode.h"
 #include "../MicroStrain/RTK/RTKNode.h"
 #include "../MicroStrain/MIP/Packets/MipPacket.h"
-#include "../MicroStrain/MIP/NMEA/NmeaPacket.h"
 %}
 
 // Need to tell SWIG that the following classes are not abstract (thinks they are by default and doesn't generate constructors)
@@ -235,7 +234,7 @@
 %include "../MicroStrain/Wireless/Features/NodeFeatures.h"
 %include "../MicroStrain/Wireless/Features/BaseStationFeatures.h"
 %include "../MicroStrain/Inertial/EulerAngles.h"
-%include "../MicroStrain/Inertial/PositionOffset.h"
+%include "../MicroStrain/Inertial/PositionVelocity.h"
 %include "../MicroStrain/MIP/MipModels.h"
 %include "../MicroStrain/Displacement/DisplacementModels.h"
 %include "../MicroStrain/MIP/MipTypes.h"
@@ -247,7 +246,6 @@
 %include "../MicroStrain/MIP/MipBuiltInTest.h"
 %include "../MicroStrain/MIP/Packets/MipSharedDataFields.h"
 %include "../MicroStrain/MIP/Packets/MipDataPacket.h"
-%include "../MicroStrain/MIP/NMEA/NmeaPacket.h"
 %include "../Communication/RawBytePacket.h"
 %include "../MicroStrain/MIP/MipNodeFeatures.h"
 %include "../MicroStrain/MIP/MipNode.h"
@@ -266,7 +264,6 @@ namespace std
     %template(DataSweeps)                       vector<mscl::DataSweep>;
     %template(LoggedDataSweeps)                 vector<mscl::LoggedDataSweep>;
     %template(MipDataPackets)                   vector<mscl::MipDataPacket>;
-    %template(NmeaPackets)                      vector<mscl::NmeaPacket>;
     %template(RawBytePackets)                   vector<mscl::RawBytePacket>;
     %template(MipChannels)                      vector<mscl::MipChannel>;
     %template(DataCollectionMethods)            vector<mscl::WirelessTypes::DataCollectionMethod>;
@@ -295,6 +292,7 @@ namespace std
     %template(ConfigIssues)                     vector<mscl::ConfigIssue>;
     %template(MipChannelFields)                 vector<enum mscl::MipTypes::ChannelField>;
     %template(MipCommands)                      vector<mscl::MipTypes::Command>;
+    %template(MipDataClasses)                   vector<enum mscl::MipTypes::DataClass>;
     %template(MipChannelIdentifiers)            vector<mscl::MipChannelIdentifier>;
     %template(MipCommandSet)                    vector<mscl::MipCommandBytes>;
     %template(MipFieldValues)                   vector<mscl::Value>;
@@ -340,6 +338,7 @@ namespace std
     %template(GpioPinOptions)                   map<uint8_t, map<enum mscl::GpioConfiguration::Feature, map<uint8_t, vector<mscl::GpioConfiguration::PinModes>>>>;
     %template(EventInputTriggers)               array<uint8_t, mscl::EventTriggerCombinationParameter::MAX_INPUT_TRIGGERS>;
     %template(EventTypes)                       vector<mscl::EventTypeInfo>;
+    %template(MeasurementReferenceFrames)       map<uint8_t, mscl::MeasurementReferenceFrame>;
 
 
 #ifndef UNIX_BUILD

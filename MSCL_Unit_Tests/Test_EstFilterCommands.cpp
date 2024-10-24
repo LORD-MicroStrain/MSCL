@@ -1,14 +1,14 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "mscl/MicroStrain/Inertial/Commands/EstFilter_Commands.h"
 #include "mscl/MicroStrain/MIP/MipDataField.h"
 #include "mscl/MicroStrain/ResponseCollector.h"
 #include "mscl/MicroStrain/Inertial/EulerAngles.h"
-#include "mscl/MicroStrain/Inertial/PositionOffset.h"
+#include "mscl/MicroStrain/Inertial/PositionVelocity.h"
 
 #include <boost/test/unit_test.hpp>
 using namespace mscl;

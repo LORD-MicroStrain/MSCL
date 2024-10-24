@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -50,7 +50,7 @@ namespace mscl
         //    The <MipNode_Impl> class that contains all the implementation logic for the DisplacementNode class.
         std::shared_ptr<MipNode_Impl> m_impl;
 
-    public:   
+    public:
 #ifndef SWIG
         //Function: doCommand
         //    Performs a generic Mip Command, sending the command bytes and waiting for the response.
@@ -219,7 +219,7 @@ namespace mscl
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: Information failed to be loaded for this Node.
         std::string deviceOptions() const;
-        
+
         //API Function: getDataPackets
         //    Gets up to the requested amount of data packets that have been collected.
         //
@@ -228,7 +228,7 @@ namespace mscl
         //    maxPackets - The maximum number of packets to return. If this is 0 (default), all packets will be returned.
         //
         //Returns:
-        //    A vector of <MipDataPacket>s containing all the data packets that are available up to the requested number of packets. 
+        //    A vector of <MipDataPacket>s containing all the data packets that are available up to the requested number of packets.
         //
         //Exceptions:
         //    - <Error_Connection>: A connection error has occurred with the DisplacementNode.
@@ -264,7 +264,7 @@ namespace mscl
         std::string name();
 
         //API Function: ping
-        //    Pings the Node to check for communication. 
+        //    Pings the Node to check for communication.
         //    Sends the "Ping" command to the device.
         //
         //Returns:
@@ -329,7 +329,7 @@ namespace mscl
         LinearEquation getAnalogToDisplacementCal() const;
 
         //API Function: setDeviceTime
-        //  Seeds the device time with the current system time. 
+        //  Seeds the device time with the current system time.
         //  This time will be reflected in the timestamp field that can come with data from the device.
         //
         //Exceptions:
@@ -351,5 +351,5 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the DisplacementNode.
         void setDeviceTime(uint64 nanoseconds);
     };
-    
+
 }

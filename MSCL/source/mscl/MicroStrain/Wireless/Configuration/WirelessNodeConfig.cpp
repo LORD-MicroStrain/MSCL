@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "stdafx.h"
@@ -109,9 +109,9 @@ namespace mscl
     DataModeMask WirelessNodeConfig::curDataModeMask(const NodeEepromHelper& eeprom) const
     {
         //if its currently set in the config, return the set value
-        if(isSet(m_dataMode)) 
-        { 
-            return DataModeMask(*m_dataMode); 
+        if(isSet(m_dataMode))
+        {
+            return DataModeMask(*m_dataMode);
         }
 
         //not set, so read the value from the node
@@ -166,8 +166,8 @@ namespace mscl
     void WirelessNodeConfig::curEventTriggerDurations(const NodeEepromHelper& eeprom, uint32& pre, uint32& post) const
     {
         //if its currently set in the config, return the set value
-        if(isSet(m_eventTriggerOptions)) 
-        { 
+        if(isSet(m_eventTriggerOptions))
+        {
             pre = m_eventTriggerOptions->preDuration();
             post = m_eventTriggerOptions->postDuration();
         }
@@ -375,7 +375,7 @@ namespace mscl
 
         //Number of Sweeps
         if(isSet(m_numSweeps))
-        {    
+        {
             //verify that we supported setting num sweeps
             if(!features.supportsLimitedDuration())
             {
@@ -444,7 +444,7 @@ namespace mscl
                 outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_LOST_BEACON_TIMEOUT, "Lost Beacon Timeout is not supported by this Node."));
             }
             //verify the timeout is within range
-            else if((val < features.minLostBeaconTimeout() && val != NodeEepromHelper::LOST_BEACON_TIMEOUT_DISABLED) || 
+            else if((val < features.minLostBeaconTimeout() && val != NodeEepromHelper::LOST_BEACON_TIMEOUT_DISABLED) ||
                     val > features.maxLostBeaconTimeout()
                     )
             {
@@ -1114,10 +1114,10 @@ namespace mscl
         }
 
         //verify Low Pass Filters with Sample Rate
-        if(features.supportsLowPassFilter() && 
+        if(features.supportsLowPassFilter() &&
             (isSet(m_sampleRate) ||
              isAnySet(m_lowPassFilters) ||
-             isSet(m_samplingMode) || 
+             isSet(m_samplingMode) ||
              isSet(m_dataCollectionMethod) ||
              isSet(m_dataMode) ||
              isSet(m_activeChannels))
@@ -1176,7 +1176,7 @@ namespace mscl
         }
 
         //verify Event Trigger settings
-        if(features.supportsEventTrigger() && 
+        if(features.supportsEventTrigger() &&
             (isSet(m_eventTriggerOptions) ||
             isSet(m_sampleRate) ||
             isSet(m_activeChannels) ||
@@ -1383,7 +1383,7 @@ namespace mscl
         if(isSet(m_activitySense)) { eeprom.write_activitySense(*m_activitySense); }
 
         //write Event Trigger Options
-        if(isSet(m_eventTriggerOptions)) 
+        if(isSet(m_eventTriggerOptions))
         {
             const uint8 numTriggers = features.numEventTriggers();
             std::map<uint8, LinearEquation> equations;
@@ -1438,7 +1438,7 @@ namespace mscl
         if(isSet(m_sensorDelay)) { eeprom.write_sensorDelay(*m_sensorDelay); }
 
         //write Data Mode
-        if(isSet(m_dataMode)) 
+        if(isSet(m_dataMode))
         {
             //if the Node doesn't support this eeprom, the verifyConfig will verify
             //that only raw mode is selected, and we will just skip writing anything

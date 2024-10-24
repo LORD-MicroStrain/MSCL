@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "mscl/MicroStrain/Wireless/WirelessNode.h"
@@ -36,13 +36,13 @@ BOOST_AUTO_TEST_CASE(WirelessNode_Ping_success)
     WirelessNode node(123, base);
 
     PingResponse r = PingResponse::ResponseSuccess(-20, -30);
-    
+
     //make the BaseStation's node_ping() function return our PingResponse object we created
     MOCK_EXPECT(impl->node_ping).once().returns(r);
 
     MOCK_EXPECT(impl->node_readEeprom).once().with(mock::any, mock::any, 124, mock::assign(0x0105)).returns(true);
     MOCK_EXPECT(impl->node_readEeprom).once().with(mock::any, mock::any, 126, mock::assign(0x0300)).returns(true);
-    
+
     PingResponse result = node.ping();
 
     //check that node.ping() return everything successfully
@@ -208,7 +208,7 @@ BOOST_AUTO_TEST_CASE(WirelessNode_writeEepromuint16)
     //check the eeprom result is what we wrote
     uint16 result = node.readEeprom(20);
     BOOST_CHECK_EQUAL(result, 5432);
-    
+
     MOCK_RESET(impl->node_writeEeprom);
     //check that writing the same value to eeprom doesn't throw an exception (uses cache)
     BOOST_CHECK_NO_THROW(node.writeEeprom(20, (uint16)5432));
@@ -355,7 +355,7 @@ BOOST_AUTO_TEST_CASE(WirelessNode_getSampling)
     node.setImpl(impl);
 
     expectGenericNodeFeatures(impl);
-    
+
 
     MOCK_EXPECT(impl->readEeprom_uint16).once().returns(WirelessTypes::samplingMode_armedDatalog);                                        //sampling mode
     MOCK_EXPECT(impl->readEeprom_uint16).once().returns(0x017);                                                                            //active channels
@@ -386,7 +386,7 @@ BOOST_AUTO_TEST_CASE(NodeConfig_setSampling)
     WirelessNode node(100, b);
     node.setImpl(impl);
 
-    
+
 
     SamplingConfig sampling;
     sampling.samplingMode(WirelessTypes::samplingMode_nonSync);
@@ -435,7 +435,7 @@ BOOST_AUTO_TEST_CASE(NodeConfig_getBootMode)
 
     std::unique_ptr<NodeFeatures> features;
     expectNodeFeatures(features, impl);
-    
+
     expectRead(impl, NodeEepromMap::DEFAULT_MODE, Value::UINT16(5));
 
     BOOST_CHECK_EQUAL(node.getDefaultMode(), WirelessTypes::defaultMode_sleep);
@@ -454,7 +454,7 @@ BOOST_AUTO_TEST_CASE(NodeConfig_setBootMode)
 
     std::unique_ptr<NodeFeatures> features;
     expectNodeFeatures(features, impl);
-    
+
     expectWrite(impl, NodeEepromMap::DEFAULT_MODE, Value::UINT16(6));
     MOCK_EXPECT(impl->cyclePower);
 
@@ -473,7 +473,7 @@ BOOST_AUTO_TEST_CASE(NodeConfig_getInactivityTimeout)
 
     std::unique_ptr<NodeFeatures> features;
     expectNodeFeatures(features, impl);
-    
+
     expectRead(impl, NodeEepromMap::INACTIVE_TIMEOUT, Value::UINT16(50));
 
     BOOST_CHECK_EQUAL(node.getInactivityTimeout(), 50);
@@ -490,7 +490,7 @@ BOOST_AUTO_TEST_CASE(NodeConfig_setInactivityTimeout)
 
     std::unique_ptr<NodeFeatures> features;
     expectNodeFeatures(features, impl);
-    
+
     expectWrite(impl, NodeEepromMap::INACTIVE_TIMEOUT, Value::UINT16(30));    //min of 30
     MOCK_EXPECT(impl->cyclePower);
 
@@ -534,7 +534,7 @@ BOOST_AUTO_TEST_CASE(NodeConfig_getTransmitPower)
 
     std::unique_ptr<NodeFeatures> features;
     expectNodeFeatures(features, impl);
-    
+
     expectRead(impl, NodeEepromMap::TX_POWER_LEVEL, Value::UINT16(25615));
 
     BOOST_CHECK_EQUAL(node.getTransmitPower(), WirelessTypes::power_10dBm);
@@ -782,7 +782,7 @@ BOOST_AUTO_TEST_CASE(WirelessNode_erase)
     MOCK_EXPECT(impl->communicationProtocol).returns(WirelessTypes::commProtocol_lxrs);
 
     WirelessNode node(123, base);
-    
+
     MOCK_EXPECT(impl->node_pageDownload).returns(false);
     MOCK_EXPECT(impl->node_readEeprom).once().with(mock::any, mock::any, 124, mock::assign(0x0105)).returns(true);
     MOCK_EXPECT(impl->node_readEeprom).once().with(mock::any, mock::any, 126, mock::assign(0x0105)).returns(true);

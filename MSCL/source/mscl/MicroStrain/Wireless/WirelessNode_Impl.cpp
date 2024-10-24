@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "stdafx.h"
@@ -653,7 +653,7 @@ namespace mscl
                 throw Error_NotSupported("Unknown Excitation voltage for this Node.");
         }
 
-        
+
     }
 
     WirelessTypes::Voltage WirelessNode_Impl::getAdcVoltageRef() const
@@ -1024,7 +1024,7 @@ namespace mscl
         catch(Error_NotSupported&)
         {
             //the velocity category is supported, but the configuration eeprom isnt
-            
+
             //default of IPS
             return WirelessTypes::derivedVelocity_ips;
         }
@@ -1039,8 +1039,8 @@ namespace mscl
             //send the node_ping command to this node's parent base station
             result = m_baseStation.node_ping(wirelessProtocol(), m_address);
         }
-        catch(Error&) 
-        { 
+        catch(Error&)
+        {
             //treat errors (such as failing to determine protocol) as if it failed to ping
         }
 
@@ -1195,7 +1195,7 @@ namespace mscl
         Utils::checkBounds_min(targetPercent, 0.0f);
         Utils::checkBounds_max(targetPercent, 100.0f);
 
-        //attempt a few pings first 
+        //attempt a few pings first
         //(legacy (v1) autobalance doesn't have a response packet, so need to check communication)
         uint8 retryCounter = 0;
         bool pingSuccess = false;

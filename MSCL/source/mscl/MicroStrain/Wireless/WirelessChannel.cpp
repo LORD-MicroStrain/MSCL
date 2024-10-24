@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "stdafx.h"
@@ -111,7 +111,7 @@ namespace mscl
             case channel_digital_16:                return "digital16";
 
             case channel_structuralHealth:          return "structuralHealth";
-            
+
             case channel_hcl_rawBase_mag1_x:            return "hcl_rawBase_mag1_x";
             case channel_hcl_rawBase_mag1_y:            return "hcl_rawBase_mag1_y";
             case channel_hcl_rawBase_mag1_z:            return "hcl_rawBase_mag1_z";

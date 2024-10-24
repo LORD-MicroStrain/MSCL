@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -45,7 +45,7 @@ namespace mscl
         //Variable: numSweeps
         //    The total number of sweeps that are in the session.
         uint32 numSweeps;
-        
+
         //Variable: sessionIndex
         //    The datalogging session index. This starts at 1 for the first session,
         //    and gets incremented for each additional session.
@@ -308,7 +308,7 @@ namespace mscl
         //  Note: May be changed whenever <metaDataUpdated> returns true.
         //
         //Returns:
-        //  The <ChannelCalMap> of <WirelessChannel::ChannelId>s to <CalCoefficients>. 
+        //  The <ChannelCalMap> of <WirelessChannel::ChannelId>s to <CalCoefficients>.
         const ChannelCalMap& calCoefficients() const;
     };
 }

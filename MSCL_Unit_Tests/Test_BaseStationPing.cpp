@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "mscl/MicroStrain/Wireless/Commands/BaseStation_Ping.h"
@@ -62,7 +62,7 @@ BOOST_AUTO_TEST_CASE(BaseStationPing_Match_Fail_ByteSize)
     std::shared_ptr<ResponseCollector> rc(new ResponseCollector);
     BaseStation_Ping::Response response(rc);
 
-    Bytes bytes;    //empty bytes        
+    Bytes bytes;    //empty bytes
 
     DataBuffer buffer(bytes);
 

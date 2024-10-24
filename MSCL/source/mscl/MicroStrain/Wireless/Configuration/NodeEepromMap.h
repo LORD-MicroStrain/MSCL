@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -92,14 +92,14 @@ namespace mscl
         //  INACTIVE_TIMEOUT                - The length of time necessary before a node enters sleep mode, if no user activity
         //  SAMPLE_RATE                     - The sample rate for standard sampling modes (Synchronized Sampling, LDC)
         //  DATA_FORMAT                     - The packet format (uint16, float, etc.) of sampled data
-        //  SNIFF_DURATION                  - The amount of time that the node listens for a wake packets 
+        //  SNIFF_DURATION                  - The amount of time that the node listens for a wake packets
         //  FREQUENCY                       - The radio frequency channel
         //  TX_POWER_LEVEL                  - The transmit output power of the radio
         //  UNLIMITED_SAMPLING              - The unlimited sampling flag for standard sampling modes
         //  UNLIMITED_DATALOG               - The unlimited sampling flag for Armed Datalogging sampling
         //  FIRMWARE_VER                    - The firmware version of the node (part 1)
         //  FIRMWARE_VER2                   - The firmware version of the node (part 2)
-        //  MODEL_NUMBER                    - The model number of the node    
+        //  MODEL_NUMBER                    - The model number of the node
         //  MODEL_OPTION                    - The model option of the node
         //  LEGACY_MODEL_NUMBER             - The (legacy) model number of the node
         //  LEGACY_SERIAL_ID                - The (legacy) serial ID for the node. Combine with the model number for the full serial number
