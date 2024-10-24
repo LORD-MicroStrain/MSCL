@@ -91,43 +91,43 @@ For projects using our inertial product lines check out our new lightweight C/C+
   </tr>
   <tr align="center">
     <td rowspan="2"> C++ </td>
-    <td><a href="https://github.com/LORD-MicroStrain/MSCL/releases/latest/download/MSCL_x64_Shared_C++.deb"> C++ Shared (.so) x64 </a></td>
+    <td><a href="https://github.com/LORD-MicroStrain/MSCL/releases/latest/download/MSCL_amd64_Shared_C++.deb"> C++ Shared (.so) x64 </a></td>
     <td><a href="https://github.com/LORD-MicroStrain/MSCL/releases/latest/download/MSCL_arm64_Shared_C++.deb"> C++ Shared (.so) arm64 </a></td>
     <td><a href="https://github.com/LORD-MicroStrain/MSCL/releases/latest/download/MSCL_armhf_Shared_C++.deb"> C++ Shared (.so) armhf </a></td>
   </tr>
   <tr align="center">
-    <td><a href="https://github.com/LORD-MicroStrain/MSCL/releases/latest/download/MSCL_x64_Static_C++.deb"> C++ Static (.a) x64 </a></td>
+    <td><a href="https://github.com/LORD-MicroStrain/MSCL/releases/latest/download/MSCL_amd64_Static_C++.deb"> C++ Static (.a) x64 </a></td>
     <td><a href="https://github.com/LORD-MicroStrain/MSCL/releases/latest/download/MSCL_arm64_Static_C++.deb"> C++ Static (.a) arm64 </a></td>
     <td><a href="https://github.com/LORD-MicroStrain/MSCL/releases/latest/download/MSCL_armhf_Static_C++.deb"> C++ Static (.a) armhf </a></td>
   </tr>
   <tr align="center">
     <td rowspan="6"> Python </td>
-    <td><a href="https://github.com/LORD-MicroStrain/MSCL/releases/latest/download/MSCL_x64_Python2.7.deb"> Python 2.7 x64 </a></td>
+    <td><a href="https://github.com/LORD-MicroStrain/MSCL/releases/latest/download/MSCL_amd64_Python2.7.deb"> Python 2.7 x64 </a></td>
     <td><a href="https://github.com/LORD-MicroStrain/MSCL/releases/latest/download/MSCL_arm64_Python2.7.deb"> Python 2.7 arm64 </a></td>
     <td><a href="https://github.com/LORD-MicroStrain/MSCL/releases/latest/download/MSCL_armhf_Python2.7.deb"> Python 2.7 armhf </a></td>
   </tr>
   <tr align="center">
-    <td><a href="https://github.com/LORD-MicroStrain/MSCL/releases/latest/download/MSCL_x64_Python3.7.deb"> Python 3.7 x64 </a></td>
+    <td><a href="https://github.com/LORD-MicroStrain/MSCL/releases/latest/download/MSCL_amd64_Python3.7.deb"> Python 3.7 x64 </a></td>
     <td><a href="https://github.com/LORD-MicroStrain/MSCL/releases/latest/download/MSCL_arm64_Python3.7.deb"> Python 3.7 arm64 </a></td>
     <td><a href="https://github.com/LORD-MicroStrain/MSCL/releases/latest/download/MSCL_armhf_Python3.7.deb"> Python 3.7 armhf </a></td>
   </tr>
   <tr align="center">
-    <td><a href="https://github.com/LORD-MicroStrain/MSCL/releases/latest/download/MSCL_x64_Python3.8.deb"> Python 3.8 x64 </a></td>
+    <td><a href="https://github.com/LORD-MicroStrain/MSCL/releases/latest/download/MSCL_amd64_Python3.8.deb"> Python 3.8 x64 </a></td>
     <td><a href="https://github.com/LORD-MicroStrain/MSCL/releases/latest/download/MSCL_arm64_Python3.8.deb"> Python 3.8 arm64 </a></td>
     <td><a href="https://github.com/LORD-MicroStrain/MSCL/releases/latest/download/MSCL_armhf_Python3.8.deb"> Python 3.8 armhf </a></td>
   </tr>
   <tr align="center">
-    <td><a href="https://github.com/LORD-MicroStrain/MSCL/releases/latest/download/MSCL_x64_Python3.9.deb"> Python 3.9 x64 </a></td>
+    <td><a href="https://github.com/LORD-MicroStrain/MSCL/releases/latest/download/MSCL_amd64_Python3.9.deb"> Python 3.9 x64 </a></td>
     <td><a href="https://github.com/LORD-MicroStrain/MSCL/releases/latest/download/MSCL_arm64_Python3.9.deb"> Python 3.9 arm64 </a></td>
     <td><a href="https://github.com/LORD-MicroStrain/MSCL/releases/latest/download/MSCL_armhf_Python3.9.deb"> Python 3.9 armhf </a></td>
   </tr>
   <tr align="center">
-    <td><a href="https://github.com/LORD-MicroStrain/MSCL/releases/latest/download/MSCL_x64_Python3.10.deb"> Python 3.10 x64 </a></td>
+    <td><a href="https://github.com/LORD-MicroStrain/MSCL/releases/latest/download/MSCL_amd64_Python3.10.deb"> Python 3.10 x64 </a></td>
     <td><a href="https://github.com/LORD-MicroStrain/MSCL/releases/latest/download/MSCL_arm64_Python3.10.deb"> Python 3.10 arm64 </a></td>
     <td><a href="https://github.com/LORD-MicroStrain/MSCL/releases/latest/download/MSCL_armhf_Python3.10.deb"> Python 3.10 armhf </a></td>
   </tr>
   <tr align="center">
-    <td><a href="https://github.com/LORD-MicroStrain/MSCL/releases/latest/download/MSCL_x64_Python3.11.deb"> Python 3.11 x64 </a></td>
+    <td><a href="https://github.com/LORD-MicroStrain/MSCL/releases/latest/download/MSCL_amd64_Python3.11.deb"> Python 3.11 x64 </a></td>
     <td><a href="https://github.com/LORD-MicroStrain/MSCL/releases/latest/download/MSCL_arm64_Python3.11.deb"> Python 3.11 arm64 </a></td>
     <td><a href="https://github.com/LORD-MicroStrain/MSCL/releases/latest/download/MSCL_armhf_Python3.11.deb"> Python 3.11 armhf </a></td>
   </tr>
