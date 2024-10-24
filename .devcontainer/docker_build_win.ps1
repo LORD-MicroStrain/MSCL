@@ -6,7 +6,8 @@
 param (
   [String]$windows_image,
   [String]$windows_version,
-  [String]$python3_versions = "3.7.0 3.8.0 3.9.0 3.10.0 3.11.0"
+  [String]$python3_versions = "3.7.0 3.8.0 3.9.0 3.10.0 3.11.0",
+  [String]$arch = "x64"
 )
 
 try {
@@ -34,18 +35,20 @@ try {
   $project_dir = "${script_dir}/.."
   $dockerfile = "${script_dir}/Dockerfile.windows"
   $image_name = "microstrain/mscl_windows_builder:${windows_version}"
+  
+  if ("${arch}" -eq "x86") {
+    $cmake_arch = "Win32"
+  } else {
+    $cmake_arch = ${arch}
+  }
 
   # Construct the flags that we will pass to the build script
-  $python2_x86_build_script_flags = "-python2Dirs C:\Python2.7-Win32"
-  $python2_x64_build_script_flags = "-python2dirs C:\Python2.7-x64"
-  $python3_x86_build_script_flags = "-python3Dirs "
-  $python3_x64_build_script_flags = "-python3Dirs "
+  $python2_build_script_flags = "-python2Dirs C:\Python2.7-${cmake_arch}"
+  $python3_build_script_flags = "-python3Dirs "
   foreach ($python3_version in ${python3_versions}.split(" ")) {
-    $python3_x86_build_script_flags += "C:\Python${python3_version}-Win32,"
-    $python3_x64_build_script_flags += "C:\Python${python3_version}-x64,"
+    $python3_build_script_flags += "C:\Python${python3_version}-${cmake_arch},"
   }
-  $python3_x86_build_script_flags = $python3_x86_build_script_flags.TrimEnd(',')
-  $python3_x64_build_script_flags = $python3_x64_build_script_flags.TrimEnd(',')
+  $python3_build_script_flags = $python3_build_script_flags.TrimEnd(',')
 
   # Make sure we have the most recent image (okay if this fails)
   docker pull "${windows_image}:${windows_version}"
@@ -77,9 +80,8 @@ try {
     "${image_name}" -Command " `
       git config --global --add safe.directory C:/projects/mscl; `
       git fetch origin --tags; `
-      & 'C:\Projects\MSCL\BuildScripts\build_win.ps1' -arch Win32 -buildDir C:\projects\mscl\docker_build\Win32 ${python2_x86_build_script_flags} ${python3_x86_build_script_flags}; `
-      & 'C:\Projects\MSCL\BuildScripts\build_win.ps1' -arch x64 -buildDir C:\projects\mscl\docker_build\x64 ${python2_x64_build_script_flags} ${python3_x64_build_script_flags}; `
-      & 'C:\Projects\MSCL\BuildScripts\zip_win.ps1'; `
+      & 'C:\Projects\MSCL\BuildScripts\build_win.ps1' -arch ${cmake_arch} -buildDir C:\projects\mscl\docker_build\${cmake_arch} ${python2_build_script_flags} ${python3_build_script_flags}; `
+      & 'C:\Projects\MSCL\BuildScripts\zip_win.ps1' -arch ${arch}; `
     "
 }
 catch {

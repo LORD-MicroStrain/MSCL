@@ -44,7 +44,7 @@ function(mscl_python_swig)
   # Compiler flags for the target that will be passed directly to the compiler
   set_property(TARGET ${mscl_python_swig_MODULE_NAME} PROPERTY COMPILE_OPTIONS ${mscl_python_swig_COMPILE_OPTIONS})
 
-  # Compiler definitons for both the compiler and swig
+  # Compiler definitions for both the compiler and swig
   set_property(TARGET ${mscl_python_swig_MODULE_NAME} PROPERTY COMPILE_DEFINITIONS ${mscl_python_swig_COMPILE_DEFINITIONS})
 
   # Include directories

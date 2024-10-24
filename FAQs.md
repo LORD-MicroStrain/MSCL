@@ -1,8 +1,6 @@
 # MSCL FAQs
 
-The following are some frequently asked questions from MSCL users. It can also be useful to view previous [Issues](https://github.com/LORD-MicroStrain/MSCL/issues?utf8=%E2%9C%93&q=)
-
-If you need more help, please [Create a New Issue](https://github.com/LORD-MicroStrain/MSCL/issues/new)
+If you need more help, please reach our on the [MicroStrain Support Portal](https://support.microstrain.com)
 
 ### How do I set up a connection to a WSDA-2000 / WSDA-1500 ethernet BaseStation?
 
@@ -18,7 +16,7 @@ tcpConnection = mscl.Connection.TcpIp("192.100.26.1", 5000)
 baseStation = mscl.BaseStation(tcpConnection)
 ```
 
-### I am using a WSDA-2000 ethernet BaseStation, but am having trouble communicating with it / Wireless Nodes.
+### I am using a WSDA-2000 ethernet BaseStation, but having trouble communicating with it / Wireless Nodes.
 
 Depending on your network latency, you may need to adjust the timeout for communicating with the BaseStation:
 
@@ -31,7 +29,8 @@ baseStation.timeout(2000)
 
 ### My Wireless Node won't respond to commands.
 
-In order to communicate with a Wireless Node, all of the following must be true:
+In order to communicate with a Wireless Node, all the following must be true:
+
 - The Node is powered on, and within range of the BaseStation
 - The Node is on the same frequency as the BaseStation
 - The Node is in Idle Mode (not sampling, and not sleeping)
@@ -46,4 +45,5 @@ node.readWriteRetries(3)
 
 ### I'm attempting to connect to a device on Linux, and I'm getting a Connection error.
 
-The /dev/tty* devices usually have a group of `dialout`. You will either need to make sure the device you are accessing is owned by you, or add your user to the `dialout` group (`usermod -a -G dialout YOUR_USER_NAME`).
+The /dev/tty* devices usually have a group of `dialout`. You will either need to make sure the device you are accessing is owned by you, or add your
+user to the `dialout` group (`usermod -a -G dialout YOUR_USER_NAME`).

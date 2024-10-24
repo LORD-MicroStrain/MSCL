@@ -10,7 +10,7 @@
 
 #ifndef SWIG
 //update with each release
-#define MSCL_MAJOR 65
+#define MSCL_MAJOR 66
 #define MSCL_MINOR 0
 #define MSCL_PATCH 0
 #endif

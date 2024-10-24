@@ -15,6 +15,8 @@ REMOVED - A function/class has been removed.
 ======================================================================================================
 
 Forthcoming
+
+66.0.0 - 2024-10-24
 - CHANGED Switched to CMake build system
     - Updated READMEs to reflect new build system
     - Updated example code for Python to conform more to Python3
@@ -33,7 +35,7 @@ Forthcoming
     - NmeaMessageFormat changes:
         - Added max configurations count
         - Made supportedDataClasses() public
-		- CHANGED SentenceTypes PKRR and PKRA to MSRR and MSRA, respectively
+    - CHANGED SentenceTypes PKRR and PKRA to MSRR and MSRA, respectively
     - Added MipDataClasses as a typedef for a vector of MipTypes::DataClass
     - Added UART feature for GPIO configuration
     - Added Aiding Measurements command set (0x13)
@@ -106,7 +108,7 @@ Forthcoming
 - Added support for storing and getting Timestamp class values in both GPS and Unix epochs - default behavior unchanged
 
 64.2.2 - 2022-03-08
-- Reverted defaul MIP command timeout to 250 ms
+- Reverted default MIP command timeout to 250 ms
 - Increased timeout for MipNode::saveSettingsAsStartup() to 2500 ms
 - Increased timeout for MipNode::loadFactoryDefaultSettings() to 1200 ms
 
@@ -436,7 +438,7 @@ Forthcoming
 
 58.0.2 - 2020-08-03
 - Updated RTKDeviceStatusFlags to reflect bitfield definition changes
-- Changed MipTyes::CHANNEL_NAMES entries for GPS and GNSS Ionospheric Corrections channel field/qualifiers to ensure they're unique
+- Changed MipTypes::CHANNEL_NAMES entries for GPS and GNSS Ionospheric Corrections channel field/qualifiers to ensure they're unique
 
 58.0.1 - 2020-08-03
 - Update inertial field parsers for:
@@ -533,7 +535,7 @@ Forthcoming
 - Added class Quaternion (extends Matrix)
 
 55.0.4 - 2020-05-21
-- Added InertialNode::saveSettingsAsStartup that accepts a list of commmand IDs and saves only those specified
+- Added InertialNode::saveSettingsAsStartup that accepts a list of command IDs and saves only those specified
 
 55.0.3 - 2020-05-21
 - Added support for fields:
@@ -1889,7 +1891,7 @@ Forthcoming
 - changed DataPoint::ChannelProperties to a map instead of an unordered_map, which
   seems to fix a crash when receiving a ShmPacket and requesting a channel property.
   This is still a mystery as to why it was crashing, as it was on the map->find() line
-  which is not suppossed to throw an exception, but threw a vector::out_of_range
+  which is not supposed to throw an exception, but threw a vector::out_of_range
 
 19.2.0 - 2017-02-27
 - support for the new Internal Temperature field in Diagnostic Packets.
@@ -2375,7 +2377,7 @@ Forthcoming
 - CHANGED NodeModel::node_vLink2 to NodeModel::node_vLink200.
 
 6.1.3 - 2016-07-13
-- fixed a bug in Datalog Download not stopping when it should (error calulating bytes remaining).
+- fixed a bug in Datalog Download not stopping when it should (error calculating bytes remaining).
 - fixed a bug in Datalog Download reading out of range for checksums in some cases.
 
 6.1.2 - 2016-07-13
@@ -3004,7 +3006,7 @@ Forthcoming
 - support for parsing Raw Base Board data.
 
 0.38.5 - 2015-08-14
-- fix for SetToIdle desctructor throwing exceptions.
+- fix for SetToIdle destructor throwing exceptions.
 - added some buffer time to the SetToIdleStatus cancel operation.
 
 0.38.4 - 2015-08-12
@@ -3442,7 +3444,7 @@ Forthcoming
 - added Error_InvalidNodeConfig exception that includes the node address of the WirelessNode.
 
 0.17.6 - 2014-12-05
-- Added InertilaNodeInfo model() function to get the model type as an enum.
+- Added InertialNodeInfo model() function to get the model type as an enum.
 - Throwing out LDC packets if the channel mask indicates there are 0 active channels.
 
 0.17.5 - 2014-11-26

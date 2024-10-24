@@ -34,12 +34,17 @@ target_link_libraries(${PROJECT_NAME}
 target_compile_definitions(${PROJECT_NAME} PRIVATE BOOST_ALL_NO_LIB)
 
 # On windows, we need to set the runtime library to the same as MSCL
-target_compile_options(${PROJECT_NAME} PRIVATE $<$<CXX_COMPILER_ID:MSVC>:/MT$<$<CONFIG:Debug>:d>>)
+if(MSVC)
+  target_compile_options(${PROJECT_NAME} PRIVATE
+    /MT$<$<CONFIG:Debug>:d>
+    /MP
+  )
+endif()
 
 # Ignore some annoying linker warnings
 target_link_options(${PROJECT_NAME} PRIVATE $<$<CXX_COMPILER_ID:MSVC>:/ignore:4099>)
 
-if (MSVC)
+if(MSVC)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /bigobj")
 endif(MSVC)
 

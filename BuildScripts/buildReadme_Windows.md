@@ -1,6 +1,7 @@
 # **Building MSCL for Windows**
 
 ## Hold up!
+
 Most users will not need to build MSCL themselves!
 
 Pre-built versions are available for download. To get it, head over to the
@@ -9,6 +10,7 @@ Under the `Downloads` section of that release, you will find the C++, Python, an
 as well as Example Code and Documentation.
 
 ## I really want to build it myself
+
 Ok, if you are making changes to MSCL's source code, or need to build MSCL from scratch for any other reason,
 here are the steps to build for Windows:
 
@@ -17,11 +19,13 @@ here are the steps to build for Windows:
 For more information on how to configure the build to use, or not use the optional dependencies see [this section](#configuring-the-build)
 
 ##### Required
+
 - \>= [Visual Studio 2015](https://visualstudio.microsoft.com/downloads/) (msvc-14.0) or MSBuild equivalent
 - \>= [cmake 3.16](https://cmake.org/download/)
 - &nbsp;&nbsp;\= [Boost 1.68](https://www.boost.org/users/download/)
 
 ##### Optional
+
 - \>= [OpenSSL 1.1.0](https://www.npcglib.org/~stathis/blog/precompiled-openssl/)
 - \>= [SWIG 4.0.0](https://swig.org/download.html) (for Python2, Python3, or .NET builds)
 - \>= [Python 2.7](https://www.python.org/downloads/)
@@ -32,11 +36,11 @@ Since Windows has no standard path for libraries to be installed in,
 we will refer to `LIB_PATH` as the location that you will install dependencies.
 Each of these paths can be configured at build time, but for reference,
 this is what a common `LIB_PATH` directory will look like:
-  - `LIB_PATH/boost/boost_1_68_0`
-  - `LIB_PATH/openssl`
-  - `LIB_PATH/swig/swigwin-4.0.0` (for .NET and Python builds)
-  - `LIB_PATH/NaturalDocs`
 
+- `LIB_PATH/boost/boost_1_68_0`
+- `LIB_PATH/openssl`
+- `LIB_PATH/swig/swigwin-4.0.0` (for .NET and Python builds)
+- `LIB_PATH/NaturalDocs`
 
 #### Installing Boost
 
@@ -48,14 +52,13 @@ If you want to install Boost yourself, you can follow the instructions on
 
 ## Building MSCL for C++
 
-1. Clone or download the [MSCL repo](https://github.com/LORD-MicroStrain/MSCL).
-The location of MSCL will be referred to as `<Project Root>` for the rest of this guide.
-2. Create a build directory. We will refer to this directory as `build` for the rest of the documentation,
-and it will be located at `<Project Root>/build` but it can be named anything and put anywhere as long as
-you update the following steps accordingly.
-3. Open a new powershell terminal in `<Project Root>/build` and run the following command to configure the project.
-If you want to add options to build language bindings, or change configuration, see [this section](#configuring-the-build)
-and add the desired options as `-D` flags to the end of this command:
+1. Clone or download the [MSCL repo](https://github.com/LORD-MicroStrain/MSCL). The location of MSCL will be referred to as `<Project Root>` for the
+   rest of this guide.
+2. Create a build directory. We will refer to this directory as `build` for the rest of the documentation, and it will be located at
+   `<Project Root>/build` but it can be named anything and put anywhere as long as you update the following steps accordingly.
+3. Open a new powershell terminal in `<Project Root>/build` and run the following command to configure the project. If you want to add options to build
+   language bindings, or change configuration, see [this section](#configuring-the-build) and add the desired options as `-D` flags to the end of this
+   command:
     ```powershell
     # Please note that you should change ".." to wherever the project is located if you did not put the "build" directory directly in <Project Root>
     cmake ..
@@ -64,9 +67,8 @@ and add the desired options as `-D` flags to the end of this command:
     ```powershell
     cmake --build .
     ```
-5. All build artifacts will be located in the `<Project Root>/build` directory in a somewhat unorderly directory structure,
-but the important artifacts such as the libraries, header files, etc. will be copied to `<Project Root>/Output`
-in a more orderly directory structure
+5. All build artifacts will be located in the `<Project Root>/build` directory in a somewhat disorderly directory structure, but the important
+   artifacts such as the libraries, header files, etc. will be copied to `<Project Root>/Output` in a more orderly directory structure
 6. If you want to build the zip files run the following command after building:
     ```powershell
     cmake --build . --target zip
@@ -77,11 +79,13 @@ in a more orderly directory structure
 The [`CMakeLists.txt`](../CMakeLists.txt) file exposes several parameters to the user to allow you to enable or disable different parts of the build.
 These options can be set in the configuration step documented above by prepending them with `-D` and setting them to the desired value.
 For example, to build python3, I would run the command:
+
 ```powershell
 cmake .. -DBUILD_PYTHON3=ON
 ```
 
 ##### Boolean Parameters
+
 The following table lists some parameters that can be set to `ON` or `OFF` to enable, or disable certain pieces of the build
 
 | Parameter           | Description                                                                                                                     | Default |
