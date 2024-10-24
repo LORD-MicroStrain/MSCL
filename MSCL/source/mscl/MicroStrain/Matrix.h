@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -31,7 +31,7 @@ namespace mscl
         //    data - The <ByteStream> that hold the values to be stored in the Matrix
         Matrix(uint16 rows, uint16 columns, ValueType storedAs, const ByteStream& data);
 #endif
-    private:
+    protected:
         //Variable: m_numRows
         //    The number of rows in the Matrix
         uint16 m_numRows;
@@ -53,7 +53,7 @@ namespace mscl
         //    A vector of vectors making the matrix that contains all the data values
         ByteStream m_data;
 
-    protected:        
+    protected:
         //Function: getBytePos
         //    Gets the byte position to read in data from the m_data <ByteStream>
         //

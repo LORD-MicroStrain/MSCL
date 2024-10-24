@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "stdafx.h"
@@ -104,7 +104,7 @@ namespace mscl
         throw Error_InvalidTcpServer(0, "The web socket host name is invalid.");
     }
 #endif // MSCL_DISABLE_WEBSOCKETS
-    
+
 #ifdef UNIX_BUILD
     Connection Connection::UnixSocket(const std::string& path)
     {
@@ -123,23 +123,23 @@ namespace mscl
     //The following functions just get pushed through the Connection_Impl class containing the implementation of all these functions
 
     void Connection::registerParser(std::function<void(DataBuffer&)> parseFunction)
-    { 
-        m_impl->registerParser(parseFunction); 
+    {
+        m_impl->registerParser(parseFunction);
     }
 
     void Connection::unregisterParser()
-    { 
-        m_impl->unregisterParser(); 
+    {
+        m_impl->unregisterParser();
     }
 
     void Connection::write(const ByteStream& data) const
-    { 
-        m_impl->write(data); 
+    {
+        m_impl->write(data);
     }
 
     std::string Connection::description()
-    { 
-        return m_impl->description(); 
+    {
+        return m_impl->description();
     }
 
     std::string Connection::port()
@@ -163,8 +163,8 @@ namespace mscl
     }
 
     void Connection::write(const Bytes& bytes) const
-    { 
-        m_impl->write(bytes); 
+    {
+        m_impl->write(bytes);
     }
 
     void Connection::throwIfError()
@@ -216,7 +216,7 @@ namespace mscl
     }
 
     void Connection::rawByteMode(bool enable)
-    { 
+    {
         m_impl->rawByteMode(enable);
     }
 

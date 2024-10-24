@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "stdafx.h"
@@ -49,7 +49,7 @@ namespace mscl
         m_channels.emplace_back(2, WirelessChannel::channel_2, WirelessTypes::chType_fullDifferential, "Differential", 24);
         m_channels.emplace_back(3, WirelessChannel::channel_3, WirelessTypes::chType_fullDifferential, "Differential", 24);
     }
-    
+
     const WirelessTypes::DataCollectionMethods NodeFeatures_shmlink210::dataCollectionMethods() const
     {
         //build and return the data collection methods that are supported
@@ -233,7 +233,7 @@ namespace mscl
         {
             case WirelessTypes::delayVersion_v1:
                 return static_cast<uint32>(TimeSpan::MilliSeconds(1).getMicroseconds());    //1 millisecond
-                
+
             case WirelessTypes::delayVersion_v4:
                 return 350;     //350 microseconds
 

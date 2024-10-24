@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -19,7 +19,7 @@ namespace mscl
 
     //API Class: Error
     //    The generic MicroStrain exception (base class)
-    class Error : public std::exception 
+    class Error : public std::exception
     {
     protected:
         //Variable: m_description
@@ -272,7 +272,7 @@ namespace mscl
             m_code(code)
         {
         }
-        
+
         virtual ~Error_Connection() throw() {}
 
         //API Function: code
@@ -303,7 +303,7 @@ namespace mscl
         //
         //Parameters:
         //    code - the exception error code
-        Error_InvalidSerialPort(int code): 
+        Error_InvalidSerialPort(int code):
             Error_Connection("Invalid Com Port.", code)
         {
         }
@@ -327,10 +327,10 @@ namespace mscl
         Error_InvalidTcpServer(int code, const std::string& message):
             Error_Connection("Invalid TCP/IP Server: " + message, code)
         {}
-            
+
         ~Error_InvalidTcpServer() throw() {}
     };
-    
+
     //API Class: Error_InvalidUnixSocket
     //    There was an error with the specified Unix Socket.
     //
@@ -344,10 +344,10 @@ namespace mscl
         //
         //Parameters:
         //    code - the exception error code
-        Error_InvalidUnixSocket(int code, const std::string& message): 
+        Error_InvalidUnixSocket(int code, const std::string& message):
             Error_Connection("Invalid Unix Socket: " + message, code)
         {}
-        
+
         ~Error_InvalidUnixSocket() throw ()
         {}
     };

@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -50,7 +50,7 @@ namespace mscl
     public:
         //Function: fieldId
         //    Gets the field id of the field data
-        //    
+        //
         //Returns:
         //    The field type describing the type of the field data
         uint16 fieldId() const;

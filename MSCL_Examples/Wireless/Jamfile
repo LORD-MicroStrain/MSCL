@@ -1,8 +1,0 @@
-project
-    : usage-requirements
-    ;
-    
-exe MSCL_Example_Wireless_CPP
-    : [ glob C++/MSCL_Wireless_Example_C++/MSCL_Wireless_Example_C++/*.cpp ] /mscl-lib//mscl
-    : <include>.
-    ;

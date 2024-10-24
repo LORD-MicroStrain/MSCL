@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -41,21 +41,21 @@ namespace mscl
     //Class: BaseStation_Impl
     //    Contains the implementation for a <BaseStation> object.
     class BaseStation_Impl
-    { 
+    {
         friend class WirelessProtocol;
 
     public:
         //Constructor: BaseStation_Impl
         //  Creates a BaseStation_Impl object.
         //    Note: This will communicate with the BaseStation to get device information, as well as start the data collection thread.
-        //    
+        //
         //Parameters:
         //    connection - The <Connection> object used for communication.
         //    baseTimeout - The timeout (in milliseconds) to use for base station commands.
         //
         //Exceptions:
         //    - <Error_Connection>: Failed to communicate with the BaseStation.
-        //    
+        //
         //See Also:
         //    <Connection>, <SerialConnection>
         explicit BaseStation_Impl(Connection connection, uint64 baseTimeout);
@@ -499,7 +499,7 @@ namespace mscl
         //    Enables the beacon on the base station using the given UTC timestamp.
         //
         //Parameters:
-        //    utcTime - The start time for the beacon in UTC seconds from the Unix Epoch (01/01/1970) 
+        //    utcTime - The start time for the beacon in UTC seconds from the Unix Epoch (01/01/1970)
         //
         //Returns:
         //    A <Timestamp> representing the initial time that was sent to start the beacon
@@ -1016,7 +1016,7 @@ namespace mscl
         //  nodeAddress - The node address of the Node to download data from.
         //  flashAddress - The flash address to read from.
         //  result - The <ByteStream> containing the resulting data bytes from the Node on success.
-        //  numBytesRead - The number of bytes that were read from the command and appended to the result <ByteStream>. 
+        //  numBytesRead - The number of bytes that were read from the command and appended to the result <ByteStream>.
         //
         //Returns:
         //  true if the command succeded, false otherwise

@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -121,7 +121,7 @@ namespace mscl
         //    - <Error_InvalidTcpServer>: the specified server address and/or server port is invalid.
         static Connection WebSocket(const std::string& host, uint16 port);
 #endif
-        
+
 #ifdef UNIX_BUILD
         //API Function: UnixSocket
         //    A generator function for <Connection> objects with a <UnixSocketConnection> implementation (Unix builds only).
@@ -254,7 +254,7 @@ namespace mscl
         std::size_t byteAppendPos() const;
 
         //API Function: rawByteMode
-        //    Puts the connection into "Raw Byte Mode." 
+        //    Puts the connection into "Raw Byte Mode."
         //    "Raw Byte Mode" stops the data from being sent/parsed from any attached devices (BaseStation, InertialNode, etc.)
         //    and instead sends all data into a raw circular data buffer that can be accessed by calling <getRawBytes> on this Connection object.
         //    Disabling this mode will start sending all data back to the previous attached device, if still available.
@@ -267,7 +267,7 @@ namespace mscl
         void rawByteMode(bool enable);
 
         //API Function: rawByteMode
-        //  Checks if raw byte mode is enabled or disabled. 
+        //  Checks if raw byte mode is enabled or disabled.
         //
         //Returns:
         //  true if raw byte mode is enabled, false if it is disabled.
@@ -316,7 +316,7 @@ namespace mscl
         Bytes getRawBytesWithPattern(const Bytes& pattern, uint32 timeout = 0);
 
         //API Function: debugMode
-        //  Puts the connection into "Debug Mode." 
+        //  Puts the connection into "Debug Mode."
         //  "Debug Mode" adds an additional container that gets filled when any write or read operations occur.
         //  Once debug mode is enabled, you can access this data with the <getDebugData> function.
         //  This does not interfere with standard data collection.

@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -646,7 +646,7 @@ namespace mscl
         //Constants: Valid Flags
         //    VALID_FLAG        - b00000001 - The flag position for checking the Mag Bias flag
         static const uint16 VALID_FLAG = BOOST_BINARY(00000001);
-        
+
         FieldParser_MagBias() {};        //default constructor disabled
 
     public:
@@ -1090,6 +1090,38 @@ namespace mscl
     {
     private:
         FieldParser_DualAntennaStatus() {};        //default constructor disabled
+
+    public:
+        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        static bool registerParser();
+
+    public:
+        static const MipTypes::ChannelField FIELD_TYPE;
+        static const bool REGISTERED;
+    };
+
+    //Class: FieldParser_FrameConfigError
+    //    The field parser for the filter Aiding Frame Config Error data
+    class FieldParser_FrameConfigError : public MipFieldParser
+    {
+    private:
+        FieldParser_FrameConfigError() {};        //default constructor disabled
+
+    public:
+        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        static bool registerParser();
+
+    public:
+        static const MipTypes::ChannelField FIELD_TYPE;
+        static const bool REGISTERED;
+    };
+
+    //Class: FieldParser_FrameConfigErrorUnc
+    //    The field parser for the filter Aiding Frame Config Error Uncertainty data
+    class FieldParser_FrameConfigErrorUnc : public MipFieldParser
+    {
+    private:
+        FieldParser_FrameConfigErrorUnc() {};        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;

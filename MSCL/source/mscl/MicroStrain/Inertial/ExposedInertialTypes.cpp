@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "stdafx.h"
@@ -66,7 +66,7 @@ namespace mscl
     {
         // calculate sample rate based on current values
         const SampleRate currentRate = SampleRate::FromInertialRateDecimationInfo(m_baseRate, m_decimation);
-        
+
         // update decimation based on current sample rate and new base rate
         m_baseRate = newBaseRate;
         sampleRate(currentRate);
@@ -77,8 +77,8 @@ namespace mscl
         switch (sentenceType)
         {
         case SentenceType::GSV:
-        case SentenceType::PKRA:
-        case SentenceType::PKRR:
+        case SentenceType::MSRA:
+        case SentenceType::MSRR:
             return false;
 
         default:
@@ -114,12 +114,12 @@ namespace mscl
                 MipTypes::DataClass::CLASS_GNSS2
             };
 
-        case SentenceType::PKRA:
+        case SentenceType::MSRA:
             return{
                 MipTypes::DataClass::CLASS_ESTFILTER
             };
 
-        case SentenceType::PKRR:
+        case SentenceType::MSRR:
             return{
                 MipTypes::DataClass::CLASS_AHRS_IMU
             };
@@ -209,7 +209,7 @@ namespace mscl
     {
         m_array[row][col] = value;
     }
-    
+
     float Matrix_3x3::operator() (uint8 row, uint8 col) const
     {
         return m_array.at(row).at(col);
@@ -268,109 +268,6 @@ namespace mscl
 
         return m;
     }
-
-    //////////  Quaternion  //////////
-    Quaternion::Quaternion() :
-        Matrix(1, 4, ValueType::valueType_float, ByteStream())
-    {
-        m_data.append_float(0);
-        m_data.append_float(0);
-        m_data.append_float(0);
-        m_data.append_float(0);
-    }
-
-    Quaternion::Quaternion(float q0, float q1, float q2, float q3) :
-        Matrix(1, 4, ValueType::valueType_float, ByteStream())
-    {
-        m_data.append_float(q0);
-        m_data.append_float(q1);
-        m_data.append_float(q2);
-        m_data.append_float(q3);
-    }
-
-    Quaternion::Quaternion(MipFieldValues data) :
-        Matrix(1, 4, ValueType::valueType_float, ByteStream())
-    {
-        for (int i = 0; i < 4; i++)
-        {
-            m_data.append_float(data[i].as_float());
-        }
-    }
-
-    float Quaternion::at(uint8 index) const
-    {
-        return as_floatAt(0, index);
-    }
-
-    void Quaternion::set(uint8 index, float val)
-    {
-        uint32 pos = getBytePos(0, index);
-        ByteStream valB;
-        valB.append_float(val);
-
-        for (uint32 i = 0; i < 4; i++)
-        {
-            uint32 replaceIndex = pos + i;
-            m_data.data()[replaceIndex] = valB[i];
-        }
-    }
-
-    void Quaternion::normalize()
-    {
-        float magnitude = 0.0f;
-        for (uint8 i = 0; i < 4; i++)
-        {
-            float val = at(i);
-            magnitude += val * val;
-        }
-
-        magnitude = sqrt(magnitude);
-
-        if (magnitude == 0)
-        {
-            return;
-        }
-
-        ByteStream b;
-        for (uint8 i = 0; i < 4; i++)
-        {
-            float val = at(i);
-            b.append_float(val / magnitude);
-        }
-
-        m_data = b;
-    }
-
-    MipFieldValues Quaternion::asMipFieldValues() const
-    {
-        MipFieldValues m;
-        for (uint8 i = 0; i < 4; i++)
-        {
-            m.push_back(Value::FLOAT(at(i)));
-        }
-
-        return m;
-    }
-
-    //////////  GeometricVector  //////////
-
-    GeometricVector::GeometricVector(float x_init, float y_init, float z_init, PositionVelocityReferenceFrame ref) :
-        vec_0(x_init),
-        vec_1(y_init),
-        vec_2(z_init),
-        referenceFrame(ref)
-    { }
-
-    GeometricVector::GeometricVector() :
-        vec_0(0),
-        vec_1(0),
-        vec_2(0),
-        referenceFrame(PositionVelocityReferenceFrame::ECEF)
-    { }
-
-    GeometricVector::~GeometricVector()
-    { }
-
 
 
     //////////  TimeUpdate  //////////
@@ -775,7 +672,7 @@ namespace mscl
         statusMap[ModelNumber] = mscl::Value::UINT16(modelNumber);
         statusMap[StatusStructure_Value] = mscl::Value::UINT8(static_cast<uint8>(statusStructure));
 
-        if (isSet(m_systemState)) 
+        if (isSet(m_systemState))
         {
             statusMap[SystemState_Value] = mscl::Value::UINT16(static_cast<uint16>(m_systemState.get()));
         }

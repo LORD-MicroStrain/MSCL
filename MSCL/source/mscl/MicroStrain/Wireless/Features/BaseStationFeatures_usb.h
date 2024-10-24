@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
@@ -9,7 +9,7 @@
 #include "BaseStationFeatures.h"
 
 namespace mscl
-{    
+{
     //Class: BaseStationFeatures_usb
     //    Contains information on features for the usb BaseStation.
     class BaseStationFeatures_usb : public BaseStationFeatures

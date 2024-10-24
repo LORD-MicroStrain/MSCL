@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "stdafx.h"
@@ -108,7 +108,7 @@ namespace mscl
         case WirelessTypes::sampleRate_80kHz:           return SampleRate::KiloHertz(80);
         case WirelessTypes::sampleRate_90kHz:           return SampleRate::KiloHertz(90);
         case WirelessTypes::sampleRate_100kHz:          return SampleRate::KiloHertz(100);
-    
+
         case WirelessTypes::sampleRate_8192Hz:          return SampleRate::Hertz(8192);
         case WirelessTypes::sampleRate_4096Hz:          return SampleRate::Hertz(4096);
         case WirelessTypes::sampleRate_2048Hz:          return SampleRate::Hertz(2048);
@@ -124,7 +124,7 @@ namespace mscl
         case WirelessTypes::sampleRate_4Hz:             return SampleRate::Hertz(4);
         case WirelessTypes::sampleRate_2Hz:             return SampleRate::Hertz(2);
         case WirelessTypes::sampleRate_1Hz:             return SampleRate::Hertz(1);
-    
+
         case WirelessTypes::sampleRate_2Sec:            return SampleRate::Seconds(2);
         case WirelessTypes::sampleRate_5Sec:            return SampleRate::Seconds(5);
         case WirelessTypes::sampleRate_10Sec:           return SampleRate::Seconds(10);

@@ -146,7 +146,7 @@
 #include "../MicroStrain/Wireless/Features/NodeInfo.h"
 #include "../MicroStrain/Wireless/Features/BaseStationFeatures.h"
 #include "../MicroStrain/Inertial/EulerAngles.h"
-#include "../MicroStrain/Inertial/PositionOffset.h"
+#include "../MicroStrain/Inertial/PositionVelocity.h"
 #include "../MicroStrain/MIP/MipModels.h"
 #include "../MicroStrain/Displacement/DisplacementModels.h"
 #include "../MicroStrain/MIP/MipTypes.h"
@@ -234,7 +234,7 @@
 %include "../MicroStrain/Wireless/Features/NodeFeatures.h"
 %include "../MicroStrain/Wireless/Features/BaseStationFeatures.h"
 %include "../MicroStrain/Inertial/EulerAngles.h"
-%include "../MicroStrain/Inertial/PositionOffset.h"
+%include "../MicroStrain/Inertial/PositionVelocity.h"
 %include "../MicroStrain/MIP/MipModels.h"
 %include "../MicroStrain/Displacement/DisplacementModels.h"
 %include "../MicroStrain/MIP/MipTypes.h"
@@ -338,6 +338,7 @@ namespace std
     %template(GpioPinOptions)                   map<uint8_t, map<enum mscl::GpioConfiguration::Feature, map<uint8_t, vector<mscl::GpioConfiguration::PinModes>>>>;
     %template(EventInputTriggers)               array<uint8_t, mscl::EventTriggerCombinationParameter::MAX_INPUT_TRIGGERS>;
     %template(EventTypes)                       vector<mscl::EventTypeInfo>;
+    %template(MeasurementReferenceFrames)       map<uint8_t, mscl::MeasurementReferenceFrame>;
 
 
 #ifndef UNIX_BUILD

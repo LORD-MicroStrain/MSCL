@@ -1,7 +1,7 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
-**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #include "stdafx.h"
@@ -250,6 +250,13 @@ namespace mscl
                 DeviceCommPort(DeviceCommPort::Type::AUX, 2)
             };
 
+        case MipModels::node_3dm_cv7_ins:
+        case MipModels::node_3dm_gv7_ins:
+            return{
+                DeviceCommPort(DeviceCommPort::Type::PRIMARY, 1),
+                DeviceCommPort(DeviceCommPort::Type::GPIO, 2)
+            };
+
         default:
             return{
                 DeviceCommPort(DeviceCommPort::Type::PRIMARY, 1)
@@ -442,6 +449,36 @@ namespace mscl
 
     }
 
+    const HeadingAlignmentMethod MipNodeFeatures::supportedHeadingAlignmentMethods() const
+    {
+        if (!supportsCommand(mscl::MipTypes::Command::CMD_EF_INITIALIZATION_CONFIG))
+        {
+            return HeadingAlignmentMethod(0);
+        }
+
+        MipModel model(nodeInfo().deviceInfo().modelNumber);
+        switch (model.baseModel().nodeModel())
+        {
+        case MipModels::node_3dm_cv7_ins:
+        case MipModels::node_3dm_gv7_ins:
+            return HeadingAlignmentMethod(
+                HeadingAlignmentOption::GNSS_Kinematic
+                | HeadingAlignmentOption::Magnetometer
+                | HeadingAlignmentOption::External
+            );
+
+        case MipModels::node_3dm_gq7:
+            return HeadingAlignmentMethod(
+                HeadingAlignmentOption::GNSS_DualAntenna
+                | HeadingAlignmentOption::GNSS_Kinematic
+                | HeadingAlignmentOption::Magnetometer
+            );
+
+        default:
+            return HeadingAlignmentMethod(0xFF);
+        }
+    }
+
     const EstimationControlOptions MipNodeFeatures::supportedEstimationControlOptions() const
     {
         if (!supportsCommand(mscl::MipTypes::Command::CMD_EF_BIAS_EST_CTRL))
@@ -600,8 +637,6 @@ namespace mscl
         {
             case MipModels::node_3dm_cv7_ahrs:
             case MipModels::node_3dm_gv7_ahrs:
-            case MipModels::node_3dm_gv7_ins:
-            case MipModels::node_3dm_cv7_ins:
                 return{
                     InertialTypes::AidingMeasurementSource::MAGNETOMETER_AIDING,
                     InertialTypes::AidingMeasurementSource::EXTERNAL_HEADING_AIDING
@@ -613,6 +648,28 @@ namespace mscl
                     InertialTypes::AidingMeasurementSource::EXTERNAL_HEADING_AIDING
                 };
 
+            case MipModels::node_3dm_gv7_ins:
+            case MipModels::node_3dm_cv7_ins:
+                return{
+                    InertialTypes::AidingMeasurementSource::GNSS_POS_VEL_AIDING,
+                    InertialTypes::AidingMeasurementSource::ALTIMETER_AIDING,
+                    InertialTypes::AidingMeasurementSource::MAGNETOMETER_AIDING,
+                    InertialTypes::AidingMeasurementSource::EXTERNAL_HEADING_AIDING,
+                    InertialTypes::AidingMeasurementSource::EXTERNAL_ALTIMETER_AIDING,
+                    InertialTypes::AidingMeasurementSource::EXTERNAL_MAGNETOMETER_AIDING,
+                    InertialTypes::AidingMeasurementSource::BODY_FRAME_VEL_AIDING
+                };
+
+            case MipModels::node_3dm_gq7:
+                return{
+                    InertialTypes::AidingMeasurementSource::GNSS_POS_VEL_AIDING,
+                    InertialTypes::AidingMeasurementSource::GNSS_HEADING_AIDING,
+                    InertialTypes::AidingMeasurementSource::ALTIMETER_AIDING,
+                    InertialTypes::AidingMeasurementSource::ODOMETER_AIDING,
+                    InertialTypes::AidingMeasurementSource::MAGNETOMETER_AIDING,
+                    InertialTypes::AidingMeasurementSource::EXTERNAL_HEADING_AIDING
+                };
+
             default:
                 return {
                     InertialTypes::AidingMeasurementSource::GNSS_POS_VEL_AIDING,
@@ -620,7 +677,10 @@ namespace mscl
                     InertialTypes::AidingMeasurementSource::ALTIMETER_AIDING,
                     InertialTypes::AidingMeasurementSource::ODOMETER_AIDING,
                     InertialTypes::AidingMeasurementSource::MAGNETOMETER_AIDING,
-                    InertialTypes::AidingMeasurementSource::EXTERNAL_HEADING_AIDING
+                    InertialTypes::AidingMeasurementSource::EXTERNAL_HEADING_AIDING,
+                    InertialTypes::AidingMeasurementSource::EXTERNAL_ALTIMETER_AIDING,
+                    InertialTypes::AidingMeasurementSource::EXTERNAL_MAGNETOMETER_AIDING,
+                    InertialTypes::AidingMeasurementSource::BODY_FRAME_VEL_AIDING
                 };
         }
     }
@@ -831,7 +891,7 @@ namespace mscl
                 { GpioConfiguration::Feature::ENCODER_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::ENCODER_FEATURE) },
                 { GpioConfiguration::Feature::UART_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::UART_FEATURE) }
         };
-        
+
         // build pin options
         GpioPinOptions pinOptions;
         for (uint8 pinId : supportedPins)
@@ -849,9 +909,14 @@ namespace mscl
             case MipModels::node_3dm_cv7_ar:
             case MipModels::node_3dm_gv7_ahrs:
             case MipModels::node_3dm_gv7_ar:
+                // CV7 and GV7 all pins support the same features
+                features.emplace(GpioConfiguration::Feature::PPS_FEATURE, availableBehaviors.at(GpioConfiguration::Feature::PPS_FEATURE));
+                features.emplace(GpioConfiguration::Feature::EVENT_TIMESTAMP_FEATURE, availableBehaviors.at(GpioConfiguration::Feature::EVENT_TIMESTAMP_FEATURE));
+                break;
+
             case MipModels::node_3dm_gv7_ins:
             case MipModels::node_3dm_cv7_ins:
-                // CV7 and GV7 all pins support the same features (PPS, Event Timestamp)
+                // CV7 and GV7 all pins support the same features
                 features.emplace(GpioConfiguration::Feature::PPS_FEATURE, availableBehaviors.at(GpioConfiguration::Feature::PPS_FEATURE));
                 features.emplace(GpioConfiguration::Feature::EVENT_TIMESTAMP_FEATURE, availableBehaviors.at(GpioConfiguration::Feature::EVENT_TIMESTAMP_FEATURE));
                 features.emplace(GpioConfiguration::Feature::UART_FEATURE, availableBehaviors.at(GpioConfiguration::Feature::UART_FEATURE));
@@ -879,7 +944,7 @@ namespace mscl
             default:
                 break;
             }
-            
+
             // add features for target id to pin options
             pinOptions.emplace(pinId, features);
         }
@@ -949,8 +1014,6 @@ namespace mscl
         case MipModels::node_3dm_cv7_ar:
         case MipModels::node_3dm_gv7_ahrs:
         case MipModels::node_3dm_gv7_ar:
-        case MipModels::node_3dm_gv7_ins:
-        case MipModels::node_3dm_cv7_ins:
             return{
                 InertialTypes::GeographicSourceOption::NONE,
                 InertialTypes::GeographicSourceOption::MANUAL
@@ -962,6 +1025,8 @@ namespace mscl
                 InertialTypes::GeographicSourceOption::MANUAL
             };
 
+        case MipModels::node_3dm_gv7_ins:
+        case MipModels::node_3dm_cv7_ins:
         default:
             return{
                 InertialTypes::GeographicSourceOption::NONE,
@@ -980,8 +1045,6 @@ namespace mscl
         case MipModels::node_3dm_cv7_ar:
         case MipModels::node_3dm_gv7_ahrs:
         case MipModels::node_3dm_gv7_ar:
-        case MipModels::node_3dm_gv7_ins:
-        case MipModels::node_3dm_cv7_ins:
             return{
                 InertialTypes::GeographicSourceOption::NONE,
                 InertialTypes::GeographicSourceOption::MANUAL
@@ -993,6 +1056,8 @@ namespace mscl
                 InertialTypes::GeographicSourceOption::MANUAL
             };
 
+        case MipModels::node_3dm_gv7_ins:
+        case MipModels::node_3dm_cv7_ins:
         default:
             return{
                 InertialTypes::GeographicSourceOption::NONE,
@@ -1011,8 +1076,6 @@ namespace mscl
         case MipModels::node_3dm_cv7_ar:
         case MipModels::node_3dm_gv7_ahrs:
         case MipModels::node_3dm_gv7_ar:
-        case MipModels::node_3dm_gv7_ins:
-        case MipModels::node_3dm_cv7_ins:
             return{
                 InertialTypes::GeographicSourceOption::NONE,
                 InertialTypes::GeographicSourceOption::MANUAL
@@ -1024,6 +1087,8 @@ namespace mscl
                 InertialTypes::GeographicSourceOption::MANUAL
             };
 
+        case MipModels::node_3dm_gv7_ins:
+        case MipModels::node_3dm_cv7_ins:
         default:
             return{
                 InertialTypes::GeographicSourceOption::NONE,
@@ -1205,5 +1270,15 @@ namespace mscl
         }
 
         return chs;
+    }
+
+    uint8 MipNodeFeatures::maxMeasurementReferenceFrameId() const
+    {
+        if (!supportsCommand(MipTypes::CMD_AIDING_FRAME_CONFIG))
+        {
+            return 0;
+        }
+
+        return 4;
     }
 }
