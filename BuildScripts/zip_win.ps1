@@ -93,15 +93,23 @@ Compress-Files -package_name "Examples" -package_output_dir "${examples_output_d
 $python_output_dir = "${output_dir}/Python"
 
 # Test to make sure Python libraries were built
-if ((-Not (Test-Path -Path "${python_output_dir}")) -or (Get-ChildItem -Path "$python_output_dir" | Measure-Object).Count -eq 0)
+if ((-Not (Test-Path -Path "${python_output_dir}")) -or (Get-ChildItem -Path "$python_output_dir" -Recurse -File).Count -eq 0)
 {
     echo "Python packages were not built"
     exit 1
 }
 
-Get-ChildItem "${python_output_dir}" -Directory | ForEach-Object
+$python_directories = Get-ChildItem -Path "${python_output_dir}" -Directory
+
+foreach ($directory in $python_directories)
 {
-    $python_version = ${_}.Name
-    $python_version_output_dir = ${_}.FullName
+    if ((Get-ChildItem -Path "$(${directory}.FullName)" -Recurse -File).Count -eq 0)
+    {
+        echo "Python Error: No binaries built in ${directory}"
+        continue
+    }
+
+    $python_version = ${directory}.Name
+    $python_version_output_dir = ${directory}.FullName
     Compress-Files -package_name "Python${python_version}" -package_output_dir "${python_version_output_dir}"
 }
