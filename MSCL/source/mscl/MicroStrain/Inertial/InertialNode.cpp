@@ -1359,7 +1359,7 @@ namespace mscl
         return ret;
     }
 
-    void InertialNode::setAidingMeasurementRefrenceFrames(const MeasurementReferenceFrames& frames, bool clearExcludedIds) const
+    void InertialNode::setAidingMeasurementReferenceFrames(const MeasurementReferenceFrames& frames, bool clearExcludedIds) const
     {
         MeasurementReferenceFrame clearFrame;
 

@@ -393,7 +393,7 @@ namespace mscl
             CMD_AIDING_VEL_BODY_FRAME               = 0x132A,
             CMD_AIDING_HEADING_TRUE                 = 0x1331,
             CMD_AIDING_MAGNETIC_FIELD               = 0x1332,
-            CMD_AIDING_PRESSURE                     = 0x1333, 
+            CMD_AIDING_PRESSURE                     = 0x1333,
         };
 
         //====================================================================================================

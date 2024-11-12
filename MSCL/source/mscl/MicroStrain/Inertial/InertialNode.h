@@ -2423,7 +2423,7 @@ namespace mscl
         //Parameters:
         //  frames - <MeasurementReferenceFrames> map of reference frames for each frame ID to be set
         //  clearExcludedIds - bool, default: false - if true, clears reference frame information for IDs not included in the frames map otherwise only overwrites included IDs
-        void setAidingMeasurementRefrenceFrames(const MeasurementReferenceFrames& frames, bool clearExcludedIds = false) const;
+        void setAidingMeasurementReferenceFrames(const MeasurementReferenceFrames& frames, bool clearExcludedIds = false) const;
 
         //API Function: getAidingMeasurementReferenceFrame
         //  Get the aiding measurement reference frame for the specified frame ID configured on the device.

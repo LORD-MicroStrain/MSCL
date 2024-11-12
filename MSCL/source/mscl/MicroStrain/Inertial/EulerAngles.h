@@ -170,12 +170,12 @@ namespace mscl
         //API Enum: Format
         //  Possible formats for the Rotation object.
         //
-        //  EULER_ANGLES    - 1 - EulerAngles format
-        //  QUATERINION     - 2 - Quaternion format
+        //  EULER_ANGLES - 1 - EulerAngles format
+        //  QUATERNION   - 2 - Quaternion format
         enum Format
         {
             EULER_ANGLES = 1,
-            QUATERNION = 2
+            QUATERNION   = 2
         };
 
     public:

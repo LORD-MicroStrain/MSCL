@@ -15,6 +15,9 @@ REMOVED - A function/class has been removed.
 ======================================================================================================
 
 Forthcoming
+- CHANGED Fixed typo for mscl::InertialNode::setAidingMeasurementReferenceFrames()
+- Inertial
+    - Added CV7-GNSS support
 
 66.0.0 - 2024-10-24
 - CHANGED Switched to CMake build system
