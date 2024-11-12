@@ -164,6 +164,7 @@ namespace mscl
     const MipModel MipModel::mip_model_3dm_gv7_ar(MipModels::ModelNumber::model_3dm_gv7_ar);       // 3DM-GV7-AR
     const MipModel MipModel::mip_model_3dm_gv7_ins(MipModels::ModelNumber::model_3dm_gv7_ins);     // 3DM-GV7-INS
     const MipModel MipModel::mip_model_3dm_cv7_ins(MipModels::ModelNumber::model_3dm_cv7_ins);     // 3DM-CV7-INS
+    const MipModel MipModel::mip_model_3dm_cv7_gnss(MipModels::ModelNumber::model_3dm_cv7_gnss);   // 3DM-CV7-GNSS
 
     MipModel::MipModel() :
         m_modelStr(""),
