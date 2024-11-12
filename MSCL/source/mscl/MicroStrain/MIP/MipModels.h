@@ -58,6 +58,7 @@ namespace mscl
         //  node_3dm_gv7_ar     - 6289 - 3DM-GV7-AR
         //  node_3dm_gv7_ins    - 6290 - 3DM-GV7-INS
         //  node_3dm_cv7_ins    - 6291 - 3DM-CV7-INS
+        //  node_3dm_cv7_gnss   - 6292 - 3DM-CV7-GNSS
         //=========================================================================
         enum NodeModel
         {
@@ -96,7 +97,8 @@ namespace mscl
             node_3dm_gv7_ahrs  = 6288, // 3DM-GV7-AHRS
             node_3dm_gv7_ar    = 6289, // 3DM-GV7-AR
             node_3dm_gv7_ins   = 6290, // 3DM-GV7-INS
-            node_3dm_cv7_ins   = 6291  // 3DM-CV7-INS
+            node_3dm_cv7_ins   = 6291, // 3DM-CV7-INS
+            node_3dm_cv7_gnss  = 6292, // 3DM-CV7-GNSS
         };
 
         //=========================================================================
@@ -163,6 +165,7 @@ namespace mscl
         //  model_3dm_gv7_ar    - 62899999 - 3DM-GV7-AR
         //  model_3dm_gv7_ins   - 62909999 - 3DM-GV7-INS
         //  model_3dm_cv7_ins   - 62919999 - 3DM-CV7-INS
+        //  model_3dm_cv7_gnss  - 62929999 - 3DM-CV7-GNSS
         //=========================================================================
         enum ModelNumber
         {
@@ -202,7 +205,8 @@ namespace mscl
             model_3dm_gv7_ahrs  = 62889999, // 3DM-GV7-AHRS
             model_3dm_gv7_ar    = 62899999, // 3DM-GV7-AR
             model_3dm_gv7_ins   = 62909999, // 3DM-GV7-INS
-            model_3dm_cv7_ins   = 62919999  // 3DM-CV7-INS
+            model_3dm_cv7_ins   = 62919999, // 3DM-CV7-INS
+            model_3dm_cv7_gnss  = 62929999, // 3DM-CV7-GNSS
         };
 
         //API Function: modelNumberEqual
@@ -386,6 +390,7 @@ namespace mscl
         static const MipModel mip_model_3dm_gv7_ar;    // 3DM-GV7-AR
         static const MipModel mip_model_3dm_gv7_ins;   // 3DM-CV7-INS
         static const MipModel mip_model_3dm_cv7_ins;   // 3DM-CV7-INS
+        static const MipModel mip_model_3dm_cv7_gnss;  // 3DM-CV7-GNSS
 
     private:
         MipModel(); // hide default constructor
