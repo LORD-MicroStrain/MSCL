@@ -470,14 +470,14 @@ namespace mscl
         //API Enum: GeographicSourceOption
         //    The enum to represent the source options for Declination (0x0D, 0x43), Inclination (0x0D, 0x4C), and Magnitude Source (0x0D, 0x4D)
         //
-        //      NONE                        - 0x0001
-        //      WORLD_MAGNETIC_MODEL        - 0x0002
-        //      MANUAL                      - 0x0004
+        //      NONE                 - 0x01 - No source
+        //      WORLD_MAGNETIC_MODEL - 0x02 - Magnetic field is assumed to conform to the World Magnetic Model
+        //      MANUAL               - 0x03 - Magnetic field is assumed to have the parameter specified by the user
         enum GeographicSourceOption
         {
-            NONE = 0x01,
-            WORLD_MAGNETIC_MODEL = 0x02,
-            MANUAL = 0x03
+            NONE                 = 0x01, // No source
+            WORLD_MAGNETIC_MODEL = 0x02, // Magnetic field is assumed to conform to the World Magnetic Model
+            MANUAL               = 0x03  // Magnetic field is assumed to have the parameter specified by the user
         };
 
         //API Enum: AdaptiveMeasurementMode
@@ -545,13 +545,13 @@ namespace mscl
         //      FILTERING_OFF           - 0x00
         //      FILTERING_CONSERVATIVE  - 0x01
         //      FILTERING_MODERATE      - 0x02
-        //      FILTERING_AGGRESIVE     - 0x03
+        //      FILTERING_AGGRESSIVE    - 0x03
         enum AutoAdaptiveFilteringLevel
         {
             FILTERING_OFF           = 0x00,
             FILTERING_CONSERVATIVE  = 0x01,
             FILTERING_MODERATE      = 0x02,
-            FILTERING_AGGRESIVE     = 0x03
+            FILTERING_AGGRESSIVE    = 0x03
         };
 
         //API Enum: FactoryStreamingOption
@@ -1891,16 +1891,16 @@ namespace mscl
     //API Enum: HeadingAlignmentOption
     //    Method options for automatically determining initial filter heading
     //
-    //  GNSS_DualAntenna    - 0x01  - Dual-antenna GNSS alignment
-    //  GNSS_Kinematic      - 0x02  - GNSS kinematic alignment (GNSS velocity determines initial heading)
-    //  Magnetometer        - 0x04  - Magnetometer heading alignment
-    //  External            - 0x08  - External heading source
+    //  GNSS_DualAntenna - 0x01 - Dual-antenna GNSS alignment
+    //  GNSS_Kinematic   - 0x02 - GNSS kinematic alignment (GNSS velocity determines initial heading)
+    //  Magnetometer     - 0x04 - Magnetometer heading alignment
+    //  External         - 0x08 - External heading source
     enum HeadingAlignmentOption
     {
-        GNSS_DualAntenna = 0x01,
-        GNSS_Kinematic = 0x02,
-        Magnetometer = 0x04,
-        External = 0x08
+        GNSS_DualAntenna = 0x01, // Dual-antenna GNSS alignment
+        GNSS_Kinematic   = 0x02, // GNSS kinematic alignment (GNSS velocity determines initial heading)
+        Magnetometer     = 0x04, // Magnetometer heading alignment
+        External         = 0x08  // External heading source
     };
 
     //API Struct: HeadingAlignmentMethod
@@ -2809,103 +2809,111 @@ namespace mscl
     struct GpioConfiguration
     {
         //API Enum: Feature
-        //  GPIO Feature options
+        //  GPIO Feature options. Determines how the pin will be used
         //
         //      UNUSED_FEATURE          - 0x00 - Pin is unused
-        //      GPIO_FEATURE            - 0x01 - Encoder is disabled
-        //      PPS_FEATURE             - 0x02 - Single pulse input; one direction only
-        //      ENCODER_FEATURE         - 0x03 - Quadrature encoder mode
+        //      GPIO_FEATURE            - 0x01 - Direct control of pin output state or to stream the state of the pin
+        //      PPS_FEATURE             - 0x02 - Pulse per second input or output
+        //      ENCODER_FEATURE         - 0x03 - Motor encoder/odometer input
         //      EVENT_TIMESTAMP_FEATURE - 0x04 - Precision event timestamping
         //      UART_FEATURE            - 0x05 - UART data or control lines
         enum Feature
         {
-            UNUSED_FEATURE = 0x00,
-            GPIO_FEATURE = 0x01,
-            PPS_FEATURE = 0x02,
-            ENCODER_FEATURE = 0x03,
-            EVENT_TIMESTAMP_FEATURE = 0x04,
-            UART_FEATURE = 0x05
+            UNUSED_FEATURE          = 0x00, // Pin is unused
+            GPIO_FEATURE            = 0x01, // Direct control of pin output state or to stream the state of the pin
+            PPS_FEATURE             = 0x02, // Pulse per second input or output
+            ENCODER_FEATURE         = 0x03, // Motor encoder/odometer input
+            EVENT_TIMESTAMP_FEATURE = 0x04, // Precision event timestamping
+            UART_FEATURE            = 0x05  // UART data or control lines
         };
 
         //API Enum: GpioBehavior
         //  GPIO Pin behavior
         //
-        //      UNUSED_BEHAVIOR              - 0x00 - Unused
-        //      GPIO_INPUT_BEHAVIOR          - 0x01 - Input
-        //      GPIO_OUTPUT_LOW_BEHAVIOR     - 0x02 - Output on low
-        //      GPIO_OUTPUT_HIGH_BEHAVIOR    - 0x03 - Output on high
+        //      GPIO_UNUSED      - 0x00 - Pin is unused
+        //      GPIO_INPUT       - 0x01 - Pin will be an input
+        //      GPIO_OUTPUT_LOW  - 0x02 - Pin is an output initially in the LOW state
+        //      GPIO_OUTPUT_HIGH - 0x03 - Pin is an output initially in the HIGH state
         enum GpioBehavior
         {
-            UNUSED_BEHAVIOR = 0x00,
-            GPIO_INPUT_BEHAVIOR = 0x01,
-            GPIO_OUTPUT_LOW_BEHAVIOR = 0x02,
-            GPIO_OUTPUT_HIGH_BEHAVIOR = 0x03
+            GPIO_UNUSED      = 0x00, // Pin is unused
+            GPIO_INPUT       = 0x01, // Pin will be an input
+            GPIO_OUTPUT_LOW  = 0x02, // Pin is an output initially in the LOW state
+            GPIO_OUTPUT_HIGH = 0x03  // Pin is an output initially in the HIGH state
         };
 
         //API Enum: PpsBehavior
         //  PPS Pin behavior
         //
-        //      UNUSED      - 0x00 - Pin is unused
-        //      PPS_INPUT   - 0x01 - Input
-        //      PPS_OUTPUT  - 0x02 - Single pulse input; one direction only
+        //      UNUSED     - 0x00 - Pin is unused
+        //      PPS_INPUT  - 0x01 - Pin will receive the pulse-per-second signal
+        //      PPS_OUTPUT - 0x02 - Pin will transmit the pulse-per-second signal from the device
         enum PpsBehavior
         {
-            PPS_UNUSED = 0x00,
-            PPS_INPUT = 0x01,
-            PPS_OUTPUT = 0x02
+            PPS_UNUSED = 0x00, // Pin is unused
+            PPS_INPUT  = 0x01, // Pin will receive the pulse-per-second signal
+            PPS_OUTPUT = 0x02  // Pin will transmit the pulse-per-second signal from the device
         };
 
         //API Enum: EncoderBehavior
         //  Encoder Pin behavior
         //
-        //      UNUSED      - 0x00 - Pin is unused
-        //      ENCODER_A   - 0x01 - Encoder A
-        //      ENCODER_B   - 0x02 - Encoder B
+        //      ENCODER_UNUSED - 0x00 - Pin is unused
+        //      ENCODER_A      - 0x01 - Encoder A
+        //      ENCODER_B      - 0x02 - Encoder B
         enum EncoderBehavior
         {
-            ENCODER_UNUSED = 0x00,
-            ENCODER_A = 0x01,
-            ENCODER_B = 0x02
+            ENCODER_UNUSED = 0x00, // Pin is unused
+            ENCODER_A      = 0x01, // Encoder A
+            ENCODER_B      = 0x02  // Encoder B
         };
 
         //API Enum: EventTimestampBehavior
         //  Event Timestamp Pin behavior
         //
-        //      TIMESTAMP_UNUSED    - 0x00 - Pin is unused
-        //      TIMESTAMP_RISING    - 0x01 - Rising edge will be timestamped
-        //      TIMESTAMP_FALLING   - 0x02 - Falling edge will be timestamped
-        //      TIMESTAMP_EDGE      - 0x03 - Both rising and falling edges will be timestamped
+        //      TIMESTAMP_UNUSED  - 0x00 - Pin is unused
+        //      TIMESTAMP_RISING  - 0x01 - Rising edge will be timestamped
+        //      TIMESTAMP_FALLING - 0x02 - Falling edge will be timestamped
+        //      TIMESTAMP_EITHER  - 0x03 - Both rising and falling edges will be timestamped
         enum EventTimestampBehavior
         {
-            EVENT_TIMESTAMP_UNUSED    = 0x00,
-            EVENT_TIMESTAMP_RISING    = 0x01,
-            EVENT_TIMESTAMP_FALLING   = 0x02,
-            EVENT_TIMESTAMP_EDGE      = 0x03,
+            TIMESTAMP_UNUSED  = 0x00, // Pin is unused
+            TIMESTAMP_RISING  = 0x01, // Rising edge will be timestamped
+            TIMESTAMP_FALLING = 0x02, // Falling edge will be timestamped
+            TIMESTAMP_EITHER  = 0x03  // Both rising and falling edges will be timestamped
         };
 
         //API Enum: UartBehavior
         //  UART Pin behavior
         //  Note: only one Transmit and one Receive pin can be configured per port pair (see documentation)
         //
-        //      UART_TRANSMIT    - 0x01 - UART transmit line
-        //      UART_RECEIVE     - 0x02 - UART receive line
+        //      UART_UNUSED   - 0x00 - Pin is unused
+        //      UART_PORT2_TX - 0x21 - UART port 2 transmit
+        //      UART_PORT2_RX - 0x22 - UART port 2 receive
+        //      UART_PORT3_TX - 0x31 - UART port 3 transmit
+        //      UART_PORT3_RX - 0x32 - UART port 3 receive
         enum UartBehavior
         {
-            UART_TRANSMIT = 0x01, // UART transmit line
-            UART_RECEIVE  = 0x02  // UART receive line
+            UART_UNUSED   = 0x00, // Pin is unused
+            UART_PORT2_TX = 0x21, // UART port 2 transmit
+            UART_PORT2_RX = 0x22, // UART port 2 receive
+            UART_PORT3_TX = 0x31, // UART port 3 transmit
+            UART_PORT3_RX = 0x32  // UART port 3 receive
         };
 
         //API Enum: PinModes
-        //
         //  PinModes for the pinMode Bitfield
-        //      OPEN_DRAIN  - 0x01
-        //      PULLDOWN    - 0x02
-        //      PULLUP      - 0x04
+        //
+        //      NONE       - 0x00 - Pin not set
+        //      OPEN_DRAIN - 0x01 - The pin will be an open-drain output
+        //      PULLDOWN   - 0x02 - The pin will have an internal pull-down resistor enabled
+        //      PULLUP     - 0x04 - The pin will have an internal pull-up resistor enabled
         enum PinModes
         {
-            OPEN_DRAIN = 0x01,
-            PULLDOWN = 0x02,
-            PULLUP = 0x04
+            NONE       = 0x00, // Pin not set
+            OPEN_DRAIN = 0x01, // The pin will be an open-drain output
+            PULLDOWN   = 0x02, // The pin will have an internal pull-down resistor enabled
+            PULLUP     = 0x04  // The pin will have an internal pull-up resistor enabled
         };
 
         Bitfield pinMode;
@@ -2918,8 +2926,8 @@ namespace mscl
 
         //API Function: pinModeValue
         //  Gets or sets the underlying value for the pin mode bitfield
-        void pinModeValue(uint8 val) { pinMode.value(val); };
-        uint8 pinModeValue() const { return static_cast<uint8>(pinMode.value()); };
+        void pinModeValue(uint8 val) { pinMode.value(val); }
+        uint8 pinModeValue() const { return static_cast<uint8>(pinMode.value()); }
 
     private:
         friend class InertialNode;
@@ -2933,21 +2941,29 @@ namespace mscl
         static GpioConfiguration fromCommandResponse(const MipFieldValues& responseValues, uint8 startIndex = 0);
     };
 
-    //API Typedef: PinModes
+    //API Typedef: GpioPinId
+    //  A uint8 representing logical GPIO pin IDs
+    typedef uint8 GpioPinId;
+
+    //API Typedef: GpioPins
+    //  A vector of <uint8> representing available GPIO pins
+    typedef std::vector<uint8> GpioPins;
+
+    //API Typedef: GpioPinModeOptions
     //  A vector of <GpioConfiguration::PinModes> representing masked pin modes
     typedef std::vector<GpioConfiguration::PinModes> GpioPinModeOptions;
 
-    //API Typedef: BehaviorModes
+    //API Typedef: GpioBehaviorModes
     //  A map of uint behavior ID, <GpioPinModeOptions> pairs
     typedef std::map<uint8, GpioPinModeOptions> GpioBehaviorModes;
 
-    //API Typedef: FeatureBehaviors
+    //API Typedef: GpioFeatureBehaviors
     //  A map of <GpioConfiguration::Feature>, <GpioBehaviorModes> pairs
     typedef std::map<GpioConfiguration::Feature, GpioBehaviorModes> GpioFeatureBehaviors;
 
     //API Typedef: GpioPinOptions
-    // A map of uint GPIO pin ID, <GpioFeatureBehaviors> pairs
-    typedef std::map<uint8, GpioFeatureBehaviors> GpioPinOptions;
+    // A map of uint <GpioPinId>, <GpioFeatureBehaviors> pairs
+    typedef std::map<GpioPinId, GpioFeatureBehaviors> GpioPinOptions;
 
     //API Enum: EventControlMode
     //  Event control modes
