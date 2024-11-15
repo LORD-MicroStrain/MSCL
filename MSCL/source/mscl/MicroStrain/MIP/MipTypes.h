@@ -226,6 +226,7 @@ namespace mscl
         //  CMD_GNSS_RECEIVER_INFO                      - 0x0E01    - GNSS Receiver Info
         //  CMD_GNSS_SIGNAL_CONFIG                      - 0x0E02    - GNSS Signal Configuration
         //  CMD_GNSS_RTK_CONFIG                         - 0x0E10    - GNSS RTK Configuration
+        //  CMD_INTERFACE_CONTROL                       - 0x7F02    - Interface Control
         //  CMD_COMMUNICATION_MODE                      - 0x7F10    - Communication Mode
         //  CMD_HARDWARE_CTRL                           - 0x7F11    - Hardware Control
         //  CMD_GET_ANALOG_DISPLACEMENT_CALS            - 0x1101    - Get Analog Output to Displacement Slope and Offset
@@ -376,6 +377,7 @@ namespace mscl
             CMD_GNSS_RECEIVER_INFO                  = 0x0E01,
             CMD_GNSS_SIGNAL_CONFIG                  = 0x0E02,
             CMD_GNSS_RTK_CONFIG                     = 0x0E10,
+            CMD_INTERFACE_CONTROL                   = 0x7F02,
             CMD_COMMUNICATION_MODE                  = 0x7F10,
             CMD_HARDWARE_CTRL                       = 0x7F11,
             CMD_GET_ANALOG_DISPLACEMENT_CALS        = 0x1101,
