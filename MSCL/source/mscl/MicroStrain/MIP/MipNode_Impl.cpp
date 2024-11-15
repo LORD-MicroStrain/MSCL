@@ -1295,6 +1295,9 @@ namespace mscl
                     setCmds.push_back(MipCommandBytes(cmd, s.data()));
                 }
                 break;
+
+                // TODO: Interface Control (0x7F, 0x02)
+
                 case MipTypes::CMD_COMMUNICATION_MODE:
                 {
                     uint8 data = getCommunicationMode();

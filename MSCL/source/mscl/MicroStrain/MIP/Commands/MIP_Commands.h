@@ -57,6 +57,8 @@ namespace mscl
         //    The data rate base parsed from the response
         static uint16 parseData_DataRateBase(const GenericMipCmdResponse& response);
 
+        // TODO: Interface Control (0x7F, 0x02)
+
         //Function: parseData_CommunicationMode
         //    Parses the data from a CommunicationMode response
         //

@@ -61,4 +61,6 @@ namespace mscl
             uint8 parseResponse(const GenericMipCmdResponse& response) const;
         };
     };
+
+    // TODO: Interface Control (0x7F, 0x02)
 }

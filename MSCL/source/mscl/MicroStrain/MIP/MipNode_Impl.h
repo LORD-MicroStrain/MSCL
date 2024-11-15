@@ -567,6 +567,8 @@ namespace mscl
         //    - <Error>: An <MipChannel> in the channels parameter is not part of the specified <MipTypes::DataClass>'s descriptor set.
         void saveMessageFormat(MipTypes::DataClass type);
 
+        // TODO: Interface Control (0x7F, 0x02)
+
         //Function: getCommunicationMode
         //    Gets the current communication mode that the node is in.
         //

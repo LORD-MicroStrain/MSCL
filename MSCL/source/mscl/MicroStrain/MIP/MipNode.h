@@ -318,6 +318,8 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the MipNode.
         void resume();
 
+        // TODO: Interface Control (0x7F, 0x02)
+
         //API Function: getCommunicationMode
         //    Gets the current communication mode that the node is in.
         //

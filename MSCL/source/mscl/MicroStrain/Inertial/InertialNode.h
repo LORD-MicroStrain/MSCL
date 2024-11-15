@@ -151,6 +151,8 @@ namespace mscl
         //    - <Error>: An <MipChannel> in the channels parameter is not part of the specified <MipTypes::DataClass>'s descriptor set.
         void setFactoryStreamingChannels(InertialTypes::FactoryStreamingOption option);
 
+        // TODO: Interface Control (0x7F, 0x02) Get/Set
+
         //API Function: getCommunicationMode
         //    Gets the current communication mode that the node is in.
         //
