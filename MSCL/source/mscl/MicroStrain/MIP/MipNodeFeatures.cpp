@@ -241,26 +241,42 @@ namespace mscl
 
     const CommPortInfo MipNodeFeatures::getCommPortInfo() const
     {
-        MipModel model(nodeInfo().deviceInfo().modelNumber);
+        const MipModel model(nodeInfo().deviceInfo().modelNumber);
+
         switch (model.baseModel().nodeModel())
         {
-        case MipModels::node_3dm_gq7:
-            return{
-                DeviceCommPort(DeviceCommPort::Type::PRIMARY, 1),
-                DeviceCommPort(DeviceCommPort::Type::AUX, 2)
-            };
+            case MipModels::node_3dm_gq7:
+            {
+                return{
+                    DeviceCommPort(DeviceCommPort::Type::SPECIAL, 1),
+                    DeviceCommPort(DeviceCommPort::Type::SPECIAL, 2)
+                };
+            }
 
-        case MipModels::node_3dm_cv7_ins:
-        case MipModels::node_3dm_gv7_ins:
-            return{
-                DeviceCommPort(DeviceCommPort::Type::PRIMARY, 1),
-                DeviceCommPort(DeviceCommPort::Type::GPIO, 2)
-            };
-
-        default:
-            return{
-                DeviceCommPort(DeviceCommPort::Type::PRIMARY, 1)
-            };
+            case MipModels::node_3dm_cv7_ins:
+            case MipModels::node_3dm_gv7_ins:
+            {
+                return {
+                    DeviceCommPort(DeviceCommPort::Type::SPECIAL, 1),
+                    DeviceCommPort(DeviceCommPort::Type::UART,    2)
+                };
+            }
+            case MipModels::node_3dm_cv7_gnss_ins:
+            {
+                return {
+                    DeviceCommPort(DeviceCommPort::Type::SPECIAL, 1),
+                    DeviceCommPort(DeviceCommPort::Type::UART,    2),
+                    DeviceCommPort(DeviceCommPort::Type::UART,    3),
+                    DeviceCommPort(DeviceCommPort::Type::USB,     1),
+                    DeviceCommPort(DeviceCommPort::Type::USB,     2)
+                };
+            }
+            default:
+            {
+                return {
+                    DeviceCommPort(DeviceCommPort::Type::SPECIAL, 1)
+                };
+            }
         }
     }
 
@@ -459,7 +475,7 @@ namespace mscl
         MipModel model(nodeInfo().deviceInfo().modelNumber);
         switch (model.baseModel().nodeModel())
         {
-        case MipModels::node_3dm_cv7_ins:
+            case MipModels::node_3dm_cv7_ins:
             case MipModels::node_3dm_gv7_ins:
             {
                 return HeadingAlignmentMethod(

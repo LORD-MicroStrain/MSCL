@@ -22,10 +22,10 @@ namespace mscl
     {
     public:
         //Constants: Packet Bytes
-        //    CMD_ID                - CMD_GET_SENSOR_RATE_BASE    - The <MipTypes::Command> for this command
-        //  FIELD_DATA_BYTE        - 0x90                        - The Data Field Descriptor byte
-        static const MipTypes::Command CMD_ID    = MipTypes::CMD_COMMUNICATION_MODE;
-        static const uint8 FIELD_DATA_BYTE            = 0x90;
+        //    CMD_ID          - CMD_GET_SENSOR_RATE_BASE - The <MipTypes::Command> for this command
+        //    FIELD_DATA_BYTE - 0x90                     - The Data Field Descriptor byte
+        static const MipTypes::Command CMD_ID = MipTypes::CMD_COMMUNICATION_MODE;
+        static const uint8 FIELD_DATA_BYTE    = 0x90;
 
     private:
         CommunicationMode();    //disabled default constructor

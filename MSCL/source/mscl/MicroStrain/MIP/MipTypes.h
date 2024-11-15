@@ -2781,26 +2781,26 @@ namespace mscl
     {
         //API Enum: Type
         //  Available comm port type definitions
-        //      PRIMARY - 0
-        //      AUX     - 1
-        //      GPIO    - 2
+        //      SPECIAL - 0x00 - Device specific ports (Main/Aux)
+        //      UART    - 0x01 - UART related ports
+        //      USB     - 0x02 - USB related  port
         enum Type
         {
-            PRIMARY = 0,
-            AUX     = 1,
-            GPIO    = 2
+            SPECIAL = 0x00,
+            UART    = 0x01,
+            USB     = 0x02
         };
 
         //API Constructor: DeviceCommPort
         //  Constructs DeviceCommPort object with default values
-        DeviceCommPort() {};
+        DeviceCommPort() = default;
 
         //API Constructor: DeviceCommPort
         //  Constructs DeviceCommPort object with specified values
         DeviceCommPort(Type portType, uint8 portId) :
             type(portType),
-            id(portId)
-        {};
+            id((static_cast<uint8>(portType) << 4) | portId)
+        {}
 
         //API Variable: type
         // Port type (primary, aux, etc.)
