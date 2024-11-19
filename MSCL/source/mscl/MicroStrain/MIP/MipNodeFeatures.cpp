@@ -253,18 +253,41 @@ namespace mscl
                 };
             }
 
+            case MipModels::node_3dm_cv7_ar:
+            case MipModels::node_3dm_cv7_ahrs:
+            case MipModels::node_3dm_gv7_ar:
+            case MipModels::node_3dm_gv7_ahrs:
+            {
+                return {
+                    DeviceCommPort(DeviceCommPort::Type::SPECIAL, 1),
+                    DeviceCommPort(DeviceCommPort::Type::UART,    1),
+                    DeviceCommPort(DeviceCommPort::Type::USB,     1)
+                };
+            }
             case MipModels::node_3dm_cv7_ins:
+            {
+                return {
+                    DeviceCommPort(DeviceCommPort::Type::SPECIAL, 1),
+                    DeviceCommPort(DeviceCommPort::Type::UART,    1),
+                    DeviceCommPort(DeviceCommPort::Type::UART,    2),
+                    DeviceCommPort(DeviceCommPort::Type::UART,    3),
+                    DeviceCommPort(DeviceCommPort::Type::USB,     1)
+                };
+            }
             case MipModels::node_3dm_gv7_ins:
             {
                 return {
                     DeviceCommPort(DeviceCommPort::Type::SPECIAL, 1),
-                    DeviceCommPort(DeviceCommPort::Type::UART,    2)
+                    DeviceCommPort(DeviceCommPort::Type::UART,    1),
+                    DeviceCommPort(DeviceCommPort::Type::UART,    2),
+                    DeviceCommPort(DeviceCommPort::Type::USB,     1)
                 };
             }
             case MipModels::node_3dm_cv7_gnss_ins:
             {
                 return {
                     DeviceCommPort(DeviceCommPort::Type::SPECIAL, 1),
+                    DeviceCommPort(DeviceCommPort::Type::UART,    1),
                     DeviceCommPort(DeviceCommPort::Type::UART,    2),
                     DeviceCommPort(DeviceCommPort::Type::UART,    3),
                     DeviceCommPort(DeviceCommPort::Type::USB,     1),
