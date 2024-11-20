@@ -332,7 +332,6 @@ namespace std
     %template(GnssSources)                      vector<mscl::InertialTypes::GNSS_Source>;
     %template(GnssSignalConfigOptions)          map<mscl::MipChannelIdentifier::GnssConstellationIds, std::vector<uint8_t>>;
     %template(NmeaMessageFormats)               vector<mscl::NmeaMessageFormat>;
-    %template(GpioPins)                         vector<mscl::GpioPinId>;
     %template(GpioPinModeOptions)               vector<mscl::GpioConfiguration::PinModes>;
     %template(GpioBehaviorModes)                map<uint8_t, vector<mscl::GpioConfiguration::PinModes>>;
     %template(GpioFeatureBehaviors)             map<enum mscl::GpioConfiguration::Feature, mscl::GpioBehaviorModes>;

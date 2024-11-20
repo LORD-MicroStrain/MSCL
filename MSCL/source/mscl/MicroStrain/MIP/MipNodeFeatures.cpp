@@ -765,7 +765,7 @@ namespace mscl
         }
     }
 
-    const GpioPins MipNodeFeatures::supportedGpioPins() const
+    const std::vector<GpioPinId> MipNodeFeatures::supportedGpioPins() const
     {
         const MipModel model(nodeInfo().deviceInfo().modelNumber);
         const MipModels::NodeModel nodeModel = model.baseModel().nodeModel();
@@ -884,7 +884,7 @@ namespace mscl
         // Make sure the pin is supported by the device first
         if (pin != 0)
         {
-            const GpioPins supportedPins = supportedGpioPins();
+            const std::vector<GpioPinId> supportedPins = supportedGpioPins();
 
             if (std::find(supportedPins.begin(), supportedPins.end(), pin) == supportedPins.end())
             {
