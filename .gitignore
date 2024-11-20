@@ -13,6 +13,11 @@ sample_mscl_cpp/
 /mscl_centos_*.tar.bz2
 /[Oo]utput
 
+## Ignore any CMake generated project files
+LibVersion.h
+AssemblyInfo.cs
+
+
 ## Ignore JetBrains files
 *.idea
 # Rider

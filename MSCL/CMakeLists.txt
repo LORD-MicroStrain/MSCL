@@ -1,10 +1,37 @@
 project(MSCL)
 
+include(microstrain_utilities)
+
+# Get the Git version to use for the version file generation
+microstrain_get_git_version(MSCL_GIT_VERSION MSCL_GIT_VERSION_CLEAN)
+microstrain_extract_git_version(MSCL_GIT_VERSION_CLEAN MSCL_GIT_VERSION_MAJOR MSCL_GIT_VERSION_MINOR MSCL_GIT_VERSION_PATCH)
+
+# Get the current year to make sure the file copyright is up-to-date
+string(TIMESTAMP MSCL_CURRENT_YEAR "%Y")
+
+set(MSCL_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/../cmake")
+set(MSCL_SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/source")
+set(MSCL_SOURCE_FILES_DIR "${MSCL_SOURCE_DIR}/mscl")
+
+# Generate the version header file
+set(VERSION_FILE "LibVersion.h")
+set(MSCL_VERSION_IN_FILE "${CMAKE_CURRENT_LIST_DIR}/../cmake/${VERSION_FILE}.in")
+set(MSCL_VERSION_OUT_FILE "${MSCL_SOURCE_FILES_DIR}/${VERSION_FILE}")
+configure_file(${MSCL_VERSION_IN_FILE} ${MSCL_VERSION_OUT_FILE})
+
+#if(BUILD_CSHARP)
+    # Generate the assembly info file for CSharp
+    set(ASSEMBLY_FILE "AssemblyInfo.cs")
+    set(MSCL_ASSEMBLY_CS_IN_FILE "${CMAKE_CURRENT_LIST_DIR}/../cmake/${ASSEMBLY_FILE}.in")
+    set(MSCL_ASSEMBLY_CS_OUT_FILE "${MSCL_SOURCE_FILES_DIR}/Wrapper/CSharp/Properties/${ASSEMBLY_FILE}")
+    configure_file(${MSCL_ASSEMBLY_CS_IN_FILE} ${MSCL_ASSEMBLY_CS_OUT_FILE})
+#endif()
+
 # Since we use globs here we won't need to update this file every time.
 # NOTE: If building locally and you add a file, you will need to reconfigure CMake to make it appear to the glob
 file(GLOB_RECURSE SRC_FILES
-  ${CMAKE_CURRENT_SOURCE_DIR}/source/**/*.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/source/**/*.h
+  ${MSCL_SOURCE_DIR}/**/*.cpp
+  ${MSCL_SOURCE_DIR}/**/*.h
 )
 
 # Create VS filters based on file directories
@@ -13,7 +40,7 @@ foreach(FILE ${SRC_FILES})
   get_filename_component(PARENT_DIR "${FILE}" DIRECTORY)
 
   # Remove common directory prefix to make the group and removed the trailing mscl source directory
-  string(REPLACE "${CMAKE_CURRENT_SOURCE_DIR}/source/mscl" "" GROUP "${PARENT_DIR}")
+  string(REPLACE "${MSCL_SOURCE_FILES_DIR}" "" GROUP "${PARENT_DIR}")
 
   # Make sure we are using windows slashes
   string(REPLACE "/" "\\" GROUP "${GROUP}")
@@ -31,22 +58,22 @@ endforeach()
 
 # Files that should only be compiled on windows
 set(WINDOWS_ONLY_FILES
-  ${CMAKE_CURRENT_SOURCE_DIR}/source/mscl/Communication/WsdaFinder.h
-  ${CMAKE_CURRENT_SOURCE_DIR}/source/mscl/Communication/WsdaFinder.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/source/mscl/Communication/UpnpService.h
-  ${CMAKE_CURRENT_SOURCE_DIR}/source/mscl/Communication/UpnpService.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/source/mscl/Communication/UpnpDeviceFinderCallback.h
-  ${CMAKE_CURRENT_SOURCE_DIR}/source/mscl/Communication/UpnpDeviceFinderCallback.cpp
+  ${MSCL_SOURCE_FILES_DIR}/Communication/WsdaFinder.h
+  ${MSCL_SOURCE_FILES_DIR}/Communication/WsdaFinder.cpp
+  ${MSCL_SOURCE_FILES_DIR}/Communication/UpnpService.h
+  ${MSCL_SOURCE_FILES_DIR}/Communication/UpnpService.cpp
+  ${MSCL_SOURCE_FILES_DIR}/Communication/UpnpDeviceFinderCallback.h
+  ${MSCL_SOURCE_FILES_DIR}/Communication/UpnpDeviceFinderCallback.cpp
 )
 
 # Files that should only be compiled on linux
 set(LINUX_ONLY_FILES
-  ${CMAKE_CURRENT_SOURCE_DIR}/source/mscl/Communication/UnixSocketConnection.cpp
+  ${MSCL_SOURCE_FILES_DIR}/Communication/UnixSocketConnection.cpp
 )
 
 # Excluded file on all OSes
 set(LIB_EXCLUDED_FILES
-  ${CMAKE_CURRENT_SOURCE_DIR}/source/mscl/Wrapper/MSCL_Wrap.cpp
+  ${MSCL_SOURCE_FILES_DIR}/Wrapper/MSCL_Wrap.cpp
 )
 
 # Remove files from the list based on the OS
@@ -79,7 +106,7 @@ endif()
 # Add some include directories
 set(LIB_INCLUDE_DIRS
   ${Boost_INCLUDE_DIRS}
-  ${CMAKE_CURRENT_SOURCE_DIR}/source
+  ${MSCL_SOURCE_DIR}
 )
 if(WITH_SSL)
   list(APPEND LIB_INCLUDE_DIRS ${OPENSSL_INCLUDE_DIR})
@@ -122,8 +149,8 @@ set_target_properties(${LIB_NAME_STATIC}
 
 # Configure some precompiled headers
 target_precompile_headers(${LIB_NAME_STATIC} PRIVATE
-  ${CMAKE_CURRENT_SOURCE_DIR}/source/stdafx.h
-  ${CMAKE_CURRENT_SOURCE_DIR}/source/stdafx.cpp
+  ${MSCL_SOURCE_DIR}/stdafx.h
+  ${MSCL_SOURCE_DIR}/stdafx.cpp
 )
 
 # In order to copy the headers, create a cmake script that will do the copying
@@ -133,7 +160,7 @@ set(MSCL_STATIC_OUTPUT_INCLUDE_DIR ${MSCL_STATIC_OUTPUT_DIR}/include)
 set(MSCL_STATIC_OUTPUT_LIB_DIR ${MSCL_STATIC_OUTPUT_DIR}/lib/${MSCL_ARCH_NAME}/$<CONFIG>)
 file(GENERATE
   OUTPUT ${MSCL_STATIC_HEADER_CP_SCRIPT}
-  CONTENT "file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/source/mscl DESTINATION ${MSCL_STATIC_OUTPUT_INCLUDE_DIR} FILES_MATCHING PATTERN *.h PATTERN Wrapper EXCLUDE)\n"
+  CONTENT "file(COPY ${MSCL_SOURCE_FILES_DIR} DESTINATION ${MSCL_STATIC_OUTPUT_INCLUDE_DIR} FILES_MATCHING PATTERN *.h PATTERN Wrapper EXCLUDE)\n"
 )
 
 # Copy the artifacts to an Output directory to make it easier for users to navigate the artifacts
@@ -152,7 +179,7 @@ if(UNIX)
     COMPONENT static
   )
   install(
-    DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/source/mscl"
+    DIRECTORY "${MSCL_SOURCE_FILES_DIR}"
     DESTINATION "include"
     COMPONENT static
     FILES_MATCHING PATTERN "*.h"
@@ -173,8 +200,8 @@ if(BUILD_SHARED_LIBS)
 
   # Configure some precompiled headers
   target_precompile_headers(${LIB_NAME_SHARED} PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}/source/stdafx.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/source/stdafx.cpp
+    ${MSCL_SOURCE_DIR}/stdafx.h
+    ${MSCL_SOURCE_DIR}/stdafx.cpp
   )
 
   # In order to copy the headers, create a cmake script that will do the copying
@@ -184,7 +211,7 @@ if(BUILD_SHARED_LIBS)
   set(MSCL_SHARED_OUTPUT_LIB_DIR ${MSCL_SHARED_OUTPUT_DIR}/lib/${MSCL_ARCH_NAME}/$<CONFIG>)
   file(GENERATE
     OUTPUT ${MSCL_SHARED_HEADER_CP_SCRIPT}
-    CONTENT "file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/source/mscl DESTINATION ${MSCL_SHARED_OUTPUT_INCLUDE_DIR} FILES_MATCHING PATTERN *.h PATTERN Wrapper EXCLUDE)\n"
+    CONTENT "file(COPY ${MSCL_SOURCE_FILES_DIR} DESTINATION ${MSCL_SHARED_OUTPUT_INCLUDE_DIR} FILES_MATCHING PATTERN *.h PATTERN Wrapper EXCLUDE)\n"
   )
 
   # Copy the artifacts to an Output directory to make it easier for users to navigate the artifacts
@@ -203,7 +230,7 @@ if(BUILD_SHARED_LIBS)
       COMPONENT shared
     )
     install(
-      DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/source/mscl"
+      DIRECTORY "${MSCL_SOURCE_FILES_DIR}"
       DESTINATION "include"
       COMPONENT shared
       FILES_MATCHING PATTERN "*.h"
@@ -252,7 +279,7 @@ if(BUILD_PYTHON2 OR BUILD_PYTHON3 OR BUILD_CSHARP)
 
   # Set up our source
   set(SWIG_SOURCE_FILES
-    ${CMAKE_CURRENT_SOURCE_DIR}/source/mscl/Wrapper/MSCL_Main_Interface.i
+    ${MSCL_SOURCE_FILES_DIR}/Wrapper/MSCL_Main_Interface.i
   )
   set_property(SOURCE ${SWIG_SOURCE_FILES} PROPERTY CPLUSPLUS ON)
 
@@ -287,7 +314,7 @@ if(BUILD_PYTHON2 OR BUILD_PYTHON3 OR BUILD_CSHARP)
       SOURCES ${SWIG_SOURCE_FILES}
       COMPILE_OPTIONS ${PYTHON_COMPILE_OPTIONS}
       COMPILE_DEFINITIONS ${LIB_DEFINES} SWIG_PYTHON_INTERPRETER_NO_DEBUG
-      INCLUDE_DIRECTORIES ${LIB_INCLUDE_DIRS} ${Python3_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR}/source/mscl/Wrapper  # Temp fix for bad include paths
+      INCLUDE_DIRECTORIES ${LIB_INCLUDE_DIRS} ${Python3_INCLUDE_DIRS} ${MSCL_SOURCE_FILES_DIR}/Wrapper  # Temp fix for bad include paths
       LINK_DIRECTORIES ${Python3_LIBRARY_DIRS}
       LINK_OPTIONS ${PYTHON_LINK_OPTIONS}
       LINK_LIBRARIES ${PYTHON_LINK_LIBRARIES} ${Python3_LIBRARIES}
@@ -308,7 +335,7 @@ if(BUILD_PYTHON2 OR BUILD_PYTHON3 OR BUILD_CSHARP)
       SOURCES ${SWIG_SOURCE_FILES}
       COMPILE_OPTIONS ${PYTHON_COMPILE_OPTIONS}
       COMPILE_DEFINITIONS ${LIB_DEFINES} SWIG_PYTHON_INTERPRETER_NO_DEBUG
-      INCLUDE_DIRECTORIES ${LIB_INCLUDE_DIRS} ${Python2_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR}/source/mscl/Wrapper  # Temp fix for bad include paths
+      INCLUDE_DIRECTORIES ${LIB_INCLUDE_DIRS} ${Python2_INCLUDE_DIRS} ${MSCL_SOURCE_FILES_DIR}/Wrapper  # Temp fix for bad include paths
       LINK_DIRECTORIES ${Python2_LIBRARY_DIRS}
       LINK_OPTIONS ${PYTHON_LINK_OPTIONS}
       LINK_LIBRARIES ${PYTHON_LINK_LIBRARIES} ${Python2_LIBRARIES}
@@ -345,7 +372,7 @@ if(BUILD_PYTHON2 OR BUILD_PYTHON3 OR BUILD_CSHARP)
     )
     target_include_directories(${CSHARP_MODULE_NAME} PUBLIC
       ${LIB_INCLUDE_DIRS}
-      ${CMAKE_CURRENT_SOURCE_DIR}/source/mscl/Wrapper  # Temp fix for bad include path
+      ${MSCL_SOURCE_FILES_DIR}/Wrapper  # Temp fix for bad include path
     )
     target_link_libraries(${CSHARP_MODULE_NAME} PRIVATE
       ${LIB_NAME_STATIC} ${Boost_STATIC_LIBRARIES}
@@ -365,8 +392,8 @@ if(BUILD_PYTHON2 OR BUILD_PYTHON3 OR BUILD_CSHARP)
 
     # Add the CSharp library
     set(MSCL_CSHARP_SOURCE
-      ${CMAKE_CURRENT_SOURCE_DIR}/source/mscl/Wrapper/CSharp/Properties/AssemblyInfo.cs
-      ${CMAKE_CURRENT_SOURCE_DIR}/source/mscl/Wrapper/CSharp/mscl/Exceptions.cs
+      ${MSCL_SOURCE_FILES_DIR}/Wrapper/CSharp/Properties/${ASSEMBLY_FILE}
+      ${MSCL_SOURCE_FILES_DIR}/Wrapper/CSharp/mscl/Exceptions.cs
       ${MSCL_GENERATED_CSHARP_SOURCE}
     )
     set(MSCL_Managed_NAME MSCL_Managed)
@@ -393,10 +420,10 @@ if(BUILD_DOCUMENTATION)
     COMMAND ${CMAKE_COMMAND} -E remove_directory "${MSCL_OUTPUT_DIR}/Documentation"
     COMMAND ${CMAKE_COMMAND} -E make_directory "${MSCL_DOCS_OUTPUT_DIR}"
     COMMAND ${CMAKE_COMMAND} -E remove_directory "${CMAKE_CURRENT_SOURCE_DIR}/../BuildScripts/NaturalDocsProjects/MSCL_Docs_Project/Working Data"
-    COMMAND ${CMAKE_COMMAND} -E env ${NaturalDocs_EXECUTABLE} -i "${CMAKE_CURRENT_SOURCE_DIR}/source/mscl" -o FramedHTML "${MSCL_DOCS_OUTPUT_DIR}" -p "${CMAKE_CURRENT_SOURCE_DIR}/../BuildScripts/NaturalDocsProjects/MSCL_Docs_Project" -s msclDocsStyle
+    COMMAND ${CMAKE_COMMAND} -E env ${NaturalDocs_EXECUTABLE} -i "${MSCL_SOURCE_FILES_DIR}" -o FramedHTML "${MSCL_DOCS_OUTPUT_DIR}" -p "${CMAKE_CURRENT_SOURCE_DIR}/../BuildScripts/NaturalDocsProjects/MSCL_Docs_Project" -s msclDocsStyle
     COMMAND ${CMAKE_COMMAND} -E make_directory "${MSCL_API_DOCS_OUTPUT_DIR}"
     COMMAND ${CMAKE_COMMAND} -E remove_directory "${CMAKE_CURRENT_SOURCE_DIR}/../BuildScripts/NaturalDocsProjects/MSCL_API_Docs_Project/Working Data"
-    COMMAND ${CMAKE_COMMAND} -E env ${NaturalDocs_EXECUTABLE} -i "${CMAKE_CURRENT_SOURCE_DIR}/source/mscl" -o FramedHTML "${MSCL_API_DOCS_OUTPUT_DIR}" -p "${CMAKE_CURRENT_SOURCE_DIR}/../BuildScripts/NaturalDocsProjects/MSCL_API_Docs_Project" -s msclDocsStyle
+    COMMAND ${CMAKE_COMMAND} -E env ${NaturalDocs_EXECUTABLE} -i "${MSCL_SOURCE_FILES_DIR}" -o FramedHTML "${MSCL_API_DOCS_OUTPUT_DIR}" -p "${CMAKE_CURRENT_SOURCE_DIR}/../BuildScripts/NaturalDocsProjects/MSCL_API_Docs_Project" -s msclDocsStyle
   )
 endif()
 
@@ -455,8 +482,7 @@ if(BUILD_PACKAGE)
   endif()
 
   # Massage the version number a little so we can set the proper version
-  string(REGEX REPLACE "^v([0-9]+)\\.([0-9]+)\\.([0-9]+).*" "\\1.\\2.\\3" MSCL_GIT_VERSION_CPACK ${MSCL_GIT_VERSION})
-  set(CPACK_PACKAGE_VERSION ${MSCL_GIT_VERSION_CPACK})
+  set(CPACK_PACKAGE_VERSION ${MSCL_GIT_VERSION_CLEAN})
 
   if(WIN32)
     set(MSCL_FILE_NAME_PREFIX "MSCL_Windows_${MSCL_ARCH}")

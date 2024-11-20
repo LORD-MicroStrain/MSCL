@@ -14,14 +14,14 @@ if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE "Debug")
 endif()
 
+# Add our custom modules path
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
+
+# Include some utilities used for MicroStrain projects
+include(microstrain_utilities)
+
 # Detect if this is a x64 or x86 build
-if(CMAKE_SIZEOF_VOID_P EQUAL 8)
-  set(MSCL_X64 ON)
-  set(MSCL_ARCH_NAME "x64")
-elseif(CMAKE_SIZEOF_VOID_P EQUAL 4)
-  set(MSCL_X86 ON)
-  set(MSCL_ARCH_NAME "x86")
-endif()
+microstrain_get_architecture(MSCL_ARCH_NAME)
 
 # This will make windows create a .lib file with all the symbols of the .dll files exported
 set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
@@ -60,10 +60,9 @@ set(Boost_REQUESTED_VERSION "1.68.0" CACHE INTERNAL "Required version of boost")
 if(WIN32)
   string(REPLACE "." "_" Boost_REQUESTED_VERSION_UNDERSCORE ${Boost_REQUESTED_VERSION})
   set(DEFAULT_BOOST_ROOT "${MICROSTRAIN_LIB_DIR}/boost")
-  if(MSCL_X64)
-    set(DEFAULT_OPENSSL_ROOT_DIR "${MICROSTRAIN_LIB_DIR}/openssl/lib64")
-  elseif(MSCL_X86)
-    set(DEFAULT_OPENSSL_ROOT_DIR "${MICROSTRAIN_LIB_DIR}/openssl/lib")
+  set(DEFAULT_OPENSSL_ROOT_DIR "${MICROSTRAIN_LIB_DIR}/openssl/lib")
+  if(${MSCL_ARCH_NAME} STREQUAL "x64")
+    string(APPEND DEFAULT_OPENSSL_ROOT_DIR "64")
   endif()
   set(DEFAULT_SWIG_ROOT "${MICROSTRAIN_LIB_DIR}/swig/swigwin-4.0.0")
 endif()
@@ -77,28 +76,7 @@ if(UNIX AND NOT APPLE)
 endif()
 
 # Use Git to find the version of this repo
-find_package(Git)
-set(DEFAULT_MSCL_GIT_VERSION "v0.0.0")
-if(NOT GIT_FOUND)
-  message(WARNING "Unable to find git, will build with unknown version")
-  set(MSCL_GIT_VERSION ${DEFAULT_MSCL_GIT_VERSION})
-else()
-  execute_process(
-    COMMAND ${CMAKE_COMMAND} -E env ${GIT_EXECUTABLE} describe --tags
-    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-    OUTPUT_VARIABLE MSCL_GIT_VERSION_OUT
-    ERROR_VARIABLE MSCL_GIT_VERSION_ERR
-    RESULT_VARIABLE MSCL_GIT_VERSION_RET
-  )
-  if(NOT ${MSCL_GIT_VERSION_RET} EQUAL 0)
-    message(WARNING "Unable to determine version from Git, defaulting to version ${DEFAULT_MSCL_GIT_VERSION}")
-    set(MSCL_GIT_VERSION ${DEFAULT_MSCL_GIT_VERSION})
-  else()
-    set(MSCL_GIT_VERSION ${MSCL_GIT_VERSION_OUT})
-    string(REGEX REPLACE "\n" "" MSCL_GIT_VERSION "${MSCL_GIT_VERSION}")
-    message(STATUS "MSCL Version: ${MSCL_GIT_VERSION}")
-  endif()
-endif()
+microstrain_get_git_version(MSCL_GIT_VERSION MSCL_GIT_VERSION_CLEAN)
 
 # Make the Output directory which is where we will copy all of the build artifacts on a successful build
 set(MSCL_OUTPUT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/Output)
@@ -170,9 +148,9 @@ if(WITH_SSL)
   # Ultra mega hack since we are finding the lib path of OpenSSL, we need to manually set the include path...
   if(NOT DEFINED OPENSSL_ROOT_DIR)
     set(OPENSSL_ROOT_DIR "${DEFAULT_OPENSSL_ROOT_DIR}")
-    if(MSCL_X64)
+    if(${MSCL_ARCH_NAME} STREQUAL "x64")
       set(OPENSSL_INCLUDE_DIR ${DEFAULT_OPENSSL_ROOT_DIR}/../include64 CACHE INTERNAL "")
-    elseif(MSCL_X86)
+    else()
       set(OPENSSL_INCLUDE_DIR ${DEFAULT_OPENSSL_ROOT_DIR}/../include CACHE INTERNAL "")
     endif()
   endif()

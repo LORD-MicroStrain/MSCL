@@ -1,23 +1,22 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
+**          Copyright(c) 2015-${MSCL_CURRENT_YEAR} MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
 #pragma once
 
-#include "Version.h"
+#include "mscl/Version.h"
 
 #ifndef SWIG
-//update with each release
-#define MSCL_MAJOR 66
-#define MSCL_MINOR 0
-#define MSCL_PATCH 0
-#endif
+#define MSCL_MAJOR ${MSCL_GIT_VERSION_MAJOR}
+#define MSCL_MINOR ${MSCL_GIT_VERSION_MINOR}
+#define MSCL_PATCH ${MSCL_GIT_VERSION_PATCH}
+#endif // !SWIG
 
 namespace mscl
 {
     //API Variable: MSCL_VERSION
     //  Gets the <Version> of MSCL.
     static const Version MSCL_VERSION = Version(MSCL_MAJOR, MSCL_MINOR, MSCL_PATCH);
-}
+} // namespace mscl
