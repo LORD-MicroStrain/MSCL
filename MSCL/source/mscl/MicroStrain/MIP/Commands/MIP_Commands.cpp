@@ -83,6 +83,23 @@ namespace mscl
         return response.data().read_uint16(0);
     }
 
+    DeviceCommPort MIP_Commands::parseData_InterfaceControl(const GenericMipCmdResponse& response)
+    {
+        //use a DataBuffer to make reading nicer
+        DataBuffer db(response.data());
+
+        //read the interface ID value
+        uint8 interfaceId =  db.read_uint8();
+
+        //read the input protocols
+        DeviceCommPort::Protocol inputProtocols = static_cast<DeviceCommPort::Protocol>(db.read_uint32());
+
+        //read the output protocols
+        DeviceCommPort::Protocol outputProtocols = static_cast<DeviceCommPort::Protocol>(db.read_uint32());
+
+        return DeviceCommPort(interfaceId, inputProtocols, outputProtocols);
+    }
+
     uint8 MIP_Commands::parseData_CommunicationMode(const GenericMipCmdResponse& response)
     {
         //cast to comm mode and return

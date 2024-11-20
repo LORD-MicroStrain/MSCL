@@ -2783,12 +2783,32 @@ namespace mscl
         //  Available comm port type definitions
         //      SPECIAL - 0x00 - Device specific ports (Main/Aux)
         //      UART    - 0x01 - UART related ports
-        //      USB     - 0x02 - USB related  port
+        //      USB     - 0x02 - USB related ports
         enum Type
         {
-            SPECIAL = 0x00,
-            UART    = 0x01,
-            USB     = 0x02
+            SPECIAL = 0x00, // Device specific ports (Main/Aux)
+            UART    = 0x01, // UART related ports
+            USB     = 0x02  // USB related ports
+        };
+
+        //API Enum: Protocol
+        //  Available comm protocols that can be configured for UART ports
+        //      NONE         - 0x00000000 - Not set
+        //      MIP_COMMANDS - 0x00000001 - MIP commands
+        //      MIP_DATA     - 0x00000002 - MIP data
+        //      NMEA         - 0x00000004 - NMEA
+        //      RTCM         - 0x00000008 - RTCM
+        //      SPARTN       - 0x00000010 - SPARTN
+        //      ALL          - 0x0000001F - All protocols
+        enum Protocol : uint32
+        {
+            NONE         = 0x00000000, // Not set
+            MIP_COMMANDS = 0x00000001, // MIP commands
+            MIP_DATA     = 0x00000002, // MIP data
+            NMEA         = 0x00000004, // NMEA
+            RTCM         = 0x00000008, // RTCM
+            SPARTN       = 0x00000010, // SPARTN
+            ALL          = 0x0000001F  // All protocols
         };
 
         //API Constructor: DeviceCommPort
@@ -2797,18 +2817,54 @@ namespace mscl
 
         //API Constructor: DeviceCommPort
         //  Constructs DeviceCommPort object with specified values
-        DeviceCommPort(Type portType, uint8 portId) :
+        //
+        //Parameters:
+        //  portType            - Type of port being configured
+        //  portId              - The ID of the port to configure
+        //  portInputProtocols  - The input protocols accepted by the port
+        //  portOutputProtocols - The output protocols transmitted from the port
+        DeviceCommPort(Type portType, uint8 portId, Protocol portInputProtocols = NONE, Protocol portOutputProtocols = NONE) :
             type(portType),
-            id((static_cast<uint8>(portType) << 4) | portId)
+            id(portId),
+            inputProtocols(portInputProtocols),
+            outputProtocols(portOutputProtocols)
         {}
 
+        //API Constructor: DeviceCommPort
+        //  Constructs DeviceCommPort object with specified values
+        //  The ID and Type are determined by the interface value. I.E. Interface 0x12 == Type 1 && ID 2
+        //
+        //Parameters:
+        //  interface           - A combination of the port type and ID
+        //  portInputProtocols  - The input protocols accepted by the port
+        //  portOutputProtocols - The output protocols transmitted from the port
+        DeviceCommPort(uint8 interface, Protocol portInputProtocols = NONE, Protocol portOutputProtocols = NONE) :
+            type(static_cast<Type>((interface & 0xF0) >> 4)),
+            id(interface & 0xF),
+            inputProtocols(portInputProtocols),
+            outputProtocols(portOutputProtocols)
+        {}
+
+        //API Function: interfaceId
+        // Get the interface ID of the port
+        // This is a combined value of the type and port ID
+        uint8 interfaceId() const { return (static_cast<uint8>(type) << 4) | id; }
+
         //API Variable: type
-        // Port type (primary, aux, etc.)
+        // Port type (special, UART, etc.)
         Type type;
 
         //API Variable: id
         // Port ID
         uint8 id;
+
+        //API Variable: protocol
+        // Input communication protocols
+        Protocol inputProtocols;
+
+        //API Variable: protocol
+        // Output communication protocols
+        Protocol outputProtocols;
     };
 
     typedef std::vector<DeviceCommPort> CommPortInfo;

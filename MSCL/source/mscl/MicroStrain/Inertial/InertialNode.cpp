@@ -63,6 +63,22 @@ namespace mscl
             Value::UINT8(0) });
     }
 
+    DeviceCommPort InertialNode::getInterfaceControl(const uint8 interfaceId) const
+    {
+        return m_impl->getInterfaceControl(interfaceId);
+    }
+
+    void InertialNode::setInterfaceControl(const DeviceCommPort& interface)
+    {
+        m_impl->setInterfaceControl(interface);
+    }
+
+    void InertialNode::setInterfaceControl(const uint8 interfaceId, const DeviceCommPort::Protocol inputProtocols,
+        const DeviceCommPort::Protocol outputProtocols)
+    {
+        m_impl->setInterfaceControl(interfaceId, inputProtocols, outputProtocols);
+    }
+
     uint8 InertialNode::getCommunicationMode()
     {
         return m_impl->getCommunicationMode();
