@@ -68,9 +68,9 @@ namespace mscl
         return m_impl->getInterfaceControl(interfaceId);
     }
 
-    void InertialNode::setInterfaceControl(const DeviceCommPort& interface)
+    void InertialNode::setInterfaceControl(const DeviceCommPort& portInterface)
     {
-        m_impl->setInterfaceControl(interface);
+        m_impl->setInterfaceControl(portInterface);
     }
 
     void InertialNode::setInterfaceControl(const uint8 interfaceId, const DeviceCommPort::Protocol inputProtocols,

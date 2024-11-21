@@ -170,13 +170,13 @@ namespace mscl
         //    Note: See the device's manual for possible configurations and limitations.
         //
         //Parameters:
-        //    interface - The preconfigured comm port information to set
+        //    portInterface - The preconfigured comm port information to set
         //
         //Exceptions:
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        void setInterfaceControl(const DeviceCommPort& interface);
+        void setInterfaceControl(const DeviceCommPort& portInterface);
 
         //API Function: setInterfaceControl
         //    Sets the specified comm port interface configuration for the node.
