@@ -24,8 +24,8 @@ namespace mscl
         //Constants: Packet Bytes
         //    CMD_ID          - CMD_INTERFACE_CONTROL - The <MipTypes::Command> for this command
         //    FIELD_DATA_BYTE - 0x82                  - The Data Field Descriptor byte
-        static const MipTypes::Command CMD_ID          = MipTypes::CMD_INTERFACE_CONTROL;
-        static const uint8             FIELD_DATA_BYTE = 0x82;
+        static constexpr MipTypes::Command CMD_ID          = MipTypes::CMD_INTERFACE_CONTROL;
+        static constexpr uint8             FIELD_DATA_BYTE = 0x82;
 
     private:
         InterfaceControl(); //disabled default constructor
@@ -78,8 +78,8 @@ namespace mscl
         //Constants: Packet Bytes
         //    CMD_ID          - CMD_COMMUNICATION_MODE - The <MipTypes::Command> for this command
         //    FIELD_DATA_BYTE - 0x90                   - The Data Field Descriptor byte
-        static const MipTypes::Command CMD_ID = MipTypes::CMD_COMMUNICATION_MODE;
-        static const uint8 FIELD_DATA_BYTE    = 0x90;
+        static constexpr MipTypes::Command CMD_ID = MipTypes::CMD_COMMUNICATION_MODE;
+        static constexpr uint8 FIELD_DATA_BYTE    = 0x90;
 
     private:
         CommunicationMode();    //disabled default constructor
