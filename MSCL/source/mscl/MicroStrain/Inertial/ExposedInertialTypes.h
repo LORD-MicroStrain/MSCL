@@ -2945,10 +2945,6 @@ namespace mscl
     //  A uint8 representing logical GPIO pin IDs
     typedef uint8 GpioPinId;
 
-    //API Typedef: GpioPins
-    //  A vector of <uint8> representing available GPIO pins
-    typedef std::vector<uint8> GpioPins;
-
     //API Typedef: GpioPinModeOptions
     //  A vector of <GpioConfiguration::PinModes> representing masked pin modes
     typedef std::vector<GpioConfiguration::PinModes> GpioPinModeOptions;

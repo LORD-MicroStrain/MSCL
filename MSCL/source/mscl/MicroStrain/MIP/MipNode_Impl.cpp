@@ -674,7 +674,7 @@ namespace mscl
                 CommPortInfo ports = features().getCommPortInfo();
                 for (DeviceCommPort& port : ports)
                 {
-                    params.push_back({ cmd, { Value::UINT8(port.id) } });
+                    params.push_back({ cmd, { Value::UINT8(port.interfaceId()) } });
                 }
                 break;
             }
@@ -1295,6 +1295,9 @@ namespace mscl
                     setCmds.push_back(MipCommandBytes(cmd, s.data()));
                 }
                 break;
+
+                // TODO: Interface Control (0x7F, 0x02)
+
                 case MipTypes::CMD_COMMUNICATION_MODE:
                 {
                     uint8 data = getCommunicationMode();
@@ -1662,6 +1665,33 @@ namespace mscl
                 break;
             }
         }
+    }
+
+    DeviceCommPort MipNode_Impl::getInterfaceControl(const uint8 interfaceId) const
+    {
+        //set the expected response
+        InterfaceControl::Response r(m_responseCollector, true);
+
+        //send the command, wait for the response, and parse the result
+        return r.parseResponse(doCommand(r, InterfaceControl::buildCommand_get(interfaceId), false));
+    }
+
+    void MipNode_Impl::setInterfaceControl(const DeviceCommPort& portInterface)
+    {
+        setInterfaceControl(portInterface.interfaceId(), portInterface.inputProtocols, portInterface.outputProtocols);
+    }
+
+    void MipNode_Impl::setInterfaceControl(const uint8 interfaceId, const DeviceCommPort::Protocol inputProtocols,
+        const DeviceCommPort::Protocol outputProtocols)
+    {
+        //set the expected response
+        InterfaceControl::Response r(m_responseCollector, false);
+
+        //send the command and wait for the response
+        doCommand(r, InterfaceControl::buildCommand_set(interfaceId, inputProtocols, outputProtocols), false);
+
+        //reset the node info because we are switching contexts
+        resetNodeInfo();
     }
 
     uint8 MipNode_Impl::getCommunicationMode() const

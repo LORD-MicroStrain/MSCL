@@ -57,6 +57,16 @@ namespace mscl
         //    The data rate base parsed from the response
         static uint16 parseData_DataRateBase(const GenericMipCmdResponse& response);
 
+        //Function: parseData_InterfaceControl
+        //    Parses the data from a InterfaceControl response
+        //
+        //Parameters:
+        //    response - The <GenericMipCmdResponse> that contains the data to be parsed
+        //
+        //Returns:
+        //    The comm port interface configuration parsed from the response
+        static DeviceCommPort parseData_InterfaceControl(const GenericMipCmdResponse& response);
+
         //Function: parseData_CommunicationMode
         //    Parses the data from a CommunicationMode response
         //
@@ -64,7 +74,7 @@ namespace mscl
         //    response - The <GenericMipCmdResponse> that contains the data to be parsed
         //
         //Returns:
-        //    The data rate base parsed from the response
+        //    The comm mode parsed from the response
         static uint8 parseData_CommunicationMode(const GenericMipCmdResponse& response);
 
 //        static uint8 parseData_AssistedFixOptions(const GenericMipCmdResponse& response);
