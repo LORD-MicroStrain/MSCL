@@ -305,6 +305,13 @@ namespace mscl
         //    A <PpsSourceOptions> list containing all the supported options.
         const PpsSourceOptions supportedPpsSourceOptions() const;
 
+        //API Function: supportedGpioPins
+        //    Gets the GPIO Pin IDs supported by this device.
+        //
+        //Returns:
+        //    A <GpioPins> list containing all the supported GPIO pins.
+        const GpioPins supportedGpioPins() const;
+
         //API Function: supportedGpioPinModes
         //    Gets the Pin Mode options supported by this device based on the selected feature and behavior.
         //
@@ -322,10 +329,11 @@ namespace mscl
         //
         //Parameters:
         //      feature - the <GpioConfiguration::Feature>
+        //      pin     - the <GpioPinId> to get the feature behaviors for
         //
         //Returns:
         //    A <GpioBehaviorModes> list containing all the supported options.
-        const GpioBehaviorModes supportedGpioBehaviors(GpioConfiguration::Feature feature) const;
+        const GpioBehaviorModes supportedGpioBehaviors(GpioConfiguration::Feature feature, GpioPinId pin) const;
 
         //API Function: supportedGpioFeatures
         //    Gets the GPIO Feature options supported by this device for the specified GPIO pin.
@@ -335,7 +343,7 @@ namespace mscl
         //
         //Returns:
         //    A <GpioFeatureOptions> list containing all the supported options.
-        const GpioFeatureBehaviors supportedGpioFeatures(uint8 pin) const;
+        const GpioFeatureBehaviors supportedGpioFeatures(GpioPinId pin) const;
 
         //API Function: supportedGpioConfigurations
         //    Gets a map of supported GPIO configuration options for each supported pin
