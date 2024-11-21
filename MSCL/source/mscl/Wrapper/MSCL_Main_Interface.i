@@ -334,9 +334,9 @@ namespace std
     %template(NmeaMessageFormats)               vector<mscl::NmeaMessageFormat>;
     %template(GpioPinModeOptions)               vector<mscl::GpioConfiguration::PinModes>;
     %template(GpioBehaviorModes)                map<uint8_t, vector<mscl::GpioConfiguration::PinModes>>;
-    %template(GpioFeatureBehaviors)             map<enum mscl::GpioConfiguration::Feature, mscl::GpioBehaviorModes>;
-    %template(GpioPinOptions)                   map<uint8_t, map<enum mscl::GpioConfiguration::Feature, mscl::GpioBehaviorModes>>;
-    %template(EventInputTriggers)               array<mscl::GpioPinId, mscl::EventTriggerCombinationParameter::MAX_INPUT_TRIGGERS>;
+    %template(GpioFeatureBehaviors)             map<enum mscl::GpioConfiguration::Feature, map<uint8_t, vector<mscl::GpioConfiguration::PinModes>>>;
+    %template(GpioPinOptions)                   map<uint8_t, map<enum mscl::GpioConfiguration::Feature, map<uint8_t, vector<mscl::GpioConfiguration::PinModes>>>>;
+    %template(EventInputTriggers)               array<uint8_t, mscl::EventTriggerCombinationParameter::MAX_INPUT_TRIGGERS>;
     %template(EventTypes)                       vector<mscl::EventTypeInfo>;
     %template(MeasurementReferenceFrames)       map<uint8_t, mscl::MeasurementReferenceFrame>;
 
