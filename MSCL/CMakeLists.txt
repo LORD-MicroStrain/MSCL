@@ -412,8 +412,8 @@ endif()
 
 # Build the documentation
 if(BUILD_DOCUMENTATION)
-  set(MSCL_DOCS_OUTPUT_DIR ${MSCL_OUTPUT_DIR}/Documentation/MSCL_Docs)
-  set(MSCL_API_DOCS_OUTPUT_DIR ${MSCL_OUTPUT_DIR}/Documentation/MSCL_API_Docs)
+  set(MSCL_DOCS_OUTPUT_DIR "${MSCL_OUTPUT_DIR}/Documentation/MSCL Documentation")
+  set(MSCL_API_DOCS_OUTPUT_DIR "${MSCL_OUTPUT_DIR}/Documentation/MSCL API Documentation")
   add_custom_target(MSCL_Docs
     ALL
     DEPENDS ${SRC_FILES}

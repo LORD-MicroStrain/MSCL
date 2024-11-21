@@ -81,7 +81,7 @@ Source Folder: ..\..\..\MSCL\source\mscl
 # Generated Documentation
 # ------------------------------------------------------------------------
 
-HTML Output Folder: ..\..\..\Output\Documentation\MSCL_Docs
+HTML Output Folder: ..\..\..\Output\Documentation\MSCL Documentation
 
 
 # This is where you specify what kind of documentation you want Natural Docs
