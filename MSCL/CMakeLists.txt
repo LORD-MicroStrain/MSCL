@@ -1,9 +1,4 @@
-project(MSCL)
-
-include(microstrain_utilities)
-
 # Get the Git version to use for the version file generation
-microstrain_get_git_version(MSCL_GIT_VERSION MSCL_GIT_VERSION_CLEAN)
 microstrain_extract_git_version(MSCL_GIT_VERSION_CLEAN MSCL_GIT_VERSION_MAJOR MSCL_GIT_VERSION_MINOR MSCL_GIT_VERSION_PATCH)
 
 # Get the current year to make sure the file copyright is up-to-date
@@ -412,8 +407,8 @@ endif()
 
 # Build the documentation
 if(BUILD_DOCUMENTATION)
-  set(MSCL_DOCS_OUTPUT_DIR "${MSCL_OUTPUT_DIR}/Documentation/MSCL Documentation")
-  set(MSCL_API_DOCS_OUTPUT_DIR "${MSCL_OUTPUT_DIR}/Documentation/MSCL API Documentation")
+  set(MSCL_DOCS_OUTPUT_DIR ${MSCL_OUTPUT_DIR}/Documentation/MSCL_Docs)
+  set(MSCL_API_DOCS_OUTPUT_DIR ${MSCL_OUTPUT_DIR}/Documentation/MSCL_API_Docs)
   add_custom_target(MSCL_Docs
     ALL
     DEPENDS ${SRC_FILES}

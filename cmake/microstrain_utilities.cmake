@@ -8,10 +8,10 @@ macro(microstrain_get_git_version GIT_VERSION_OUT GIT_VERSION_CLEAN_OUT)
     # Use Git to find the version
     find_package(Git)
 
-    set(MICROSTRAIN_DEFAULT_GIT_VERSION "v0.0.0")
+    set(MICROSTRAIN_DEFAULT_GIT_VERSION "v${PROJECT_VERSION}")
 
     if(NOT GIT_FOUND)
-        message(WARNING "Unable to find Git, will build with unknown version")
+        message(WARNING "Unable to find Git, defaulting to version ${MICROSTRAIN_DEFAULT_GIT_VERSION}")
         set(${GIT_VERSION_OUT} ${MICROSTRAIN_DEFAULT_GIT_VERSION})
     else()
         execute_process(
@@ -25,11 +25,17 @@ macro(microstrain_get_git_version GIT_VERSION_OUT GIT_VERSION_CLEAN_OUT)
             message(STATUS "Unable to determine version from Git, defaulting to version ${MICROSTRAIN_DEFAULT_GIT_VERSION}")
             set(${GIT_VERSION_OUT} ${MICROSTRAIN_DEFAULT_GIT_VERSION})
         else()
-            set(${GIT_VERSION_OUT} ${MICROSTRAIN_GIT_VERSION_OUT})
+            if("${MICROSTRAIN_GIT_VERSION_OUT}" MATCHES "^v.+")
+                set(${GIT_VERSION_OUT} ${MICROSTRAIN_GIT_VERSION_OUT})
+            else()
+                message(STATUS "Unable to determine semantic version from Git, defaulting to version ${MICROSTRAIN_DEFAULT_GIT_VERSION}")
+                set(${GIT_VERSION_OUT} ${MICROSTRAIN_DEFAULT_GIT_VERSION})
+            endif()
             string(REGEX REPLACE "\n" "" ${GIT_VERSION_OUT} "${${GIT_VERSION_OUT}}")
             message(STATUS "Determined version from Git: ${${GIT_VERSION_OUT}}")
         endif()
     endif()
+
 
     # Massage the version number a little so we can use it in a couple places
     string(REGEX REPLACE "^v?([0-9]+)\\.([0-9]+)\\.([0-9]+).*" "\\1.\\2.\\3" ${GIT_VERSION_CLEAN_OUT} ${${GIT_VERSION_OUT}})
