@@ -104,7 +104,7 @@ pipeline {
               withCredentials([string(credentialsId: 'Github_Token', variable: 'GH_TOKEN')]) {
                 sh '''
                   # Release to github
-                  "${WORKSPACE}/scripts/release.sh" \
+                  "${WORKSPACE}/BuildScripts/release.sh" \
                     --artifacts "$(find "$(pwd)" -type f)" \
                     --target "${BRANCH_NAME}" \
                     --release "latest" \
@@ -121,7 +121,7 @@ pipeline {
               withCredentials([string(credentialsId: 'Github_Token', variable: 'GH_TOKEN')]) {
                 sh '''
                   # Release to github. The release script will determine if master needs to be published
-                  ${WORKSPACE}/scripts/release.sh" \
+                  ${WORKSPACE}/BuildScripts/release.sh" \
                     --artifacts "$(find "$(pwd)" -type f)" \
                     --target "${BRANCH_NAME}" \
                     --release "$(cd ${WORKSPACE} && git describe --exact-match --tags HEAD)" \
