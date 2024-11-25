@@ -42,6 +42,15 @@ function Compress-Files
         return
     }
 
+    echo "Copying contents to temporary directory for cross-platform compatibility"
+    $cross_platform_temp_dir = New-TemporaryFile
+
+    Copy-Item -Path $package_output_dir -Destination $cross_platform_temp_dir -Recurse -Force -Container | ForEach-Object
+    {
+        $cross_platform_output_dir = $_.FullName.Replace($cross_platform_temp_dir, '').Replace('\', '/')
+        Rename-Item -Path $_.FullName -NewName $cross_platform_output_dir
+    }
+
     $package_name_prefix = "MSCL"
 
     # Documentation and Examples are not Windows specific
@@ -53,8 +62,8 @@ function Compress-Files
     # Compress the files with the git version
     $full_package_name = "${build_output_dir}/${package_name_prefix}_${package_name}"
     $versioned_zip_file = "${full_package_name}_${mscl_git_version}.zip"
-    echo "Compressing contents of ${package_output_dir} to ${versioned_zip_file}"
-    Compress-Archive -Force -Path "${package_output_dir}/*" -DestinationPath "${versioned_zip_file}"
+    echo "Compressing contents of ${cross_platform_output_dir} to ${versioned_zip_file}"
+    Compress-Archive -Force -Path "${cross_platform_output_dir}/*" -DestinationPath "${versioned_zip_file}"
 }
 
 # Make the build output directories
