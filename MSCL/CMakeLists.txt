@@ -591,15 +591,15 @@ if(BUILD_PACKAGE)
         endif()
     endif()
 
-    if(BUILD_CSHARP)
+    if(WIN32 AND BUILD_CSHARP)
         microstrain_add_archive_component(${MSCL_CSHARP_INSTALL_COMPONENT} ${MSCL_FILE_NAME_PREFIX} "DotNet" ${MSCL_GIT_VERSION})
     endif()
 
-    if(BUILD_DOCUMENTATION)
+    if(WIN32 AND BUILD_DOCUMENTATION)
         microstrain_add_archive_component(${MSCL_DOCS_INSTALL_COMPONENT} ${PROJECT_NAME} "Documentation" ${MSCL_GIT_VERSION})
     endif()
 
-    if(BUILD_EXAMPLES)
+    if(WIN32 AND BUILD_EXAMPLES)
         microstrain_add_archive_component(${MSCL_EXAMPLES_INSTALL_COMPONENT} ${PROJECT_NAME} "Examples" ${MSCL_GIT_VERSION})
     endif()
 
@@ -632,21 +632,21 @@ if(BUILD_PACKAGE)
         )
     endif()
 
-    if(BUILD_CSHARP)
+    if(WIN32 AND BUILD_CSHARP)
         cpack_add_component(${MSCL_CSHARP_INSTALL_COMPONENT}
             DESCRIPTION "MSCL CSharp bindings"
             GROUP ${MSCL_CSHARP_INSTALL_COMPONENT}
         )
     endif()
 
-    if(BUILD_DOCUMENTATION)
+    if(WIN32 AND BUILD_DOCUMENTATION)
         cpack_add_component(${MSCL_DOCS_INSTALL_COMPONENT}
             DESCRIPTION "MSCL documentation"
             GROUP ${MSCL_DOCS_INSTALL_COMPONENT}
         )
     endif()
 
-    if(BUILD_EXAMPLES)
+    if(WIN32 AND BUILD_EXAMPLES)
         cpack_add_component(${MSCL_EXAMPLES_INSTALL_COMPONENT}
             DESCRIPTION "MSCL examples"
             GROUP ${MSCL_EXAMPLES_INSTALL_COMPONENT}
