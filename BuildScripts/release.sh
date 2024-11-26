@@ -97,6 +97,7 @@ echo "* [Public Documentation](${documentation_link}/MSCL_Docs)" >> ${release_no
 # Deploy the artifacts to Github
 gh release create \
   -R "${repo}" \
+  --prerelease \
   --title "${release_name}" \
   --target "${target}" \
   ${generate_notes_flag} \

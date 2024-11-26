@@ -14,8 +14,9 @@ macro(microstrain_get_git_version GIT_VERSION_OUT GIT_VERSION_CLEAN_OUT)
         message(WARNING "Unable to find Git, defaulting to version ${MICROSTRAIN_DEFAULT_GIT_VERSION}")
         set(${GIT_VERSION_OUT} ${MICROSTRAIN_DEFAULT_GIT_VERSION})
     else()
+        # Find the latest semantic version tag I.E. 'v1.0.0' not 'latest'
         execute_process(
-            COMMAND ${CMAKE_COMMAND} -E env ${GIT_EXECUTABLE} describe --tags
+            COMMAND ${CMAKE_COMMAND} -E env ${GIT_EXECUTABLE} describe --tags --match "v*"
             WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
             OUTPUT_VARIABLE MICROSTRAIN_GIT_VERSION_OUT
             ERROR_VARIABLE MICROSTRAIN_GIT_VERSION_ERR
@@ -81,4 +82,11 @@ macro(microstrain_get_architecture SYS_ARCH_OUT)
     else()
         message(STATUS "Detected system architecture ${${SYS_ARCH_OUT}}")
     endif()
+endmacro()
+
+macro(microstrain_add_archive_component COMPONENT_NAME FILE_NAME_PREFIX FILE_NAME FILE_NAME_SUFFIX)
+    list(APPEND CPACK_COMPONENTS_ALL ${COMPONENT_NAME})
+    set(CPACK_ARCHIVE_${COMPONENT_NAME}_FILE_NAME "${FILE_NAME_PREFIX}_${FILE_NAME}_${FILE_NAME_SUFFIX}")
+    set(CPACK_DEBIAN_${COMPONENT_NAME}_FILE_NAME "${FILE_NAME_PREFIX}_${FILE_NAME}_${FILE_NAME_SUFFIX}.deb")
+    set(CPACK_RPM_${COMPONENT_NAME}_FILE_NAME "${FILE_NAME_PREFIX}_${FILE_NAME}_${FILE_NAME_SUFFIX}.rpm")
 endmacro()

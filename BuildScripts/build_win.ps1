@@ -33,7 +33,7 @@ try
         -DBUILD_EXAMPLES="OFF" `
         -DBUILD_DOCUMENTATION="ON"
 
-        cmake --build "${buildDir}" --config "Release"
+        cmake --build "${buildDir}" --config "Release" --target package
     }
 
     # Configure MSCL to build with everything except csharp, python2, and python3
@@ -49,7 +49,7 @@ try
     # Build multiple configurations
     foreach ($config in ${configs})
     {
-        cmake --build "${buildDir}" --config "${config}"
+        cmake --build "${buildDir}" --config "${config}" --target package
         cmake --build "${buildDir}" --config "${config}" --target "RUN_TESTS"
     }
 
@@ -66,7 +66,7 @@ try
     # Build multiple configurations for CSharp
     foreach ($config in ${configs})
     {
-        cmake --build "${buildDir}" --config "${config}"
+        cmake --build "${buildDir}" --config "${config}" --target package
     }
 
     # Build python3
@@ -91,7 +91,7 @@ try
             # Build multiple configurations
             foreach ($config in ${configs})
             {
-                cmake --build "${buildDir}" --config "${config}"
+                cmake --build "${buildDir}" --config "${config}" --target package
             }
         }
     }
@@ -118,7 +118,7 @@ try
             # Build multiple configurations
             foreach ($config in ${configs})
             {
-                cmake --build "${buildDir}" --config "${config}"
+                cmake --build "${buildDir}" --config "${config}" --target package
             }
         }
     }

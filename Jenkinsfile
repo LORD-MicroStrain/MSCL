@@ -126,7 +126,6 @@ pipeline {
                     --target "${BRANCH_NAME}" \
                     --release "$(cd ${WORKSPACE} && git describe --exact-match --tags HEAD)" \
                     --docs-zip "$(find "$(pwd)" -type f -name "MSCL_Documentation_*.zip" | sort | uniq)"
-                    --docs-zip "$(find "$(pwd)" -type f -name "MSCL_Documentation_*.zip" | sort | uniq)"
                 '''
               }
             }
