@@ -31,7 +31,8 @@ try
         -DBUILD_CSHARP="OFF" `
         -DBUILD_TESTS="OFF" `
         -DBUILD_EXAMPLES="OFF" `
-        -DBUILD_DOCUMENTATION="ON"
+        -DBUILD_DOCUMENTATION="ON" `
+        -DBUILD_PACKAGE="ON"
 
         cmake --build "${buildDir}" --config "Release" --target package
     }
@@ -44,7 +45,8 @@ try
         -DBUILD_CSHARP="OFF" `
         -DBUILD_TESTS="ON" `
         -DBUILD_EXAMPLES="ON" `
-        -DBUILD_DOCUMENTATION="OFF"
+        -DBUILD_DOCUMENTATION="OFF" `
+        -DBUILD_PACKAGE="ON"
 
     # Build multiple configurations
     foreach ($config in ${configs})
@@ -61,7 +63,8 @@ try
         -DBUILD_CSHARP="ON" `
         -DBUILD_TESTS="OFF" `
         -DBUILD_EXAMPLES="ON" `
-        -DBUILD_DOCUMENTATION="OFF"
+        -DBUILD_DOCUMENTATION="OFF" `
+        -DBUILD_PACKAGE="ON"
 
     # Build multiple configurations for CSharp
     foreach ($config in ${configs})
@@ -82,6 +85,7 @@ try
                 -DBUILD_TESTS="OFF" `
                 -DBUILD_EXAMPLES="OFF" `
                 -DBUILD_DOCUMENTATION="OFF" `
+                -DBUILD_PACKAGE="ON" `
                 `
                 -UPython3_ROOT -DPython3_ROOT="${python3Dir}" `
                 -UPython3_ROOT_DIR -DPython3_ROOT_DIR="${python3Dir}" `
@@ -109,6 +113,7 @@ try
                 -DBUILD_TESTS="OFF" `
                 -DBUILD_EXAMPLES="OFF" `
                 -DBUILD_DOCUMENTATION="OFF" `
+                -DBUILD_PACKAGE="ON" `
                 `
                 -UPython2_ROOT -DPython2_ROOT="${python2Dir}" `
                 -UPython2_ROOT_DIR -DPython2_ROOT_DIR="${python2Dir}" `
