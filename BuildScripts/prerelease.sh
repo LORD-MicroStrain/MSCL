@@ -147,7 +147,7 @@ git add --all
 if ! git diff-index --quiet HEAD --; then
   git commit -m "Pre-release updates for release ${project_release_version}."
 
-  GIT_ASKPASS="${git_askpass_file}" git push origin main
+  GIT_ASKPASS="${git_askpass_file}" git push origin developTest
 else
   echo "No changes to commit for pre-release"
 fi
