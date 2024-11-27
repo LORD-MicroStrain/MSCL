@@ -89,7 +89,7 @@ cmake -S "${project_dir}" -B "${build_dir}" \
   -DMSCL_WITH_WEBSOCKETS="OFF" \
   -DMSCL_BUILD_PACKAGE="OFF" \
   -DMSCL_LINK_STATIC_DEPS="OFF" \
-  || /dev/null # Failures are OK. Project version is added to the cache immediately
+  || echo "" # Failures are OK. Project version is added to the cache immediately
 
 # Only continue the prerelease if the project version changed on develop
 pushd "${build_dir}"
