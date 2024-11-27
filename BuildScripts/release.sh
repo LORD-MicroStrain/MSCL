@@ -77,6 +77,11 @@ git_askpass_file="${project_dir}/.mscl-git-askpass"
 echo 'echo ${GH_TOKEN}' > "${git_askpass_file}"
 chmod 700 "${git_askpass_file}"
 
+# Delete the release before the tag. Deleting the tag before the release may cause issues
+gh release delete \
+  -y \
+  -R "${repo}" "${release_name}" || echo "No existing release named ${release_name}."
+
 pushd "${project_dir}"
 # Find the commit that this project is built on
 mscl_commit="$(git rev-parse HEAD)"
