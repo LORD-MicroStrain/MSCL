@@ -23,6 +23,23 @@ pipeline {
     timeout(time: 3, unit: 'HOURS')
   }
   stages {
+    stage('Pre-Release') {
+      agent { label 'linux-amd64' }
+      options {
+        skipDefaultCheckout()
+        timeout(time: 10, activity: true, unit: 'MINUTES')
+      }
+      steps {
+        cleanWs()
+        checkout scm
+        withCredentials([string(credentialsId: 'Github_Token', variable: 'GH_TOKEN')]) {
+          sh '''
+            # Pre-release check/update before building on develop
+            "${WORKSPACE}/BuildScripts/prerelease.sh" --target "${BRANCH_NAME}"
+          '''
+        }
+      }
+    }
     stage('Build') {
       // Run the windows and linux builds in parallel
       parallel {

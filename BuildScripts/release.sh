@@ -92,7 +92,7 @@ popd
 
 # Generate a release notes file
 documentation_link="https://lord-microstrain.github.io/MSCL_documentation/${release_name}"
-changelog_link="https://github.com/LORD-MicroStrain/MSCL/blob/${release_name}/CHANGELOG.txt"
+changelog_link="https://github.com/LORD-MicroStrain/MSCL/blob/${release_name}/CHANGELOG.md"
 release_notes_file="${tmp_dir}/mscl-release-notes-${release_name}.md"
 echo "## Useful Links" > ${release_notes_file}
 echo "* [Changelog](${changelog_link})" >> ${release_notes_file}
