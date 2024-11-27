@@ -32,19 +32,35 @@ set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 # Parse some flags
 # These are all ON/OFF flags. For example, -DBUILD_SHARED_LIBS="ON"
 option(BUILD_SHARED_LIBS "Whether or not to build the shared version of the library." OFF)
-option(WITH_SSL "Whether or not to compile the library with SSL support" ON)
-option(WITH_WEBSOCKETS "Whether or not to compile the library with Websocket support" ON)
-option(BUILD_PYTHON2 "Whether to build the python 2 bindings." OFF)
-option(BUILD_PYTHON3 "Whether to build the python 3 bindings." OFF)
-option(BUILD_TESTS "Whether to build the unit tests." OFF)
-option(BUILD_EXAMPLES "Whether to build the examples." OFF)
+option(MSCL_WITH_SSL "Whether or not to compile the library with SSL support" ON)
+option(MSCL_WITH_WEBSOCKETS "Whether or not to compile the library with Websocket support" ON)
+option(MSCL_BUILD_PYTHON2 "Whether to build the python 2 bindings." OFF)
+option(MSCL_BUILD_PYTHON3 "Whether to build the python 3 bindings." OFF)
+option(MSCL_BUILD_TESTS "Whether to build the unit tests." OFF)
+option(MSCL_BUILD_EXAMPLES "Whether to build the examples." OFF)
+option(MSCL_ZIP_EXAMPLES "Whether to zip the examples source code." OFF)
+option(MSCL_BUILD_PACKAGE "Whether to build a package from the resulting binaries" OFF)
 
 if(WIN32)
-    option(BUILD_CSHARP "Whether to build the C# bindings. Only supported on Windows" OFF)
-    option(BUILD_DOCUMENTATION "Whether to build the documentation" OFF)
+    option(MSCL_BUILD_CSHARP "Whether to build the C# bindings. Only supported on Windows" OFF)
+    option(MSCL_BUILD_DOCUMENTATION "Whether to build the documentation" OFF)
+
+    if(DEFINED MSCL_LINK_STATIC_DEPS)
+        message(WARNING "Linking static dependencies is for Linux. Making sure this is off for Windows")
+        set(MSCL_LINK_STATIC_DEPS OFF)
+    endif()
 elseif(UNIX)
-    option(LINK_STATIC_DEPS "Whether to link the dependencies statically. Please note that this means that OpenSSL and boost must be built with -fPIC" OFF)
-    option(BUILD_PACKAGE "Whether to build a package from the resulting binaries" OFF)
+    option(MSCL_LINK_STATIC_DEPS "Whether to link the dependencies statically. Please note that this means that OpenSSL and boost must be built with -fPIC" OFF)
+
+    if(DEFINED MSCL_BUILD_CSHARP)
+        message(WARNING "Building .NET is only supported on Windows. Making sure this is off for Linux")
+        set(MSCL_BUILD_CSHARP OFF)
+    endif()
+
+    if(DEFINED MSCL_BUILD_DOCUMENTATION)
+        message(WARNING "Building documentation is only supported on Windows. Making sure this is off for Linux")
+        set(MSCL_BUILD_DOCUMENTATION OFF)
+    endif()
 endif()
 
 # Allow the user to override the location where most dependencies are installed on Windows
@@ -130,7 +146,7 @@ find_package(Boost ${Boost_REQUESTED_VERSION} EXACT REQUIRED COMPONENTS ${Boost_
 set(Boost_STATIC_LIBRARIES ${Boost_LIBRARIES})
 
 # Optionally find some boost testing libraries
-if(BUILD_TESTS)
+if(MSCL_BUILD_TESTS)
     set(Boost_USE_STATIC_LIBS ON)
     set(Boost_USE_STATIC_RUNTIME ON)
     find_package(Boost ${Boost_REQUESTED_VERSION} EXACT REQUIRED COMPONENTS unit_test_framework test_exec_monitor)
@@ -138,7 +154,7 @@ if(BUILD_TESTS)
 endif()
 
 # Find the shared version of boost
-if(BUILD_SHARED_LIBS OR (UNIX AND BUILD_PYTHON3) OR (UNIX AND BUILD_PYTHON2))
+if(BUILD_SHARED_LIBS OR (UNIX AND MSCL_BUILD_PYTHON3) OR (UNIX AND MSCL_BUILD_PYTHON2))
     set(Boost_USE_STATIC_LIBS OFF)
     set(Boost_USE_STATIC_RUNTIME OFF)
     find_package(Boost ${Boost_REQUESTED_VERSION} EXACT REQUIRED COMPONENTS ${Boost_REQUESTED_COMPONENTS})
@@ -149,7 +165,7 @@ endif()
 find_package(Threads REQUIRED)
 
 # If we were requested to build with SSL, find OpenSSL
-if(WITH_SSL)
+if(MSCL_WITH_SSL)
     # Ultra mega hack since we are finding the lib path of OpenSSL, we need to manually set the include path...
     if(NOT DEFINED OPENSSL_ROOT_DIR)
         set(OPENSSL_ROOT_DIR "${DEFAULT_OPENSSL_ROOT_DIR}")
@@ -200,25 +216,25 @@ if(WITH_SSL)
 endif()
 
 # Find language libraries if building them
-if(BUILD_PYTHON3)
+if(MSCL_BUILD_PYTHON3)
     set(Python3_USE_STATIC_LIBS OFF)
     find_package(Python3 REQUIRED COMPONENTS Interpreter Development)
 endif()
 
-if(BUILD_PYTHON2)
+if(MSCL_BUILD_PYTHON2)
     set(Python2_USE_STATIC_LIBS OFF)
     find_package(Python2 REQUIRED COMPONENTS Interpreter Development)
 endif()
 
-if(BUILD_CSHARP)
+if(MSCL_BUILD_CSHARP)
     enable_language(CSharp)
 endif()
 
-if(BUILD_PYTHON2 OR BUILD_PYTHON3 OR BUILD_CSHARP)
+if(MSCL_BUILD_PYTHON2 OR MSCL_BUILD_PYTHON3 OR MSCL_BUILD_CSHARP)
     # Make sure we can find swig
     cmake_policy(SET CMP0078 NEW)
     cmake_policy(SET CMP0086 NEW)
-    if(BUILD_CSHARP AND WIN32)
+    if(MSCL_BUILD_CSHARP AND WIN32)
         cmake_policy(SET CMP0122 NEW)
     endif()
 
@@ -238,7 +254,7 @@ if(BUILD_PYTHON2 OR BUILD_PYTHON3 OR BUILD_CSHARP)
 endif()
 
 # If we were asked to build the docs, try to find NaturalDocs
-if(BUILD_DOCUMENTATION)
+if(MSCL_BUILD_DOCUMENTATION)
     find_program(NaturalDocs_EXECUTABLE
         NAMES NaturalDocs
         PATHS ${NATURAL_DOCS_ROOT}
@@ -252,7 +268,7 @@ if(BUILD_DOCUMENTATION)
 endif()
 
 # If we were asked to package, find the generators we can use
-if(BUILD_PACKAGE AND UNIX AND NOT APPLE)
+if(MSCL_BUILD_PACKAGE AND UNIX AND NOT APPLE)
     set(FOUND_CPACK_GENERATORS "")
     find_program(DPKG_EXECUTABLE
         NAMES dpkg
@@ -275,13 +291,11 @@ if(BUILD_PACKAGE AND UNIX AND NOT APPLE)
     endif()
 endif()
 
-# Add the underlying CMake files
-if(BUILD_EXAMPLES)
-    add_subdirectory(MSCL_Examples)
+if(MSCL_ZIP_EXAMPLES)
+    set(MSCL_EXAMPLES_OUTPUT_DIR "${MSCL_OUTPUT_DIR}/Examples")
 
     # Also copy the test source and build files to the output directory so it can be compressed
-    set(MSCL_EXAMPLES_OUTPUT_DIR "${MSCL_OUTPUT_DIR}/Examples")
-    set(MSCL_EXAMPLES_TARGET MSCL_Examples)
+    set(MSCL_EXAMPLES_TARGET MSCL_Examples_Zip)
     add_custom_target(${MSCL_EXAMPLES_TARGET}
         ALL
         COMMAND ${CMAKE_COMMAND} -E remove_directory "${MSCL_EXAMPLES_OUTPUT_DIR}"
@@ -299,9 +313,14 @@ if(BUILD_EXAMPLES)
     )
 endif()
 
+# Add the underlying CMake files
+if(MSCL_BUILD_EXAMPLES)
+    add_subdirectory(MSCL_Examples)
+endif()
+
 add_subdirectory(MSCL)
 
-if(BUILD_TESTS)
+if(MSCL_BUILD_TESTS)
     enable_testing()
     add_subdirectory(MSCL_Unit_Tests)
 endif()

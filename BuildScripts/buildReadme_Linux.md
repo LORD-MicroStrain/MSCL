@@ -72,32 +72,33 @@ These options can be set in the configuration step documented above by prependin
 build python3, I would run the command:
 
 ```bash
-cmake .. -DBUILD_PYTHON3=ON
+cmake .. -DMSCL_BUILD_PYTHON3=ON
 ```
 
 ##### Boolean Parameters
 
 The following table lists some parameters that can be set to `ON` or `OFF` to enable, or disable certain pieces of the build
 
-| Parameter         | Description                                                                                                                     | Default |
-| ----------------- | ------------------------------------------------------------------------------------------------------------------------------- | ------- |
-| BUILD_SHARED_LIBS | Build MSCL as a shared library as well as a static library                                                                      | OFF     |
-| BUILD_PYTHON2     | Build the Python2 bindings for MSCL. Note that this requires swig and python2 to be installed                                   | OFF     |
-| BUILD_PYTHON3     | Build the Python3 bindings for MSCL. Note that this requires swig and python3 to be installed                                   | OFF     |
-| BUILD_TESTS       | Build the unit tests for MSCL. This also enables the `test` CMake target. Note that this also requires that turtle be installed | OFF     |
-| BUILD_EXAMPLES    | Build the examples in [`MSCL_Examples`](../MSCL_Examples/)                                                                      | OFF     |
-| BUILD_PACKAGE     | Build the resulting artifacts into `.deb`, or `.rpm` files                                                                      | OFF     |
-| WITH_SSL          | Whether to build with SSL support. Note that this requires openssl to be installed                                              | ON      |
-| WITH_WEBSOCKETS   | Whether to build with Websocket support                                                                                         | ON      |
-| LINK_STATIC_DEPS  | Whether to link boost and OpenSSL statically. Note that this requires both libraries to have been compiled with `-fPIC`         | OFF     |
+| Parameter             | Description                                                                                                                     | Default |
+|-----------------------|---------------------------------------------------------------------------------------------------------------------------------| ------- |
+| BUILD_SHARED_LIBS     | Build MSCL as a shared library as well as a static library                                                                      | OFF     |
+| MSCL_BUILD_PYTHON2    | Build the Python2 bindings for MSCL. Note that this requires swig and python2 to be installed                                   | OFF     |
+| MSCL_BUILD_PYTHON3    | Build the Python3 bindings for MSCL. Note that this requires swig and python3 to be installed                                   | OFF     |
+| MSCL_BUILD_TESTS      | Build the unit tests for MSCL. This also enables the `test` CMake target. Note that this also requires that turtle be installed | OFF     |
+| MSCL_BUILD_EXAMPLES   | Build the examples in [`MSCL_Examples`](../MSCL_Examples/)                                                                      | OFF     |
+| MSCL_ZIP_EXAMPLES     | Zip the examples in [`MSCL_Examples`](../MSCL_Examples/)                                                                        | OFF     |
+| MSCL_BUILD_PACKAGE    | Build the resulting artifacts into `.deb`, or `.rpm` files                                                                      | OFF     |
+| MSCL_WITH_SSL         | Whether to build with SSL support. Note that this requires openssl to be installed                                              | ON      |
+| MSCL_WITH_WEBSOCKETS  | Whether to build with Websocket support                                                                                         | ON      |
+| MSCL_LINK_STATIC_DEPS | Whether to link boost and OpenSSL statically. Note that this requires both libraries to have been compiled with `-fPIC`         | OFF     |
 
 ##### String Parameters
 
 | Parameter          | Description                                                                                                                                    | Default                 |
 | ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
 | TURTLE_INCLUDE_DIR | Directory where the turtle include files are installed. Only required if include files are in a nonstandard place.                             | `C:/lib/turtle/include` |
-| DPKG_ROOT          | Directory to search for the `dpkg` executable. Only required if `BUILD_PACKAGE` is true, and `dpkg` is installed somewhere nonstandard         | `""`                    |
-| RPMBUILD_ROOT      | Directory to search for the `rpmbuild` executable. Only required if `BUILD_PACKAGE` is true, and `rpmbuild` is installed somewhere nonstandard | `""`                    |
+| DPKG_ROOT          | Directory to search for the `dpkg` executable. Only required if `MSCL_BUILD_PACKAGE` is true, and `dpkg` is installed somewhere nonstandard         | `""`                    |
+| RPMBUILD_ROOT      | Directory to search for the `rpmbuild` executable. Only required if `MSCL_BUILD_PACKAGE` is true, and `rpmbuild` is installed somewhere nonstandard | `""`                    |
 
 ##### Other parameters
 

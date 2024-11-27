@@ -90,3 +90,40 @@ macro(microstrain_add_archive_component COMPONENT_NAME FILE_NAME_PREFIX FILE_NAM
     set(CPACK_DEBIAN_${COMPONENT_NAME}_FILE_NAME "${FILE_NAME_PREFIX}_${FILE_NAME}_${FILE_NAME_SUFFIX}.deb")
     set(CPACK_RPM_${COMPONENT_NAME}_FILE_NAME "${FILE_NAME_PREFIX}_${FILE_NAME}_${FILE_NAME_SUFFIX}.rpm")
 endmacro()
+
+macro(microstrain_get_git_branch GIT_BRANCH_OUT USER_CACHE_BRANCH)
+    set(MICROSTRAIN_DEFAULT_GIT_BRANCH "unknown")
+    set(${USER_CACHE_BRANCH} "${MICROSTRAIN_DEFAULT_GIT_BRANCH}" CACHE STRING "Branch that this build is happening on")
+
+    if("${${USER_CACHE_BRANCH}}" STREQUAL "${MICROSTRAIN_DEFAULT_GIT_BRANCH}")
+        # Use Git to find the version
+        if(NOT GIT_FOUND)
+            find_package(Git)
+        endif()
+
+        if(NOT GIT_FOUND)
+            message(STATUS "Unable to determine branch from Git, defaulting to ${MICROSTRAIN_DEFAULT_GIT_BRANCH}")
+            set(${GIT_BRANCH_OUT} ${MICROSTRAIN_DEFAULT_GIT_BRANCH})
+        else()
+            execute_process(
+                COMMAND ${CMAKE_COMMAND} -E env ${GIT_EXECUTABLE} rev-parse --abbrev-ref HEAD
+                WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+                OUTPUT_VARIABLE MICROSTRAIN_GIT_BRANCH_OUT
+                ERROR_VARIABLE MICROSTRAIN_GIT_BRANCH_ERR
+                RESULT_VARIABLE MICROSTRAIN_GIT_BRANCH_RET
+            )
+
+            if(NOT ${MICROSTRAIN_GIT_BRANCH_RET} EQUAL 0)
+                message(STATUS "Unable to determine branch from Git, defaulting to ${MICROSTRAIN_DEFAULT_GIT_BRANCH}")
+                set(${GIT_BRANCH_OUT} ${MICROSTRAIN_DEFAULT_GIT_BRANCH})
+            else()
+                set(${GIT_BRANCH_OUT} ${MICROSTRAIN_GIT_BRANCH_OUT})
+                string(REGEX REPLACE "\n" "" ${GIT_BRANCH_OUT} "${MICROSTRAIN_GIT_BRANCH_OUT}")
+                message(STATUS "Determined branch from Git: ${${GIT_BRANCH_OUT}}")
+            endif()
+        endif()
+    else()
+        set(${GIT_BRANCH_OUT} "${${USER_CACHE_BRANCH}}")
+        message(STATUS "Using user defined Git branch: ${${GIT_BRANCH_OUT}}")
+    endif()
+endmacro()

@@ -14,7 +14,7 @@ set(MSCL_VERSION_IN_FILE "${CMAKE_CURRENT_LIST_DIR}/../cmake/${VERSION_FILE}.in"
 set(MSCL_VERSION_OUT_FILE "${MSCL_SOURCE_FILES_DIR}/${VERSION_FILE}")
 configure_file(${MSCL_VERSION_IN_FILE} ${MSCL_VERSION_OUT_FILE})
 
-if(BUILD_CSHARP)
+if(MSCL_BUILD_CSHARP)
     # Generate the assembly info file for CSharp
     set(ASSEMBLY_FILE "AssemblyInfo.cs")
     set(MSCL_ASSEMBLY_CS_IN_FILE "${CMAKE_CURRENT_LIST_DIR}/../cmake/${ASSEMBLY_FILE}.in")
@@ -90,11 +90,11 @@ endforeach()
 # Configure some compiler flags
 set(LIB_DEFINES "")
 
-if(NOT WITH_SSL)
+if(NOT MSCL_WITH_SSL)
     list(APPEND LIB_DEFINES MSCL_DISABLE_SSL)
 endif()
 
-if(NOT WITH_WEBSOCKETS)
+if(NOT MSCL_WITH_WEBSOCKETS)
     list(APPEND LIB_DEFINES MSCL_DISABLE_WEBSOCKETS)
 endif()
 
@@ -108,7 +108,7 @@ set(LIB_INCLUDE_DIRS
     ${MSCL_SOURCE_DIR}
 )
 
-if(WITH_SSL)
+if(MSCL_WITH_SSL)
     list(APPEND LIB_INCLUDE_DIRS ${OPENSSL_INCLUDE_DIR})
 endif()
 
@@ -118,7 +118,7 @@ if(BUILD_SHARED_LIBS)
         ${Boost_SHARED_LIBRARIES}
     )
 
-    if(WITH_SSL)
+    if(MSCL_WITH_SSL)
         list(APPEND LIB_SHARED_LIBRARIES ${OPENSSL_SHARED_LIBRARIES})
     endif()
 endif()
@@ -128,7 +128,7 @@ set(LIB_STATIC_LIBRARIES
     ${Boost_STATIC_LIBRARIES}
 )
 
-if(WITH_SSL)
+if(MSCL_WITH_SSL)
     list(APPEND LIB_STATIC_LIBRARIES ${OPENSSL_STATIC_LIBRARIES})
 endif()
 
@@ -283,7 +283,7 @@ endif()
 
 # Shared linker options
 if(BUILD_SHARED_LIBS)
-    if(UNIX AND LINK_STATIC_DEPS)
+    if(UNIX AND MSCL_LINK_STATIC_DEPS)
         target_link_libraries(${LIB_NAME_SHARED} PUBLIC ${LIB_STATIC_LIBRARIES})
     else()
         target_link_libraries(${LIB_NAME_SHARED} PUBLIC ${LIB_SHARED_LIBRARIES})
@@ -291,7 +291,7 @@ if(BUILD_SHARED_LIBS)
 endif()
 
 # Optionally generate the language bindings using swig
-if(BUILD_PYTHON2 OR BUILD_PYTHON3 OR BUILD_CSHARP)
+if(MSCL_BUILD_PYTHON2 OR MSCL_BUILD_PYTHON3 OR MSCL_BUILD_CSHARP)
     include(UseSWIG)
     include(${CMAKE_CURRENT_SOURCE_DIR}/../cmake/mscl_python_swig.cmake)
 
@@ -312,13 +312,13 @@ if(BUILD_PYTHON2 OR BUILD_PYTHON3 OR BUILD_CSHARP)
     set(PYTHON_LINK_OPTIONS $<$<CXX_COMPILER_ID:GNU>:-Wl,--no-as-needed>)
     set(PYTHON_LINK_LIBRARIES ${LIB_NAME_STATIC})
 
-    if((UNIX AND LINK_STATIC_DEPS) OR WIN32)
+    if((UNIX AND MSCL_LINK_STATIC_DEPS) OR WIN32)
         list(APPEND PYTHON_LINK_LIBRARIES ${Boost_STATIC_LIBRARIES})
     else()
         list(APPEND PYTHON_LINK_LIBRARIES ${Boost_SHARED_LIBRARIES})
     endif()
 
-    if(WITH_SSL)
+    if(MSCL_WITH_SSL)
         if((UNIX AND PYTHON_STATIC_DEPS) OR WIN32)
             list(APPEND PYTHON_LINK_LIBRARIES ${OPENSSL_STATIC_LIBRARIES})
         else()
@@ -327,7 +327,7 @@ if(BUILD_PYTHON2 OR BUILD_PYTHON3 OR BUILD_CSHARP)
     endif()
 
     # Build for python3
-    if(BUILD_PYTHON3)
+    if(MSCL_BUILD_PYTHON3)
         set(PYTHON3_MODULE_NAME MSCL_Python3)
         set(MSCL_PYTHON3_VERSION ${Python3_VERSION_MAJOR}.${Python3_VERSION_MINOR})
         mscl_python_swig(
@@ -348,7 +348,7 @@ if(BUILD_PYTHON2 OR BUILD_PYTHON3 OR BUILD_CSHARP)
     endif()
 
     # Build for python2
-    if(BUILD_PYTHON2)
+    if(MSCL_BUILD_PYTHON2)
         set(PYTHON2_MODULE_NAME MSCL_Python2)
         set(MSCL_PYTHON2_VERSION ${Python2_VERSION_MAJOR}.${Python2_VERSION_MINOR})
         mscl_python_swig(
@@ -370,7 +370,7 @@ if(BUILD_PYTHON2 OR BUILD_PYTHON3 OR BUILD_CSHARP)
 
     # Build C# on Windows
     # Wish we could generate it the same as python, but we need to get the list of CSharp files
-    if(BUILD_CSHARP)
+    if(MSCL_BUILD_CSHARP)
         set(CSHARP_MODULE_NAME MSCL_CSharp)
 
         # Hack of all hacks, but we need to generate the source separately so we can determine the source files at configure time
@@ -405,7 +405,7 @@ if(BUILD_PYTHON2 OR BUILD_PYTHON3 OR BUILD_CSHARP)
             ${LIB_NAME_STATIC} ${Boost_STATIC_LIBRARIES}
         )
 
-        if(WITH_SSL)
+        if(MSCL_WITH_SSL)
             target_link_libraries(${CSHARP_MODULE_NAME} PRIVATE
                 ${OPENSSL_STATIC_LIBRARIES}
             )
@@ -447,7 +447,7 @@ if(BUILD_PYTHON2 OR BUILD_PYTHON3 OR BUILD_CSHARP)
 endif()
 
 # Build the documentation
-if(BUILD_DOCUMENTATION)
+if(MSCL_BUILD_DOCUMENTATION)
     set(MSCL_BASE_DOCS_OUTPUT_DIR ${MSCL_OUTPUT_DIR}/Documentation)
     set(MSCL_DOCS_OUTPUT_DIR ${MSCL_BASE_DOCS_OUTPUT_DIR}/MSCL_Docs)
     set(MSCL_API_DOCS_OUTPUT_DIR ${MSCL_BASE_DOCS_OUTPUT_DIR}/MSCL_API_Docs)
@@ -474,7 +474,14 @@ if(BUILD_DOCUMENTATION)
 endif()
 
 # If we were asked to build packages, include CPack and set up packaging
-if(BUILD_PACKAGE)
+if(MSCL_BUILD_PACKAGE)
+    microstrain_get_git_branch(MSCL_GIT_BRANCH MSCL_BRANCH) # Second param is used to set a cache variable
+
+    # Only use the tag for assets built on master or develop
+    if("${MSCL_GIT_BRANCH}" STREQUAL "masterTest" OR "${MSCL_GIT_BRANCH}" STREQUAL "developTest")
+        string(REGEX REPLACE "(^v[0-9]+\\.[0-9]+\\.[0-9]+).+" "\\1" MSCL_GIT_VERSION "${MSCL_GIT_VERSION}")
+    endif()
+
     # Try to determine what architecture we are building for based on the compiler output
     if(MSVC)
         set(MSCL_ARCH ${MSCL_ARCH_NAME})
@@ -515,7 +522,6 @@ if(BUILD_PACKAGE)
     set(CPACK_PACKAGE_VENDOR "MicroStrain by HBK")
     set(CPACK_PACKAGE_CONTACT "MicroStrain Support <microstrainsupport@hbkworld.com>")
 
-    # Massage the version number a little so we can set the proper version
     set(CPACK_PACKAGE_VERSION ${MSCL_GIT_VERSION_CLEAN})
 
     if(WIN32)
@@ -533,7 +539,7 @@ if(BUILD_PACKAGE)
     # Most packages share these dependencies
     set(CPACK_DEBIAN_COMMON_DEPS libboost-system-dev libboost-filesystem-dev)
 
-    if(WITH_SSL)
+    if(MSCL_WITH_SSL)
         list(APPEND CPACK_DEBIAN_COMMON_DEPS libssl-dev)
     endif()
 
@@ -546,7 +552,7 @@ if(BUILD_PACKAGE)
     # Most packages share these dependencies
     set(CPACK_RPM_COMMON_DEPS boost-filesystem boost-system boost-devel)
 
-    if(WITH_SSL)
+    if(MSCL_WITH_SSL)
         list(APPEND CPACK_RPM_COMMON_DEPS openssl-devel)
     endif()
 
@@ -563,12 +569,12 @@ if(BUILD_PACKAGE)
         set(CPACK_RPM_${MSCL_SHARED_INSTALL_COMPONENT}_PACKAGE_REQUIRES "${CPACK_RPM_COMMON_DEPS}")
     endif()
 
-    if(BUILD_PYTHON3)
+    if(MSCL_BUILD_PYTHON3)
         microstrain_add_archive_component(${MSCL_PYTHON${MSCL_PYTHON3_VERSION}_INSTALL_COMPONENT} ${MSCL_FILE_NAME_PREFIX} "Python${MSCL_PYTHON3_VERSION}" ${MSCL_GIT_VERSION})
         set(CPACK_DEBIAN_${MSCL_PYTHON${MSCL_PYTHON3_VERSION}_INSTALL_COMPONENT}_PACKAGE_DEPENDS "python${MSCL_PYTHON3_VERSION}")
         set(CPACK_RPM_${MSCL_PYTHON${MSCL_PYTHON3_VERSION}_INSTALL_COMPONENT}_PACKAGE_REQUIRES "python3")
 
-        if(NOT LINK_STATIC_DEPS)
+        if(NOT MSCL_LINK_STATIC_DEPS)
             list(APPEND CPACK_DEBIAN_${MSCL_PYTHON${MSCL_PYTHON3_VERSION}_INSTALL_COMPONENT}_PACKAGE_DEPENDS "${CPACK_DEBIAN_COMMON_DEPS}")
             string(REPLACE ";" ", " CPACK_DEBIAN_${MSCL_PYTHON${MSCL_PYTHON3_VERSION}_INSTALL_COMPONENT}_PACKAGE_DEPENDS "${CPACK_DEBIAN_${MSCL_PYTHON${MSCL_PYTHON3_VERSION}_INSTALL_COMPONENT}_PACKAGE_DEPENDS}")
 
@@ -577,12 +583,12 @@ if(BUILD_PACKAGE)
         endif()
     endif()
 
-    if(BUILD_PYTHON2)
+    if(MSCL_BUILD_PYTHON2)
         microstrain_add_archive_component(${MSCL_PYTHON${MSCL_PYTHON2_VERSION}_INSTALL_COMPONENT} ${MSCL_FILE_NAME_PREFIX} "Python${MSCL_PYTHON2_VERSION}" ${MSCL_GIT_VERSION})
         set(CPACK_DEBIAN_${MSCL_PYTHON${MSCL_PYTHON2_VERSION}_INSTALL_COMPONENT}_PACKAGE_DEPENDS "python${MSCL_PYTHON2_VERSION}")
         set(CPACK_RPM_${MSCL_PYTHON${MSCL_PYTHON2_VERSION}_INSTALL_COMPONENT}_PACKAGE_REQUIRES "python2")
 
-        if(NOT LINK_STATIC_DEPS)
+        if(NOT MSCL_LINK_STATIC_DEPS)
             list(APPEND CPACK_DEBIAN_${MSCL_PYTHON${MSCL_PYTHON2_VERSION}_INSTALL_COMPONENT}_PACKAGE_DEPENDS "${CPACK_DEBIAN_COMMON_DEPS}")
             string(REPLACE ";" ", " CPACK_DEBIAN_${MSCL_PYTHON${MSCL_PYTHON2_VERSION}_INSTALL_COMPONENT}_PACKAGE_DEPENDS "${CPACK_DEBIAN_${MSCL_PYTHON${MSCL_PYTHON2_VERSION}_INSTALL_COMPONENT}_PACKAGE_DEPENDS}")
 
@@ -591,15 +597,15 @@ if(BUILD_PACKAGE)
         endif()
     endif()
 
-    if(WIN32 AND BUILD_CSHARP)
+    if(MSCL_BUILD_CSHARP)
         microstrain_add_archive_component(${MSCL_CSHARP_INSTALL_COMPONENT} ${MSCL_FILE_NAME_PREFIX} "DotNet" ${MSCL_GIT_VERSION})
     endif()
 
-    if(WIN32 AND BUILD_DOCUMENTATION)
+    if(MSCL_BUILD_DOCUMENTATION)
         microstrain_add_archive_component(${MSCL_DOCS_INSTALL_COMPONENT} ${PROJECT_NAME} "Documentation" ${MSCL_GIT_VERSION})
     endif()
 
-    if(WIN32 AND BUILD_EXAMPLES)
+    if(MSCL_ZIP_EXAMPLES)
         microstrain_add_archive_component(${MSCL_EXAMPLES_INSTALL_COMPONENT} ${PROJECT_NAME} "Examples" ${MSCL_GIT_VERSION})
     endif()
 
@@ -618,35 +624,35 @@ if(BUILD_PACKAGE)
         )
     endif()
 
-    if(BUILD_PYTHON3)
+    if(MSCL_BUILD_PYTHON3)
         cpack_add_component(${MSCL_PYTHON${MSCL_PYTHON3_VERSION}_INSTALL_COMPONENT}
             DESCRIPTION "MSCL python bindings for ${MSCL_PYTHON3_VERSION}"
             GROUP ${MSCL_PYTHON${MSCL_PYTHON3_VERSION}_INSTALL_COMPONENT}
         )
     endif()
 
-    if(BUILD_PYTHON2)
+    if(MSCL_BUILD_PYTHON2)
         cpack_add_component(${MSCL_PYTHON${MSCL_PYTHON2_VERSION}_INSTALL_COMPONENT}
             DESCRIPTION "MSCL python bindings for ${MSCL_PYTHON2_VERSION}"
             GROUP ${MSCL_PYTHON${MSCL_PYTHON2_VERSION}_INSTALL_COMPONENT}
         )
     endif()
 
-    if(WIN32 AND BUILD_CSHARP)
+    if(MSCL_BUILD_CSHARP)
         cpack_add_component(${MSCL_CSHARP_INSTALL_COMPONENT}
             DESCRIPTION "MSCL CSharp bindings"
             GROUP ${MSCL_CSHARP_INSTALL_COMPONENT}
         )
     endif()
 
-    if(WIN32 AND BUILD_DOCUMENTATION)
+    if(MSCL_BUILD_DOCUMENTATION)
         cpack_add_component(${MSCL_DOCS_INSTALL_COMPONENT}
             DESCRIPTION "MSCL documentation"
             GROUP ${MSCL_DOCS_INSTALL_COMPONENT}
         )
     endif()
 
-    if(WIN32 AND BUILD_EXAMPLES)
+    if(MSCL_ZIP_EXAMPLES)
         cpack_add_component(${MSCL_EXAMPLES_INSTALL_COMPONENT}
             DESCRIPTION "MSCL examples"
             GROUP ${MSCL_EXAMPLES_INSTALL_COMPONENT}
