@@ -93,6 +93,8 @@ cmake -S "${project_dir}" -B "${build_dir}" \
 
 # Only continue the prerelease if the project version changed on develop
 pushd "${build_dir}"
+# Make sure the target branch is checked out
+git checkout ${target}
 # Make sure the tags are pulled
 git pull --tags
 github_release_version=$(git describe --tags --match "v*" --abbrev=0 HEAD)
@@ -140,8 +142,6 @@ sed -i -e "/^## Forthcoming/s,$,\n\n## ${changelog_release_name} - ${today},g" "
 # Replace all the previous release asset links with the new links
 sed -i -e "s,${github_release_version},${project_release_version},g" "${project_dir}/README.md"
 
-popd
-
 # Add any pending changes
 git add --all
 
@@ -149,7 +149,7 @@ git add --all
 if ! git diff-index --quiet HEAD --; then
   git commit -m "Pre-release updates for release ${project_release_version}."
 
-  GIT_ASKPASS="${git_askpass_file}" git push origin developTest
+  GIT_ASKPASS="${git_askpass_file}" git push origin ${target}
 else
   echo "No changes to commit for pre-release"
 fi
