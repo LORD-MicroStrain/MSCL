@@ -80,7 +80,12 @@ try {
     "${image_name}" -Command " `
       git config --global --add safe.directory C:/projects/mscl; `
       git fetch origin --tags; `
-      & 'C:\Projects\MSCL\BuildScripts\build_win.ps1' -arch ${cmake_arch} -buildDir C:\projects\mscl\build_windows_${arch} ${python2_build_script_flags} ${python3_build_script_flags}; `
+      & 'C:\Projects\MSCL\BuildScripts\build_win.ps1' `
+        -branch ${env:BRANCH_NAME} `
+        -arch ${cmake_arch} `
+        -buildDir C:\projects\mscl\build_windows_${arch} `
+        ${python2_build_script_flags} `
+        ${python3_build_script_flags}; `
     "
 }
 catch {

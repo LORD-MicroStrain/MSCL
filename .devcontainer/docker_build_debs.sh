@@ -78,6 +78,7 @@ docker run \
     git fetch origin --tags; \
     ./BuildScripts/build_linux.sh \
       ${python3_dirs_flag} \
+      --branch ${BRANCH_NAME} \
       --python2Dir /usr/lib/python2.7 \
       --buildDir /home/microstrain/MSCL/${build_dir_name} \
   "

@@ -5,6 +5,7 @@ param (
     [String]$arch = "x64",
     [String]$generator = "Visual Studio 15 2017",
     [String]$toolset = "v140",
+    [String]$branch = "unknown",
     [String[]]$python3Dirs,
     [String[]]$python2Dirs
 )
@@ -34,7 +35,8 @@ try
         -DMSCL_BUILD_EXAMPLES="OFF" `
         -DMSCL_ZIP_EXAMPLES="ON" `
         -DMSCL_BUILD_DOCUMENTATION="ON" `
-        -DMSCL_BUILD_PACKAGE="ON"
+        -DMSCL_BUILD_PACKAGE="ON" `
+        -DMSCL_BRANCH="${branch}"
 
         cmake --build "${buildDir}" --config "Release" --target package
     }
@@ -50,7 +52,8 @@ try
         -DMSCL_BUILD_EXAMPLES="ON" `
         -DMSCL_ZIP_EXAMPLES="OFF" `
         -DMSCL_BUILD_DOCUMENTATION="OFF" `
-        -DMSCL_BUILD_PACKAGE="ON"
+        -DMSCL_BUILD_PACKAGE="ON" `
+        -DMSCL_BRANCH="${branch}"
 
     # Build multiple configurations
     foreach ($config in ${configs})
@@ -70,7 +73,8 @@ try
         -DMSCL_BUILD_EXAMPLES="ON" `
         -DMSCL_ZIP_EXAMPLES="OFF" `
         -DMSCL_BUILD_DOCUMENTATION="OFF" `
-        -DMSCL_BUILD_PACKAGE="ON"
+        -DMSCL_BUILD_PACKAGE="ON" `
+        -DMSCL_BRANCH="${branch}"
 
     # Build multiple configurations for CSharp
     foreach ($config in ${configs})
@@ -94,6 +98,7 @@ try
                 -DMSCL_ZIP_EXAMPLES="OFF" `
                 -DMSCL_BUILD_DOCUMENTATION="OFF" `
                 -DMSCL_BUILD_PACKAGE="ON" `
+                -DMSCL_BRANCH="${branch}" `
                 `
                 -UPython3_ROOT -DPython3_ROOT="${python3Dir}" `
                 -UPython3_ROOT_DIR -DPython3_ROOT_DIR="${python3Dir}" `
@@ -124,6 +129,7 @@ try
                 -DMSCL_ZIP_EXAMPLES="OFF" `
                 -DMSCL_BUILD_DOCUMENTATION="OFF" `
                 -DMSCL_BUILD_PACKAGE="ON" `
+                -DMSCL_BRANCH="${branch}" `
                 `
                 -UPython2_ROOT -DPython2_ROOT="${python2Dir}" `
                 -UPython2_ROOT_DIR -DPython2_ROOT_DIR="${python2Dir}" `

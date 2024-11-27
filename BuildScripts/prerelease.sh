@@ -126,11 +126,9 @@ if ! grep -q -E "^\| ${release_name} +\|" "${documentation_readme}"; then
   sed -i -E "/^\| latest +/s,$,${append_links},g" "${documentation_readme}"
 fi
 
-# Add any pending changes
-git add --all
-
 # Only commit if there are changes
 if ! git diff-index --quiet HEAD --; then
+  git add --all
   git commit -m "Adds/updates documentation for release ${release_name} at ${repo}@${mscl_commit}."
 
   GIT_ASKPASS="${git_askpass_file}" git push origin main

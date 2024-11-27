@@ -15,6 +15,7 @@ build_dir="${project_dir}/jenkins_build"
 # Get some arguments from the user
 python2Dirs=()
 python3Dirs=()
+branch="unknown"
 while [[ $# -gt 0 ]]; do
   case $1 in
     --python3Dir)
@@ -29,6 +30,11 @@ while [[ $# -gt 0 ]]; do
       ;;
     --buildDir)
       build_dir="${2}"
+      shift # past argument
+      shift # past value
+      ;;
+    --branch)
+      branch="${2}"
       shift # past argument
       shift # past value
       ;;
@@ -51,7 +57,8 @@ cmake -S "${project_dir}" -B "${build_dir}" \
   -DMSCL_WITH_SSL="OFF" \
   -DMSCL_WITH_WEBSOCKETS="OFF" \
   -DMSCL_BUILD_PACKAGE="ON" \
-  -DMSCL_LINK_STATIC_DEPS="OFF"
+  -DMSCL_LINK_STATIC_DEPS="OFF" \
+  -DMSCL_BRANCH="${branch}"
 cmake --build "${build_dir}" -j$(nproc)
 
 # Run the unit tests
@@ -77,6 +84,7 @@ for python3Dir in "${python3Dirs[@]}"; do
     -DMSCL_WITH_WEBSOCKETS="OFF" \
     -DMSCL_BUILD_PACKAGE="ON" \
     -DMSCL_LINK_STATIC_DEPS="ON" \
+    -DMSCL_BRANCH="${branch}" \
     \
     -UPython3_ROOT -DPython3_ROOT="${python3Dir}" \
     -UPython3_ROOT_DIR -DPython3_ROOT_DIR="${python3Dir}" \
@@ -104,6 +112,7 @@ for python2Dir in "${python2Dirs[@]}"; do
     -DMSCL_WITH_WEBSOCKETS="OFF" \
     -DMSCL_BUILD_PACKAGE="ON" \
     -DMSCL_LINK_STATIC_DEPS="ON" \
+    -DMSCL_BRANCH="${branch}" \
     \
     -UPython2_ROOT -DPython2_ROOT="${python2Dir}" \
     -UPython2_ROOT_DIR -DPython2_ROOT_DIR="${python2Dir}" \
