@@ -35,9 +35,6 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-# TODO: Add option to build for release instead of copying release artifacts all the time
-release_build_dir="${build_dir}_for_release"
-
 # Build MSCL with everything except python2 and python3
 mkdir -p "${build_dir}"
 echo "!! Building MSCL in ${build_dir}"
@@ -112,14 +109,4 @@ for python2Dir in "${python2Dirs[@]}"; do
 
   cmake --build "${build_dir}" -j$(nproc)
   cmake --build "${build_dir}" --target "package"
-done
-
-# Copy and rename all the packages into a release directory
-# Renaming makes it easier for the release process
-# Create the new directory
-mkdir -p "${release_build_dir}"
-for deb_package in "${build_dir}"/*.deb; do
-    release_package_name=$(basename "${deb_package}")                  # Get the name of the file
-    release_package_name="${release_package_name%_*}.deb"              # Remove the version number
-    cp "${deb_package}" "${release_build_dir}/${release_package_name}" # Copy into a release directory
 done
