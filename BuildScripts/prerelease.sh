@@ -126,6 +126,15 @@ mscl_commit="$(git rev-parse HEAD)"
 # Delete the tag if it exists
 GIT_ASKPASS="${git_askpass_file}" git push --delete origin "${project_release_version}" || echo "No existing tag named ${project_release_version}."
 
+changelog_file="${project_dir}/CHANGELOG.md"
+forthcoming_header="^## Forthcoming"
+
+# Check if there are any changes in the changelog first
+if [ $(grep -A 1 "${forthcoming_header}" ${changelog_file} | grep -v -e "${forthcoming_header}" -e "^$" | wc -l) -eq 0 ]; then
+    echo "Nothing to update"
+    exit 0
+fi
+
 changelog_release_name="${project_release_version}"
 
 # Remove any leading 'v' from the release tag
@@ -137,7 +146,7 @@ fi
 today=$(date '+%Y-%m-%d')
 
 # Shift the forthcoming details down and prepend the version tag
-sed -i -e "/^## Forthcoming/s,$,\n\n## ${changelog_release_name} - ${today},g" "${project_dir}/CHANGELOG.md"
+sed -i -e "/^## Forthcoming/s,$,\n\n## ${changelog_release_name} - ${today},g" "${changelog_file}"
 
 # Replace all the previous release asset links with the new links
 sed -i -e "s,${github_release_version},${project_release_version},g" "${project_dir}/README.md"
@@ -155,10 +164,14 @@ else
 fi
 popd
 
+gh release delete \
+  -y \
+  -R "${repo}" "${release_name}" || echo "No existing release named ${release_name}."
+
 # Create a draft release on GitHub
 gh release create \
   --repo "LORD-MicroStrain/MSCL" \
-  --draft \
+  --prerelease \
   --title "${project_release_version}" \
   --target "${target}" \
   "${project_release_version}"
