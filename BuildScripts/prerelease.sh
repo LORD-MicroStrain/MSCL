@@ -164,13 +164,15 @@ else
 fi
 popd
 
+repo="LORD-MicroStrain/MSCL"
+
 gh release delete \
   -y \
-  -R "${repo}" "${release_name}" || echo "No existing release named ${release_name}."
+  -R "${repo}" "${project_release_version}" || echo "No existing release named ${project_release_version}."
 
 # Create a draft release on GitHub
 gh release create \
-  --repo "LORD-MicroStrain/MSCL" \
+  --repo "${repo}" \
   --prerelease \
   --title "${project_release_version}" \
   --target "${target}" \
