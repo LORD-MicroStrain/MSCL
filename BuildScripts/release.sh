@@ -99,33 +99,35 @@ echo "* [Changelog](${changelog_link})" >> ${release_notes_file}
 echo "* [Full Documentation](${documentation_link}/MSCL_API_Docs)" >> ${release_notes_file}
 echo "* [Public Documentation](${documentation_link}/MSCL_Docs)" >> ${release_notes_file}
 
-add_changes="false"
+if [[ "${generate_notes_flag}" == "" ]]; then
+  add_changes="false"
 
-while IFS= read line; do
+  while IFS= read line; do
     # Read between release notes (I.E. '## 1.2.4...' and '## 1.2.3...')
     if [[ "${line}" =~ "^## [0-9]+.+" ]]; then
-        # Start reading change notes
-        if [ "${add_changes}" == "false" ]; then
-            add_changes="true"
-            echo "" >> ${release_notes_file}
-            echo "## What's Changed" >> ${release_notes_file}
-            continue
-        # Stop reading change notes
-        else
-            break
-        fi
+      # Start reading change notes
+      if [ "${add_changes}" == "false" ]; then
+        add_changes="true"
+        echo "" >> ${release_notes_file}
+        echo "## What's Changed" >> ${release_notes_file}
+        continue
+      # Stop reading change notes
+      else
+        break
+      fi
     fi
 
     if [ "${add_changes}" == "true" ]; then
-        # End of the changes (empty line)
-        if [[ "${line}" == "" ]]; then
-            break
-        fi
+      # End of the changes (empty line)
+      if [[ "${line}" == "" ]]; then
+        break
+      fi
 
-        # Append the changes to the release notes while keeping leading whitespaces
-        echo -e "${line}" >> ${release_notes_file}
+      # Append the changes to the release notes while keeping leading whitespaces
+      echo -e "${line}" >> ${release_notes_file}
     fi
-done < "${project_dir}/CHANGELOG.md"
+  done < "${project_dir}/CHANGELOG.md"
+fi
 
 # Deploy the artifacts to Github
 gh release create \

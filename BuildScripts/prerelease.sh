@@ -131,8 +131,8 @@ forthcoming_header="^## Forthcoming"
 
 # Check if there are any changes in the changelog first
 if [ $(grep -A 1 "${forthcoming_header}" ${changelog_file} | grep -v -e "${forthcoming_header}" -e "^$" | wc -l) -eq 0 ]; then
-    echo "Nothing to update"
-    exit 0
+  echo "Nothing to update"
+  exit 0
 fi
 
 changelog_release_name="${project_release_version}"
