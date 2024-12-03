@@ -103,7 +103,7 @@ try
                 -UPython3_ROOT -DPython3_ROOT="${python3Dir}" `
                 -UPython3_ROOT_DIR -DPython3_ROOT_DIR="${python3Dir}" `
                 -UPython3_INCLUDE_DIR `
-                -UPython3_EXECUTABLE -DPython3_EXECUTABLE="${python3Dir}\python.exe"
+                -UPython3_EXECUTABLE -DPython3_EXECUTABLE="${python3Dir}/python.exe"
 
             # Build multiple configurations
             foreach ($config in ${configs})
@@ -134,7 +134,7 @@ try
                 -UPython2_ROOT -DPython2_ROOT="${python2Dir}" `
                 -UPython2_ROOT_DIR -DPython2_ROOT_DIR="${python2Dir}" `
                 -UPython2_INCLUDE_DIR `
-                -UPython2_EXECUTABLE -DPython2_EXECUTABLE="${python2Dir}\python.exe"
+                -UPython2_EXECUTABLE -DPython2_EXECUTABLE="${python2Dir}/python.exe"
 
             # Build multiple configurations
             foreach ($config in ${configs})

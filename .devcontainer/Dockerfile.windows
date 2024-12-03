@@ -5,28 +5,28 @@ ARG WINDOWS_VERSION
 FROM ${WINDOWS_IMAGE}:${WINDOWS_VERSION}
 
 # Temporary directory
-ENV DOCKER_TEMP_DIR "C:\DockerTemp"
+ENV DOCKER_TEMP_DIR "C:/DockerTemp"
 
 # All dependencies will be installed in this directory
-ENV LIB_PATH "C:\lib"
+ENV LIB_PATH "C:/lib"
 
 # Restore the default Windows shell for correct batch processing.
 SHELL ["cmd", "/S", "/C"]
 
 # Install any additional certificates
-COPY .devcontainer\extra_cas C:\DockerTemp\Certs
-RUN for %f in (%DOCKER_TEMP_DIR%\Certs\*.crt %DOCKER_TEMP_DIR%\Certs\*.pem) do ( `
-        powershell -Command "Import-Certificate -FilePath %f -CertStoreLocation Cert:\LocalMachine\Root" `
+COPY .devcontainer/extra_cas C:/DockerTemp/Certs
+RUN for %f in (%DOCKER_TEMP_DIR%/Certs/*.crt %DOCKER_TEMP_DIR%/Certs/*.pem) do ( `
+        powershell -Command "Import-Certificate -FilePath %f -CertStoreLocation Cert:/LocalMachine/Root" `
     )
 
 # Install Microsoft Buildtools
 RUN `
     # Download the Build Tools bootstrapper.
-    curl -SL --output %DOCKER_TEMP_DIR%\vs_buildtools.exe https://aka.ms/vs/15/release/vs_buildtools.exe `
+    curl -SL --output %DOCKER_TEMP_DIR%/vs_buildtools.exe https://aka.ms/vs/15/release/vs_buildtools.exe `
     `
     # Install Build Tools
     && echo Starting install `
-    && (start /w %DOCKER_TEMP_DIR%\vs_buildtools.exe --quiet --wait --norestart --nocache `
+    && (start /w %DOCKER_TEMP_DIR%/vs_buildtools.exe --quiet --wait --norestart --nocache `
         --add Microsoft.Net.Component.4.8.SDK `
         --add Microsoft.Net.Component.4.8.TargetingPack `
         --add Microsoft.Net.Component.4.TargetingPack `
@@ -37,11 +37,11 @@ RUN `
         --add Microsoft.VisualStudio.Component.VC.140 `
         --add Microsoft.VisualStudio.Component.Windows10SDK.19041 `
         --add Microsoft.Component.VC.Runtime.UCRTSDK `
-        --installPath "%ProgramFiles(x86)%\Microsoft Visual Studio\2017\BuildTools" `
+        --installPath "%ProgramFiles(x86)%/Microsoft Visual Studio/2017/BuildTools" `
         || IF "%ERRORLEVEL%"=="3010" EXIT 0) `
     `
     # Cleanup
-    && del /q %DOCKER_TEMP_DIR%\vs_buildtools.exe
+    && del /q %DOCKER_TEMP_DIR%/vs_buildtools.exe
 
 # Install Boost
 ARG BOOST_VERSION=1.68.0
@@ -49,75 +49,75 @@ ARG BOOST_VERSION_UNDERSCORE=1_68_0
 ARG BOOST_MSVC_VERSION=14.0
 RUN echo Installing Boost `
     # Download the boost installer
-    && curl -SL --output %DOCKER_TEMP_DIR%\boost_%BOOST_VERSION_UNDERSCORE%-msvc-%BOOST_MSVC_VERSION%-32.exe https://boostorg.jfrog.io/artifactory/main/release/%BOOST_VERSION%/binaries/boost_%BOOST_VERSION_UNDERSCORE%-msvc-%BOOST_MSVC_VERSION%-32.exe `
-    && curl -SL --output %DOCKER_TEMP_DIR%\boost_%BOOST_VERSION_UNDERSCORE%-msvc-%BOOST_MSVC_VERSION%-64.exe https://boostorg.jfrog.io/artifactory/main/release/%BOOST_VERSION%/binaries/boost_%BOOST_VERSION_UNDERSCORE%-msvc-%BOOST_MSVC_VERSION%-64.exe `
+    && curl -SL --output %DOCKER_TEMP_DIR%/boost_%BOOST_VERSION_UNDERSCORE%-msvc-%BOOST_MSVC_VERSION%-32.exe https://boostorg.jfrog.io/artifactory/main/release/%BOOST_VERSION%/binaries/boost_%BOOST_VERSION_UNDERSCORE%-msvc-%BOOST_MSVC_VERSION%-32.exe `
+    && curl -SL --output %DOCKER_TEMP_DIR%/boost_%BOOST_VERSION_UNDERSCORE%-msvc-%BOOST_MSVC_VERSION%-64.exe https://boostorg.jfrog.io/artifactory/main/release/%BOOST_VERSION%/binaries/boost_%BOOST_VERSION_UNDERSCORE%-msvc-%BOOST_MSVC_VERSION%-64.exe `
     `
-    # Install 
-    && (start /w %DOCKER_TEMP_DIR%\boost_%BOOST_VERSION_UNDERSCORE%-msvc-%BOOST_MSVC_VERSION%-32.exe /VERYSILENT /DIR=%LIB_PATH%\boost) `
-    && (start /w %DOCKER_TEMP_DIR%\boost_%BOOST_VERSION_UNDERSCORE%-msvc-%BOOST_MSVC_VERSION%-64.exe /VERYSILENT /DIR=%LIB_PATH%\boost) `
+    # Install
+    && (start /w %DOCKER_TEMP_DIR%/boost_%BOOST_VERSION_UNDERSCORE%-msvc-%BOOST_MSVC_VERSION%-32.exe /VERYSILENT /DIR=%LIB_PATH%/boost) `
+    && (start /w %DOCKER_TEMP_DIR%/boost_%BOOST_VERSION_UNDERSCORE%-msvc-%BOOST_MSVC_VERSION%-64.exe /VERYSILENT /DIR=%LIB_PATH%/boost) `
     `
     # Cleanup
-    && del /q %DOCKER_TEMP_DIR%\boost_%BOOST_VERSION_UNDERSCORE%-msvc-%BOOST_MSVC_VERSION%-32.exe `
-    && del /q %DOCKER_TEMP_DIR%\boost_%BOOST_VERSION_UNDERSCORE%-msvc-%BOOST_MSVC_VERSION%-64.exe
+    && del /q %DOCKER_TEMP_DIR%/boost_%BOOST_VERSION_UNDERSCORE%-msvc-%BOOST_MSVC_VERSION%-32.exe `
+    && del /q %DOCKER_TEMP_DIR%/boost_%BOOST_VERSION_UNDERSCORE%-msvc-%BOOST_MSVC_VERSION%-64.exe
 
 # Install CMake
 ARG CMAKE_VERSION=3.23.1
 RUN `
     # Download the cmake installer
-    curl -SL --output %DOCKER_TEMP_DIR%\cmake-%CMAKE_VERSION%-windows-x86_64.msi https://github.com/Kitware/CMake/releases/download/v%CMAKE_VERSION%/cmake-%CMAKE_VERSION%-windows-x86_64.msi `
+    curl -SL --output %DOCKER_TEMP_DIR%/cmake-%CMAKE_VERSION%-windows-x86_64.msi https://github.com/Kitware/CMake/releases/download/v%CMAKE_VERSION%/cmake-%CMAKE_VERSION%-windows-x86_64.msi `
     `
     # Install cmake
-    && msiexec /i %DOCKER_TEMP_DIR%\cmake-%CMAKE_VERSION%-windows-x86_64.msi /quiet /qn /norestart `
+    && msiexec /i %DOCKER_TEMP_DIR%/cmake-%CMAKE_VERSION%-windows-x86_64.msi /quiet /qn /norestart `
     `
     # Add Cmake to the path
-    && setx PATH "%PATH;C:\Program Files\CMake\bin" `
+    && setx PATH "%PATH;C:/Program Files/CMake/bin" `
     `
     # Cleanup
-    && del /q %DOCKER_TEMP_DIR%\cmake-%CMAKE_VERSION%-windows-x86_64.msi
+    && del /q %DOCKER_TEMP_DIR%/cmake-%CMAKE_VERSION%-windows-x86_64.msi
 
 # Install 7zip
 ARG 7ZIP_VERSION=2107
 RUN echo Installing 7zip `
     # Download the installer
-    && curl -SL --output %DOCKER_TEMP_DIR%\7z%7ZIP_VERSION%-x64.msi https://www.7-zip.org/a/7z%7ZIP_VERSION%-x64.msi `
+    && curl -SL --output %DOCKER_TEMP_DIR%/7z%7ZIP_VERSION%-x64.msi https://www.7-zip.org/a/7z%7ZIP_VERSION%-x64.msi `
     `
     # Run the installer
-    && msiexec /i %DOCKER_TEMP_DIR%\7z%7ZIP_VERSION%-x64.msi /quiet /qn /norestart `
+    && msiexec /i %DOCKER_TEMP_DIR%/7z%7ZIP_VERSION%-x64.msi /quiet /qn /norestart `
     `
     # Add 7zip the the path
-    && setx PATH "%PATH%;C:\Program Files\7-Zip" `
+    && setx PATH "%PATH%;C:/Program Files/7-Zip" `
     `
     # Cleanup
-    && del /q %DOCKER_TEMP_DIR%\7z%7ZIP_VERSION%-x64.msi
+    && del /q %DOCKER_TEMP_DIR%/7z%7ZIP_VERSION%-x64.msi
 
 # Install OpenSSL
 ARG OPENSSL_VERSION=1.1.0f
 ARG OPENSSL_MSVC_VERSION=2015
 RUN echo Installing OpenSSL `
     # Download the zip file
-    && curl -SL --output %DOCKER_TEMP_DIR%\openssl-%OPENSSL_VERSION%-vs%OPENSSL_MSVC_VERSION%.7z https://www.npcglib.org/~stathis/downloads/openssl-%OPENSSL_VERSION%-vs%OPENSSL_MSVC_VERSION%.7z `
+    && curl -SL --output %DOCKER_TEMP_DIR%/openssl-%OPENSSL_VERSION%-vs%OPENSSL_MSVC_VERSION%.7z https://www.npcglib.org/~stathis/downloads/openssl-%OPENSSL_VERSION%-vs%OPENSSL_MSVC_VERSION%.7z `
     `
     # Extract the artifacts
-    && 7z x %DOCKER_TEMP_DIR%\openssl-%OPENSSL_VERSION%-vs%OPENSSL_MSVC_VERSION%.7z "-o%LIB_PATH%" `
-    && move %LIB_PATH%\openssl-%OPENSSL_VERSION%-vs%OPENSSL_MSVC_VERSION% %LIB_PATH%\openssl `
+    && 7z x %DOCKER_TEMP_DIR%/openssl-%OPENSSL_VERSION%-vs%OPENSSL_MSVC_VERSION%.7z "-o%LIB_PATH%" `
+    && move %LIB_PATH%/openssl-%OPENSSL_VERSION%-vs%OPENSSL_MSVC_VERSION% %LIB_PATH%/openssl `
     `
     # Cleanup
-    && del /q %DOCKER_TEMP_DIR%\openssl-%OPENSSL_VERSION%-vs%OPENSSL_MSVC_VERSION%.7z
+    && del /q %DOCKER_TEMP_DIR%/openssl-%OPENSSL_VERSION%-vs%OPENSSL_MSVC_VERSION%.7z
 
 # Install Git
 ARG GIT_VERSION=2.36.0
 RUN echo Installing Git `
     # Download the installer
-    && curl -SL --output %DOCKER_TEMP_DIR%\Git-%GIT_VERSION%-64-bit.exe https://github.com/git-for-windows/git/releases/download/v%GIT_VERSION%.windows.1/Git-%GIT_VERSION%-64-bit.exe `
+    && curl -SL --output %DOCKER_TEMP_DIR%/Git-%GIT_VERSION%-64-bit.exe https://github.com/git-for-windows/git/releases/download/v%GIT_VERSION%.windows.1/Git-%GIT_VERSION%-64-bit.exe `
     `
     # Install
-    && (start /w %DOCKER_TEMP_DIR%\Git-%GIT_VERSION%-64-bit.exe /VERYSILENT /DIR="C:\Program Files\Git") `
+    && (start /w %DOCKER_TEMP_DIR%/Git-%GIT_VERSION%-64-bit.exe /VERYSILENT /DIR="C:/Program Files/Git") `
     `
     # Add Windows to the path
-    && setx PATH "%PATH%;C:\Program Files\Git\bin" `
+    && setx PATH "%PATH%;C:/Program Files/Git/bin" `
     `
     # Cleanup
-    && del /q %DOCKER_TEMP_DIR%\Git-%GIT_VERSION%-64-bit.exe
+    && del /q %DOCKER_TEMP_DIR%/Git-%GIT_VERSION%-64-bit.exe
 
 # Install Python3
 ARG PYTHON3_VERSIONS="3.5.0"
@@ -126,16 +126,16 @@ RUN echo Installing Python3 `
         echo Installing Python%v `
         `
         # Download the installer
-        && curl -SL --output %DOCKER_TEMP_DIR%\python-%v.exe https://www.python.org/ftp/python/%v/python-%v.exe `
-        && curl -SL --output %DOCKER_TEMP_DIR%\python-%v-amd64.exe https://www.python.org/ftp/python/%v/python-%v-amd64.exe `
+        && curl -SL --output %DOCKER_TEMP_DIR%/python-%v.exe https://www.python.org/ftp/python/%v/python-%v.exe `
+        && curl -SL --output %DOCKER_TEMP_DIR%/python-%v-amd64.exe https://www.python.org/ftp/python/%v/python-%v-amd64.exe `
         `
         # Install
-        && (start /w %DOCKER_TEMP_DIR%\python-%v.exe /quiet TargetDir="C:\Python%v-Win32") `
-        && (start /w %DOCKER_TEMP_DIR%\python-%v-amd64.exe /quiet TargetDir="C:\Python%v-x64") `
+        && (start /w %DOCKER_TEMP_DIR%/python-%v.exe /quiet TargetDir="C:/Python%v-Win32") `
+        && (start /w %DOCKER_TEMP_DIR%/python-%v-amd64.exe /quiet TargetDir="C:/Python%v-x64") `
         `
         # Cleanup
-        && del /q %DOCKER_TEMP_DIR%\python-%v.exe `
-        && del /q %DOCKER_TEMP_DIR%\python-%v-amd64.exe `
+        && del /q %DOCKER_TEMP_DIR%/python-%v.exe `
+        && del /q %DOCKER_TEMP_DIR%/python-%v-amd64.exe `
     )
 
 # Install Python2
@@ -143,64 +143,64 @@ ARG PYTHON2_VERSION="2.7.18"
 RUN echo Install Python2 `
     `
     # Download the installer
-    && curl -SL --output %DOCKER_TEMP_DIR%\python-%PYTHON2_VERSION%.msi https://www.python.org/ftp/python/%PYTHON2_VERSION%/python-%PYTHON2_VERSION%.msi `
-    && curl -SL --output %DOCKER_TEMP_DIR%\python-%PYTHON2_VERSION%.amd64.msi https://www.python.org/ftp/python/%PYTHON2_VERSION%/python-%PYTHON2_VERSION%.amd64.msi `
+    && curl -SL --output %DOCKER_TEMP_DIR%/python-%PYTHON2_VERSION%.msi https://www.python.org/ftp/python/%PYTHON2_VERSION%/python-%PYTHON2_VERSION%.msi `
+    && curl -SL --output %DOCKER_TEMP_DIR%/python-%PYTHON2_VERSION%.amd64.msi https://www.python.org/ftp/python/%PYTHON2_VERSION%/python-%PYTHON2_VERSION%.amd64.msi `
     `
     # Install
-    && msiexec /i %DOCKER_TEMP_DIR%\python-%PYTHON2_VERSION%.msi /quiet /qn /norestart TargetDir="C:\Python2.7-Win32" `
-    && msiexec /i %DOCKER_TEMP_DIR%\python-%PYTHON2_VERSION%.amd64.msi /quiet /qn /norestart TargetDir="C:\Python2.7-x64" `
+    && msiexec /i %DOCKER_TEMP_DIR%/python-%PYTHON2_VERSION%.msi /quiet /qn /norestart TargetDir="C:/Python2.7-Win32" `
+    && msiexec /i %DOCKER_TEMP_DIR%/python-%PYTHON2_VERSION%.amd64.msi /quiet /qn /norestart TargetDir="C:/Python2.7-x64" `
     `
     # Cleanup
-    && del /q %DOCKER_TEMP_DIR%\python-%PYTHON2_VERSION%.msi `
-    && del /q %DOCKER_TEMP_DIR%\python-%PYTHON2_VERSION%.amd64.msi
+    && del /q %DOCKER_TEMP_DIR%/python-%PYTHON2_VERSION%.msi `
+    && del /q %DOCKER_TEMP_DIR%/python-%PYTHON2_VERSION%.amd64.msi
 
 # Install swig
 ARG SWIG_VERSION="4.0.2"
 RUN echo Installing SWIG `
     `
     # Download the zip file
-    && curl -SL --output %DOCKER_TEMP_DIR%\swigwin-%SWIG_VERSION%.zip https://sourceforge.net/projects/swig/files/swigwin/swigwin-%SWIG_VERSION%/swigwin-%SWIG_VERSION%.zip/download `
+    && curl -SL --output %DOCKER_TEMP_DIR%/swigwin-%SWIG_VERSION%.zip https://sourceforge.net/projects/swig/files/swigwin/swigwin-%SWIG_VERSION%/swigwin-%SWIG_VERSION%.zip/download `
     `
     # Extract to the library path
-    && 7z x %DOCKER_TEMP_DIR%\swigwin-%SWIG_VERSION%.zip "-o%LIB_PATH%" `
-    && move %LIB_PATH%\swigwin-%SWIG_VERSION% %LIB_PATH%\swig `
+    && 7z x %DOCKER_TEMP_DIR%/swigwin-%SWIG_VERSION%.zip "-o%LIB_PATH%" `
+    && move %LIB_PATH%/swigwin-%SWIG_VERSION% %LIB_PATH%/swig `
     `
     # Add to the path
-    && setx PATH "%PATH%;%LIB_PATH%\swig" `
+    && setx PATH "%PATH%;%LIB_PATH%/swig" `
     `
     # Cleanup
-    && del /q %DOCKER_TEMP_DIR%\swigwin-%SWIG_VERSION%.zip
+    && del /q %DOCKER_TEMP_DIR%/swigwin-%SWIG_VERSION%.zip
 
 # Install NaturalDocs
 ARG NATURAL_DOCS_VERSION="2.0.2"
 RUN echo Installing NaturalDocs `
     `
     # Download the zip file
-    && curl -SL --output %DOCKER_TEMP_DIR%\Natural_Docs_%NATURAL_DOCS_VERSION%.zip https://www.naturaldocs.org/download/natural_docs/%NATURAL_DOCS_VERSION%/Natural_Docs_%NATURAL_DOCS_VERSION%.zip `
+    && curl -SL --output %DOCKER_TEMP_DIR%/Natural_Docs_%NATURAL_DOCS_VERSION%.zip https://www.naturaldocs.org/download/natural_docs/%NATURAL_DOCS_VERSION%/Natural_Docs_%NATURAL_DOCS_VERSION%.zip `
     `
     # Extract to the library path
-    && 7z x %DOCKER_TEMP_DIR%\Natural_Docs_%NATURAL_DOCS_VERSION%.zip "-o%LIB_PATH%" `
-    && move "%LIB_PATH%\Natural Docs" %LIB_PATH%\NaturalDocs `
+    && 7z x %DOCKER_TEMP_DIR%/Natural_Docs_%NATURAL_DOCS_VERSION%.zip "-o%LIB_PATH%" `
+    && move "%LIB_PATH%/Natural Docs" %LIB_PATH%/NaturalDocs `
     `
     # Add to the path
-    && setx PATH "%PATH%;%LIB_PATH%\NaturalDocs" `
+    && setx PATH "%PATH%;%LIB_PATH%/NaturalDocs" `
     `
     # Cleanup
-    && del /q %DOCKER_TEMP_DIR%\Natural_Docs_%NATURAL_DOCS_VERSION%.zip
+    && del /q %DOCKER_TEMP_DIR%/Natural_Docs_%NATURAL_DOCS_VERSION%.zip
 
 # Install Turtle
 ARG TURTLE_VERSION="1.3.2"
 RUN echo Installing Turtle `
     `
     # Download the zip file
-    && curl -SL --output %DOCKER_TEMP_DIR%\turtle-%TURTLE_VERSION%.zip https://sourceforge.net/projects/turtle/files/turtle/%TURTLE_VERSION%/turtle-%TURTLE_VERSION%.zip/download `
+    && curl -SL --output %DOCKER_TEMP_DIR%/turtle-%TURTLE_VERSION%.zip https://sourceforge.net/projects/turtle/files/turtle/%TURTLE_VERSION%/turtle-%TURTLE_VERSION%.zip/download `
     `
     # Extract to the library path
-    && mkdir "%LIB_PATH%\turtle" `
-    && 7z x %DOCKER_TEMP_DIR%\turtle-%TURTLE_VERSION%.zip "-o%LIB_PATH%\turtle" `
+    && mkdir "%LIB_PATH%/turtle" `
+    && 7z x %DOCKER_TEMP_DIR%/turtle-%TURTLE_VERSION%.zip "-o%LIB_PATH%/turtle" `
     `
     # Cleanup
-    && del /q %DOCKER_TEMP_DIR%\turtle-%TURTLE_VERSION%.zip
+    && del /q %DOCKER_TEMP_DIR%/turtle-%TURTLE_VERSION%.zip
 
 # Allow users to execute powershell scripts
 RUN powershell -Command "Set-ExecutionPolicy RemoteSigned"

@@ -43,10 +43,10 @@ try {
   }
 
   # Construct the flags that we will pass to the build script
-  $python2_build_script_flags = "-python2Dirs C:\Python2.7-${cmake_arch}"
+  $python2_build_script_flags = "-python2Dirs C:/Python2.7-${cmake_arch}"
   $python3_build_script_flags = "-python3Dirs "
   foreach ($python3_version in ${python3_versions}.split(" ")) {
-    $python3_build_script_flags += "C:\Python${python3_version}-${cmake_arch},"
+    $python3_build_script_flags += "C:/Python${python3_version}-${cmake_arch},"
   }
   $python3_build_script_flags = $python3_build_script_flags.TrimEnd(',')
 
@@ -75,12 +75,12 @@ try {
     --cpus="${num_cpus}" `
     --memory="${memory}g" `
     --isolation="process" `
-    -v "${project_dir}:C:\Projects\MSCL" `
-    -w "C:\projects\mscl" `
+    -v "${project_dir}:C:/Projects/MSCL" `
+    -w "C:/projects/mscl" `
     "${image_name}" -Command " `
       git config --global --add safe.directory C:/projects/mscl; `
       git fetch origin --tags; `
-      & 'C:\Projects\MSCL\BuildScripts\build_win.ps1' -branch ${env:BRANCH_NAME} -arch ${cmake_arch} -buildDir C:\projects\mscl\build_windows_${arch} ${python2_build_script_flags} ${python3_build_script_flags}; `
+      & 'C:/Projects/MSCL/BuildScripts/build_win.ps1' -branch ${env:BRANCH_NAME} -arch ${cmake_arch} -buildDir C:\projects\mscl\build_windows_${arch} ${python2_build_script_flags} ${python3_build_script_flags}; `
     "
 }
 catch {
