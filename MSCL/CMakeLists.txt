@@ -293,7 +293,7 @@ endif()
 # Optionally generate the language bindings using swig
 if(MSCL_BUILD_PYTHON2 OR MSCL_BUILD_PYTHON3 OR MSCL_BUILD_CSHARP)
     include(UseSWIG)
-    include(${CMAKE_CURRENT_SOURCE_DIR}/../cmake/mscl_python_swig.cmake)
+    include(mscl_python_swig)
 
     if(MSVC)
         # Linking through the MSCL cmake interface causes linker error 4197. This is related to swig and can be ignored
@@ -324,6 +324,11 @@ if(MSCL_BUILD_PYTHON2 OR MSCL_BUILD_PYTHON3 OR MSCL_BUILD_CSHARP)
         else()
             list(APPEND PYTHON_LINK_LIBRARIES ${OPENSSL_SHARED_LIBRARIES})
         endif()
+    endif()
+
+    # Fix the include paths on Windows to remove backslashes
+    if(WIN32)
+        list(TRANSFORM LIB_INCLUDE_DIRS REPLACE "\\\\" "/")
     endif()
 
     # Build for python3
