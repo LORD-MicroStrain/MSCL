@@ -15,6 +15,7 @@ build_dir="${project_dir}/jenkins_build"
 # Get some arguments from the user
 python2Dirs=()
 python3Dirs=()
+branch="unknown"
 while [[ $# -gt 0 ]]; do
   case $1 in
     --python3Dir)
@@ -32,11 +33,13 @@ while [[ $# -gt 0 ]]; do
       shift # past argument
       shift # past value
       ;;
+    --branch)
+      branch="${2}"
+      shift # past argument
+      shift # past value
+      ;;
   esac
 done
-
-# TODO: Add option to build for release instead of copying release artifacts all the time
-release_build_dir="${build_dir}_for_release"
 
 # Build MSCL with everything except python2 and python3
 mkdir -p "${build_dir}"
@@ -45,15 +48,17 @@ cmake -S "${project_dir}" -B "${build_dir}" \
   -DCMAKE_VERBOSE_MAKEFILE="ON" \
   -DCMAKE_BUILD_TYPE="Release" \
   -DBUILD_SHARED_LIBS="ON" \
-  -DBUILD_PYTHON2="OFF" \
-  -DBUILD_PYTHON3="OFF" \
-  -DBUILD_TESTS="ON" \
-  -DBUILD_EXAMPLES="ON" \
-  -DBUILD_DOCUMENTATION="OFF" \
-  -DWITH_SSL="OFF" \
-  -DWITH_WEBSOCKETS="OFF" \
-  -DBUILD_PACKAGE="ON" \
-  -DLINK_STATIC_DEPS="OFF"
+  -DMSCL_BUILD_PYTHON2="OFF" \
+  -DMSCL_BUILD_PYTHON3="OFF" \
+  -DMSCL_BUILD_TESTS="ON" \
+  -DMSCL_BUILD_EXAMPLES="ON" \
+  -DMSCL_ZIP_EXAMPLES="OFF" \
+  -DMSCL_BUILD_DOCUMENTATION="OFF" \
+  -DMSCL_WITH_SSL="OFF" \
+  -DMSCL_WITH_WEBSOCKETS="OFF" \
+  -DMSCL_BUILD_PACKAGE="ON" \
+  -DMSCL_LINK_STATIC_DEPS="OFF" \
+  -DMSCL_BRANCH="${branch}"
 cmake --build "${build_dir}" -j$(nproc)
 
 # Run the unit tests
@@ -69,15 +74,17 @@ for python3Dir in "${python3Dirs[@]}"; do
     -DCMAKE_VERBOSE_MAKEFILE="ON" \
     -DCMAKE_BUILD_TYPE="Release" \
     -DBUILD_SHARED_LIBS="OFF" \
-    -DBUILD_PYTHON2="OFF" \
-    -DBUILD_PYTHON3="ON" \
-    -DBUILD_TESTS="OFF" \
-    -DBUILD_EXAMPLES="OFF" \
-    -DBUILD_DOCUMENTATION="OFF" \
-    -DWITH_SSL="OFF" \
-    -DWITH_WEBSOCKETS="OFF" \
-    -DBUILD_PACKAGE="ON" \
-    -DLINK_STATIC_DEPS="ON" \
+    -DMSCL_BUILD_PYTHON2="OFF" \
+    -DMSCL_BUILD_PYTHON3="ON" \
+    -DMSCL_BUILD_TESTS="OFF" \
+    -DMSCL_BUILD_EXAMPLES="OFF" \
+    -DMSCL_ZIP_EXAMPLES="OFF" \
+    -DMSCL_BUILD_DOCUMENTATION="OFF" \
+    -DMSCL_WITH_SSL="OFF" \
+    -DMSCL_WITH_WEBSOCKETS="OFF" \
+    -DMSCL_BUILD_PACKAGE="ON" \
+    -DMSCL_LINK_STATIC_DEPS="ON" \
+    -DMSCL_BRANCH="${branch}" \
     \
     -UPython3_ROOT -DPython3_ROOT="${python3Dir}" \
     -UPython3_ROOT_DIR -DPython3_ROOT_DIR="${python3Dir}" \
@@ -95,15 +102,17 @@ for python2Dir in "${python2Dirs[@]}"; do
     -DCMAKE_VERBOSE_MAKEFILE="ON" \
     -DCMAKE_BUILD_TYPE="Release" \
     -DBUILD_SHARED_LIBS="OFF" \
-    -DBUILD_PYTHON2="ON" \
-    -DBUILD_PYTHON3="OFF" \
-    -DBUILD_TESTS="OFF" \
-    -DBUILD_EXAMPLES="OFF" \
-    -DBUILD_DOCUMENTATION="OFF" \
-    -DWITH_SSL="OFF" \
-    -DWITH_WEBSOCKETS="OFF" \
-    -DBUILD_PACKAGE="ON" \
-    -DLINK_STATIC_DEPS="ON" \
+    -DMSCL_BUILD_PYTHON2="ON" \
+    -DMSCL_BUILD_PYTHON3="OFF" \
+    -DMSCL_BUILD_TESTS="OFF" \
+    -DMSCL_BUILD_EXAMPLES="OFF" \
+    -DMSCL_ZIP_EXAMPLES="OFF" \
+    -DMSCL_BUILD_DOCUMENTATION="OFF" \
+    -DMSCL_WITH_SSL="OFF" \
+    -DMSCL_WITH_WEBSOCKETS="OFF" \
+    -DMSCL_BUILD_PACKAGE="ON" \
+    -DMSCL_LINK_STATIC_DEPS="ON" \
+    -DMSCL_BRANCH="${branch}" \
     \
     -UPython2_ROOT -DPython2_ROOT="${python2Dir}" \
     -UPython2_ROOT_DIR -DPython2_ROOT_DIR="${python2Dir}" \
@@ -112,14 +121,4 @@ for python2Dir in "${python2Dirs[@]}"; do
 
   cmake --build "${build_dir}" -j$(nproc)
   cmake --build "${build_dir}" --target "package"
-done
-
-# Copy and rename all the packages into a release directory
-# Renaming makes it easier for the release process
-# Create the new directory
-mkdir -p "${release_build_dir}"
-for deb_package in "${build_dir}"/*.deb; do
-    release_package_name=$(basename "${deb_package}")                  # Get the name of the file
-    release_package_name="${release_package_name%_*}.deb"              # Remove the version number
-    cp "${deb_package}" "${release_build_dir}/${release_package_name}" # Copy into a release directory
 done

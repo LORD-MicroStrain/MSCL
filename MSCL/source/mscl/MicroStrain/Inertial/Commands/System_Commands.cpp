@@ -48,7 +48,7 @@ namespace mscl
     }
 
     InterfaceControl::Response::Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse):
-        GenericMipCommand::Response(CMD_ID, collector, true, dataResponse, "Interface Control")
+        GenericMipCommand::Response(MipTypes::CMD_INTERFACE_CONTROL, collector, true, dataResponse, "Interface Control")
     {}
 
     DeviceCommPort InterfaceControl::Response::parseResponse(const GenericMipCmdResponse& response) const
@@ -90,7 +90,7 @@ namespace mscl
     }
 
     CommunicationMode::Response::Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse):
-        GenericMipCommand::Response(CMD_ID, collector, true, dataResponse, "Communication Mode")
+        GenericMipCommand::Response(MipTypes::CMD_COMMUNICATION_MODE, collector, true, dataResponse, "Communication Mode")
     {}
 
     uint8 CommunicationMode::Response::parseResponse(const GenericMipCmdResponse& response) const

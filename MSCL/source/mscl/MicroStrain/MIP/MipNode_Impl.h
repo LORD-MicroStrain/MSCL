@@ -571,8 +571,11 @@ namespace mscl
         //    Gets the current comm port interface configuration for the specified ID.
         //    This includes the port type, ID and input/output protocols currently configured.
         //
+        //Parameters:
+        //    interfaceId - The interface ID to get the comm port configuration for
+        //
         //Returns:
-        //    The comm port configuration for the specified ID.
+        //    The <DeviceCommPort> configuration for the specified ID.
         //
         //Exceptions:
         //    - <Error_NotSupported>: The command or <MipTypes::DataClass> is not supported by this Node.
@@ -583,10 +586,10 @@ namespace mscl
 
         //Function: setInterfaceControl
         //    Sets the interface control for the node.
-        //    Note: The node info will be reset when doing this and therefore will require being fetched again the next time it is requested.
+        //    Note: See the device's manual for possible configurations and limitations.
         //
         //Parameters:
-        //    communicationMode - The communication mode to set. This is an advanced command, and therefore the communication modes for your device should be researched to determine what each communication mode is.
+        //    portInterface - The <DeviceCommPort> with prepopulated configuration information to set
         //
         //Exceptions:
         //    - <Error_Communication>: There was no response to the command. The command timed out.

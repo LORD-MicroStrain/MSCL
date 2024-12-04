@@ -2835,12 +2835,12 @@ namespace mscl
         //  The ID and Type are determined by the interface value. I.E. Interface 0x12 == Type 1 && ID 2
         //
         //Parameters:
-        //  interface           - A combination of the port type and ID
+        //  portInterface       - A combination of the port type and ID
         //  portInputProtocols  - The input protocols accepted by the port
         //  portOutputProtocols - The output protocols transmitted from the port
-        DeviceCommPort(uint8 interface, Protocol portInputProtocols = NONE, Protocol portOutputProtocols = NONE) :
-            type(static_cast<Type>((interface & 0xF0) >> 4)),
-            id(interface & 0xF),
+        DeviceCommPort(uint8 portInterface, Protocol portInputProtocols = NONE, Protocol portOutputProtocols = NONE) :
+            type(static_cast<Type>((portInterface & 0xF0) >> 4)),
+            id(portInterface & 0xF),
             inputProtocols(portInputProtocols),
             outputProtocols(portOutputProtocols)
         {}

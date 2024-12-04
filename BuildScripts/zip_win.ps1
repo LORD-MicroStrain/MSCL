@@ -11,12 +11,21 @@ param (
 $script_dir = $PSScriptRoot
 $project_dir = "${script_dir}/.."
 $build_output_dir = "${project_dir}/build_windows_${arch}"
-$release_build_output_dir = "${build_output_dir}_for_release"
 
-# Find the version from Git
+# Find the version and branch from Git
 pushd "${project_dir}"
-$mscl_git_version = (git describe --tag)                    # Tag and commit hash
-$mscl_git_release_version = (git describe --tag --abbrev=0) # Just the tag
+$mscl_git_branch = (git rev-parse --abbrev-ref HEAD)
+
+# Just get the release version on master
+if ((${mscl_git_branch} -eq "masterTest"))
+{
+    $mscl_git_version = (git describe --tags --abbrev=0)
+}
+# Get the tag and commit hash for all other branches
+else
+{
+    $mscl_git_version = (git describe --tag)
+}
 popd
 
 # Function to handle compressing each package
@@ -33,35 +42,33 @@ function Compress-Files
         return
     }
 
-    # TODO: Move documentation build to separate build process
-    # Documentation isn't needed to be copied
-    if (-Not ("${package_name}" -eq "Documentation"))
-    {
-        # Copy the files to a temp dir to zip for release
-        $full_release_package_name = "${release_build_output_dir}/MSCL_Windows_${arch}_${package_name}"
-        $temp_zip_dir = "${full_release_package_name}_${mscl_git_release_version}"
-        $zip_file = "${full_release_package_name}.zip"
-        Copy-Item -Path "${package_output_dir}" -Destination "${temp_zip_dir}" -Recurse
+    echo "Copying contents to temporary directory for cross-platform compatibility"
+    $cross_platform_temp_dir = New-TemporaryFile
 
-        # Compress the temp directory and then remove it
-        echo "Compressing ${temp_zip_dir} to ${zip_file} for release"
-        Compress-Archive -Force -Path "${temp_zip_dir}" -DestinationPath "${zip_file}"
-        Remove-Item "${temp_zip_dir}" -Recurse -Force
+    Copy-Item -Path $package_output_dir -Destination $cross_platform_temp_dir -Recurse -Force -Container | ForEach-Object
+    {
+        $cross_platform_output_dir = $_.FullName.Replace($cross_platform_temp_dir, '').Replace('\', '/')
+        Rename-Item -Path $_.FullName -NewName $cross_platform_output_dir
+    }
+
+    $package_name_prefix = "MSCL"
+
+    # Documentation and Examples are not Windows specific
+    if (("${package_name}" -ne "Documentation") -and ("${package_name}" -ne "Examples"))
+    {
+        $package_name_prefix = "${package_name_prefix}_Windows_${arch}"
     }
 
     # Compress the files with the git version
-    $full_package_name = "${build_output_dir}/MSCL_Windows_${arch}_${package_name}"
+    $full_package_name = "${build_output_dir}/${package_name_prefix}_${package_name}"
     $versioned_zip_file = "${full_package_name}_${mscl_git_version}.zip"
-    echo "Compressing contents of ${package_output_dir} to ${versioned_zip_file}"
-    Compress-Archive -Force -Path "${package_output_dir}/*" -DestinationPath "${versioned_zip_file}"
+    echo "Compressing contents of ${cross_platform_output_dir} to ${versioned_zip_file}"
+    Compress-Archive -Force -Path "${cross_platform_output_dir}/*" -DestinationPath "${versioned_zip_file}"
 }
 
 # Make the build output directories
 echo "Creating a Windows archive directory at ${build_output_dir}"
 New-Item -Path "${build_output_dir}" -ItemType Directory -Force
-
-echo "Creating a Windows archive directory for release at ${release_build_output_dir}"
-New-Item -Path "${release_build_output_dir}" -ItemType Directory -Force
 
 # MSCL build output directory
 $output_dir = "${project_dir}/Output"
@@ -81,13 +88,17 @@ Compress-Files -package_name "Shared_C++" -package_output_dir "${shared_output_d
 $dotnet_output_dir = "${output_dir}/DotNet"
 Compress-Files -package_name "DotNet" -package_output_dir "${dotnet_output_dir}"
 
-# Zip up the documentation
-$documentation_output_dir = "${output_dir}/Documentation"
-Compress-Files -package_name "Documentation" -package_output_dir "${documentation_output_dir}"
+# Only compress the Documentation and Examples for x64
+if (("${arch}" -eq "x64"))
+{
+    # Zip up the documentation
+    $documentation_output_dir = "${output_dir}/Documentation"
+    Compress-Files -package_name "Documentation" -package_output_dir "${documentation_output_dir}"
 
-# Zip up the examples
-$examples_output_dir = "${output_dir}/Examples"
-Compress-Files -package_name "Examples" -package_output_dir "${examples_output_dir}"
+    # Zip up the examples
+    $examples_output_dir = "${output_dir}/Examples"
+    Compress-Files -package_name "Examples" -package_output_dir "${examples_output_dir}"
+}
 
 # Zip up the python versions
 $python_output_dir = "${output_dir}/Python"

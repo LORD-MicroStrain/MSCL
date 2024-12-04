@@ -309,8 +309,8 @@ namespace mscl
         //    Gets the GPIO Pin IDs supported by this device.
         //
         //Returns:
-        //    A <GpioPins> list containing all the supported GPIO pins.
-        const GpioPins supportedGpioPins() const;
+        //    A <std::vector<GpioPinId>> list containing all the supported GPIO pins.
+        const std::vector<GpioPinId> supportedGpioPins() const;
 
         //API Function: supportedGpioPinModes
         //    Gets the Pin Mode options supported by this device based on the selected feature and behavior.

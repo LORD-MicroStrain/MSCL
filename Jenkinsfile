@@ -23,6 +23,23 @@ pipeline {
     timeout(time: 3, unit: 'HOURS')
   }
   stages {
+    stage('Pre-Release') {
+      agent { label 'linux-amd64' }
+      options {
+        skipDefaultCheckout()
+        timeout(time: 10, activity: true, unit: 'MINUTES')
+      }
+      steps {
+        cleanWs()
+        checkout scm
+        withCredentials([string(credentialsId: 'Github_Token', variable: 'GH_TOKEN')]) {
+          sh '''
+            # Pre-release check/update before building on develop
+            "${WORKSPACE}/BuildScripts/prerelease.sh" --target "${BRANCH_NAME}"
+          '''
+        }
+      }
+    }
     stage('Build') {
       // Run the windows and linux builds in parallel
       parallel {
@@ -37,7 +54,6 @@ pipeline {
             checkout scm
             powershell '.devcontainer/docker_build_win.ps1 -arch x64 -python3_versions "' + python3Versions() + '"'
             archiveArtifacts artifacts: 'build_windows_x64/*.zip'
-            archiveArtifacts artifacts: 'build_windows_x64_for_release/*.zip'
           }
         }
         stage('Windows x86') {
@@ -51,7 +67,6 @@ pipeline {
             checkout scm
             powershell '.devcontainer/docker_build_win.ps1 -arch x86 -python3_versions "' + python3Versions() + '"'
             archiveArtifacts artifacts: 'build_windows_x86/*.zip'
-            archiveArtifacts artifacts: 'build_windows_x86_for_release/*.zip'
           }
         }
         stage('DEB AMD64') {
@@ -65,7 +80,6 @@ pipeline {
             checkout scm
             sh '.devcontainer/docker_build_debs.sh --arch amd64 --python3Versions "' + python3Versions() + '"'
             archiveArtifacts artifacts: 'build_ubuntu_amd64/*.deb'
-            archiveArtifacts artifacts: 'build_ubuntu_amd64_for_release/*.deb'
           }
         }
         stage('DEB ARM64') {
@@ -79,7 +93,6 @@ pipeline {
             checkout scm
             sh '.devcontainer/docker_build_debs.sh --arch arm64v8 --python3Versions "' + python3Versions() + '"'
             archiveArtifacts artifacts: 'build_ubuntu_arm64v8/*.deb'
-            archiveArtifacts artifacts: 'build_ubuntu_arm64v8_for_release/*.deb'
           }
         }
         stage('DEB ARM32') {
@@ -93,34 +106,49 @@ pipeline {
             checkout scm
             sh '.devcontainer/docker_build_debs.sh --arch arm32v7 --python3Versions "' + python3Versions() + '"'
             archiveArtifacts artifacts: 'build_ubuntu_arm32v7/*.deb'
-            archiveArtifacts artifacts: 'build_ubuntu_arm32v7_for_release/*.deb'
           }
         }
       }
     }
   }
-//   post {
-//     failure {
-//       script {
-//         if (BRANCH_NAME && (BRANCH_NAME == 'main' || BRANCH_NAME == 'master')) {
-//           mail to: "${env.Notification_Emails_MSCL}",
-//             subject: "Build Failed in Jenkins: ${env.JOB_NAME}",
-//             body: "See: ${env.BUILD_URL}",
-//             charset: 'UTF-8',
-//             mimeType: 'text/html';
-//         }
-//       }
-//     }
-//     changed {
-//       script {
-//         if (BRANCH_NAME && (BRANCH_NAME == 'main' || BRANCH_NAME == 'master') && currentBuild.currentResult == 'SUCCESS') { // Other values: FAILURE, UNSTABLE
-//           mail to: "${env.Notification_Emails_MSCL}",
-//           subject: "Jenkins build is back to normal: ${env.JOB_NAME}",
-//           body: "See: ${env.BUILD_URL}",
-//           charset: 'UTF-8',
-//           mimeType: 'text/html';
-//         }
-//       }
-//     }
-//   }
+  post {
+    success {
+      script {
+        if (BRANCH_NAME && BRANCH_NAME == 'developTest') {
+          node("linux-amd64") {
+            dir("/tmp/mscl_${env.BRANCH_NAME}_${currentBuild.number}") {
+              copyArtifacts(projectName: "${env.JOB_NAME}", selector: specific("${currentBuild.number}"));
+              withCredentials([string(credentialsId: 'Github_Token', variable: 'GH_TOKEN')]) {
+                sh '''
+                  # Release to github
+                  "${WORKSPACE}/BuildScripts/release.sh" \
+                    --artifacts "$(find "$(pwd)" -type f)" \
+                    --target "${BRANCH_NAME}" \
+                    --release "latest" \
+                    --docs-zip "$(find "$(pwd)" -type f -name "MSCL_Documentation_*.zip" | sort | uniq)" \
+                    --generate-notes
+                '''
+              }
+            }
+          }
+        } else if (BRANCH_NAME && BRANCH_NAME == 'masterTest') {
+          node("linux-amd64") {
+            dir("/tmp/mscl_${env.BRANCH_NAME}_${currentBuild.number}") {
+              copyArtifacts(projectName: "${env.JOB_NAME}", selector: specific("${currentBuild.number}"));
+              withCredentials([string(credentialsId: 'Github_Token', variable: 'GH_TOKEN')]) {
+                sh '''
+                  # Release to github. The release script will determine if master needs to be published
+                  ${WORKSPACE}/BuildScripts/release.sh" \
+                    --artifacts "$(find "$(pwd)" -type f)" \
+                    --target "${BRANCH_NAME}" \
+                    --release "$(cd ${WORKSPACE} && git describe --exact-match --tags HEAD)" \
+                    --docs-zip "$(find "$(pwd)" -type f -name "MSCL_Documentation_*.zip" | sort | uniq)"
+                '''
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 }

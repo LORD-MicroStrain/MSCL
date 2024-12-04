@@ -274,18 +274,12 @@ namespace mscl
         //InertialDevice device type
         if(devType == TYPE_INERTIALDEVICE || devType == TYPE_ALL)
         {
-            //check for the STM vendor ID (this is the best we can do right now for GX4's)
-            if(Utils::containsStr(pnpID, "VID_0483&PID_5740"))
-            {
-                baudRate = 921600;
-                type = DeviceInfo::connectionType_serial;
-                return true;
-            }
-
             //check for the inertial VID/PIDs
-            if(Utils::containsStr(pnpID, "VID_199B&PID_3065") ||    //Inertial
-               Utils::containsStr(pnpID, "VID_199B&PID_3A65") ||    //3DM-GX3-45
-               Utils::containsStr(pnpID, "VID_199B&PID_3D65"))      //Inertial in DFU (usb updater) mode
+            if(Utils::containsStr(pnpID, "VID_199B&PID_0001&MI_00") || //CV7-GNSS/INS
+               Utils::containsStr(pnpID, "VID_199B&PID_3065")       || //Inertial
+               Utils::containsStr(pnpID, "VID_0483&PID_5740")       || //check for the STM vendor ID (this is the best we can do right now for GX4's)
+               Utils::containsStr(pnpID, "VID_199B&PID_3A65")       || //3DM-GX3-45
+               Utils::containsStr(pnpID, "VID_199B&PID_3D65"))         //Inertial in DFU (usb updater) mode
             {
                 baudRate = 921600;
                 type = DeviceInfo::connectionType_serial;
