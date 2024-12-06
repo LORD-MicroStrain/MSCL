@@ -102,7 +102,7 @@ echo "* [Public Documentation](${documentation_link}/MSCL_Docs)" >> ${release_no
 if [ -z "${generate_notes_flag}" ]; then
   add_changes=0
 
-  while IFS= read line; do
+  while read line; do
     # Read between release notes (I.E. '## 1.2.4...' and '## 1.2.3...')
     if [[ "${line}" =~ "^## [0-9]+.+" ]]; then
       # Start reading change notes
