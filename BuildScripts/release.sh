@@ -104,7 +104,7 @@ if [ -z "${generate_notes_flag}" ]; then
 
   while IFS= read line; do
     # Read between release notes (I.E. '## 1.2.4...' and '## 1.2.3...')
-    if [[ "${line}" =~ ^## [0-9]+.+ ]]; then
+    if [[ "${line}" =~ "^## [0-9]+.+" ]]; then
       # Start reading change notes
       if [[ ${add_changes} -eq 0 ]]; then
         add_changes=1
