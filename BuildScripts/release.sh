@@ -99,15 +99,15 @@ echo "* [Changelog](${changelog_link})" >> ${release_notes_file}
 echo "* [Full Documentation](${documentation_link}/MSCL_API_Docs)" >> ${release_notes_file}
 echo "* [Public Documentation](${documentation_link}/MSCL_Docs)" >> ${release_notes_file}
 
-if [[ "${generate_notes_flag}" == "" ]]; then
-  add_changes="false"
+if [ -z "${generate_notes_flag}" ]; then
+  add_changes=0
 
   while IFS= read line; do
     # Read between release notes (I.E. '## 1.2.4...' and '## 1.2.3...')
-    if [[ "${line}" =~ "^## [0-9]+.+" ]]; then
+    if [[ "${line}" =~ ^## [0-9]+.+ ]]; then
       # Start reading change notes
-      if [ "${add_changes}" == "false" ]; then
-        add_changes="true"
+      if [[ ${add_changes} -eq 0 ]]; then
+        add_changes=1
         echo "" >> ${release_notes_file}
         echo "## What's Changed" >> ${release_notes_file}
         continue
@@ -117,7 +117,7 @@ if [[ "${generate_notes_flag}" == "" ]]; then
       fi
     fi
 
-    if [ "${add_changes}" == "true" ]; then
+    if [[ ${add_changes} -eq 1 ]]; then
       # End of the changes (empty line)
       if [[ "${line}" == "" ]]; then
         break
