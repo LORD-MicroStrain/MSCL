@@ -103,7 +103,7 @@ regex_pattern='^## [0-9]+.+'
 if [ -z "${generate_notes_flag}" ]; then
   add_changes=0
 
-  while read line; do
+  while IFS= read line; do
     # Read between release notes (I.E. '## 1.2.4...' and '## 1.2.3...')
     if [[ "${line}" =~ ${regex_pattern} ]]; then
       # Start reading change notes
