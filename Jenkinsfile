@@ -138,10 +138,10 @@ pipeline {
               withCredentials([string(credentialsId: 'Github_Token', variable: 'GH_TOKEN')]) {
                 sh '''
                   # Release to github. The release script will determine if master needs to be published
-                  ${WORKSPACE}/BuildScripts/release.sh" \
+                  "${WORKSPACE}/BuildScripts/release.sh" \
                     --artifacts "$(find "$(pwd)" -type f)" \
                     --target "${BRANCH_NAME}" \
-                    --release "$(cd ${WORKSPACE} && git describe --exact-match --tags HEAD)" \
+                    --release "$(cd ${WORKSPACE} && git describe --match "v*" --abbrev=0 --tags HEAD)" \
                     --docs-zip "$(find "$(pwd)" -type f -name "MSCL_Documentation_*.zip" | sort | uniq)"
                 '''
               }
