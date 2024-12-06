@@ -99,12 +99,13 @@ echo "* [Changelog](${changelog_link})" >> ${release_notes_file}
 echo "* [Full Documentation](${documentation_link}/MSCL_API_Docs)" >> ${release_notes_file}
 echo "* [Public Documentation](${documentation_link}/MSCL_Docs)" >> ${release_notes_file}
 
+regex_pattern='^## [0-9]+.+'
 if [ -z "${generate_notes_flag}" ]; then
   add_changes=0
 
   while read line; do
     # Read between release notes (I.E. '## 1.2.4...' and '## 1.2.3...')
-    if [[ "${line}" =~ ^## [0-9]+.+ ]]; then
+    if [[ "${line}" =~ ${regex_pattern} ]]; then
       # Start reading change notes
       if [[ ${add_changes} -eq 0 ]]; then
         add_changes=1
