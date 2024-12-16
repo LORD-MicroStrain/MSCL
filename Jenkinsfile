@@ -40,81 +40,81 @@ pipeline {
         }
       }
     }
-//     stage('Build') {
-//       // Run the windows and linux builds in parallel
-//       parallel {
-//         stage('Windows x64') {
-//           agent { label 'windows10' }
-//           options {
-//             skipDefaultCheckout()
-//             timeout(time: 20, activity: true, unit: 'MINUTES')
-//           }
-//           steps {
-//             cleanWs()
-//             checkout scm
-//             powershell '.devcontainer/docker_build_win.ps1 -arch x64 -python3_versions "' + python3Versions() + '"'
-//             archiveArtifacts artifacts: 'build_windows_x64/*.zip'
-//           }
-//         }
-//         stage('Windows x86') {
-//           agent { label 'windows10' }
-//           options {
-//             skipDefaultCheckout()
-//             timeout(time: 20, activity: true, unit: 'MINUTES')
-//           }
-//           steps {
-//             cleanWs()
-//             checkout scm
-//             powershell '.devcontainer/docker_build_win.ps1 -arch x86 -python3_versions "' + python3Versions() + '"'
-//             archiveArtifacts artifacts: 'build_windows_x86/*.zip'
-//           }
-//         }
-//         stage('DEB AMD64') {
-//           agent { label 'linux-amd64' }
-//           options {
-//             skipDefaultCheckout()
-//             timeout(time: 20, activity: true, unit: 'MINUTES')
-//           }
-//           steps {
-//             cleanWs()
-//             checkout scm
-//             sh '.devcontainer/docker_build_debs.sh --arch amd64 --python3Versions "' + python3Versions() + '"'
-//             archiveArtifacts artifacts: 'build_ubuntu_amd64/*.deb'
-//           }
-//         }
-//         stage('DEB ARM64') {
-//           agent { label 'linux-arm64' }
-//           options {
-//             skipDefaultCheckout()
-//             timeout(time: 20, activity: true, unit: 'MINUTES')
-//           }
-//           steps {
-//             cleanWs()
-//             checkout scm
-//             sh '.devcontainer/docker_build_debs.sh --arch arm64v8 --python3Versions "' + python3Versions() + '"'
-//             archiveArtifacts artifacts: 'build_ubuntu_arm64v8/*.deb'
-//           }
-//         }
-//         stage('DEB ARM32') {
-//           agent { label 'linux-arm64' }
-//           options {
-//             skipDefaultCheckout()
-//             timeout(time: 20, activity: true, unit: 'MINUTES')
-//           }
-//           steps {
-//             cleanWs()
-//             checkout scm
-//             sh '.devcontainer/docker_build_debs.sh --arch arm32v7 --python3Versions "' + python3Versions() + '"'
-//             archiveArtifacts artifacts: 'build_ubuntu_arm32v7/*.deb'
-//           }
-//         }
-//       }
-//     }
+    stage('Build') {
+      // Run the windows and linux builds in parallel
+      parallel {
+        stage('Windows x64') {
+          agent { label 'windows10' }
+          options {
+            skipDefaultCheckout()
+            timeout(time: 20, activity: true, unit: 'MINUTES')
+          }
+          steps {
+            cleanWs()
+            checkout scm
+            powershell '.devcontainer/docker_build_win.ps1 -arch x64 -python3_versions "' + python3Versions() + '"'
+            archiveArtifacts artifacts: 'build_windows_x64/*.zip'
+          }
+        }
+        stage('Windows x86') {
+          agent { label 'windows10' }
+          options {
+            skipDefaultCheckout()
+            timeout(time: 20, activity: true, unit: 'MINUTES')
+          }
+          steps {
+            cleanWs()
+            checkout scm
+            powershell '.devcontainer/docker_build_win.ps1 -arch x86 -python3_versions "' + python3Versions() + '"'
+            archiveArtifacts artifacts: 'build_windows_x86/*.zip'
+          }
+        }
+        stage('DEB AMD64') {
+          agent { label 'linux-amd64' }
+          options {
+            skipDefaultCheckout()
+            timeout(time: 20, activity: true, unit: 'MINUTES')
+          }
+          steps {
+            cleanWs()
+            checkout scm
+            sh '.devcontainer/docker_build_debs.sh --arch amd64 --python3Versions "' + python3Versions() + '"'
+            archiveArtifacts artifacts: 'build_ubuntu_amd64/*.deb'
+          }
+        }
+        stage('DEB ARM64') {
+          agent { label 'linux-arm64' }
+          options {
+            skipDefaultCheckout()
+            timeout(time: 20, activity: true, unit: 'MINUTES')
+          }
+          steps {
+            cleanWs()
+            checkout scm
+            sh '.devcontainer/docker_build_debs.sh --arch arm64v8 --python3Versions "' + python3Versions() + '"'
+            archiveArtifacts artifacts: 'build_ubuntu_arm64v8/*.deb'
+          }
+        }
+        stage('DEB ARM32') {
+          agent { label 'linux-arm64' }
+          options {
+            skipDefaultCheckout()
+            timeout(time: 20, activity: true, unit: 'MINUTES')
+          }
+          steps {
+            cleanWs()
+            checkout scm
+            sh '.devcontainer/docker_build_debs.sh --arch arm32v7 --python3Versions "' + python3Versions() + '"'
+            archiveArtifacts artifacts: 'build_ubuntu_arm32v7/*.deb'
+          }
+        }
+      }
+    }
   }
   post {
     success {
       script {
-        if (BRANCH_NAME && BRANCH_NAME == 'developTest') {
+        if (BRANCH_NAME && BRANCH_NAME == 'develop') {
           node("linux-amd64") {
             dir("/tmp/mscl_${env.BRANCH_NAME}_${currentBuild.number}") {
               copyArtifacts(projectName: "${env.JOB_NAME}", selector: specific("${currentBuild.number}"));
@@ -131,7 +131,7 @@ pipeline {
               }
             }
           }
-        } else if (BRANCH_NAME && BRANCH_NAME == 'masterTest') {
+        } else if (BRANCH_NAME && BRANCH_NAME == 'master') {
           node("linux-amd64") {
             dir("/tmp/mscl_${env.BRANCH_NAME}_${currentBuild.number}") {
               copyArtifacts(projectName: "${env.JOB_NAME}", selector: specific("12"));

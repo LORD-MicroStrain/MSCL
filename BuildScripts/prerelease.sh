@@ -62,7 +62,7 @@ if [ -z "${target}" ]; then
 fi
 
 # Only need to perform a pre-release check for develop
-if [ "${target}" != "developTest" ]; then
+if [ "${target}" != "develop" ]; then
   echo "No pre-release check required for ${target}"
   exit 0
 fi

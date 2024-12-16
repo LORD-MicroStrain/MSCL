@@ -55,11 +55,11 @@ build_dir="${project_dir}/build_ubuntu_amd64"
 pushd "${build_dir}"
 github_release_version=$(git describe --tag --abbrev=0 HEAD)
 project_release_version="v$(cmake --system-information | awk -F= '$1~/CMAKE_PROJECT_VERSION:STATIC/{print$2}')"
-if [ "${target}" == "masterTest" ]; then
-#  if [ "${github_release_version}" == "${project_release_version}" ]; then
-#    echo "Not releasing from ${target} since the current version matches the latest version"
-#    exit 0
-#  fi
+if [ "${target}" == "master" ]; then
+  if [ "${github_release_version}" == "${project_release_version}" ]; then
+    echo "Not releasing from ${target} since the current version matches the latest version"
+    exit 0
+  fi
 
   # Use the release name from the project
   release_name=${project_release_version}

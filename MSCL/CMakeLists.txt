@@ -483,7 +483,7 @@ if(MSCL_BUILD_PACKAGE)
     microstrain_get_git_branch(MSCL_GIT_BRANCH MSCL_BRANCH) # Second param is used to set a cache variable
 
     # Use the tag for assets built on master
-    if("${MSCL_GIT_BRANCH}" STREQUAL "masterTest")
+    if("${MSCL_GIT_BRANCH}" STREQUAL "master")
         string(REGEX REPLACE "(^v[0-9]+\\.[0-9]+\\.[0-9]+).+" "\\1" MSCL_GIT_VERSION "${MSCL_GIT_VERSION}")
     endif()
 
