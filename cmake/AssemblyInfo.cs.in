@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("MicroStrain by HBK")]
 [assembly: AssemblyProduct("MSCL")]
-[assembly: AssemblyCopyright("Copyright © 2024 MicroStrain by HBK")]
+[assembly: AssemblyCopyright("Copyright © ${MSCL_CURRENT_YEAR} MicroStrain by HBK")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -32,6 +32,5 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 //
-//update with each release
-[assembly: AssemblyVersion("66.0.0.0")]
-[assembly: AssemblyFileVersion("66.0.0.0")]
+[assembly: AssemblyVersion("${MSCL_GIT_VERSION_MAJOR}.${MSCL_GIT_VERSION_MINOR}.${MSCL_GIT_VERSION_PATCH}.0")]
+[assembly: AssemblyFileVersion("${MSCL_GIT_VERSION_MAJOR}.${MSCL_GIT_VERSION_MINOR}.${MSCL_GIT_VERSION_PATCH}.0")]
