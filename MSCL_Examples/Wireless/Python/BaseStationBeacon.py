@@ -2,14 +2,16 @@
 #   This example shows how to Enable and Disable the
 #   beacon (used for Synchronized Sampling) on a base station
 #
-# Updated: 2/21/2024
+# Updated: 12/18/2024
 
 import sys
+import os
 
 # TODO: change this path to match your setup
 # import the mscl library.
-arch = sys.maxsize > 2**32 and "x64" or "x32"
-sys.path.append("../../../Output/Python{sys.version_info.major}.{sys.version_info.minor}/{arch}/Release")
+arch = sys.maxsize > 2 ** 32 and "x64" or "x32"
+sys.path.append(os.path.abspath("{}/../../../Output/Python/{}.{}/{}/Release".format(os.path.dirname(os.path.realpath(__file__)),
+    sys.version_info.major, sys.version_info.minor, arch)))
 
 import mscl
 
