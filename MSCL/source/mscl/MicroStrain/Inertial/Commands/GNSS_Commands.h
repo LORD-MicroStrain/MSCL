@@ -6,8 +6,8 @@
 
 #pragma once
 
-#include "mscl/MicroStrain/MIP/Commands/GenericMipCommand.h"
 #include "mscl/MicroStrain/MIP/MipChannel.h"
+#include "mscl/MicroStrain/MIP/Commands/GenericMipCommand.h"
 
 namespace mscl
 {
@@ -19,10 +19,10 @@ namespace mscl
     {
     public:
         //Constants: Packet Bytes
-        //    CMD_ID               - CMD_GET_GPS_RATE_BASE        - The <MipTypes::Command> for this command
-        //  FIELD_DATA_BYTE        - 0x84                        - The Data Field Descriptor byte
-        static const MipTypes::Command CMD_ID    = MipTypes::CMD_GET_GNSS_RATE_BASE;
-        static const uint8 FIELD_DATA_BYTE            = 0x84;
+        //    CMD_ID          - CMD_GET_GPS_RATE_BASE - The <MipTypes::Command> for this command
+        //    FIELD_DATA_BYTE - 0x84                  - The Data Field Descriptor byte
+        static const MipTypes::Command CMD_ID = MipTypes::CMD_GET_GNSS_RATE_BASE;
+        static const uint8 FIELD_DATA_BYTE    = 0x84;
 
     private:
         GetGnssDataRateBase();    //private default constructor
@@ -45,7 +45,10 @@ namespace mscl
         protected:
             //Function: fieldDataByte
             //    Gets the data field descriptor byte
-            virtual uint8 fieldDataByte() const    override { return FIELD_DATA_BYTE; }
+            uint8 fieldDataByte() const override
+            {
+                return FIELD_DATA_BYTE;
+            }
 
         public:
             //Constructor: Response
@@ -70,13 +73,13 @@ namespace mscl
     {
     public:
         //Constants: Packet Bytes
-        //  CMD_ID                - CMD_GNSS_MESSAGE_FORMAT    - The <MipTypes::Command> for this command
-        //  FIELD_DATA_BYTE       - 0x81                       - The Data Field Descriptor byte
+        //  CMD_ID          - CMD_GNSS_MESSAGE_FORMAT - The <MipTypes::Command> for this command
+        //  FIELD_DATA_BYTE - 0x81                    - The Data Field Descriptor byte
         static const MipTypes::Command CMD_ID = MipTypes::CMD_GNSS_MESSAGE_FORMAT;
-        static const uint8 FIELD_DATA_BYTE            = 0x81;
+        static const uint8 FIELD_DATA_BYTE    = 0x81;
 
     private:
-        GnssMessageFormat();    //disabled default constructor
+        GnssMessageFormat(); //disabled default constructor
 
     public:
         //Function: buildCommand_get
@@ -113,11 +116,14 @@ namespace mscl
         class Response : public GenericMipCommand::Response
         {
         protected:
-            virtual uint8 fieldDataByte() const    override { return FIELD_DATA_BYTE; }
+            uint8 fieldDataByte() const override
+            {
+                return FIELD_DATA_BYTE;
+            }
 
         public:
             Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse);
             MipChannels parseResponse(const GenericMipCmdResponse& response, uint16 sampleRateBase) const;
         };
     };
-}
+} // namespace mscl

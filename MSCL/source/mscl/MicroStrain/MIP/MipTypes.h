@@ -225,6 +225,7 @@ namespace mscl
         //  CMD_EF_GNSS_ANTENNA_LEVER_ARM_CAL           - 0x0D64    - Estimation Filter - GNSS Antenna Lever Arm Calibration Control
         //  CMD_GNSS_RECEIVER_INFO                      - 0x0E01    - GNSS Receiver Info
         //  CMD_GNSS_SIGNAL_CONFIG                      - 0x0E02    - GNSS Signal Configuration
+        //  CMD_GNSS_SPARTN_CONFIG                      - 0x0E20    - GNSS Spartn Configuration
         //  CMD_GNSS_RTK_CONFIG                         - 0x0E10    - GNSS RTK Configuration
         //  CMD_INTERFACE_CONTROL                       - 0x7F02    - Interface Control
         //  CMD_COMMUNICATION_MODE                      - 0x7F10    - Communication Mode
@@ -376,6 +377,7 @@ namespace mscl
             CMD_EF_GNSS_ANTENNA_LEVER_ARM_CAL       = 0x0D64,
             CMD_GNSS_RECEIVER_INFO                  = 0x0E01,
             CMD_GNSS_SIGNAL_CONFIG                  = 0x0E02,
+            CMD_GNSS_SPARTN_CONFIG                  = 0x0E20,
             CMD_GNSS_RTK_CONFIG                     = 0x0E10,
             CMD_INTERFACE_CONTROL                   = 0x7F02,
             CMD_COMMUNICATION_MODE                  = 0x7F10,

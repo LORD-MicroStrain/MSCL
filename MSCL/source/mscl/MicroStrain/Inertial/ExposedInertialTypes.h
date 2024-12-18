@@ -2725,6 +2725,158 @@ namespace mscl
 
     typedef std::map<MipChannelIdentifier::GnssConstellationIds, std::vector<uint8>> GnssSignalConfigOptions;
 
+    //API Class: GnssSpartnConfiguration
+    class GnssSpartnConfiguration
+    {
+    public:
+        //API Constant: KEY_SIZE
+        //  Null terminated character count for key strings
+        static constexpr uint8_t KEY_SIZE = 33;
+
+        //API Enum: ConnectionType
+        //  Available connection types
+        //
+        //      NONE     - 0x00 - No connection type
+        //      NETWORK  - 0x01 - Network connection type
+        //      LBAND    - 0x02 - L-Band connection type
+        enum ConnectionType : uint8_t
+        {
+            NONE     = 0x00, // No connection type
+            NETWORK  = 0x01, // Network connection type
+            LBAND    = 0x02  // L-Band connection type
+        };
+
+        //API Constructor: GnssSpartnConfiguration
+        GnssSpartnConfiguration() = default;
+
+        //API Function: enable
+        //  Enable or disable the SPARTN subsystem
+        //
+        //Parameters:
+        //  enable - True/False value to enabled or disabled the SPARTN subsystem
+        void enable(const bool enable);
+
+        //API Function: enabled
+        //  Check if the SPARTN subsystem is enabled or disabled
+        bool enabled() const;
+
+        //API Function: type
+        //  Set the connection type
+        //
+        //Parameters:
+        //  connectionType - <ConnectionType> value to set for the SPARTN subsystem
+        void type(const ConnectionType connectionType);
+
+        //API Function: type
+        //  Get the connection type
+        ConnectionType type() const;
+
+        //API Function: currentKeyTow
+        //  Set the time-of-week for the current key
+        //
+        //Parameters:
+        //  tow - The time-of-week to set for the current key
+        void currentKeyTow(const uint32_t tow);
+
+        //API Function: currentKeyTow
+        //  Get the time-of-week for the current key
+        uint32_t currentKeyTow() const;
+
+        //API Function: currentKeyWeek
+        //  Set the week number for the current key
+        //
+        //Parameters:
+        //  week - The week number to set for the current key
+        void currentKeyWeek(const uint16_t week);
+
+        //API Function: currentKeyWeek
+        //  Get the week number for the current key
+        uint16_t currentKeyWeek() const;
+
+        //API Function: currentKey
+        //  Set the current key for the SPARTN subsystem
+        //
+        //Note:
+        //  This value needs to be 32 characters long and is sent as ASCII bytes
+        //
+        //Parameters:
+        //  key - The 32 character key to set
+        void currentKey(const char key[KEY_SIZE]);
+
+        //API Function: currentKey
+        //  Get the current key for the SPARTN subsystem
+        const std::string currentKey();
+
+        //API Function: nextKeyTow
+        //  Set the time-of-week for the next key
+        //
+        //Parameters:
+        //  tow - The time-of-week to set for the next key
+        void nextKeyTow(const uint32_t tow);
+
+        //API Function: nextKeyTow
+        //  Get the time-of-week for the next key
+        uint32_t nextKeyTow() const;
+
+        //API Function: type
+        //  Enable or disable the SPARTN subsystem
+        void nextKeyWeek(const uint16_t week);
+
+        //API Function: nextKeyWeek
+        //  Set the week number for the next key
+        //
+        //Parameters:
+        //  week - The week number to set for the next key
+        uint16_t nextKeyWeek() const;
+
+        //API Function: nextKey
+        //  Set the next key for the SPARTN subsystem
+        //
+        //Note:
+        //  This value needs to be 32 characters long and is sent as ASCII bytes
+        //
+        //Parameters:
+        //  key - The 32 character key to set
+        void nextKey(const char key[KEY_SIZE]);
+
+        //API Function: nextKey
+        //  Get the next key for the SPARTN subsystem
+        const std::string nextKey() const;
+
+    private:
+        //API Variable: m_enable
+        //  Enable/Disable the SPARTN subsystem
+        bool m_enable = false;
+
+        //API Variable: m_type
+        //  Connection type
+        ConnectionType m_type = NONE;
+
+        //API Variable: m_currentKeyTow
+        //  The GPS time of week the current key is valid until
+        uint32_t m_currentKeyTow = 0;
+
+        //API Variable: m_currentKeyWeek
+        //  The GPS week number the current key is valid until
+        uint16_t m_currentKeyWeek = 0;
+
+        //API Variable: m_currentKey
+        //  32 character string of ASCII hex values for the current key (e.g. "bc" for 0xBC)
+        char m_currentKey[KEY_SIZE] = "";
+
+        //API Variable: m_nextKeyTow
+        //  The GPS time of week the next key is valid until
+        uint32_t m_nextKeyTow = 0;
+
+        //API Variable: m_nextKeyWeek
+        //  The GPS week number the next key is valid until
+        uint16_t m_nextKeyWeek = 0;
+
+        //API Variable: m_nextKey
+        //  32 character string of ASCII hex values for the next key (e.g. "bc" for 0xBC)
+        char m_nextKey[KEY_SIZE] = "";
+    };
+
     //API Struct: PositionReferenceConfiguration
     struct PositionReferenceConfiguration
     {

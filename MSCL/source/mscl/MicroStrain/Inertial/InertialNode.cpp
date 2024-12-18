@@ -1251,6 +1251,36 @@ namespace mscl
         });
     }
 
+    GnssSpartnConfiguration InertialNode::getGnssSpartnConfig() const
+    {
+        MipFieldValues data = m_impl->get(MipTypes::CMD_GNSS_SPARTN_CONFIG);
+        GnssSpartnConfiguration config;
+        config.enable(data[0].as_bool());
+        config.type(static_cast<GnssSpartnConfiguration::ConnectionType>(data[1].as_uint8()));
+        config.currentKeyTow(data[2].as_uint32());
+        config.currentKeyWeek(data[3].as_uint16());
+        config.currentKey(data[4].as_string().c_str());
+        config.nextKeyTow(data[5].as_uint32());
+        config.nextKeyWeek(data[6].as_uint16());
+        config.nextKey(data[7].as_string().c_str());
+
+        return config;
+    }
+
+    void InertialNode::setGnssSpartnConfig(GnssSpartnConfiguration config)
+    {
+        m_impl->set(MipTypes::CMD_GNSS_SPARTN_CONFIG, {
+            Value::UINT8(static_cast<uint8_t>(config.enabled())),
+            Value::UINT8(static_cast<uint8_t>(config.type())),
+            Value::UINT32(config.currentKeyTow()),
+            Value::UINT16(config.currentKeyWeek()),
+            Value(ValueType::valueType_string, config.currentKey()),
+            Value::UINT32(config.nextKeyTow()),
+            Value::UINT16(config.nextKeyWeek()),
+            Value(ValueType::valueType_string, config.nextKey()),
+        });
+    }
+
     bool InertialNode::rtkEnabled() const
     {
         MipFieldValues data = m_impl->get(MipTypes::CMD_GNSS_RTK_CONFIG);
