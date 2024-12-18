@@ -2359,6 +2359,32 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         void setGnssSignalConfig(GnssSignalConfiguration config);
 
+        //API Function: getGnssSpartnConfig
+        //    Gets the device's current GNSS SPARTN configuration.
+        //
+        //Return:
+        //    <GnssSpartnConfiguration> - The current GNSS SPARTN configuration
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        GnssSpartnConfiguration getGnssSpartnConfig() const;
+
+        //API Function: setGnssSpartnConfig
+        //    Set the GNSS SPARTN configuration.
+        //
+        //Parameter:
+        //    config - the <GnssSpartnConfiguration> to apply.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void setGnssSpartnConfig(GnssSpartnConfiguration config);
+
         //API Function: rtkEnabled
         //    Reads whether RTK input is currently enabled on the device.
         //
