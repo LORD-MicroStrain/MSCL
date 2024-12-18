@@ -22,6 +22,9 @@ ___
 - REMOVED zip_win.ps1 in favor of CPack
 - Inertial
     - Added CV7-GNSS/INS support
+    - Added support for MIP commands:
+        - Interface Control (0x7F,0x02)
+        - SPARTN Configuration (0x0E,0x20)
 
 ## 66.0.0 - 2024-10-24
 - CHANGED Switched to CMake build system
