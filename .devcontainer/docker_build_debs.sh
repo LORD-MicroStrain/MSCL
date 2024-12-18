@@ -9,7 +9,7 @@ set -e
 # Get some arguments from the user
 arch="amd64"
 ubuntu_version="20.04"
-python3_versions="3.7.16 3.8.16 3.9.16 3.10.9 3.11.1"
+python3_versions="3.9.21 3.10.16 3.11.11 3.12.8 3.13.1"
 while [[ $# -gt 0 ]]; do
   case $1 in
     --arch)
