@@ -30,7 +30,6 @@ pipeline {
         timeout(time: 10, activity: true, unit: 'MINUTES')
       }
       steps {
-//         cleanWs()
         checkout scm
         withCredentials([string(credentialsId: 'Github_Token', variable: 'GH_TOKEN')]) {
           sh '''

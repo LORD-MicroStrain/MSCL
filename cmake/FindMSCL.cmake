@@ -69,7 +69,7 @@ find_library(MSCL_LIBRARY
 # Disable CMake policy for Boost config find_package
 # CMake 3.30+ uses Boost Config for Boost 1.70+
 if(POLICY CMP0167)
-        cmake_policy(SET CMP0167 OLD)
+    cmake_policy(SET CMP0167 OLD)
 endif()
 
 # Also find the dependencies for MSCL
