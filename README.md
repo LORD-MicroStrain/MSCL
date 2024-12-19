@@ -20,8 +20,8 @@ For projects using our inertial product lines check out our new lightweight C/C+
 
 ## Downloads
 
-[Offline Documentation](https://github.com/LORD-MicroStrain/MSCL/releases/download/v66.0.1/MSCL_Documentation_v66.0.1.zip) |
-[Offline Example Code](https://github.com/LORD-MicroStrain/MSCL/releases/download/v66.0.1/MSCL_Examples_v66.0.1.zip)
+[Offline Documentation](https://github.com/LORD-MicroStrain/MSCL/releases/download/v66.0.0/MSCL_Documentation_v66.0.0.zip)</br>
+[Offline Example Code](https://github.com/LORD-MicroStrain/MSCL/releases/download/v66.0.0/MSCL_Examples_v66.0.0.zip)
 
 Please see our [releases](https://github.com/LORD-MicroStrain/MSCL/releases) page for all of our release notes and packages.</br>
 Packages for the current release, <b>v66.0.0</b>, can be found [here](https://github.com/LORD-MicroStrain/MSCL/releases/tag/v66.0.0)</br>
@@ -147,23 +147,15 @@ from source.
 
 If the pre-built packages aren't available on your platform, you can build MSCL from source.
 
-Instructions can be found here:
-[Building MSCL on Windows](BuildScripts/buildReadme_Windows.md) |
+Instructions can be found here:</br>
+[Building MSCL on Windows](BuildScripts/buildReadme_Windows.md)</br>
 [Building MSCL on Linux](BuildScripts/buildReadme_Linux.md)
 
 ---
 
 ### Documentation
 
-[How to use MSCL](HowToUseMSCL.md)
-
-[Quick Start Guide](https://lord-microstrain.github.io/MSCL/Documentation/Getting%20Started/index.html)
-
-[Public Documentation](https://lord-microstrain.github.io/MSCL/Documentation/MSCL%20API%20Documentation/index.html) - Documentation for all the public
-functionality of MSCL.
-
-[Full Documentation](https://lord-microstrain.github.io/MSCL/Documentation/MSCL%20Documentation/index.html) - Full Documentation of everything in MSCL
-(useful when editing the source).
+MSCL documentation can now be found [here](https://github.com/LORD-MicroStrain/MSCL_documentation)
 
 [Example Code](MSCL_Examples)
 
