@@ -3,9 +3,9 @@ def python3Versions() {
   // Different version depending on the OS
   String[] versions;
   if (isUnix()) {
-    versions = ["3.7.16", "3.8.16", "3.9.16", "3.10.9", "3.11.1"];
+    versions = ["3.9.21", "3.10.16", "3.11.11", "3.12.8", "3.13.1"];
   } else {
-    versions = ["3.7.0", "3.8.0", "3.9.0", "3.10.0", "3.11.0"];
+    versions = ["3.9.0", "3.10.0", "3.11.0", "3.12.0", "3.13.0"];
   }
 
   // If a PR build, just build the most recent, otherwise build all versions
@@ -27,10 +27,10 @@ pipeline {
       agent { label 'linux-amd64' }
       options {
         skipDefaultCheckout()
-        timeout(time: 10, activity: true, unit: 'MINUTES')
+        // TODO: Fix timeout issues on Jenkins for console activity
+//         timeout(time: 10, activity: true, unit: 'MINUTES')
       }
       steps {
-//         cleanWs()
         checkout scm
         withCredentials([string(credentialsId: 'Github_Token', variable: 'GH_TOKEN')]) {
           sh '''
@@ -47,7 +47,8 @@ pipeline {
           agent { label 'windows10' }
           options {
             skipDefaultCheckout()
-            timeout(time: 20, activity: true, unit: 'MINUTES')
+            // TODO: Fix timeout issues on Jenkins for console activity
+//             timeout(time: 20, activity: true, unit: 'MINUTES')
           }
           steps {
             cleanWs()
@@ -60,6 +61,7 @@ pipeline {
           agent { label 'windows10' }
           options {
             skipDefaultCheckout()
+            // TODO: Fix timeout issues on Jenkins for console activity
             timeout(time: 20, activity: true, unit: 'MINUTES')
           }
           steps {
@@ -73,7 +75,8 @@ pipeline {
           agent { label 'linux-amd64' }
           options {
             skipDefaultCheckout()
-            timeout(time: 20, activity: true, unit: 'MINUTES')
+            // TODO: Fix timeout issues on Jenkins for console activity
+//             timeout(time: 20, activity: true, unit: 'MINUTES')
           }
           steps {
             cleanWs()
@@ -86,7 +89,8 @@ pipeline {
           agent { label 'linux-arm64' }
           options {
             skipDefaultCheckout()
-            timeout(time: 20, activity: true, unit: 'MINUTES')
+            // TODO: Fix timeout issues on Jenkins for console activity
+//             timeout(time: 20, activity: true, unit: 'MINUTES')
           }
           steps {
             cleanWs()
@@ -99,7 +103,8 @@ pipeline {
           agent { label 'linux-arm64' }
           options {
             skipDefaultCheckout()
-            timeout(time: 20, activity: true, unit: 'MINUTES')
+            // TODO: Fix timeout issues on Jenkins for console activity
+//             timeout(time: 20, activity: true, unit: 'MINUTES')
           }
           steps {
             cleanWs()

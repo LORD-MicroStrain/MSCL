@@ -120,7 +120,7 @@ RUN echo Installing Git `
     && del /q %DOCKER_TEMP_DIR%/Git-%GIT_VERSION%-64-bit.exe
 
 # Install Python3
-ARG PYTHON3_VERSIONS="3.5.0"
+ARG PYTHON3_VERSIONS="3.9.0"
 RUN echo Installing Python3 `
     && for %v in (%PYTHON3_VERSIONS%) do ( `
         echo Installing Python%v `

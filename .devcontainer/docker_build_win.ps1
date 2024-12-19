@@ -6,7 +6,7 @@
 param (
   [String]$windows_image,
   [String]$windows_version,
-  [String]$python3_versions = "3.7.0 3.8.0 3.9.0 3.10.0 3.11.0",
+  [String]$python3_versions = "3.9.0 3.10.0 3.11.0 3.12.0 3.13.0",
   [String]$arch = "x64"
 )
 
