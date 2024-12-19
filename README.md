@@ -3,9 +3,8 @@
 MSCL is developed by [MicroStrain](https://microstrain.com) in Williston, VT. It was created to make it simple to interact with our
 [Wireless](https://www.microstrain.com/wireless), and [Inertial](https://www.microstrain.com/inertial) sensors.
 
-|                                                                                    Stable                                                                                     |                                                                                Development                                                                                 |
-|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
-|  [![GitHub tag status](https://img.shields.io/github/checks-status/LORD-MicroStrain/MSCL/v66.0.0?label=v66.0.0)](https://github.com/LORD-MicroStrain/MSCL/releases/v66.0.0/)  |  [![GitHub tag status](https://img.shields.io/github/checks-status/LORD-MicroStrain/MSCL/latest?label=latest)](https://github.com/LORD-MicroStrain/MSCL/releases/latest/)  |
+[![GitHub tag status](https://img.shields.io/github/checks-status/LORD-MicroStrain/MSCL/v67.0.0?label=v67.0.0)](https://github.com/LORD-MicroStrain/MSCL/releases/v67.0.0/) &nbsp;
+[![GitHub tag status](https://img.shields.io/github/checks-status/LORD-MicroStrain/MSCL/latest?label=latest)](https://github.com/LORD-MicroStrain/MSCL/releases/latest/)
 
 ### Support/Issues
 
@@ -23,11 +22,14 @@ For projects using our inertial product lines check out our new lightweight C/C+
 Release notes and all downloadable assets can be found on our [releases page](https://github.com/LORD-MicroStrain/MSCL/releases) or from the
 links below.
 
-[Offline Documentation](https://github.com/LORD-MicroStrain/MSCL/releases/download/v66.0.0/MSCL_Documentation.zip) |
-[Offline Example Code](https://github.com/LORD-MicroStrain/MSCL/releases/download/v66.0.0/MSCL_Examples.zip)
+[Offline Documentation](https://github.com/LORD-MicroStrain/MSCL/releases/download/v67.0.0/MSCL_Documentation_v67.0.0.zip)</br>
+[Offline Example Code](https://github.com/LORD-MicroStrain/MSCL/releases/download/v67.0.0/MSCL_Examples_v67.0.0.zip)
 
+Please see our [releases](https://github.com/LORD-MicroStrain/MSCL/releases) page for all of our release notes and packages.</br>
+Packages for the current release, <b>v67.0.0</b>, can be found [here](https://github.com/LORD-MicroStrain/MSCL/releases/tag/v67.0.0)</br>
+Latest pre-release packages can be found [here](https://github.com/LORD-MicroStrain/MSCL/releases/tag/latest)</br>
 
-## Pre-built Binaries/Packages
+## Supported Pre-Built Binaries/Packages
 
 ### Windows:
 
@@ -42,42 +44,42 @@ links below.
   </tr>
   <tr align="center">
     <td rowspan="2"> C++ </td>
-    <td><a href="https://github.com/LORD-MicroStrain/MSCL/releases/download/v66.0.0/MSCL_Windows_x64_Shared_C++.zip"> C++ Shared (.dll) x64 </a></td>
-    <td><a href="https://github.com/LORD-MicroStrain/MSCL/releases/download/v66.0.0/MSCL_Windows_x86_Shared_C++.zip"> C++ Shared (.dll) x86 </a></td>
+    <td> C++ Shared (.dll) x64 </td>
+    <td> C++ Shared (.dll) x86 </td>
   </tr>
   <tr align="center">
-    <td><a href="https://github.com/LORD-MicroStrain/MSCL/releases/download/v66.0.0/MSCL_Windows_x64_Shared_C++.zip"> C++ Static (.lib) x64 </a></td>
-    <td><a href="https://github.com/LORD-MicroStrain/MSCL/releases/download/v66.0.0/MSCL_Windows_x86_Shared_C++.zip"> C++ Static (.lib) x86 </a></td>
+    <td> C++ Static (.lib) x64 </td>
+    <td> C++ Static (.lib) x86 </td>
   </tr>
   <tr align="center">
     <td rowspan="6"> Python </td>
-    <td><a href="https://github.com/LORD-MicroStrain/MSCL/releases/download/v66.0.0/MSCL_Windows_x64_Python2.7.zip"> Python 2.7 x64 </a></td>
-    <td><a href="https://github.com/LORD-MicroStrain/MSCL/releases/download/v66.0.0/MSCL_Windows_x86_Python2.7.zip"> Python 2.7 x86 </a></td>
+    <td> Python 2.7 x64 </td>
+    <td> Python 2.7 x86 </td>
   </tr>
   <tr align="center">
-    <td><a href="https://github.com/LORD-MicroStrain/MSCL/releases/download/v66.0.0/MSCL_Windows_x64_Python3.7.zip"> Python 3.7 x64 </a></td>
-    <td><a href="https://github.com/LORD-MicroStrain/MSCL/releases/download/v66.0.0/MSCL_Windows_x86_Python3.7.zip"> Python 3.7 x86 </a></td>
+    <td> Python 3.9 x64 </td>
+    <td> Python 3.9 x86 </td>
   </tr>
   <tr align="center">
-    <td><a href="https://github.com/LORD-MicroStrain/MSCL/releases/download/v66.0.0/MSCL_Windows_x64_Python3.8.zip"> Python 3.8 x64 </a></td>
-    <td><a href="https://github.com/LORD-MicroStrain/MSCL/releases/download/v66.0.0/MSCL_Windows_x86_Python3.8.zip"> Python 3.8 x86 </a></td>
+    <td> Python 3.10 x64 </td>
+    <td> Python 3.10 x86 </td>
   </tr>
   <tr align="center">
-    <td><a href="https://github.com/LORD-MicroStrain/MSCL/releases/download/v66.0.0/MSCL_Windows_x64_Python3.9.zip"> Python 3.9 x64 </a></td>
-    <td><a href="https://github.com/LORD-MicroStrain/MSCL/releases/download/v66.0.0/MSCL_Windows_x86_Python3.9.zip"> Python 3.9 x86 </a></td>
+    <td> Python 3.11 x64 </td>
+    <td> Python 3.11 x86 </td>
   </tr>
   <tr align="center">
-    <td><a href="https://github.com/LORD-MicroStrain/MSCL/releases/download/v66.0.0/MSCL_Windows_x64_Python3.10.zip"> Python 3.10 x64 </a></td>
-    <td><a href="https://github.com/LORD-MicroStrain/MSCL/releases/download/v66.0.0/MSCL_Windows_x86_Python3.10.zip"> Python 3.10 x86 </a></td>
+    <td> Python 3.12 x64 </td>
+    <td> Python 3.12 x86 </td>
   </tr>
   <tr align="center">
-    <td><a href="https://github.com/LORD-MicroStrain/MSCL/releases/download/v66.0.0/MSCL_Windows_x64_Python3.11.zip"> Python 3.11 x64 </a></td>
-    <td><a href="https://github.com/LORD-MicroStrain/MSCL/releases/download/v66.0.0/MSCL_Windows_x86_Python3.11.zip"> Python 3.11 x86 </a></td>
+    <td> Python 3.13 x64 </td>
+    <td> Python 3.13 x86 </td>
   </tr>
   <tr align="center">
     <td> .NET </td>
-    <td><a href="https://github.com/LORD-MicroStrain/MSCL/releases/download/v66.0.0/MSCL_Windows_x64_DotNet.zip"> .NET x64 </a></td>
-    <td><a href="https://github.com/LORD-MicroStrain/MSCL/releases/download/v66.0.0/MSCL_Windows_x86_DotNet.zip"> .NET x86 </a></td>
+    <td> .NET x64 </td>
+    <td> .NET x86 </td>
   </tr>
 </table>
 
@@ -96,45 +98,45 @@ links below.
   </tr>
   <tr align="center">
     <td rowspan="2"> C++ </td>
-    <td><a href="https://github.com/LORD-MicroStrain/MSCL/releases/download/v66.0.0/MSCL_amd64_Shared_C++.deb"> C++ Shared (.so) x64 </a></td>
-    <td><a href="https://github.com/LORD-MicroStrain/MSCL/releases/download/v66.0.0/MSCL_arm64_Shared_C++.deb"> C++ Shared (.so) arm64 </a></td>
-    <td><a href="https://github.com/LORD-MicroStrain/MSCL/releases/download/v66.0.0/MSCL_armhf_Shared_C++.deb"> C++ Shared (.so) armhf </a></td>
+    <td> C++ Shared (.so) x64 </td>
+    <td> C++ Shared (.so) arm64 </td>
+    <td> C++ Shared (.so) armhf </td>
   </tr>
   <tr align="center">
-    <td><a href="https://github.com/LORD-MicroStrain/MSCL/releases/download/v66.0.0/MSCL_amd64_Static_C++.deb"> C++ Static (.a) x64 </a></td>
-    <td><a href="https://github.com/LORD-MicroStrain/MSCL/releases/download/v66.0.0/MSCL_arm64_Static_C++.deb"> C++ Static (.a) arm64 </a></td>
-    <td><a href="https://github.com/LORD-MicroStrain/MSCL/releases/download/v66.0.0/MSCL_armhf_Static_C++.deb"> C++ Static (.a) armhf </a></td>
+    <td> C++ Static (.a) x64 </td>
+    <td> C++ Static (.a) arm64 </td>
+    <td> C++ Static (.a) armhf </td>
   </tr>
   <tr align="center">
     <td rowspan="6"> Python </td>
-    <td><a href="https://github.com/LORD-MicroStrain/MSCL/releases/download/v66.0.0/MSCL_amd64_Python2.7.deb"> Python 2.7 x64 </a></td>
-    <td><a href="https://github.com/LORD-MicroStrain/MSCL/releases/download/v66.0.0/MSCL_arm64_Python2.7.deb"> Python 2.7 arm64 </a></td>
-    <td><a href="https://github.com/LORD-MicroStrain/MSCL/releases/download/v66.0.0/MSCL_armhf_Python2.7.deb"> Python 2.7 armhf </a></td>
+    <td> Python 2.7 x64 </td>
+    <td> Python 2.7 arm64 </td>
+    <td> Python 2.7 armhf </td>
   </tr>
   <tr align="center">
-    <td><a href="https://github.com/LORD-MicroStrain/MSCL/releases/download/v66.0.0/MSCL_amd64_Python3.7.deb"> Python 3.7 x64 </a></td>
-    <td><a href="https://github.com/LORD-MicroStrain/MSCL/releases/download/v66.0.0/MSCL_arm64_Python3.7.deb"> Python 3.7 arm64 </a></td>
-    <td><a href="https://github.com/LORD-MicroStrain/MSCL/releases/download/v66.0.0/MSCL_armhf_Python3.7.deb"> Python 3.7 armhf </a></td>
+    <td> Python 3.9 x64 </td>
+    <td> Python 3.9 arm64 </td>
+    <td> Python 3.9 armhf </td>
   </tr>
   <tr align="center">
-    <td><a href="https://github.com/LORD-MicroStrain/MSCL/releases/download/v66.0.0/MSCL_amd64_Python3.8.deb"> Python 3.8 x64 </a></td>
-    <td><a href="https://github.com/LORD-MicroStrain/MSCL/releases/download/v66.0.0/MSCL_arm64_Python3.8.deb"> Python 3.8 arm64 </a></td>
-    <td><a href="https://github.com/LORD-MicroStrain/MSCL/releases/download/v66.0.0/MSCL_armhf_Python3.8.deb"> Python 3.8 armhf </a></td>
+    <td> Python 3.10 x64 </td>
+    <td> Python 3.10 arm64 </td>
+    <td> Python 3.10 armhf </td>
   </tr>
   <tr align="center">
-    <td><a href="https://github.com/LORD-MicroStrain/MSCL/releases/download/v66.0.0/MSCL_amd64_Python3.9.deb"> Python 3.9 x64 </a></td>
-    <td><a href="https://github.com/LORD-MicroStrain/MSCL/releases/download/v66.0.0/MSCL_arm64_Python3.9.deb"> Python 3.9 arm64 </a></td>
-    <td><a href="https://github.com/LORD-MicroStrain/MSCL/releases/download/v66.0.0/MSCL_armhf_Python3.9.deb"> Python 3.9 armhf </a></td>
+    <td> Python 3.11 x64 </td>
+    <td> Python 3.11 arm64 </td>
+    <td> Python 3.11 armhf </td>
   </tr>
   <tr align="center">
-    <td><a href="https://github.com/LORD-MicroStrain/MSCL/releases/download/v66.0.0/MSCL_amd64_Python3.10.deb"> Python 3.10 x64 </a></td>
-    <td><a href="https://github.com/LORD-MicroStrain/MSCL/releases/download/v66.0.0/MSCL_arm64_Python3.10.deb"> Python 3.10 arm64 </a></td>
-    <td><a href="https://github.com/LORD-MicroStrain/MSCL/releases/download/v66.0.0/MSCL_armhf_Python3.10.deb"> Python 3.10 armhf </a></td>
+    <td> Python 3.12 x64 </td>
+    <td> Python 3.12 arm64 </td>
+    <td> Python 3.12 armhf </td>
   </tr>
   <tr align="center">
-    <td><a href="https://github.com/LORD-MicroStrain/MSCL/releases/download/v66.0.0/MSCL_amd64_Python3.11.deb"> Python 3.11 x64 </a></td>
-    <td><a href="https://github.com/LORD-MicroStrain/MSCL/releases/download/v66.0.0/MSCL_arm64_Python3.11.deb"> Python 3.11 arm64 </a></td>
-    <td><a href="https://github.com/LORD-MicroStrain/MSCL/releases/download/v66.0.0/MSCL_armhf_Python3.11.deb"> Python 3.11 armhf </a></td>
+    <td> Python 3.13 x64 </td>
+    <td> Python 3.13 arm64 </td>
+    <td> Python 3.13 armhf </td>
   </tr>
 </table>
 
@@ -147,23 +149,15 @@ from source.
 
 If the pre-built packages aren't available on your platform, you can build MSCL from source.
 
-Instructions can be found here:
-[Building MSCL on Windows](BuildScripts/buildReadme_Windows.md) |
+Instructions can be found here:</br>
+[Building MSCL on Windows](BuildScripts/buildReadme_Windows.md)</br>
 [Building MSCL on Linux](BuildScripts/buildReadme_Linux.md)
 
 ---
 
 ### Documentation
 
-[How to use MSCL](HowToUseMSCL.md)
-
-[Quick Start Guide](https://lord-microstrain.github.io/MSCL/Documentation/Getting%20Started/index.html)
-
-[Public Documentation](https://lord-microstrain.github.io/MSCL/Documentation/MSCL%20API%20Documentation/index.html) - Documentation for all the public
-functionality of MSCL.
-
-[Full Documentation](https://lord-microstrain.github.io/MSCL/Documentation/MSCL%20Documentation/index.html) - Full Documentation of everything in MSCL
-(useful when editing the source).
+MSCL documentation can now be found [here](https://github.com/LORD-MicroStrain/MSCL_documentation)
 
 [Example Code](MSCL_Examples)
 

@@ -2,14 +2,16 @@
 #   This examples shows how to open a connection with a Base Station,
 #   ping a Node, and get the result and its information
 #
-# Updated: 2/21/2024
+# Updated: 12/18/2024
 
 import sys
+import os
 
 # TODO: change this path to match your setup
 # import the mscl library.
-arch = sys.maxsize > 2**32 and "x64" or "x32"
-sys.path.append("../../../Output/Python{sys.version_info.major}.{sys.version_info.minor}/{arch}/Release")
+arch = sys.maxsize > 2 ** 32 and "x64" or "x32"
+sys.path.append(os.path.abspath("{}/../../../Output/Python/{}.{}/{}/Release".format(os.path.dirname(os.path.realpath(__file__)),
+    sys.version_info.major, sys.version_info.minor, arch)))
 
 import mscl
 
@@ -42,4 +44,4 @@ try:
         print("Failed to ping Node", NODE_ADDRESS)
 
 except Exception as e:
-    print("Error:", e    )
+    print("Error:", e)

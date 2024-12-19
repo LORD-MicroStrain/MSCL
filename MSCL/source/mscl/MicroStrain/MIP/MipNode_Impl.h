@@ -567,6 +567,51 @@ namespace mscl
         //    - <Error>: An <MipChannel> in the channels parameter is not part of the specified <MipTypes::DataClass>'s descriptor set.
         void saveMessageFormat(MipTypes::DataClass type);
 
+        //Function: getInterfaceControl
+        //    Gets the current comm port interface configuration for the specified ID.
+        //    This includes the port type, ID and input/output protocols currently configured.
+        //
+        //Parameters:
+        //    interfaceId - The interface ID to get the comm port configuration for
+        //
+        //Returns:
+        //    The <DeviceCommPort> configuration for the specified ID.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command or <MipTypes::DataClass> is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        virtual DeviceCommPort getInterfaceControl(uint8 interfaceId) const;
+
+        //Function: setInterfaceControl
+        //    Sets the interface control for the node.
+        //    Note: See the device's manual for possible configurations and limitations.
+        //
+        //Parameters:
+        //    portInterface - The <DeviceCommPort> with prepopulated configuration information to set
+        //
+        //Exceptions:
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        virtual void setInterfaceControl(const DeviceCommPort& portInterface);
+
+        //Function: setInterfaceControl
+        //    Sets the specified comm port interface configuration for the node.
+        //    Note: See the device's manual for possible configurations and limitations.
+        //
+        //Parameters:
+        //    interfaceId     - The interface ID to configure
+        //    inputProtocols  - The protocols to receive on the specified ID
+        //    outputProtocols - The protocols to transmit on the specified ID
+        //
+        //Exceptions:
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        virtual void setInterfaceControl(const uint8 interfaceId, const DeviceCommPort::Protocol inputProtocols, const DeviceCommPort::Protocol outputProtocols);
+
         //Function: getCommunicationMode
         //    Gets the current communication mode that the node is in.
         //

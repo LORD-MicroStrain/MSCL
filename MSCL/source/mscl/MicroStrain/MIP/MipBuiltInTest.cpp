@@ -20,6 +20,7 @@ namespace mscl
         case MipModels::node_3dm_cv7_ahrs:
         case MipModels::node_3dm_cv7_ar:
         case MipModels::node_3dm_cv7_ins:
+        case MipModels::node_3dm_cv7_gnss_ins:
         {
             const CV7ContinuousBIT bit(data);
             return bit.as_MipDataPoints();

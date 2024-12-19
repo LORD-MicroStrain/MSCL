@@ -126,44 +126,45 @@ namespace mscl
         return !MipModels::modelNumbersEqual(model1, model2.modelNumber());
     }
 
-    const MipModel MipModel::mip_model_none("0000-0000");                                          // undefined placeholder
-    const MipModel MipModel::mip_model_3dm_dh3(MipModels::ModelNumber::model_3dm_dh3);             // 3DM-DH3
-    const MipModel MipModel::mip_model_3dm_gx3_15(MipModels::ModelNumber::model_3dm_gx3_15);       // 3DM-GX3-15
-    const MipModel MipModel::mip_model_3dm_gx3_25(MipModels::ModelNumber::model_3dm_gx3_25);       // 3DM-GX3-25
-    const MipModel MipModel::mip_model_3dm_gx3_35(MipModels::ModelNumber::model_3dm_gx3_35);       // 3DM-GX3-35
-    const MipModel MipModel::mip_model_3dm_gx3_45(MipModels::ModelNumber::model_3dm_gx3_45);       // 3DM-GX3-45
-    const MipModel MipModel::mip_model_3dm_rq1_45_lt(MipModels::ModelNumber::model_3dm_rq1_45_lt); // 3DM-RQ1-45-LT
-    const MipModel MipModel::mip_model_3dm_rq1_45_st(MipModels::ModelNumber::model_3dm_rq1_45_st); // 3DM-RQ1-45-ST
-    const MipModel MipModel::mip_model_3dm_gx4_15(MipModels::ModelNumber::model_3dm_gx4_15);       // 3DM-GX4-15
-    const MipModel MipModel::mip_model_3dm_gx4_25(MipModels::ModelNumber::model_3dm_gx4_25);       // 3DM-GX4-25
-    const MipModel MipModel::mip_model_3dm_gx4_45(MipModels::ModelNumber::model_3dm_gx4_45);       // 3DM-GX4-45
-    const MipModel MipModel::mip_model_mv5_ar(MipModels::ModelNumber::model_mv5_ar);               // MV5-AR
-    const MipModel MipModel::mip_model_3dm_gx5_10(MipModels::ModelNumber::model_3dm_gx5_10);       // 3DM-GX5-10
-    const MipModel MipModel::mip_model_3dm_gx5_15(MipModels::ModelNumber::model_3dm_gx5_15);       // 3DM-GX5-15
-    const MipModel MipModel::mip_model_3dm_gx5_25(MipModels::ModelNumber::model_3dm_gx5_25);       // 3DM-GX5-25
-    const MipModel MipModel::mip_model_3dm_gx5_35(MipModels::ModelNumber::model_3dm_gx5_35);       // 3DM-GX5-35
-    const MipModel MipModel::mip_model_3dm_gx5_45(MipModels::ModelNumber::model_3dm_gx5_45);       // 3DM-GX5-45
-    const MipModel MipModel::mip_model_3dm_cv5_10(MipModels::ModelNumber::model_3dm_cv5_10);       // 3DM-CV5-10
-    const MipModel MipModel::mip_model_3dm_cv5_15(MipModels::ModelNumber::model_3dm_cv5_15);       // 3DM-CV5-15
-    const MipModel MipModel::mip_model_3dm_cv5_25(MipModels::ModelNumber::model_3dm_cv5_25);       // 3DM-CV5-25
-    const MipModel MipModel::mip_model_3dm_cv5_45(MipModels::ModelNumber::model_3dm_cv5_45);       // 3DM-CV5-45
-    const MipModel MipModel::mip_model_3dm_gq4_45(MipModels::ModelNumber::model_3dm_gq4_45);       // 3DM-GQ4-45
-    const MipModel MipModel::mip_model_3dm_cx5_45(MipModels::ModelNumber::model_3dm_cx5_45);       // 3DM-CX5-45
-    const MipModel MipModel::mip_model_3dm_cx5_35(MipModels::ModelNumber::model_3dm_cx5_35);       // 3DM-CX5-35
-    const MipModel MipModel::mip_model_3dm_cx5_25(MipModels::ModelNumber::model_3dm_cx5_25);       // 3DM-CX5-25
-    const MipModel MipModel::mip_model_3dm_cx5_15(MipModels::ModelNumber::model_3dm_cx5_15);       // 3DM-CX5-15
-    const MipModel MipModel::mip_model_3dm_cx5_10(MipModels::ModelNumber::model_3dm_cx5_10);       // 3DM-CX5-10
-    const MipModel MipModel::mip_model_3dm_cl5_15(MipModels::ModelNumber::model_3dm_cl5_15);       // 3DM-CL5-15
-    const MipModel MipModel::mip_model_3dm_cl5_25(MipModels::ModelNumber::model_3dm_cl5_25);       // 3DM-CL5-25
-    const MipModel MipModel::mip_model_3dm_gq7(MipModels::ModelNumber::model_3dm_gq7);             // 3DM-GQ7
-    const MipModel MipModel::mip_model_3dm_rtk_v1(MipModels::ModelNumber::model_3dm_rtk_v1);       // 3DM-RTK v1
-    const MipModel MipModel::mip_model_3dm_rtk(MipModels::ModelNumber::model_3dm_rtk);             // 3DM-RTK
-    const MipModel MipModel::mip_model_3dm_cv7_ahrs(MipModels::ModelNumber::model_3dm_cv7_ahrs);   // 3DM-CV7-AHRS
-    const MipModel MipModel::mip_model_3dm_cv7_ar(MipModels::ModelNumber::model_3dm_cv7_ar);       // 3DM-CV7-AR
-    const MipModel MipModel::mip_model_3dm_gv7_ahrs(MipModels::ModelNumber::model_3dm_gv7_ahrs);   // 3DM-GV7-AHRS
-    const MipModel MipModel::mip_model_3dm_gv7_ar(MipModels::ModelNumber::model_3dm_gv7_ar);       // 3DM-GV7-AR
-    const MipModel MipModel::mip_model_3dm_gv7_ins(MipModels::ModelNumber::model_3dm_gv7_ins);     // 3DM-GV7-INS
-    const MipModel MipModel::mip_model_3dm_cv7_ins(MipModels::ModelNumber::model_3dm_cv7_ins);     // 3DM-CV7-INS
+    const MipModel MipModel::mip_model_none("0000-0000");                                                // undefined placeholder
+    const MipModel MipModel::mip_model_3dm_dh3(MipModels::ModelNumber::model_3dm_dh3);                   // 3DM-DH3
+    const MipModel MipModel::mip_model_3dm_gx3_15(MipModels::ModelNumber::model_3dm_gx3_15);             // 3DM-GX3-15
+    const MipModel MipModel::mip_model_3dm_gx3_25(MipModels::ModelNumber::model_3dm_gx3_25);             // 3DM-GX3-25
+    const MipModel MipModel::mip_model_3dm_gx3_35(MipModels::ModelNumber::model_3dm_gx3_35);             // 3DM-GX3-35
+    const MipModel MipModel::mip_model_3dm_gx3_45(MipModels::ModelNumber::model_3dm_gx3_45);             // 3DM-GX3-45
+    const MipModel MipModel::mip_model_3dm_rq1_45_lt(MipModels::ModelNumber::model_3dm_rq1_45_lt);       // 3DM-RQ1-45-LT
+    const MipModel MipModel::mip_model_3dm_rq1_45_st(MipModels::ModelNumber::model_3dm_rq1_45_st);       // 3DM-RQ1-45-ST
+    const MipModel MipModel::mip_model_3dm_gx4_15(MipModels::ModelNumber::model_3dm_gx4_15);             // 3DM-GX4-15
+    const MipModel MipModel::mip_model_3dm_gx4_25(MipModels::ModelNumber::model_3dm_gx4_25);             // 3DM-GX4-25
+    const MipModel MipModel::mip_model_3dm_gx4_45(MipModels::ModelNumber::model_3dm_gx4_45);             // 3DM-GX4-45
+    const MipModel MipModel::mip_model_mv5_ar(MipModels::ModelNumber::model_mv5_ar);                     // MV5-AR
+    const MipModel MipModel::mip_model_3dm_gx5_10(MipModels::ModelNumber::model_3dm_gx5_10);             // 3DM-GX5-10
+    const MipModel MipModel::mip_model_3dm_gx5_15(MipModels::ModelNumber::model_3dm_gx5_15);             // 3DM-GX5-15
+    const MipModel MipModel::mip_model_3dm_gx5_25(MipModels::ModelNumber::model_3dm_gx5_25);             // 3DM-GX5-25
+    const MipModel MipModel::mip_model_3dm_gx5_35(MipModels::ModelNumber::model_3dm_gx5_35);             // 3DM-GX5-35
+    const MipModel MipModel::mip_model_3dm_gx5_45(MipModels::ModelNumber::model_3dm_gx5_45);             // 3DM-GX5-45
+    const MipModel MipModel::mip_model_3dm_cv5_10(MipModels::ModelNumber::model_3dm_cv5_10);             // 3DM-CV5-10
+    const MipModel MipModel::mip_model_3dm_cv5_15(MipModels::ModelNumber::model_3dm_cv5_15);             // 3DM-CV5-15
+    const MipModel MipModel::mip_model_3dm_cv5_25(MipModels::ModelNumber::model_3dm_cv5_25);             // 3DM-CV5-25
+    const MipModel MipModel::mip_model_3dm_cv5_45(MipModels::ModelNumber::model_3dm_cv5_45);             // 3DM-CV5-45
+    const MipModel MipModel::mip_model_3dm_gq4_45(MipModels::ModelNumber::model_3dm_gq4_45);             // 3DM-GQ4-45
+    const MipModel MipModel::mip_model_3dm_cx5_45(MipModels::ModelNumber::model_3dm_cx5_45);             // 3DM-CX5-45
+    const MipModel MipModel::mip_model_3dm_cx5_35(MipModels::ModelNumber::model_3dm_cx5_35);             // 3DM-CX5-35
+    const MipModel MipModel::mip_model_3dm_cx5_25(MipModels::ModelNumber::model_3dm_cx5_25);             // 3DM-CX5-25
+    const MipModel MipModel::mip_model_3dm_cx5_15(MipModels::ModelNumber::model_3dm_cx5_15);             // 3DM-CX5-15
+    const MipModel MipModel::mip_model_3dm_cx5_10(MipModels::ModelNumber::model_3dm_cx5_10);             // 3DM-CX5-10
+    const MipModel MipModel::mip_model_3dm_cl5_15(MipModels::ModelNumber::model_3dm_cl5_15);             // 3DM-CL5-15
+    const MipModel MipModel::mip_model_3dm_cl5_25(MipModels::ModelNumber::model_3dm_cl5_25);             // 3DM-CL5-25
+    const MipModel MipModel::mip_model_3dm_gq7(MipModels::ModelNumber::model_3dm_gq7);                   // 3DM-GQ7
+    const MipModel MipModel::mip_model_3dm_rtk_v1(MipModels::ModelNumber::model_3dm_rtk_v1);             // 3DM-RTK v1
+    const MipModel MipModel::mip_model_3dm_rtk(MipModels::ModelNumber::model_3dm_rtk);                   // 3DM-RTK
+    const MipModel MipModel::mip_model_3dm_cv7_ahrs(MipModels::ModelNumber::model_3dm_cv7_ahrs);         // 3DM-CV7-AHRS
+    const MipModel MipModel::mip_model_3dm_cv7_ar(MipModels::ModelNumber::model_3dm_cv7_ar);             // 3DM-CV7-AR
+    const MipModel MipModel::mip_model_3dm_gv7_ahrs(MipModels::ModelNumber::model_3dm_gv7_ahrs);         // 3DM-GV7-AHRS
+    const MipModel MipModel::mip_model_3dm_gv7_ar(MipModels::ModelNumber::model_3dm_gv7_ar);             // 3DM-GV7-AR
+    const MipModel MipModel::mip_model_3dm_gv7_ins(MipModels::ModelNumber::model_3dm_gv7_ins);           // 3DM-GV7-INS
+    const MipModel MipModel::mip_model_3dm_cv7_ins(MipModels::ModelNumber::model_3dm_cv7_ins);           // 3DM-CV7-INS
+    const MipModel MipModel::mip_model_3dm_cv7_gnss_ins(MipModels::ModelNumber::model_3dm_cv7_gnss_ins); // 3DM-CV7-GNSS/INS
 
     MipModel::MipModel() :
         m_modelStr(""),

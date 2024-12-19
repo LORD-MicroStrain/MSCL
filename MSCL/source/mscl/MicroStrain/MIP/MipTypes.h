@@ -225,7 +225,9 @@ namespace mscl
         //  CMD_EF_GNSS_ANTENNA_LEVER_ARM_CAL           - 0x0D64    - Estimation Filter - GNSS Antenna Lever Arm Calibration Control
         //  CMD_GNSS_RECEIVER_INFO                      - 0x0E01    - GNSS Receiver Info
         //  CMD_GNSS_SIGNAL_CONFIG                      - 0x0E02    - GNSS Signal Configuration
+        //  CMD_GNSS_SPARTN_CONFIG                      - 0x0E20    - GNSS Spartn Configuration
         //  CMD_GNSS_RTK_CONFIG                         - 0x0E10    - GNSS RTK Configuration
+        //  CMD_INTERFACE_CONTROL                       - 0x7F02    - Interface Control
         //  CMD_COMMUNICATION_MODE                      - 0x7F10    - Communication Mode
         //  CMD_HARDWARE_CTRL                           - 0x7F11    - Hardware Control
         //  CMD_GET_ANALOG_DISPLACEMENT_CALS            - 0x1101    - Get Analog Output to Displacement Slope and Offset
@@ -375,7 +377,9 @@ namespace mscl
             CMD_EF_GNSS_ANTENNA_LEVER_ARM_CAL       = 0x0D64,
             CMD_GNSS_RECEIVER_INFO                  = 0x0E01,
             CMD_GNSS_SIGNAL_CONFIG                  = 0x0E02,
+            CMD_GNSS_SPARTN_CONFIG                  = 0x0E20,
             CMD_GNSS_RTK_CONFIG                     = 0x0E10,
+            CMD_INTERFACE_CONTROL                   = 0x7F02,
             CMD_COMMUNICATION_MODE                  = 0x7F10,
             CMD_HARDWARE_CTRL                       = 0x7F11,
             CMD_GET_ANALOG_DISPLACEMENT_CALS        = 0x1101,
@@ -393,7 +397,7 @@ namespace mscl
             CMD_AIDING_VEL_BODY_FRAME               = 0x132A,
             CMD_AIDING_HEADING_TRUE                 = 0x1331,
             CMD_AIDING_MAGNETIC_FIELD               = 0x1332,
-            CMD_AIDING_PRESSURE                     = 0x1333, 
+            CMD_AIDING_PRESSURE                     = 0x1333,
         };
 
         //====================================================================================================
@@ -2779,34 +2783,90 @@ namespace mscl
     {
         //API Enum: Type
         //  Available comm port type definitions
-        //      PRIMARY - 0
-        //      AUX     - 1
-        //      GPIO    - 2
+        //      SPECIAL - 0x00 - Device specific ports (Main/Aux)
+        //      UART    - 0x01 - UART related ports
+        //      USB     - 0x02 - USB related ports
         enum Type
         {
-            PRIMARY = 0,
-            AUX     = 1,
-            GPIO    = 2
+            SPECIAL = 0x00, // Device specific ports (Main/Aux)
+            UART    = 0x01, // UART related ports
+            USB     = 0x02  // USB related ports
+        };
+
+        //API Enum: Protocol
+        //  Available comm protocols that can be configured for UART ports
+        //      NONE         - 0x00000000 - Not set
+        //      MIP_COMMANDS - 0x00000001 - MIP commands
+        //      MIP_DATA     - 0x00000002 - MIP data
+        //      NMEA         - 0x00000004 - NMEA
+        //      RTCM         - 0x00000008 - RTCM
+        //      SPARTN       - 0x00000010 - SPARTN
+        //      ALL          - 0x0000001F - All protocols
+        enum Protocol : uint32
+        {
+            NONE         = 0x00000000, // Not set
+            MIP_COMMANDS = 0x00000001, // MIP commands
+            MIP_DATA     = 0x00000002, // MIP data
+            NMEA         = 0x00000004, // NMEA
+            RTCM         = 0x00000008, // RTCM
+            SPARTN       = 0x00000010, // SPARTN
+            ALL          = 0x0000001F  // All protocols
         };
 
         //API Constructor: DeviceCommPort
         //  Constructs DeviceCommPort object with default values
-        DeviceCommPort() {};
+        DeviceCommPort() = default;
 
         //API Constructor: DeviceCommPort
         //  Constructs DeviceCommPort object with specified values
-        DeviceCommPort(Type portType, uint8 portId) :
+        //
+        //Parameters:
+        //  portType            - Type of port being configured
+        //  portId              - The ID of the port to configure
+        //  portInputProtocols  - The input protocols accepted by the port
+        //  portOutputProtocols - The output protocols transmitted from the port
+        DeviceCommPort(Type portType, uint8 portId, Protocol portInputProtocols = NONE, Protocol portOutputProtocols = NONE) :
             type(portType),
-            id(portId)
-        {};
+            id(portId),
+            inputProtocols(portInputProtocols),
+            outputProtocols(portOutputProtocols)
+        {}
+
+        //API Constructor: DeviceCommPort
+        //  Constructs DeviceCommPort object with specified values
+        //  The ID and Type are determined by the interface value. I.E. Interface 0x12 == Type 1 && ID 2
+        //
+        //Parameters:
+        //  portInterface       - A combination of the port type and ID
+        //  portInputProtocols  - The input protocols accepted by the port
+        //  portOutputProtocols - The output protocols transmitted from the port
+        DeviceCommPort(uint8 portInterface, Protocol portInputProtocols = NONE, Protocol portOutputProtocols = NONE) :
+            type(static_cast<Type>((portInterface & 0xF0) >> 4)),
+            id(portInterface & 0xF),
+            inputProtocols(portInputProtocols),
+            outputProtocols(portOutputProtocols)
+        {}
+
+        //API Function: interfaceId
+        // Get the interface ID of the port
+        // This is a combined value of the type and port ID
+        uint8 interfaceId() const { return (static_cast<uint8>(type) << 4) | id; }
 
         //API Variable: type
-        // Port type (primary, aux, etc.)
+        // Port type (special, UART, etc.)
         Type type;
 
         //API Variable: id
         // Port ID
         uint8 id;
+
+        //API Variable: protocol
+        // Input communication protocols
+        Protocol inputProtocols;
+
+        //API Variable: protocol
+        // Output communication protocols
+        Protocol outputProtocols;
     };
 
     typedef std::vector<DeviceCommPort> CommPortInfo;

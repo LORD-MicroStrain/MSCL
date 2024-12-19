@@ -470,14 +470,14 @@ namespace mscl
         //API Enum: GeographicSourceOption
         //    The enum to represent the source options for Declination (0x0D, 0x43), Inclination (0x0D, 0x4C), and Magnitude Source (0x0D, 0x4D)
         //
-        //      NONE                        - 0x0001
-        //      WORLD_MAGNETIC_MODEL        - 0x0002
-        //      MANUAL                      - 0x0004
+        //      NONE                 - 0x01 - No source
+        //      WORLD_MAGNETIC_MODEL - 0x02 - Magnetic field is assumed to conform to the World Magnetic Model
+        //      MANUAL               - 0x03 - Magnetic field is assumed to have the parameter specified by the user
         enum GeographicSourceOption
         {
-            NONE = 0x01,
-            WORLD_MAGNETIC_MODEL = 0x02,
-            MANUAL = 0x03
+            NONE                 = 0x01, // No source
+            WORLD_MAGNETIC_MODEL = 0x02, // Magnetic field is assumed to conform to the World Magnetic Model
+            MANUAL               = 0x03  // Magnetic field is assumed to have the parameter specified by the user
         };
 
         //API Enum: AdaptiveMeasurementMode
@@ -545,13 +545,13 @@ namespace mscl
         //      FILTERING_OFF           - 0x00
         //      FILTERING_CONSERVATIVE  - 0x01
         //      FILTERING_MODERATE      - 0x02
-        //      FILTERING_AGGRESIVE     - 0x03
+        //      FILTERING_AGGRESSIVE    - 0x03
         enum AutoAdaptiveFilteringLevel
         {
             FILTERING_OFF           = 0x00,
             FILTERING_CONSERVATIVE  = 0x01,
             FILTERING_MODERATE      = 0x02,
-            FILTERING_AGGRESIVE     = 0x03
+            FILTERING_AGGRESSIVE    = 0x03
         };
 
         //API Enum: FactoryStreamingOption
@@ -1891,16 +1891,16 @@ namespace mscl
     //API Enum: HeadingAlignmentOption
     //    Method options for automatically determining initial filter heading
     //
-    //  GNSS_DualAntenna    - 0x01  - Dual-antenna GNSS alignment
-    //  GNSS_Kinematic      - 0x02  - GNSS kinematic alignment (GNSS velocity determines initial heading)
-    //  Magnetometer        - 0x04  - Magnetometer heading alignment
-    //  External            - 0x08  - External heading source
+    //  GNSS_DualAntenna - 0x01 - Dual-antenna GNSS alignment
+    //  GNSS_Kinematic   - 0x02 - GNSS kinematic alignment (GNSS velocity determines initial heading)
+    //  Magnetometer     - 0x04 - Magnetometer heading alignment
+    //  External         - 0x08 - External heading source
     enum HeadingAlignmentOption
     {
-        GNSS_DualAntenna = 0x01,
-        GNSS_Kinematic = 0x02,
-        Magnetometer = 0x04,
-        External = 0x08
+        GNSS_DualAntenna = 0x01, // Dual-antenna GNSS alignment
+        GNSS_Kinematic   = 0x02, // GNSS kinematic alignment (GNSS velocity determines initial heading)
+        Magnetometer     = 0x04, // Magnetometer heading alignment
+        External         = 0x08  // External heading source
     };
 
     //API Struct: HeadingAlignmentMethod
@@ -2725,6 +2725,158 @@ namespace mscl
 
     typedef std::map<MipChannelIdentifier::GnssConstellationIds, std::vector<uint8>> GnssSignalConfigOptions;
 
+    //API Class: GnssSpartnConfiguration
+    class GnssSpartnConfiguration
+    {
+    public:
+        //API Constant: KEY_SIZE
+        //  Null terminated character count for key strings
+        static constexpr uint8_t KEY_SIZE = 33;
+
+        //API Enum: ConnectionType
+        //  Available connection types
+        //
+        //      NONE     - 0x00 - No connection type
+        //      NETWORK  - 0x01 - Network connection type
+        //      LBAND    - 0x02 - L-Band connection type
+        enum ConnectionType : uint8_t
+        {
+            NONE     = 0x00, // No connection type
+            NETWORK  = 0x01, // Network connection type
+            LBAND    = 0x02  // L-Band connection type
+        };
+
+        //API Constructor: GnssSpartnConfiguration
+        GnssSpartnConfiguration() = default;
+
+        //API Function: enable
+        //  Enable or disable the SPARTN subsystem
+        //
+        //Parameters:
+        //  enable - True/False value to enabled or disabled the SPARTN subsystem
+        void enable(const bool enable);
+
+        //API Function: enabled
+        //  Check if the SPARTN subsystem is enabled or disabled
+        bool enabled() const;
+
+        //API Function: type
+        //  Set the connection type
+        //
+        //Parameters:
+        //  connectionType - <ConnectionType> value to set for the SPARTN subsystem
+        void type(const ConnectionType connectionType);
+
+        //API Function: type
+        //  Get the connection type
+        ConnectionType type() const;
+
+        //API Function: currentKeyTow
+        //  Set the time-of-week for the current key
+        //
+        //Parameters:
+        //  tow - The time-of-week to set for the current key
+        void currentKeyTow(const uint32_t tow);
+
+        //API Function: currentKeyTow
+        //  Get the time-of-week for the current key
+        uint32_t currentKeyTow() const;
+
+        //API Function: currentKeyWeek
+        //  Set the week number for the current key
+        //
+        //Parameters:
+        //  week - The week number to set for the current key
+        void currentKeyWeek(const uint16_t week);
+
+        //API Function: currentKeyWeek
+        //  Get the week number for the current key
+        uint16_t currentKeyWeek() const;
+
+        //API Function: currentKey
+        //  Set the current key for the SPARTN subsystem
+        //
+        //Note:
+        //  This value needs to be 32 characters long and is sent as ASCII bytes
+        //
+        //Parameters:
+        //  key - The 32 character key to set
+        void currentKey(const char key[KEY_SIZE]);
+
+        //API Function: currentKey
+        //  Get the current key for the SPARTN subsystem
+        const std::string currentKey();
+
+        //API Function: nextKeyTow
+        //  Set the time-of-week for the next key
+        //
+        //Parameters:
+        //  tow - The time-of-week to set for the next key
+        void nextKeyTow(const uint32_t tow);
+
+        //API Function: nextKeyTow
+        //  Get the time-of-week for the next key
+        uint32_t nextKeyTow() const;
+
+        //API Function: type
+        //  Enable or disable the SPARTN subsystem
+        void nextKeyWeek(const uint16_t week);
+
+        //API Function: nextKeyWeek
+        //  Set the week number for the next key
+        //
+        //Parameters:
+        //  week - The week number to set for the next key
+        uint16_t nextKeyWeek() const;
+
+        //API Function: nextKey
+        //  Set the next key for the SPARTN subsystem
+        //
+        //Note:
+        //  This value needs to be 32 characters long and is sent as ASCII bytes
+        //
+        //Parameters:
+        //  key - The 32 character key to set
+        void nextKey(const char key[KEY_SIZE]);
+
+        //API Function: nextKey
+        //  Get the next key for the SPARTN subsystem
+        const std::string nextKey() const;
+
+    private:
+        //API Variable: m_enable
+        //  Enable/Disable the SPARTN subsystem
+        bool m_enable = false;
+
+        //API Variable: m_type
+        //  Connection type
+        ConnectionType m_type = NONE;
+
+        //API Variable: m_currentKeyTow
+        //  The GPS time of week the current key is valid until
+        uint32_t m_currentKeyTow = 0;
+
+        //API Variable: m_currentKeyWeek
+        //  The GPS week number the current key is valid until
+        uint16_t m_currentKeyWeek = 0;
+
+        //API Variable: m_currentKey
+        //  32 character string of ASCII hex values for the current key (e.g. "bc" for 0xBC)
+        char m_currentKey[KEY_SIZE] = "";
+
+        //API Variable: m_nextKeyTow
+        //  The GPS time of week the next key is valid until
+        uint32_t m_nextKeyTow = 0;
+
+        //API Variable: m_nextKeyWeek
+        //  The GPS week number the next key is valid until
+        uint16_t m_nextKeyWeek = 0;
+
+        //API Variable: m_nextKey
+        //  32 character string of ASCII hex values for the next key (e.g. "bc" for 0xBC)
+        char m_nextKey[KEY_SIZE] = "";
+    };
+
     //API Struct: PositionReferenceConfiguration
     struct PositionReferenceConfiguration
     {
@@ -2809,103 +2961,111 @@ namespace mscl
     struct GpioConfiguration
     {
         //API Enum: Feature
-        //  GPIO Feature options
+        //  GPIO Feature options. Determines how the pin will be used
         //
         //      UNUSED_FEATURE          - 0x00 - Pin is unused
-        //      GPIO_FEATURE            - 0x01 - Encoder is disabled
-        //      PPS_FEATURE             - 0x02 - Single pulse input; one direction only
-        //      ENCODER_FEATURE         - 0x03 - Quadrature encoder mode
+        //      GPIO_FEATURE            - 0x01 - Direct control of pin output state or to stream the state of the pin
+        //      PPS_FEATURE             - 0x02 - Pulse per second input or output
+        //      ENCODER_FEATURE         - 0x03 - Motor encoder/odometer input
         //      EVENT_TIMESTAMP_FEATURE - 0x04 - Precision event timestamping
         //      UART_FEATURE            - 0x05 - UART data or control lines
         enum Feature
         {
-            UNUSED_FEATURE = 0x00,
-            GPIO_FEATURE = 0x01,
-            PPS_FEATURE = 0x02,
-            ENCODER_FEATURE = 0x03,
-            EVENT_TIMESTAMP_FEATURE = 0x04,
-            UART_FEATURE = 0x05
+            UNUSED_FEATURE          = 0x00, // Pin is unused
+            GPIO_FEATURE            = 0x01, // Direct control of pin output state or to stream the state of the pin
+            PPS_FEATURE             = 0x02, // Pulse per second input or output
+            ENCODER_FEATURE         = 0x03, // Motor encoder/odometer input
+            EVENT_TIMESTAMP_FEATURE = 0x04, // Precision event timestamping
+            UART_FEATURE            = 0x05  // UART data or control lines
         };
 
         //API Enum: GpioBehavior
         //  GPIO Pin behavior
         //
-        //      UNUSED_BEHAVIOR              - 0x00 - Unused
-        //      GPIO_INPUT_BEHAVIOR          - 0x01 - Input
-        //      GPIO_OUTPUT_LOW_BEHAVIOR     - 0x02 - Output on low
-        //      GPIO_OUTPUT_HIGH_BEHAVIOR    - 0x03 - Output on high
+        //      GPIO_UNUSED      - 0x00 - Pin is unused
+        //      GPIO_INPUT       - 0x01 - Pin will be an input
+        //      GPIO_OUTPUT_LOW  - 0x02 - Pin is an output initially in the LOW state
+        //      GPIO_OUTPUT_HIGH - 0x03 - Pin is an output initially in the HIGH state
         enum GpioBehavior
         {
-            UNUSED_BEHAVIOR = 0x00,
-            GPIO_INPUT_BEHAVIOR = 0x01,
-            GPIO_OUTPUT_LOW_BEHAVIOR = 0x02,
-            GPIO_OUTPUT_HIGH_BEHAVIOR = 0x03
+            GPIO_UNUSED      = 0x00, // Pin is unused
+            GPIO_INPUT       = 0x01, // Pin will be an input
+            GPIO_OUTPUT_LOW  = 0x02, // Pin is an output initially in the LOW state
+            GPIO_OUTPUT_HIGH = 0x03  // Pin is an output initially in the HIGH state
         };
 
         //API Enum: PpsBehavior
         //  PPS Pin behavior
         //
-        //      UNUSED      - 0x00 - Pin is unused
-        //      PPS_INPUT   - 0x01 - Input
-        //      PPS_OUTPUT  - 0x02 - Single pulse input; one direction only
+        //      UNUSED     - 0x00 - Pin is unused
+        //      PPS_INPUT  - 0x01 - Pin will receive the pulse-per-second signal
+        //      PPS_OUTPUT - 0x02 - Pin will transmit the pulse-per-second signal from the device
         enum PpsBehavior
         {
-            PPS_UNUSED = 0x00,
-            PPS_INPUT = 0x01,
-            PPS_OUTPUT = 0x02
+            PPS_UNUSED = 0x00, // Pin is unused
+            PPS_INPUT  = 0x01, // Pin will receive the pulse-per-second signal
+            PPS_OUTPUT = 0x02  // Pin will transmit the pulse-per-second signal from the device
         };
 
         //API Enum: EncoderBehavior
         //  Encoder Pin behavior
         //
-        //      UNUSED      - 0x00 - Pin is unused
-        //      ENCODER_A   - 0x01 - Encoder A
-        //      ENCODER_B   - 0x02 - Encoder B
+        //      ENCODER_UNUSED - 0x00 - Pin is unused
+        //      ENCODER_A      - 0x01 - Encoder A
+        //      ENCODER_B      - 0x02 - Encoder B
         enum EncoderBehavior
         {
-            ENCODER_UNUSED = 0x00,
-            ENCODER_A = 0x01,
-            ENCODER_B = 0x02
+            ENCODER_UNUSED = 0x00, // Pin is unused
+            ENCODER_A      = 0x01, // Encoder A
+            ENCODER_B      = 0x02  // Encoder B
         };
 
         //API Enum: EventTimestampBehavior
         //  Event Timestamp Pin behavior
         //
-        //      TIMESTAMP_UNUSED    - 0x00 - Pin is unused
-        //      TIMESTAMP_RISING    - 0x01 - Rising edge will be timestamped
-        //      TIMESTAMP_FALLING   - 0x02 - Falling edge will be timestamped
-        //      TIMESTAMP_EDGE      - 0x03 - Both rising and falling edges will be timestamped
+        //      TIMESTAMP_UNUSED  - 0x00 - Pin is unused
+        //      TIMESTAMP_RISING  - 0x01 - Rising edge will be timestamped
+        //      TIMESTAMP_FALLING - 0x02 - Falling edge will be timestamped
+        //      TIMESTAMP_EITHER  - 0x03 - Both rising and falling edges will be timestamped
         enum EventTimestampBehavior
         {
-            EVENT_TIMESTAMP_UNUSED    = 0x00,
-            EVENT_TIMESTAMP_RISING    = 0x01,
-            EVENT_TIMESTAMP_FALLING   = 0x02,
-            EVENT_TIMESTAMP_EDGE      = 0x03,
+            TIMESTAMP_UNUSED  = 0x00, // Pin is unused
+            TIMESTAMP_RISING  = 0x01, // Rising edge will be timestamped
+            TIMESTAMP_FALLING = 0x02, // Falling edge will be timestamped
+            TIMESTAMP_EITHER  = 0x03  // Both rising and falling edges will be timestamped
         };
 
         //API Enum: UartBehavior
         //  UART Pin behavior
         //  Note: only one Transmit and one Receive pin can be configured per port pair (see documentation)
         //
-        //      UART_TRANSMIT    - 0x01 - UART transmit line
-        //      UART_RECEIVE     - 0x02 - UART receive line
+        //      UART_UNUSED   - 0x00 - Pin is unused
+        //      UART_PORT2_TX - 0x21 - UART port 2 transmit
+        //      UART_PORT2_RX - 0x22 - UART port 2 receive
+        //      UART_PORT3_TX - 0x31 - UART port 3 transmit
+        //      UART_PORT3_RX - 0x32 - UART port 3 receive
         enum UartBehavior
         {
-            UART_TRANSMIT = 0x01, // UART transmit line
-            UART_RECEIVE  = 0x02  // UART receive line
+            UART_UNUSED   = 0x00, // Pin is unused
+            UART_PORT2_TX = 0x21, // UART port 2 transmit
+            UART_PORT2_RX = 0x22, // UART port 2 receive
+            UART_PORT3_TX = 0x31, // UART port 3 transmit
+            UART_PORT3_RX = 0x32  // UART port 3 receive
         };
 
         //API Enum: PinModes
-        //
         //  PinModes for the pinMode Bitfield
-        //      OPEN_DRAIN  - 0x01
-        //      PULLDOWN    - 0x02
-        //      PULLUP      - 0x04
+        //
+        //      NONE       - 0x00 - Pin not set
+        //      OPEN_DRAIN - 0x01 - The pin will be an open-drain output
+        //      PULLDOWN   - 0x02 - The pin will have an internal pull-down resistor enabled
+        //      PULLUP     - 0x04 - The pin will have an internal pull-up resistor enabled
         enum PinModes
         {
-            OPEN_DRAIN = 0x01,
-            PULLDOWN = 0x02,
-            PULLUP = 0x04
+            NONE       = 0x00, // Pin not set
+            OPEN_DRAIN = 0x01, // The pin will be an open-drain output
+            PULLDOWN   = 0x02, // The pin will have an internal pull-down resistor enabled
+            PULLUP     = 0x04  // The pin will have an internal pull-up resistor enabled
         };
 
         Bitfield pinMode;
@@ -2918,8 +3078,8 @@ namespace mscl
 
         //API Function: pinModeValue
         //  Gets or sets the underlying value for the pin mode bitfield
-        void pinModeValue(uint8 val) { pinMode.value(val); };
-        uint8 pinModeValue() const { return static_cast<uint8>(pinMode.value()); };
+        void pinModeValue(uint8 val) { pinMode.value(val); }
+        uint8 pinModeValue() const { return static_cast<uint8>(pinMode.value()); }
 
     private:
         friend class InertialNode;
@@ -2933,21 +3093,25 @@ namespace mscl
         static GpioConfiguration fromCommandResponse(const MipFieldValues& responseValues, uint8 startIndex = 0);
     };
 
-    //API Typedef: PinModes
+    //API Typedef: GpioPinId
+    //  A uint8 representing logical GPIO pin IDs
+    typedef uint8 GpioPinId;
+
+    //API Typedef: GpioPinModeOptions
     //  A vector of <GpioConfiguration::PinModes> representing masked pin modes
     typedef std::vector<GpioConfiguration::PinModes> GpioPinModeOptions;
 
-    //API Typedef: BehaviorModes
+    //API Typedef: GpioBehaviorModes
     //  A map of uint behavior ID, <GpioPinModeOptions> pairs
     typedef std::map<uint8, GpioPinModeOptions> GpioBehaviorModes;
 
-    //API Typedef: FeatureBehaviors
+    //API Typedef: GpioFeatureBehaviors
     //  A map of <GpioConfiguration::Feature>, <GpioBehaviorModes> pairs
     typedef std::map<GpioConfiguration::Feature, GpioBehaviorModes> GpioFeatureBehaviors;
 
     //API Typedef: GpioPinOptions
-    // A map of uint GPIO pin ID, <GpioFeatureBehaviors> pairs
-    typedef std::map<uint8, GpioFeatureBehaviors> GpioPinOptions;
+    // A map of uint <GpioPinId>, <GpioFeatureBehaviors> pairs
+    typedef std::map<GpioPinId, GpioFeatureBehaviors> GpioPinOptions;
 
     //API Enum: EventControlMode
     //  Event control modes

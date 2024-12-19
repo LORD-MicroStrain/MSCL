@@ -6,7 +6,7 @@
 param (
   [String]$windows_image,
   [String]$windows_version,
-  [String]$python3_versions = "3.7.0 3.8.0 3.9.0 3.10.0 3.11.0",
+  [String]$python3_versions = "3.9.0 3.10.0 3.11.0 3.12.0 3.13.0",
   [String]$arch = "x64"
 )
 
@@ -35,7 +35,7 @@ try {
   $project_dir = "${script_dir}/.."
   $dockerfile = "${script_dir}/Dockerfile.windows"
   $image_name = "microstrain/mscl_windows_builder:${windows_version}"
-  
+
   if ("${arch}" -eq "x86") {
     $cmake_arch = "Win32"
   } else {
@@ -43,10 +43,10 @@ try {
   }
 
   # Construct the flags that we will pass to the build script
-  $python2_build_script_flags = "-python2Dirs C:\Python2.7-${cmake_arch}"
+  $python2_build_script_flags = "-python2Dirs C:/Python2.7-${cmake_arch}"
   $python3_build_script_flags = "-python3Dirs "
   foreach ($python3_version in ${python3_versions}.split(" ")) {
-    $python3_build_script_flags += "C:\Python${python3_version}-${cmake_arch},"
+    $python3_build_script_flags += "C:/Python${python3_version}-${cmake_arch},"
   }
   $python3_build_script_flags = $python3_build_script_flags.TrimEnd(',')
 
@@ -75,13 +75,12 @@ try {
     --cpus="${num_cpus}" `
     --memory="${memory}g" `
     --isolation="process" `
-    -v "${project_dir}:C:\Projects\MSCL" `
-    -w "C:\projects\mscl" `
+    -v "${project_dir}:C:/Projects/MSCL" `
+    -w "C:/projects/mscl" `
     "${image_name}" -Command " `
       git config --global --add safe.directory C:/projects/mscl; `
       git fetch origin --tags; `
-      & 'C:\Projects\MSCL\BuildScripts\build_win.ps1' -arch ${cmake_arch} -buildDir C:\projects\mscl\docker_build\${cmake_arch} ${python2_build_script_flags} ${python3_build_script_flags}; `
-      & 'C:\Projects\MSCL\BuildScripts\zip_win.ps1' -arch ${arch}; `
+      & 'C:/Projects/MSCL/BuildScripts/build_win.ps1' -branch ${env:BRANCH_NAME} -arch ${cmake_arch} -buildDir C:/projects/mscl/build_windows_${arch} ${python2_build_script_flags} ${python3_build_script_flags}; `
     "
 }
 catch {

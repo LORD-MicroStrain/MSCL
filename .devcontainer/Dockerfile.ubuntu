@@ -33,7 +33,7 @@ RUN set -ex \
 RUN set -ex && apt-get update && apt-get install -y python2-dev || apt-get install -y python-dev
 
 # Install additional python versions
-ARG PYTHON3_VERSIONS="3.5.10 3.6.15"
+ARG PYTHON3_VERSIONS="3.9.21 3.10.16"
 RUN set -ex \
     && for PYTHON3_VERSION in ${PYTHON3_VERSIONS}; do \
         curl -fsSLo /tmp/Python-${PYTHON3_VERSION}.tgz https://www.python.org/ftp/python/${PYTHON3_VERSION}/Python-${PYTHON3_VERSION}.tgz; \

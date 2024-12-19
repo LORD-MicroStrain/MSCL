@@ -151,6 +151,48 @@ namespace mscl
         //    - <Error>: An <MipChannel> in the channels parameter is not part of the specified <MipTypes::DataClass>'s descriptor set.
         void setFactoryStreamingChannels(InertialTypes::FactoryStreamingOption option);
 
+        //API Function: getInterfaceControl
+        //    Gets the current comm port interface configuration for the specified ID.
+        //    This includes the port type, ID and input/output protocols currently configured.
+        //
+        //Returns:
+        //    The comm port configuration for the specified ID.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command or <MipTypes::DataClass> is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        DeviceCommPort getInterfaceControl(const uint8 interfaceId) const;
+
+        //API Function: setInterfaceControl
+        //    Sets the specified comm port interface configuration for the node.
+        //    Note: See the device's manual for possible configurations and limitations.
+        //
+        //Parameters:
+        //    portInterface - The preconfigured comm port information to set
+        //
+        //Exceptions:
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void setInterfaceControl(const DeviceCommPort& portInterface);
+
+        //API Function: setInterfaceControl
+        //    Sets the specified comm port interface configuration for the node.
+        //    Note: See the device's manual for possible configurations and limitations.
+        //
+        //Parameters:
+        //    interfaceId     - The interface ID to configure
+        //    inputProtocols  - The protocols to receive on the specified ID
+        //    outputProtocols - The protocols to transmit on the specified ID
+        //
+        //Exceptions:
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void setInterfaceControl(const uint8 interfaceId, const DeviceCommPort::Protocol inputProtocols, const DeviceCommPort::Protocol outputProtocols);
+
         //API Function: getCommunicationMode
         //    Gets the current communication mode that the node is in.
         //
@@ -2317,6 +2359,32 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         void setGnssSignalConfig(GnssSignalConfiguration config);
 
+        //API Function: getGnssSpartnConfig
+        //    Gets the device's current GNSS SPARTN configuration.
+        //
+        //Return:
+        //    <GnssSpartnConfiguration> - The current GNSS SPARTN configuration
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        GnssSpartnConfiguration getGnssSpartnConfig() const;
+
+        //API Function: setGnssSpartnConfig
+        //    Set the GNSS SPARTN configuration.
+        //
+        //Parameter:
+        //    config - the <GnssSpartnConfiguration> to apply.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void setGnssSpartnConfig(GnssSpartnConfiguration config);
+
         //API Function: rtkEnabled
         //    Reads whether RTK input is currently enabled on the device.
         //
@@ -2423,7 +2491,7 @@ namespace mscl
         //Parameters:
         //  frames - <MeasurementReferenceFrames> map of reference frames for each frame ID to be set
         //  clearExcludedIds - bool, default: false - if true, clears reference frame information for IDs not included in the frames map otherwise only overwrites included IDs
-        void setAidingMeasurementRefrenceFrames(const MeasurementReferenceFrames& frames, bool clearExcludedIds = false) const;
+        void setAidingMeasurementReferenceFrames(const MeasurementReferenceFrames& frames, bool clearExcludedIds = false) const;
 
         //API Function: getAidingMeasurementReferenceFrame
         //  Get the aiding measurement reference frame for the specified frame ID configured on the device.
