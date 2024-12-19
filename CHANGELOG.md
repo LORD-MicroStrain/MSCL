@@ -15,6 +15,8 @@ REMOVED - A function/class has been removed.
 ___
 
 ## Forthcoming
+
+## 67.0.0 - 2024-12-19
 - CHANGED Fixed typo for mscl::InertialNode::setAidingMeasurementReferenceFrames()
 - Updated CMake options to be project independent (prefixed with MSCL)
 - Moved documentation to separate GitHub repository
