@@ -27,7 +27,8 @@ pipeline {
       agent { label 'linux-amd64' }
       options {
         skipDefaultCheckout()
-        timeout(time: 10, activity: true, unit: 'MINUTES')
+        // TODO: Fix timeout issues on Jenkins for console activity
+//         timeout(time: 10, activity: true, unit: 'MINUTES')
       }
       steps {
         checkout scm
@@ -46,7 +47,8 @@ pipeline {
           agent { label 'windows10' }
           options {
             skipDefaultCheckout()
-            timeout(time: 20, activity: true, unit: 'MINUTES')
+            // TODO: Fix timeout issues on Jenkins for console activity
+//             timeout(time: 20, activity: true, unit: 'MINUTES')
           }
           steps {
             cleanWs()
@@ -59,6 +61,7 @@ pipeline {
           agent { label 'windows10' }
           options {
             skipDefaultCheckout()
+            // TODO: Fix timeout issues on Jenkins for console activity
             timeout(time: 20, activity: true, unit: 'MINUTES')
           }
           steps {
@@ -72,7 +75,8 @@ pipeline {
           agent { label 'linux-amd64' }
           options {
             skipDefaultCheckout()
-            timeout(time: 20, activity: true, unit: 'MINUTES')
+            // TODO: Fix timeout issues on Jenkins for console activity
+//             timeout(time: 20, activity: true, unit: 'MINUTES')
           }
           steps {
             cleanWs()
@@ -85,7 +89,8 @@ pipeline {
           agent { label 'linux-arm64' }
           options {
             skipDefaultCheckout()
-            timeout(time: 20, activity: true, unit: 'MINUTES')
+            // TODO: Fix timeout issues on Jenkins for console activity
+//             timeout(time: 20, activity: true, unit: 'MINUTES')
           }
           steps {
             cleanWs()
@@ -98,7 +103,8 @@ pipeline {
           agent { label 'linux-arm64' }
           options {
             skipDefaultCheckout()
-            timeout(time: 20, activity: true, unit: 'MINUTES')
+            // TODO: Fix timeout issues on Jenkins for console activity
+//             timeout(time: 20, activity: true, unit: 'MINUTES')
           }
           steps {
             cleanWs()
