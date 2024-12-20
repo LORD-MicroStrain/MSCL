@@ -139,7 +139,7 @@ pipeline {
         } else if (BRANCH_NAME && BRANCH_NAME == 'master') {
           node("linux-amd64") {
             dir("/tmp/mscl_${env.BRANCH_NAME}_${currentBuild.number}") {
-              copyArtifacts(projectName: "${env.JOB_NAME}", selector: specific("12"));
+              copyArtifacts(projectName: "${env.JOB_NAME}", selector: specific("${currentBuild.number}"));
               withCredentials([string(credentialsId: 'Github_Token', variable: 'GH_TOKEN')]) {
                 sh '''
                   # Release to github. The release script will determine if master needs to be published
