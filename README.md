@@ -174,4 +174,4 @@ Boost - see the [License_Boost.txt](License_Boost.txt) file in the source distri
 
 MSCL is released under the MIT License - see the [LICENSE](LICENSE) file in the source distribution.
 
-Copyright (C) 2015-2024 MicroStrain by HBK. All Rights Reserved.
+Copyright (c) 2015-2025 MicroStrain by HBK. All Rights Reserved.
