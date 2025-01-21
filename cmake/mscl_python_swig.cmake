@@ -75,20 +75,20 @@ macro(mscl_python_swig)
     )
 
     if(MSVC)
-        set(PYTHON_SITE_PACKAGES_DIR "${mscl_python_swig_PYTHON_VERSION}/${MSCL_ARCH_NAME}/$<CONFIG>")
+        set(PYTHON_DIST_PACKAGES_DIR "${mscl_python_swig_PYTHON_VERSION}/${MSCL_ARCH_NAME}/$<CONFIG>")
     else()
-        set(PYTHON_SITE_PACKAGES_DIR lib/python${mscl_python_swig_PYTHON_VERSION}/site-packages)
+        set(PYTHON_DIST_PACKAGES_DIR lib/python${mscl_python_swig_PYTHON_VERSION}/dist-packages)
     endif()
 
     set(MSCL_PYTHON${mscl_python_swig_PYTHON_VERSION}_INSTALL_COMPONENT ${PROJECT_NAME}_PYTHON${mscl_python_swig_PYTHON_VERSION})
     install(
         TARGETS ${mscl_python_swig_MODULE_NAME}
-        DESTINATION "${PYTHON_SITE_PACKAGES_DIR}"
+        DESTINATION "${PYTHON_DIST_PACKAGES_DIR}"
         COMPONENT ${MSCL_PYTHON${mscl_python_swig_PYTHON_VERSION}_INSTALL_COMPONENT}
     )
     install(
         FILES "${PYTHON_INTERFACE_FILE}"
-        DESTINATION "${PYTHON_SITE_PACKAGES_DIR}"
+        DESTINATION "${PYTHON_DIST_PACKAGES_DIR}"
         COMPONENT ${MSCL_PYTHON${mscl_python_swig_PYTHON_VERSION}_INSTALL_COMPONENT}
     )
 endmacro()
