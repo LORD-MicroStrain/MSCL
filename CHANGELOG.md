@@ -15,6 +15,7 @@ REMOVED - A function/class has been removed.
 ___
 
 ## Forthcoming
+- Fixed Python install directory for Linux
 
 ## 67.0.0 - 2024-12-19
 - CHANGED Fixed typo for mscl::InertialNode::setAidingMeasurementReferenceFrames()
