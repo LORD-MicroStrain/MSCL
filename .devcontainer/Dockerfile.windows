@@ -53,8 +53,8 @@ RUN echo Installing Boost `
     && curl -SL --output "%DOCKER_TEMP_DIR%\boost_%BOOST_VERSION_UNDERSCORE%-msvc-%BOOST_MSVC_VERSION%-64.exe" https://archives.boost.io/release/%BOOST_VERSION%/binaries/boost_%BOOST_VERSION_UNDERSCORE%-msvc-%BOOST_MSVC_VERSION%-64.exe `
     `
     # Install
-    && (start /w "%DOCKER_TEMP_DIR%\boost_%BOOST_VERSION_UNDERSCORE%-msvc-%BOOST_MSVC_VERSION%-32.exe" /VERYSILENT /DIR="%LIB_PATH%\boost") `
-    && (start /w "%DOCKER_TEMP_DIR%\boost_%BOOST_VERSION_UNDERSCORE%-msvc-%BOOST_MSVC_VERSION%-64.exe" /VERYSILENT /DIR="%LIB_PATH%\boost") `
+    && (start /w "" "%DOCKER_TEMP_DIR%\boost_%BOOST_VERSION_UNDERSCORE%-msvc-%BOOST_MSVC_VERSION%-32.exe" /VERYSILENT /DIR="%LIB_PATH%\boost") `
+    && (start /w "" "%DOCKER_TEMP_DIR%\boost_%BOOST_VERSION_UNDERSCORE%-msvc-%BOOST_MSVC_VERSION%-64.exe" /VERYSILENT /DIR="%LIB_PATH%\boost") `
     `
     # Cleanup
     && del /q "%DOCKER_TEMP_DIR%\boost_%BOOST_VERSION_UNDERSCORE%-msvc-%BOOST_MSVC_VERSION%-32.exe" `
@@ -111,7 +111,7 @@ RUN echo Installing Git `
     && curl -SL --output "%DOCKER_TEMP_DIR%\Git-%GIT_VERSION%-64-bit.exe" https://github.com/git-for-windows/git/releases/download/v%GIT_VERSION%.windows.1/Git-%GIT_VERSION%-64-bit.exe `
     `
     # Install
-    && (start /w "%DOCKER_TEMP_DIR%\Git-%GIT_VERSION%-64-bit.exe" /VERYSILENT /DIR="C:\Program Files\Git") `
+    && (start /w "" "%DOCKER_TEMP_DIR%\Git-%GIT_VERSION%-64-bit.exe" /VERYSILENT /DIR="C:\Program Files\Git") `
     `
     # Add Windows to the path
     && setx PATH "%PATH%;C:\Program Files\Git\bin" `
@@ -130,8 +130,8 @@ RUN echo Installing Python3 `
         && curl -SL --output "%DOCKER_TEMP_DIR%\python-%v-amd64.exe" https://www.python.org/ftp/python/%v/python-%v-amd64.exe `
         `
         # Install
-        && (start /w "%DOCKER_TEMP_DIR%\python-%v.exe" /quiet TargetDir="C:\Python%v-Win32") `
-        && (start /w "%DOCKER_TEMP_DIR%\python-%v-amd64.exe" /quiet TargetDir="C:\Python%v-x64") `
+        && (start /w "" "%DOCKER_TEMP_DIR%\python-%v.exe" /quiet TargetDir="C:\Python%v-Win32") `
+        && (start /w "" "%DOCKER_TEMP_DIR%\python-%v-amd64.exe" /quiet TargetDir="C:\Python%v-x64") `
         `
         # Cleanup
         && del /q "%DOCKER_TEMP_DIR%\python-%v.exe" `
