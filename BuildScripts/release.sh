@@ -130,14 +130,9 @@ if [ -z "${generate_notes_flag}" ]; then
   done < "${project_dir}/CHANGELOG.md"
 fi
 
-if [ "${release_name}" == "latest" ]; then
-  latest_flag="--latest"
-fi
-
 # Deploy the artifacts to Github
 gh release create \
   -R "${repo}" \
-  ${latest_flag} \
   --title "${release_name}" \
   --target "${target}" \
   ${generate_notes_flag} \
