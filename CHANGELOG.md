@@ -15,6 +15,8 @@ REMOVED - A function/class has been removed.
 ___
 
 ## Forthcoming
+
+## 67.0.1 - 2025-01-30
 - Fixed Python install directory for Linux
 - Fixed Windows Python builds
 
