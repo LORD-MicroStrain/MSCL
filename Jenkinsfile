@@ -64,7 +64,7 @@ pipeline {
           options {
             skipDefaultCheckout()
             // TODO: Fix timeout issues on Jenkins for console activity
-            timeout(time: 20, activity: true, unit: 'MINUTES')
+//             timeout(time: 20, activity: true, unit: 'MINUTES')
           }
           steps {
             cleanWs()

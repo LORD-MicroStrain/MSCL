@@ -156,26 +156,12 @@ git add --all
 
 # Only commit if there are changes
 if ! git diff-index --quiet HEAD --; then
-  git commit -m "Pre-release updates for release ${project_release_version}."
+  git commit -m "Pre-release updates for release ${project_release_version}." --author="microstrain-build"
 
   GIT_ASKPASS="${git_askpass_file}" git push origin ${target}
 else
   echo "No changes to commit for pre-release"
 fi
 popd
-
-repo="LORD-MicroStrain/MSCL"
-
-gh release delete \
-  -y \
-  -R "${repo}" "${project_release_version}" || echo "No existing release named ${project_release_version}."
-
-# Create a draft release on GitHub
-gh release create \
-  --repo "${repo}" \
-  --prerelease \
-  --title "${project_release_version}" \
-  --target "${target}" \
-  "${project_release_version}"
 
 rm "${git_askpass_file}"
