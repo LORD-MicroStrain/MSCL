@@ -15,6 +15,8 @@ REMOVED - A function/class has been removed.
 ___
 
 ## Forthcoming
+
+## 67.0.1 - 2025-02-18
 - Fixed device scanning for Linux
 
 ## 67.0.1 - 2025-01-30
