@@ -15,6 +15,7 @@ REMOVED - A function/class has been removed.
 ___
 
 ## Forthcoming
+- Fixed device scanning for Linux
 
 ## 67.0.1 - 2025-01-30
 - Fixed Python install directory for Linux
