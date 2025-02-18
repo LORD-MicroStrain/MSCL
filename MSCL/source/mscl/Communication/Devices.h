@@ -152,35 +152,22 @@ namespace mscl
         //    devType - The type of device to list
         static DeviceList listDevices(DeviceType devType);
 
-#ifdef _WIN32
         //Function: matchesDevice
-        //    Checks whether a given string found from WMI matches the given device
+        //    Checks whether a given string found from device scanning matches the given device
         //
         //Parameters:
-        //    pnpID - The WMI PNPDeviceID to match
-        //    name - The WMI Name to match
-        //    devType - The <DeviceType> to check for
+        //    info     - The device information from the port to use for matching (PnPID on Windows and PnPID formatted string of device info on Linux)
+        //    name     - The manufacturer name to match
+        //    devType  - The <DeviceType> to check for
         //    baudRate - Resulting suspected baud rate based on the device information
-        //    type - Resulting <DeviceInfo::ConnectionType> of the device
+        //    type     - Resulting <DeviceInfo::ConnectionType> of the device
         //
         //Returns:
         //    true if the string matches the given <DeviceType>, false otherwise
-        static bool matchesDevice(const std::string& pnpID, const std::string& name, DeviceType devType, uint32& baudRate, DeviceInfo::ConnectionType& type);
-#else
-        //Function: matchesDevice
-        //    Checks whether the given information, found from searching files in linux, matches the given device
-        //
-        //Parameters:
-        //    manufacturer - The manufacturer of the device
-        //    vendorId - The vendor id of the device
-        //    devType - The <DeviceType> to check for
-        //    baudRate - Resulting suspected baud rate based on the device information
-        //    type - Resulting <DeviceInfo::ConnectionType> of the device
-        //
-        //Returns:
-        //    true if the string matches the given <DeviceType>, false otherwise
-        static bool matchesDevice(const std::string& manufacturer, const std::string& vendorId, DeviceType devType, uint32& baudRate, DeviceInfo::ConnectionType& type);
+        static bool matchesDevice(const std::string& info, const std::string& name, DeviceType devType, uint32& baudRate,
+            DeviceInfo::ConnectionType& type);
 
+#ifndef _WIN32
         //Function: getDeviceInfo
         //    Gets information about the attached device
         //
@@ -192,8 +179,8 @@ namespace mscl
         //
         //Returns:
         //    true if successfully find the device info, false otherwise
-        static bool getDeviceInfo(const std::string& devicePath, std::string& serial, std::string& manufacturer, std::string& vendorId);
-#endif
+        // static bool getDeviceInfo(const std::string& devicePath, std::string& serial, std::string& manufacturer, std::string& vendorId, std::string& productId);
+        static bool getDeviceInfo(const std::string& devicePath, std::string& serial, std::string& manufacturer, std::string& pnpID);
+#endif // _WIN32
     };
-
-}
+} // namespace mscl

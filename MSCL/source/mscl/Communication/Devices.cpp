@@ -4,12 +4,9 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "Devices.h"
-#include "mscl/Utils.h"
+#include "mscl/Communication/Devices.h"
 
-#include <cmath>
-#include <vector>
+#include "mscl/Utils.h"
 
 #ifdef _WIN32
 
@@ -19,13 +16,15 @@
 #else
 
 #include <boost/filesystem.hpp>
-#include <fstream>      // std::ifstream
 
-#endif
+#include <cmath>
+#include <fstream>
+#include <vector>
+
+#endif // _WIN32
 
 namespace mscl
 {
-
     Devices::DeviceList Devices::listBaseStations()
     {
         return listDevices(TYPE_BASESTATION);
@@ -46,16 +45,14 @@ namespace mscl
         m_serial(""),
         m_baudRate(0),
         m_connectionType(ConnectionType::connectionType_serial)
-    {
-    }
+    {}
 
     DeviceInfo::DeviceInfo(std::string description, std::string serial, uint32 baudRate, DeviceInfo::ConnectionType type):
         m_description(description),
         m_serial(serial),
         m_baudRate(baudRate),
         m_connectionType(type)
-    {
-    }
+    {}
 
     std::string DeviceInfo::description() const
     {
@@ -132,15 +129,90 @@ namespace mscl
         }
     }
 
-#ifdef _WIN32
+    bool Devices::matchesDevice(const std::string& info, const std::string& name, DeviceType devType, uint32& baudRate,
+        DeviceInfo::ConnectionType& type)
+    {
+        const bool validName = Utils::containsStr(name, "(COM") ||
+           Utils::containsStr(name, "LORD") ||
+           Utils::containsStr(name, "Lord") ||
+           Utils::containsStr(name, "Microstrain") ||
+           Utils::containsStr(name, "MicroStrain") ||
+           Utils::containsStr(name, "Silicon Labs");
 
+        if (!validName)
+        {
+            return false;
+        }
+
+        // BaseStation device type
+        if (devType == TYPE_BASESTATION || devType == TYPE_ALL)
+        {
+            // Check for the BaseStation name (currently this is all we have to go on, not very strong)
+            if (Utils::containsStr(name, "Silicon Labs CP210x"))
+            {
+                baudRate = 921600;
+                type = DeviceInfo::connectionType_serial;
+                return true;
+            }
+
+            // Check for the micro usb base station
+            if (Utils::containsStr(info, "VID_199B&PID_BA2E"))
+            {
+                baudRate = 921600;
+                type = DeviceInfo::connectionType_serial;
+                return true;
+            }
+
+            // Check for the WSDA-Base-200
+            if (Utils::containsStr(info, "VID_199B&PID_BA30"))
+            {
+                baudRate = 3000000;
+                type = DeviceInfo::connectionType_serial;
+                return true;
+            }
+
+            // Check for a WSDA as a USB connected ethernet port
+            if (Utils::containsStr(info, "VID_199B&PID_306B"))
+            {
+                baudRate = 0;
+                type = DeviceInfo::connectionType_tcp;
+                return true;
+            }
+        }
+
+        // InertialDevice device type
+        if (devType == TYPE_INERTIALDEVICE || devType == TYPE_ALL)
+        {
+            // Check for the inertial VID/PIDs
+            if (Utils::containsStr(info, "VID_199B&PID_0001&MI_00") || // CV7-GNSS/INS
+               Utils::containsStr(info, "VID_199B&PID_3065") ||        // Inertial
+               Utils::containsStr(info, "VID_0483&PID_5740") ||        // check for the STM vendor ID (this is the best we can do right now for GX4's)
+               Utils::containsStr(info, "VID_199B&PID_3A65") ||        // 3DM-GX3-45
+               Utils::containsStr(info, "VID_199B&PID_3D65"))          // Inertial in DFU (usb updater) mode
+            {
+                baudRate = 921600;
+                type = DeviceInfo::connectionType_serial;
+                return true;
+            }
+        }
+
+        if (devType == TYPE_ALL)
+        {
+            // All other devices we are returning true
+            baudRate = 0;
+            return true;
+        }
+
+        return false;
+    }
+
+#ifdef _WIN32
     Devices::DeviceList Devices::listDevices(DeviceType devType)
     {
         DeviceList result;
 
         static const std::string PNP_DEV_ID = "PNPDeviceID";
         static const std::string NAME = "Name";
-
 
         try
         {
@@ -225,125 +297,88 @@ namespace mscl
         //return the map of all found items
         return result;
     }
-
-    bool Devices::matchesDevice(const std::string& pnpID, const std::string& name, DeviceType devType, uint32& baudRate, DeviceInfo::ConnectionType& type)
-    {
-        //verify name has '(COM' or 'LORD' in it for all cases
-        if(!Utils::containsStr(name, "(COM") &&
-           !Utils::containsStr(name, "LORD"))
-        {
-            return false;
-        }
-
-        //BaseStation device type
-        if(devType == TYPE_BASESTATION || devType == TYPE_ALL)
-        {
-            //check for the basestation name (currently this is all we have to go on, not very strong)
-            if(Utils::containsStr(name, "Silicon Labs CP210x"))
-            {
-                baudRate = 921600;
-                type = DeviceInfo::connectionType_serial;
-                return true;
-            }
-
-            //check for the micro usb base station
-            if(Utils::containsStr(pnpID, "VID_199B&PID_BA2E"))
-            {
-                baudRate = 921600;
-                type = DeviceInfo::connectionType_serial;
-                return true;
-            }
-
-            //check for the WSDA-Base-200
-            if(Utils::containsStr(pnpID, "VID_199B&PID_BA30"))
-            {
-                baudRate = 3000000;
-                type = DeviceInfo::connectionType_serial;
-                return true;
-            }
-
-            //check for a WSDA as a USB connected ethernet port
-            if(Utils::containsStr(pnpID, "VID_199B&PID_306B"))
-            {
-                baudRate = 0;
-                type = DeviceInfo::connectionType_tcp;
-                return true;
-            }
-        }
-
-        //InertialDevice device type
-        if(devType == TYPE_INERTIALDEVICE || devType == TYPE_ALL)
-        {
-            //check for the inertial VID/PIDs
-            if(Utils::containsStr(pnpID, "VID_199B&PID_0001&MI_00") || //CV7-GNSS/INS
-               Utils::containsStr(pnpID, "VID_199B&PID_3065")       || //Inertial
-               Utils::containsStr(pnpID, "VID_0483&PID_5740")       || //check for the STM vendor ID (this is the best we can do right now for GX4's)
-               Utils::containsStr(pnpID, "VID_199B&PID_3A65")       || //3DM-GX3-45
-               Utils::containsStr(pnpID, "VID_199B&PID_3D65"))         //Inertial in DFU (usb updater) mode
-            {
-                baudRate = 921600;
-                type = DeviceInfo::connectionType_serial;
-                return true;
-            }
-        }
-
-        if(devType == TYPE_ALL)
-        {
-            //anything with "COM" in the name we are returning true
-            baudRate = 0;
-            return true;
-        }
-
-        return false;
-    }
-
-#else //LINUX SPECIFIC CODE
-
-    bool Devices::getDeviceInfo(const std::string& devicePath, std::string& serial, std::string& manufacturer, std::string& vendorId)
+#else // LINUX SPECIFIC CODE
+    bool Devices::getDeviceInfo(const std::string& devicePath, std::string& serial, std::string& manufacturer, std::string& pnpID)
     {
         namespace fs = boost::filesystem;
 
-        //get the path to the device (should be "/sys/bus/___/devices/___")
+        // Get the path to the device (should be "/sys/bus/___/devices/___")
         fs::path pathToDevice(devicePath);
 
-        //get the full symlink path
+        // Get the full symlink path
         fs::path deviceSymLink = fs::read_symlink(pathToDevice);
 
-        //create the path to the connected devices (concatenate paths)
+        // Create the path to the connected devices (concatenate paths)
         fs::path fullDevicePath = (pathToDevice.parent_path()) / deviceSymLink;
 
-        //check that the device path isn't empty
-        if(fullDevicePath.string() != "")
+        // Check that the device path isn't empty
+        if (!fullDevicePath.string().empty())
         {
-            //move up 1 directory to the device info directory
+            // Move up 1 directory to the device info directory
             fs::path deviceInfoPath = fullDevicePath.parent_path();
 
             fs::path serialFilePath = deviceInfoPath / fs::path("serial");
 
-            //if the "serial" file does not exist
-            if(!fs::exists(serialFilePath))
+            // If the "serial" file does not exist
+            if (!fs::exists(serialFilePath))
             {
-                //try to move up another directory and find it
+                // Try to move up another directory and find it
                 deviceInfoPath = deviceInfoPath.parent_path();
                 serialFilePath = deviceInfoPath / fs::path("serial");
             }
 
-            //open the /serial file and read the first line
+            // Open the /serial file and read the first line
             std::ifstream serialStream(serialFilePath.string().c_str());
             std::getline(serialStream, serial);
 
-            //open the /manufacturer file and read the first line
+            // Open the /manufacturer file and read the first line
             std::ifstream manufStream( (deviceInfoPath / fs::path("manufacturer")).string().c_str() );
             std::getline(manufStream, manufacturer);
 
-            //open the /idVendor file and read the first line
+            // Open the /idVendor file and read the first line
             std::ifstream vendorStream( (deviceInfoPath / fs::path("idVendor")).string().c_str() );
+            std::string vendorId;
             std::getline(vendorStream, vendorId);
+            if (!vendorId.empty())
+            {
+                std::transform(vendorId.begin(), vendorId.end(), vendorId.begin(), ::toupper);
+            }
+
+            // Open the /idProduct file and read the first line
+            std::ifstream productStream( (deviceInfoPath / fs::path("idProduct")).string().c_str() );
+            std::string productId;
+            std::getline(productStream, productId);
+            if (!productId.empty())
+            {
+                std::transform(productId.begin(), productId.end(), productId.begin(), ::toupper);
+            }
+
+            // Pack all the info into a similar interface as Windows for fewer variables to pass around and to use a common lookup function
+            pnpID = "VID_" + vendorId + "&PID_" + productId;
+
+            // Check for multiple interfaces (I.E, CV7-GNSS/INS)
+            std::ifstream interfaceCountStream( (deviceInfoPath / fs::path("bNumInterfaces")).string().c_str() );
+            std::string interfaceCount;
+            std::getline(interfaceCountStream, interfaceCount);
+
+            // Get the interface number for the device
+            if (!interfaceCount.empty())
+            {
+                // Open the /bInterfaceNumber file and read the first line
+                std::ifstream interfaceNumberStream( (fullDevicePath / fs::path("bInterfaceNumber")).string().c_str() );
+                std::string interfaceNumber;
+                std::getline(interfaceNumberStream, interfaceNumber);
+                if (!interfaceNumber.empty())
+                {
+                    std::transform(interfaceNumber.begin(), interfaceNumber.end(), interfaceNumber.begin(), ::toupper);
+                    pnpID += "&MI_" + interfaceNumber;
+                }
+            }
 
             return true;
         }
 
-        //we didn't get any info
+        // We didn't get any info
         return false;
     }
 
@@ -407,14 +442,16 @@ namespace mscl
                 }
 
                 //get the information for the device
-                std::string serial, manufacturer, vendorId;
-                getDeviceInfo(deviceItemPath, serial, manufacturer, vendorId);
+                std::string serial, manufacturer, pnpID/*, vendorId, productId*/;
+                // getDeviceInfo(deviceItemPath, serial, manufacturer, vendorId, productId);
+                getDeviceInfo(deviceItemPath, serial, manufacturer, pnpID);
 
                 uint32 baudRate = 0;
                 DeviceInfo::ConnectionType connectionType = DeviceInfo::connectionType_serial;
 
                 //if this matches the device we are looking for
-                if(matchesDevice(manufacturer, vendorId, devType, baudRate, connectionType))
+                // if(matchesDevice(manufacturer, vendorId, devType, baudRate, connectionType))
+                if(matchesDevice(pnpID, manufacturer, devType, baudRate, connectionType))
                 {
                     //get the first directory in this directory (should be the only one?)
                     fs::directory_iterator ttyItr(ttyPath);
@@ -438,47 +475,5 @@ namespace mscl
         //return the map we created
         return result;
     }
-
-    bool Devices::matchesDevice(const std::string& manufacturer, const std::string& vendorId, DeviceType devType, uint32& baudRate, DeviceInfo::ConnectionType& type)
-    {
-        //TODO: set baud rate based on found device type on linux (need PID)
-        baudRate = 0;
-
-        //BaseStation device type
-        if(devType == TYPE_BASESTATION || devType == TYPE_ALL)
-        {
-            //currently, checking the base station information isn't a very strong search
-            if( (Utils::containsStr(manufacturer, "Silicon Labs") && Utils::containsStr(vendorId, "10c4")) ||
-                (Utils::containsStr(manufacturer, "LORD Sensing Systems") && Utils::containsStr(vendorId, "199b")))
-            {
-                return true;
-            }
-        }
-
-        //InertialDevice device type
-        if(devType == TYPE_INERTIALDEVICE || devType == TYPE_ALL)
-        {
-            //check for the STM vendor ID (this is the best we can do right now for GX4's)
-            if( Utils::containsStr(manufacturer, "Lord Microstrain") && Utils::containsStr(vendorId, "0483"))
-            {
-                return true;
-            }
-
-            //check for the inertial information
-            if( Utils::containsStr(manufacturer, "MicroStrain, Inc.") && Utils::containsStr(vendorId, "199b"))
-            {
-                return true;
-            }
-        }
-
-        //all device types means we should match all devices that we found listed
-        if(devType == TYPE_ALL)
-        {
-            return true;
-        }
-
-        return false;
-    }
-
-#endif
-}
+#endif // _WIN32
+} // namespace mscl
