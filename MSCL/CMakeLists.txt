@@ -448,6 +448,13 @@ if(MSCL_BUILD_PYTHON2 OR MSCL_BUILD_PYTHON3 OR MSCL_BUILD_CSHARP)
             DESTINATION "DotNet/${MSCL_ARCH_NAME}/$<CONFIG>"
             COMPONENT ${MSCL_CSHARP_INSTALL_COMPONENT}
         )
+
+        # Install the shared libraries
+        install(
+            FILES $<TARGET_RUNTIME_DLLS:${MSCL_Managed_NAME}>
+            DESTINATION "DotNet/${MSCL_ARCH_NAME}/$<CONFIG>"
+            COMPONENT ${MSCL_CSHARP_INSTALL_COMPONENT}
+        )
     endif()
 endif()
 
