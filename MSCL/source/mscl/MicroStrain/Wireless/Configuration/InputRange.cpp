@@ -345,6 +345,7 @@ namespace mscl
             case WirelessModels::node_gLink_200_8g_oem:
             case WirelessModels::node_gLink_200_8g_oem_mmcx:
             case WirelessModels::node_gLink_200_8g_oem_u_fl:
+            case WirelessModels::node_gLink_200_p:
                 return RANGES_GLINK200;
 
             case WirelessModels::node_gLink_200_40g:
