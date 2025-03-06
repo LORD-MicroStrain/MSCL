@@ -15,6 +15,7 @@ REMOVED - A function/class has been removed.
 ___
 
 ## Forthcoming
+- Fixed .NET library packaging
 
 ## 67.0.1 - 2025-02-18
 - Fixed device scanning for Linux
