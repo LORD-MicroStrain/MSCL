@@ -15,6 +15,8 @@ REMOVED - A function/class has been removed.
 ___
 
 ## Forthcoming
+
+## 67.0.2 - 2025-03-06
 - Fixed .NET library packaging
 
 ## 67.0.1 - 2025-02-18
