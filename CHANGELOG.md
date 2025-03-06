@@ -15,6 +15,8 @@ REMOVED - A function/class has been removed.
 ___
 
 ## Forthcoming
+
+## 67.2.0 - 2025-03-06
 - Wireless
     - Added G-Link-200-P support
 
