@@ -4,16 +4,13 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-
 #ifndef MSCL_DISABLE_WEBSOCKETS
 
-#include "WebSocketConnection.h"
-#include "mscl/Utils.h"
+#include "mscl/Communication/WebSocketConnection.h"
 
 #ifdef _WIN32
-#include <MSTcpIP.h>
-#endif
+#include <mstcpip.h>
+#endif // _WIN32
 
 namespace mscl
 {

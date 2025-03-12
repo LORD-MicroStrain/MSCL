@@ -6,16 +6,12 @@
 
 #pragma once
 
-#include "mscl/MicroStrain/MIP/Commands/GenericMipCommand.h"
-#include "mscl/MicroStrain/ResponseCollector.h"
 #include "mscl/MicroStrain/Inertial/ExposedInertialTypes.h"
 #include "mscl/MicroStrain/MIP/Commands/MipCommand.h"
 
 namespace mscl
 {
-
 #ifndef SWIG
-
     //Class: AdvancedLowPassFilterSettings
     //    Contains the logic for the Inertial AdvancedLowPassFilterSettings command.
     class AdvancedLowPassFilterSettings : public MipCommand

@@ -6,16 +6,13 @@
 
 #pragma once
 
-#include "mscl/MicroStrain/ResponsePattern.h"
-#include "mscl/MicroStrain/Wireless/BaseStation.h"
-#include "SetToIdleStatus.h"
-#include "SetToIdle.h"
+#include "mscl/MicroStrain/Wireless/Commands/SetToIdle.h"
 
 namespace mscl
 {
+#ifndef SWIG
     //Title: SetToIdle_v2
 
-#ifndef SWIG
     //Class: SetToIdle_v2
     //    Contains logic for the Set to Idle (v2) command.
     namespace SetToIdle_v2
@@ -30,7 +27,6 @@ namespace mscl
         //    A <ByteStream> containing the SetToIdle command packet
         ByteStream buildCommand(NodeAddress nodeAddress);
         ByteStream buildCommand_aspp3(NodeAddress nodeAddress);
-
 
         //Class: Response
         //    Handles the response to the SetToIdle command
@@ -94,6 +90,6 @@ namespace mscl
             //  true if the operation has started, false otherwise.
             bool started();
         };
-    };
+    }
 #endif
 }

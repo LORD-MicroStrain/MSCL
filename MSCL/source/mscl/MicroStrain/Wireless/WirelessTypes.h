@@ -6,11 +6,6 @@
 
 #pragma once
 
-#include "mscl/Types.h"
-#include "ChannelMask.h"
-#include <map>
-#include <vector>
-
 namespace mscl
 {
     //API Class: WirelessTypes

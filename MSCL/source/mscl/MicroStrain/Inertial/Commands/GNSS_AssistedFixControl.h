@@ -7,13 +7,10 @@
 #pragma once
 
 #include "mscl/MicroStrain/MIP/Commands/GenericMipCommand.h"
-#include "mscl/MicroStrain/ResponseCollector.h"
 
 namespace mscl
 {
-
 #ifndef SWIG
-
     //Class: GNSS_AssistedFixControl
     //    Contains the logic for the Inertial GNSS Assist Fix Control command.
     class GNSS_AssistedFixControl : private GenericMipCommand

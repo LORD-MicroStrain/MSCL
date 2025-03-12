@@ -6,8 +6,8 @@
 
 #pragma once
 
-#include "MipTypes.h"
 #include "mscl/MicroStrain/SampleRate.h"
+#include "mscl/MicroStrain/MIP/MipTypes.h"
 
 namespace mscl
 {

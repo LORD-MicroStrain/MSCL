@@ -6,10 +6,7 @@
 
 #pragma once
 
-#include "mscl/Types.h"
-#include "mscl/MicroStrain/ByteStream.h"
 #include "mscl/MicroStrain/MIP/MipDataField.h"
-#include <vector>
 
 namespace mscl
 {

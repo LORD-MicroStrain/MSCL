@@ -7,14 +7,10 @@
 #pragma once
 
 #include "mscl/MicroStrain/MIP/Commands/GenericMipCommand.h"
-#include "mscl/MicroStrain/ResponseCollector.h"
-#include "mscl/MicroStrain/Inertial/ExposedInertialTypes.h"
 
 namespace mscl
 {
-
 #ifndef SWIG
-
     //Class: GPSTimeUpdate
     //    Contains the logic for the Inertial GPSTimeUpdate command.
     class GPSTimeUpdate : private GenericMipCommand
@@ -47,7 +43,7 @@ namespace mscl
 
     public:
         //  Destructor: ~GPSTimeUpdate
-        virtual ~GPSTimeUpdate() {};
+        virtual ~GPSTimeUpdate() {}
 
         //Function: GetWeekValue
         //    Builds the bytes to get the GPS week value.
@@ -122,6 +118,5 @@ namespace mscl
             const uint8 m_fieldDataByte;
         };
     };
-
 #endif
 }

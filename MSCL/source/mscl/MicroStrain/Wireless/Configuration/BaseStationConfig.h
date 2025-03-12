@@ -6,12 +6,10 @@
 
 #pragma once
 
-#include <boost/optional.hpp>
-#include <map>
-#include "mscl/MicroStrain/Wireless/WirelessTypes.h"
-#include "mscl/MicroStrain/Wireless/BaseStationButton.h"
-#include "mscl/MicroStrain/Wireless/BaseStationAnalogPair.h"
 #include "mscl/Exceptions.h"
+#include "mscl/MicroStrain/Wireless/BaseStationAnalogPair.h"
+#include "mscl/MicroStrain/Wireless/BaseStationButton.h"
+#include "mscl/MicroStrain/Wireless/WirelessTypes.h"
 
 namespace mscl
 {

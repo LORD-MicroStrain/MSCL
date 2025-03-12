@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "Connection_Impl.h"
+#include "mscl/Communication/Connection_Impl.h"
 
 namespace mscl
 {
@@ -25,7 +25,7 @@ namespace mscl
 
         //Destructor: ~MockConnection
         //    Destroys the MockConnection object
-        virtual ~MockConnection() {}
+        ~MockConnection() override {}
 
     protected:
         virtual void establishConnection() override { return; }
@@ -71,5 +71,4 @@ namespace mscl
 
         std::string port() const override { return ""; }
     };
-
 }

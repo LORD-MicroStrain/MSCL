@@ -6,15 +6,8 @@
 
 #pragma once
 
-#include "mscl/Value.h"
-#include "mscl/Types.h"
-#include "Vector.h"
-#include "Matrix.h"
-#include "mscl/Histogram.h"
-#include "mscl/Timestamp.h"
+#include "mscl/MicroStrain/Vector.h"
 #include "mscl/MicroStrain/Wireless/StructuralHealth.h"
-
-#include <map>
 
 namespace mscl
 {

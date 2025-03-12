@@ -6,16 +6,9 @@
 
 #pragma once
 
-#include "mscl/MicroStrain/ByteStream.h"
-#include "WirelessResponsePattern.h"
-#include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
-#include "mscl/Types.h"
-
 namespace mscl
 {
-
 #ifndef SWIG
-
     //Class: Sleep
     //    Contains logic for the Sleep Node command
     class Sleep
@@ -25,7 +18,6 @@ namespace mscl
         Sleep(const Sleep&) = delete;               //copy constructor disabled
         Sleep& operator=(const Sleep&) = delete;    //assignment operator disabled
 
-    public:
         //Function: buildCommand
         //    Builds the Sleep command packet.
         //
@@ -36,6 +28,5 @@ namespace mscl
         //    A <ByteStream> containing the command packet.
         static ByteStream buildCommand(NodeAddress nodeAddress);
     };
-
 #endif
 }

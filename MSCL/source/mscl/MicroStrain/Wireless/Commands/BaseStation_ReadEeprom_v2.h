@@ -6,16 +6,12 @@
 
 #pragma once
 
+#include "mscl/MicroStrain/Wireless/Commands/WirelessResponsePattern.h"
 #include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
-#include "mscl/MicroStrain/ByteStream.h"
-#include "WirelessResponsePattern.h"
-#include "mscl/Types.h"
 
 namespace mscl
 {
-
 #ifndef SWIG
-
     //Class: BaseStation_ReadEeprom_v2
     //    Contains logic for the base station read eeprom command (v2).
     class BaseStation_ReadEeprom_v2
@@ -25,7 +21,6 @@ namespace mscl
         BaseStation_ReadEeprom_v2(const BaseStation_ReadEeprom_v2&) = delete;               //copy constructor disabled
         BaseStation_ReadEeprom_v2& operator=(const BaseStation_ReadEeprom_v2&) = delete;    //assignement operator disabled
 
-    public:
         //Function: buildCommand
         //    Builds the eeprom read command packet.
         //
@@ -102,7 +97,5 @@ namespace mscl
             bool matchFailResponse(const WirelessPacket& packet) override;
         };
     };
-
 #endif
-
 }

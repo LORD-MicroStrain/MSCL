@@ -4,12 +4,10 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "ContinuousDataStream.h"
+#include "mscl/MicroStrain/Inertial/Commands/ContinuousDataStream.h"
+
 #include "mscl/MicroStrain/MIP/Commands/MIP_Commands.h"
 #include "mscl/MicroStrain/MIP/MipDataField.h"
-#include "mscl/Utils.h"
-#include "mscl/Exceptions.h"
 
 namespace mscl
 {

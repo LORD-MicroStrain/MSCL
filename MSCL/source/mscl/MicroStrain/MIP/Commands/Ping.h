@@ -10,9 +10,7 @@
 
 namespace mscl
 {
-
 #ifndef SWIG
-
     //Class: Ping
     //    Contains the logic for the Inertial Ping command.
     class Ping

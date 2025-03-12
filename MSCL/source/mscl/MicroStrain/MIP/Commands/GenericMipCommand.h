@@ -6,9 +6,7 @@
 
 #pragma once
 
-#include "mscl/MicroStrain/ResponsePattern.h"
-#include "mscl/MicroStrain/MIP/MipTypes.h"
-#include "MipCmdResponse.h"
+#include "mscl/MicroStrain/MIP/Commands/MipCmdResponse.h"
 
 namespace mscl
 {

@@ -6,16 +6,10 @@
 
 #pragma once
 
-#include "MipPacket.h"
-#include "mscl/Timestamp.h"
-#include "mscl/Types.h"
-#include "mscl/MicroStrain/MIP/MipDataPoint.h"
 #include "mscl/MicroStrain/MIP/MipDataField.h"
-#include "MipPacket.h"
-#include "MipSharedDataFields.h"
-
-#include <memory>
-#include <vector>
+#include "mscl/MicroStrain/MIP/MipDataPoint.h"
+#include "mscl/MicroStrain/MIP/Packets/MipPacket.h"
+#include "mscl/MicroStrain/MIP/Packets/MipSharedDataFields.h"
 
 namespace mscl
 {

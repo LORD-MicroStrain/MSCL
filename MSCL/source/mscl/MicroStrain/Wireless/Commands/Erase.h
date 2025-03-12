@@ -6,15 +6,11 @@
 
 #pragma once
 
-#include "mscl/MicroStrain/ByteStream.h"
-#include "WirelessResponsePattern.h"
-#include "mscl/Types.h"
+#include "mscl/MicroStrain/Wireless/Commands/WirelessResponsePattern.h"
 
 namespace mscl
 {
-
 #ifndef SWIG
-
     //Class: Erase
     //    Contains logic for the Erase Node command
     class Erase
@@ -59,6 +55,5 @@ namespace mscl
             virtual bool match(DataBuffer& data) override;
         };
     };
-
 #endif
 }

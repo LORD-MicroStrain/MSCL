@@ -4,11 +4,8 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "WirelessProtocol.h"
-#include "AutoCalInfo.h"
-#include "mscl/Version.h"
-#include "mscl/MicroStrain/Wireless/BaseStation.h"
+#include "mscl/MicroStrain/Wireless/Commands/WirelessProtocol.h"
+
 #include "mscl/MicroStrain/Wireless/BaseStation_Impl.h"
 #include "mscl/MicroStrain/Wireless/Features/NodeFeatures.h"
 

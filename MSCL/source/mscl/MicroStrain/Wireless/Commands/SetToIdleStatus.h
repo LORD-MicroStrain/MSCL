@@ -6,9 +6,6 @@
 
 #pragma once
 
-#include <memory>
-#include "mscl/Types.h"
-
 namespace mscl
 {
     namespace SetToIdle { class Response; }    //forward declaration

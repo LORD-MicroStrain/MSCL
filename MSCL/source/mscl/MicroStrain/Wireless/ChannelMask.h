@@ -7,7 +7,6 @@
 #pragma once
 
 #include "mscl/BitMask.h"
-#include "mscl/Types.h"
 
 namespace mscl
 {

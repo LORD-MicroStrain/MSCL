@@ -6,10 +6,7 @@
 
 #pragma once
 
-#include "mscl/Types.h"
 #include "mscl/Timestamp.h"
-
-#include <vector>
 
 namespace mscl
 {

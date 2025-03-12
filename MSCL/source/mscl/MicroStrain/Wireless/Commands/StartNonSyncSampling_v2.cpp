@@ -4,14 +4,12 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "StartNonSyncSampling_v2.h"
-#include "WirelessProtocol.h"
-#include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
+#include "mscl/MicroStrain/Wireless/Commands/StartNonSyncSampling_v2.h"
+
+#include "mscl/MicroStrain/Wireless/Commands/WirelessProtocol.h"
 
 namespace mscl
 {
-
     ByteStream StartNonSyncSampling_v2::buildCommand(WirelessPacket::AsppVersion asppVer, NodeAddress nodeAddress)
     {
         //build the command ByteStream

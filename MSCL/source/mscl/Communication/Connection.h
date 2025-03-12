@@ -6,12 +6,7 @@
 
 #pragma once
 
-#include <functional>
-#include <string>
-#include <memory>
-#include "mscl/Types.h"
-#include "ConnectionDebugData.h"
-#include "RawBytePacketCollector.h"
+#include "mscl/Communication/ConnectionDebugData.h"
 
 namespace mscl
 {

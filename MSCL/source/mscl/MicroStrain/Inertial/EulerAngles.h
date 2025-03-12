@@ -7,6 +7,7 @@
 #pragma once
 
 #include "mscl/MicroStrain/Vector.h"
+#include "mscl/Value.h"
 
 namespace mscl
 {

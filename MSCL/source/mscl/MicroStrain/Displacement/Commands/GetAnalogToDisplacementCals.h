@@ -6,9 +6,8 @@
 
 #pragma once
 
-#include "mscl/MicroStrain/MIP/Commands/GenericMipCommand.h"
-#include "mscl/MicroStrain/ResponseCollector.h"
 #include "mscl/MicroStrain/LinearEquation.h"
+#include "mscl/MicroStrain/MIP/Commands/GenericMipCommand.h"
 
 namespace mscl
 {

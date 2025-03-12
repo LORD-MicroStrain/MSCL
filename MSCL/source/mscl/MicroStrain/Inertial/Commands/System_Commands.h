@@ -6,7 +6,6 @@
 
 #pragma once
 
-#include "mscl/MicroStrain/MIP/MipTypes.h"
 #include "mscl/MicroStrain/MIP/Commands/GenericMipCommand.h"
 
 namespace mscl

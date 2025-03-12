@@ -6,10 +6,6 @@
 
 #pragma once
 
-#include <functional>
-#include <string>
-#include "Types.h"
-
 namespace mscl
 {
     //Class: ScopeHelper

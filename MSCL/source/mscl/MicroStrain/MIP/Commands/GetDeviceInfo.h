@@ -7,11 +7,6 @@
 #pragma once
 
 #include "mscl/MicroStrain/MIP/Commands/GenericMipCommand.h"
-#include "mscl/Version.h"
-#include "mscl/MicroStrain/MIP/Commands/MipCmdResponse.h"
-#include "mscl/MicroStrain/MIP/MipModels.h"
-
-#include <string>
 
 namespace mscl
 {

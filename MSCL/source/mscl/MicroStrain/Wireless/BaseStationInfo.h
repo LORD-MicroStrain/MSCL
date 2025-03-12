@@ -12,8 +12,6 @@
 #include "RadioFeatures.h"
 #include "Commands/WirelessProtocol.h"
 
-#include <boost/optional.hpp>
-
 namespace mscl
 {
     class BaseStation_Impl;    //forward declarations

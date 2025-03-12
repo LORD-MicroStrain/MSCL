@@ -6,8 +6,6 @@
 
 #include "mscl/MicroStrain/Inertial/Commands/GNSS_Commands.h"
 
-#include "mscl/Exceptions.h"
-#include "mscl/Utils.h"
 #include "mscl/MicroStrain/MIP/Commands/MIP_Commands.h"
 
 namespace mscl

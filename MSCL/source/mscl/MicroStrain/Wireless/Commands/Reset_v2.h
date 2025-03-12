@@ -6,8 +6,7 @@
 
 #pragma once
 
-#include "mscl/MicroStrain/ByteStream.h"
-#include "WirelessResponsePattern.h"
+#include "mscl/MicroStrain/Wireless/Commands/WirelessResponsePattern.h"
 
 namespace mscl
 {
@@ -28,7 +27,6 @@ namespace mscl
             resetType_soft = 2
         };
 
-    public:
         //Function: buildCommand
         //    Builds the Reset_v2 command packet
         //

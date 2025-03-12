@@ -4,14 +4,12 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
+#include "mscl/MicroStrain/Wireless/Commands/BaseStation_Ping.h"
 
-#include "BaseStation_Ping.h"
-#include "WirelessProtocol.h"
+#include "mscl/MicroStrain/Wireless/Commands/WirelessProtocol.h"
 
 namespace mscl
 {
-
     ByteStream BaseStation_Ping::buildCommand()
     {
         //build the command ByteStream

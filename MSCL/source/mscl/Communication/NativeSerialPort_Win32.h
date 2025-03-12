@@ -6,10 +6,6 @@
 
 #pragma once
 
-#include "OperatingSystemErrorCodes.h"
-#include "mscl/Utils.h"
-#include "mscl/Exceptions.h"
-
 //Note: most of this code has been taken from the boost file: win_iocp_serial_port_service.ipp under the function "open"
 
 namespace mscl
@@ -157,5 +153,4 @@ namespace mscl
         //return the comm port handle
         return handle;
     }
-
 }

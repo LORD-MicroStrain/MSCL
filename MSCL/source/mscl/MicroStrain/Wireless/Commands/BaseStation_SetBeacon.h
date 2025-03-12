@@ -6,13 +6,11 @@
 
 #pragma once
 
-#include "WirelessResponsePattern.h"
-#include "mscl/Timestamp.h"
+#include "mscl/MicroStrain/Wireless/Commands/WirelessResponsePattern.h"
 
 namespace mscl
 {
 #ifndef SWIG
-
     //Class: BaseStation_SetBeacon
     //    Contains logic for the base station set (enable/disable) beacon command
     class BaseStation_SetBeacon
@@ -70,7 +68,5 @@ namespace mscl
             Timestamp beaconStartTime() const;
         };
     };
-
 #endif
-
 }

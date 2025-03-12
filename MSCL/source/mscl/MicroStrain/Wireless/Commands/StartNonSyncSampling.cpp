@@ -4,9 +4,9 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "StartNonSyncSampling.h"
-#include "WirelessProtocol.h"
+#include "mscl/MicroStrain/Wireless/Commands/StartNonSyncSampling.h"
+
+#include "mscl/MicroStrain/Wireless/Commands/WirelessProtocol.h"
 
 namespace mscl
 {

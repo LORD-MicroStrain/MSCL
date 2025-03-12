@@ -6,9 +6,6 @@
 
 #pragma once
 
-#include <condition_variable>
-#include <boost/circular_buffer.hpp>
-
 #include "WirelessDataPacket.h"
 #include "mscl/MicroStrain/Wireless/NodeDiscovery.h"
 

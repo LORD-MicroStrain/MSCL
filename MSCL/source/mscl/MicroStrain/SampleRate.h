@@ -6,12 +6,10 @@
 
 #pragma once
 
-#include "mscl/TimeSpan.h"
-#include "Wireless/WirelessTypes.h"
+#include "mscl/MicroStrain/Wireless/WirelessTypes.h"
 
 namespace mscl
 {
-
     //API Class: SampleRate
     //    Represents a MicroStrain sample rate (rate at which data is sampling)
     class SampleRate

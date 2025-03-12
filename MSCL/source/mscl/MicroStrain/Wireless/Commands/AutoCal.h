@@ -6,20 +6,13 @@
 
 #pragma once
 
-#include "mscl/Types.h"
-#include "mscl/Version.h"
-#include "mscl/MicroStrain/ByteStream.h"
-#include "WirelessResponsePattern.h"
-#include "mscl/MicroStrain/Wireless/WirelessModels.h"
-#include "mscl/MicroStrain/Wireless/WirelessTypes.h"
+#include "mscl/MicroStrain/Wireless/Commands/AutoCalInfo.h"
+#include "mscl/MicroStrain/Wireless/Commands/WirelessResponsePattern.h"
 #include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
-#include "AutoCalInfo.h"
+#include "mscl/MicroStrain/Wireless/WirelessModels.h"
 
 namespace mscl
 {
-    class WirelessPacket;
-    struct ShuntCalCmdInfo;
-
     //Struct: AutoCalCmdDetails
     //  Struct used internally to hold details for passing to the AutoCal function.
     //  Contains the ShuntCalCmdInfo that we want user exposed, as well as other internal info.
@@ -55,7 +48,6 @@ namespace mscl
         AutoCal(const AutoCal&) = delete;                //copy constructor disabled
         AutoCal& operator=(const AutoCal&) = delete;     //assignment operator disabled
 
-    public:
         //Function: buildCommand_shmLink
         //    Builds the AutoCal command packet for the SHM-Link node.
         //

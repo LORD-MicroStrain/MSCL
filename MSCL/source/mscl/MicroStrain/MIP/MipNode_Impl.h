@@ -6,27 +6,18 @@
 
 #pragma once
 
-#include <memory>
-
+#include "MipNodeInfo.h"
+#include "mscl/Communication/RawBytePacketCollector.h"
+#include "mscl/MicroStrain/LinearEquation.h"
+#include "mscl/MicroStrain/Inertial/ExposedInertialTypes.h"
 #include "mscl/MicroStrain/MIP/MipChannel.h"
-#include "mscl/MicroStrain/MIP/MipTypes.h"
-#include "mscl/MicroStrain/MIP/Commands/Ping.h"
-#include "mscl/MicroStrain/MIP/Commands/GenericMipCommand.h"
 #include "mscl/MicroStrain/MIP/Commands/GetDeviceInfo.h"
 #include "mscl/MicroStrain/MIP/Packets/MipPacketCollector.h"
-#include "mscl/Communication/Connection.h"
-#include "mscl/MicroStrain/ResponseCollector.h"
-#include "mscl/MicroStrain/Inertial/EulerAngles.h"
-#include "mscl/MicroStrain/Inertial/PositionVelocity.h"
-#include "mscl/Timestamp.h"
-#include "mscl/MicroStrain/Inertial/ExposedInertialTypes.h"
-#include "mscl/MicroStrain/LinearEquation.h"
 
 namespace mscl
 {
     //forward declarations
     class MipParser;
-    class MipNodeInfo;
     class MipNodeFeatures;
     class MipCommand;
 

@@ -6,14 +6,12 @@
 
 #pragma once
 
-#include "mscl/Types.h"
-#include "Packets/MipPacket.h"
-#include "../../Communication/RawBytePacketCollector.h"
 #include "mscl/MicroStrain/MIP/MipDataField.h"
-#include <memory>
 
 namespace mscl
 {
+    class MipPacket;
+    class RawBytePacketCollector;
     class DataBuffer;
     class MipPacketCollector;
     class ResponseCollector;

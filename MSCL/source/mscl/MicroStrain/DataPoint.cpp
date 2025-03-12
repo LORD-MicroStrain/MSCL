@@ -4,13 +4,7 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "DataPoint.h"
-
-#include <iomanip>
-#include "mscl/Exceptions.h"
-#include "mscl/Types.h"
-#include "mscl/Utils.h"
+#include "mscl/MicroStrain/DataPoint.h"
 
 namespace mscl
 {
@@ -31,7 +25,6 @@ namespace mscl
 
         return iter->second;
     }
-
 
     const Vector DataPoint::as_Vector() const
     {

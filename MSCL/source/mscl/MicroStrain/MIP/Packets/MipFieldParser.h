@@ -6,10 +6,7 @@
 
 #pragma once
 
-#include "MipDataPacket.h"
-#include "mscl/MicroStrain/MIP/MipTypes.h"
-#include <vector>
-#include <map>
+#include "mscl/MicroStrain/MIP/MipDataPoint.h"
 
 namespace mscl
 {
@@ -27,8 +24,8 @@ namespace mscl
     class MipFieldParser
     {
     protected:
-        MipFieldParser(){};                //default constructor disabled
-        virtual ~MipFieldParser(){};
+        MipFieldParser(){}                //default constructor disabled
+        virtual ~MipFieldParser(){}
 
     private:
         MipFieldParser(const MipFieldParser&);                //copy constructor disabled

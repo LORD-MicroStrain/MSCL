@@ -37,9 +37,6 @@
 
 #pragma once
 
-#include <typeinfo>
-#include <algorithm>
-
 #ifdef _MSC_VER
 //MSVC defines type_info outside of the std namespace for some reason
 typedef type_info TypeInfo;

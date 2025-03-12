@@ -6,12 +6,7 @@
 
 #pragma once
 
-#include "simple_any.h"
-
-#include <cstdint>
-#include <mutex>
-#include <vector>
-#include <sstream>
+#include "mscl/simple_any.h"
 
 namespace mscl
 {

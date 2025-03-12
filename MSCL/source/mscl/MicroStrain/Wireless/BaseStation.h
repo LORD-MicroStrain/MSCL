@@ -6,20 +6,19 @@
 
 #pragma once
 
-#include "mscl/Communication/Connection.h"
-#include "mscl/MicroStrain/Wireless/DataSweep.h"
-#include "mscl/MicroStrain/Wireless/NodeDiscovery.h"
+#include "BaseStationAnalogPair.h"
+#include "BaseStationButton.h"
+#include "WirelessModels.h"
+#include "WirelessTypes.h"
 #include "Commands/BeaconStatus.h"
 #include "Commands/PingResponse.h"
 #include "Commands/SetToIdleStatus.h"
 #include "Configuration/ConfigIssue.h"
-#include "BaseStationButton.h"
-#include "BaseStationAnalogPair.h"
-#include "WirelessTypes.h"
-#include "WirelessModels.h"
+#include "mscl/Communication/Connection.h"
+#include "mscl/Communication/RawBytePacket.h"
+#include "mscl/MicroStrain/Wireless/DataSweep.h"
+#include "mscl/MicroStrain/Wireless/NodeDiscovery.h"
 #include "mscl/Version.h"
-
-#include <memory>
 
 namespace mscl
 {

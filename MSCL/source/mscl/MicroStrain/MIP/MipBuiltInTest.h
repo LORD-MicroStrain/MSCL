@@ -6,9 +6,9 @@
 
 #pragma once
 
-#include "mscl/MicroStrain/MIP/MipModels.h"
-#include "mscl/MicroStrain/MIP/MipDataPoint.h"
 #include "mscl/MicroStrain/Bitfield.h"
+#include "mscl/MicroStrain/MIP/MipDataPoint.h"
+#include "mscl/MicroStrain/MIP/MipModels.h"
 
 namespace mscl
 {

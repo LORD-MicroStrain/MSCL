@@ -4,12 +4,8 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
 #include "WirelessDataPacket.h"
 #include "mscl/Timestamp.h"
-
-#include <assert.h>
-#include <boost/numeric/conversion/cast.hpp>
 
 namespace mscl
 {

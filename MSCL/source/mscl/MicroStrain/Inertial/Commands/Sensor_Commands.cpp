@@ -4,11 +4,8 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "Sensor_Commands.h"
+#include "mscl/MicroStrain/Inertial/Commands/Sensor_Commands.h"
 
-#include "mscl/Exceptions.h"
-#include "mscl/Utils.h"
 #include "mscl/MicroStrain/MIP/Commands/MIP_Commands.h"
 
 namespace mscl

@@ -6,21 +6,11 @@
 
 #include "mscl/Communication/Devices.h"
 
-#include "mscl/Utils.h"
-
 #ifdef _WIN32
-
-#include "mscl/WMI_Helper.h"
 #include "mscl/Utils_Win32.h"
-
+#include "mscl/WMI_Helper.h"
 #else
-
-#include <boost/filesystem.hpp>
-
-#include <cmath>
-#include <fstream>
-#include <vector>
-
+// #include "mscl/Utils.h"
 #endif // _WIN32
 
 namespace mscl

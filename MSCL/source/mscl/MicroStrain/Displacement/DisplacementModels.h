@@ -6,8 +6,6 @@
 
 #pragma once
 
-#include <string>
-
 namespace mscl
 {
     //API Class: DisplacementModels

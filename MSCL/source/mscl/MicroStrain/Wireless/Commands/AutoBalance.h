@@ -6,10 +6,6 @@
 
 #pragma once
 
-#include "mscl/MicroStrain/ByteStream.h"
-#include "mscl/MicroStrain/ResponsePattern.h"
-#include "mscl/Types.h"
-
 namespace mscl
 {
     //Class: AutoBalance

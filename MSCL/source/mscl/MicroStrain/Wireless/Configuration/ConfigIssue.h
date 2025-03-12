@@ -6,8 +6,6 @@
 
 #pragma once
 
-#include <string>
-#include <vector>
 #include "mscl/MicroStrain/Wireless/ChannelMask.h"
 
 namespace mscl

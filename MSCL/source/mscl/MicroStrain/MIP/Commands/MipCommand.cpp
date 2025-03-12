@@ -6,9 +6,6 @@
 
 #include "mscl/MicroStrain/MIP/Commands/MipCommand.h"
 
-#include "mscl/MicroStrain/ResponseCollector.h"
-#include "mscl/MicroStrain/MIP/Commands/GenericMipCommand.h"
-
 namespace mscl
 {
     /////  MipCommand  /////

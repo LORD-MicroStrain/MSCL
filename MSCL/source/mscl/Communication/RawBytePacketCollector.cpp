@@ -4,11 +4,7 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "RawBytePacketCollector.h"
-
-#include <chrono>
-#include "mscl/Exceptions.h"
+#include "mscl/Communication/RawBytePacketCollector.h"
 
 namespace mscl
 {

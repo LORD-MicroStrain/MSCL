@@ -6,21 +6,11 @@
 
 #pragma once
 
-#include <string>
-#include <unordered_map>
-#include <vector>
-#include <map>
-#include "mscl/Value.h"
-#include "mscl/Version.h"
-#include "mscl/Timestamp.h"
-
 #include "mscl/MicroStrain/Bitfield.h"
-
 #include "mscl/MicroStrain/Inertial/PositionVelocity.h"
 
 namespace mscl
 {
-
     //API Struct: MipTypes
     //    Contains enumeration/types for various MIP information
     struct MipTypes
@@ -2978,23 +2968,23 @@ namespace mscl
             m_type(rangeType),
             m_range(rangeValue),
             m_id(index)
-        {};
+        {}
 
     public:
         // needed for SWIG - should not be used
-        SensorRange() {};
+        SensorRange() {}
 
         //API Function: type
         // The SensorRange::Type of this range
-        Type type() const { return m_type; };
+        Type type() const { return m_type; }
 
         //API Function: range
         // This will only be set and valid if read from <SupportedSensorRanges> object
-        float range() const { return m_range; };
+        float range() const { return m_range; }
 
         //API Function: id
         // The index ID of this range according to device manual
-        uint8 id() const { return m_id; };
+        uint8 id() const { return m_id; }
     };
 
     //API Typedef: SensorRanges
@@ -3015,14 +3005,14 @@ namespace mscl
         SensorRangeOptions m_options;
 
     public:
-        SupportedSensorRanges() {};
+        SupportedSensorRanges() {}
 
         //API Function: options
         // Get the supported sensor range options
         //
         // Returns:
         //  <SensorRangeOptions> - the supported options
-        const SensorRangeOptions options() const { return m_options; };
+        const SensorRangeOptions options() const { return m_options; }
 
         //API Function: lookupRecommended
         // Lookup the supported option of the specified type that is closest to but also incorporates the specified range.

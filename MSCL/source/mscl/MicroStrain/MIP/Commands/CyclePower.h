@@ -10,9 +10,7 @@
 
 namespace mscl
 {
-
 #ifndef SWIG
-
     //Class: CyclePower
     //  Contains the logic for the MIP "Device Reset" command.
     class CyclePower

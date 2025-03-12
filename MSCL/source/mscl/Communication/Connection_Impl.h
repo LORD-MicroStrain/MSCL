@@ -6,18 +6,6 @@
 
 #pragma once
 
-#include <chrono>
-#include <condition_variable>
-#include <memory>
-#include <mutex>
-#include <boost/circular_buffer.hpp>
-#include <string>
-#include <thread>
-#include "BoostCommunication.h"
-#include "Connection.h"
-#include "ConnectionDebugData.h"
-#include <functional>
-
 namespace mscl
 {
     class DataBuffer;
@@ -191,9 +179,6 @@ namespace mscl
         //  - <Error_Connection>: a connection error has occurred, such as the device being unplugged.
         virtual void updateBaudRate(uint32 baudRate) {};
     };
-
-
-
 
     //Class: Connection_Impl
     //    An Abstract Base Class for various connection types.

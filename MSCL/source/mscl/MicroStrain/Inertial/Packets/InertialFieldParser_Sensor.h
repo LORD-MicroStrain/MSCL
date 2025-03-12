@@ -6,10 +6,7 @@
 
 #pragma once
 
-#include <boost/utility/binary.hpp>
-
 #include "mscl/MicroStrain/MIP/Packets/MipFieldParser.h"
-#include "mscl/MicroStrain/MIP/Packets/MipDataPacket.h"
 
 namespace mscl
 {
@@ -22,7 +19,7 @@ namespace mscl
     class FieldParser_RawAccelVector : public MipFieldParser
     {
     private:
-        FieldParser_RawAccelVector(){};    //default constructor disabled
+        FieldParser_RawAccelVector(){}    //default constructor disabled
 
     public:
         //Function: parse
@@ -55,7 +52,7 @@ namespace mscl
     class FieldParser_RawGyroVector : public MipFieldParser
     {
     private:
-        FieldParser_RawGyroVector(){};        //default constructor disabled
+        FieldParser_RawGyroVector(){}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -71,7 +68,7 @@ namespace mscl
     class FieldParser_RawMagVector : public MipFieldParser
     {
     private:
-        FieldParser_RawMagVector(){};        //default constructor disabled
+        FieldParser_RawMagVector(){}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -87,7 +84,7 @@ namespace mscl
     class FieldParser_ScaledAccelVector : public MipFieldParser
     {
     private:
-        FieldParser_ScaledAccelVector(){};        //default constructor disabled
+        FieldParser_ScaledAccelVector(){}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -103,7 +100,7 @@ namespace mscl
     class FieldParser_ScaledGyroVector : public MipFieldParser
     {
     private:
-        FieldParser_ScaledGyroVector(){};        //default constructor disabled
+        FieldParser_ScaledGyroVector(){}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -119,7 +116,7 @@ namespace mscl
     class FieldParser_ScaledMagVector : public MipFieldParser
     {
     private:
-        FieldParser_ScaledMagVector(){};        //default constructor disabled
+        FieldParser_ScaledMagVector(){}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -135,7 +132,7 @@ namespace mscl
     class FieldParser_DeltaThetaVector : public MipFieldParser
     {
     private:
-        FieldParser_DeltaThetaVector(){};        //default constructor disabled
+        FieldParser_DeltaThetaVector(){}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -151,7 +148,7 @@ namespace mscl
     class FieldParser_DeltaVelocityVector : public MipFieldParser
     {
     private:
-        FieldParser_DeltaVelocityVector(){};        //default constructor disabled
+        FieldParser_DeltaVelocityVector(){}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -167,7 +164,7 @@ namespace mscl
     class FieldParser_OrientationMatrix : public MipFieldParser
     {
     private:
-        FieldParser_OrientationMatrix(){};        //default constructor disabled
+        FieldParser_OrientationMatrix(){}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -183,7 +180,7 @@ namespace mscl
     class FieldParser_Quaternion : public MipFieldParser
     {
     private:
-        FieldParser_Quaternion(){};        //default constructor disabled
+        FieldParser_Quaternion(){}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -199,7 +196,7 @@ namespace mscl
     class FieldParser_OrientationUpdateMatrix : public MipFieldParser
     {
     private:
-        FieldParser_OrientationUpdateMatrix(){};        //default constructor disabled
+        FieldParser_OrientationUpdateMatrix(){}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -215,7 +212,7 @@ namespace mscl
     class FieldParser_EulerAngles : public MipFieldParser
     {
     private:
-        FieldParser_EulerAngles(){};        //default constructor disabled
+        FieldParser_EulerAngles(){}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -231,7 +228,7 @@ namespace mscl
     class FieldParser_InternalTimestamp : public MipFieldParser
     {
     private:
-        FieldParser_InternalTimestamp(){};        //default constructor disabled
+        FieldParser_InternalTimestamp(){}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -247,7 +244,7 @@ namespace mscl
     class FieldParser_BeaconedTimestamp : public MipFieldParser
     {
     private:
-        FieldParser_BeaconedTimestamp(){};        //default constructor disabled
+        FieldParser_BeaconedTimestamp(){}        //default constructor disabled
 
         //Constants: Valid Flags
         //    TIMESTAMP_FLAG        - b0001 - The flag position for checking the Timestamp status
@@ -267,7 +264,7 @@ namespace mscl
     class FieldParser_StabilizedMagVector : public MipFieldParser
     {
     private:
-        FieldParser_StabilizedMagVector(){};        //default constructor disabled
+        FieldParser_StabilizedMagVector(){}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -283,7 +280,7 @@ namespace mscl
     class FieldParser_StabilizedAccelVector : public MipFieldParser
     {
     private:
-        FieldParser_StabilizedAccelVector(){};        //default constructor disabled
+        FieldParser_StabilizedAccelVector(){}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -303,7 +300,7 @@ namespace mscl
         //    TS_FLAG    - b00000001    - The flag position for checking the Timestamp Valid flag
         static const uint16 TS_FLAG = BOOST_BINARY(00000100);
 
-        FieldParser_GpsCorrelationTimestamp(){};        //default constructor disabled
+        FieldParser_GpsCorrelationTimestamp(){}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -322,7 +319,7 @@ namespace mscl
         //Constants: Valid Flags
         //    TS_FLAG    - b00000001    - The flag position for checking the Timestamp Valid flag
 
-        FieldParser_TemperatureStatistics() {};        //default constructor disabled
+        FieldParser_TemperatureStatistics() {}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -338,7 +335,7 @@ namespace mscl
     class FieldParser_ScaledAmbientPressure : public MipFieldParser
     {
     private:
-        FieldParser_ScaledAmbientPressure() {};        //default constructor disabled
+        FieldParser_ScaledAmbientPressure() {}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -388,7 +385,7 @@ namespace mscl
     class FieldParser_RawAmbientPressure : public MipFieldParser
     {
     private:
-        FieldParser_RawAmbientPressure() {};        //default constructor disabled
+        FieldParser_RawAmbientPressure() {}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -404,7 +401,7 @@ namespace mscl
     class FieldParser_OdometerData : public MipFieldParser
     {
     private:
-        FieldParser_OdometerData() {};        //default constructor disabled
+        FieldParser_OdometerData() {}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;

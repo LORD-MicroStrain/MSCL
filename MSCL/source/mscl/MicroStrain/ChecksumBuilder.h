@@ -6,9 +6,6 @@
 
 #pragma once
 
-#include "ByteStream.h"
-#include "mscl/Types.h"
-
 namespace mscl
 {
     //Class: ChecksumBuilder
@@ -18,7 +15,7 @@ namespace mscl
     public:
         //Default Constructor: ChecksumBuilder
         //    Creates a ChecksumBuilder object
-        ChecksumBuilder(){};
+        ChecksumBuilder(){}
 
     private:
         //Variable: m_bytes
@@ -82,5 +79,4 @@ namespace mscl
         //  The CRC checksum of all bytes in the ChecksumBuilder.
         uint32 crcChecksum() const;
     };
-
 }

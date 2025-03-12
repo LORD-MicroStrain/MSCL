@@ -6,15 +6,11 @@
 
 #pragma once
 
-#include "mscl/MicroStrain/ByteStream.h"
-#include "WirelessResponsePattern.h"
-#include "mscl/Types.h"
+#include "mscl/MicroStrain/Wireless/Commands/WirelessResponsePattern.h"
 
 namespace mscl
 {
-
 #ifndef SWIG
-
     //Class: BaseStation_ReadEeprom
     //    Contains logic for the base station read eeprom command
     class BaseStation_ReadEeprom
@@ -85,7 +81,5 @@ namespace mscl
             bool matchFailResponse(DataBuffer& data) override;
         };
     };
-
 #endif
-
 }

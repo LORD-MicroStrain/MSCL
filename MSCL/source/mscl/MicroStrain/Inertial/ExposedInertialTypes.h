@@ -6,17 +6,9 @@
 
 #pragma once
 
-#include "mscl/Types.h"
-#include "mscl/MicroStrain/Matrix.h"
-#include "mscl/MicroStrain/Bitfield.h"
-#include "mscl/MicroStrain/SampleRate.h"
-#include "mscl/MicroStrain/MIP/MipTypes.h"
 #include "mscl/MicroStrain/Inertial/EulerAngles.h"
-#include "mscl/MicroStrain/Inertial/PositionVelocity.h"
-#include <array>
-#include <boost/optional.hpp>
-#include "mscl/Exceptions.h"
-
+#include "mscl/MicroStrain/MIP/MipTypes.h"
+#include "mscl/MicroStrain/SampleRate.h"
 
 namespace mscl
 {
@@ -1356,7 +1348,7 @@ namespace mscl
             count(0),
             lastTimeinMS(0)
         {
-        };
+        }
 
         //API Variable: count
         //  The number of 1PPS pulses
@@ -1378,7 +1370,7 @@ namespace mscl
             enabled(false),
             outgoingPacketsDropped(0)
         {
-        };
+        }
 
         //API Variable: enabled
         bool enabled;
@@ -1398,7 +1390,7 @@ namespace mscl
             messagesRead(0),
             lastMessageReadinMS(0)
         {
-        };
+        }
 
         //API Variable: messageParsingErrors
         uint32 messageParsingErrors;
@@ -1424,7 +1416,7 @@ namespace mscl
             overrunsOnWrite(0),
             overrunsOnRead(0)
         {
-        };
+        }
 
         //API Variable: bytesWritten
         uint32 bytesWritten;
@@ -1451,7 +1443,7 @@ namespace mscl
             lastReadInMS(0),
             error(0)
         {
-        };
+        }
 
         //API Variable: onBoardTemp
         float onBoardTemp;
@@ -1571,7 +1563,7 @@ namespace mscl
 
         // API Constructor: DeviceStatusData
         //    Creates a DeviceStatusData object with default values.
-        DeviceStatusData() {};
+        DeviceStatusData() {}
 
         //API Variable: model
         uint16 modelNumber;
@@ -2004,7 +1996,7 @@ namespace mscl
             return initialValuesSource == FilterInitialValuesSource::UserSpecified_Heading
                 || initialValuesSource == FilterInitialValuesSource::UserSpecified_Attitude
                 || initialValuesSource == FilterInitialValuesSource::UserSpecified_All;
-        };
+        }
 
         //API Function: manualAttitude
         //    Checks the value of initialValuesSource to determine if the initial heading, pitch, and roll need to be set manually.
@@ -2012,7 +2004,7 @@ namespace mscl
         {
             return initialValuesSource == FilterInitialValuesSource::UserSpecified_Attitude
                 || initialValuesSource == FilterInitialValuesSource::UserSpecified_All;
-        };
+        }
 
         //API Function: manualPositionVelocity
         //    Checks the value of initialValuesSource to determine if the initial position and velocity need to be set manually.
@@ -2033,7 +2025,7 @@ namespace mscl
             tareRollAxis(tareRollAxis),
             tarePitchAxis(tarePitchAxis),
             tareYawAxis(tareYawAxis)
-        { };
+        { }
 
         //API Variable: tareRollAxis
         bool tareRollAxis;
@@ -2197,14 +2189,14 @@ namespace mscl
         AutoAdaptiveFilterOptions() :
             level(InertialTypes::FILTERING_MODERATE),
             timeLimit(0)
-        {};
+        {}
 
         //API Constructor: AutoAdaptiveFilterOptions
         //  Initializes a AutoAdaptiveFilterOptions object with specified values
         AutoAdaptiveFilterOptions(InertialTypes::AutoAdaptiveFilteringLevel lvl, uint16 limit) :
             level(lvl),
             timeLimit(limit)
-        {};
+        {}
 
         //API Variable: level
         //  The auto-adaptive filter operating level
@@ -2269,22 +2261,22 @@ namespace mscl
         MagPowerBandwidthSettings magBandwidthPower;
 
         //Constructor: SignalConditioningValues
-        SignalConditioningValues() {};
+        SignalConditioningValues() {}
 
         //API Function: conditioningOptionOn
         //    Checks whether the specified conditioning option bit is 1.
-        bool conditioningOptionOn(DataConditioningFlags option) { return (dataConditioningFlags & static_cast<uint16>(option)) > 0; };
-        bool conditioningOptionOn(uint16 options) { return (dataConditioningFlags & options) > 0; };
+        bool conditioningOptionOn(DataConditioningFlags option) { return (dataConditioningFlags & static_cast<uint16>(option)) > 0; }
+        bool conditioningOptionOn(uint16 options) { return (dataConditioningFlags & options) > 0; }
 
         //API Function: setConditioningOptionOn
         //    Sets the specified conditioning option bit to 1.
-        void setConditioningOptionOn(DataConditioningFlags option) { dataConditioningFlags = dataConditioningFlags | static_cast<uint16>(option); };
-        void setConditioningOptionOn(uint16 options) { dataConditioningFlags = dataConditioningFlags | options; };
+        void setConditioningOptionOn(DataConditioningFlags option) { dataConditioningFlags = dataConditioningFlags | static_cast<uint16>(option); }
+        void setConditioningOptionOn(uint16 options) { dataConditioningFlags = dataConditioningFlags | options; }
 
         //API Function: setConditioningOptionOff
         //    Sets the specified conditioning option bit to 0.
-        void setConditioningOptionOff(DataConditioningFlags option) { dataConditioningFlags = dataConditioningFlags & ~static_cast<uint16>(option); };
-        void setConditioningOptionOff(uint16 options) { dataConditioningFlags = dataConditioningFlags & ~options; };
+        void setConditioningOptionOff(DataConditioningFlags option) { dataConditioningFlags = dataConditioningFlags & ~static_cast<uint16>(option); }
+        void setConditioningOptionOff(uint16 options) { dataConditioningFlags = dataConditioningFlags & ~options; }
     };
 
     //API Struct: EnableDisableMeasurements
@@ -2300,19 +2292,19 @@ namespace mscl
         };
 
         //Constructor: EnableDisableMeasurements
-        EnableDisableMeasurements() {};
+        EnableDisableMeasurements() {}
 
         //Constructor: EnableDisableMeasurements
         EnableDisableMeasurements(uint16 option) :
-            measurementOptions(option) {};
+            measurementOptions(option) {}
 
         //API Variable: measurementOptions
         uint16 measurementOptions;
 
         //API Function: optionEnabled
         //    Checks whether the specified option is enabled.
-        bool optionEnabled(MeasurementOptions option) { return (measurementOptions & static_cast<uint16>(option)) > 0; };
-        bool optionEnabled(uint16 options) { return (measurementOptions & options) > 0; };
+        bool optionEnabled(MeasurementOptions option) { return (measurementOptions & static_cast<uint16>(option)) > 0; }
+        bool optionEnabled(uint16 options) { return (measurementOptions & options) > 0; }
 
         //API Function: enableOption
         //    Enables the specified option.
@@ -2680,8 +2672,8 @@ namespace mscl
 
         //API Function: gpsSignalValue
         //  Gets or sets the underlying value for the GPS signal bitfield
-        void gpsSignalValue(uint8 val) { m_gpsSignals.value(val); };
-        uint8 gpsSignalValue() { return static_cast<uint8>(m_gpsSignals.value()); };
+        void gpsSignalValue(uint8 val) { m_gpsSignals.value(val); }
+        uint8 gpsSignalValue() { return static_cast<uint8>(m_gpsSignals.value()); }
 
         //API Function: enableGlonassSignal
         //  Enable or disable specified GLONASS signal
@@ -2693,8 +2685,8 @@ namespace mscl
 
         //API Function: glonassSignalValue
         //  Gets or sets the underlying value for the GLONASS signal bitfield
-        void glonassSignalValue(uint8 val) { m_glonassSignals.value(val); };
-        uint8 glonassSignalValue() { return static_cast<uint8>(m_glonassSignals.value()); };
+        void glonassSignalValue(uint8 val) { m_glonassSignals.value(val); }
+        uint8 glonassSignalValue() { return static_cast<uint8>(m_glonassSignals.value()); }
 
         //API Function: enableGalileoSignal
         //  Enable or disable specified Galileo signal
@@ -2706,8 +2698,8 @@ namespace mscl
 
         //API Function: galileoSignalValue
         //  Gets or sets the underlying value for the Galileo signal bitfield
-        void galileoSignalValue(uint8 val) { m_galileoSignals.value(val); };
-        uint8 galileoSignalValue() { return static_cast<uint8>(m_galileoSignals.value()); };
+        void galileoSignalValue(uint8 val) { m_galileoSignals.value(val); }
+        uint8 galileoSignalValue() { return static_cast<uint8>(m_galileoSignals.value()); }
 
         //API Function: enableBeiDouSignal
         //  Enable or disable specified BeiDou signal
@@ -2719,8 +2711,8 @@ namespace mscl
 
         //API Function: beidouSignalValue
         //  Gets or sets the underlying value for the BeiDou signal bitfield
-        void beidouSignalValue(uint8 val) { m_beidouSignals.value(val); };
-        uint8 beidouSignalValue() { return static_cast<uint8>(m_beidouSignals.value()); };
+        void beidouSignalValue(uint8 val) { m_beidouSignals.value(val); }
+        uint8 beidouSignalValue() { return static_cast<uint8>(m_beidouSignals.value()); }
     };
 
     typedef std::map<MipChannelIdentifier::GnssConstellationIds, std::vector<uint8>> GnssSignalConfigOptions;
@@ -2918,7 +2910,7 @@ namespace mscl
         };
 
     public:
-        OdometerConfiguration() {};
+        OdometerConfiguration() {}
 
         //API Function: mode
         //  Get/Set the mode

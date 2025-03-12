@@ -6,14 +6,14 @@
 
 #pragma once
 
-#include "WirelessResponsePattern.h"
 #include "mscl/MicroStrain/Wireless/BaseStation.h"
+#include "mscl/MicroStrain/Wireless/Commands/WirelessResponsePattern.h"
 
 namespace mscl
 {
+#ifndef SWIG
     //Title: SetToIdle
 
-#ifndef SWIG
     //Class: SetToIdle
     //    Contains logic for the Set to Idle command.
     namespace SetToIdle
@@ -90,6 +90,6 @@ namespace mscl
             //    The <SetToIdleResult> containing the result of the Stop Node command.
             SetToIdleStatus::SetToIdleResult result();
         };
-    };
+    }
 #endif
 }

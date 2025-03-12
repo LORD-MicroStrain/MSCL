@@ -5,6 +5,7 @@
 *****************************************************************************************/
 
 #include "mscl/MicroStrain/Inertial/Commands/System_Commands.h"
+
 #include "mscl/MicroStrain/MIP/Commands/MIP_Commands.h"
 
 namespace mscl

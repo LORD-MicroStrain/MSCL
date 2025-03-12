@@ -4,7 +4,6 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
 #include "StructuralHealth.h"
 
 namespace mscl

@@ -6,9 +6,6 @@
 
 #pragma once
 
-#include "mscl/Types.h"
-#include <vector>
-
 namespace mscl
 {
     //API Class: BitMask

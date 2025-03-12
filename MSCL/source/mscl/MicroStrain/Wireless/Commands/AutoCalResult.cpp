@@ -4,8 +4,7 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "AutoCalResult.h"
+#include "mscl/MicroStrain/Wireless/Commands/AutoCalResult.h"
 
 namespace mscl
 {
@@ -70,8 +69,6 @@ namespace mscl
         m_temperature = data.read_float();
     }
 
-
-
     //=====================================================
     //AutoCalResult_shmLink201
     //=====================================================
@@ -131,7 +128,6 @@ namespace mscl
         //temperature at time of cal
         m_temperature = data.read_float();
     }
-
 
     //=====================================================
     //AutoCalResult_shunt

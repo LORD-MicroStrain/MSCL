@@ -4,8 +4,7 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "Mip_SetToIdle.h"
+#include "mscl/MicroStrain/MIP/Commands/Mip_SetToIdle.h"
 
 namespace mscl
 {

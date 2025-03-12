@@ -6,9 +6,6 @@
 
 #pragma once
 
-#include "mscl/Types.h"
-#include "ByteStream.h"
-
 namespace mscl
 {
     //API Class: Matrix

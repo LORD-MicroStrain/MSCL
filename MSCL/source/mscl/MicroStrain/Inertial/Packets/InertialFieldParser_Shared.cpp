@@ -4,11 +4,9 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
+#include "mscl/MicroStrain/Inertial/Packets/InertialFieldParser_Shared.h"
 
-#include "InertialFieldParser_Shared.h"
-#include "mscl/MicroStrain/MIP/Packets/MipDataPacket.h"
-#include "mscl/MicroStrain/DataBuffer.h"
+#include "mscl/MicroStrain/MIP/MipDataField.h"
 
 namespace mscl
 {

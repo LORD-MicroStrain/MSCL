@@ -7,7 +7,7 @@
 #pragma once
 
 #ifdef _WIN32
-    #include "NativeSerialPort_Win32.h"
+    #include "mscl/Communication/NativeSerialPort_Win32.h"
 #else
-    #include "NativeSerialPort_linux.h"
-#endif
+    #include "mscl/Communication/NativeSerialPort_linux.h"
+#endif // _WIN32

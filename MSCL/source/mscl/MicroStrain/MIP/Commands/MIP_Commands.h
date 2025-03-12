@@ -6,16 +6,15 @@
 
 #pragma once
 
-#include "mscl/MicroStrain/MIP/Commands/GenericMipCommand.h"
 #include "mscl/MicroStrain/Inertial/EulerAngles.h"
-#include "mscl/MicroStrain/MIP/MipChannel.h"
-#include "mscl/MicroStrain/MIP/MipTypes.h"
-#include "mscl/MicroStrain/Inertial/PositionVelocity.h"
-#include "GetDeviceInfo.h"
 #include "mscl/MicroStrain/Inertial/ExposedInertialTypes.h"
+#include "mscl/MicroStrain/MIP/MipChannel.h"
 
 namespace mscl
 {
+    class GenericMipCmdResponse;
+    class MipDeviceInfo;
+
     //Class: MIP_Commands
     //    Contains helper functions for MIP Commands
     class MIP_Commands

@@ -17,8 +17,8 @@ namespace mscl
     {
     public:
         //Constants: Packet Bytes
-        //    CMD_ID                - CMD_CONTINUOUS_DATA_STREAM    - The <MipTypes::Command> for this command
-        //  FIELD_DATA_BYTE        - 0x85                            - The Data Field Descriptor byte
+        //  CMD_ID          - CMD_CONTINUOUS_DATA_STREAM - The <MipTypes::Command> for this command
+        //  FIELD_DATA_BYTE - 0x85                       - The Data Field Descriptor byte
         static const MipTypes::Command CMD_ID    = MipTypes::CMD_CONTINUOUS_DATA_STREAM;
         static const uint8 FIELD_DATA_BYTE            = 0x85;
 

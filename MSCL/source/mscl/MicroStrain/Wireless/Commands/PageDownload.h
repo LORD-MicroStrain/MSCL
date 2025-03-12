@@ -6,15 +6,12 @@
 
 #pragma once
 
-#include "mscl/MicroStrain/ByteStream.h"
-#include "WirelessResponsePattern.h"
-#include "mscl/Types.h"
+#include "mscl/MicroStrain/Wireless/Commands/WirelessResponsePattern.h"
 
 namespace mscl
 {
-    //Title: PageDownload
-
 #ifndef SWIG
+    //Title: PageDownload
 
     //Class: PageDownload
     //    Contains logic for the PageDownload Node command
@@ -108,6 +105,5 @@ namespace mscl
             bool matchFailResponse(DataBuffer& data) override;
         };
     };
-
 #endif
 }

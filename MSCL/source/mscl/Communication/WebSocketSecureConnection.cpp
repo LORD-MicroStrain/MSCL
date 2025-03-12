@@ -4,20 +4,14 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-
 #ifndef MSCL_DISABLE_WEBSOCKETS
 #ifndef MSCL_DISABLE_SSL
 
-#include "WebSocketSecureConnection.h"
-#include "mscl/Utils.h"
+#include "mscl/Communication/WebSocketSecureConnection.h"
 
 #ifdef _WIN32
-#include <MSTcpIP.h>
-#endif
-
-#include <boost/beast/websocket/ssl.hpp>
-#include <boost/asio/ssl.hpp>
+#include <mstcpip.h>
+#endif // _WIN32
 
 namespace mscl
 {
@@ -151,5 +145,5 @@ namespace mscl
     }
 }
 
-#endif // MSCL_DISABLE_SSL
-#endif // MSCL_DISABLE_WEBSOCKETS
+#endif // !MSCL_DISABLE_SSL
+#endif // !MSCL_DISABLE_WEBSOCKETS

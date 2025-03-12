@@ -6,11 +6,6 @@
 
 #pragma once
 
-#include <string>
-#include <vector>
-#include <Windows.h>
-
-
 //Title: Utils_Win32
 
 #ifdef UNICODE
@@ -59,7 +54,7 @@ namespace mscl
             return std::wstring(&buffer[0]);
         }
 
-    #ifdef UNICODE
+#ifdef UNICODE
         //Function: toHstring
         //    Converts a std::string to an hstring
         //
@@ -115,7 +110,7 @@ namespace mscl
             //unicode so just return the hstring
             return in;
         }
-    #else
+#else
         //Function: toHstring
         //    Converts a std::string to an hstring
         //
@@ -167,6 +162,6 @@ namespace mscl
         {
             return string_to_wstring(in);
         }
-    #endif
+#endif
     }
 }

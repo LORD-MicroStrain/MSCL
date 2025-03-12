@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "Matrix.h"
+#include "mscl/MicroStrain/Matrix.h"
 
 namespace mscl
 {

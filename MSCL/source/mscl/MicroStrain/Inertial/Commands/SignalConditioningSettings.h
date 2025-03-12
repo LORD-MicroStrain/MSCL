@@ -6,7 +6,6 @@
 
 #pragma once
 
-#include "mscl/MicroStrain/ResponseCollector.h"
 #include "mscl/MicroStrain/Inertial/ExposedInertialTypes.h"
 #include "mscl/MicroStrain/MIP/Commands/MipCommand.h"
 
@@ -22,7 +21,7 @@ namespace mscl
         //
         //Returns:
         //    std::string - the string name for the command.
-        virtual std::string commandName() const { return "AHRSSignalConditioningSettings"; };
+        virtual std::string commandName() const { return "AHRSSignalConditioningSettings"; }
 
         //Function: MakeSetCommand
         //
@@ -68,7 +67,7 @@ namespace mscl
         //
         //Returns:
         //    uint8 - the byte ID for field data in the reply.
-        virtual uint8 fieldDataByte() const { return 0x86; };
+        virtual uint8 fieldDataByte() const { return 0x86; }
 
         //Function: responseExpected
         //

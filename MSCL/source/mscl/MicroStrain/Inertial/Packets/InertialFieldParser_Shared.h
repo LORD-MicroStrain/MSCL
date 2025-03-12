@@ -6,10 +6,7 @@
 
 #pragma once
 
-#include <boost/utility/binary.hpp>
-
 #include "mscl/MicroStrain/MIP/Packets/MipFieldParser.h"
-#include "mscl/MicroStrain/MIP/Packets/MipDataPacket.h"
 
 namespace mscl
 {
@@ -22,8 +19,8 @@ namespace mscl
     class MipSharedFieldParser : public MipFieldParser
     {
     protected:
-        MipSharedFieldParser() {};                //default constructor disabled
-        virtual ~MipSharedFieldParser() {};
+        MipSharedFieldParser() {}                //default constructor disabled
+        virtual ~MipSharedFieldParser() {}
 
     private:
         MipSharedFieldParser(const MipSharedFieldParser&);                //copy constructor disabled
@@ -37,7 +34,7 @@ namespace mscl
     class FieldParser_EventSource : public MipSharedFieldParser
     {
     private:
-        FieldParser_EventSource() {};        //default constructor disabled
+        FieldParser_EventSource() {}        //default constructor disabled
 
     public:
         //Function: parse
@@ -70,7 +67,7 @@ namespace mscl
     class FieldParser_Ticks : public MipSharedFieldParser
     {
     private:
-        FieldParser_Ticks() {};        //default constructor disabled
+        FieldParser_Ticks() {}        //default constructor disabled
 
     public:
         //Function: parse
@@ -103,7 +100,7 @@ namespace mscl
     class FieldParser_DeltaTicks : public MipSharedFieldParser
     {
     private:
-        FieldParser_DeltaTicks() {};        //default constructor disabled
+        FieldParser_DeltaTicks() {}        //default constructor disabled
 
     public:
         //Function: parse
@@ -143,7 +140,7 @@ namespace mscl
         static const uint16 WEEK_NUM_VALID = BOOST_BINARY(00000010);
 
     private:
-        FieldParser_GpsTimestamp() {};        //default constructor disabled
+        FieldParser_GpsTimestamp() {}        //default constructor disabled
 
     public:
         //Function: parse
@@ -176,7 +173,7 @@ namespace mscl
     class FieldParser_DeltaTime : public MipSharedFieldParser
     {
     private:
-        FieldParser_DeltaTime() {};        //default constructor disabled
+        FieldParser_DeltaTime() {}        //default constructor disabled
 
     public:
         //Function: parse

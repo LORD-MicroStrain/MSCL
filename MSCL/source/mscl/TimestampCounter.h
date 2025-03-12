@@ -6,8 +6,7 @@
 
 #pragma once
 
-#include "Types.h"
-#include "MicroStrain/SampleRate.h"
+#include "mscl/MicroStrain/SampleRate.h"
 
 namespace mscl
 {
@@ -74,5 +73,4 @@ namespace mscl
         uint64 m_time;
         size_t m_sampleCount;
     };
-
 }

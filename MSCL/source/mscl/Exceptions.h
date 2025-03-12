@@ -6,11 +6,7 @@
 
 #pragma once
 
-#include <exception>
-#include <string>
-
-#include "mscl/Types.h"
-#include "mscl/MicroStrain/Wireless/Configuration/ConfigIssue.h"
+#include "MicroStrain/Wireless/Configuration/ConfigIssue.h"
 
 namespace mscl
 {

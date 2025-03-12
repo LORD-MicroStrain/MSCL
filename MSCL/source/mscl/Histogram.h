@@ -6,8 +6,8 @@
 
 #pragma once
 
-#include "Value.h"
-#include "Bin.h"
+#include "mscl/Bin.h"
+#include "mscl/Value.h"
 
 namespace mscl
 {

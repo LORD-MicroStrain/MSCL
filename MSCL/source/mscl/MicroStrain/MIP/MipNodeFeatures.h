@@ -6,15 +6,12 @@
 
 #pragma once
 
-#include <memory>
-
-#include "mscl/MicroStrain/MIP/MipNodeInfo.h"
-#include "mscl/MicroStrain/MIP/MipTypes.h"
 #include "mscl/MicroStrain/Inertial/ExposedInertialTypes.h"
-#include "mscl/MicroStrain/SampleRate.h"
 
 namespace mscl
 {
+    class MipNodeInfo;
+
     //API Class: MipNodeFeatures
     //    Contains information on which features are supported by an <InertialNode>.
     class MipNodeFeatures
@@ -29,7 +26,7 @@ namespace mscl
         mutable std::unique_ptr<MipNodeInfo> m_nodeInfo;
 
     public:
-        virtual ~MipNodeFeatures() {};
+        virtual ~MipNodeFeatures() {}
 
     protected:
         friend class MipNode_Impl;

@@ -6,11 +6,8 @@
 
 #pragma once
 
-#include "Types.h"
-
 namespace mscl
 {
-
     //API Class: TimeSpan
     //    Represents a range of time
     class TimeSpan
@@ -34,7 +31,7 @@ namespace mscl
         static const uint64 NANOSECONDS_PER_SECOND      = 1000000000L;
 
     private:
-        TimeSpan(){};    //default constructor disabled
+        TimeSpan(){}    //default constructor disabled
 
         //Constructor: TimeSpan
         //    Creates a TimeSpan given the nanoseconds value.
@@ -99,7 +96,6 @@ namespace mscl
         //    The TimeSpan in seconds resolution
         uint64 getSeconds() const;
 
-    public:
         //API Function: NanoSeconds
         //    Creates a TimeSpan object from nanoseconds
         //

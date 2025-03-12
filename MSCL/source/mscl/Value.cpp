@@ -4,13 +4,7 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "Value.h"
-
-#include <boost/numeric/conversion/cast.hpp>
-
-#include "Utils.h"
-#include "Exceptions.h"
+#include "mscl/Value.h"
 
 namespace mscl
 {

@@ -7,7 +7,6 @@
 #pragma once
 
 #include "mscl/MicroStrain/MIP/Commands/GenericMipCommand.h"
-#include "mscl/MicroStrain/ResponseCollector.h"
 #include "mscl/MicroStrain/SampleRate.h"
 
 namespace mscl
@@ -17,14 +16,14 @@ namespace mscl
     class DisplacementOutputDataRate : private GenericMipCommand
     {
     private:
-        DisplacementOutputDataRate() {};                //default constructor disabled
+        DisplacementOutputDataRate() {}                //default constructor disabled
 
          //Constants: Packet Bytes
          // FIELD_DATA_BYTE - Descriptor byte for the Field data.
         static const uint8 FIELD_DATA_BYTE = 0x82;
 
     public:
-        virtual ~DisplacementOutputDataRate() {};
+        virtual ~DisplacementOutputDataRate() {}
 
         static ByteStream buildCommand_get();
 

@@ -20,7 +20,7 @@ namespace mscl
         //    Creates a MipCmdResponse with default values
         MipCmdResponse();
 
-        virtual ~MipCmdResponse(){};    //virtual destructor
+        virtual ~MipCmdResponse(){}    //virtual destructor
 
     protected:
         //Constructor: MipCmdResponse
@@ -76,6 +76,4 @@ namespace mscl
         //    The MIP ack/nack error code as a <MipPacket::MipAckNack>
         virtual MipPacket::MipAckNack errorCode() const;
     };
-
-
 }

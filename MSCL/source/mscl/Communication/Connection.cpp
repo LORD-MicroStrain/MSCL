@@ -4,31 +4,23 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
+#include "mscl/Communication/Connection.h"
 
-#include "Connection.h"
-#include "Connection_Impl.h"
-#include "Devices.h"
-
-#include "MockConnection.h"
-#include "SerialConnection.h"
-#include "TcpIpConnection.h"
+#include "mscl/Communication/Devices.h"
+#include "mscl/Communication/MockConnection.h"
+#include "mscl/Communication/SerialConnection.h"
+#include "mscl/Communication/TcpIpConnection.h"
 
 #ifndef MSCL_DISABLE_WEBSOCKETS
-#include "WebSocketConnection.h"
-
+#include "mscl/Communication/WebSocketConnection.h"
 #ifndef MSCL_DISABLE_SSL
-#include "WebSocketSecureConnection.h"
-#endif // MSCL_DISABLE_SSL
-#endif // MSCL_DISABLE_WEBSOCKETS
+#include "mscl/Communication/WebSocketSecureConnection.h"
+#endif // !MSCL_DISABLE_SSL
+#endif // !MSCL_DISABLE_WEBSOCKETS
 
-#ifdef UNIX_BUILD
-#include "UnixSocketConnection.h"
-#endif
-
-#ifndef _WIN32
-#include <boost/filesystem.hpp>
-#endif
+#ifdef __linux__
+#include "mscl/Communication/UnixSocketConnection.h"
+#endif // __linux__
 
 namespace mscl
 {

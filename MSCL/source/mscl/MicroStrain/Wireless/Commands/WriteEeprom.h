@@ -6,15 +6,11 @@
 
 #pragma once
 
-#include "mscl/MicroStrain/ByteStream.h"
-#include "WirelessResponsePattern.h"
-#include "mscl/Types.h"
+#include "mscl/MicroStrain/Wireless/Commands/WirelessResponsePattern.h"
 
 namespace mscl
 {
-
 #ifndef SWIG
-
     //Class: WriteEeprom
     //    Contains logic for the WriteEeprom Node command
     class WriteEeprom
@@ -67,6 +63,5 @@ namespace mscl
             virtual bool matchSuccessResponse(const WirelessPacket& packet) override;
         };
     };
-
 #endif
 }

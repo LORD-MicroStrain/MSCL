@@ -4,19 +4,7 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-
-#include "boost/date_time.hpp"                                    //for boost::posix_time::time_facet
-#include "boost/date_time/posix_time/posix_time_duration.hpp"    //for boost::posix_time durations
-
-#include "Timestamp.h"
-#include "TimeSpan.h"
-#include "Types.h"
-#include "Utils.h"
-
-#include <chrono>
-#include <time.h>
-
+#include "mscl/Timestamp.h"
 
 namespace mscl
 {

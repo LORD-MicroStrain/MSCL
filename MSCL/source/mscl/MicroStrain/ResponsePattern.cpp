@@ -4,16 +4,9 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "ResponsePattern.h"
+#include "mscl/MicroStrain/ResponsePattern.h"
 
-#include "mscl/Exceptions.h"
-#include "mscl/Types.h"
-#include "Wireless/Commands/WirelessProtocol.h"
-#include "Wireless/Packets/WirelessPacket.h"
-#include "MIP/MipDataField.h"
-#include "DataBuffer.h"
-#include "ResponseCollector.h"
+#include "mscl/MicroStrain/ResponseCollector.h"
 
 namespace mscl
 {

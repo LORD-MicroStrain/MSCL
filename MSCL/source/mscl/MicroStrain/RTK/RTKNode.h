@@ -6,8 +6,8 @@
 
 #pragma once
 
+#include "mscl/MicroStrain/Inertial/ExposedInertialTypes.h"
 #include "mscl/MicroStrain/MIP/MipNode.h"
-#include "mscl/MicroStrain/LinearEquation.h"
 
 namespace mscl
 {
@@ -27,12 +27,12 @@ namespace mscl
         //
         //Exceptions:
         //    - <Error_Connection>: A problem occurred with the Connection.
-        explicit RTKNode(Connection connection) : MipNode(connection) {};
+        explicit RTKNode(Connection connection) : MipNode(connection) {}
 
         virtual ~RTKNode() {}
 
 #ifndef SWIG
-        RTKNode(std::shared_ptr<MipNode_Impl> impl) : MipNode(impl) {}; //constructor with direct underlying implementation for this class.
+        RTKNode(std::shared_ptr<MipNode_Impl> impl) : MipNode(impl) {} //constructor with direct underlying implementation for this class.
 #endif
 
         //API Function: getCommunicationMode

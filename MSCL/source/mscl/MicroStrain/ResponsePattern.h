@@ -6,16 +6,8 @@
 
 #pragma once
 
-#include "mscl/Types.h"
-#include "ByteStream.h"
-#include "mscl/TimedCondition.h"
-#include "mscl/TimeSpan.h"
-#include <memory>
-#include <mutex>
-
 namespace mscl
 {
-    class DataBuffer;
     class WirelessPacket;
     class MipDataField;
     class ResponseCollector;
@@ -48,7 +40,6 @@ namespace mscl
             STATE_SUCCESS
         };
 
-    public:
         //Default Constructor: ResponsePattern
         //    Creates a default constructor ResponsePattern.
         //    Note: You will need to use the <setResponseCollector> function before being used.
@@ -76,7 +67,6 @@ namespace mscl
         ResponsePattern(const ResponsePattern&);                //copy constructor disabled
         ResponsePattern& operator=(const ResponsePattern&);        //assignement operator disabled
 
-    private:
         //Variable: m_collector
         //    The <ResponseCollector> that holds this response pattern
         std::weak_ptr<ResponseCollector> m_collector;
@@ -99,7 +89,6 @@ namespace mscl
         //    Whether or not the command was a success (a success response was matched).
         bool m_success;
 
-    protected:
         //Function: throwIfFailed
         //    Throws an <Error> if the command has failed (if m_success is false).
         //    Otherwise, no action is taken.

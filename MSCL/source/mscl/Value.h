@@ -6,9 +6,6 @@
 
 #pragma once
 
-#include "Types.h"
-#include "MicroStrain/Wireless/ChannelMask.h"
-
 namespace mscl
 {
     //API Class: Value
@@ -18,7 +15,6 @@ namespace mscl
     //    <DataPoint>
     class Value
     {
-
     public:
         virtual ~Value(){}
 
@@ -259,5 +255,4 @@ namespace mscl
         //    - <Error_BadDataType>: The type to string conversion is not supported by this function
         virtual std::string as_string() const;
     };
-
 }

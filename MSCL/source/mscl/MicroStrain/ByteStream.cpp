@@ -4,18 +4,7 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-
-#include "ByteStream.h"
-#include "mscl/Utils.h"
-
-#pragma warning(push)
-#pragma warning(disable: 4245)  //intializing conversion from int to boost::detail::mask_uint_t<8>::least, signed/unsigned mismatch
-#pragma warning(disable: 4244)  //return conversion from unsigned int to unsigned char
-#include <boost/crc.hpp>
-#pragma warning(pop)
-
-#include <numeric>    //for std::accumulate
+#include "mscl/MicroStrain/ByteStream.h"
 
 namespace mscl
 {

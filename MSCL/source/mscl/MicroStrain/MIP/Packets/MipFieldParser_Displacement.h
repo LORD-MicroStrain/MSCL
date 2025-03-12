@@ -6,10 +6,7 @@
 
 #pragma once
 
-#include <boost/utility/binary.hpp>
-
 #include "mscl/MicroStrain/MIP/Packets/MipFieldParser.h"
-#include "mscl/MicroStrain/MIP/Packets/MipDataPacket.h"
 
 namespace mscl
 {
@@ -22,7 +19,7 @@ namespace mscl
     class FieldParser_RawPosition: public MipFieldParser
     {
     private:
-        FieldParser_RawPosition() {};    //default constructor disabled
+        FieldParser_RawPosition() {}    //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -38,7 +35,7 @@ namespace mscl
     class FieldParser_Position : public MipFieldParser
     {
     private:
-        FieldParser_Position(){};    //default constructor disabled
+        FieldParser_Position() {}    //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;

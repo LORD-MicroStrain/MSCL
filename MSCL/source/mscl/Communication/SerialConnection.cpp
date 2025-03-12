@@ -4,12 +4,9 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
+#include "mscl/Communication/SerialConnection.h"
 
-#include "OperatingSystemErrorCodes.h"
-#include "SerialConnection.h"
-#include "NativeSerialPort.h"
-#include "mscl/Utils.h"
+#include "mscl/Communication/NativeSerialPort.h"
 
 namespace mscl
 {

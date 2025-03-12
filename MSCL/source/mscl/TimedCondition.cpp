@@ -4,10 +4,7 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "TimedCondition.h"
-#include "Types.h"
-#include "Utils.h"
+#include "mscl/TimedCondition.h"
 
 namespace mscl
 {

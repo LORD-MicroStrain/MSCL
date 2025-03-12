@@ -4,11 +4,9 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "MipPacketCollector.h"
+#include "mscl/MicroStrain/MIP/Packets/MipPacketCollector.h"
 
-#include <chrono>
-#include "mscl/Exceptions.h"
+#include "mscl/MicroStrain/MIP/Packets/MipDataPacket.h"
 
 namespace mscl
 {

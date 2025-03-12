@@ -6,9 +6,6 @@
 
 #pragma once
 
-#include <string>
-#include <map>
-
 namespace mscl
 {
     //API Title: Devices

@@ -4,18 +4,9 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "InertialFieldParser_Sensor.h"
+#include "mscl/MicroStrain/Inertial/Packets/InertialFieldParser_Sensor.h"
 
-#include <boost/date_time/posix_time/ptime.hpp>
-
-#include "mscl/MicroStrain/MIP/Packets/MipDataPacket.h"
-#include "mscl/MicroStrain/DataBuffer.h"
-#include "mscl/MicroStrain/Vector.h"
-#include "mscl/MicroStrain/Matrix.h"
-#include "mscl/Timestamp.h"
-#include "mscl/TimeSpan.h"
-#include "mscl/Types.h"
+#include "mscl/MicroStrain/MIP/MipDataField.h"
 
 namespace mscl
 {

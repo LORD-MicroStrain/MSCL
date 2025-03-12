@@ -6,15 +6,11 @@
 
 #pragma once
 
-#include "mscl/MicroStrain/ByteStream.h"
-#include "WirelessResponsePattern.h"
-#include "mscl/Types.h"
+#include "mscl/MicroStrain/Wireless/Commands/WirelessResponsePattern.h"
 
 namespace mscl
 {
-
 #ifndef SWIG
-
     //Class: ReadEeprom
     //    Contains logic for the ReadEeprom Node command
     class ReadEeprom
@@ -78,6 +74,5 @@ namespace mscl
             uint16 eepromValue() const;
         };
     };
-
 #endif
 }

@@ -6,9 +6,10 @@
 
 #pragma once
 
+#include "mscl/MicroStrain/Inertial/ExposedInertialTypes.h"
+#include "mscl/MicroStrain/MIP/MipChannel.h"
 #include "mscl/MicroStrain/MIP/MipNode.h"
-#include "mscl/MicroStrain/Inertial/PositionVelocity.h"
-#include "mscl/MicroStrain/Inertial/EulerAngles.h"
+#include "mscl/MicroStrain/MIP/Packets/MipDataPacket.h"
 
 namespace mscl
 {
@@ -31,12 +32,12 @@ namespace mscl
         //
         //Exceptions:
         //    - <Error_Connection>: A problem occurred with the Connection.
-        explicit InertialNode(Connection connection) : MipNode(connection) {};
+        explicit InertialNode(Connection connection) : MipNode(connection) {}
 
         virtual ~InertialNode() {}
 
 #ifndef SWIG
-        InertialNode(std::shared_ptr<MipNode_Impl> impl) : MipNode(impl) {}; //constructor with direct underlying implementation for this class.
+        InertialNode(std::shared_ptr<MipNode_Impl> impl) : MipNode(impl) {} //constructor with direct underlying implementation for this class.
 #endif
 
         //API Function: getDataPackets

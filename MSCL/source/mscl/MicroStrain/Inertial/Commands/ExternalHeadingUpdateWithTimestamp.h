@@ -6,16 +6,12 @@
 
 #pragma once
 
-#include "mscl/MicroStrain/MIP/Commands/GenericMipCommand.h"
-#include "mscl/MicroStrain/ResponseCollector.h"
 #include "mscl/MicroStrain/Inertial/ExposedInertialTypes.h"
 #include "mscl/MicroStrain/MIP/Commands/MipCommand.h"
 
 namespace mscl
 {
-
 #ifndef SWIG
-
     //Class: ExternalHeadingUpdateWithTimestamp
     //    Contains the logic for the Inertial ExternalHeadingUpdateWithTimestamp command.
     class ExternalHeadingUpdateWithTimestamp : public MipCommand

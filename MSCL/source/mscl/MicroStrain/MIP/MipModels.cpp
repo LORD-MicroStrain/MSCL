@@ -4,12 +4,7 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-
-#include "MipModels.h"
-#include "mscl/Utils.h"
-
-#include<math.h>
+#include "mscl/MicroStrain/MIP/MipModels.h"
 
 namespace mscl
 {

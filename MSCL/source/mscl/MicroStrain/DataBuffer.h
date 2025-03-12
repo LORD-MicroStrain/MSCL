@@ -6,9 +6,7 @@
 
 #pragma once
 
-#include "ByteStream.h"
-#include "mscl/Types.h"
-#include <string>
+#include "mscl/MicroStrain/ByteStream.h"
 
 namespace mscl
 {

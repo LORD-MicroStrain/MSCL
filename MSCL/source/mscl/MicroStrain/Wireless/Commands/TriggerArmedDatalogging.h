@@ -6,22 +6,17 @@
 
 #pragma once
 
-#include "mscl/MicroStrain/ByteStream.h"
-#include "mscl/MicroStrain/ResponsePattern.h"
-
 namespace mscl
 {
-
 #ifndef SWIG
-
     //Class: TriggerArmedDatalogging
     //    Contains logic for the Trigger Armed Datalogging Node command.
     class TriggerArmedDatalogging
     {
     private:
-        TriggerArmedDatalogging();                                            //disabled default constructor
+        TriggerArmedDatalogging();                                          //disabled default constructor
         TriggerArmedDatalogging(const TriggerArmedDatalogging&);            //disabled copy constructor
-        TriggerArmedDatalogging& operator=(const TriggerArmedDatalogging&);    //disabled assignment operator
+        TriggerArmedDatalogging& operator=(const TriggerArmedDatalogging&); //disabled assignment operator
 
     public:
         //Function: buildCommand
@@ -34,7 +29,5 @@ namespace mscl
         //    A <ByteStream> containing the command packet.
         static ByteStream buildCommand(NodeAddress nodeAddress);
     };
-
 #endif
-
 }

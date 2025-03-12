@@ -4,13 +4,10 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
 #include "mscl/MicroStrain/MIP/Commands/GenericMipCommand.h"
 
-#include "mscl/Utils.h"
 #include "mscl/MicroStrain/MIP/MipDataField.h"
 #include "mscl/MicroStrain/MIP/Packets/MipPacketBuilder.h"
-#include "mscl/MicroStrain/MIP/Packets/MipPacket.h"
 
 namespace mscl
 {
@@ -40,7 +37,6 @@ namespace mscl
         //return the ByteStream containing the data from the response
         return m_data;
     }
-
 
     ByteStream GenericMipCommand::buildCommand(uint8 descSetId, uint8 cmdByte, const Bytes& fieldData) //fieldData=Bytes()
     {

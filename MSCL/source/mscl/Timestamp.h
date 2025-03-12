@@ -6,9 +6,7 @@
 
 #pragma once
 
-#include <iostream>
-#include "TimeSpan.h"
-#include "Types.h"
+#include "mscl/TimeSpan.h"
 
 namespace mscl
 {
@@ -39,7 +37,6 @@ namespace mscl
             UTC             = 0x05,
         };
 
-    public:
         //API Constructor: Timestamp
         //    Creates a Timestamp object based on the nanoseconds parameter
         //
@@ -61,12 +58,11 @@ namespace mscl
         //    millisecond - The milliseconds of the timestamp (ex. 123)
         Timestamp(uint16 year, uint16 month, uint16 day, uint16 hour, uint16 minute, uint16 second, uint32 milli);
 
-        virtual ~Timestamp() {};
+        virtual ~Timestamp() {}
 
     private:
         static bool canConvertEpoch(Epoch epoch);
 
-    private:
         //Variable: m_nanoseconds
         //    The number of nanoseconds since the m_epoch epoch
         uint64 m_nanoseconds;
@@ -114,7 +110,6 @@ namespace mscl
         virtual bool operator>=(const Timestamp& other) const;
 #endif
 
-    public:
         //API Function: nanoseconds
         //    Gets the number of nanoseconds since the specified epoch
         //
@@ -142,7 +137,7 @@ namespace mscl
         //
         //Returns:
         //    The stored <Epoch>
-        Epoch storedEpoch() const { return m_epoch; };
+        Epoch storedEpoch() const { return m_epoch; }
 
         //API Function: str
         //    Gets a string representation of the Timestamp object in ISO 8601 Date/Time format.
@@ -163,7 +158,6 @@ namespace mscl
         //    Sets the Timestamp object to the current system time in UTC
         void setTimeNow();
 
-    public:
         //API Function: timeNow
         //    Creates a timestamp using the current system time
         //

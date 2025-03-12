@@ -22,70 +22,12 @@ if(MSCL_BUILD_CSHARP)
     configure_file(${MSCL_ASSEMBLY_CS_IN_FILE} ${MSCL_ASSEMBLY_CS_OUT_FILE})
 endif()
 
-# Since we use globs here we won't need to update this file every time.
-# NOTE: If building locally and you add a file, you will need to reconfigure CMake to make it appear to the glob
-file(GLOB_RECURSE SRC_FILES
-    ${MSCL_SOURCE_DIR}/**/*.cpp
-    ${MSCL_SOURCE_DIR}/**/*.h
-)
+# Add all the sources
+add_subdirectory(source/mscl)
 
-# Create VS filters based on file directories
-foreach(FILE ${SRC_FILES})
-    # Get the directory of the source file
-    get_filename_component(PARENT_DIR "${FILE}" DIRECTORY)
-
-    # Remove common directory prefix to make the group and removed the trailing mscl source directory
-    string(REPLACE "${MSCL_SOURCE_FILES_DIR}" "" GROUP "${PARENT_DIR}")
-
-    # Make sure we are using windows slashes
-    string(REPLACE "/" "\\" GROUP "${GROUP}")
-
-    # Group into "Source Files" and "Header Files"
-    if("${FILE}" MATCHES ".*\\.cpp")
-        set(GROUP "Source Files${GROUP}")
-    elseif("${FILE}" MATCHES ".*\\.h")
-        set(GROUP "Header Files${GROUP}")
-    endif()
-
-    source_group("${GROUP}" FILES "${FILE}")
-endforeach()
-
-# Files that should only be compiled on windows
-set(WINDOWS_ONLY_FILES
-    ${MSCL_SOURCE_FILES_DIR}/Communication/WsdaFinder.h
-    ${MSCL_SOURCE_FILES_DIR}/Communication/WsdaFinder.cpp
-    ${MSCL_SOURCE_FILES_DIR}/Communication/UpnpService.h
-    ${MSCL_SOURCE_FILES_DIR}/Communication/UpnpService.cpp
-    ${MSCL_SOURCE_FILES_DIR}/Communication/UpnpDeviceFinderCallback.h
-    ${MSCL_SOURCE_FILES_DIR}/Communication/UpnpDeviceFinderCallback.cpp
-)
-
-# Files that should only be compiled on linux
-set(LINUX_ONLY_FILES
-    ${MSCL_SOURCE_FILES_DIR}/Communication/UnixSocketConnection.cpp
-)
-
-# Excluded file on all OSes
-set(LIB_EXCLUDED_FILES
-    ${MSCL_SOURCE_FILES_DIR}/Wrapper/MSCL_Wrap.cpp
-)
-
-# Remove files from the list based on the OS
-if(WIN32)
-    foreach(item_to_remove IN LISTS LINUX_ONLY_FILES)
-        list(REMOVE_ITEM SRC_FILES "${item_to_remove}")
-    endforeach()
+if(MSVC)
+    source_group(TREE ${MSCL_SOURCE_FILES_DIR} FILES ${MSCL_SOURCES})
 endif()
-
-if(UNIX)
-    foreach(item_to_remove IN LISTS WINDOWS_ONLY_FILES)
-        list(REMOVE_ITEM SRC_FILES "${item_to_remove}")
-    endforeach()
-endif()
-
-foreach(item_to_remove IN LISTS LIB_EXCLUDED_FILES)
-    list(REMOVE_ITEM SRC_FILES "${item_to_remove}")
-endforeach()
 
 # Configure some compiler flags
 set(LIB_DEFINES "")
@@ -104,8 +46,8 @@ endif()
 
 # Add some include directories
 set(LIB_INCLUDE_DIRS
-    ${Boost_INCLUDE_DIRS}
     ${MSCL_SOURCE_DIR}
+    ${Boost_INCLUDE_DIRS}
 )
 
 if(MSCL_WITH_SSL)
@@ -136,8 +78,9 @@ endif()
 set(LIB_NAME ${PROJECT_NAME})
 set(LIB_NAME_STATIC ${LIB_NAME}_Static)
 set(LIB_NAME_SHARED ${LIB_NAME}_Shared)
+set(MSCL_PCH_FILE "${MSCL_SOURCE_FILES_DIR}/stdafx.h")
 
-add_library(${LIB_NAME_STATIC} STATIC ${SRC_FILES})
+add_library(${LIB_NAME_STATIC} STATIC ${MSCL_SOURCES})
 set(LIB_NAME_STATIC_DIR ${CMAKE_CURRENT_BINARY_DIR}/${LIB_NAME_STATIC})
 set_target_properties(${LIB_NAME_STATIC}
     PROPERTIES
@@ -150,10 +93,7 @@ set_target_properties(${LIB_NAME_STATIC}
 )
 
 # Configure some precompiled headers
-target_precompile_headers(${LIB_NAME_STATIC} PRIVATE
-    ${MSCL_SOURCE_DIR}/stdafx.h
-    ${MSCL_SOURCE_DIR}/stdafx.cpp
-)
+target_precompile_headers(${LIB_NAME_STATIC} PUBLIC "${MSCL_PCH_FILE}")
 
 # In order to copy the headers, create a cmake script that will do the copying
 set(MSCL_STATIC_HEADER_CP_SCRIPT ${CMAKE_BINARY_DIR}/${LIB_NAME_STATIC}_$<CONFIG>_header_cp.cmake)
@@ -189,16 +129,20 @@ install(
     DESTINATION "${MSCL_STATIC_INSTALL_LIBDIR}"
     COMPONENT ${MSCL_STATIC_INSTALL_COMPONENT}
 )
-install(
-    DIRECTORY "${MSCL_SOURCE_FILES_DIR}"
-    DESTINATION "${MSCL_STATIC_INSTALL_INCLUDEDIR}"
-    COMPONENT ${MSCL_STATIC_INSTALL_COMPONENT}
-    FILES_MATCHING PATTERN "*.h"
-    PATTERN "Wrapper" EXCLUDE
-)
+
+# Install files in their respective directories
+foreach(MSCL_SOURCE_FILE IN LISTS MSCL_SOURCES)
+    get_filename_component(RELATIVE_PATH_OUT ${MSCL_SOURCE_FILE} DIRECTORY)
+    file(RELATIVE_PATH RELATIVE_PATH_OUT "${MSCL_SOURCE_DIR}" "${RELATIVE_PATH_OUT}")
+    install(
+        FILES ${MSCL_SOURCE_FILE}
+        DESTINATION "${MSCL_STATIC_INSTALL_INCLUDEDIR}/${RELATIVE_PATH_OUT}"
+        COMPONENT ${MSCL_STATIC_INSTALL_COMPONENT}
+    )
+endforeach()
 
 if(BUILD_SHARED_LIBS)
-    add_library(${LIB_NAME_SHARED} SHARED ${SRC_FILES})
+    add_library(${LIB_NAME_SHARED} SHARED ${MSCL_SOURCES})
     set(LIB_NAME_SHARED_DIR ${CMAKE_CURRENT_BINARY_DIR}/${LIB_NAME_SHARED})
     set_target_properties(${LIB_NAME_SHARED}
         PROPERTIES
@@ -211,10 +155,7 @@ if(BUILD_SHARED_LIBS)
     )
 
     # Configure some precompiled headers
-    target_precompile_headers(${LIB_NAME_SHARED} PRIVATE
-        ${MSCL_SOURCE_DIR}/stdafx.h
-        ${MSCL_SOURCE_DIR}/stdafx.cpp
-    )
+    target_precompile_headers(${LIB_NAME_SHARED} PUBLIC "${MSCL_PCH_FILE}")
 
     # In order to copy the headers, create a cmake script that will do the copying
     set(MSCL_SHARED_HEADER_CP_SCRIPT ${CMAKE_BINARY_DIR}/${LIB_NAME_SHARED}_$<CONFIG>_header_cp.cmake)
@@ -251,17 +192,20 @@ if(BUILD_SHARED_LIBS)
         COMPONENT ${MSCL_SHARED_INSTALL_COMPONENT}
     )
 
-    install(
-        DIRECTORY "${MSCL_SOURCE_FILES_DIR}"
-        DESTINATION "${MSCL_SHARED_INSTALL_INCLUDEDIR}"
-        COMPONENT ${MSCL_SHARED_INSTALL_COMPONENT}
-        FILES_MATCHING PATTERN "*.h"
-        PATTERN "Wrapper" EXCLUDE
-    )
+    # Install files in their respective directories
+    foreach(MSCL_SOURCE_FILE IN LISTS MSCL_SOURCES)
+        get_filename_component(RELATIVE_PATH_OUT ${MSCL_SOURCE_FILE} DIRECTORY)
+        file(RELATIVE_PATH RELATIVE_PATH_OUT "${MSCL_SOURCE_DIR}" "${RELATIVE_PATH_OUT}")
+        install(
+            FILES ${MSCL_SOURCE_FILE}
+            DESTINATION "${MSCL_SHARED_INSTALL_INCLUDEDIR}/${RELATIVE_PATH_OUT}"
+            COMPONENT ${MSCL_SHARED_INSTALL_COMPONENT}
+        )
+    endforeach()
 endif()
 
 # Compiler definitions
-target_compile_definitions(${LIB_NAME_STATIC} PRIVATE ${LIB_DEFINES})
+target_compile_definitions(${LIB_NAME_STATIC} PUBLIC ${LIB_DEFINES})
 target_include_directories(${LIB_NAME_STATIC} PUBLIC ${LIB_INCLUDE_DIRS})
 target_compile_options(${LIB_NAME_STATIC} PRIVATE
     $<$<CXX_COMPILER_ID:GNU>:-fPIC> # Normally static libraries aren't compiled with this flag, but we need it to compile our bindings properly
@@ -277,7 +221,7 @@ if(BUILD_SHARED_LIBS)
         )
     endif()
 
-    target_compile_definitions(${LIB_NAME_SHARED} PRIVATE ${LIB_DEFINES})
+    target_compile_definitions(${LIB_NAME_SHARED} PUBLIC ${LIB_DEFINES})
     target_include_directories(${LIB_NAME_SHARED} PUBLIC ${LIB_INCLUDE_DIRS})
 endif()
 
@@ -399,7 +343,7 @@ if(MSCL_BUILD_PYTHON2 OR MSCL_BUILD_PYTHON3 OR MSCL_BUILD_CSHARP)
             /MT$<$<CONFIG:Debug>:d>
             /MP
         )
-        target_compile_definitions(${CSHARP_MODULE_NAME} PRIVATE
+        target_compile_definitions(${CSHARP_MODULE_NAME} PUBLIC
             ${LIB_DEFINES}
         )
         target_include_directories(${CSHARP_MODULE_NAME} PUBLIC
@@ -467,7 +411,7 @@ if(MSCL_BUILD_DOCUMENTATION)
 
     add_custom_target(${MSCL_DOCS_TARGET}
         ALL
-        DEPENDS ${SRC_FILES}
+        DEPENDS ${MSCL_SOURCES}
         COMMAND ${CMAKE_COMMAND} -E remove_directory "${MSCL_BASE_DOCS_OUTPUT_DIR}"
         COMMAND ${CMAKE_COMMAND} -E make_directory "${MSCL_DOCS_OUTPUT_DIR}"
         COMMAND ${CMAKE_COMMAND} -E remove_directory "${CMAKE_CURRENT_SOURCE_DIR}/../BuildScripts/NaturalDocsProjects/MSCL_Docs_Project/Working Data"

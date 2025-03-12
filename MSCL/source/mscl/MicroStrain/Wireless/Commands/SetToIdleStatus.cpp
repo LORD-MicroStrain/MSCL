@@ -4,9 +4,9 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "SetToIdleStatus.h"
-#include "SetToIdle.h"
+#include "mscl/MicroStrain/Wireless/Commands/SetToIdleStatus.h"
+
+#include "mscl/MicroStrain/Wireless/Commands/SetToIdle.h"
 
 namespace mscl
 {

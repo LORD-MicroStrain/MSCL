@@ -6,11 +6,7 @@
 
 #pragma once
 
-#include <condition_variable>
-#include <boost/circular_buffer.hpp>
-
-#include "RawBytePacket.h"
-
+#include "mscl/Communication/RawBytePacket.h"
 
 namespace mscl
 {

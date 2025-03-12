@@ -6,9 +6,7 @@
 
 #pragma once
 
-#include "mscl/Types.h"
 #include "mscl/MicroStrain/ResponsePattern.h"
-#include "WirelessProtocol.h"
 
 namespace mscl
 {
@@ -54,7 +52,6 @@ namespace mscl
         //  The wait time (in milliseconds) that was sent in the Base Station received response.
         uint64 m_baseReceivedWaitTime;
 
-    protected:
         virtual bool matchBaseReceivedResponse(const WirelessPacket& packet) override;
 
     public:

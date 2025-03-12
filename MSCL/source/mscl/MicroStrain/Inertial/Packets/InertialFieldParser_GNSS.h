@@ -6,10 +6,7 @@
 
 #pragma once
 
-#include <boost/utility/binary.hpp>
-
 #include "mscl/MicroStrain/MIP/Packets/MipFieldParser.h"
-#include "mscl/MicroStrain/MIP/Packets/MipDataPacket.h"
 
 namespace mscl
 {
@@ -22,8 +19,8 @@ namespace mscl
     class MipGnssFieldParser : public MipFieldParser
     {
     protected:
-        MipGnssFieldParser() {};                //default constructor disabled
-        virtual ~MipGnssFieldParser() {};
+        MipGnssFieldParser() {}                //default constructor disabled
+        virtual ~MipGnssFieldParser() {}
 
     private:
         MipGnssFieldParser(const MipGnssFieldParser&);                //copy constructor disabled
@@ -50,7 +47,7 @@ namespace mscl
         static const uint16 VERT_ACCUR_FLAG        = BOOST_BINARY(00010000);
 
     private:
-        FieldParser_LLHPosition(){};        //default constructor disabled
+        FieldParser_LLHPosition(){}        //default constructor disabled
 
     public:
         //Function: parse
@@ -90,7 +87,7 @@ namespace mscl
         static const uint16 POS_ACCURACY_FLAG    = BOOST_BINARY(00000010);
 
     private:
-        FieldParser_ECEFPosition(){};        //default constructor disabled
+        FieldParser_ECEFPosition(){}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -121,7 +118,7 @@ namespace mscl
         static const uint16 HEADING_ACCUR_FLAG    = BOOST_BINARY(00100000);
 
     private:
-        FieldParser_NEDVelocity(){};        //default constructor disabled
+        FieldParser_NEDVelocity(){}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -144,7 +141,7 @@ namespace mscl
         static const uint16 VELOCITY_ACCUR_FLAG    = BOOST_BINARY(00000010);
 
     private:
-        FieldParser_ECEFVelocity(){};        //default constructor disabled
+        FieldParser_ECEFVelocity(){}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -177,7 +174,7 @@ namespace mscl
         static const uint16 EDOP_FLAG    = BOOST_BINARY(01000000);
 
     private:
-        FieldParser_DOP(){};        //default constructor disabled
+        FieldParser_DOP(){}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -200,7 +197,7 @@ namespace mscl
         static const uint16 UTC_TIME_OFFSET_VALID    = BOOST_BINARY(00000010);
 
     private:
-        FieldParser_UTCTime(){};        //default constructor disabled
+        FieldParser_UTCTime(){}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -223,7 +220,7 @@ namespace mscl
         static const uint16 WEEK_NUM_VALID    = BOOST_BINARY(00000010);
 
     private:
-        FieldParser_GPSTime(){};        //default constructor disabled
+        FieldParser_GPSTime(){}       //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -248,7 +245,7 @@ namespace mscl
         static const uint16 ACCUR_VALID        = BOOST_BINARY(00000100);
 
     private:
-        FieldParser_ClockInfo(){};        //default constructor disabled
+        FieldParser_ClockInfo(){}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -273,7 +270,7 @@ namespace mscl
         static const uint16 FIX_FLAGS_VALID        = BOOST_BINARY(00000100);
 
     private:
-        FieldParser_GPSFixInfo(){};        //default constructor disabled
+        FieldParser_GPSFixInfo(){}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -302,7 +299,7 @@ namespace mscl
         static const uint16 SV_FLAGS_VALID         = BOOST_BINARY(00100000);
 
     private:
-        FieldParser_SpaceVehicleInfo(){};        //default constructor disabled
+        FieldParser_SpaceVehicleInfo(){}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -327,7 +324,7 @@ namespace mscl
         static const uint16 ANTENNA_POWER_VALID        = BOOST_BINARY(00000100);
 
     private:
-        FieldParser_HardwareStatus(){};        //default constructor disabled
+        FieldParser_HardwareStatus(){}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -354,7 +351,7 @@ namespace mscl
         static const uint16 NUM_CHANNELS_VALID    = BOOST_BINARY(00001000);
 
     private:
-        FieldParser_DGNSSInfo() {};        //default constructor disabled
+        FieldParser_DGNSSInfo() {}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -381,7 +378,7 @@ namespace mscl
         static const uint16 RATE_CORRECTION_VALID      = BOOST_BINARY(00001000);
 
     private:
-        FieldParser_DGNSSChannelStatus() {};        //default constructor disabled
+        FieldParser_DGNSSChannelStatus() {}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -409,7 +406,7 @@ namespace mscl
         static const uint16 DRIFT_ACCUR_VALID = BOOST_BINARY(00001000);
 
     private:
-        FieldParser_ClockInfo2() {};        //default constructor disabled
+        FieldParser_ClockInfo2() {}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -430,7 +427,7 @@ namespace mscl
         static const uint16 SECONDS_VALID = BOOST_BINARY(00000010);
 
     private:
-        FieldParser_GPSLeapSeconds() {};        //default constructor disabled
+        FieldParser_GPSLeapSeconds() {}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -590,7 +587,7 @@ namespace mscl
         static const uint16 HEALTH_VALID = BOOST_BINARY(01000000);
 
     private:
-        FieldParser_GnssSatelliteStatus() {};        //default constructor disabled
+        FieldParser_GnssSatelliteStatus() {}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -633,7 +630,7 @@ namespace mscl
         static const uint16 LOCK_TIME_VALID         = 32768;  //BOOST_BINARY(1000000000000000);
 
     private:
-        FieldParser_GnssRawObservation() {};        //default constructor disabled
+        FieldParser_GnssRawObservation() {}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -664,7 +661,7 @@ namespace mscl
         static const uint16 INDICATORS_VALID = BOOST_BINARY(00100000);
 
     private:
-        FieldParser_GnssStationInfo() {};        //default constructor disabled
+        FieldParser_GnssStationInfo() {}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -699,7 +696,7 @@ namespace mscl
         static const uint16 BEIDOU_LATENCY_VALID      = BOOST_BINARY(10000000);
 
     private:
-        FieldParser_RTKCorrectionsStatus() {};        //default constructor disabled
+        FieldParser_RTKCorrectionsStatus() {}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -726,7 +723,7 @@ namespace mscl
         static const uint16 BETA_VALID = BOOST_BINARY(00001000);
 
     private:
-        FieldParser_GPSIonosphericCorrection() {};        //default constructor disabled
+        FieldParser_GPSIonosphericCorrection() {}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -754,7 +751,7 @@ namespace mscl
         static const uint16 DISTURBANCE_FLAGS_VALID = BOOST_BINARY(00001000);
 
     private:
-        FieldParser_IonosphericCorrection() {};        //default constructor disabled
+        FieldParser_IonosphericCorrection() {}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;

@@ -6,18 +6,11 @@
 
 #pragma once
 
-#include <string>
 #include "mscl/MicroStrain/SampleRate.h"
-#include "mscl/Types.h"
-#include "mscl/Utils.h"
-#include "mscl/Version.h"
 #include "mscl/MicroStrain/MIP/Commands/GetDeviceInfo.h"
-#include "mscl/MicroStrain/MIP/MipTypes.h"
 
 namespace mscl
 {
-    class MipNode_Impl;
-
     //Class: MipNodeInfo
     //    Contains basic information about a MipNode.
     class MipNodeInfo
@@ -113,5 +106,4 @@ namespace mscl
         // Gets the <SupportedSensorRanges> for this device
         const SupportedSensorRanges& supportedSensorRanges() const;
     };
-
 }

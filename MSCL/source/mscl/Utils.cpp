@@ -4,21 +4,13 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "Utils.h"
+#include "mscl/Utils.h"
 
-#include <chrono>
-#include <locale>
-#include <thread>
-
-#include "HighResClock.h"
-#include "Types.h"
 #include "mscl/Endianness.h"
-#include "Exceptions.h"
+#include "mscl/HighResClock.h"
 
 namespace mscl
 {
-
 #ifndef SWIG
     namespace Utils
     {

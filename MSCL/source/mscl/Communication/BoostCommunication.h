@@ -5,25 +5,8 @@
 *****************************************************************************************/
 
 #pragma once
-#include <boost/asio.hpp>
-
-#ifndef MSCL_DISABLE_SSL
-#include <boost/asio/ssl/stream.hpp>
-#include <boost/beast/websocket/ssl.hpp>
-#endif
-
-#ifndef MSCL_DISABLE_WEBSOCKETS
-#include <boost/beast.hpp>
-#endif
-
-#include <memory>
-#include <mutex>
-#include <functional>
 
 #include "mscl/Exceptions.h"
-#include "mscl/Types.h"
-#include "mscl/Utils.h"
-#include "mscl/MicroStrain/ByteStream.h"
 #include "mscl/MicroStrain/DataBuffer.h"
 
 namespace mscl

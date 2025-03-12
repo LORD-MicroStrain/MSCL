@@ -6,17 +6,9 @@
 
 #pragma once
 
-#include <bitset>
-#include <functional>
-#include <iomanip>
-#include <string>
-#include "Types.h"
-#include <regex>
-
 namespace mscl
 {
 #ifndef SWIG
-
     //Namespace: Utils
     //    Contains many commonly used utility functions.
     //    Note: Communication with our devices (wireless and inertial) is done in Big Endian.

@@ -6,9 +6,7 @@
 
 #pragma once
 
-#include "mscl/Types.h"
 #include "mscl/Utils.h"
-#include <string>
 
 namespace mscl
 {
@@ -34,7 +32,7 @@ namespace mscl
 
         //Destructor: ~ByteStream
         //    Default destructor for the ByteStream object
-        virtual ~ByteStream(){};
+        virtual ~ByteStream(){}
 
     private:
         //Variable: m_bytes
@@ -88,7 +86,7 @@ namespace mscl
         //Parameters:
         //    value - The 2-byte int16 to be added to the byte stream
         //    endian - The <Utils::Endianness> to append the bytes in.
-        void append_int16(int16 value, Utils::Endianness endian=Utils::bigEndian);
+        void append_int16(int16 value, Utils::Endianness endian = Utils::bigEndian);
 
         //Function: append_uint16
         //    Appends a 2-byte unsigned integer to the byte stream

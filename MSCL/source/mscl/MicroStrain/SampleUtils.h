@@ -6,13 +6,12 @@
 
 #pragma once
 
-#include "SampleRate.h"
-#include "mscl/Types.h"
-#include "Wireless/WirelessTypes.h"
-#include <map>
+#include "mscl/MicroStrain/Wireless/WirelessTypes.h"
 
 namespace mscl
 {
+    class SampleRate;
+
     //Title: SampleUtils
 
     //Class: SampleUtils
@@ -64,5 +63,4 @@ namespace mscl
         //    - <Error_UnknownSampleRate>: The given <SampleRate> does not match a <WirelessTypes::WirelessSampleRate>.
         static WirelessTypes::WirelessSampleRate convertFromSampleRate(const SampleRate& rate);
     };
-
 }

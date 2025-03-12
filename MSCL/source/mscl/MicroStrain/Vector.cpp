@@ -4,11 +4,7 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-
-#include "Vector.h"
-#include "Matrix.h"
-#include "mscl/Utils.h"
+#include "mscl/MicroStrain/Vector.h"
 
 namespace mscl
 {

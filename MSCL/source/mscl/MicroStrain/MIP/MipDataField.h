@@ -6,13 +6,8 @@
 
 #pragma once
 
-#include "mscl/Types.h"
-#include "mscl/MicroStrain/ByteStream.h"
-#include "mscl/MicroStrain/MIP/MipTypes.h"
-
 namespace mscl
 {
-
 #ifndef SWIG
     //Class: MipDataField
     //    An Inertial data field object that represents a data field within an Inertial Data Packet

@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <vector>
+#include "mscl/Value.h"
 
 namespace mscl
 {
@@ -31,10 +31,10 @@ namespace mscl
 
         //API Constructor: Vec3f
         //    Creates a zero-filled Vec3f object.
-        Vec3f() {};
+        Vec3f() {}
 
         //API Destructor: ~Vec3f
-        ~Vec3f() {};
+        ~Vec3f() {}
 
     public:
         void fromMipFieldValues(const MipFieldValues& data, uint8 offset = 0);
@@ -44,15 +44,15 @@ namespace mscl
     public:
         //API Function: x
         float x() const { return vec_0; }
-        void x(float x) { vec_0 = x; };
+        void x(float x) { vec_0 = x; }
 
         //API Function: y
         float y() const { return vec_1; }
-        void y(float y) { vec_1 = y; };
+        void y(float y) { vec_1 = y; }
 
         //API Function: z
         float z() const { return vec_2; }
-        void z(float z) { vec_2 = z; };
+        void z(float z) { vec_2 = z; }
     };
 
     //API Enum: PositionVelocityReferenceFrame
@@ -233,19 +233,19 @@ namespace mscl
         //    alt_init - initial altitude
         //    ref - reference frame (default: LLH)
         Position(double lat_init, double long_init, double alt_init, PositionVelocityReferenceFrame ref = PositionVelocityReferenceFrame::LLH_NED) :
+            referenceFrame(ref),
             position_0(lat_init),
             position_1(long_init),
-            position_2(alt_init),
-            referenceFrame(ref) {}
+            position_2(alt_init) {}
 
         //API Constructor: Position
         //    Creates a zero-filled Position object.
         //    Default reference frame: LLH
         Position() :
+            referenceFrame(PositionVelocityReferenceFrame::LLH_NED),
             position_0(0),
             position_1(0),
-            position_2(0),
-            referenceFrame(PositionVelocityReferenceFrame::LLH_NED) {}
+            position_2(0) {}
 
         //API Destructor: ~Position
         //    Destroys a TimeUpdate object.

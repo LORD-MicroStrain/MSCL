@@ -7,19 +7,18 @@
 #pragma once
 
 #include "mscl/MicroStrain/MIP/Commands/GenericMipCommand.h"
+#include "mscl/MicroStrain/MIP/MipTypes.h"
 
 namespace mscl
 {
-
 #ifndef SWIG
-
     //Class: DeviceStartupSettings
     //    Contains the logic for the Inertial "DeviceStartupSettings" command.
     class DeviceStartupSettings
     {
     public:
         //Constants: Packet Bytes
-        //    CMD_ID        - CMD_SAVE_STARTUP_SETTINGS    - The <MipTypes::Command> for this command
+        //    CMD_ID - CMD_SAVE_STARTUP_SETTINGS - The <MipTypes::Command> for this command
         static const MipTypes::Command CMD_ID = MipTypes::CMD_SAVE_STARTUP_SETTINGS;
 
     private:

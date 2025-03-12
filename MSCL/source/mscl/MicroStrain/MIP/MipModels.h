@@ -6,12 +6,8 @@
 
 #pragma once
 
-#include <string>
-
 namespace mscl
 {
-    class MipModel;
-
     //API Class: MipModels
     //    Contains the model number information of MIP devices.
     class MipModels

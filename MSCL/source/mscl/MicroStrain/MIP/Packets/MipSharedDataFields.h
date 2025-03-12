@@ -46,7 +46,7 @@ namespace mscl
     public:
         //API Constructor: MipSharedDataFields
         //  Create an empty MipSharedDataFields object
-        MipSharedDataFields() {};
+        MipSharedDataFields() {}
 
         //API Function: hasEventSource
         //  Checks whether the packet contains the Event Source field

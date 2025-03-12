@@ -4,8 +4,8 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "PingResponse.h"
+#include "mscl/MicroStrain/Wireless/Commands/PingResponse.h"
+
 #include "mscl/MicroStrain/Wireless/WirelessTypes.h"
 
 namespace mscl

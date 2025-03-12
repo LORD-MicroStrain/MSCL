@@ -9,9 +9,9 @@
 #include "mscl/Version.h"
 
 #ifndef SWIG
-#define MSCL_MAJOR ${MSCL_GIT_VERSION_MAJOR}
-#define MSCL_MINOR ${MSCL_GIT_VERSION_MINOR}
-#define MSCL_PATCH ${MSCL_GIT_VERSION_PATCH}
+#define MSCL_MAJOR ${PROJECT_VERSION_MAJOR}
+#define MSCL_MINOR ${PROJECT_VERSION_MINOR}
+#define MSCL_PATCH ${PROJECT_VERSION_PATCH}
 #endif // !SWIG
 
 namespace mscl

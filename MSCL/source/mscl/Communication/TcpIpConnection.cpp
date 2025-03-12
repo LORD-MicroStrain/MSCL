@@ -4,16 +4,11 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-
-#include <boost/lambda/lambda.hpp>
-
-#include "TcpIpConnection.h"
-#include "mscl/Utils.h"
+#include "mscl/Communication/TcpIpConnection.h"
 
 #ifdef _WIN32
-#include <MSTcpIP.h>
-#endif
+#include <mstcpip.h>
+#endif // _WIN32
 
 namespace mscl
 {

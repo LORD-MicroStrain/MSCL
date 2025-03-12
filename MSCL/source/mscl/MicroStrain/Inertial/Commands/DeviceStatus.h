@@ -6,17 +6,13 @@
 
 #pragma once
 
-#include "mscl/MicroStrain/MIP/Commands/GenericMipCommand.h"
-#include "mscl/MicroStrain/ResponseCollector.h"
 #include "mscl/MicroStrain/Inertial/ExposedInertialTypes.h"
 #include "mscl/MicroStrain/MIP/Commands/MipCommand.h"
 #include "mscl/MicroStrain/MIP/MipModels.h"
 
 namespace mscl
 {
-
 #ifndef SWIG
-
     //Class: DeviceStatus
     //    Contains the logic for the Inertial DeviceStatus command.
     class DeviceStatus : public MipCommand
@@ -104,6 +100,5 @@ namespace mscl
     // Destructor
         ~DeviceStatus() { }
     };
-
 #endif
 }

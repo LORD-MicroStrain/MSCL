@@ -4,10 +4,7 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-
-#include "TimestampCounter.h"
-#include "TimeSpan.h"
+#include "mscl/TimestampCounter.h"
 
 namespace mscl
 {
@@ -54,7 +51,7 @@ namespace mscl
 
             default:
                 m_time += static_cast<uint64>(m_sampleRate.samples()) * n * TimeSpan::NANOSECONDS_PER_SECOND;
-        };
+        }
     }
 
     void TimestampCounter::advance()
@@ -85,7 +82,7 @@ namespace mscl
 
             default:
                 m_time -= static_cast<uint64>(m_sampleRate.samples()) * n * TimeSpan::NANOSECONDS_PER_SECOND;
-        };
+        }
 
         if(m_time > origTime)
         {
@@ -109,7 +106,6 @@ namespace mscl
 
             default:
                 return m_time;
-        };
+        }
     }
-
 }

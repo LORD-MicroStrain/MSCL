@@ -6,13 +6,11 @@
 
 #pragma once
 
-#include "mscl/MicroStrain/ByteStream.h"
-#include "WirelessResponsePattern.h"
+#include "mscl/MicroStrain/Wireless/Commands/WirelessResponsePattern.h"
 
 namespace mscl
 {
 #ifndef SWIG
-
     //Class: BaseStation_Ping
     //    Contains logic for the base station Ping command
     class BaseStation_Ping
@@ -54,7 +52,5 @@ namespace mscl
             virtual bool matchSuccessResponse(DataBuffer& data) override;
         };
     };
-
 #endif
-
 }

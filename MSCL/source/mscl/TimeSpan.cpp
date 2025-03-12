@@ -4,10 +4,7 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-
-#include "TimeSpan.h"
-#include "Timestamp.h"
+#include "mscl/TimeSpan.h"
 
 namespace mscl
 {
@@ -52,13 +49,13 @@ namespace mscl
         return m_nanoseconds / NANOSECONDS_PER_SECOND;
     }
 
-    TimeSpan TimeSpan::NanoSeconds(uint64 nanoseconds)    { return TimeSpan(static_cast<uint64>(nanoseconds)    * 1); }
-    TimeSpan TimeSpan::MicroSeconds(uint64 microseconds){ return TimeSpan(static_cast<uint64>(microseconds) * 1000); }
-    TimeSpan TimeSpan::MilliSeconds(uint64 milliseconds){ return TimeSpan(static_cast<uint64>(milliseconds) * 1000000); }
-    TimeSpan TimeSpan::Seconds(uint64 seconds)            { return TimeSpan(static_cast<uint64>(seconds)        * 1000000000); }
-    TimeSpan TimeSpan::Minutes(int minutes)                { return TimeSpan(static_cast<uint64>(minutes)        * 1000000000 * 60); }
-    TimeSpan TimeSpan::Hours(int hours)                    { return TimeSpan(static_cast<uint64>(hours)        * 1000000000 * 60 * 60); }
-    TimeSpan TimeSpan::Days(int days)                    { return TimeSpan(static_cast<uint64>(days)            * 1000000000 * 60 * 60 * 24); }
+    TimeSpan TimeSpan::NanoSeconds(uint64 nanoseconds)   { return TimeSpan(static_cast<uint64>(nanoseconds)  * 1); }
+    TimeSpan TimeSpan::MicroSeconds(uint64 microseconds) { return TimeSpan(static_cast<uint64>(microseconds) * 1000); }
+    TimeSpan TimeSpan::MilliSeconds(uint64 milliseconds) { return TimeSpan(static_cast<uint64>(milliseconds) * 1000000); }
+    TimeSpan TimeSpan::Seconds(uint64 seconds)           { return TimeSpan(static_cast<uint64>(seconds)      * 1000000000); }
+    TimeSpan TimeSpan::Minutes(int minutes)              { return TimeSpan(static_cast<uint64>(minutes)      * 1000000000 * 60); }
+    TimeSpan TimeSpan::Hours(int hours)                  { return TimeSpan(static_cast<uint64>(hours)        * 1000000000 * 60 * 60); }
+    TimeSpan TimeSpan::Days(int days)                    { return TimeSpan(static_cast<uint64>(days)         * 1000000000 * 60 * 60 * 24); }
 
     TimeSpan operator*(TimeSpan timeSpan, uint32 factor)
     {

@@ -6,23 +6,20 @@
 
 #pragma once
 
-#include <map>
-#include <boost/optional.hpp>
-
-#include "mscl/MicroStrain/Wireless/Configuration/DataModeMask.h"
-#include "mscl/MicroStrain/Wireless/WirelessTypes.h"
-#include "mscl/MicroStrain/Wireless/WirelessModels.h"
-#include "mscl/MicroStrain/Wireless/Features/ChannelGroup.h"
-#include "mscl/MicroStrain/LinearEquation.h"
-#include "mscl/MicroStrain/Wireless/ChannelMask.h"
-#include "mscl/Exceptions.h"
-#include "mscl/TimeSpan.h"
 #include "ActivitySense.h"
 #include "ConfigIssue.h"
 #include "EventTriggerOptions.h"
 #include "FatigueOptions.h"
 #include "HistogramOptions.h"
 #include "TempSensorOptions.h"
+#include "mscl/Exceptions.h"
+#include "mscl/MicroStrain/LinearEquation.h"
+#include "mscl/MicroStrain/Wireless/ChannelMask.h"
+#include "mscl/MicroStrain/Wireless/Configuration/DataModeMask.h"
+#include "mscl/MicroStrain/Wireless/Features/ChannelGroup.h"
+#include "mscl/MicroStrain/Wireless/WirelessModels.h"
+#include "mscl/MicroStrain/Wireless/WirelessTypes.h"
+#include "mscl/TimeSpan.h"
 
 namespace mscl
 {

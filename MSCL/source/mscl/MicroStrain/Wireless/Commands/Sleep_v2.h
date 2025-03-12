@@ -6,16 +6,12 @@
 
 #pragma once
 
-#include "mscl/MicroStrain/ByteStream.h"
-#include "WirelessResponsePattern.h"
+#include "mscl/MicroStrain/Wireless/Commands/WirelessResponsePattern.h"
 #include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
-#include "mscl/Types.h"
 
 namespace mscl
 {
-
 #ifndef SWIG
-
     //Class: Sleep_v2
     //    Contains logic for the Sleep (v2) Node command
     class Sleep_v2
@@ -25,7 +21,6 @@ namespace mscl
         Sleep_v2(const Sleep_v2&) = delete;             //copy constructor disabled
         Sleep_v2& operator=(const Sleep_v2&) = delete;  //assignment operator disabled
 
-    public:
         //Function: buildCommand
         //    Builds the Sleep command packet.
         //
@@ -66,6 +61,5 @@ namespace mscl
             virtual bool matchSuccessResponse(const WirelessPacket& packet) override;
         };
     };
-
 #endif
 }

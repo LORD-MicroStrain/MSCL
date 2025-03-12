@@ -6,14 +6,10 @@
 
 #pragma once
 
-#include "mscl/MicroStrain/MIP/MipNodeInfo.h"
-#include "mscl/MicroStrain/MIP/MipChannel.h"
-#include "mscl/MicroStrain/MIP/MipTypes.h"
-#include "mscl/MicroStrain/MIP/Commands/MipCmdResponse.h"
-#include "mscl/MicroStrain/MIP/Packets/MipDataPacket.h"
-#include "DisplacementModels.h"
-#include "mscl/Communication/Connection.h"
+#include "mscl/MicroStrain/Displacement/DisplacementModels.h"
 #include "mscl/MicroStrain/LinearEquation.h"
+#include "mscl/MicroStrain/MIP/Commands/GenericMipCommand.h"
+#include "mscl/MicroStrain/MIP/Packets/MipDataPacket.h"
 
 namespace mscl
 {

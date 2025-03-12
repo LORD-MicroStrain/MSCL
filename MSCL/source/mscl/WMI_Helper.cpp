@@ -4,19 +4,11 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-
 #ifdef _WIN32
 
-#include "WMI_Helper.h"
+#include "mscl/WMI_Helper.h"
 
-#endif
-
-#include <sstream>
-#include <thread>
-
-
-#ifdef _WIN32
+#include <comdef.h>
 
 WMI_Helper::WMI_Helper(std::string wmi_namespace, std::string wmi_class):
     m_wmi_namespace(wmi_namespace),
@@ -249,5 +241,4 @@ WMI_Helper::wmiValues WMI_Helper::request(std::vector<std::string> valuesToGet)
 
     return m_values;
 }
-
-#endif
+#endif // _WIN32

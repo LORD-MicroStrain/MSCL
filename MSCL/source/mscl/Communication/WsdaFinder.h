@@ -6,11 +6,8 @@
 
 #pragma once
 
-#include "UpnpService.h"
-#include "UpnpDeviceFinderCallback.h"
-
-#include <string>
-#include <map>
+#include "mscl/Communication/UpnpDeviceFinderCallback.h"
+#include "mscl/Communication/UpnpService.h"
 
 namespace mscl
 {

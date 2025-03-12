@@ -4,8 +4,6 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-
 #include "mscl/Exceptions.h"
 #include "BufferedLdcPacket_v2.h"
 #include "mscl/MicroStrain/SampleUtils.h"

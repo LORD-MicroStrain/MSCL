@@ -7,10 +7,6 @@
 #pragma once
 
 #include "mscl/MicroStrain/MIP/Commands/GenericMipCommand.h"
-#include "mscl/MicroStrain/Inertial/ExposedInertialTypes.h"
-#include "mscl/MicroStrain/ResponseCollector.h"
-#include "mscl/MicroStrain/SampleRate.h"
-
 
 namespace mscl
 {
@@ -19,14 +15,14 @@ namespace mscl
     class ActivationCode : private GenericMipCommand
     {
     private:
-        ActivationCode() {};                //default constructor disabled
+        ActivationCode() {}                //default constructor disabled
 
         //Constants: Packet Bytes
         // FIELD_DATA_BYTE - Descriptor byte for the Field data.
         static const uint8 FIELD_DATA_BYTE = 0x87;
 
     public:
-        virtual ~ActivationCode() {};
+        virtual ~ActivationCode() {}
 
         static ByteStream buildCommand_get();
 

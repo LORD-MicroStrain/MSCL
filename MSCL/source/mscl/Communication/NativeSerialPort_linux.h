@@ -6,8 +6,6 @@
 
 #pragma once
 
-#include "mscl/Exceptions.h"
-
 namespace mscl
 {
     //Title: NativeSerialPort_linux

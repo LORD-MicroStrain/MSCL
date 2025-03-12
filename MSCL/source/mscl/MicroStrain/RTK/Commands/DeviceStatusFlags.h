@@ -6,11 +6,8 @@
 
 #pragma once
 
-#include "mscl/MicroStrain/MIP/Commands/GenericMipCommand.h"
 #include "mscl/MicroStrain/Inertial/ExposedInertialTypes.h"
-#include "mscl/MicroStrain/ResponseCollector.h"
-#include "mscl/MicroStrain/SampleRate.h"
-
+#include "mscl/MicroStrain/MIP/Commands/GenericMipCommand.h"
 
 namespace mscl
 {
@@ -19,14 +16,14 @@ namespace mscl
     class DeviceStatusFlags : private GenericMipCommand
     {
     private:
-        DeviceStatusFlags() {};                //default constructor disabled
+        DeviceStatusFlags() {}                //default constructor disabled
 
          //Constants: Packet Bytes
          // FIELD_DATA_BYTE - Descriptor byte for the Field data.
         static const uint8 FIELD_DATA_BYTE = 0x81;
 
     public:
-        virtual ~DeviceStatusFlags() {};
+        virtual ~DeviceStatusFlags() {}
 
         static ByteStream buildCommand_get();
 

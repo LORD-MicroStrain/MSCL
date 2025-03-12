@@ -6,8 +6,6 @@
 
 #pragma once
 
-#include "mscl/Types.h"
-#include "mscl/MicroStrain/ByteStream.h"
 #include "mscl/MicroStrain/MIP/MipTypes.h"
 
 namespace mscl

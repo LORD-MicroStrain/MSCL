@@ -6,16 +6,11 @@
 
 #pragma once
 
-#include "mscl/MicroStrain/MIP/Commands/GenericMipCommand.h"
-#include "mscl/MicroStrain/ResponseCollector.h"
-#include "mscl/MicroStrain/Inertial/ExposedInertialTypes.h"
 #include "mscl/MicroStrain/MIP/Commands/MipCommand.h"
 
 namespace mscl
 {
-
 #ifndef SWIG
-
     //Class: ConingAndScullingEnable
     //    Contains the logic for the Inertial ConingAndScullingEnable command.
     class ConingAndScullingEnable : public MipCommand
@@ -91,6 +86,5 @@ namespace mscl
         // Destructor
         ~ConingAndScullingEnable() { }
     };
-
 #endif
 }

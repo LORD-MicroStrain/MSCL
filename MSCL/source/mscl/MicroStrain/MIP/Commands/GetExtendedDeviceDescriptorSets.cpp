@@ -4,16 +4,14 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "GetExtendedDeviceDescriptorSets.h"
-#include "MIP_Commands.h"
-#include "mscl/Utils.h"
+#include "mscl/MicroStrain/MIP/Commands/GetExtendedDeviceDescriptorSets.h"
+
 #include "mscl/MicroStrain/MIP/MipDataField.h"
+#include "mscl/MicroStrain/MIP/Commands/MIP_Commands.h"
 #include "mscl/MicroStrain/MIP/Packets/MipPacketBuilder.h"
 
 namespace mscl
 {
-
     ByteStream GetExtendedDeviceDescriptorSets::buildCommand()
     {
         static const uint8 DescSet = 0x01;
@@ -28,7 +26,6 @@ namespace mscl
         //build the packet and return the ByteStream result
         return builder.buildPacket();
     }
-
 
     GetExtendedDeviceDescriptorSets::Response::Response(std::weak_ptr<ResponseCollector> collector):
         GenericMipCommand::Response(MipTypes::CMD_GET_EXT_DESCRIPTOR_SETS, collector, true, true, "Get Extended Device Descriptor Sets")

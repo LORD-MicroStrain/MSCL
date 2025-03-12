@@ -6,15 +6,11 @@
 
 #pragma once
 
-#include "mscl/MicroStrain/ByteStream.h"
 #include "WirelessResponsePattern.h"
-#include "mscl/Types.h"
 
 namespace mscl
 {
-
 #ifndef SWIG
-
     //Class: ReadSingleSensor
     //    Contains logic for the Read Single Sensor Node command
     class ReadSingleSensor
@@ -69,6 +65,5 @@ namespace mscl
             uint16 sensorValue() const;
         };
     };
-
 #endif
 }

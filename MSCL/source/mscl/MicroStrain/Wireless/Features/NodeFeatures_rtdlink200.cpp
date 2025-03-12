@@ -4,7 +4,6 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
 #include "NodeFeatures_rtdlink200.h"
 
 #include "mscl/Exceptions.h"

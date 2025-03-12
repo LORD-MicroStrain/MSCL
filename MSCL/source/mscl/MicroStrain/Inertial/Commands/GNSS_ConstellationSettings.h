@@ -6,15 +6,12 @@
 
 #pragma once
 
-#include "mscl/MicroStrain/MIP/Commands/GenericMipCommand.h"
 #include "mscl/MicroStrain/Inertial/ExposedInertialTypes.h"
 #include "mscl/MicroStrain/MIP/Commands/MipCommand.h"
 
 namespace mscl
 {
-
 #ifndef SWIG
-
     //Class: GNSS_ConstellationSettings
     //    Contains the logic for the "GNSS Constellation Settings" command
     class GNSS_ConstellationSettings : public MipCommand

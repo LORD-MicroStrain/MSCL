@@ -4,9 +4,7 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-
-#include "EulerAngles.h"
+#include "mscl/MicroStrain/Inertial/EulerAngles.h"
 
 namespace mscl
 {

@@ -4,8 +4,6 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-
 #include "DiagnosticPacket.h"
 #include "mscl/MicroStrain/Wireless/NodeCommTimes.h"
 

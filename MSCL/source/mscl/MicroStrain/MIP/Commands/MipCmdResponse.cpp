@@ -4,9 +4,7 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "MipCmdResponse.h"
-#include "mscl/Exceptions.h"
+#include "mscl/MicroStrain/MIP/Commands/MipCmdResponse.h"
 
 namespace mscl
 {

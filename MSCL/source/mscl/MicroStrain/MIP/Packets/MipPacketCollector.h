@@ -6,13 +6,13 @@
 
 #pragma once
 
-#include <condition_variable>
-#include <boost/circular_buffer.hpp>
-
-#include "MipDataPacket.h"
+#include "mscl/MicroStrain/MIP/MipTypes.h"
 
 namespace mscl
 {
+    class MipPacket;
+    class MipDataPacket;
+
     //Class: MipPacketCollector
     //    Class that sets/matches expected responses, and stores all the Inertial packets
     class MipPacketCollector

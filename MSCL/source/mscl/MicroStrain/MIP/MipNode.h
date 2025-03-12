@@ -6,19 +6,13 @@
 
 #pragma once
 
-#include "mscl/MicroStrain/MIP/MipNodeInfo.h"
-#include "mscl/MicroStrain/MIP/MipChannel.h"
-#include "mscl/MicroStrain/MIP/MipTypes.h"
-#include "mscl/MicroStrain/Inertial/ExposedInertialTypes.h"
-#include "mscl/MicroStrain/MIP/Commands/MipCmdResponse.h"
-#include "mscl/MicroStrain/MIP/Packets/MipDataPacket.h"
+#include "mscl/Communication/RawBytePacket.h"
 #include "mscl/MicroStrain/MIP/MipModels.h"
-#include "mscl/Communication/Connection.h"
+#include "mscl/MicroStrain/MIP/Commands/GenericMipCommand.h"
 
 namespace mscl
 {
     //forward declarations
-    class MipNode_Impl;
     class MipNodeFeatures;
 
     //API Class: MipNode
@@ -26,7 +20,7 @@ namespace mscl
     class MipNode
     {
     protected:
-        MipNode() {};  //default constructor disabled
+        MipNode() {}  //default constructor disabled
         virtual ~MipNode() {}
 
         MipNode(Connection connection);

@@ -6,15 +6,12 @@
 
 #pragma once
 
-#include "mscl/MicroStrain/MIP/Commands/GenericMipCommand.h"
-#include "mscl/MicroStrain/ResponseCollector.h"
 #include "mscl/MicroStrain/Inertial/ExposedInertialTypes.h"
+#include "mscl/MicroStrain/MIP/Commands/GenericMipCommand.h"
 
 namespace mscl
 {
-
 #ifndef SWIG
-
     //Class: GNSS_AssistTimeUpdate
     //    Contains the logic for the Inertial GNSS Assist TimeUpdate command.
     //    It is important to note that this command will get a Nack back every time after the first from power up.

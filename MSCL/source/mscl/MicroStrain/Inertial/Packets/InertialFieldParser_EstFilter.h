@@ -6,10 +6,7 @@
 
 #pragma once
 
-#include <boost/utility/binary.hpp>
-
 #include "mscl/MicroStrain/MIP/Packets/MipFieldParser.h"
-#include "mscl/MicroStrain/MIP/Packets/MipDataPacket.h"
 
 namespace mscl
 {
@@ -22,7 +19,7 @@ namespace mscl
     class FieldParser_FilterStatus : public MipFieldParser
     {
     private:
-        FieldParser_FilterStatus(){};        //default constructor disabled
+        FieldParser_FilterStatus(){}        //default constructor disabled
 
     public:
         //Function: parse
@@ -60,7 +57,7 @@ namespace mscl
         static const uint16 TIME_FLAG        = BOOST_BINARY(00000001);
 
     private:
-        FieldParser_NAV_GPS_Timestamp(){};        //default constructor disabled
+        FieldParser_NAV_GPS_Timestamp(){}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -81,7 +78,7 @@ namespace mscl
         static const uint16 LLH_FLAG        = BOOST_BINARY(00000001);
 
     private:
-        FieldParser_EstimatedLLHPosition(){};        //default constructor disabled
+        FieldParser_EstimatedLLHPosition(){}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -102,7 +99,7 @@ namespace mscl
         static const uint16 NED_FLAG        = BOOST_BINARY(00000001);
 
     private:
-        FieldParser_EstimatedNEDVelocity(){};        //default constructor disabled
+        FieldParser_EstimatedNEDVelocity(){}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -123,7 +120,7 @@ namespace mscl
         static const uint16 QUATERNION_FLAG        = BOOST_BINARY(00000001);
 
     private:
-        FieldParser_EstimatedQuaternion(){};        //default constructor disabled
+        FieldParser_EstimatedQuaternion(){}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -144,7 +141,7 @@ namespace mscl
         static const uint16 MATRIX_FLAG        = BOOST_BINARY(00000001);
 
     private:
-        FieldParser_EstimatedMatrix(){};        //default constructor disabled
+        FieldParser_EstimatedMatrix(){}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -165,7 +162,7 @@ namespace mscl
         static const uint16 EULER_FLAG        = BOOST_BINARY(00000001);
 
     private:
-        FieldParser_EstimatedEulerAngles(){};        //default constructor disabled
+        FieldParser_EstimatedEulerAngles(){}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -186,7 +183,7 @@ namespace mscl
         static const uint16 GYRO_FLAG        = BOOST_BINARY(00000001);
 
     private:
-        FieldParser_EstimatedGyroBias(){};        //default constructor disabled
+        FieldParser_EstimatedGyroBias(){}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -207,7 +204,7 @@ namespace mscl
         static const uint16 ACCEL_FLAG = BOOST_BINARY(00000001);
 
     private:
-        FieldParser_EstimatedAccelBias() {};        //default constructor disabled
+        FieldParser_EstimatedAccelBias() {}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -228,7 +225,7 @@ namespace mscl
         static const uint16 UNCERTAINTY_FLAG        = BOOST_BINARY(00000001);
 
     private:
-        FieldParser_EstimatedLLHPosUncertainty(){};        //default constructor disabled
+        FieldParser_EstimatedLLHPosUncertainty(){}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -249,7 +246,7 @@ namespace mscl
         static const uint16 UNCERTAINTY_FLAG        = BOOST_BINARY(00000001);
 
     private:
-        FieldParser_EstimatedNEDUncertainty(){};        //default constructor disabled
+        FieldParser_EstimatedNEDUncertainty(){}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -270,7 +267,7 @@ namespace mscl
         static const uint16 UNCERTAINTY_FLAG        = BOOST_BINARY(00000001);
 
     private:
-        FieldParser_EstimatedAttEulerUncertainty(){};        //default constructor disabled
+        FieldParser_EstimatedAttEulerUncertainty(){}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -291,7 +288,7 @@ namespace mscl
         static const uint16 UNCERTAINTY_FLAG        = BOOST_BINARY(00000001);
 
     private:
-        FieldParser_EstimatedGyroBiasUncertainty(){};        //default constructor disabled
+        FieldParser_EstimatedGyroBiasUncertainty(){}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -312,7 +309,7 @@ namespace mscl
         static const uint16 UNCERTAINTY_FLAG = BOOST_BINARY(00000001);
 
     private:
-        FieldParser_EstimatedAccelBiasUncertainty() {};        //default constructor disabled
+        FieldParser_EstimatedAccelBiasUncertainty() {}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -333,7 +330,7 @@ namespace mscl
         static const uint16 ACCEL_FLAG        = BOOST_BINARY(00000001);
 
     private:
-        FieldParser_EstimatedLinearAccel(){};        //default constructor disabled
+        FieldParser_EstimatedLinearAccel(){}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -354,7 +351,7 @@ namespace mscl
         static const uint16 RATE_FLAG        = BOOST_BINARY(00000001);
 
     private:
-        FieldParser_EstimatedAngularRate(){};        //default constructor disabled
+        FieldParser_EstimatedAngularRate(){}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -375,7 +372,7 @@ namespace mscl
         static const uint16 GRAV_FLAG        = BOOST_BINARY(00000001);
 
     private:
-        FieldParser_WGS84LocalGravMagnitude(){};        //default constructor disabled
+        FieldParser_WGS84LocalGravMagnitude(){}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -396,7 +393,7 @@ namespace mscl
         static const uint16 UNCERT_FLAG        = BOOST_BINARY(00000001);
 
     private:
-        FieldParser_EstimatedAttQuaternUncertainty(){};        //default constructor disabled
+        FieldParser_EstimatedAttQuaternUncertainty(){}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -417,7 +414,7 @@ namespace mscl
         static const uint16 GRAV_FLAG        = BOOST_BINARY(00000001);
 
     private:
-        FieldParser_EstimatedGravityVector(){};        //default constructor disabled
+        FieldParser_EstimatedGravityVector(){}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -438,7 +435,7 @@ namespace mscl
         static const uint16 HEADING_FLAG        = BOOST_BINARY(00000001);
 
     private:
-        FieldParser_HeadingUpdateSource(){};        //default constructor disabled
+        FieldParser_HeadingUpdateSource(){}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -459,7 +456,7 @@ namespace mscl
         static const uint16 SLN_FLAG        = BOOST_BINARY(00000001);
 
     private:
-        FieldParser_MagneticModelSolution(){};        //default constructor disabled
+        FieldParser_MagneticModelSolution(){}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -480,7 +477,7 @@ namespace mscl
         static const uint16 VALID_FLAG = BOOST_BINARY(00000001);
 
     private:
-        FieldParser_EstimatedGyroScaleFactor() {};        //default constructor disabled
+        FieldParser_EstimatedGyroScaleFactor() {}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -501,7 +498,7 @@ namespace mscl
         static const uint16 VALID_FLAG = BOOST_BINARY(00000001);
 
     private:
-        FieldParser_EstimatedAccelScaleFactor() {};        //default constructor disabled
+        FieldParser_EstimatedAccelScaleFactor() {}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -522,7 +519,7 @@ namespace mscl
         static const uint16 VALID_FLAG = BOOST_BINARY(00000001);
 
     private:
-        FieldParser_EstimatedGyroScaleFactorUncertainty() {};        //default constructor disabled
+        FieldParser_EstimatedGyroScaleFactorUncertainty() {}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -543,7 +540,7 @@ namespace mscl
         static const uint16 VALID_FLAG = BOOST_BINARY(00000001);
 
     private:
-        FieldParser_EstimatedAccelScaleFactorUncertainty() {};        //default constructor disabled
+        FieldParser_EstimatedAccelScaleFactorUncertainty() {}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -564,7 +561,7 @@ namespace mscl
         static const uint16 VALID_FLAG = BOOST_BINARY(00000001);
 
     private:
-        FieldParser_CompensatedAccel() {};        //default constructor disabled
+        FieldParser_CompensatedAccel() {}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -585,7 +582,7 @@ namespace mscl
         static const uint16 VALID_FLAG = BOOST_BINARY(00000001);
 
     private:
-        FieldParser_StdAtmModel() {};        //default constructor disabled
+        FieldParser_StdAtmModel() {}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -606,7 +603,7 @@ namespace mscl
         static const uint16 VALID_FLAG = BOOST_BINARY(00000001);
 
     private:
-        FieldParser_PressureAlt() {};        //default constructor disabled
+        FieldParser_PressureAlt() {}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -627,7 +624,7 @@ namespace mscl
         static const uint16 VECTOR_FLAG = BOOST_BINARY(00000001);
 
     private:
-        FieldParser_MagAutoHardIronOffset() {};        //default constructor disabled
+        FieldParser_MagAutoHardIronOffset() {}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -647,7 +644,7 @@ namespace mscl
         //    VALID_FLAG        - b00000001 - The flag position for checking the Mag Bias flag
         static const uint16 VALID_FLAG = BOOST_BINARY(00000001);
 
-        FieldParser_MagBias() {};        //default constructor disabled
+        FieldParser_MagBias() {}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -668,7 +665,7 @@ namespace mscl
         static const uint16 MATRIX_FLAG = BOOST_BINARY(00000001);
 
     private:
-        FieldParser_MagAutoSoftIronMatrix() {};        //default constructor disabled
+        FieldParser_MagAutoSoftIronMatrix() {}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -689,7 +686,7 @@ namespace mscl
         static const uint16 VECTOR_FLAG = BOOST_BINARY(00000001);
 
     private:
-        FieldParser_MagAutoHardIronOffsetUncert() {};        //default constructor disabled
+        FieldParser_MagAutoHardIronOffsetUncert() {}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -709,7 +706,7 @@ namespace mscl
         //    VALID_FLAG        - b00000001 - The flag position for checking the Mag Bias Uncertainty flag
         static const uint16 VALID_FLAG = BOOST_BINARY(00000001);
 
-        FieldParser_MagBiasUncert() {};        //default constructor disabled
+        FieldParser_MagBiasUncert() {}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -730,7 +727,7 @@ namespace mscl
         static const uint16 MATRIX_FLAG = BOOST_BINARY(00000001);
 
     private:
-        FieldParser_MagAutoSoftIronMatrixUncert() {};        //default constructor disabled
+        FieldParser_MagAutoSoftIronMatrixUncert() {}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -746,7 +743,7 @@ namespace mscl
     class FieldParser_MagCovarianceMatrix : public MipFieldParser
     {
     private:
-        FieldParser_MagCovarianceMatrix() {};        //default constructor disabled
+        FieldParser_MagCovarianceMatrix() {}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -762,7 +759,7 @@ namespace mscl
     class FieldParser_MagResidualVector : public MipFieldParser
     {
     private:
-        FieldParser_MagResidualVector() {};        //default constructor disabled
+        FieldParser_MagResidualVector() {}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -783,7 +780,7 @@ namespace mscl
         static const uint16 VALID_FLAG = BOOST_BINARY(00000001);
 
     private:
-        FieldParser_GnssAntennaOffsetCorrection() {};        //default constructor disabled
+        FieldParser_GnssAntennaOffsetCorrection() {}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -804,7 +801,7 @@ namespace mscl
         static const uint16 VALID_FLAG = BOOST_BINARY(00000001);
 
     private:
-        FieldParser_GnssAntennaOffsetCorrectionUncert() {};        //default constructor disabled
+        FieldParser_GnssAntennaOffsetCorrectionUncert() {}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -825,7 +822,7 @@ namespace mscl
         static const uint16 VALID_FLAG = BOOST_BINARY(00000001);
 
     private:
-        FieldParser_GnssClockCorrection() {};        //default constructor disabled
+        FieldParser_GnssClockCorrection() {}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -846,7 +843,7 @@ namespace mscl
         static const uint16 VALID_FLAG = BOOST_BINARY(00000001);
 
     private:
-        FieldParser_GnssClockCorrectionUncert() {};        //default constructor disabled
+        FieldParser_GnssClockCorrectionUncert() {}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -867,7 +864,7 @@ namespace mscl
         static const uint16 VALID_FLAG = BOOST_BINARY(00000001);
 
     private:
-        FieldParser_GnssMultiAntennaOffsetCorrection() {};        //default constructor disabled
+        FieldParser_GnssMultiAntennaOffsetCorrection() {}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -888,7 +885,7 @@ namespace mscl
         static const uint16 VALID_FLAG = BOOST_BINARY(00000001);
 
     private:
-        FieldParser_GnssMultiAntennaOffsetCorrectionUncert() {};        //default constructor disabled
+        FieldParser_GnssMultiAntennaOffsetCorrectionUncert() {}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -909,7 +906,7 @@ namespace mscl
         static const uint16 VALID_FLAG = BOOST_BINARY(00000001);
 
     private:
-        FieldParser_EcefPositionUncert() {};        //default constructor disabled
+        FieldParser_EcefPositionUncert() {}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -930,7 +927,7 @@ namespace mscl
         static const uint16 VALID_FLAG = BOOST_BINARY(00000001);
 
     private:
-        FieldParser_EcefVelocityUncert() {};        //default constructor disabled
+        FieldParser_EcefVelocityUncert() {}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -951,7 +948,7 @@ namespace mscl
         static const uint16 VALID_FLAG = BOOST_BINARY(00000001);
 
     private:
-        FieldParser_EcefPosition() {};        //default constructor disabled
+        FieldParser_EcefPosition() {}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -972,7 +969,7 @@ namespace mscl
         static const uint16 VALID_FLAG = BOOST_BINARY(00000001);
 
     private:
-        FieldParser_EcefVelocity() {};        //default constructor disabled
+        FieldParser_EcefVelocity() {}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -993,7 +990,7 @@ namespace mscl
         static const uint16 VALID_FLAG = BOOST_BINARY(00000001);
 
     private:
-        FieldParser_NedRelativePos() {};        //default constructor disabled
+        FieldParser_NedRelativePos() {}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -1009,7 +1006,7 @@ namespace mscl
     class FieldParser_FilterPosAidingStatus : public MipFieldParser
     {
     private:
-        FieldParser_FilterPosAidingStatus() {};        //default constructor disabled
+        FieldParser_FilterPosAidingStatus() {}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -1025,7 +1022,7 @@ namespace mscl
     class FieldParser_FilterAttAidingStatus : public MipFieldParser
     {
     private:
-        FieldParser_FilterAttAidingStatus() {};        //default constructor disabled
+        FieldParser_FilterAttAidingStatus() {}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -1041,7 +1038,7 @@ namespace mscl
     class FieldParser_FilterAidingSummary : public MipFieldParser
     {
     private:
-        FieldParser_FilterAidingSummary() {};        //default constructor disabled
+        FieldParser_FilterAidingSummary() {}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -1057,7 +1054,7 @@ namespace mscl
     class FieldParser_OdometerScaleError : public MipFieldParser
     {
     private:
-        FieldParser_OdometerScaleError() {};        //default constructor disabled
+        FieldParser_OdometerScaleError() {}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -1073,7 +1070,7 @@ namespace mscl
     class FieldParser_OdometerScaleErrorUncert : public MipFieldParser
     {
     private:
-        FieldParser_OdometerScaleErrorUncert() {};        //default constructor disabled
+        FieldParser_OdometerScaleErrorUncert() {}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -1089,7 +1086,7 @@ namespace mscl
     class FieldParser_DualAntennaStatus : public MipFieldParser
     {
     private:
-        FieldParser_DualAntennaStatus() {};        //default constructor disabled
+        FieldParser_DualAntennaStatus() {}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -1105,7 +1102,7 @@ namespace mscl
     class FieldParser_FrameConfigError : public MipFieldParser
     {
     private:
-        FieldParser_FrameConfigError() {};        //default constructor disabled
+        FieldParser_FrameConfigError() {}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
@@ -1121,7 +1118,7 @@ namespace mscl
     class FieldParser_FrameConfigErrorUnc : public MipFieldParser
     {
     private:
-        FieldParser_FrameConfigErrorUnc() {};        //default constructor disabled
+        FieldParser_FrameConfigErrorUnc() {}        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;

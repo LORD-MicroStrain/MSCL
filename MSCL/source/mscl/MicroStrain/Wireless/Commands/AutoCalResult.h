@@ -6,11 +6,6 @@
 
 #pragma once
 
-#include "mscl/Types.h"
-#include "mscl/Version.h"
-#include "mscl/MicroStrain/ByteStream.h"
-#include "mscl/MicroStrain/ResponsePattern.h"
-#include "mscl/MicroStrain/Wireless/WirelessModels.h"
 #include "mscl/MicroStrain/Wireless/WirelessTypes.h"
 
 namespace mscl
@@ -25,7 +20,7 @@ namespace mscl
 
     public:
         AutoCalResult();
-        virtual ~AutoCalResult() {};
+        virtual ~AutoCalResult() {}
 
         //API Function: completionFlag
         //    Gets the <WirelessTypes::AutoCalCompletionFlag> of the AutoCal operation result.
@@ -79,7 +74,7 @@ namespace mscl
 
     public:
         AutoCalResult_shmLink();
-        virtual ~AutoCalResult_shmLink() {};
+        virtual ~AutoCalResult_shmLink() {}
 
         //API Function: errorFlagCh1
         //    Gets the <WirelessTypes::AutoCalErrorFlag> for the channel 1 strain sensor.
@@ -162,7 +157,7 @@ namespace mscl
 
     public:
         AutoCalResult_shmLink201();
-        virtual ~AutoCalResult_shmLink201() {};
+        virtual ~AutoCalResult_shmLink201() {}
 
         //API Function: errorFlagCh1
         //    Gets the <WirelessTypes::AutoCalErrorFlag> for the channel 1 strain sensor.
@@ -253,7 +248,7 @@ namespace mscl
 
     public:
         AutoShuntCalResult();
-        virtual ~AutoShuntCalResult() {};
+        virtual ~AutoShuntCalResult() {}
 
         //API Function: errorFlag
         //  Gets the <WirelessTypes::AutoCalErrorFlag> for the shunt calibration.

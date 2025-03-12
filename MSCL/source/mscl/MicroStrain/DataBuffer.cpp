@@ -4,9 +4,7 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "DataBuffer.h"
-#include <assert.h>
+#include "mscl/MicroStrain/DataBuffer.h"
 
 namespace mscl
 {
@@ -31,9 +29,6 @@ namespace mscl
         //move the position of the underlying DataBuffer's write offset (append position)
         *m_writeOffset += numBytesAdded;
     }
-
-
-
 
     DataBuffer::DataBuffer(uint32 size) :
         m_appendPosition(0),

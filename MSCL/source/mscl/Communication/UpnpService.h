@@ -6,13 +6,9 @@
 
 #pragma once
 
+// Windows-only file
 #ifdef _WIN32
-#include <UPnP.h>   //Windows only file
-#include <Windows.h>
-
-#include <map>
-#include <string>
-#include <thread>
+#include <UPnP.h>
 
 namespace mscl
 {

@@ -4,10 +4,7 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "MipChannel.h"
-#include "mscl/MicroStrain/Inertial/InertialNode.h"
-#include "mscl/Utils.h"
+#include "mscl/MicroStrain/MIP/MipChannel.h"
 
 namespace mscl
 {

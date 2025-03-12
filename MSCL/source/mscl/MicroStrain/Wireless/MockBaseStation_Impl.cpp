@@ -4,7 +4,6 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
 #include "MockBaseStation_Impl.h"
 #include "mscl/Communication/Connection.h"
 #include "Features/BaseStationFeatures.h"

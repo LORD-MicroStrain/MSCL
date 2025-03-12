@@ -6,14 +6,11 @@
 
 #pragma once
 
-#include "WirelessResponsePattern.h"
-#include "mscl/MicroStrain/ByteStream.h"
+#include "mscl/MicroStrain/Wireless/Commands/WirelessResponsePattern.h"
 
 namespace mscl
 {
-
 #ifndef SWIG
-
     //Class: ArmForDatalogging
     //    Contains logic for the Arm For Datalogging Node command.
     class ArmForDatalogging
@@ -65,7 +62,5 @@ namespace mscl
             virtual bool matchSuccessResponse(const WirelessPacket& packet) override;
         };
     };
-
 #endif
-
 }

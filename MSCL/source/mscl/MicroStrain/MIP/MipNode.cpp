@@ -4,11 +4,9 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "MipNode.h"
+#include "mscl/MicroStrain/MIP/MipNode.h"
 
 #include "mscl/MicroStrain/MIP/MipNode_Impl.h"
-#include "mscl/MicroStrain/MIP/MipNodeFeatures.h"
 
 namespace mscl
 {

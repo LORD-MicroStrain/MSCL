@@ -6,11 +6,7 @@
 
 #pragma once
 
-#include <boost/asio.hpp>
-#include "Connection.h"
-#include "Connection_Impl.h"
-#include "BoostCommunication.h"
-#include "mscl/Types.h"
+#include "mscl/Communication/Connection_Impl.h"
 
 namespace mscl
 {

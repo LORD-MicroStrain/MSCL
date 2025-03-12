@@ -4,12 +4,9 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
+#include "mscl/MicroStrain/SampleRate.h"
 
-#include "SampleRate.h"
-#include "SampleUtils.h"
-#include "mscl/Utils.h"
-#include "mscl/Exceptions.h"
+#include "mscl/MicroStrain/SampleUtils.h"
 
 namespace mscl
 {
