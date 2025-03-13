@@ -73,9 +73,19 @@ if(POLICY CMP0167)
 endif()
 
 # Also find the dependencies for MSCL
+
+# Custom variables used in this CMake file, not used by FindBoost.cmake
+set(Boost_REQUESTED_VERSION "1.68.0" CACHE STRING "Requested version of boost")
+set(Boost_REQUIRED_VERSION "1.68.0")
+
+if("${Boost_REQUESTED_VERSION}" VERSION_LESS "${Boost_REQUIRED_VERSION}")
+    message(WARNING "MSCL requires a minimum Boost version of ${Boost_REQUIRED_VERSION}. We will search for ${Boost_REQUIRED_VERSION} instead")
+    set(Boost_REQUESTED_VERSION ${Boost_REQUIRED_VERSION})
+endif()
+
 set(Boost_USE_STATIC_LIBS ON)
 set(Boost_USE_STATIC_RUNTIME ON)
-find_package(Boost 1.68.0 EXACT REQUIRED COMPONENTS system filesystem)
+find_package(Boost ${Boost_REQUESTED_VERSION} REQUIRED COMPONENTS system filesystem)
 
 # We also need to find OpenSSL
 set(OPENSSL_USE_STATIC_LIBS TRUE)

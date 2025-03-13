@@ -72,9 +72,14 @@ if(WIN32)
     endif()
 endif()
 
-# These flags can be passed string values. For example, -DOPENSSL_ROOT_DIR="/usr/lib"
-# Different default search paths for windows
-set(Boost_REQUESTED_VERSION "1.68.0" CACHE INTERNAL "Required version of boost")
+# Custom variables used in this CMake file, not used by FindBoost.cmake
+set(Boost_REQUESTED_VERSION "1.68.0" CACHE STRING "Requested version of boost")
+set(Boost_REQUIRED_VERSION "1.68.0")
+
+if("${Boost_REQUESTED_VERSION}" VERSION_LESS "${Boost_REQUIRED_VERSION}")
+    message(WARNING "MSCL requires a minimum Boost version of ${Boost_REQUIRED_VERSION}. We will search for ${Boost_REQUIRED_VERSION} instead")
+    set(Boost_REQUESTED_VERSION ${Boost_REQUIRED_VERSION})
+endif()
 
 # Disable CMake policy for Boost config find_package
 # CMake 3.30+ uses Boost Config for Boost 1.70+
@@ -142,14 +147,14 @@ endif()
 # Find the static version of boost
 set(Boost_USE_STATIC_LIBS ON)
 set(Boost_USE_STATIC_RUNTIME ON)
-find_package(Boost ${Boost_REQUESTED_VERSION} EXACT REQUIRED COMPONENTS ${Boost_REQUESTED_COMPONENTS})
+find_package(Boost ${Boost_REQUESTED_VERSION} REQUIRED COMPONENTS ${Boost_REQUESTED_COMPONENTS})
 set(Boost_STATIC_LIBRARIES ${Boost_LIBRARIES})
 
 # Optionally find some boost testing libraries
 if(MSCL_BUILD_TESTS)
     set(Boost_USE_STATIC_LIBS ON)
     set(Boost_USE_STATIC_RUNTIME ON)
-    find_package(Boost ${Boost_REQUESTED_VERSION} EXACT REQUIRED COMPONENTS unit_test_framework test_exec_monitor)
+    find_package(Boost ${Boost_REQUESTED_VERSION} REQUIRED COMPONENTS unit_test_framework test_exec_monitor)
     set(Boost_TEST_LIBRARIES ${Boost_LIBRARIES})
 endif()
 
@@ -157,7 +162,7 @@ endif()
 if(BUILD_SHARED_LIBS OR (UNIX AND MSCL_BUILD_PYTHON3) OR (UNIX AND MSCL_BUILD_PYTHON2))
     set(Boost_USE_STATIC_LIBS OFF)
     set(Boost_USE_STATIC_RUNTIME OFF)
-    find_package(Boost ${Boost_REQUESTED_VERSION} EXACT REQUIRED COMPONENTS ${Boost_REQUESTED_COMPONENTS})
+    find_package(Boost ${Boost_REQUESTED_VERSION} REQUIRED COMPONENTS ${Boost_REQUESTED_COMPONENTS})
     set(Boost_SHARED_LIBRARIES ${Boost_LIBRARIES}) # Save the shared libraries, so they will not be overridden when we find the static libraries
 endif()
 

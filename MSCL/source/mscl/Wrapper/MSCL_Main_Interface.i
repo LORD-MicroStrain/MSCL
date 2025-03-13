@@ -8,6 +8,9 @@
 %include "std_shared_ptr.i" // SWIG file needed for std::shared_ptr
 %include "std_array.i"      // SWIG file needed for std::array
 
+%define DISABLE_WARNING_BOOST_START %enddef
+%define DISABLE_WARNING_BOOST_END %enddef
+
 #ifdef SWIGCSHARP
 //fix operator functions for C#
 %rename(__eq__) mscl::Version::operator==;
