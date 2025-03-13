@@ -7,8 +7,9 @@
 #pragma once
 
 #include "mscl/Communication/RawBytePacket.h"
-#include "mscl/MicroStrain/MIP/MipModels.h"
 #include "mscl/MicroStrain/MIP/Commands/GenericMipCommand.h"
+#include "mscl/MicroStrain/MIP/MipModels.h"
+#include "mscl/MicroStrain/MIP/MipNode_Impl.h"
 
 namespace mscl
 {
