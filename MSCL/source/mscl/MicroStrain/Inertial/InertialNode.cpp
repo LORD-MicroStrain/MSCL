@@ -1,5 +1,5 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
+**          Copyright(c) 2015-2025 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
@@ -61,6 +61,22 @@ namespace mscl
         m_impl->set(MipTypes::Command::CMD_FACTORY_STREAMING, {
             Value::UINT8(static_cast<uint8>(option)),
             Value::UINT8(0) });
+    }
+
+    DeviceCommPort InertialNode::getInterfaceControl(const uint8 interfaceId) const
+    {
+        return m_impl->getInterfaceControl(interfaceId);
+    }
+
+    void InertialNode::setInterfaceControl(const DeviceCommPort& portInterface)
+    {
+        m_impl->setInterfaceControl(portInterface);
+    }
+
+    void InertialNode::setInterfaceControl(const uint8 interfaceId, const DeviceCommPort::Protocol inputProtocols,
+        const DeviceCommPort::Protocol outputProtocols)
+    {
+        m_impl->setInterfaceControl(interfaceId, inputProtocols, outputProtocols);
     }
 
     uint8 InertialNode::getCommunicationMode()
@@ -1235,6 +1251,36 @@ namespace mscl
         });
     }
 
+    GnssSpartnConfiguration InertialNode::getGnssSpartnConfig() const
+    {
+        MipFieldValues data = m_impl->get(MipTypes::CMD_GNSS_SPARTN_CONFIG);
+        GnssSpartnConfiguration config;
+        config.enable(data[0].as_bool());
+        config.type(static_cast<GnssSpartnConfiguration::ConnectionType>(data[1].as_uint8()));
+        config.currentKeyTow(data[2].as_uint32());
+        config.currentKeyWeek(data[3].as_uint16());
+        config.currentKey(data[4].as_string().c_str());
+        config.nextKeyTow(data[5].as_uint32());
+        config.nextKeyWeek(data[6].as_uint16());
+        config.nextKey(data[7].as_string().c_str());
+
+        return config;
+    }
+
+    void InertialNode::setGnssSpartnConfig(GnssSpartnConfiguration config)
+    {
+        m_impl->set(MipTypes::CMD_GNSS_SPARTN_CONFIG, {
+            Value::UINT8(static_cast<uint8_t>(config.enabled())),
+            Value::UINT8(static_cast<uint8_t>(config.type())),
+            Value::UINT32(config.currentKeyTow()),
+            Value::UINT16(config.currentKeyWeek()),
+            Value(ValueType::valueType_string, config.currentKey()),
+            Value::UINT32(config.nextKeyTow()),
+            Value::UINT16(config.nextKeyWeek()),
+            Value(ValueType::valueType_string, config.nextKey()),
+        });
+    }
+
     bool InertialNode::rtkEnabled() const
     {
         MipFieldValues data = m_impl->get(MipTypes::CMD_GNSS_RTK_CONFIG);
@@ -1359,7 +1405,7 @@ namespace mscl
         return ret;
     }
 
-    void InertialNode::setAidingMeasurementRefrenceFrames(const MeasurementReferenceFrames& frames, bool clearExcludedIds) const
+    void InertialNode::setAidingMeasurementReferenceFrames(const MeasurementReferenceFrames& frames, bool clearExcludedIds) const
     {
         MeasurementReferenceFrame clearFrame;
 

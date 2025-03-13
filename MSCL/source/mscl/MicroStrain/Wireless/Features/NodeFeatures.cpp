@@ -1,5 +1,5 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
+**          Copyright(c) 2015-2025 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
@@ -115,6 +115,7 @@ namespace mscl
         case WirelessModels::node_gLink_200_8g_oem_u_fl:
         case WirelessModels::node_gLink_200_40g_oem_u_fl:
         case WirelessModels::node_gLink_200_40g_s:
+        case WirelessModels::node_gLink_200_p:
             return std::unique_ptr<NodeFeatures>(new NodeFeatures_glink200(info));
 
         case WirelessModels::node_gLink_200_r:

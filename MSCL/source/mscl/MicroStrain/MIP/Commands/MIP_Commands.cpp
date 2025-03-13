@@ -1,5 +1,5 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
+**          Copyright(c) 2015-2025 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
@@ -81,6 +81,23 @@ namespace mscl
     {
         //return the value from the response
         return response.data().read_uint16(0);
+    }
+
+    DeviceCommPort MIP_Commands::parseData_InterfaceControl(const GenericMipCmdResponse& response)
+    {
+        //use a DataBuffer to make reading nicer
+        DataBuffer db(response.data());
+
+        //read the interface ID value
+        uint8 interfaceId =  db.read_uint8();
+
+        //read the input protocols
+        DeviceCommPort::Protocol inputProtocols = static_cast<DeviceCommPort::Protocol>(db.read_uint32());
+
+        //read the output protocols
+        DeviceCommPort::Protocol outputProtocols = static_cast<DeviceCommPort::Protocol>(db.read_uint32());
+
+        return DeviceCommPort(interfaceId, inputProtocols, outputProtocols);
     }
 
     uint8 MIP_Commands::parseData_CommunicationMode(const GenericMipCmdResponse& response)

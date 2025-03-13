@@ -1,5 +1,5 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
+**          Copyright(c) 2015-2025 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
@@ -995,6 +995,94 @@ namespace mscl
     bool GnssSignalConfiguration::beidouSignalEnabled(GnssSignalConfiguration::BeiDouSignal signal)
     {
         return m_beidouSignals.get(signal) > 0;
+    }
+
+    void GnssSpartnConfiguration::enable(const bool enable)
+    {
+        m_enable = enable;
+    }
+
+    bool GnssSpartnConfiguration::enabled() const
+    {
+        return m_enable;
+    }
+
+    void GnssSpartnConfiguration::type(const ConnectionType connectionType)
+    {
+        m_type = connectionType;
+    }
+
+    GnssSpartnConfiguration::ConnectionType GnssSpartnConfiguration::type() const
+    {
+        return m_type;
+    }
+
+    void GnssSpartnConfiguration::currentKeyTow(const uint32_t tow)
+    {
+        m_currentKeyTow = tow;
+    }
+
+    uint32_t GnssSpartnConfiguration::currentKeyTow() const
+    {
+        return m_currentKeyTow;
+    }
+
+    void GnssSpartnConfiguration::currentKeyWeek(const uint16_t week)
+    {
+        m_currentKeyWeek = week;
+    }
+
+    uint16_t GnssSpartnConfiguration::currentKeyWeek() const
+    {
+        return m_currentKeyWeek;
+    }
+
+    void GnssSpartnConfiguration::currentKey(const char key[KEY_SIZE])
+    {
+        memset(m_currentKey, 0, KEY_SIZE);
+        strcpy(m_currentKey, key);
+
+        // The string needs a null terminating character to work
+        m_currentKey[KEY_SIZE - 1] = '\0';
+    }
+
+    const std::string GnssSpartnConfiguration::currentKey()
+    {
+        return m_currentKey;
+    }
+
+    void GnssSpartnConfiguration::nextKeyTow(const uint32_t tow)
+    {
+        m_nextKeyTow = tow;
+    }
+
+    uint32_t GnssSpartnConfiguration::nextKeyTow() const
+    {
+        return m_nextKeyTow;
+    }
+
+    void GnssSpartnConfiguration::nextKeyWeek(const uint16_t week)
+    {
+        m_nextKeyWeek = week;
+    }
+
+    uint16_t GnssSpartnConfiguration::nextKeyWeek() const
+    {
+        return m_nextKeyWeek;
+    }
+
+    void GnssSpartnConfiguration::nextKey(const char key[KEY_SIZE])
+    {
+        memset(m_nextKey, 0, KEY_SIZE);
+        strcpy(m_nextKey, key);
+
+        // The string needs a null terminating character to work
+        m_nextKey[KEY_SIZE - 1] = '\0';
+    }
+
+    const std::string GnssSpartnConfiguration::nextKey() const
+    {
+        return m_nextKey;
     }
 
     OdometerConfiguration::Mode OdometerConfiguration::mode() const

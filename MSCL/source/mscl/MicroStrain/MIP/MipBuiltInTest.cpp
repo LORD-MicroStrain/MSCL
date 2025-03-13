@@ -1,5 +1,5 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
+**          Copyright(c) 2015-2025 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
@@ -20,6 +20,7 @@ namespace mscl
         case MipModels::node_3dm_cv7_ahrs:
         case MipModels::node_3dm_cv7_ar:
         case MipModels::node_3dm_cv7_ins:
+        case MipModels::node_3dm_cv7_gnss_ins:
         {
             const CV7ContinuousBIT bit(data);
             return bit.as_MipDataPoints();
