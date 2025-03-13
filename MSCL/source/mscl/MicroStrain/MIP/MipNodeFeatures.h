@@ -11,6 +11,7 @@
 namespace mscl
 {
     class MipNodeInfo;
+    class MipNode_Impl;
 
     //API Class: MipNodeFeatures
     //    Contains information on which features are supported by an <InertialNode>.

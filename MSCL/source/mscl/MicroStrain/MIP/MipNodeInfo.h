@@ -11,6 +11,8 @@
 
 namespace mscl
 {
+    class MipNode_Impl;
+
     //Class: MipNodeInfo
     //    Contains basic information about a MipNode.
     class MipNodeInfo

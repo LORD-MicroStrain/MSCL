@@ -29,6 +29,7 @@ namespace mscl
     class BaseStationFeatures;
     struct DatalogSessionInfoResult;
     class EepromLocation;
+    class WirelessProtocol;
 
     //Class: BaseStation_Impl
     //    Contains the implementation for a <BaseStation> object.
