@@ -6,9 +6,9 @@
 
 #include "mscl/MicroStrain/Wireless/DatalogDownloader.h"
 
-#include <boost/test/unit_test.hpp>
 #include "mock_BaseStation.h"
 #include "mock_WirelessNode.h"
+
 using namespace mscl;
 
 BOOST_AUTO_TEST_SUITE(DatalogDownloader_Test)

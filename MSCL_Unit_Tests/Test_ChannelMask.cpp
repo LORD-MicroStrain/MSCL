@@ -5,9 +5,7 @@
 *****************************************************************************************/
 
 #include "mscl/MicroStrain/Wireless/ChannelMask.h"
-#include <boost/utility/binary.hpp>
 
-#include <boost/test/unit_test.hpp>
 using namespace mscl;
 
 BOOST_AUTO_TEST_SUITE(ChannelMask_Test)

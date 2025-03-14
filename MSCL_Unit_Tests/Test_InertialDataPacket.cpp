@@ -6,10 +6,7 @@
 
 #include "mscl/MicroStrain/MIP/Packets/MipDataPacket.h"
 #include "mscl/MicroStrain/MIP/Packets/MipPacket.h"
-#include "mscl/Timestamp.h"
 #include "mscl/Utils.h"
-
-#include <boost/test/unit_test.hpp>
 
 using namespace mscl;
 

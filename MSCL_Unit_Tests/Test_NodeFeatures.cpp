@@ -4,11 +4,9 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "mscl/MicroStrain/Wireless/Features/NodeFeatures.h"
-#include "mscl/Exceptions.h"
+#include "mscl/MicroStrain/SampleRate.h"
 #include "mscl/MicroStrain/Wireless/ChannelMask.h"
-
-#include <boost/test/unit_test.hpp>
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures.h"
 
 using namespace mscl;
 

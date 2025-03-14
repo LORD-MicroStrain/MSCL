@@ -8,11 +8,9 @@
 
 #include "mscl/MicroStrain/MIP/MipNode_Impl.h"
 
-#include <memory>
-#include <turtle/mock.hpp>
 #include "mock_Connection.h"
-using namespace mscl;
 
+using namespace mscl;
 
 MOCK_BASE_CLASS(mock_InertialNodeImpl, MipNode_Impl)
 {

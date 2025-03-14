@@ -7,8 +7,6 @@
 #include "mscl/MicroStrain/Wireless/Commands/TriggerArmedDatalogging.h"
 #include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
 
-#include <boost/test/unit_test.hpp>
-
 using namespace mscl;
 
 BOOST_AUTO_TEST_SUITE(TriggerArmedDatalogging_Test)

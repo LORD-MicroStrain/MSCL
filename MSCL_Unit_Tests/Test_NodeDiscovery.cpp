@@ -7,9 +7,7 @@
 #include "mscl/MicroStrain/Wireless/NodeDiscovery.h"
 #include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
 #include "mscl/MicroStrain/Wireless/WirelessNode.h"
-#include "mscl/Timestamp.h"
 
-#include <boost/test/unit_test.hpp>
 #include "mock_BaseStation.h"
 #include "mock_WirelessNode.h"
 

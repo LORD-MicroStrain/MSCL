@@ -4,13 +4,13 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
+#include "mscl/MicroStrain/Wireless/Configuration/WirelessNodeConfig.h"
 #include "mscl/MicroStrain/Wireless/SyncSamplingNetwork.h"
 #include "mscl/MicroStrain/Wireless/WirelessNode.h"
-#include "mscl/MicroStrain/Wireless/Configuration/WirelessNodeConfig.h"
 
-#include <boost/test/unit_test.hpp>
-#include "mock_WirelessNode.h"
 #include "mock_BaseStation.h"
+#include "mock_WirelessNode.h"
+
 using namespace mscl;
 
 struct Sampling_Continuous

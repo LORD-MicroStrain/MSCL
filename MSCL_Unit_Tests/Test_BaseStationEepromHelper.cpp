@@ -4,14 +4,14 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include <boost/test/unit_test.hpp>
+#include "mscl/MicroStrain/Wireless/BaseStation.h"
 #include "mscl/MicroStrain/Wireless/Configuration/BaseStationEepromHelper.h"
 #include "mscl/MicroStrain/Wireless/Configuration/BaseStationEepromMap.h"
-#include "mscl/MicroStrain/Wireless/BaseStation.h"
 #include "mscl/MicroStrain/Wireless/WirelessTypes.h"
-#include "mock_BaseStation.h"
-using namespace mscl;
 
+#include "mock_BaseStation.h"
+
+using namespace mscl;
 
 BOOST_AUTO_TEST_SUITE(BaseStationEepromHelper_Test)
 
@@ -32,7 +32,7 @@ BOOST_AUTO_TEST_CASE(BaseStationEepromHelper_readTransmitPower)
     std::unique_ptr<BaseStationFeatures> features;
     expectBaseFeatures(features, impl);
 
-    expectRead(impl, BaseStationEepromMap::TX_POWER_LEVEL, Value(valueType_int16, (int16)WirelessTypes::power_10dBm));
+    expectRead(impl, BaseStationEepromMap::TX_POWER_LEVEL, Value(valueType_int16, static_cast<int16>(WirelessTypes::power_10dBm)));
 
     BaseStationEepromHelper c(base.eepromHelper());
 
@@ -51,9 +51,9 @@ BOOST_AUTO_TEST_CASE(BaseStationEepromHelper_readTransmitPower_legacy)
     Version asppVer_lxrsPlus(3, 0);
     BaseStationInfo info(Version(3, 2), WirelessModels::base_wsdaBase_104_usb, WirelessTypes::region_usa, asppVer_lxrs, asppVer_lxrsPlus);
     features = BaseStationFeatures::create(info);
-    MOCK_EXPECT(impl->features).returns(std::ref(*(features.get())));
+    MOCK_EXPECT(impl->features).returns(std::ref(*features.get()));
 
-    expectRead(impl, BaseStationEepromMap::TX_POWER_LEVEL, Value(valueType_int16, (int16)WirelessTypes::legacyPower_0dBm));
+    expectRead(impl, BaseStationEepromMap::TX_POWER_LEVEL, Value(valueType_int16, static_cast<int16>(WirelessTypes::legacyPower_0dBm)));
 
     BaseStationEepromHelper c(base.eepromHelper());
 
@@ -69,7 +69,7 @@ BOOST_AUTO_TEST_CASE(BaseStationEepromHelper_writeTransmitPower)
     std::unique_ptr<BaseStationFeatures> features;
     expectBaseFeatures(features, impl);
 
-    expectWrite(impl, BaseStationEepromMap::TX_POWER_LEVEL, Value(valueType_int16, (int16)WirelessTypes::power_16dBm));
+    expectWrite(impl, BaseStationEepromMap::TX_POWER_LEVEL, Value(valueType_int16, static_cast<int16>(WirelessTypes::power_16dBm)));
 
     BOOST_CHECK_NO_THROW(base.eepromHelper().write_transmitPower(WirelessTypes::power_16dBm));
 }
@@ -86,9 +86,9 @@ BOOST_AUTO_TEST_CASE(BaseStationEepromHelper_writeTransmitPower_legacy)
     Version asppVer_lxrsPlus(3, 0);
     BaseStationInfo info(Version(3, 2), WirelessModels::base_wsdaBase_104_usb, WirelessTypes::region_usa, asppVer_lxrs, asppVer_lxrsPlus);
     features = BaseStationFeatures::create(info);
-    MOCK_EXPECT(impl->features).returns(std::ref(*(features.get())));
+    MOCK_EXPECT(impl->features).returns(std::ref(*features.get()));
 
-    expectWrite(impl, BaseStationEepromMap::TX_POWER_LEVEL, Value(valueType_int16, (int16)WirelessTypes::legacyPower_10dBm));
+    expectWrite(impl, BaseStationEepromMap::TX_POWER_LEVEL, Value(valueType_int16, static_cast<int16>(WirelessTypes::legacyPower_10dBm)));
 
     BOOST_CHECK_NO_THROW(base.eepromHelper().write_transmitPower(WirelessTypes::power_10dBm));
 }

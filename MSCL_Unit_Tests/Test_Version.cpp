@@ -4,10 +4,6 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "mscl/Version.h"
-
-#include <boost/test/unit_test.hpp>
-
 using namespace mscl;
 
 BOOST_AUTO_TEST_SUITE(Version_Test)

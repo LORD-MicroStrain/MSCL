@@ -4,12 +4,10 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "mscl/MicroStrain/Wireless/Commands/AutoCalResult.h"
-#include "mscl/MicroStrain/Wireless/Commands/AutoCal.h"
-#include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
 #include "mscl/MicroStrain/ResponseCollector.h"
-
-#include <boost/test/unit_test.hpp>
+#include "mscl/MicroStrain/Wireless/Commands/AutoCal.h"
+#include "mscl/MicroStrain/Wireless/Commands/AutoCalResult.h"
+#include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
 
 using namespace mscl;
 

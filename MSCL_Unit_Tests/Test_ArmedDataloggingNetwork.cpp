@@ -8,9 +8,9 @@
 #include "mscl/MicroStrain/Wireless/WirelessNode.h"
 #include "mscl/MicroStrain/Wireless/WirelessNode_Impl.h"
 
-#include <boost/test/unit_test.hpp>
 #include "mock_BaseStation.h"
 #include "mock_WirelessNode.h"
+
 using namespace mscl;
 
 BOOST_AUTO_TEST_SUITE(ArmedDataloggingNetwork_Test)

@@ -6,7 +6,6 @@
 
 #include "mscl/MicroStrain/Wireless/CalCoefficients.h"
 
-#include <boost/test/unit_test.hpp>
 using namespace mscl;
 
 BOOST_AUTO_TEST_SUITE(CalCoefficients_Test)

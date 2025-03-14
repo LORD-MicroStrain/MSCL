@@ -4,21 +4,20 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "mscl/MicroStrain/Wireless/WirelessNode.h"
+#include "mscl/Communication/SerialConnection.h"
+#include "mscl/MicroStrain/ResponsePattern.h"
 #include "mscl/MicroStrain/Wireless/BaseStation.h"
 #include "mscl/MicroStrain/Wireless/Commands/LongPing.h"
-#include "mscl/MicroStrain/ResponsePattern.h"
-#include "mscl/Communication/SerialConnection.h"
-#include "mscl/Communication/Connection.h"
-#include "mscl/Utils.h"
-#include "mscl/MicroStrain/Wireless/Features/NodeFeatures.h"
-#include "mscl/MicroStrain/Wireless/Commands/SetToIdleStatus.h"
 #include "mscl/MicroStrain/Wireless/Commands/SetToIdle.h"
+#include "mscl/MicroStrain/Wireless/Commands/SetToIdleStatus.h"
 #include "mscl/MicroStrain/Wireless/Configuration/WirelessNodeConfig.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures.h"
+#include "mscl/MicroStrain/Wireless/WirelessNode.h"
+#include "mscl/Utils.h"
 
-#include <boost/test/unit_test.hpp>
 #include "mock_BaseStation.h"
 #include "mock_WirelessNode.h"
+
 using namespace mscl;
 
 

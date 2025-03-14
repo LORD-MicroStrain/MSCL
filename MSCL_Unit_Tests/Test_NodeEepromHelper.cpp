@@ -4,16 +4,16 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "mscl/MicroStrain/Wireless/WirelessNode.h"
 #include "mscl/MicroStrain/Wireless/Configuration/NodeEepromHelper.h"
-#include "mscl/MicroStrain/Wireless/Features/NodeInfo.h"
-#include "mscl/MicroStrain/Wireless/Features/NodeFeatures.h"
-#include "mscl/MicroStrain/Wireless/Configuration/WirelessNodeConfig.h"
 #include "mscl/MicroStrain/Wireless/Configuration/NodeEepromMap.h"
 #include "mscl/MicroStrain/Wireless/Configuration/TempSensorOptions.h"
+#include "mscl/MicroStrain/Wireless/Configuration/WirelessNodeConfig.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeInfo.h"
+#include "mscl/MicroStrain/Wireless/WirelessNode.h"
 
-#include <boost/test/unit_test.hpp>
 #include "mock_WirelessNode.h"
+
 using namespace mscl;
 
 

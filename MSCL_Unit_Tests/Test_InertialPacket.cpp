@@ -6,8 +6,6 @@
 
 #include "mscl/MicroStrain/MIP/Packets/MipPacket.h"
 
-#include <boost/test/unit_test.hpp>
-
 using namespace mscl;
 
 BOOST_AUTO_TEST_SUITE(InertialPacket_Test)

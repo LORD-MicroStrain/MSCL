@@ -6,12 +6,10 @@
 
 #pragma once
 
-#include <memory>
 #include "mscl/Communication/Connection.h"
 #include "mscl/Communication/Connection_Impl.h"
 #include "mscl/MicroStrain/DataBuffer.h"
 
-#include <turtle/mock.hpp>
 using namespace mscl;
 
 static ByteStream loadBaseInfoResponse()
@@ -41,50 +39,49 @@ private:
     uint16_t delay;    //in ms
     bool useDelay;
 
-private:
-    virtual void registerParser(std::function<void(DataBuffer&)> parseFunction)
+    void registerParser(std::function<void(DataBuffer&)> parseFunction) override
     {
         parseFunc = parseFunction;
     }
 
-    virtual void unregisterParser(){}
-    virtual void throwIfError(){}
-    virtual std::string description(){return "";}
-    virtual Connection::ConnectionType type() { return Connection::connectionType_serial; }
+    void unregisterParser() override {}
+    void throwIfError() override {}
+    std::string description() override { return ""; }
+    Connection::ConnectionType type() override { return Connection::connectionType_serial; }
 
-    virtual void write(const ByteStream& data) const
+    void write(const ByteStream& data) const override
     {
         parseNextResponse();
     }
 
-    virtual void write(const Bytes& bytes) const
+    void write(const Bytes& bytes) const override
     {
         parseNextResponse();
     }
 
-    virtual void clearBuffer() {}
+    void clearBuffer() override {}
 
-    virtual void disconnect() {}
-    virtual void reconnect() {}
-    virtual void establishConnection() {}
+    void disconnect() override {}
+    void reconnect() override {}
+    void establishConnection() override {}
 
-    virtual std::size_t byteReadPos() const
+    std::size_t byteReadPos() const override
     {
       return 0;
     }
 
-    virtual std::size_t byteAppendPos() const
+    std::size_t byteAppendPos() const override
     {
       return 0;
     }
 
-    virtual void rawByteMode(bool enable){}
-    virtual bool rawByteMode() { return false; }
-    virtual void getRawBytes(Bytes& bytes, uint32 timeout = 0, uint32 maxBytes = 0, uint32 minBytes = 0) {};
-    virtual void getRawBytesWithPattern(Bytes& bytes, const uint8* pattern, size_t length, uint32 timeout = 0) {};
-    virtual void debugMode(bool enable) {};
-    virtual bool debugMode() { return false; };
-    virtual void getDebugData(ConnectionDebugDataVec& data, uint32 timeout) {};
+    void rawByteMode(bool enable) override {}
+    bool rawByteMode() override { return false; }
+    void getRawBytes(Bytes& bytes, uint32 timeout = 0, uint32 maxBytes = 0, uint32 minBytes = 0) override {}
+    void getRawBytesWithPattern(Bytes& bytes, const uint8* pattern, size_t length, uint32 timeout = 0) override {}
+    void debugMode(bool enable) override {}
+    bool debugMode() override { return false; }
+    void getDebugData(ConnectionDebugDataVec& data, uint32 timeout) override {}
 
 public:
     void setResponseBytes(ByteStream response)
@@ -112,7 +109,7 @@ public:
 
     void parseNextResponse() const
     {
-        if((responseItr + 1) <= writeResponses.size())
+        if(responseItr + 1 <= writeResponses.size())
         {
             //send the data that we want to be the response
             parseFunc(writeResponses.at(responseItr));

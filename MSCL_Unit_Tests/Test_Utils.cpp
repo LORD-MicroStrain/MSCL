@@ -4,17 +4,7 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "mscl/Types.h"
 #include "mscl/Utils.h"
-#include "mscl/Exceptions.h"
-
-#if BOOST_VERSION < 106900
-#include <boost/detail/endian.hpp>
-#else
-#include <boost/predef/other/endian.h>
-#endif
-#include <boost/test/unit_test.hpp>
-#include <turtle/mock.hpp>
 
 using namespace mscl;
 using namespace mscl::Utils;

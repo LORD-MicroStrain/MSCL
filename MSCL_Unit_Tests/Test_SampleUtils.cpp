@@ -4,11 +4,8 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "mscl/MicroStrain/SampleUtils.h"
 #include "mscl/MicroStrain/SampleRate.h"
-#include "mscl/Exceptions.h"
-
-#include <boost/test/unit_test.hpp>
+#include "mscl/MicroStrain/SampleUtils.h"
 
 using namespace mscl;
 

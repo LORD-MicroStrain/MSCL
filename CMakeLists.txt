@@ -72,23 +72,7 @@ if(WIN32)
     endif()
 endif()
 
-# Custom variables used in this CMake file, not used by FindBoost.cmake
-set(Boost_REQUESTED_VERSION "1.68.0" CACHE STRING "Requested version of boost")
-set(Boost_REQUIRED_VERSION "1.68.0")
-
-if("${Boost_REQUESTED_VERSION}" VERSION_LESS "${Boost_REQUIRED_VERSION}")
-    message(WARNING "MSCL requires a minimum Boost version of ${Boost_REQUIRED_VERSION}. We will search for ${Boost_REQUIRED_VERSION} instead")
-    set(Boost_REQUESTED_VERSION ${Boost_REQUIRED_VERSION})
-endif()
-
-# Disable CMake policy for Boost config find_package
-# CMake 3.30+ uses Boost Config for Boost 1.70+
-if(POLICY CMP0167)
-    cmake_policy(SET CMP0167 OLD)
-endif()
-
 if(WIN32)
-    string(REPLACE "." "_" Boost_REQUESTED_VERSION_UNDERSCORE ${Boost_REQUESTED_VERSION})
     set(DEFAULT_BOOST_ROOT "${MICROSTRAIN_LIB_DIR}/boost")
     set(DEFAULT_OPENSSL_ROOT_DIR "${MICROSTRAIN_LIB_DIR}/openssl/lib")
 
@@ -136,33 +120,59 @@ endif()
 # Don't let boost figure out the libraries to link
 add_compile_definitions(BOOST_ALL_NO_LIB)
 
-# Custom variable used in this CMake file, not used by FindBoost.cmake
-set(Boost_REQUESTED_COMPONENTS system filesystem)
+# Also find the dependencies for MSCL
 
 # Setup the boost root variable
-if(NOT DEFINED Boost_ROOT)
+if(NOT Boost_ROOT)
     set(Boost_ROOT "${DEFAULT_BOOST_ROOT}")
 endif()
+
+# Custom variable used in this CMake file, not used by FindBoost.cmake
+set(Boost_REQUESTED_VERSION "1.68.0")
+set(Boost_REQUESTED_COMPONENTS system filesystem)
 
 # Find the static version of boost
 set(Boost_USE_STATIC_LIBS ON)
 set(Boost_USE_STATIC_RUNTIME ON)
-find_package(Boost ${Boost_REQUESTED_VERSION} REQUIRED COMPONENTS ${Boost_REQUESTED_COMPONENTS})
-set(Boost_STATIC_LIBRARIES ${Boost_LIBRARIES})
 
-# Optionally find some boost testing libraries
-if(MSCL_BUILD_TESTS)
-    set(Boost_USE_STATIC_LIBS ON)
-    set(Boost_USE_STATIC_RUNTIME ON)
-    find_package(Boost ${Boost_REQUESTED_VERSION} REQUIRED COMPONENTS unit_test_framework test_exec_monitor)
-    set(Boost_TEST_LIBRARIES ${Boost_LIBRARIES})
+# Disable CMake policy for Boost config find_package
+# CMake 3.30+ uses Boost Config for Boost 1.70+
+if(POLICY CMP0167)
+    cmake_policy(SET CMP0167 OLD)
 endif()
+
+# Use the old FindBoost module to find the Boost directory
+find_package(Boost ${Boost_REQUESTED_VERSION} COMPONENTS ${Boost_REQUESTED_COMPONENTS})
+
+if(NOT Boost_FOUND)
+    message(FATAL_ERROR "Could NOT find Boost")
+endif()
+
+if(${Boost_VERSION} VERSION_GREATER_EQUAL 1.70.0)
+    if(POLICY CMP0167)
+        cmake_policy(SET CMP0167 NEW)
+    endif()
+
+    if(WIN32)
+        list(APPEND CMAKE_PREFIX_PATH "${Boost_LIBRARY_DIRS}/cmake")
+    endif()
+
+    find_package(Boost ${Boost_VERSION} REQUIRED COMPONENTS ${Boost_REQUESTED_COMPONENTS} CONFIG)
+endif()
+
+set(Boost_STATIC_LIBRARIES ${Boost_LIBRARIES})
 
 # Find the shared version of boost
 if(BUILD_SHARED_LIBS OR (UNIX AND MSCL_BUILD_PYTHON3) OR (UNIX AND MSCL_BUILD_PYTHON2))
     set(Boost_USE_STATIC_LIBS OFF)
     set(Boost_USE_STATIC_RUNTIME OFF)
-    find_package(Boost ${Boost_REQUESTED_VERSION} REQUIRED COMPONENTS ${Boost_REQUESTED_COMPONENTS})
+
+    if(${Boost_VERSION} VERSION_LESS 1.70.0)
+        find_package(Boost ${Boost_VERSION} REQUIRED COMPONENTS "${Boost_REQUESTED_COMPONENTS}")
+    else()
+        find_package(Boost ${Boost_VERSION} REQUIRED COMPONENTS ${Boost_REQUESTED_COMPONENTS} CONFIG)
+    endif()
+
     set(Boost_SHARED_LIBRARIES ${Boost_LIBRARIES}) # Save the shared libraries, so they will not be overridden when we find the static libraries
 endif()
 

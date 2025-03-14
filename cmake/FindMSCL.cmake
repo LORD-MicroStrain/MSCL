@@ -66,26 +66,40 @@ find_library(MSCL_LIBRARY
     PATHS ${_MSCL_LIBRARY_DIRS}
 )
 
+# Also find the dependencies for MSCL
+
+# Custom variable used in this CMake file, not used by FindBoost.cmake
+set(Boost_REQUESTED_VERSION "1.68.0")
+set(Boost_REQUESTED_COMPONENTS system filesystem)
+
+# Find the static version of boost
+set(Boost_USE_STATIC_LIBS ON)
+set(Boost_USE_STATIC_RUNTIME ON)
+
 # Disable CMake policy for Boost config find_package
 # CMake 3.30+ uses Boost Config for Boost 1.70+
 if(POLICY CMP0167)
     cmake_policy(SET CMP0167 OLD)
 endif()
 
-# Also find the dependencies for MSCL
+# Use the old FindBoost module to find the Boost directory
+find_package(Boost ${Boost_REQUESTED_VERSION} COMPONENTS ${Boost_REQUESTED_COMPONENTS})
 
-# Custom variables used in this CMake file, not used by FindBoost.cmake
-set(Boost_REQUESTED_VERSION "1.68.0" CACHE STRING "Requested version of boost")
-set(Boost_REQUIRED_VERSION "1.68.0")
-
-if("${Boost_REQUESTED_VERSION}" VERSION_LESS "${Boost_REQUIRED_VERSION}")
-    message(WARNING "MSCL requires a minimum Boost version of ${Boost_REQUIRED_VERSION}. We will search for ${Boost_REQUIRED_VERSION} instead")
-    set(Boost_REQUESTED_VERSION ${Boost_REQUIRED_VERSION})
+if(NOT Boost_FOUND)
+    message(FATAL_ERROR "Could NOT find Boost")
 endif()
 
-set(Boost_USE_STATIC_LIBS ON)
-set(Boost_USE_STATIC_RUNTIME ON)
-find_package(Boost ${Boost_REQUESTED_VERSION} REQUIRED COMPONENTS system filesystem)
+if(${Boost_VERSION} VERSION_GREATER_EQUAL 1.70.0)
+    if(POLICY CMP0167)
+        cmake_policy(SET CMP0167 NEW)
+    endif()
+
+    if(WIN32)
+        list(APPEND CMAKE_PREFIX_PATH "${Boost_LIBRARY_DIRS}/cmake")
+    endif()
+
+    find_package(Boost ${Boost_VERSION} REQUIRED COMPONENTS ${Boost_REQUESTED_COMPONENTS} CONFIG)
+endif()
 
 # We also need to find OpenSSL
 set(OPENSSL_USE_STATIC_LIBS TRUE)

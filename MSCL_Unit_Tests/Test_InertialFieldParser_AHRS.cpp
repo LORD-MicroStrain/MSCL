@@ -4,12 +4,10 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "mscl/MicroStrain/MIP/Packets/MipFieldParser.h"
-#include "mscl/MicroStrain/MIP/Packets/MipDataPacket.h"
-#include "mscl/MicroStrain/MIP/MipDataPoint.h"
 #include "mscl/MicroStrain/Inertial/Packets/InertialFieldParser_Sensor.h"
-
-#include <boost/test/unit_test.hpp>
+#include "mscl/MicroStrain/MIP/MipDataPoint.h"
+#include "mscl/MicroStrain/MIP/Packets/MipDataPacket.h"
+#include "mscl/MicroStrain/MIP/Packets/MipFieldParser.h"
 
 using namespace mscl;
 

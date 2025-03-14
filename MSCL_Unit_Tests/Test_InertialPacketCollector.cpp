@@ -4,11 +4,10 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "mscl/MicroStrain/MIP/Packets/MipPacketCollector.h"
+#include "mscl/Communication/RawBytePacketCollector.h"
+#include "mscl/MicroStrain/MIP/Packets/MipDataPacket.h"
 #include "mscl/MicroStrain/MIP/Packets/MipPacket.h"
-#include "mscl/Exceptions.h"
-
-#include <boost/test/unit_test.hpp>
+#include "mscl/MicroStrain/MIP/Packets/MipPacketCollector.h"
 
 using namespace mscl;
 

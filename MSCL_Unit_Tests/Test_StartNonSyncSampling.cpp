@@ -7,8 +7,6 @@
 #include "mscl/MicroStrain/Wireless/Commands/StartNonSyncSampling.h"
 #include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
 
-#include <boost/test/unit_test.hpp>
-
 using namespace mscl;
 
 BOOST_AUTO_TEST_SUITE(StartNonSyncSampling_Test)

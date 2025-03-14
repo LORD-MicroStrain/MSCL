@@ -4,11 +4,9 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "mscl/MicroStrain/Wireless/Commands/Erase.h"
-#include "mscl/MicroStrain/ResponseCollector.h"
 #include "mscl/MicroStrain/DataBuffer.h"
-
-#include <boost/test/unit_test.hpp>
+#include "mscl/MicroStrain/ResponseCollector.h"
+#include "mscl/MicroStrain/Wireless/Commands/Erase.h"
 
 using namespace mscl;
 

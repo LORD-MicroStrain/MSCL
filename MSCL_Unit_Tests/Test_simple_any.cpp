@@ -5,9 +5,6 @@
 *****************************************************************************************/
 
 #include "mscl/simple_any.h"
-#include <cstdint>
-
-#include <boost/test/unit_test.hpp>
 
 struct dynamic_type
 {

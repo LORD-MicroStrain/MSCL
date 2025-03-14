@@ -4,13 +4,12 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "mscl/MicroStrain/MIP/MipNodeFeatures.h"
 #include "mscl/MicroStrain/Inertial/InertialNode.h"
+#include "mscl/MicroStrain/MIP/MipNodeFeatures.h"
 
-#include <boost/test/unit_test.hpp>
 #include "mock_InertialNode.h"
-using namespace mscl;
 
+using namespace mscl;
 
 BOOST_AUTO_TEST_SUITE(InertialNodeInfo_Test)
 

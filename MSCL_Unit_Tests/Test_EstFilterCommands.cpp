@@ -5,12 +5,11 @@
 *****************************************************************************************/
 
 #include "mscl/MicroStrain/Inertial/Commands/EstFilter_Commands.h"
-#include "mscl/MicroStrain/MIP/MipDataField.h"
-#include "mscl/MicroStrain/ResponseCollector.h"
 #include "mscl/MicroStrain/Inertial/EulerAngles.h"
 #include "mscl/MicroStrain/Inertial/PositionVelocity.h"
+#include "mscl/MicroStrain/MIP/MipDataField.h"
+#include "mscl/MicroStrain/ResponseCollector.h"
 
-#include <boost/test/unit_test.hpp>
 using namespace mscl;
 
 BOOST_AUTO_TEST_SUITE(EstFilterCommands_Test)

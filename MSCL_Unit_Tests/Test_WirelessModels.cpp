@@ -5,9 +5,6 @@
 *****************************************************************************************/
 
 #include "mscl/MicroStrain/Wireless/WirelessModels.h"
-#include "mscl/Exceptions.h"
-
-#include <boost/test/unit_test.hpp>
 
 using namespace mscl;
 

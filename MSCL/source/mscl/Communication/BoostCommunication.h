@@ -15,7 +15,7 @@ namespace mscl
     {
         //generalized template function for writing to a IO_Object
         template <typename IO_Object>
-        inline void writeAll(IO_Object& obj, const std::vector<uint8>& data)
+        void writeAll(IO_Object& obj, const std::vector<uint8>& data)
         {
             boost::asio::write(
                 obj,                                        //the ioObject (serial port, tcp socket, websocket)
@@ -46,7 +46,6 @@ namespace mscl
     template <typename IO_Object>
     class BoostCommunication
     {
-    private:
         static const int ERROR_CODE_CONNECTION_RESET = 10054;
         static const int ERROR_CODE_IO_ABORTED = 995;
         static const int ERROR_CODE_DEVICE_NOT_RECOGNIZED = 22;
@@ -69,7 +68,6 @@ namespace mscl
         BoostCommunication(const BoostCommunication&) = delete;               //copy constructor disabled
         BoostCommunication& operator=(const BoostCommunication&) = delete;    //assignment operator disabled
 
-    private:
         //Variable: m_ioObject
         //    Boost io_object used to communicate (serial_port, ip::tcp::socket, etc.)
         std::unique_ptr<IO_Object> m_ioObject;

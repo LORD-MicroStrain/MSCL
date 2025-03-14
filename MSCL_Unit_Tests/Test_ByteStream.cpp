@@ -4,12 +4,7 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "mscl/Types.h"
 #include "mscl/MicroStrain/ByteStream.h"
-#include "mscl/Exceptions.h"
-
-#include <boost/test/unit_test.hpp>
-#include <turtle/mock.hpp>
 
 using namespace mscl;
 

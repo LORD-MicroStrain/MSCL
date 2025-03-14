@@ -6,11 +6,10 @@
 
 #pragma once
 
-#include <turtle/mock.hpp>
-#include <memory>
-#include "mscl/MicroStrain/Wireless/WirelessNode_Impl.h"
-#include "mscl/MicroStrain/Wireless/Features/NodeFeatures.h"
 #include "mscl/MicroStrain/Wireless/Configuration/NodeEepromMap.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures.h"
+#include "mscl/MicroStrain/Wireless/WirelessNode_Impl.h"
+
 #include "mock_BaseStation.h"
 
 using namespace mscl;
@@ -113,7 +112,7 @@ static void expectNodeFeatures(std::unique_ptr<NodeFeatures>& features, std::sha
 
     features = NodeFeatures::create(info);
 
-    MOCK_EXPECT(impl->features).returns(std::ref(*(features.get())));
+    MOCK_EXPECT(impl->features).returns(std::ref(*features.get()));
 }
 
 static void expectNodeFeatures_fw10(std::unique_ptr<NodeFeatures>& features, std::shared_ptr<mock_WirelessNodeImpl> impl, WirelessModels::NodeModel model = WirelessModels::node_gLink_2g)
@@ -122,7 +121,7 @@ static void expectNodeFeatures_fw10(std::unique_ptr<NodeFeatures>& features, std
 
     features = NodeFeatures::create(info);
 
-    MOCK_EXPECT(impl->features).returns(std::ref(*(features.get())));
+    MOCK_EXPECT(impl->features).returns(std::ref(*features.get()));
 }
 
 static void expectResetRadio(std::shared_ptr<mock_WirelessNodeImpl> impl)

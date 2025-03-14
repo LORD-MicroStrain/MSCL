@@ -6,9 +6,6 @@
 
 #include "mscl/MicroStrain/DataBuffer.h"
 
-#include <boost/test/unit_test.hpp>
-#include <turtle/mock.hpp>
-
 using namespace mscl;
 
 BOOST_AUTO_TEST_SUITE(DataBuffer_Test)

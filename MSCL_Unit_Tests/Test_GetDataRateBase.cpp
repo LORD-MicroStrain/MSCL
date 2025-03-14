@@ -4,14 +4,11 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
+#include "mscl/MicroStrain/Inertial/Commands/EstFilter_Commands.h"
+#include "mscl/MicroStrain/Inertial/Commands/GNSS_Commands.h"
+#include "mscl/MicroStrain/Inertial/Commands/Sensor_Commands.h"
 #include "mscl/MicroStrain/MIP/MipDataField.h"
 #include "mscl/MicroStrain/ResponseCollector.h"
-#include "mscl/MicroStrain/Inertial/Commands/Sensor_Commands.h"
-#include "mscl/MicroStrain/Inertial/Commands/GNSS_Commands.h"
-#include "mscl/MicroStrain/Inertial/Commands/EstFilter_Commands.h"
-#include "mscl/Exceptions.h"
-
-#include <boost/test/unit_test.hpp>
 
 using namespace std;
 using namespace mscl;

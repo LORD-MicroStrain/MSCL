@@ -4,10 +4,8 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "mscl/MicroStrain/Matrix.h"
 #include "mscl/MicroStrain/ByteStream.h"
-
-#include <boost/test/unit_test.hpp>
+#include "mscl/MicroStrain/Matrix.h"
 
 using namespace mscl;
 

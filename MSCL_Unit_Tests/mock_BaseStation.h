@@ -6,15 +6,13 @@
 
 #pragma once
 
-#include <memory>
-#include "mscl/MicroStrain/Wireless/BaseStation_Impl.h"
 #include "mscl/MicroStrain/Wireless/BaseStationInfo.h"
-#include "mscl/MicroStrain/Wireless/Features/BaseStationFeatures.h"
+#include "mscl/MicroStrain/Wireless/BaseStation_Impl.h"
 #include "mscl/MicroStrain/Wireless/Configuration/BaseStationEepromMap.h"
-#include "mscl/Timestamp.h"
+#include "mscl/MicroStrain/Wireless/Features/BaseStationFeatures.h"
 
-#include <turtle/mock.hpp>
 #include "mock_Connection.h"
+
 using namespace mscl;
 
 //declare a 'mock_baseStation class implementing the 'mockBaseStation' class
@@ -25,7 +23,7 @@ MOCK_BASE_CLASS(mock_baseStationImpl, BaseStation_Impl)
     {
     }
 
-    mock_baseStationImpl(mscl::Connection c):
+    mock_baseStationImpl(Connection c):
         BaseStation_Impl(c, 10)
     {
     }
@@ -89,5 +87,5 @@ static void expectBaseFeatures(std::unique_ptr<BaseStationFeatures>& features, s
 
     features = BaseStationFeatures::create(info);
 
-    MOCK_EXPECT(impl->features).returns(std::ref(*(features.get())));
+    MOCK_EXPECT(impl->features).returns(std::ref(*features.get()));
 }

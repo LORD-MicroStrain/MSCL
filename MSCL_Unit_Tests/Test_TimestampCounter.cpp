@@ -6,8 +6,6 @@
 
 #include "mscl/TimestampCounter.h"
 
-#include <boost/test/unit_test.hpp>
-
 using namespace mscl;
 
 BOOST_AUTO_TEST_SUITE(TimestampCounter_Test)

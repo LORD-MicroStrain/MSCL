@@ -4,15 +4,12 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
+#include "mscl/MicroStrain/ChecksumBuilder.h"
+#include "mscl/MicroStrain/DataBuffer.h"
+#include "mscl/MicroStrain/ResponseCollector.h"
 #include "mscl/MicroStrain/Wireless/Commands/BaseStation_ReadEeprom.h"
 #include "mscl/MicroStrain/Wireless/Commands/BaseStation_ReadEeprom_v2.h"
 #include "mscl/Utils.h"
-#include "mscl/MicroStrain/ChecksumBuilder.h"
-#include "mscl/MicroStrain/ResponseCollector.h"
-#include "mscl/MicroStrain/DataBuffer.h"
-#include "mscl/Exceptions.h"
-
-#include <boost/test/unit_test.hpp>
 
 using namespace mscl;
 

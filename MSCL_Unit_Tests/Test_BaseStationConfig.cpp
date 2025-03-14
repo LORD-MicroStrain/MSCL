@@ -4,14 +4,13 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
+#include "mscl/MicroStrain/Wireless/BaseStation.h"
 #include "mscl/MicroStrain/Wireless/Configuration/BaseStationConfig.h"
 #include "mscl/MicroStrain/Wireless/Configuration/BaseStationEepromMap.h"
 #include "mscl/MicroStrain/Wireless/WirelessTypes.h"
-#include "mscl/MicroStrain/Wireless/BaseStation.h"
-#include "mscl/Exceptions.h"
 
-#include <boost/test/unit_test.hpp>
 #include "mock_BaseStation.h"
+
 using namespace mscl;
 
 BOOST_AUTO_TEST_SUITE(BaseStationConfig_Test)
@@ -59,9 +58,9 @@ BOOST_AUTO_TEST_CASE(BaseStationConfig_setSingleValue)
     c.transmitPower(WirelessTypes::power_10dBm);
 
     //expect the single eeprom write
-    expectWrite(impl, BaseStationEepromMap::TX_POWER_LEVEL, Value(valueType_int16, (int16)WirelessTypes::power_10dBm));
-    expectRead(impl, BaseStationEepromMap::COMM_PROTOCOL, Value(valueType_uint16, (uint16)WirelessTypes::commProtocol_lxrs));
-    expectRead(impl, BaseStationEepromMap::FIRMWARE_VER, Value(valueType_uint16, (uint16)10));
+    expectWrite(impl, BaseStationEepromMap::TX_POWER_LEVEL, Value(valueType_int16, static_cast<int16>(WirelessTypes::power_10dBm)));
+    expectRead(impl, BaseStationEepromMap::COMM_PROTOCOL, Value(valueType_uint16, static_cast<uint16>(WirelessTypes::commProtocol_lxrs)));
+    expectRead(impl, BaseStationEepromMap::FIRMWARE_VER, Value(valueType_uint16, static_cast<uint16>(10)));
     expectResetRadio(impl);
 
     BOOST_CHECK_NO_THROW(b.applyConfig(c));
@@ -209,16 +208,16 @@ BOOST_AUTO_TEST_CASE(BaseStationConfig_legacyTransmitPower)
     Version asppVer_lxrsPlus(3, 0);
     BaseStationInfo info(Version(3, 2), WirelessModels::base_wsdaBase_104_usb, WirelessTypes::region_usa, asppVer_lxrs, asppVer_lxrsPlus);
     features = BaseStationFeatures::create(info);
-    MOCK_EXPECT(impl->features).returns(std::ref(*(features.get())));
+    MOCK_EXPECT(impl->features).returns(std::ref(*features.get()));
 
     BaseStationConfig c;
     c.transmitPower(WirelessTypes::power_10dBm);
 
     //expect the single eeprom write
-    expectWrite(impl, BaseStationEepromMap::TX_POWER_LEVEL, Value(valueType_int16, (int16)WirelessTypes::legacyPower_10dBm));
-    expectRead(impl, BaseStationEepromMap::ASPP_VER_LXRS, Value::UINT16((0)));
-    expectRead(impl, BaseStationEepromMap::FIRMWARE_VER, Value::UINT16((uint16)(3)));
-    expectRead(impl, BaseStationEepromMap::FIRMWARE_VER2, Value::UINT16((uint16)(2)));
+    expectWrite(impl, BaseStationEepromMap::TX_POWER_LEVEL, Value(valueType_int16, static_cast<int16>(WirelessTypes::legacyPower_10dBm)));
+    expectRead(impl, BaseStationEepromMap::ASPP_VER_LXRS, Value::UINT16(0));
+    expectRead(impl, BaseStationEepromMap::FIRMWARE_VER, Value::UINT16(static_cast<uint16>(3)));
+    expectRead(impl, BaseStationEepromMap::FIRMWARE_VER2, Value::UINT16(static_cast<uint16>(2)));
     expectCyclePower(impl);
 
     BOOST_CHECK_NO_THROW(b.applyConfig(c));

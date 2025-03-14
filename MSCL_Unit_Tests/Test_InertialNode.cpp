@@ -5,19 +5,16 @@
 *****************************************************************************************/
 
 #include "mscl/Communication/SerialConnection.h"
-#include "mscl/MicroStrain/Inertial/InertialNode.h"
-#include "mscl/MicroStrain/Displacement/DisplacementModels.h"
-#include "mscl/MicroStrain/MIP/MipNodeFeatures.h"
-#include "mscl/MicroStrain/MIP/Packets/MipDataPacket.h"
 #include "mscl/MicroStrain/ByteStream.h"
 #include "mscl/MicroStrain/ChecksumBuilder.h"
+#include "mscl/MicroStrain/Displacement/DisplacementModels.h"
+#include "mscl/MicroStrain/Inertial/InertialNode.h"
+#include "mscl/MicroStrain/MIP/MipNodeFeatures.h"
+#include "mscl/MicroStrain/MIP/Packets/MipDataPacket.h"
 #include "mscl/Utils.h"
 
-#include <boost/test/unit_test.hpp>
-#include "mock_InertialNode.h"
 #include "mock_Connection.h"
-
-#include <string>
+#include "mock_InertialNode.h"
 
 using namespace mscl;
 

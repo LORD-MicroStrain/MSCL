@@ -6,12 +6,11 @@
 
 #include "mscl/MicroStrain/Wireless/Configuration/DataModeMask.h"
 #include "mscl/MicroStrain/Wireless/Configuration/WirelessNodeConfig.h"
-#include "mscl/MicroStrain/Wireless/WirelessTypes.h"
 #include "mscl/MicroStrain/Wireless/WirelessNode.h"
-#include "mscl/Exceptions.h"
+#include "mscl/MicroStrain/Wireless/WirelessTypes.h"
 
-#include <boost/test/unit_test.hpp>
 #include "mock_WirelessNode.h"
+
 using namespace mscl;
 
 BOOST_AUTO_TEST_SUITE(WirelessNodeConfig_Test)
