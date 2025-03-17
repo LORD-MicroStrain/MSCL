@@ -24,7 +24,7 @@ namespace mscl
     //Exceptions:
     //    - <Error_InvalidSerialPort>: the specified com port is invalid
     //    - <Error_Connection>: failed to get or set com port parameters
-    boost::asio::serial_port::native_handle_type getNativeSerialPort(const std::string& portName)
+    inline boost::asio::serial_port::native_handle_type getNativeSerialPort(const std::string& portName)
     {
         // For convenience, add a leading \\.\ sequence if not already present.
         std::string name = (portName[0] == '\\') ? portName : "\\\\.\\" + portName;
