@@ -142,23 +142,7 @@ if(POLICY CMP0167)
 endif()
 
 # Use the old FindBoost module to find the Boost directory
-find_package(Boost ${Boost_REQUESTED_VERSION} COMPONENTS ${Boost_REQUESTED_COMPONENTS})
-
-if(NOT Boost_FOUND)
-    message(FATAL_ERROR "Could NOT find Boost")
-endif()
-
-if(${Boost_VERSION} VERSION_GREATER_EQUAL 1.70.0)
-    if(POLICY CMP0167)
-        cmake_policy(SET CMP0167 NEW)
-    endif()
-
-    if(WIN32)
-        list(APPEND CMAKE_PREFIX_PATH "${Boost_LIBRARY_DIRS}/cmake")
-    endif()
-
-    find_package(Boost ${Boost_VERSION} REQUIRED COMPONENTS ${Boost_REQUESTED_COMPONENTS} CONFIG)
-endif()
+find_package(Boost ${Boost_REQUESTED_VERSION} REQUIRED COMPONENTS ${Boost_REQUESTED_COMPONENTS})
 
 set(Boost_STATIC_LIBRARIES ${Boost_LIBRARIES})
 
@@ -167,11 +151,7 @@ if(BUILD_SHARED_LIBS OR (UNIX AND MSCL_BUILD_PYTHON3) OR (UNIX AND MSCL_BUILD_PY
     set(Boost_USE_STATIC_LIBS OFF)
     set(Boost_USE_STATIC_RUNTIME OFF)
 
-    if(${Boost_VERSION} VERSION_LESS 1.70.0)
-        find_package(Boost ${Boost_VERSION} REQUIRED COMPONENTS "${Boost_REQUESTED_COMPONENTS}")
-    else()
-        find_package(Boost ${Boost_VERSION} REQUIRED COMPONENTS ${Boost_REQUESTED_COMPONENTS} CONFIG)
-    endif()
+    find_package(Boost ${Boost_REQUESTED_VERSION} REQUIRED COMPONENTS ${Boost_REQUESTED_COMPONENTS})
 
     set(Boost_SHARED_LIBRARIES ${Boost_LIBRARIES}) # Save the shared libraries, so they will not be overridden when we find the static libraries
 endif()

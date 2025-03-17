@@ -83,23 +83,7 @@ if(POLICY CMP0167)
 endif()
 
 # Use the old FindBoost module to find the Boost directory
-find_package(Boost ${Boost_REQUESTED_VERSION} COMPONENTS ${Boost_REQUESTED_COMPONENTS})
-
-if(NOT Boost_FOUND)
-    message(FATAL_ERROR "Could NOT find Boost")
-endif()
-
-if(${Boost_VERSION} VERSION_GREATER_EQUAL 1.70.0)
-    if(POLICY CMP0167)
-        cmake_policy(SET CMP0167 NEW)
-    endif()
-
-    if(WIN32)
-        list(APPEND CMAKE_PREFIX_PATH "${Boost_LIBRARY_DIRS}/cmake")
-    endif()
-
-    find_package(Boost ${Boost_VERSION} REQUIRED COMPONENTS ${Boost_REQUESTED_COMPONENTS} CONFIG)
-endif()
+find_package(Boost ${Boost_REQUESTED_VERSION} REQUIRED COMPONENTS ${Boost_REQUESTED_COMPONENTS})
 
 # We also need to find OpenSSL
 set(OPENSSL_USE_STATIC_LIBS TRUE)

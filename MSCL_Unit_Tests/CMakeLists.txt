@@ -35,17 +35,7 @@ if(POLICY CMP0167)
 endif()
 
 # Use the old FindBoost module to find the Boost directory
-find_package(Boost ${Boost_REQUESTED_VERSION} COMPONENTS ${Boost_TEST_REQUESTED_COMPONENTS})
-
-if(NOT Boost_FOUND)
-    message(FATAL_ERROR "Could NOT find Boost")
-endif()
-
-if(${Boost_VERSION} VERSION_LESS 1.70.0)
-    find_package(Boost ${Boost_VERSION} REQUIRED COMPONENTS ${Boost_TEST_REQUESTED_COMPONENTS})
-else()
-    find_package(Boost ${Boost_VERSION} REQUIRED COMPONENTS ${Boost_TEST_REQUESTED_COMPONENTS} CONFIG)
-endif()
+find_package(Boost ${Boost_REQUESTED_VERSION} REQUIRED COMPONENTS ${Boost_TEST_REQUESTED_COMPONENTS})
 
 target_include_directories(${PROJECT_NAME} PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}
