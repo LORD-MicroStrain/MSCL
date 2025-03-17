@@ -97,13 +97,13 @@ namespace mscl
     }
 #endif // MSCL_DISABLE_WEBSOCKETS
 
-#ifdef UNIX_BUILD
+#ifdef __linux__
     Connection Connection::UnixSocket(const std::string& path)
     {
         std::shared_ptr<Connection_Impl_Base> socket(new UnixSocketConnection(path));
         return Connection(socket);
     }
-#endif
+#endif // __linux__
 
     Connection Connection::Mock()
     {

@@ -98,9 +98,9 @@
 #include "../Communication/Devices.h"
 #include "../Communication/ConnectionDebugData.h"
 #include "../Communication/Connection.h"
-#ifndef UNIX_BUILD
+#ifdef _WIN32
 #include "../Communication/WsdaFinder.h"
-#endif
+#endif // _WIN32
 #include "../MicroStrain/SampleRate.h"
 #include "../MicroStrain/DataPoint.h"
 #include "../MicroStrain/Matrix.h"
@@ -189,9 +189,9 @@
 %include "../Communication/Devices.h"
 %include "../Communication/ConnectionDebugData.h"
 %include "../Communication/Connection.h"
-#ifndef UNIX_BUILD
-    %include "../Communication/WsdaFinder.h"
-#endif
+#ifdef _WIN32
+%include "../Communication/WsdaFinder.h"
+#endif // _WIN32
 %include "../MicroStrain/Wireless/WirelessTypes.h"
 %include "../MicroStrain/SampleRate.h"
 %include "../MicroStrain/Matrix.h"
@@ -344,9 +344,9 @@ namespace std
     %template(MeasurementReferenceFrames)       map<uint8_t, mscl::MeasurementReferenceFrame>;
 
 
-#ifndef UNIX_BUILD
+#ifdef _WIN32
     %template(WsdaMap)                  map<string, mscl::WsdaInfo>;
-#endif
+#endif // _WIN32
 
     %ignore vector<mscl::Bin>::vector(size_type);   //no default constructor
     %ignore vector<mscl::Bin>::resize;              //no default constructor

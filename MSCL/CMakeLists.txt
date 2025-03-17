@@ -40,10 +40,6 @@ if(NOT MSCL_WITH_WEBSOCKETS)
     list(APPEND LIB_DEFINES MSCL_DISABLE_WEBSOCKETS)
 endif()
 
-if(UNIX)
-    list(APPEND LIB_DEFINES UNIX_BUILD)
-endif()
-
 # Add some include directories
 set(LIB_INCLUDE_DIRS
     ${MSCL_SOURCE_DIR}

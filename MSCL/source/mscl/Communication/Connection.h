@@ -117,7 +117,7 @@ namespace mscl
         static Connection WebSocket(const std::string& host, uint16 port);
 #endif
 
-#ifdef UNIX_BUILD
+#ifdef __linux__
         //API Function: UnixSocket
         //    A generator function for <Connection> objects with a <UnixSocketConnection> implementation (Unix builds only).
         //    A connection with the specified path will be established.
@@ -131,7 +131,7 @@ namespace mscl
         //Exceptions:
         //    - <Error_InvalidUnixSocket>: failed to connect to the specified unix socket path.
         static Connection UnixSocket(const std::string& path);
-#endif
+#endif // __linux__
 
         static Connection Mock();
 

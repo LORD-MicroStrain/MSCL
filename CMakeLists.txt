@@ -10,7 +10,8 @@ set(CMAKE_CONFIGURATION_TYPES "Release;Debug" CACHE STRING "Supported configurat
 list(APPEND CMAKE_PREFIX_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 # Set some global C++ options
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # If a build type was not specified, default to debug
 if(NOT CMAKE_BUILD_TYPE)

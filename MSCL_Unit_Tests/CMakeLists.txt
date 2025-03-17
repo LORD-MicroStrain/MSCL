@@ -1,4 +1,8 @@
+cmake_minimum_required(VERSION 3.16.0)
 project(MSCL_Unit_Tests)
+
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Tests should just consist of compiling all source in this directory and linking against MSCL
 file(GLOB SRC_FILES
