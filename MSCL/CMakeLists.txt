@@ -89,7 +89,7 @@ set_target_properties(${LIB_NAME_STATIC}
 )
 
 # Configure some precompiled headers
-target_precompile_headers(${LIB_NAME_STATIC} PUBLIC "${MSCL_PCH_FILE}")
+target_precompile_headers(${LIB_NAME_STATIC} PRIVATE "${MSCL_PCH_FILE}")
 
 # In order to copy the headers, create a cmake script that will do the copying
 set(MSCL_STATIC_HEADER_CP_SCRIPT ${CMAKE_BINARY_DIR}/${LIB_NAME_STATIC}_$<CONFIG>_header_cp.cmake)
@@ -151,7 +151,7 @@ if(BUILD_SHARED_LIBS)
     )
 
     # Configure some precompiled headers
-    target_precompile_headers(${LIB_NAME_SHARED} PUBLIC "${MSCL_PCH_FILE}")
+    target_precompile_headers(${LIB_NAME_SHARED} PRIVATE "${MSCL_PCH_FILE}")
 
     # In order to copy the headers, create a cmake script that will do the copying
     set(MSCL_SHARED_HEADER_CP_SCRIPT ${CMAKE_BINARY_DIR}/${LIB_NAME_SHARED}_$<CONFIG>_header_cp.cmake)
@@ -321,15 +321,34 @@ if(MSCL_BUILD_PYTHON2 OR MSCL_BUILD_PYTHON3 OR MSCL_BUILD_CSHARP)
         # Hack of all hacks, but we need to generate the source separately so we can determine the source files at configure time
         set(CSHARP_MODULE_DIR ${CMAKE_CURRENT_BINARY_DIR}/${CSHARP_MODULE_NAME})
         set(CSHARP_MODULE_CPP_FILE ${CSHARP_MODULE_DIR}/MSCL_Main_InterfaceCSHARP_wrap.cxx)
+
+        # Always clean old generated files
+        if(EXISTS ${CSHARP_MODULE_DIR})
+            file(REMOVE_RECURSE ${CSHARP_MODULE_DIR})
+        endif()
         file(MAKE_DIRECTORY ${CSHARP_MODULE_DIR})
+
         message(STATUS "Generating CSharp binding source")
         execute_process(
             COMMAND ${CMAKE_COMMAND} -E env SWIG_LIB=${SWIG_DIR} "${SWIG_EXECUTABLE}" -csharp -namespace mscl -outdir "${CSHARP_MODULE_DIR}" -c++ -dllimport MSCL -o "${CSHARP_MODULE_CPP_FILE}" "${SWIG_SOURCE_FILES}"
             COMMAND_ERROR_IS_FATAL ANY
         )
+
         file(GLOB MSCL_GENERATED_CSHARP_SOURCE
             ${CSHARP_MODULE_DIR}/*.cs
         )
+
+        # Filter out incorrect file generation to make it simple to spot issues
+        foreach(MSCL_GENERATED_CSHARP_FILE IN LISTS MSCL_GENERATED_CSHARP_SOURCE)
+            get_filename_component(CSHARP_FILENAME "${MSCL_GENERATED_CSHARP_FILE}" NAME)
+            if("${CSHARP_FILENAME}" MATCHES "^SWIGTYPE_p*")
+                string(APPEND CSHARP_INCORRECT_FILENAMES "\n${CSHARP_FILENAME}")
+            endif()
+        endforeach()
+
+        if(CSHARP_INCORRECT_FILENAMES)
+            message(FATAL_ERROR "Incorrect CSharp filename generation(s) found ${CSHARP_INCORRECT_FILENAMES}")
+        endif()
 
         # Build the C++ wrapper
         add_library(${CSHARP_MODULE_NAME} SHARED ${CSHARP_MODULE_CPP_FILE})

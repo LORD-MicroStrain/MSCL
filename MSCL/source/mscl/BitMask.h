@@ -6,6 +6,8 @@
 
 #pragma once
 
+#include "mscl/Types.h"
+
 namespace mscl
 {
     //API Class: BitMask

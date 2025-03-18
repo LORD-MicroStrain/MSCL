@@ -8,6 +8,10 @@
 
 #include "mscl/simple_any.h"
 
+#include <mutex>
+#include <sstream>
+#include <vector>
+
 namespace mscl
 {
     //API Title: Types
