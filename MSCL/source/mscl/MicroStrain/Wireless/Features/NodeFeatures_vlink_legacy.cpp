@@ -4,14 +4,14 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "NodeFeatures_vlink_legacy.h"
-#include "AvailableSampleRates.h"
-#include "mscl/MicroStrain/Wireless/ChannelMask.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures_vlink_legacy.h"
+
 #include "mscl/MicroStrain/Wireless/Configuration/NodeEepromMap.h"
+#include "mscl/MicroStrain/Wireless/Features/AvailableSampleRates.h"
 
 namespace mscl
 {
-    NodeFeatures_vlink_legacy::NodeFeatures_vlink_legacy(const NodeInfo& info):
+    NodeFeatures_vlink_legacy::NodeFeatures_vlink_legacy(const NodeInfo& info) :
         NodeFeatures(info)
     {
         //Channels

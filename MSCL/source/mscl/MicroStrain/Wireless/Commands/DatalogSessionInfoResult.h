@@ -12,7 +12,6 @@ namespace mscl
     //  Object to represent the result of a DatalogSessionInfo request.
     struct DatalogSessionInfoResult
     {
-    public:
         //Variable: sessionCount
         //  The total number of sessions logged on the Node.
         uint16 sessionCount;

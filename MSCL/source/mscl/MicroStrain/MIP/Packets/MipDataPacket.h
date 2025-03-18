@@ -69,7 +69,6 @@ namespace mscl
         //  The flags value that the device timestamp was transmitted with.
         uint16 m_deviceTimeFlags;
 
-    private:
         //Function: parseDataFields
         //    Parses the passed in MipPacket for all the field information and adds a data field to the <MipDataFields> container
         //    Also parses out all the <MipDataPoints> in the fields that were created and adds them to m_points

@@ -42,7 +42,6 @@ namespace mscl
 
         static std::string WstringToString(const std::wstring& in);
 
-    private:
         long m_refCount;
         std::function<void()> m_searchCompleteCallback;
         std::function<void(const UpnpDevice&)> m_deviceAddedCallback;

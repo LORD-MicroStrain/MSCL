@@ -58,7 +58,7 @@ namespace mscl
             byteCommand.append_float(m_gyroBiasVector.y());
             byteCommand.append_float(m_gyroBiasVector.z());
         }
-        return GenericMipCommand::buildCommand(commandType(), byteCommand.data()); ;
+        return GenericMipCommand::buildCommand(commandType(), byteCommand.data());
     }
 
 }

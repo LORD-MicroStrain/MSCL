@@ -37,7 +37,6 @@ namespace mscl
             rateType_decimation   = 3
         };
 
-    public:
         //API Default Constructor: SampleRate
         //    Creates a default sample rate of 1 Hz
         SampleRate();
@@ -50,7 +49,6 @@ namespace mscl
         //    samples - The number of samples in the given sample rate (or seconds if the type is rateType_seconds)
         SampleRate(RateType type, uint32 samples);
 
-    public:
 #ifndef SWIG
         bool operator == (const SampleRate& other) const;
         bool operator != (const SampleRate& other) const;
@@ -132,7 +130,6 @@ namespace mscl
         //    The decimation of the current SampleRate
         uint16 toDecimation(uint16 sampleRateBase) const;
 
-    public:
         //API Function: Hertz
         //    Creates a SampleRate object from the given samples per second
         //

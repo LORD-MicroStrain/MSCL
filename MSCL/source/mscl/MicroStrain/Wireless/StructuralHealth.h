@@ -22,7 +22,7 @@ namespace mscl
         //Parameters:
         //    angle - The actual angle that is being measured.
         //    uptime - The uptime counter of how long the device has been running.
-        //    damage - The percent of damage that has occurred. (0% = no damage, 100% = dead)
+        //    damage - The percentage of damage that has occurred. (0% = no damage, 100% = dead)
         //    processingRate - The processing rate used in calculating the Histogram.
         //    histogram - The <Histogram> that was calculated for the given angle.
         StructuralHealth(float angle, uint32 uptime, float damage, const SampleRate& processingRate, const Histogram& histogram);
@@ -37,7 +37,7 @@ namespace mscl
         uint32 m_uptime;
 
         //Variable: m_damage
-        //    The percent of damage that has occurred. (0% = no damage, 100% = dead)
+        //    The percentage of damage that has occurred. (0% = no damage, 100% = dead)
         float m_damage;
 
         //Variable: m_processingRate
@@ -64,10 +64,10 @@ namespace mscl
         uint32 uptime() const;
 
         //API Function: damage
-        //    Gets the percent of damage that has occurred. (0% = no damage, 100% = dead)
+        //    Gets the percentage of damage that has occurred. (0% = no damage, 100% = dead)
         //
         //Returns:
-        //    The percent of damage that has occured. (0% = no damage, 100% = dead)
+        //    The percentage of damage that has occurred. (0% = no damage, 100% = dead)
         float damage() const;
 
         //API Function: processingRate

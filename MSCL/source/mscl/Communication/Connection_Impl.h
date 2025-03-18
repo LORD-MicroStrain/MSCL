@@ -16,12 +16,12 @@ namespace mscl
     class Connection_Impl_Base
     {
     protected:
-        Connection_Impl_Base() {};    //protected default constructor
+        Connection_Impl_Base() {}    //protected default constructor
 
     public:
         //Destructor: ~Connection_Impl_Base
         //    Destroys the Connection_Impl_Base object
-        virtual ~Connection_Impl_Base() {};
+        virtual ~Connection_Impl_Base() = default;
 
         Connection_Impl_Base(const Connection_Impl_Base&) = delete;                 //copy constructor disabled
         Connection_Impl_Base& operator=(const Connection_Impl_Base&) = delete;      //assignment operator disabled
@@ -177,7 +177,7 @@ namespace mscl
         //
         //Exceptions:
         //  - <Error_Connection>: a connection error has occurred, such as the device being unplugged.
-        virtual void updateBaudRate(uint32 baudRate) {};
+        virtual void updateBaudRate(uint32 baudRate) {}
     };
 
     //Class: Connection_Impl
@@ -297,15 +297,15 @@ namespace mscl
 
         //Function: type
         //  Gets the <Connection::ConnectionType>.
-        virtual Connection::ConnectionType type() override;
+        Connection::ConnectionType type() override;
 
         //Function: disconnect
         //    Closes the current connection.
-        virtual void disconnect() override;
+        void disconnect() override;
 
         //Function: reconnect
         //    Reopens a connection that has been disconnected.
-        virtual void reconnect() override;
+        void reconnect() override;
 
         //Function: registerParser
         //    Registers a function to handle the parsing of data when it is read in.
@@ -315,18 +315,18 @@ namespace mscl
         //
         //Exceptions:
         //    - <Error>: a data parsing function has already been registered.
-        virtual void registerParser(std::function<void(DataBuffer&)> parseFunction) final;
+        void registerParser(std::function<void(DataBuffer&)> parseFunction) final;
 
         //Function: unregisterParser
         //    Unregisters the function to handle the parsing of data when it is read in.
-        virtual void unregisterParser() final;
+        void unregisterParser() final;
 
         //Function: throwIfError
         //    Throws an exception if a connection error has occurred.
         //
         //Exceptions:
         //    - <Error_Connection>: a connection error has occurred.
-        virtual void throwIfError() final;
+        void throwIfError() final;
 
         //Function: write
         //    Writes bytes to the port via the BoostCommunication object.
@@ -336,7 +336,7 @@ namespace mscl
         //
         //Exceptions:
         //    - <Error_Connection>: a connection error has occurred, such as the device being unplugged.
-        virtual void write(const ByteStream& data) const final;
+        void write(const ByteStream& data) const final;
 
         //Function: write
         //    Writes the given bytes to the port via the BoostCommunication object.
@@ -346,19 +346,19 @@ namespace mscl
         //
         //Exceptions:
         //    - <Error_Connection>: a connection error has occurred, such as the device being unplugged.
-        virtual void write(const Bytes& bytes) const final;
+        void write(const Bytes& bytes) const final;
 
         //Function: clearBuffer
         //    Clears the read buffer.
-        virtual void clearBuffer() final;
+        void clearBuffer() final;
 
         //Function: byteReadPos
         //    Gets the read position from the byte buffer.
-        virtual std::size_t byteReadPos() const final;
+        std::size_t byteReadPos() const final;
 
         //Function: byteAppendPos
         //    Gets the append position from the byte buffer.
-        virtual std::size_t byteAppendPos() const final;
+        std::size_t byteAppendPos() const final;
 
         //Function: startIoThread
         //    Starts the main thread for reading in all the data and handling write commands
@@ -379,11 +379,11 @@ namespace mscl
         //
         //Exceptions:
         //    - <Error_Connection>: The connection has been disconnected.
-        virtual void rawByteMode(bool enable) final;
+        void rawByteMode(bool enable) final;
 
         //Function: rawByteMode
         //  Checks if raw byte mode is enabled (true) or disabled (false)
-        virtual bool rawByteMode() final;
+        bool rawByteMode() final;
 
         //Function: getRawBytes
         //    Gets all of the raw bytes that are available that have been collected when the Connection is in "Raw Byte Mode."
@@ -394,9 +394,9 @@ namespace mscl
         //    timeout - the timeout, in milliseconds, to wait for the data if necessary (default of 0).
         //    maxBytes - The maximum number of bytes to return. If this is 0 (default), all bytes will be returned.
         //    minBytes - The minimum number of bytes to parse before returning.
-        virtual void getRawBytes(Bytes& bytes, uint32 timeout = 0, uint32 maxBytes = 0, uint32 minBytes = 0) final;
+        void getRawBytes(Bytes& bytes, uint32 timeout = 0, uint32 maxBytes = 0, uint32 minBytes = 0) final;
 
-        virtual void getRawBytesWithPattern(Bytes& bytes, const uint8* pattern, size_t length, uint32 timeout = 0) final;
+        void getRawBytesWithPattern(Bytes& bytes, const uint8* pattern, size_t length, uint32 timeout = 0) final;
 
         //Function: debugMode
         //  Puts the connection into "Debug Mode."
@@ -409,11 +409,11 @@ namespace mscl
         //
         //Exceptions:
         //  - <Error_Connection>: The connection has been disconnected.
-        virtual void debugMode(bool enable) final;
+        void debugMode(bool enable) final;
 
         //Function: debugMode
         //  Checks if debug mode is enabled (true) or disabled (false)
-        virtual bool debugMode() final;
+        bool debugMode() final;
 
         //Function: getDebugData
         //  Gets the <ConnectionDebugData> that have been collected when the Connection is in "Debug Mode."
@@ -427,7 +427,7 @@ namespace mscl
         //
         //Exceptions:
         //  - <Error_Connection>: a connection error has occurred, such as the device being unplugged.
-        virtual void getDebugData(ConnectionDebugDataVec& data, uint32 timeout) final;
+        void getDebugData(ConnectionDebugDataVec& data, uint32 timeout) final;
 
     private:
         //Function: collectRawData

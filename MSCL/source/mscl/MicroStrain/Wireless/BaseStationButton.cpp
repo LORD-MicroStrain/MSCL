@@ -4,17 +4,17 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "BaseStationButton.h"
+#include "mscl/MicroStrain/Wireless/BaseStationButton.h"
 
 namespace mscl
 {
-    BaseStationButton::BaseStationButton():
+    BaseStationButton::BaseStationButton() :
         m_command(btn_disabled),
         m_nodeAddress(0)
     {
     }
 
-    BaseStationButton::BaseStationButton(Command cmd, uint16 nodeAddress):
+    BaseStationButton::BaseStationButton(Command cmd, uint16 nodeAddress) :
         m_command(cmd),
         m_nodeAddress(nodeAddress)
     {

@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "NodeFeatures.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures.h"
 
 namespace mscl
 {
@@ -14,41 +14,39 @@ namespace mscl
     //    Contains information on features for the SHM-Link node. Inherits from <NodeFeatures>.
     class NodeFeatures_shmlink : public NodeFeatures
     {
-    private:
         NodeFeatures_shmlink();    //disabled default constructor
 
     public:
-        virtual ~NodeFeatures_shmlink(){};
+        ~NodeFeatures_shmlink() override = default;
 
         //Constructor: NodeFeatures_shmlink
         //    Creates a NodeFeatures_shmlink object.
         NodeFeatures_shmlink(const NodeInfo& info);
 
-    public:
-        virtual bool supportsFatigueConfig() const final;
+        bool supportsFatigueConfig() const final;
 
-        virtual bool supportsYoungsModConfig() const final;
+        bool supportsYoungsModConfig() const final;
 
-        virtual bool supportsPoissonsRatioConfig() const final;
+        bool supportsPoissonsRatioConfig() const final;
 
-        virtual bool supportsFatigueDebugModeConfig() const final;
+        bool supportsFatigueDebugModeConfig() const final;
 
-        virtual bool supportsHistogramConfig() const final;
+        bool supportsHistogramConfig() const final;
 
-        virtual bool supportsHistogramRateConfig() const final;
+        bool supportsHistogramRateConfig() const final;
 
-        virtual bool supportsHistogramEnableConfig() const final;
+        bool supportsHistogramEnableConfig() const final;
 
-        virtual bool supportsSensorDelayConfig() const final;
+        bool supportsSensorDelayConfig() const final;
 
-        virtual bool supportsSensorDelayAlwaysOn() const final;
+        bool supportsSensorDelayAlwaysOn() const final;
 
-        virtual uint8 numDamageAngles() const final;
+        uint8 numDamageAngles() const final;
 
-        virtual uint8 numSnCurveSegments() const final;
+        uint8 numSnCurveSegments() const final;
 
-        virtual const WirelessTypes::WirelessSampleRates histogramTransmitRates() const final;
+        const WirelessTypes::WirelessSampleRates histogramTransmitRates() const final;
 
-        virtual const WirelessTypes::FatigueModes fatigueModes() const final;
+        const WirelessTypes::FatigueModes fatigueModes() const final;
     };
 }

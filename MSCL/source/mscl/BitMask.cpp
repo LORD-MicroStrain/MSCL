@@ -8,13 +8,13 @@
 
 namespace mscl
 {
-    BitMask::BitMask(uint16 val):
+    BitMask::BitMask(uint16 val) :
         m_numBits(16)   //for now, this class always uses 16 bits
     {
         fromMask(val);
     }
 
-    BitMask::BitMask():
+    BitMask::BitMask() :
         m_numBits(16)   //for now, this class always uses 16 bits
     {
         //initialize all the bits to inactive

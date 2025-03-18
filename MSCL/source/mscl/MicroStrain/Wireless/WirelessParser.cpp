@@ -4,35 +4,37 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "WirelessParser.h"
-#include "Packets/AsyncDigitalAnalogPacket.h"
-#include "Packets/AsyncDigitalPacket.h"
-#include "Packets/BufferedLdcPacket.h"
-#include "Packets/BufferedLdcPacket_v2.h"
-#include "Packets/DiagnosticPacket.h"
-#include "Packets/HclSmartBearing_RawPacket.h"
-#include "Packets/HclSmartBearing_CalPacket.h"
-#include "Packets/LdcPacket.h"
-#include "Packets/LdcMathPacket.h"
-#include "Packets/LdcMathPacket_aspp3.h"
-#include "Packets/LdcPacket_v2.h"
-#include "Packets/LdcPacket_v2_aspp3.h"
-#include "Packets/RawAngleStrainPacket.h"
-#include "Packets/RollerPacket.h"
-#include "Packets/SyncSamplingPacket.h"
-#include "Packets/SyncSamplingPacket_v2.h"
-#include "Packets/SyncSamplingPacket_v2_aspp3.h"
-#include "Packets/SyncSamplingMathPacket.h"
-#include "Packets/SyncSamplingMathPacket_aspp3.h"
-#include "Packets/WirelessPacket.h"
-#include "Packets/WirelessPacketCollector.h"
-#include "Packets/WirelessPacketUtils.h"
-#include "mscl/MicroStrain/ResponseCollector.h"
+#include "mscl/MicroStrain/Wireless/WirelessParser.h"
+
+#include "mscl/Communication/RawBytePacket.h"
+#include "mscl/Communication/RawBytePacketCollector.h"
 #include "mscl/MicroStrain/ChecksumBuilder.h"
+#include "mscl/MicroStrain/ResponseCollector.h"
+#include "mscl/MicroStrain/Wireless/Packets/AsyncDigitalAnalogPacket.h"
+#include "mscl/MicroStrain/Wireless/Packets/AsyncDigitalPacket.h"
+#include "mscl/MicroStrain/Wireless/Packets/BufferedLdcPacket.h"
+#include "mscl/MicroStrain/Wireless/Packets/BufferedLdcPacket_v2.h"
+#include "mscl/MicroStrain/Wireless/Packets/DiagnosticPacket.h"
+#include "mscl/MicroStrain/Wireless/Packets/HclSmartBearing_CalPacket.h"
+#include "mscl/MicroStrain/Wireless/Packets/HclSmartBearing_RawPacket.h"
+#include "mscl/MicroStrain/Wireless/Packets/LdcMathPacket.h"
+#include "mscl/MicroStrain/Wireless/Packets/LdcMathPacket_aspp3.h"
+#include "mscl/MicroStrain/Wireless/Packets/LdcPacket.h"
+#include "mscl/MicroStrain/Wireless/Packets/LdcPacket_v2.h"
+#include "mscl/MicroStrain/Wireless/Packets/LdcPacket_v2_aspp3.h"
+#include "mscl/MicroStrain/Wireless/Packets/RawAngleStrainPacket.h"
+#include "mscl/MicroStrain/Wireless/Packets/RollerPacket.h"
+#include "mscl/MicroStrain/Wireless/Packets/SyncSamplingMathPacket.h"
+#include "mscl/MicroStrain/Wireless/Packets/SyncSamplingMathPacket_aspp3.h"
+#include "mscl/MicroStrain/Wireless/Packets/SyncSamplingPacket.h"
+#include "mscl/MicroStrain/Wireless/Packets/SyncSamplingPacket_v2.h"
+#include "mscl/MicroStrain/Wireless/Packets/SyncSamplingPacket_v2_aspp3.h"
+#include "mscl/MicroStrain/Wireless/Packets/WirelessPacketCollector.h"
+#include "mscl/MicroStrain/Wireless/Packets/WirelessPacketUtils.h"
 
 namespace mscl
 {
-    WirelessParser::WirelessParser(WirelessPacketCollector& packetCollector, std::weak_ptr<ResponseCollector> responseCollector, RawBytePacketCollector& rawBytePacketCollector):
+    WirelessParser::WirelessParser(WirelessPacketCollector& packetCollector, std::weak_ptr<ResponseCollector> responseCollector, RawBytePacketCollector& rawBytePacketCollector) :
         m_packetCollector(packetCollector),
         m_responseCollector(responseCollector),
         m_rawBytePacketCollector(rawBytePacketCollector)
@@ -47,18 +49,17 @@ namespace mscl
             m_packetCollector.addDataPacket(packet);
             return true;
         }
-        else if(packet.isDiscoveryPacket())
+
+        if(packet.isDiscoveryPacket())
         {
             //store the node discovery packet with the packet collector
             m_packetCollector.addNodeDiscoveryPacket(packet);
             return true;
         }
-        //if this is not a data packet
-        else
-        {
-            //this could be a valid ASPP command response
-            return findMatchingResponse(packet, lastReadPos);
-        }
+
+        //if this is not a data packet,
+        //this could be a valid ASPP command response
+        return findMatchingResponse(packet, lastReadPos);
     }
 
     bool WirelessParser::findMatchingResponse(DataBuffer& data)
@@ -109,7 +110,7 @@ namespace mscl
 
     void WirelessParser::parse(DataBuffer& data, WirelessTypes::Frequency freq)
     {
-        mscl::Bytes rawBytes;
+        Bytes rawBytes;
 
         RawBytePacket rawBytePacket;
 
@@ -135,7 +136,7 @@ namespace mscl
             //skipByte is set to false when we don't want to skip to the next byte after we are done looking at the current byte
             bool moveToNextByte = true;
 
-            //notEnoughData is true when the bytes could be a valid packet, but there isn't enough bytes to be sure
+            //notEnoughData is true when the bytes could be a valid packet, but there aren't enough bytes to be sure
             bool notEnoughData = false;
 
             //if this is any ASPP Start of Packet byte
@@ -174,13 +175,13 @@ namespace mscl
                         processPacket(packet, lastReadPosition);
                         addRawBytePacket(rawBytes, true, true, packet.type());
                         savepoint.commit();
-                        continue;    //packet has been processed, move to the next byte after the packet
+                        continue;    //the packet has been processed, move to the next byte after the packet
 
                     case parsePacketResult_duplicate:
                         savepoint.commit();
                         continue;    //packet is a duplicate, but byte position has been moved. Move to the next byte after the packet
 
-                    //somethings incorrect in the packet, move passed the AA and start looking for the next packet
+                    //something's incorrect in the packet, move passed the AA and start looking for the next packet
                     case parsePacketResult_invalidPacket:
                     case parsePacketResult_badChecksum:
                         if (rawBytes.size() > 0)
@@ -208,7 +209,7 @@ namespace mscl
 
             //check if the bytes we currently have match an expected response
             //    This isn't perfect (could possibly use part of a partial ASPP packet as a cmd response),
-            //    but unfortunately its the best we can do with single byte responses being part of our protocol
+            //    but unfortunately it's the best we can do with single byte responses being part of our protocol
             if(findMatchingResponse(data))
             {
                 //the bytes have already moved, don't move to the next byte in the next iteration
@@ -224,7 +225,7 @@ namespace mscl
                 {
                     //look for packets after the current byte.
                     //    Even though this looks like it could be the start of an ASPP packet,
-                    //    if we find any full ASPP packets inside of the these bytes, we need
+                    //    if we find any full ASPP packets inside these bytes, we need
                     //    to pick them up and move on.
                     WirelessPacket::PacketType type = findPacketInBytes(data, freq);
                     if (type == WirelessPacket::PacketType::packetType_NotFound)
@@ -239,27 +240,24 @@ namespace mscl
                         //we didn't find a packet within this, so return from this function as we need to wait for more data
                         return;
                     }
-                    else
+
+                    size_t position = data.readPosition();
+
+                    if (rawBytes.size() > 0)
                     {
-                        size_t position = data.readPosition();
-
-                        if (rawBytes.size() > 0)
-                        {
-                            addRawBytePacket(rawBytes, false, false, WirelessPacket::PacketType::packetType_NotFound);
-                        }
-                        position = data.readPosition();
-                        savepoint.revert();
-
-                        //Read out the "in packet" bytes into the debugPacket buffer...
-                        while (data.readPosition() < position)
-                        {
-                            rawBytes.push_back(data.read_uint8());
-                        }
-                        savepoint.commit();
-
-                        addRawBytePacket(rawBytes, true, true, type);
-
+                        addRawBytePacket(rawBytes, false, false, WirelessPacket::PacketType::packetType_NotFound);
                     }
+                    position = data.readPosition();
+                    savepoint.revert();
+
+                    //Read out the "in packet" bytes into the debugPacket buffer...
+                    while (data.readPosition() < position)
+                    {
+                        rawBytes.push_back(data.read_uint8());
+                    }
+                    savepoint.commit();
+
+                    addRawBytePacket(rawBytes, true, true, type);
                 }
             }
 
@@ -309,13 +307,11 @@ namespace mscl
                     savePoint.commit();
                     return packet.type();
                 }
-                else
-                {
-                    //found what looks like a packet within the bytes, but wasn't a data packet, nor a response packet we were expecting
 
-                    //revert back to before we parsed this packet that we aren't interested in
-                    packetParseSavePoint.revert();
-                }
+                //found what looks like a packet within the bytes, but wasn't a data packet, nor a response packet we were expecting
+
+                //revert to before we parsed this packet that we aren't interested in
+                packetParseSavePoint.revert();
             }
         }
 
@@ -784,12 +780,12 @@ namespace mscl
             //check the packet type
             switch(packet.type())
             {
-                case WirelessPacket::packetType_LDC_16ch:                   uniqueId = LdcPacket_v2_aspp3::getUniqueId(packet);                   break;
-                case WirelessPacket::packetType_LDC_math:                   uniqueId = LdcMathPacket_aspp3::getUniqueId(packet);               break;
-                case WirelessPacket::packetType_SyncSampling_16ch:          uniqueId = SyncSamplingPacket_v2_aspp3::getUniqueId(packet);          break;
-                case WirelessPacket::packetType_SyncSampling_math:          uniqueId = SyncSamplingMathPacket_aspp3::getUniqueId(packet);      break;
-                case WirelessPacket::packetType_rawAngleStrain:             uniqueId = RawAngleStrainPacket::getUniqueId(packet);           break;  //same payload, no new parser
-                case WirelessPacket::packetType_diagnostic:                 uniqueId = DiagnosticPacket::getUniqueId(packet);               break;  //same payload, no new parser
+                case WirelessPacket::packetType_LDC_16ch:          uniqueId = LdcPacket_v2_aspp3::getUniqueId(packet);           break;
+                case WirelessPacket::packetType_LDC_math:          uniqueId = LdcMathPacket_aspp3::getUniqueId(packet);          break;
+                case WirelessPacket::packetType_SyncSampling_16ch: uniqueId = SyncSamplingPacket_v2_aspp3::getUniqueId(packet);  break;
+                case WirelessPacket::packetType_SyncSampling_math: uniqueId = SyncSamplingMathPacket_aspp3::getUniqueId(packet); break;
+                case WirelessPacket::packetType_rawAngleStrain:    uniqueId = RawAngleStrainPacket::getUniqueId(packet);         break;  //same payload, no new parser
+                case WirelessPacket::packetType_diagnostic:        uniqueId = DiagnosticPacket::getUniqueId(packet);             break;  //same payload, no new parser
 
                 default:
                     assert(false); //unhandled packet type, need to add a case for it

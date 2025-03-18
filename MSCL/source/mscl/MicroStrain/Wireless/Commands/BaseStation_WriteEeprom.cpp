@@ -24,7 +24,7 @@ namespace mscl
         return cmd;
     }
 
-    BaseStation_WriteEeprom::Response::Response(uint16 valueToWrite, std::weak_ptr<ResponseCollector> collector):
+    BaseStation_WriteEeprom::Response::Response(uint16 valueToWrite, std::weak_ptr<ResponseCollector> collector) :
         WirelessResponsePattern(collector, WirelessProtocol::cmdId_base_writeEeprom, WirelessProtocol::BASE_STATION_ADDRESS),
         m_valueWritten(valueToWrite)
     {

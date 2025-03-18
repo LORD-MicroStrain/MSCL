@@ -65,7 +65,7 @@ namespace mscl
         return GenericMipCommand::buildCommand(CMD_ID, fieldData.data());
     }
 
-    ContinuousDataStream::Response::Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse, MipTypes::DataClass type):
+    ContinuousDataStream::Response::Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse, MipTypes::DataClass type) :
         GenericMipCommand::Response(MipTypes::CMD_CONTINUOUS_DATA_STREAM, collector, true, dataResponse, "Continuous Data Stream"),
         m_deviceSelector(getDeviceSelector(type))
     {}

@@ -17,7 +17,7 @@ namespace mscl
     {
     }
 
-    PingResponse::PingResponse(bool success, int16 nodeRssi, int16 baseRssi):
+    PingResponse::PingResponse(bool success, int16 nodeRssi, int16 baseRssi) :
         m_success(success),
         m_nodeRssi(nodeRssi),
         m_baseRssi(baseRssi)

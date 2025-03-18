@@ -12,6 +12,10 @@
 
 using namespace mscl;
 
+DISABLE_WARNING_BOOST_START
+#include <boost/test/unit_test.hpp>
+DISABLE_WARNING_BOOST_END
+
 BOOST_AUTO_TEST_SUITE(EstFilterCommands_Test)
 
 BOOST_AUTO_TEST_SUITE(EstFilterCommands_GetEstFilterDataRateBase)
@@ -160,7 +164,7 @@ BOOST_AUTO_TEST_CASE(SensorToVehicFrameTrans_buildCommand_get)
 
 BOOST_AUTO_TEST_CASE(SensorToVehicFrameTrans_buildCommand_set)
 {
-    mscl::EulerAngles angles(1.5f, 10.123f, 0.018945f);
+    EulerAngles angles(1.5f, 10.123f, 0.018945f);
 
     ByteStream b = SensorToVehicFrameTrans::buildCommand_set(angles);
 
@@ -198,7 +202,7 @@ BOOST_AUTO_TEST_CASE(SensorToVehicFrameTrans_parseData)
     std::shared_ptr<ResponseCollector> rc(new ResponseCollector);
     SensorToVehicFrameTrans::Response response(rc, true);
 
-    mscl::EulerAngles angles = response.parseResponse(GenericMipCmdResponse::ResponseSuccess("", data));
+    EulerAngles angles = response.parseResponse(GenericMipCmdResponse::ResponseSuccess("", data));
 
     BOOST_CHECK_CLOSE(angles.roll(), -2.3, 0.001);
     BOOST_CHECK_CLOSE(angles.pitch(), 0.34234, 0.001);
@@ -228,7 +232,7 @@ BOOST_AUTO_TEST_CASE(SensorToVehicFrameOffset_buildCommand_get)
 
 BOOST_AUTO_TEST_CASE(SensorToVehicFrameOffset_buildCommand_set)
 {
-    mscl::PositionOffset offset(1.5f, -1.123f, 0.018945f);
+    PositionOffset offset(1.5f, -1.123f, 0.018945f);
 
     ByteStream b = SensorToVehicFrameOffset::buildCommand_set(offset);
 
@@ -266,7 +270,7 @@ BOOST_AUTO_TEST_CASE(SensorToVehicFrameOffset_parseData)
     std::shared_ptr<ResponseCollector> rc(new ResponseCollector);
     SensorToVehicFrameOffset::Response response(rc, true);
 
-    mscl::PositionOffset offset = response.parseResponse(GenericMipCmdResponse::ResponseSuccess("", data));
+    PositionOffset offset = response.parseResponse(GenericMipCmdResponse::ResponseSuccess("", data));
 
     BOOST_CHECK_CLOSE(offset.x(), -5.3, 0.001);
     BOOST_CHECK_CLOSE(offset.y(), 0.3234, 0.001);

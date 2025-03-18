@@ -55,7 +55,6 @@ namespace mscl
 
         void checkDeadline(const boost::system::error_code& error);
 
-    private:
         typedef boost::asio::ip::tcp tcp;
 
         //Variable: m_path

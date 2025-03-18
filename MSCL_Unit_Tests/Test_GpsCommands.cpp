@@ -10,6 +10,10 @@
 
 using namespace mscl;
 
+DISABLE_WARNING_BOOST_START
+#include <boost/test/unit_test.hpp>
+DISABLE_WARNING_BOOST_END
+
 BOOST_AUTO_TEST_SUITE(GpsCommands_Test)
 
 BOOST_AUTO_TEST_SUITE(GpsCommands_GetGpsDataRateBase)

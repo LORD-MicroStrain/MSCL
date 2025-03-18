@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "WirelessResponsePattern.h"
+#include "mscl/MicroStrain/Wireless/Commands/WirelessResponsePattern.h"
 
 namespace mscl
 {
@@ -15,7 +15,6 @@ namespace mscl
     //    Contains logic for the Read Single Sensor Node command
     class ReadSingleSensor
     {
-    private:
         ReadSingleSensor();                                        //default constructor disabled
         ReadSingleSensor(const ReadSingleSensor&);                //copy constructor disabled
         ReadSingleSensor& operator=(const ReadSingleSensor&);    //assignment operator disabled
@@ -35,7 +34,6 @@ namespace mscl
         //    Handles the response to the ReadSingleSensor node command
         class Response : public WirelessResponsePattern
         {
-        private:
             //Variable: m_sensorValue
             //    The value read from the sensor.
             uint16 m_sensorValue;
@@ -57,7 +55,7 @@ namespace mscl
             //
             //Returns:
             //    true if the response pattern was found, false otherwise
-            virtual bool matchSuccessResponse(DataBuffer& data) override;
+            bool matchSuccessResponse(DataBuffer& data) override;
 
         public:
             //Function: sensorValue

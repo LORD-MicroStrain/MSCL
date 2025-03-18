@@ -6,23 +6,16 @@
 
 #pragma once
 
-#include <memory>
-#include <tuple>
-#include <vector>
-
-#include "mscl/MicroStrain/Wireless/WirelessTypes.h"
-#include "mscl/MicroStrain/Wireless/WirelessModels.h"
-#include "mscl/MicroStrain/Wireless/WirelessChannel.h"
 #include "mscl/MicroStrain/Wireless/Configuration/InputRange.h"
-#include "mscl/MicroStrain/SampleRate.h"
-#include "mscl/Types.h"
-#include "ChannelGroup.h"
-#include "NodeInfo.h"
+#include "mscl/MicroStrain/Wireless/Features/ChannelGroup.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeInfo.h"
+#include "mscl/MicroStrain/Wireless/WirelessChannel.h"
 
 namespace mscl
 {
     //forward declarations
     class ChannelMask;
+    class SampleRate;
 
     //API Class: NodeFeatures
     //    Contains information on which features are supported by a <WirelessNode>.
@@ -35,13 +28,12 @@ namespace mscl
         friend class WirelessProtocol;
         friend class NodeEeprom;
 
-    private:
         NodeFeatures();                                    //disabled default constructor
         NodeFeatures(const NodeFeatures&);                //disabled copy constructor
         NodeFeatures& operator=(const NodeFeatures&);    //disable assignment operator
 
     public:
-        virtual ~NodeFeatures() {};
+        virtual ~NodeFeatures() = default;
 
     private:
         //Wireless Node FW version to ASPP version lookup

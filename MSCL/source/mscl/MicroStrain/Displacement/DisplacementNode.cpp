@@ -10,7 +10,7 @@
 
 namespace mscl
 {
-    DisplacementNode::DisplacementNode(Connection connection):
+    DisplacementNode::DisplacementNode(Connection connection) :
         m_impl(std::make_shared<MipNode_Impl>(connection))
     {
     }

@@ -4,14 +4,14 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "NodeFeatures_vlink200.h"
-#include "AvailableSampleRates.h"
-#include "mscl/MicroStrain/Wireless/ChannelMask.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures_vlink200.h"
+
 #include "mscl/MicroStrain/Wireless/Configuration/NodeEepromMap.h"
+#include "mscl/MicroStrain/Wireless/Features/AvailableSampleRates.h"
 
 namespace mscl
 {
-    NodeFeatures_vlink200::NodeFeatures_vlink200(const NodeInfo& info):
+    NodeFeatures_vlink200::NodeFeatures_vlink200(const NodeInfo& info) :
         NodeFeatures_200series(info)
     {
         //Channels
@@ -110,7 +110,7 @@ namespace mscl
     {
         static const Version MIN_POLL_FW(12, 45139);
 
-        return (m_nodeInfo.firmwareVersion() >= MIN_POLL_FW);
+        return m_nodeInfo.firmwareVersion() >= MIN_POLL_FW;
     }
 
     const WirelessTypes::WirelessSampleRates NodeFeatures_vlink200::sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const
@@ -123,20 +123,16 @@ namespace mscl
             {
                 return AvailableSampleRates::continuous_log_vlink200;
             }
-            else
-            {
-                return AvailableSampleRates::continuous_nonSync_vlink200;
-            }
+
+            return AvailableSampleRates::continuous_nonSync_vlink200;
 
         case WirelessTypes::samplingMode_sync:
             if(dataCollectionMethod == WirelessTypes::collectionMethod_logOnly)
             {
                 return AvailableSampleRates::continuous_log_vlink200;
             }
-            else
-            {
-                return AvailableSampleRates::continuous_sync_vlink200;
-            }
+
+            return AvailableSampleRates::continuous_sync_vlink200;
 
         case WirelessTypes::samplingMode_syncBurst:
         case WirelessTypes::samplingMode_syncEvent:

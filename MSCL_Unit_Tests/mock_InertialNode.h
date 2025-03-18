@@ -12,6 +12,8 @@
 
 using namespace mscl;
 
+#include <turtle/mock.hpp>
+
 MOCK_BASE_CLASS(mock_InertialNodeImpl, MipNode_Impl)
 {
     mock_InertialNodeImpl():

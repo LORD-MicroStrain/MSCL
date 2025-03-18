@@ -37,13 +37,11 @@ namespace mscl
             MIP_ACK_NACK_ERROR_UNKNOWN_DESCRIPTOR_SET   = 6
         };
 
-    public:
         //Default Constructor: MipPacket
         //    The default constructor for a MipPacket object
         MipPacket();
 
 #ifndef SWIG
-    public:
         //Typedef: Payload
         //    typedef for the bytes that make up a payload in a packet
         typedef ByteStream Payload;
@@ -143,7 +141,6 @@ namespace mscl
     //    Contains enums representing Descriptor sets for Inertial Packets
     struct DescriptorSet
     {
-    public:
         //=====================================================================================================
         //Enums: MIP Packet Descriptor Sets
         //    DESC_SET_CMD_BASE         - 0x01    - Command Packet, Base Set

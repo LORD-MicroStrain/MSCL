@@ -21,7 +21,7 @@ namespace mscl
     {
         ByteStream command;
 
-        if (MipCommand::supportsFunctionSelector(m_commandId, m_functionSelector)
+        if (supportsFunctionSelector(m_commandId, m_functionSelector)
             || (!isKnownCommand() && m_functionSelector != MipTypes::FunctionSelector(0))) // allows undefined commands to be manually sent with fn selectors (ex: for save as startup)
         {
             command.append_uint8(static_cast<uint8>(m_functionSelector));
@@ -34,7 +34,7 @@ namespace mscl
             {
                 case valueType_bool:
                 {
-                    command.append_uint8((val.as_bool() ? 1 : 0));
+                    command.append_uint8(val.as_bool() ? 1 : 0);
                     break;
                 }
                 case valueType_uint8:
@@ -90,7 +90,7 @@ namespace mscl
 
     MipFieldValues MipCommand::getGenericResponseData(const GenericMipCmdResponse& response)
     {
-        MipFieldFormat responseFormat = MipCommand::getResponseFieldFormat(m_commandId);
+        MipFieldFormat responseFormat = getResponseFieldFormat(m_commandId);
         DataBuffer buffer(response.data());
         MipFieldValues data;
 
@@ -101,12 +101,12 @@ namespace mscl
 
     std::string MipCommand::commandName() const
     {
-        return MipCommand::getCommandName(m_commandId);
+        return getCommandName(m_commandId);
     }
 
     bool MipCommand::isKnownCommand() const
     {
-        return MipCommand::getCommandName(m_commandId) != "";
+        return getCommandName(m_commandId) != "";
     }
 
     MipFunctionSelectors MipCommand::supportedFunctionSelectors(MipTypes::Command cmd)
@@ -202,13 +202,13 @@ namespace mscl
 
     bool MipCommand::supportsFunctionSelector(MipTypes::Command cmd, MipTypes::FunctionSelector fn)
     {
-        MipFunctionSelectors fns = MipCommand::supportedFunctionSelectors(cmd);
+        MipFunctionSelectors fns = supportedFunctionSelectors(cmd);
         return std::find(fns.begin(), fns.end(), fn) != fns.end();
     }
 
     uint8 MipCommand::fieldDataByte() const
     {
-        return MipCommand::getFieldDataByte(m_commandId);
+        return getFieldDataByte(m_commandId);
     }
 
     bool MipCommand::responseExpected() const
@@ -1104,7 +1104,7 @@ namespace mscl
             {
                 case valueType_bool:
                 {
-                    outData.push_back(Value::BOOL((buffer.read_uint8() > 0)));
+                    outData.push_back(Value::BOOL(buffer.read_uint8() > 0));
                     break;
                 }
                 case valueType_uint8:
@@ -1147,7 +1147,7 @@ namespace mscl
                     size_t count = stringLength(id);
                     if (count <= 0)
                     {
-                        // no count - read until end of buffer
+                        // no count - read until the end of the buffer
                         count = buffer.size();
                     }
 
@@ -1163,7 +1163,7 @@ namespace mscl
                 }
                 case valueType_Vector:
                 {
-                    MipFieldFormat vectorFormat = MipCommand::getResponseVectorPartFormat(id, vectorNestedLevel, vectorSequenceCount);
+                    MipFieldFormat vectorFormat = getResponseVectorPartFormat(id, vectorNestedLevel, vectorSequenceCount);
                     size_t count = 0;
                     bool hasCount = false;
                     if (outData.size() > 0)
@@ -1179,7 +1179,7 @@ namespace mscl
 
                     if (count == 0 && !hasCount)
                     {
-                        // no count - read element format until end of buffer
+                        // no count - read element format until the end of the buffer
                         size_t elementSize = 0;
                         for (ValueType t : vectorFormat)
                         {
@@ -1192,7 +1192,7 @@ namespace mscl
 
                     for (size_t i = 0; i < count; i++)
                     {
-                        MipCommand::populateGenericResponseData(id, buffer, vectorFormat, outData);
+                        populateGenericResponseData(id, buffer, vectorFormat, outData);
                     }
 
                     break;

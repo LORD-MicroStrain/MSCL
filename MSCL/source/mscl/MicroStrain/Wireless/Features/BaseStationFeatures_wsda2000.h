@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "BaseStationFeatures.h"
+#include "mscl/MicroStrain/Wireless/Features/BaseStationFeatures.h"
 
 namespace mscl
 {
@@ -15,7 +15,7 @@ namespace mscl
     class BaseStationFeatures_wsda2000 : public BaseStationFeatures
     {
     public:
-        virtual ~BaseStationFeatures_wsda2000() {}
+        ~BaseStationFeatures_wsda2000() override = default;
 
         //Constructor: BaseStationFeatures_wsda2000
         //    Creates a BaseStationFeatures_wsda2000 object.
@@ -24,7 +24,7 @@ namespace mscl
         //    info - A <BaseStationInfo> object representing standard information of the <BaseStation>.
         BaseStationFeatures_wsda2000(const BaseStationInfo& info);
 
-        virtual bool supportsRfSweepMode() const final;
-        virtual bool supportsCustomRfSweepMode() const final;
+        bool supportsRfSweepMode() const final;
+        bool supportsCustomRfSweepMode() const final;
     };
 }

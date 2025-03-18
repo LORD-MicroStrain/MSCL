@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "NodeFeatures_200series.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures_200series.h"
 
 namespace mscl
 {
@@ -15,7 +15,7 @@ namespace mscl
     class NodeFeatures_glink200: public NodeFeatures_200series
     {
     public:
-        virtual ~NodeFeatures_glink200(){};
+        ~NodeFeatures_glink200() override = default;
 
         //Constructor: NodeFeatures_glink200
         //    Creates a NodeFeatures_glink200 object.
@@ -25,16 +25,16 @@ namespace mscl
         static const Version VER_TILT_SUPPORTED;
 
     public:
-        virtual const WirelessTypes::WirelessSampleRates sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const override;
+        const WirelessTypes::WirelessSampleRates sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const override;
 
-        virtual const WirelessTypes::DataFormats dataFormats() const override;
+        const WirelessTypes::DataFormats dataFormats() const override;
 
-        virtual const WirelessTypes::Filters lowPassFilters() const override;
+        const WirelessTypes::Filters lowPassFilters() const override;
 
-        virtual const WirelessTypes::HighPassFilters highPassFilters() const override;
+        const WirelessTypes::HighPassFilters highPassFilters() const override;
 
-        virtual const WirelessTypes::DerivedChannelMasks channelsPerDerivedCategory() const override;
+        const WirelessTypes::DerivedChannelMasks channelsPerDerivedCategory() const override;
 
-        virtual const WirelessTypes::SensorOutputModes sensorOutputModes() const override;
+        const WirelessTypes::SensorOutputModes sensorOutputModes() const override;
     };
 }

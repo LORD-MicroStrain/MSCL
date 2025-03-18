@@ -6,18 +6,13 @@
 
 #pragma once
 
-#include "mscl/Timestamp.h"
-#include "mscl/Types.h"
-#include <map>
-
 namespace mscl
 {
     //Class: NodeCommTimes
     //  Contains a global map of Wireless Node addresses to last communication times.
     class NodeCommTimes
     {
-    private:
-        NodeCommTimes() {};
+        NodeCommTimes() = default;
 
     public:
         NodeCommTimes(const NodeCommTimes&)             = delete;

@@ -27,7 +27,6 @@ namespace mscl
     private:
         Bin() = delete; //default constructor disabled
 
-    private:
         //Variable: m_start
         //    The start of the range of the bin.
         Value m_start;

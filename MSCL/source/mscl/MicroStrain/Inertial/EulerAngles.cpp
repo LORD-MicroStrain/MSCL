@@ -8,7 +8,7 @@
 
 namespace mscl
 {
-    EulerAngles::EulerAngles():
+    EulerAngles::EulerAngles() :
         EulerAngles(0.0f, 0.0f, 0.0f)
     {
     }
@@ -216,12 +216,12 @@ namespace mscl
     }
 
 #ifndef SWIG
-    Rotation::operator mscl::EulerAngles() const
+    Rotation::operator EulerAngles() const
     {
         return asEulerAngles();
     }
 
-    Rotation::operator mscl::Quaternion() const
+    Rotation::operator Quaternion() const
     {
         return asQuaternion();
     }

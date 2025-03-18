@@ -57,9 +57,9 @@ namespace mscl
         //API Enums: DataCollectionMethod
         //    Represents the types of data collection methods that can be performed on the Node.
         //
-        //    collectionMethod_logOnly           - 1 - Data is logged to the Node's internal memory to be downloaded later
-        //    collectionMethod_transmitOnly      - 2 - Data is transmitted wirelessly over the air
-        //    collectionMethod_logAndTransmit    - 3 - Data is both logged to the Node and transmitted over the air.
+        //    collectionMethod_logOnly        - 1 - Data is logged to the Node's internal memory to be downloaded later
+        //    collectionMethod_transmitOnly   - 2 - Data is transmitted wirelessly over the air
+        //    collectionMethod_logAndTransmit - 3 - Data is both logged to the Node and transmitted over the air.
         //=====================================================================================================
         enum DataCollectionMethod
         {
@@ -135,7 +135,7 @@ namespace mscl
         //    Represents the types of synchronized sampling modes the Node can be in.
         //
         //    syncMode_continuous   - 0x7400 - Data will be transmitted in standard non-burst synchronized sampling mode.
-        //    syncMode_burst        - 0xF600 - Data will be transmitted in a burst synchronized sampling mode.
+        //    syncMode_burst        - 0xF600 - Data will be transmitted in a burst-synchronized sampling mode.
         //=====================================================================================================
         enum SyncSamplingMode
         {
@@ -170,7 +170,7 @@ namespace mscl
         //    This is the mode the Node starts in, as well as the mode the node goes into after an inactivity timeout.
         //
         //    defaultMode_idle       - 0 - Default of Idle Mode.
-        //    default_ldc            - 1 - Default of Low Duty Cycle sampling.
+        //    default_ldc            - 1 - Default of Low-Duty Cycle sampling.
         //    default_datalog        - 4 - Default of Armed Datalogging (but with no timestamp) sampling.
         //    default_sleep          - 5 - Default of a low-power Sleep Mode.
         //    default_sync           - 6 - Default of Sync Sampling (must hear a beacon to start sampling).
@@ -1567,8 +1567,6 @@ namespace mscl
             delayVersion_v4 = 3     // V4 - Seconds, Milliseconds, or Microseconds
         };
 
-    public:
-
         //API Typedefs:
         //  DataCollectionMethods       - A vector of <DataCollectionMethod> enums.
         //  DataFormats                 - A vector of <DataFormat> enums.
@@ -1646,7 +1644,7 @@ namespace mscl
         static uint16 dataTypeSize(DataType type);
 
         //Function: dataTypeToValueType
-        //    Converts a <DataType> (value received from a data packet) to a <ValueType> which describes how the data is stored (as a short, as a float, etc)
+        //    Converts a <DataType> (value received from a data packet) to a <ValueType> which describes how the data is stored (as a short, as a float, etc.)
         //
         //Parameters:
         //    type - The <DataType> to convert to a <ValueType>
@@ -1705,7 +1703,7 @@ namespace mscl
         //
         //Returns:
         //    The <WirelessTypes::TransmitPower> equivalent of the legacy transmit power.
-        static WirelessTypes::TransmitPower legacyToTransmitPower(WirelessTypes::LegacyTransmitPower legacyVal);
+        static TransmitPower legacyToTransmitPower(LegacyTransmitPower legacyVal);
 
         //Function: transmitPowerToLegacy
         //    Converts the given <WirelessTypes::TransmitPower> to the <WirelessTypes::LegacyTransmitPower> equivalent.
@@ -1718,7 +1716,7 @@ namespace mscl
         //
         //Exceptions:
         //    - <Error>: Invalid transmit power.
-        static WirelessTypes::LegacyTransmitPower transmitPowerToLegacy(WirelessTypes::TransmitPower power);
+        static LegacyTransmitPower transmitPowerToLegacy(TransmitPower power);
 
         //Function: bytesPerDerivedAlgorithmId
         //  Gets the number of bytes that make up a derived channel.
@@ -1744,18 +1742,18 @@ namespace mscl
         //  The number of bytes that make up a derived channel's data.
         //
         //Exceptions:
-        //    - <Error_NotSupported>: Invalid Derived Option
+        //    - <Error_NotSupported>: Invalid-Derived Option
         static uint8 bytesPerDerivedChannelOption(DerivedCategory category);
 
         //Function: derivedBytesPerSweep
         //  Gets the number of derived bytes in a sweep for the given <WirelessTypes::DerivedChannelMasks>.
         //
         //Parameters:
-        //  derivedChannelMasks - The <WirelessTypes::DerivedChannelMasks> to calculated the number of derived bytes for.
+        //  derivedChannelMasks - The <WirelessTypes::DerivedChannelMasks> to calculate the number of derived bytes for.
         //
         //Returns:
         //  The number of derived bytes in a sweep for all the derived channels given.
-        static uint32 derivedBytesPerSweep(const WirelessTypes::DerivedChannelMasks& derivedChannelMasks);
+        static uint32 derivedBytesPerSweep(const DerivedChannelMasks& derivedChannelMasks);
 #endif
     };
 }

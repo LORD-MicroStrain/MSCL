@@ -22,7 +22,6 @@ namespace mscl
         UpnpService(const UpnpService&);              //copy constructor disabled
         UpnpService& operator=(const UpnpService&);   //assignment operator disabled
 
-    private:
         IUPnPDeviceFinderCallback* m_deviceFinderCallback;
         IUPnPDeviceFinder* m_deviceFinder;
         BSTR m_description;
@@ -34,7 +33,6 @@ namespace mscl
         std::recursive_mutex m_upnpMutex;
         std::unique_ptr<std::thread> m_searchThread;
 
-    private:
         bool startSearch();
         void findDevices();
         void cancelFindDevices();

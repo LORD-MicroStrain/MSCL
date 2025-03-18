@@ -37,7 +37,7 @@ namespace mscl
 
     bool GNSS_ConstellationSettings::responseExpected() const
     {
-        return (m_functionSelector == MipTypes::READ_BACK_CURRENT_SETTINGS) ? true : false;
+        return m_functionSelector == MipTypes::READ_BACK_CURRENT_SETTINGS;
     }
 
     ConstellationSettingsData GNSS_ConstellationSettings::getResponseData(const GenericMipCmdResponse& response)
@@ -51,7 +51,7 @@ namespace mscl
         {
             Constellation constellationToAdd;
             constellationToAdd.constellationID = static_cast<InertialTypes::ConstellationId>(dataBuffer.read_uint8());
-            constellationToAdd.enabled = (dataBuffer.read_uint8() == 0x00) ? false : true;
+            constellationToAdd.enabled = dataBuffer.read_uint8() == 0x00 ? false : true;
             constellationToAdd.reservedChannelCount = dataBuffer.read_uint8();
             constellationToAdd.maxChannels = dataBuffer.read_uint8();
             uint16 constellationOptionFlags = dataBuffer.read_uint16();
@@ -78,11 +78,11 @@ namespace mscl
                 byteCommand.append_uint8(constellation->enabled);
                 byteCommand.append_uint8(constellation->reservedChannelCount);
                 byteCommand.append_uint8(constellation->maxChannels);
-                uint16 constellationOptionFlags = (constellation->enableL1SAIF == true)? 0x01 : 0x00;
+                uint16 constellationOptionFlags = constellation->enableL1SAIF == true? 0x01 : 0x00;
                 byteCommand.append_uint16(constellationOptionFlags);
             }
         }
-        return GenericMipCommand::buildCommand(commandType(), byteCommand.data()); ;
+        return GenericMipCommand::buildCommand(commandType(), byteCommand.data());
     }
 
 }

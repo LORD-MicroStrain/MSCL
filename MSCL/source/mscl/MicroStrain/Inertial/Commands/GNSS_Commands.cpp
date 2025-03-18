@@ -16,7 +16,7 @@ namespace mscl
         return GenericMipCommand::buildCommand(CMD_ID);
     }
 
-    GetGnssDataRateBase::Response::Response(std::weak_ptr<ResponseCollector> collector):
+    GetGnssDataRateBase::Response::Response(std::weak_ptr<ResponseCollector> collector) :
         GenericMipCommand::Response(MipTypes::CMD_GET_GNSS_RATE_BASE, collector, true, true, "Get GNSS Data Rate Base")
     {}
 
@@ -86,7 +86,7 @@ namespace mscl
         return GenericMipCommand::buildCommand(CMD_ID, fieldData.data());
     }
 
-    GnssMessageFormat::Response::Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse):
+    GnssMessageFormat::Response::Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse) :
         GenericMipCommand::Response(MipTypes::CMD_GNSS_MESSAGE_FORMAT, collector, true, dataResponse, "GNSS Message Format")
     {}
 

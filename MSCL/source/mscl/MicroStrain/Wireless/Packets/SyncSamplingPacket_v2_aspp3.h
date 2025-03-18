@@ -6,31 +6,29 @@
 
 #pragma once
 
-#include "WirelessDataPacket.h"
+#include "mscl/MicroStrain/Wireless/Packets/WirelessDataPacket.h"
 
 namespace mscl
 {
-
     //Class: SyncSamplingPacket_v2_aspp3
     //    A <WirelessDataPacket> derived class representing a Synchronized Sampling 16 channel packet
     class SyncSamplingPacket_v2_aspp3 : public WirelessDataPacket
     {
-    private:
         //=====================================================================================================
         //Constants: Synchronized Sampling Packet Information
-        //    PAYLOAD_OFFSET_CHANNEL_MASK                    - 4    - The offset into the payload to get the channel mask
-        //    PAYLOAD_OFFSET_SAMPLE_RATE                     - 6    - The offset into the payload to get the sample rate
-        //    PAYLOAD_OFFSET_DATA_TYPE                       - 7    - The offset into the payload to get the sample mode and data type
-        //    PAYLOAD_OFFSET_TICK                            - 8    - The offset into the payload to get the tick
-        //    PAYLOAD_OFFSET_TS                              - 10   - The offset into the payload to get the timestamp seconds
-        //    PAYLOAD_OFFSET_CHANNEL_DATA                    - 18   - The offset into the payload where the channel data starts
+        //    PAYLOAD_OFFSET_CHANNEL_MASK - 4  - The offset into the payload to get the channel mask
+        //    PAYLOAD_OFFSET_SAMPLE_RATE  - 6  - The offset into the payload to get the sample rate
+        //    PAYLOAD_OFFSET_DATA_TYPE    - 7  - The offset into the payload to get the sample mode and data type
+        //    PAYLOAD_OFFSET_TICK         - 8  - The offset into the payload to get the tick
+        //    PAYLOAD_OFFSET_TS           - 10 - The offset into the payload to get the timestamp seconds
+        //    PAYLOAD_OFFSET_CHANNEL_DATA - 18 - The offset into the payload where the channel data starts
         //=====================================================================================================
-        static const uint16 PAYLOAD_OFFSET_CHANNEL_MASK                = 4;
-        static const uint16 PAYLOAD_OFFSET_SAMPLE_RATE                 = 6;
-        static const uint16 PAYLOAD_OFFSET_DATA_TYPE                   = 7;
-        static const uint16 PAYLOAD_OFFSET_TICK                        = 8;
-        static const uint16 PAYLOAD_OFFSET_TS                          = 10;
-        static const uint16 PAYLOAD_OFFSET_CHANNEL_DATA                = 18;
+        static const uint16 PAYLOAD_OFFSET_CHANNEL_MASK = 4;
+        static const uint16 PAYLOAD_OFFSET_SAMPLE_RATE  = 6;
+        static const uint16 PAYLOAD_OFFSET_DATA_TYPE    = 7;
+        static const uint16 PAYLOAD_OFFSET_TICK         = 8;
+        static const uint16 PAYLOAD_OFFSET_TS           = 10;
+        static const uint16 PAYLOAD_OFFSET_CHANNEL_DATA = 18;
 
     public:
         //Constructor: SyncSamplingPacket_v2_aspp3
@@ -52,17 +50,17 @@ namespace mscl
 
     public:
         //Function: integrityCheck
-        //    Verifies that the packet is a well formed Synchronized Sampling packet
+        //    Verifies that the packet is a well-formed Synchronized Sampling packet
         //
         //Parameters:
         //    packet - The fully formed Wireless Packet to check the integrity of
         //
         //Returns:
-        //    true if the packet is a well formed Sync Sampling packet, false otherwise
+        //    true if the packet is a well-formed Sync Sampling packet, false otherwise
         static bool integrityCheck(const WirelessPacket& packet);
 
         //Function: getUniqueId
-        //    Gets the unique Id of the <WirelessPacket> passed in
+        //    Gets the unique ID of the <WirelessPacket> passed in
         //
         //Parameters:
         //    packet - The <WirelessPacket> to get the unique id of
@@ -71,5 +69,4 @@ namespace mscl
         //    The <UniqueWirelessPacketId> of the passed in packet
         static UniqueWirelessPacketId getUniqueId(const WirelessPacket& packet);
     };
-
 }

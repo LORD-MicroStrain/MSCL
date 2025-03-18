@@ -4,31 +4,24 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include <iomanip>
+#include "mscl/MicroStrain/Wireless/WirelessNode_Impl.h"
 
+#include "mscl/MicroStrain/Wireless/Commands/AutoCal.h"
+#include "mscl/MicroStrain/Wireless/Commands/DatalogSessionInfoResult.h"
+#include "mscl/MicroStrain/Wireless/Configuration/NodeEepromMap.h"
+#include "mscl/MicroStrain/Wireless/Configuration/WirelessNodeConfig.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeInfo.h"
+#include "mscl/MicroStrain/Wireless/NodeCommTimes.h"
+#include "mscl/MicroStrain/Wireless/NodeMemory_v1.h"
 #include "mscl/ScopeHelper.h"
-#include "mscl/Utils.h"
-#include "WirelessNode_Impl.h"
-#include "Features/NodeInfo.h"
-#include "Features/NodeFeatures.h"
-#include "Commands/AutoCal.h"
-#include "Commands/AutoCalInfo.h"
-#include "Commands/WirelessProtocol.h"
-#include "Commands/DatalogSessionInfoResult.h"
-#include "Configuration/NodeEeprom.h"
-#include "Configuration/NodeEepromMap.h"
-#include "Configuration/WirelessNodeConfig.h"
-#include "NodeCommTimes.h"
-#include "NodeMemory_v1.h"
 
 namespace mscl
 {
-    WirelessNode_Impl::WirelessNode_Impl(NodeAddress nodeAddress, const BaseStation& basestation):
+    WirelessNode_Impl::WirelessNode_Impl(NodeAddress nodeAddress, const BaseStation& basestation) :
         m_address(nodeAddress),
         m_baseStation(basestation),
         m_eepromHelper(new NodeEepromHelper(this))
-    {
-    }
+    {}
 
     void WirelessNode_Impl::determineProtocols() const
     {
@@ -102,7 +95,7 @@ namespace mscl
             m_eeprom.reset(new NodeEeprom(this, m_baseStation, m_eepromSettings));
         }
 
-        return *(m_eeprom.get());
+        return *m_eeprom.get();
     }
 
     const WirelessProtocol& WirelessNode_Impl::wirelessProtocol()
@@ -114,7 +107,7 @@ namespace mscl
 
     NodeEepromHelper& WirelessNode_Impl::eeHelper() const
     {
-        return *(m_eepromHelper.get());
+        return *m_eepromHelper.get();
     }
 
     const NodeFeatures& WirelessNode_Impl::features() const
@@ -129,7 +122,7 @@ namespace mscl
             m_features = NodeFeatures::create(info);
         }
 
-        return *(m_features.get());
+        return *m_features.get();
     }
 
     const WirelessProtocol& WirelessNode_Impl::protocol(WirelessTypes::CommProtocol commProtocol) const
@@ -149,10 +142,10 @@ namespace mscl
         switch(commProtocol)
         {
             case WirelessTypes::commProtocol_lxrsPlus:
-                return *(m_protocol_lxrsPlus.get());
+                return *m_protocol_lxrsPlus.get();
 
             case WirelessTypes::commProtocol_lxrs:
-                return *(m_protocol_lxrs.get());
+                return *m_protocol_lxrs.get();
 
             default:
                 throw Error("Invalid RadioMode");
@@ -197,7 +190,7 @@ namespace mscl
 
     bool WirelessNode_Impl::hasBaseStation(const BaseStation& basestation) const
     {
-        return (basestation == m_baseStation);
+        return basestation == m_baseStation;
     }
 
     void WirelessNode_Impl::useGroupRead(bool useGroup)
@@ -279,10 +272,10 @@ namespace mscl
         }
     }
 
-    void WirelessNode_Impl::updateEepromCacheFromNodeDiscovery(const NodeDiscovery& nodeDisovery)
+    void WirelessNode_Impl::updateEepromCacheFromNodeDiscovery(const NodeDiscovery& nodeDiscovery)
     {
         //import the Node Discovery eeprom map
-        eeprom().importCache(nodeDisovery.eepromMap());
+        eeprom().importCache(nodeDiscovery.eepromMap());
 
         //features may need to be reset if firmware version or model changed
         if(m_features != nullptr)
@@ -385,19 +378,17 @@ namespace mscl
         {
             return m_eepromHelper->read_numDatalogSessions();
         }
-        else
+
+        //datalog v2+ doesn't support the num datalog sessions eeprom
+
+        //use the getDatalogSessionInfo command to obtain this information
+        DatalogSessionInfoResult info;
+        if(!m_baseStation.node_getDatalogSessionInfo(wirelessProtocol(), m_address, info))
         {
-            //datalog v2+ doesn't support the num datalog sessions eeprom
-
-            //use the getDatalogSessionInfo command to obtain this information
-            DatalogSessionInfoResult info;
-            if(!m_baseStation.node_getDatalogSessionInfo(wirelessProtocol(), m_address, info))
-            {
-                throw Error_NodeCommunication(nodeAddress(), "Failed to get the Datalogging Session Info");
-            }
-
-            return info.sessionCount;
+            throw Error_NodeCommunication(nodeAddress(), "Failed to get the Datalogging Session Info");
         }
+
+        return info.sessionCount;
     }
 
     float WirelessNode_Impl::percentFull()
@@ -426,7 +417,7 @@ namespace mscl
             numBytesLogged = info.maxLoggedBytes;
         }
 
-        float result = (static_cast<float>(numBytesLogged) / static_cast<float>(dataStorageSize)) * 100.0f;
+        float result = static_cast<float>(numBytesLogged) / static_cast<float>(dataStorageSize) * 100.0f;
 
         //make sure it is within 0 to 100 %
         Utils::checkBounds_min(result, 0.0f);
@@ -475,7 +466,7 @@ namespace mscl
         //if the node doesn't support limited number of sweeps
         if(!features().supportsLimitedDuration())
         {
-            throw Error_NotSupported("The Number of Sweeps is not supported by this Ndoe.");
+            throw Error_NotSupported("The Number of Sweeps is not supported by this Node.");
         }
 
         return m_eepromHelper->read_numSweeps();
@@ -1021,7 +1012,7 @@ namespace mscl
         }
         catch(Error_NotSupported&)
         {
-            //the velocity category is supported, but the configuration eeprom isnt
+            //the velocity category is supported, but the configuration eeprom isn't
 
             //default of IPS
             return WirelessTypes::derivedVelocity_ips;
@@ -1184,7 +1175,7 @@ namespace mscl
 
         m_eepromHelper->clearHistogram();
 
-        //must cycle power for the clearing to take affect
+        //must cycle power for the clearing to take effect
         cyclePower();
     }
 
@@ -1194,7 +1185,7 @@ namespace mscl
         Utils::checkBounds_max(targetPercent, 100.0f);
 
         //attempt a few pings first
-        //(legacy (v1) autobalance doesn't have a response packet, so need to check communication)
+        //(legacy (v1) auto balance doesn't have a response packet, so need to check communication)
         uint8 retryCounter = 0;
         bool pingSuccess = false;
         while(!pingSuccess && retryCounter < 3)
@@ -1208,16 +1199,16 @@ namespace mscl
             throw Error_NodeCommunication(nodeAddress());
         }
 
-        //find the eeprom location that the autobalance will adjust
+        //find the eeprom location that the auto balance will adjust
         //Note: this also verifies that it is supported for this mask
         const EepromLocation& eepromLoc = features().findEeprom(WirelessTypes::chSetting_autoBalance, mask);
 
-        //currently, autobalance is always per channel, so get the channel from the mask
+        //currently, auto balance is always per channel, so get the channel from the mask
         uint8 channelNumber = mask.lastChEnabled();
 
         AutoBalanceResult result;
 
-        //perform the autobalance command with the parent base station
+        //perform the auto balance command with the parent base station
         m_baseStation.node_autoBalance(wirelessProtocol(), m_address, channelNumber, targetPercent, result);
 
         //clear the cache of the hardware offset eeprom location we adjusted
@@ -1436,13 +1427,13 @@ namespace mscl
         {
             return eeprom().readEeprom(location);
         }
-        catch(mscl::Error_NodeCommunication& e)
+        catch(Error_NodeCommunication& e)
         {
-            throw mscl::Error_NodeCommunication(e.nodeAddress(), "Failed to read the " + location.description() + " from Node " + Utils::toStr(e.nodeAddress()));
+            throw Error_NodeCommunication(e.nodeAddress(), "Failed to read the " + location.description() + " from Node " + Utils::toStr(e.nodeAddress()));
         }
-        catch(mscl::Error_NotSupported&)
+        catch(Error_NotSupported&)
         {
-            throw mscl::Error_NotSupported("Node " + Utils::toStr(nodeAddress()) + " does not support reading the " + location.description());
+            throw Error_NotSupported("Node " + Utils::toStr(nodeAddress()) + " does not support reading the " + location.description());
         }
     }
 
@@ -1452,13 +1443,13 @@ namespace mscl
         {
             eeprom().writeEeprom(location, val);
         }
-        catch(mscl::Error_NodeCommunication& e)
+        catch(Error_NodeCommunication& e)
         {
-            throw mscl::Error_NodeCommunication(e.nodeAddress(), "Failed to write the " + location.description() + " to Node " + Utils::toStr(e.nodeAddress()));
+            throw Error_NodeCommunication(e.nodeAddress(), "Failed to write the " + location.description() + " to Node " + Utils::toStr(e.nodeAddress()));
         }
-        catch(mscl::Error_NotSupported&)
+        catch(Error_NotSupported&)
         {
-            throw mscl::Error_NotSupported("Node " + Utils::toStr(nodeAddress()) + " does not support writing the " + location.description());
+            throw Error_NotSupported("Node " + Utils::toStr(nodeAddress()) + " does not support writing the " + location.description());
         }
     }
 
@@ -1495,7 +1486,7 @@ namespace mscl
             throw Error_NotSupported("The Communication Protocol is not supported by this Node.");
         }
 
-        if(!(wirelessProtocol().supportsTestCommProtocol()))
+        if(!wirelessProtocol().supportsTestCommProtocol())
         {
             throw Error_NotSupported("The Test Communication Protocol is not supported by this Node.");
         }

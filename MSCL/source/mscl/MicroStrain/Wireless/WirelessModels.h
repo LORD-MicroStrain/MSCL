@@ -6,8 +6,6 @@
 
 #pragma once
 
-#include "mscl/Types.h"
-
 namespace mscl
 {
     //API Class: WirelessModels
@@ -285,5 +283,4 @@ namespace mscl
         static BaseModel baseFromLegacyModel(uint16 legacyModel);
 #endif
     };
-
 }

@@ -97,11 +97,9 @@ namespace mscl
                 {
                     return Utils::toStr(m_samples) + "Hz";
                 }
+
                 //1 kHz and faster
-                else
-                {
-                    return Utils::toStrWithPrecision(m_samples / 1000.0) + "kHz";
-                }
+                return Utils::toStrWithPrecision(m_samples / 1000.0) + "kHz";
 
                 //slower than 1 Hz
             case rateType_seconds:
@@ -110,16 +108,15 @@ namespace mscl
                 {
                     return "Every " + Utils::toStr(m_samples) + " sec";
                 }
+
                 //minutes resolution
-                else if(m_samples < 3600)
+                if(m_samples < 3600)
                 {
                     return "Every " + Utils::toStrWithPrecision(m_samples / 60.0) + " min";
                 }
+
                 //hours resolution
-                else
-                {
-                    return "Every " + Utils::toStrWithPrecision(m_samples / 3600.0) + " hr";
-                }
+                return "Every " + Utils::toStrWithPrecision(m_samples / 3600.0) + " hr";
 
                 //event, no real sample rate
             case rateType_event:
@@ -130,10 +127,8 @@ namespace mscl
                 {
                     return "Every sample";
                 }
-                else
-                {
-                    return "Every " + Utils::toStr(m_samples) + " samples";
-                }
+
+                return "Every " + Utils::toStr(m_samples) + " samples";
 
             default:
                 assert(false);    //unknown sample rate type
@@ -252,18 +247,17 @@ namespace mscl
 
         if (baseRate == 0)
         {
-            return SampleRate::Decimation(decimationActual);
+            return Decimation(decimationActual);
         }
-        else if (decimationActual <= baseRate)
+
+        if (decimationActual <= baseRate)
         {
             uint32 rate = static_cast<uint32>(Utils::round(static_cast<float>(baseRate) / static_cast<float>(decimationActual)));
-            return SampleRate::Hertz(rate);
+            return Hertz(rate);
         }
-        else
-        {
-            uint32 rate = static_cast<uint32>(Utils::round(static_cast<float>(decimationActual) / static_cast<float>(baseRate)));
-            return SampleRate::Seconds(rate);
-        }
+
+        uint32 rate = static_cast<uint32>(Utils::round(static_cast<float>(decimationActual) / static_cast<float>(baseRate)));
+        return Seconds(rate);
     }
 
     inline SampleRate fromTimeSpan(const TimeSpan& timeSpan)
@@ -273,13 +267,11 @@ namespace mscl
             return SampleRate::Seconds(
                 static_cast<uint32>(timeSpan.getSeconds()));
         }
-        else
-        {
-            uint32 samplesPerSecond = static_cast<uint32>(
-                TimeSpan::NANOSECONDS_PER_SECOND /
-                timeSpan.getNanoseconds());
-            return SampleRate::Hertz(samplesPerSecond);
-        }
+
+        uint32 samplesPerSecond = static_cast<uint32>(
+            TimeSpan::NANOSECONDS_PER_SECOND /
+            timeSpan.getNanoseconds());
+        return SampleRate::Hertz(samplesPerSecond);
     }
 
     SampleRate operator*(const SampleRate& sampleRate, uint32 factor)

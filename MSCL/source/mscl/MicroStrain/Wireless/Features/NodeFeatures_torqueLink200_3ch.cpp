@@ -4,14 +4,15 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "NodeFeatures_torqueLink200_3ch.h"
-#include "AvailableSampleRates.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures_torqueLink200_3ch.h"
+
+#include "mscl/MicroStrain/SampleRate.h"
 #include "mscl/MicroStrain/Wireless/Configuration/NodeEepromMap.h"
-#include "mscl/Utils.h"
+#include "mscl/MicroStrain/Wireless/Features/AvailableSampleRates.h"
 
 namespace mscl
 {
-    NodeFeatures_torqueLink200_3ch::NodeFeatures_torqueLink200_3ch(const NodeInfo& info, bool ext):
+    NodeFeatures_torqueLink200_3ch::NodeFeatures_torqueLink200_3ch(const NodeInfo& info, bool ext) :
         NodeFeatures_200series(info)
     {
         if (ext)
@@ -170,7 +171,7 @@ namespace mscl
     {
         static const Version MIN_POLL_FW(12, 44849);
 
-        return (m_nodeInfo.firmwareVersion() >= MIN_POLL_FW);
+        return m_nodeInfo.firmwareVersion() >= MIN_POLL_FW;
     }
 
     const WirelessTypes::WirelessSampleRates NodeFeatures_torqueLink200_3ch::sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const

@@ -12,7 +12,7 @@ namespace mscl
     {
     }
 
-    ByteStream::ByteStream(Bytes bytesToCopy):
+    ByteStream::ByteStream(Bytes bytesToCopy) :
         m_bytes(bytesToCopy)
     {
     }

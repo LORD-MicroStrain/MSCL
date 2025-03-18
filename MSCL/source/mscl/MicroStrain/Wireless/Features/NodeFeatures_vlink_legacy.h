@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "NodeFeatures.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures.h"
 
 namespace mscl
 {
@@ -14,19 +14,17 @@ namespace mscl
     //    Contains information on features for the V-Link (legacy) node. Inherits from <NodeFeatures>.
     class NodeFeatures_vlink_legacy : public NodeFeatures
     {
-    private:
         NodeFeatures_vlink_legacy();    //disabled default constructor
 
     public:
-        virtual ~NodeFeatures_vlink_legacy(){};
+        ~NodeFeatures_vlink_legacy() override = default;
 
         //Constructor: NodeFeatures_vlink_legacy
         //    Creates a NodeFeatures_vlink_legacy object.
         NodeFeatures_vlink_legacy(const NodeInfo& info);
 
-    public:
-        virtual bool supportsSensorDelayConfig() const override;
+        bool supportsSensorDelayConfig() const override;
 
-        virtual const WirelessTypes::WirelessSampleRates sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const override;
+        const WirelessTypes::WirelessSampleRates sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const override;
     };
 }

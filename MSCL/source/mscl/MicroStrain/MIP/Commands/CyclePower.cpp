@@ -14,7 +14,7 @@ namespace mscl
         return GenericMipCommand::buildCommand(CMD_ID);
     }
 
-    CyclePower::Response::Response(std::weak_ptr<ResponseCollector> collector):
+    CyclePower::Response::Response(std::weak_ptr<ResponseCollector> collector) :
         GenericMipCommand::Response(MipTypes::CMD_RESET, collector, true, false, "CyclePower")
     {
     }

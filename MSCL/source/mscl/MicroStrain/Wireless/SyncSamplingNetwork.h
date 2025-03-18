@@ -6,14 +6,12 @@
 
 #pragma once
 
-#include "mscl/Timestamp.h"
-#include "WirelessTypes.h"
-#include "BaseStation.h"
-#include "SyncNetworkInfo.h"
-#include <map>
+#include "mscl/MicroStrain/Wireless/BaseStation.h"
 
 namespace mscl
 {
+    class WirelessNodeConfig;
+    class SyncNetworkInfo;
     class WirelessNode;
 
     //API Class: SyncSamplingNetwork
@@ -25,7 +23,6 @@ namespace mscl
         SyncSamplingNetwork(const SyncSamplingNetwork&) = delete;               //copy constructor disabled
         SyncSamplingNetwork& operator=(const SyncSamplingNetwork&) = delete;    //assignment operator disabled
 
-    public:
         //API Constructor: SyncSamplingNetwork
         //    Creates a SyncSamplingNetwork object used to configure and start a Synchronized Sampling network.
         //

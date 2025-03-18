@@ -12,7 +12,6 @@ namespace mscl
     //    Helper class used to obtain the current system time from as high-resolution of a clock as possible.
     class HighResClock
     {
-    private:
         //Variable: m_startHighResNanos
         //    The nanoseconds since epoch for the high-resolution clock.
         uint64 m_startHighResNanos;

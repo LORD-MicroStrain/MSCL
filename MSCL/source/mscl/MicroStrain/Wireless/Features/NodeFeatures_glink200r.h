@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "NodeFeatures_200series.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures_200series.h"
 
 namespace mscl
 {
@@ -15,16 +15,15 @@ namespace mscl
     class NodeFeatures_glink200r: public NodeFeatures_200series
     {
     public:
-        virtual ~NodeFeatures_glink200r(){};
+        ~NodeFeatures_glink200r() override = default;
 
         //Constructor: NodeFeatures_glink200
         //    Creates a NodeFeatures_glink200 object.
         NodeFeatures_glink200r(const NodeInfo& info);
 
-    public:
-        virtual const WirelessTypes::WirelessSampleRates sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const override;
-        virtual const WirelessTypes::SamplingModes samplingModes() const override;
-        virtual const WirelessTypes::DataFormats dataFormats() const override;
-        virtual const WirelessTypes::CfcFilters cfcFilters() const override;
+        const WirelessTypes::WirelessSampleRates sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const override;
+        const WirelessTypes::SamplingModes samplingModes() const override;
+        const WirelessTypes::DataFormats dataFormats() const override;
+        const WirelessTypes::CfcFilters cfcFilters() const override;
     };
 }

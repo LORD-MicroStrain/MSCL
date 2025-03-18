@@ -12,7 +12,7 @@ namespace mscl
         Matrix()
     {}
 
-    Vector::Vector(ValueType storedAs, const ByteStream& data):
+    Vector::Vector(ValueType storedAs, const ByteStream& data) :
         //size (columns) = (# of bytes in ByteStream / # of bytes in the values' type)
         Matrix(1, static_cast<uint16>(data.size() / Utils::valueTypeSize(storedAs)), storedAs, data)
     {}

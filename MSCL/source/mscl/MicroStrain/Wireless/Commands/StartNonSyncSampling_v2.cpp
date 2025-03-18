@@ -42,7 +42,7 @@ namespace mscl
         return cmd;
     }
 
-    StartNonSyncSampling_v2::Response::Response(NodeAddress nodeAddress, std::weak_ptr<ResponseCollector> collector):
+    StartNonSyncSampling_v2::Response::Response(NodeAddress nodeAddress, std::weak_ptr<ResponseCollector> collector) :
         WirelessResponsePattern(collector, WirelessProtocol::cmdId_startLdc_v2, nodeAddress),
         m_nodeAddress(nodeAddress)
     {

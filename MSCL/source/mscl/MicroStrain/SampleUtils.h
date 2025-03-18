@@ -18,7 +18,6 @@ namespace mscl
     //    Contains utilities/functions related to sampling
     class SampleUtils
     {
-    private:
         //Variable: WIRELESS_SAMPLE_RATE_MAP
         //    A static map of <SampleRate> objects to their <WirelessTypes::WirelessSampleRate> (eeprom value) equivalent
         static const std::map<SampleRate, WirelessTypes::WirelessSampleRate> WIRELESS_SAMPLE_RATE_MAP;

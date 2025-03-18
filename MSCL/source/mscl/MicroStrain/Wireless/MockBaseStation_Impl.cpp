@@ -4,24 +4,21 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "MockBaseStation_Impl.h"
-#include "mscl/Communication/Connection.h"
-#include "Features/BaseStationFeatures.h"
-#include "WirelessTypes.h"
+#include "mscl/MicroStrain/Wireless/MockBaseStation_Impl.h"
+
+#include "mscl/MicroStrain/Wireless/Features/BaseStationFeatures.h"
 
 namespace mscl
 {
     //Constructor
-    MockBaseStation_Impl::MockBaseStation_Impl(const BaseStationInfo& info):
+    MockBaseStation_Impl::MockBaseStation_Impl(const BaseStationInfo& info) :
         BaseStation_Impl(Connection::Mock(), 10),
         m_info(info)
-    {
-    }
+    {}
 
     //Destructor
     MockBaseStation_Impl::~MockBaseStation_Impl()
-    {
-    }
+    {}
 
     const BaseStationFeatures& MockBaseStation_Impl::features() const
     {
@@ -32,14 +29,14 @@ namespace mscl
             m_features = BaseStationFeatures::create(m_info);
         }
 
-        return *(m_features.get());
+        return *m_features.get();
     }
 
     const WirelessProtocol& MockBaseStation_Impl::protocol(WirelessTypes::CommProtocol commProtocol) const
     {
         rec_mutex_lock_guard lock(m_protocolMutex);
 
-        //given the BaseInfo up front for the MockBaseStation, so just use this
+        //given the BaseInfo up front for the MockBaseStation, so use this
         return m_info.protocol(commProtocol);
     }
 
@@ -47,10 +44,9 @@ namespace mscl
     {
         rec_mutex_lock_guard lock(m_protocolMutex);
 
-        //just fake it for the MockBaseStation
+        //fake it for the MockBaseStation
         return WirelessTypes::commProtocol_lxrs;
     }
-
 
     //================================================================================================
     //                                    BASE STATION COMMANDS
@@ -102,12 +98,8 @@ namespace mscl
     }
 
     void MockBaseStation_Impl::cyclePower(bool checkComm)
-    {
-        return;
-    }
+    {}
 
     void MockBaseStation_Impl::resetRadio()
-    {
-        return;
-    }
+    {}
 }

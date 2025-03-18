@@ -20,7 +20,6 @@ namespace mscl
     //    <WirelessNode>
     class InertialNode : public MipNode
     {
-    private:
         InertialNode();        //default constructor disabled
 
     public:
@@ -824,7 +823,7 @@ namespace mscl
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        mscl::uint32 getGPSTimeUpdate(MipTypes::TimeFrame timeFrame);
+        uint32 getGPSTimeUpdate(MipTypes::TimeFrame timeFrame);
 
         //API Function: setGPSTimeUpdate
         //    Sets the GPS Time Update.
@@ -838,7 +837,7 @@ namespace mscl
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        void setGPSTimeUpdate(MipTypes::TimeFrame, mscl::uint32 timeData);
+        void setGPSTimeUpdate(MipTypes::TimeFrame, uint32 timeData);
 
         //API Function: setConstellationSettings
         //    Sets the GNSS Constellation Settings.

@@ -13,7 +13,6 @@ namespace mscl
     //    Contains logic for the StartNonSyncSampling Node command
     class StartNonSyncSampling
     {
-    private:
         StartNonSyncSampling();                                          //default constructor disabled
         StartNonSyncSampling(const StartNonSyncSampling&);               //copy constructor disabled
         StartNonSyncSampling& operator=(const StartNonSyncSampling&);    //assignment operator disabled

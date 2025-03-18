@@ -10,7 +10,7 @@ namespace mscl
 {
     ByteStream ActivationCode::buildCommand_get()
     {
-        mscl::Bytes fieldData;
+        Bytes fieldData;
 
         return buildCommand(MipTypes::CMD_RTK_ACTIVATION_CODE, fieldData);
     }

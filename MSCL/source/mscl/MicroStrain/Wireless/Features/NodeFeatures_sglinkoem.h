@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "NodeFeatures.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures.h"
 
 namespace mscl
 {
@@ -14,17 +14,16 @@ namespace mscl
     //    Contains information on features for the SG-Link-OEM node. Inherits from <NodeFeatures>.
     class NodeFeatures_sglinkoem : public NodeFeatures
     {
-    private:
         NodeFeatures_sglinkoem();    //disabled default constructor
 
     public:
-        virtual ~NodeFeatures_sglinkoem(){};
+        ~NodeFeatures_sglinkoem() override = default;
 
         //Constructor: NodeFeatures_sglinkoem
         //    Creates a NodeFeatures_sglinkoem object.
         NodeFeatures_sglinkoem(const NodeInfo& info);
 
-        virtual bool supportsSensorDelayConfig() const override;
+        bool supportsSensorDelayConfig() const override;
 
         const uint32 minSensorDelay() const override;
 

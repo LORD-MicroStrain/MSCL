@@ -6,31 +6,29 @@
 
 #pragma once
 
-#include "WirelessDataPacket.h"
+#include "mscl/MicroStrain/Wireless/Packets/WirelessDataPacket.h"
 
 namespace mscl
 {
-
     //Class: BufferedLdcPacket
     //    A <WirelessDataPacket> derived class representing a Buffered LDC packet
     class BufferedLdcPacket : public WirelessDataPacket
     {
-    private:
         //=====================================================================================================
         //Constants: Buffered LDC Packet Information
-        //    PAYLOAD_OFFSET_APP_ID            - 0        - The offset into the payload to get the application ID
-        //    PAYLOAD_OFFSET_CHANNEL_MASK        - 1        - The offset into the payload to get the channel mask
-        //    PAYLOAD_OFFSET_SAMPLE_RATE        - 2        - The offset into the payload to get the sample rate
-        //    PAYLOAD_OFFSET_DATA_TYPE        - 3        - The offset into the payload to get the data type
-        //    PAYLOAD_OFFSET_TICK                - 4        - The offset into the payload to get the tick (2 bytes)
-        //    PAYLOAD_OFFSET_CHANNEL_DATA        - 6        - The offset into the payload where the channel data starts
+        //    PAYLOAD_OFFSET_APP_ID           - 0   - The offset into the payload to get the application ID
+        //    PAYLOAD_OFFSET_CHANNEL_MASK     - 1   - The offset into the payload to get the channel mask
+        //    PAYLOAD_OFFSET_SAMPLE_RATE      - 2   - The offset into the payload to get the sample rate
+        //    PAYLOAD_OFFSET_DATA_TYPE        - 3   - The offset into the payload to get the data type
+        //    PAYLOAD_OFFSET_TICK             - 4   - The offset into the payload to get the tick (2 bytes)
+        //    PAYLOAD_OFFSET_CHANNEL_DATA     - 6   - The offset into the payload where the channel data starts
         //=====================================================================================================
-        static const uint16 PAYLOAD_OFFSET_APP_ID        = 0;
+        static const uint16 PAYLOAD_OFFSET_APP_ID       = 0;
         static const uint16 PAYLOAD_OFFSET_CHANNEL_MASK = 1;
-        static const uint16 PAYLOAD_OFFSET_SAMPLE_RATE    = 2;
+        static const uint16 PAYLOAD_OFFSET_SAMPLE_RATE  = 2;
         static const uint16 PAYLOAD_OFFSET_DATA_TYPE    = 3;
-        static const uint16 PAYLOAD_OFFSET_TICK            = 4;
-        static const uint16 PAYLOAD_OFFSET_CHANNEL_DATA    = 6;
+        static const uint16 PAYLOAD_OFFSET_TICK         = 4;
+        static const uint16 PAYLOAD_OFFSET_CHANNEL_DATA = 6;
 
         //=====================================================================================================
         //Constants: Packet values
@@ -49,7 +47,6 @@ namespace mscl
     private:
         BufferedLdcPacket();    //default constructor disabled
 
-    private:
         //Function: parseSweeps
         //    Parses the passed in WirelessPacket for all the sweep information and adds a sweep to the sweeps container
         //
@@ -59,17 +56,17 @@ namespace mscl
 
     public:
         //Function: integrityCheck
-        //    Verifies that the packet is a well formed Buffered LDC packet
+        //    Verifies that the packet is a well-formed Buffered LDC packet
         //
         //Parameters:
         //    packet - The fully formed Wireless Packet to check the integrity of
         //
         //Returns:
-        //    true if the packet is a well formed Buffered LDC packet, false otherwise
+        //    true if the packet is a well-formed Buffered LDC packet, false otherwise
         static bool integrityCheck(const WirelessPacket& packet);
 
         //Function: getUniqueId
-        //    Gets the unique Id of the <WirelessPacket> passed in
+        //    Gets the unique ID of the <WirelessPacket> passed in
         //
         //Parameters:
         //    packet - The <WirelessPacket> to get the unique id of
@@ -78,5 +75,4 @@ namespace mscl
         //    The <UniqueWirelessPacketId> of the passed in packet
         static UniqueWirelessPacketId getUniqueId(const WirelessPacket& packet);
     };
-
 }

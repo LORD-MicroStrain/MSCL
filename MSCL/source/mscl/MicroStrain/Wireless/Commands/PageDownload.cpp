@@ -21,7 +21,7 @@ namespace mscl
         return cmd;
     }
 
-    PageDownload::Response::Response(std::weak_ptr<ResponseCollector> collector):
+    PageDownload::Response::Response(std::weak_ptr<ResponseCollector> collector) :
         WirelessResponsePattern(collector, WirelessProtocol::cmdId_pageDownload, 0),    //note: passing 0 since this response doesn't check node address :(
         m_matchedPart1(false)
     {

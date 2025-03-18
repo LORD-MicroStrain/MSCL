@@ -25,7 +25,7 @@ namespace mscl
     {
     protected:
         MipFieldParser(){}                //default constructor disabled
-        virtual ~MipFieldParser(){}
+        virtual ~MipFieldParser() = default;
 
     private:
         MipFieldParser(const MipFieldParser&);                //copy constructor disabled

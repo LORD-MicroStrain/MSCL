@@ -13,6 +13,10 @@
 
 using namespace mscl;
 
+DISABLE_WARNING_BOOST_START
+#include <boost/test/unit_test.hpp>
+DISABLE_WARNING_BOOST_END
+
 Bytes buildBaseReadEepromResponseV1(uint16 valueRead)
 {
     ChecksumBuilder checksum;

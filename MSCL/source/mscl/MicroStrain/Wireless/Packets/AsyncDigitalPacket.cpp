@@ -4,26 +4,22 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "mscl/Exceptions.h"
-#include "AsyncDigitalPacket.h"
-#include "mscl/MicroStrain/SampleUtils.h"
-#include "mscl/MicroStrain/Wireless/ChannelMask.h"
-#include "mscl/TimeSpan.h"
-#include "mscl/Types.h"
+#include "mscl/MicroStrain/Wireless/Packets/AsyncDigitalPacket.h"
+
+#include "mscl/MicroStrain/Wireless/DataSweep.h"
 
 namespace mscl
 {
-
     AsyncDigitalPacket::AsyncDigitalPacket(const WirelessPacket& packet)
     {
         //construct the data packet from the wireless packet passed in
-        m_nodeAddress        = packet.nodeAddress();
-        m_deliveryStopFlags = packet.deliveryStopFlags();
-        m_type                = packet.type();
-        m_nodeRSSI            = packet.nodeRSSI();
-        m_baseRSSI            = packet.baseRSSI();
-        m_frequency            = packet.frequency();
-        m_payload            = packet.payload();
+        m_nodeAddress              = packet.nodeAddress();
+        m_deliveryStopFlags        = packet.deliveryStopFlags();
+        m_type                     = packet.type();
+        m_nodeRSSI                 = packet.nodeRSSI();
+        m_baseRSSI                 = packet.baseRSSI();
+        m_frequency                = packet.frequency();
+        m_payload                  = packet.payload();
         m_payloadOffsetChannelData = PAYLOAD_OFFSET_CHANNEL_DATA;
 
         //parse the data sweeps in the packet
@@ -33,13 +29,13 @@ namespace mscl
     void AsyncDigitalPacket::parseSweeps()
     {
         //read the values from the payload
-        uint16 channelMask        = m_payload.read_uint16(PAYLOAD_OFFSET_CHANNEL_MASK);
-        uint16 tick                = m_payload.read_uint16(PAYLOAD_OFFSET_TICK);
-        uint64 timestampSeconds    = m_payload.read_uint32(PAYLOAD_OFFSET_TS_SEC);        //the timestamp (UTC) seconds part
+        uint16 channelMask       = m_payload.read_uint16(PAYLOAD_OFFSET_CHANNEL_MASK);
+        uint16 tick              = m_payload.read_uint16(PAYLOAD_OFFSET_TICK);
+        uint64 timestampSeconds  = m_payload.read_uint32(PAYLOAD_OFFSET_TS_SEC);        //the timestamp (UTC) seconds part
         uint64 timestampNanos    = m_payload.read_uint32(PAYLOAD_OFFSET_TS_NANOSEC);    //the timestamp (UTC) nanoseconds part
 
         //build the full nanosecond resolution timestamp from the seconds and nanoseconds values read above
-        uint64 packetTimestamp = (timestampSeconds * TimeSpan::NANOSECONDS_PER_SECOND) + timestampNanos;
+        uint64 packetTimestamp = timestampSeconds * TimeSpan::NANOSECONDS_PER_SECOND + timestampNanos;
 
         if(!timestampWithinRange(Timestamp(packetTimestamp)))
         {
@@ -76,7 +72,7 @@ namespace mscl
             sweep.sampleRate(digitalRate);
 
             //find the offset into the payload to get the data
-            uint32 readPos = (sweepItr * m_sweepSize) + PAYLOAD_OFFSET_CHANNEL_DATA;
+            uint32 readPos = sweepItr * m_sweepSize + PAYLOAD_OFFSET_CHANNEL_DATA;
 
             //get this sweep's timestamp offset
             uint64 timeOffset = m_payload.read_uint16(readPos);
@@ -88,7 +84,7 @@ namespace mscl
             ChannelMask digitalDataMask(digitalData);
 
             //build this sweep's timestamp
-            sweep.timestamp(Timestamp(packetTimestamp + ((timeOffset * TimeSpan::NANOSECONDS_PER_SECOND) / 32768) ));
+            sweep.timestamp(Timestamp(packetTimestamp + timeOffset * TimeSpan::NANOSECONDS_PER_SECOND / 32768 ));
 
             //get this sweep's node and base rssi values
             sweep.nodeRssi(m_nodeRSSI);
@@ -137,7 +133,7 @@ namespace mscl
         //verify the payload size
         if(payload.size() < PAYLOAD_OFFSET_CHANNEL_DATA)
         {
-            //payload is too small to be valid
+            //The payload is too small to be valid
             return false;
         }
 

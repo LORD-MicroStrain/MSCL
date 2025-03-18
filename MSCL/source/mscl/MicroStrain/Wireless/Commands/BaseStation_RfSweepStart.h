@@ -38,7 +38,6 @@ namespace mscl
         //    Handles the response to the command
         class Response : public WirelessResponsePattern
         {
-        private:
             //Variable: m_min;
             //  The min frequency to match in the response.
             uint32 m_min;

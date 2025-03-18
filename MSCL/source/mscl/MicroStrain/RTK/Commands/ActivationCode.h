@@ -14,7 +14,6 @@ namespace mscl
     //    Contains the logic for the ActivationCode command.
     class ActivationCode : private GenericMipCommand
     {
-    private:
         ActivationCode() {}                //default constructor disabled
 
         //Constants: Packet Bytes
@@ -22,14 +21,14 @@ namespace mscl
         static const uint8 FIELD_DATA_BYTE = 0x87;
 
     public:
-        virtual ~ActivationCode() {}
+        ~ActivationCode() override = default;
 
         static ByteStream buildCommand_get();
 
         class Response : public GenericMipCommand::Response
         {
         protected:
-            virtual uint8 fieldDataByte() const override { return FIELD_DATA_BYTE; }
+            uint8 fieldDataByte() const override { return FIELD_DATA_BYTE; }
 
         public:
             Response(std::weak_ptr<ResponseCollector> collector);

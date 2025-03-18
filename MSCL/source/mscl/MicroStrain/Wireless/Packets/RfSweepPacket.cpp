@@ -4,12 +4,12 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "RfSweepPacket.h"
-#include "mscl/Bin.h"
+#include "mscl/MicroStrain/Wireless/Packets/RfSweepPacket.h"
+
+#include "mscl/MicroStrain/Wireless/DataSweep.h"
 
 namespace mscl
 {
-
     RfSweepPacket::RfSweepPacket(const WirelessPacket& packet)
     {
         //construct the data packet from the wireless packet passed in

@@ -10,7 +10,7 @@
 
 namespace mscl
 {
-    ResponsePattern::ResponsePattern():
+    ResponsePattern::ResponsePattern() :
         m_fullyMatched(false),
         m_success(false)
     {

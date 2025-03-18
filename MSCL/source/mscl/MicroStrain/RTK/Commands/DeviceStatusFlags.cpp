@@ -10,7 +10,7 @@ namespace mscl
 {
     ByteStream DeviceStatusFlags::buildCommand_get()
     {
-        mscl::Bytes fieldData;
+        Bytes fieldData;
 
         return buildCommand(MipTypes::CMD_RTK_DEVICE_STATUS_FLAGS, fieldData);
     }

@@ -6,18 +6,16 @@
 
 #pragma once
 
-#include "mscl/Types.h"
-#include "mscl/TimeSpan.h"
-#include "WirelessTypes.h"
-#include "WirelessModels.h"
+#include "mscl/MicroStrain/Wireless/WirelessModels.h"
+#include "mscl/MicroStrain/Wireless/WirelessTypes.h"
 
 namespace mscl
 {
+#ifndef SWIG
     //Title: SyncSamplingFormulas
 
     class SampleRate;    //forward declaration
 
-#ifndef SWIG
     //Namespace: SyncSamplingFormulas
     //    Contains formulas for determining Sync Sampling configuration
     namespace SyncSamplingFormulas
@@ -230,7 +228,7 @@ namespace mscl
         //
         //Returns:
         //    A <TimeSpan> representing the minimum time that can be assigned for a Burst Sync Sampling session.
-        TimeSpan minTimeBetweenBursts(uint32 numRawBytesPerSweep, uint32 numDerivedBytesPerSweep, const mscl::SampleRate& rawSampleRate, uint32 sweepsPerBurst, WirelessTypes::CommProtocol commProtocol);
+        TimeSpan minTimeBetweenBursts(uint32 numRawBytesPerSweep, uint32 numDerivedBytesPerSweep, const SampleRate& rawSampleRate, uint32 sweepsPerBurst, WirelessTypes::CommProtocol commProtocol);
 
         //Function: burstTxPerSecond
         //    Calculates the burst transmissions per second

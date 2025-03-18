@@ -18,7 +18,7 @@ namespace mscl
     {
     }
 
-    MipDataField::MipDataField(uint16 fieldId, Bytes fieldData):
+    MipDataField::MipDataField(uint16 fieldId, Bytes fieldData) :
         m_fieldId(fieldId),
         m_fieldData(fieldData)
     {

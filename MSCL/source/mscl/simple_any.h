@@ -180,7 +180,7 @@ any_fxn* get_any_fxn()
     };
 
     return &fxns;
-};
+}
 
 }
 

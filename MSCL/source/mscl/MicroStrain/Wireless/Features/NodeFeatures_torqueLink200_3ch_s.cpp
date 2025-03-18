@@ -4,14 +4,13 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "NodeFeatures_torqueLink200_3ch_s.h"
-#include "AvailableSampleRates.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures_torqueLink200_3ch_s.h"
+
 #include "mscl/MicroStrain/Wireless/Configuration/NodeEepromMap.h"
-#include "mscl/Utils.h"
 
 namespace mscl
 {
-    NodeFeatures_torqueLink200_3ch_s::NodeFeatures_torqueLink200_3ch_s(const NodeInfo& info):
+    NodeFeatures_torqueLink200_3ch_s::NodeFeatures_torqueLink200_3ch_s(const NodeInfo& info) :
         NodeFeatures_torqueLink200_3ch(info, true)
     {
         addCalCoeffChannelGroup(1, "Differential", NodeEepromMap::CH_ACTION_SLOPE_1, NodeEepromMap::CH_ACTION_ID_1);

@@ -6,11 +6,10 @@
 
 #pragma once
 
-#include "WirelessDataPacket.h"
+#include "mscl/MicroStrain/Wireless/Packets/WirelessDataPacket.h"
 
 namespace mscl
 {
-
     //Class: ShmPacket_v2_aspp3
     //    A <WirelessDataPacket> derived class representing a Structural Health Monitoring Packet
     class ShmPacket_v2_aspp3 : public WirelessDataPacket
@@ -28,7 +27,6 @@ namespace mscl
         //    The number of bins in the packet.
         size_t m_binCount;
 
-    private:
         ShmPacket_v2_aspp3();    //default constructor disabled
 
         //Function: parseSweeps
@@ -37,13 +35,13 @@ namespace mscl
 
     public:
         //Function: integrityCheck
-        //    Verifies that the packet is a well formed Shm-Link packet.
+        //    Verifies that the packet is a well-formed Shm-Link packet.
         //
         //Parameters:
         //    packet - The fully formed Wireless Packet to check the integrity of.
         //
         //Returns:
-        //    true if the packet is a well formed SHM packet, false otherwise.
+        //    true if the packet is a well-formed SHM packet, false otherwise.
         static bool integrityCheck(const WirelessPacket& packet);
 
         //Function: buildChannelName
@@ -53,5 +51,4 @@ namespace mscl
         //  angle - The angle of the data.
         static std::string buildChannelName(float angle);
     };
-
 }

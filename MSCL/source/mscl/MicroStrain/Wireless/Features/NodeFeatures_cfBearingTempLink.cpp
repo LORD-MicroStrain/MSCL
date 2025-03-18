@@ -4,11 +4,9 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "NodeFeatures_cfBearingTempLink.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures_cfBearingTempLink.h"
 
-#include "mscl/Exceptions.h"
-#include "mscl/MicroStrain/Wireless/Configuration/NodeEepromMap.h"
-#include "AvailableSampleRates.h"
+#include "mscl/MicroStrain/Wireless/Features/AvailableSampleRates.h"
 
 namespace mscl
 {

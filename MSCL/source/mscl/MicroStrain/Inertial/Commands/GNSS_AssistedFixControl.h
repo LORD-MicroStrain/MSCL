@@ -19,14 +19,14 @@ namespace mscl
         static const int NO_FLAGS_DEFINED = 0xFF;
 
     private:
-        GNSS_AssistedFixControl() {};                //default constructor disabled
+        GNSS_AssistedFixControl() {}                //default constructor disabled
 
          //Constants: Packet Bytes
          //     FIELD_DATA_BYTE - Descriptor byte for the Field data.
         static const uint8 FIELD_DATA_BYTE = 0xA2;
 
     public:
-        virtual ~GNSS_AssistedFixControl() {};
+        virtual ~GNSS_AssistedFixControl() {}
 
         //Function: buildCommand_get
         //    Builds the bytes for the "get" command.
@@ -52,7 +52,7 @@ namespace mscl
         protected:
             //Function: fieldDataByte
             //    Gets the data field descriptor byte
-            virtual uint8 fieldDataByte() const    override { return FIELD_DATA_BYTE; }
+            uint8 fieldDataByte() const    override { return FIELD_DATA_BYTE; }
 
         public:
             //Constructor: Response

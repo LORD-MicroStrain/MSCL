@@ -323,7 +323,7 @@ namespace mscl
         m_impl->setGNSSAssistTimeUpdate(timeUpdate);
     }
 
-    mscl::uint32 InertialNode::getGPSTimeUpdate(MipTypes::TimeFrame timeFrame)
+    uint32 InertialNode::getGPSTimeUpdate(MipTypes::TimeFrame timeFrame)
     {
         switch (timeFrame)
         {
@@ -336,7 +336,7 @@ namespace mscl
         }
     }
 
-    void InertialNode::setGPSTimeUpdate(MipTypes::TimeFrame timeFrame, mscl::uint32 time)
+    void InertialNode::setGPSTimeUpdate(MipTypes::TimeFrame timeFrame, uint32 time)
     {
         m_impl->setGPSTimeUpdate(timeFrame, time);
     }

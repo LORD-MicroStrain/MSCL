@@ -18,7 +18,7 @@ namespace mscl
         return GenericMipCommand::buildCommand(CMD_ID);
     }
 
-    GetEstFilterDataRateBase::Response::Response(std::weak_ptr<ResponseCollector> collector):
+    GetEstFilterDataRateBase::Response::Response(std::weak_ptr<ResponseCollector> collector) :
         GenericMipCommand::Response(MipTypes::CMD_GET_EF_RATE_BASE, collector, true, true, "Get Estimation Filter Data Rate Base")
     {}
 
@@ -90,7 +90,7 @@ namespace mscl
     }
 
 
-    EstFilterMessageFormat::Response::Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse):
+    EstFilterMessageFormat::Response::Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse) :
         GenericMipCommand::Response(MipTypes::CMD_EF_MESSAGE_FORMAT, collector, true, dataResponse, "Estimation Filter Message Format")
     {}
 
@@ -108,7 +108,7 @@ namespace mscl
         return GenericMipCommand::buildCommand(CMD_ID);
     }
 
-    ResetFilter::Response::Response(std::weak_ptr<ResponseCollector> collector):
+    ResetFilter::Response::Response(std::weak_ptr<ResponseCollector> collector) :
         GenericMipCommand::Response(MipTypes::CMD_EF_RESET_FILTER, collector, true, false, "Reset Filter")
     {
     }
@@ -130,7 +130,7 @@ namespace mscl
         return GenericMipCommand::buildCommand(CMD_ID, fieldData.data());
     }
 
-    SetInitialAttitude::Response::Response(std::weak_ptr<ResponseCollector> collector):
+    SetInitialAttitude::Response::Response(std::weak_ptr<ResponseCollector> collector) :
         GenericMipCommand::Response(MipTypes::CMD_EF_INIT_ATTITUDE, collector, true, false, "Set Initial Attitude")
     {
     }
@@ -150,7 +150,7 @@ namespace mscl
         return GenericMipCommand::buildCommand(CMD_ID, fieldData.data());
     }
 
-    SetInitialHeading::Response::Response(std::weak_ptr<ResponseCollector> collector):
+    SetInitialHeading::Response::Response(std::weak_ptr<ResponseCollector> collector) :
         GenericMipCommand::Response(MipTypes::CMD_EF_INIT_HEADING, collector, true, false, "Set Initial Heading")
     {
     }
@@ -185,7 +185,7 @@ namespace mscl
         return GenericMipCommand::buildCommand(CMD_ID, fieldData.data());
     }
 
-    AutoInitializeControl::Response::Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse):
+    AutoInitializeControl::Response::Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse) :
         GenericMipCommand::Response(MipTypes::CMD_EF_AUTO_INIT_CTRL, collector, true, dataResponse, "Auto-Initialization Control")
     {
     }
@@ -403,7 +403,7 @@ namespace mscl
         return GenericMipCommand::buildCommand(CMD_ID, fieldData.data());
     }
 
-    CmdedVelZupt::Response::Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse):
+    CmdedVelZupt::Response::Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse) :
         GenericMipCommand::Response(MipTypes::CMD_EF_CMDED_ZERO_VEL_UPDATE, collector, true, false, "Commanded Zero Velocity Update")
     {
     }
@@ -460,7 +460,7 @@ namespace mscl
         return GenericMipCommand::buildCommand(CMD_ID, fieldData.data());
     }
 
-    SensorToVehicFrameTrans::Response::Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse):
+    SensorToVehicFrameTrans::Response::Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse) :
         GenericMipCommand::Response(MipTypes::CMD_EF_SENS_VEHIC_FRAME_ROTATION_EULER, collector, true, dataResponse, "Sensor to Vehicle Frame Transformation")
     {
     }
@@ -502,7 +502,7 @@ namespace mscl
         return GenericMipCommand::buildCommand(MipTypes::CMD_EF_SENS_VEHIC_FRAME_OFFSET, fieldData.data());
     }
 
-    SensorToVehicFrameOffset::Response::Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse):
+    SensorToVehicFrameOffset::Response::Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse) :
         GenericMipCommand::Response(MipTypes::CMD_EF_SENS_VEHIC_FRAME_OFFSET, collector, true, dataResponse, "Sensor to Vehicle Frame Offset")
     {
     }
@@ -544,7 +544,7 @@ namespace mscl
         return GenericMipCommand::buildCommand(CMD_ID, fieldData.data());
     }
 
-    AntennaOffset::Response::Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse):
+    AntennaOffset::Response::Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse) :
         GenericMipCommand::Response(MipTypes::CMD_EF_ANTENNA_OFFSET, collector, true, dataResponse, "Antenna Offset")
     {
     }

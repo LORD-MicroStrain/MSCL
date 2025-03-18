@@ -8,7 +8,6 @@
 #include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
 #include "mscl/MicroStrain/Wireless/WirelessNode.h"
 
-#include "mock_BaseStation.h"
 #include "mock_WirelessNode.h"
 
 using namespace mscl;

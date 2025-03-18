@@ -16,7 +16,7 @@ namespace mscl
     class Value
     {
     public:
-        virtual ~Value(){}
+        virtual ~Value() =  default;
 
 #ifndef SWIG
         //Constructor: Value

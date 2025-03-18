@@ -4,17 +4,16 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "MockWirelessNode_Impl.h"
-#include "Configuration/MockNodeEeprom.h"
-#include "Features/NodeFeatures.h"
+#include "mscl/MicroStrain/Wireless/MockWirelessNode_Impl.h"
+
+#include "mscl/MicroStrain/Wireless/Configuration/MockNodeEeprom.h"
 
 namespace mscl
 {
-    MockWirelessNode_Impl::MockWirelessNode_Impl(NodeAddress nodeAddress, const BaseStation& basestation, const NodeInfo& info):
+    MockWirelessNode_Impl::MockWirelessNode_Impl(NodeAddress nodeAddress, const BaseStation& basestation, const NodeInfo& info) :
         WirelessNode_Impl(nodeAddress, basestation),
         m_info(info)
-    {
-    }
+    {}
 
     NodeEeprom& MockWirelessNode_Impl::eeprom() const
     {
@@ -27,7 +26,7 @@ namespace mscl
             m_eeprom.reset(new MockNodeEeprom(this, m_baseStation, m_eepromSettings));
         }
 
-        return *(m_eeprom.get());
+        return *m_eeprom.get();
     }
 
     void MockWirelessNode_Impl::importEepromCache(const WirelessTypes::EepromMap& eeproms) const
@@ -41,13 +40,13 @@ namespace mscl
         {
             return eeprom().readEeprom(location);
         }
-        catch(mscl::Error_NodeCommunication& e)
+        catch(Error_NodeCommunication& e)
         {
-            throw mscl::Error_NodeCommunication(e.nodeAddress(), "Attempted to read the " + location.description() + " from Node " + Utils::toStr(e.nodeAddress()) + " but it is not in the Mock Node's Cache.");
+            throw Error_NodeCommunication(e.nodeAddress(), "Attempted to read the " + location.description() + " from Node " + Utils::toStr(e.nodeAddress()) + " but it is not in the Mock Node's Cache.");
         }
-        catch(mscl::Error_NotSupported&)
+        catch(Error_NotSupported&)
         {
-            throw mscl::Error_NotSupported("Node " + Utils::toStr(nodeAddress()) + " does not support reading the " + location.description());
+            throw Error_NotSupported("Node " + Utils::toStr(nodeAddress()) + " does not support reading the " + location.description());
         }
     }
 
@@ -60,7 +59,7 @@ namespace mscl
             m_features = NodeFeatures::create(m_info);
         }
 
-        return *(m_features.get());
+        return *m_features.get();
     }
 
     const WirelessProtocol& MockWirelessNode_Impl::protocol(WirelessTypes::CommProtocol commProtocol) const
@@ -73,13 +72,13 @@ namespace mscl
 
     Version MockWirelessNode_Impl::firmwareVersion() const
     {
-        //use cached info for Mock object
+        //use cached info for the Mock object
         return m_info.firmwareVersion();
     }
 
     WirelessModels::NodeModel MockWirelessNode_Impl::model() const
     {
-        //use cached info for Mock object
+        //use cached info for the Mock object
         return m_info.model();
     }
 
@@ -105,7 +104,7 @@ namespace mscl
 
     WirelessTypes::RegionCode MockWirelessNode_Impl::regionCode() const
     {
-        //use cached info for Mock object
+        //use cached info for the Mock object
         return m_info.regionCode();
     }
 
@@ -130,14 +129,10 @@ namespace mscl
     }
 
     void MockWirelessNode_Impl::cyclePower()
-    {
-        return;
-    }
+    {}
 
     void MockWirelessNode_Impl::resetRadio()
-    {
-        return;
-    }
+    {}
 
     SetToIdleStatus MockWirelessNode_Impl::setToIdle()
     {

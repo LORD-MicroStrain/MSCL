@@ -5,8 +5,6 @@
 *****************************************************************************************/
 
 #pragma once
-#include "mscl/Types.h"
-#include "mscl/MicroStrain/ByteStream.h"
 
 namespace mscl
 {
@@ -30,7 +28,7 @@ namespace mscl
 
         //Destructor: ~NodeMemory
         //  Destroys a NodeMemory object.
-        virtual ~NodeMemory() {};
+        virtual ~NodeMemory() {}
 
     private:
         NodeMemory();                               //disabled default constructor
@@ -50,7 +48,6 @@ namespace mscl
         //    Contains data for the current page that has been downloaded.
         ByteStream m_currentData;
 
-    protected:
         //Function: nextByte
         //    Reads the next byte from the datalogging data.
         //
@@ -65,7 +62,7 @@ namespace mscl
 
     public:
         //Function: isNextByteNewHeader
-        //  Checks if the next byte will be the start of a new header.
+        //  Checks if the next byte is the start of a new header.
         //  Note: upon returning from this function, the read position will not have changed.
         //
         //Returns:

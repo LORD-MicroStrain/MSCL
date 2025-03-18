@@ -45,7 +45,7 @@ namespace mscl
         protected:
             //Function: fieldDataByte
             //    Gets the data field descriptor byte
-            virtual uint8 fieldDataByte() const override { return FIELD_DATA_BYTE; }
+            uint8 fieldDataByte() const override { return FIELD_DATA_BYTE; }
 
         public:
             //Constructor: Response
@@ -116,7 +116,7 @@ namespace mscl
         class Response : public GenericMipCommand::Response
         {
         protected:
-            virtual uint8 fieldDataByte() const    override { return FIELD_DATA_BYTE; }
+            uint8 fieldDataByte() const    override { return FIELD_DATA_BYTE; }
 
         public:
             Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse);

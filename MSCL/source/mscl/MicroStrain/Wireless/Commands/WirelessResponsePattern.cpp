@@ -11,7 +11,7 @@
 
 namespace mscl
 {
-    WirelessResponsePattern::WirelessResponsePattern(uint16 commandId, NodeAddress nodeAddress):
+    WirelessResponsePattern::WirelessResponsePattern(uint16 commandId, NodeAddress nodeAddress) :
         ResponsePattern(),
         m_commandId(commandId),
         m_nodeAddress(nodeAddress),

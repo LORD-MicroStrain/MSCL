@@ -44,7 +44,6 @@ namespace mscl
         //    - <Error_InvalidTcpServer>: the specified server address and/or server port is invalid.
         virtual void establishConnection();
 
-    private:
         typedef boost::asio::ip::tcp tcp;
 
         //Variable: m_host

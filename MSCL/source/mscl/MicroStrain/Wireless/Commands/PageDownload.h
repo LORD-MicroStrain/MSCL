@@ -17,7 +17,6 @@ namespace mscl
     //    Contains logic for the PageDownload Node command
     class PageDownload
     {
-    private:
         PageDownload();                                    //default constructor disabled
         PageDownload(const PageDownload&);                //copy constructor disabled
         PageDownload& operator=(const PageDownload&);    //assignment operator disabled
@@ -64,7 +63,7 @@ namespace mscl
             //
             //Returns:
             //    true if the bytes match a response pattern, false otherwise
-            virtual bool match(DataBuffer& data) override;
+            bool match(DataBuffer& data) override;
 
             //Function: dataPoints
             //    Gets the dataPoints that were downloaded from the Node

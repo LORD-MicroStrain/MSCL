@@ -6,9 +6,8 @@
 
 #pragma once
 
-#include "Eeprom.h"
 #include "mscl/MicroStrain/Wireless/BaseStation.h"
-#include "mscl/MicroStrain/Wireless/Commands/WirelessProtocol.h"
+#include "mscl/MicroStrain/Wireless/Configuration/Eeprom.h"
 
 namespace mscl
 {
@@ -45,7 +44,6 @@ namespace mscl
     //    Used to read and write to Wireless Nodes' eeproms and provide caching functionality.
     class NodeEeprom : public Eeprom
     {
-    private:
         static const uint16 PAGE_0_MAX_EEPROM = 262;    //the max eeprom location that is in page 0 (from the node page download command)
         static const uint16 PAGE_1_MAX_EEPROM = 526;    //the max eeprom location that is in page 1 (from the node page download command)
         static const uint16 EEPROMS_PER_PAGE = 264;        //the number of eeprom locations per page (from the node page download command)
@@ -60,7 +58,7 @@ namespace mscl
         //    settings - The <NodeEepromSettings> to use.
         NodeEeprom(const WirelessNode_Impl* node, const BaseStation& base, const NodeEepromSettings& settings);
 
-        virtual ~NodeEeprom() {};
+        ~NodeEeprom() override {}
 
     protected:
         const WirelessNode_Impl* m_node;
@@ -73,7 +71,6 @@ namespace mscl
         //    Whether we can use a group eeprom read when reading from eeprom.
         bool m_useGroupRead;
 
-    protected:
         //Function: updateCacheFromDevice
         //    Attempts to update the cache by reading the value from the Node with the nodeAddress given at initialization.
         //    Any values that are read from the Node will be updated in the cache.
@@ -86,7 +83,7 @@ namespace mscl
         //
         //Exceptions:
         //    - <Error_NotSupported>: Unsupported eeprom location.
-        virtual bool updateCacheFromDevice(uint16 location) final;
+        bool updateCacheFromDevice(uint16 location) final;
 
     private:
         //Function: parseEepromPage
@@ -133,7 +130,7 @@ namespace mscl
         //    - <Error_NotSupported>: Unsupported eeprom location.
         //    - <Error_NodeCommunication>: Failed to read the value from the Node.
         //    - <Error_Connection>: A connection error has occurred with the BaseStation.
-        virtual uint16 readEeprom(uint16 location) override;
+        uint16 readEeprom(uint16 location) override;
 
         //Function: writeEeprom
         //    Attempts to write an eeprom value to the Node.
@@ -148,6 +145,6 @@ namespace mscl
         //Exceptions:
         //    - <Error_NodeCommunication>: Failed to write the value to the Node.
         //    - <Error_Connection>: A connection error has occurred with the BaseStation.
-        virtual void writeEeprom(uint16 location, uint16 value) override;
+        void writeEeprom(uint16 location, uint16 value) override;
     };
 }

@@ -21,7 +21,6 @@ namespace mscl
     //    A class representing a MicroStrain Displacement Node
     class DisplacementNode
     {
-    private:
         DisplacementNode();        //default constructor disabled
 
     public:
@@ -35,7 +34,7 @@ namespace mscl
         //    - <Error_Connection>: A problem occured with the Connection.
         explicit DisplacementNode(Connection connection);
 
-        virtual ~DisplacementNode() {}
+        virtual ~DisplacementNode() = default;
 
 #ifndef SWIG
         DisplacementNode(std::shared_ptr<MipNode_Impl> impl); //constructor with direct underlying implementation for this class.

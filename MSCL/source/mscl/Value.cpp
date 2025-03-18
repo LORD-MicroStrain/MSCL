@@ -8,19 +8,19 @@
 
 namespace mscl
 {
-    Value::Value(ValueType type, const anyType& value):
+    Value::Value(ValueType type, const anyType& value) :
         m_value(value),
         m_storedAs(type)
     {
     }
 
-    Value::Value():
+    Value::Value() :
         m_value(0.0f),
         m_storedAs(ValueType::valueType_float)
     {
     }
 
-    Value::Value(const Value& other):
+    Value::Value(const Value& other) :
         m_value(other.m_value),
         m_storedAs(other.m_storedAs)
     {

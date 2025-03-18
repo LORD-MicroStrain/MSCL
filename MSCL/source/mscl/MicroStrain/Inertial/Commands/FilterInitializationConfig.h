@@ -73,7 +73,7 @@ namespace mscl
         //
         //Returns:
         //    uint8 - the byte ID for field data in the reply.
-        virtual uint8 fieldDataByte() const { return 0xD2; };
+        virtual uint8 fieldDataByte() const { return 0xD2; }
 
         //Function: responseExpected
         //

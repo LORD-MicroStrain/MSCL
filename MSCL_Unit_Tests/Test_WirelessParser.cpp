@@ -4,17 +4,23 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
+#include "mscl/Communication/RawBytePacketCollector.h"
 #include "mscl/MicroStrain/DataBuffer.h"
 #include "mscl/MicroStrain/ResponseCollector.h"
 #include "mscl/MicroStrain/ResponsePattern.h"
 #include "mscl/MicroStrain/Wireless/Commands/LongPing.h"
 #include "mscl/MicroStrain/Wireless/Commands/PageDownload.h"
 #include "mscl/MicroStrain/Wireless/Commands/StartSyncSampling.h"
+#include "mscl/MicroStrain/Wireless/DataSweep.h"
 #include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
 #include "mscl/MicroStrain/Wireless/Packets/WirelessPacketCollector.h"
 #include "mscl/MicroStrain/Wireless/WirelessParser.h"
 
 using namespace mscl;
+
+DISABLE_WARNING_BOOST_START
+#include <boost/test/unit_test.hpp>
+DISABLE_WARNING_BOOST_END
 
 BOOST_AUTO_TEST_SUITE(WirelessParser_Test)
 

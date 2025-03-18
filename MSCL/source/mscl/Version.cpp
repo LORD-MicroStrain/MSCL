@@ -8,28 +8,28 @@
 
 namespace mscl
 {
-    Version::Version():
+    Version::Version() :
         m_major(0),
         m_minor(0),
         m_patch(0)
     {
     }
 
-    Version::Version(uint32 major, uint32 minor, uint32 patch):
+    Version::Version(uint32 major, uint32 minor, uint32 patch) :
         m_major(major),
         m_minor(minor),
         m_patch(patch)
     {
     }
 
-    Version::Version(uint32 major, uint32 minor):
+    Version::Version(uint32 major, uint32 minor) :
         m_major(major),
         m_minor(minor),
         m_patch(0)
     {
     }
 
-    Version::Version(const Version& other):
+    Version::Version(const Version& other) :
         m_major(other.m_major),
         m_minor(other.m_minor),
         m_patch(other.m_patch)

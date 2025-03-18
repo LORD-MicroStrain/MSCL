@@ -15,7 +15,6 @@ namespace mscl
     //    Contains the logic for the DisplacementOutputDataRate command.
     class DisplacementOutputDataRate : private GenericMipCommand
     {
-    private:
         DisplacementOutputDataRate() {}                //default constructor disabled
 
          //Constants: Packet Bytes
@@ -30,7 +29,7 @@ namespace mscl
         class Response : public GenericMipCommand::Response
         {
         protected:
-            virtual uint8 fieldDataByte() const override { return FIELD_DATA_BYTE; }
+            uint8 fieldDataByte() const override { return FIELD_DATA_BYTE; }
 
         public:
             Response(std::weak_ptr<ResponseCollector> collector, bool dataResponseExpected);

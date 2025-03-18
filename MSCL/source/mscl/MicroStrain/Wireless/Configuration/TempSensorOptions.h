@@ -14,7 +14,6 @@ namespace mscl
     //    Options to adjust the temperature sensor for a WirelessNode.
     class TempSensorOptions
     {
-    private:
         TempSensorOptions();
 
     public:

@@ -30,14 +30,14 @@ namespace mscl
         return listDevices(TYPE_ALL);
     }
 
-    DeviceInfo::DeviceInfo():
+    DeviceInfo::DeviceInfo() :
         m_description(""),
         m_serial(""),
         m_baudRate(0),
         m_connectionType(ConnectionType::connectionType_serial)
     {}
 
-    DeviceInfo::DeviceInfo(std::string description, std::string serial, uint32 baudRate, DeviceInfo::ConnectionType type):
+    DeviceInfo::DeviceInfo(std::string description, std::string serial, uint32 baudRate, DeviceInfo::ConnectionType type) :
         m_description(description),
         m_serial(serial),
         m_baudRate(baudRate),
@@ -257,7 +257,7 @@ namespace mscl
                         {
                             deviceId = wsdaProIPAddress(serial);
                         }
-                        catch(mscl::Error&)
+                        catch(Error&)
                         {
                             continue;
                         }

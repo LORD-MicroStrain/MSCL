@@ -4,11 +4,11 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "ActivitySense.h"
+#include "mscl/MicroStrain/Wireless/Configuration/ActivitySense.h"
 
 namespace mscl
 {
-    ActivitySense::ActivitySense():
+    ActivitySense::ActivitySense() :
         m_enabled(false),
         m_activityThreshold(0.0),
         m_inactivityThreshold(0.0),

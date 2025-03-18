@@ -8,7 +8,7 @@
 
 namespace mscl
 {
-    MipChannel::MipChannel():
+    MipChannel::MipChannel() :
         m_channelField(static_cast<MipTypes::ChannelField>(0))
     {}
 

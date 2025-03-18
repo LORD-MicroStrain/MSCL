@@ -74,7 +74,7 @@ namespace mscl
             //
             //Returns:
             //    true if the response pattern was found, false otherwise.
-            virtual bool match(DataBuffer& data) override;
+            bool match(DataBuffer& data) override;
 
             //Function: cancel
             //    Attempts to cancel the Stop Node operation.

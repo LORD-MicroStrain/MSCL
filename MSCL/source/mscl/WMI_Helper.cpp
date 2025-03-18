@@ -10,7 +10,7 @@
 
 #include <comdef.h>
 
-WMI_Helper::WMI_Helper(std::string wmi_namespace, std::string wmi_class):
+WMI_Helper::WMI_Helper(std::string wmi_namespace, std::string wmi_class) :
     m_wmi_namespace(wmi_namespace),
     m_wmi_class(wmi_class),
     m_enumerator(nullptr)

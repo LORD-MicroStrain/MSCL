@@ -14,7 +14,7 @@ namespace mscl
         return GenericMipCommand::buildCommand(CMD_ID);
     }
 
-    Resume::Response::Response(std::weak_ptr<ResponseCollector> collector):
+    Resume::Response::Response(std::weak_ptr<ResponseCollector> collector) :
         GenericMipCommand::Response(MipTypes::CMD_RESUME, collector, true, false, "Resume")
     {
     }

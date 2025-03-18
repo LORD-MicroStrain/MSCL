@@ -41,7 +41,7 @@ namespace mscl
         return cmd;
     }
 
-    BaseStation_BeaconStatus::Response::Response(std::weak_ptr<ResponseCollector> collector):
+    BaseStation_BeaconStatus::Response::Response(std::weak_ptr<ResponseCollector> collector) :
         WirelessResponsePattern(collector, WirelessProtocol::cmdId_base_getBeaconStatus_v1, WirelessProtocol::BASE_STATION_ADDRESS)
     {
     }

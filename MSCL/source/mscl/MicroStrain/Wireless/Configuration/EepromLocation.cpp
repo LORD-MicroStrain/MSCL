@@ -4,20 +4,20 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "EepromLocation.h"
+#include "mscl/MicroStrain/Wireless/Configuration/EepromLocation.h"
 
 namespace mscl
 {
     uint16 EepromLocation::m_nextId = 0;
 
-    EepromLocation::EepromLocation(uint16 location, ValueType valueType, const std::string& description):
+    EepromLocation::EepromLocation(uint16 location, ValueType valueType, const std::string& description) :
         m_id(m_nextId++),        //set the id to the next id, then increment the value
         m_location(location),
         m_valueType(valueType),
         m_description(description)
     {}
 
-    EepromLocation::EepromLocation(uint16 idCopy, uint16 location, ValueType valueType, const std::string& description):
+    EepromLocation::EepromLocation(uint16 idCopy, uint16 location, ValueType valueType, const std::string& description) :
         m_id(idCopy),
         m_location(location),
         m_valueType(valueType),

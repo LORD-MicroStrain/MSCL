@@ -6,15 +6,13 @@
 
 #pragma once
 
-#include <mutex>
-
 #include "mscl/MicroStrain/Wireless/WirelessTypes.h"
-#include "mscl/Types.h"
 #include "mscl/Value.h"
-#include "EepromLocation.h"
 
 namespace mscl
 {
+    class EepromLocation;
+
     //Class: Eeprom
     //    The abstract base class for reading and writing to Wireless devices' eeproms.
     class Eeprom
@@ -28,11 +26,11 @@ namespace mscl
         //    numRetries - The number of retries to use for reads and writes.
         explicit Eeprom(bool useCache, uint8 numRetries);
 
-        virtual ~Eeprom() {};
+        virtual ~Eeprom() {}
 
     protected:
         //Variable: m_eepromCache
-        //    The <WirelessTypes::EepromMap> contianing all cached values that have previously been read from a device.
+        //    The <WirelessTypes::EepromMap> containing all cached values that have previously been read from a device.
         WirelessTypes::EepromMap m_eepromCache;
 
         //Variable: m_useCache

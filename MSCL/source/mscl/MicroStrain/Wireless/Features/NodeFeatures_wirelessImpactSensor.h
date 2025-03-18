@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "NodeFeatures.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures.h"
 
 namespace mscl
 {
@@ -15,21 +15,21 @@ namespace mscl
     class NodeFeatures_wirelessImpactSensor: public NodeFeatures
     {
     public:
-        virtual ~NodeFeatures_wirelessImpactSensor(){};
+        ~NodeFeatures_wirelessImpactSensor() override = default;
 
         //Constructor: NodeFeatures_wirelessImpactSensor
         //    Creates a NodeFeatures_wirelessImpactSensor object.
         NodeFeatures_wirelessImpactSensor(const NodeInfo& info);
 
     private:
-        virtual uint32 ramBufferSize() const override;
+        uint32 ramBufferSize() const override;
 
     public:
-        virtual const WirelessTypes::SamplingModes samplingModes() const override;
+        const WirelessTypes::SamplingModes samplingModes() const override;
 
-        virtual const WirelessTypes::WirelessSampleRates sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const override;
+        const WirelessTypes::WirelessSampleRates sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const override;
 
-        virtual const WirelessTypes::Filters antiAliasingFilters() const override;
+        const WirelessTypes::Filters antiAliasingFilters() const override;
 
         virtual const WirelessTypes::StorageLimitModes storageLimitModes() const;
     };

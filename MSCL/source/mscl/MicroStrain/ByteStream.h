@@ -32,7 +32,7 @@ namespace mscl
 
         //Destructor: ~ByteStream
         //    Default destructor for the ByteStream object
-        virtual ~ByteStream(){}
+        virtual ~ByteStream() = default;
 
     private:
         //Variable: m_bytes
@@ -64,7 +64,6 @@ namespace mscl
         //    true if the two ByteStreams are identical, false otherwise
         friend bool operator== (ByteStream& stream1, ByteStream& stream2);
 
-    public:
         //Function: append_uint8
         //    Appends a 1-byte unsigned integer to the byte stream
         //

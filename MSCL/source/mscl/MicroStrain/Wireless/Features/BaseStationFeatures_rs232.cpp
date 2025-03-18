@@ -4,12 +4,11 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "BaseStationFeatures_rs232.h"
+#include "mscl/MicroStrain/Wireless/Features/BaseStationFeatures_rs232.h"
 
 namespace mscl
 {
-    BaseStationFeatures_rs232::BaseStationFeatures_rs232(const BaseStationInfo& info):
+    BaseStationFeatures_rs232::BaseStationFeatures_rs232(const BaseStationInfo& info) :
         BaseStationFeatures(info)
-    {
-    }
+    {}
 }

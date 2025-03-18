@@ -32,7 +32,7 @@ namespace mscl
         return GenericMipCommand::buildCommand(CMD_ID, fieldData.data());
     }
 
-    PollImuData::Response::Response(std::weak_ptr<ResponseCollector> collector):
+    PollImuData::Response::Response(std::weak_ptr<ResponseCollector> collector) :
         GenericMipCommand::Response(MipTypes::CMD_POLL_SENSOR_DATA, collector, true, false, "Poll IMU Data")
     {
     }
@@ -64,7 +64,7 @@ namespace mscl
         return GenericMipCommand::buildCommand(CMD_ID, fieldData.data());
     }
 
-    PollGnssData::Response::Response(std::weak_ptr<ResponseCollector> collector):
+    PollGnssData::Response::Response(std::weak_ptr<ResponseCollector> collector) :
         GenericMipCommand::Response(MipTypes::CMD_POLL_GNSS_DATA, collector, true, false, "Poll GNSS Data")
     {
     }
@@ -96,7 +96,7 @@ namespace mscl
         return GenericMipCommand::buildCommand(CMD_ID, fieldData.data());
     }
 
-    PollEstFilterData::Response::Response(std::weak_ptr<ResponseCollector> collector):
+    PollEstFilterData::Response::Response(std::weak_ptr<ResponseCollector> collector) :
         GenericMipCommand::Response(MipTypes::CMD_POLL_EF_DATA, collector, true, false, "Poll Estimation Filter Data")
     {
     }

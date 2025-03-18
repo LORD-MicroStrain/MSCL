@@ -4,14 +4,14 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "NodeFeatures_vlink.h"
-#include "AvailableSampleRates.h"
-#include "mscl/MicroStrain/Wireless/ChannelMask.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures_vlink.h"
+
 #include "mscl/MicroStrain/Wireless/Configuration/NodeEepromMap.h"
+#include "mscl/MicroStrain/Wireless/Features/AvailableSampleRates.h"
 
 namespace mscl
 {
-    NodeFeatures_vlink::NodeFeatures_vlink(const NodeInfo& info):
+    NodeFeatures_vlink::NodeFeatures_vlink(const NodeInfo& info) :
         NodeFeatures(info)
     {
         //Channels
@@ -125,7 +125,8 @@ namespace mscl
                     return WirelessTypes::sampleRate_2kHz;
             }
         }
-        else if(samplingMode == WirelessTypes::samplingMode_armedDatalog)
+
+        if(samplingMode == WirelessTypes::samplingMode_armedDatalog)
         {
             //determine the actual max rate based on the # of active channels
             switch(channelCount)
@@ -148,12 +149,10 @@ namespace mscl
                     return WirelessTypes::sampleRate_3kHz;
             }
         }
+
         //number of channels has no affect on sample rate
-        else
-        {
-            //just return the result of the parent class' function
-            return NodeFeatures::maxSampleRate(samplingMode, channels, dataCollectionMethod, dataMode);
-        }
+        //just return the result of the parent class' function
+        return NodeFeatures::maxSampleRate(samplingMode, channels, dataCollectionMethod, dataMode);
     }
 
     const uint32 NodeFeatures_vlink::minSensorDelay() const

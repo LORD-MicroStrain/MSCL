@@ -23,7 +23,6 @@ namespace mscl
 
         PollImuData() = delete;    //disabled default constructor
 
-    public:
         //Function: buildCommand
         //  Builds the bytes in the command
         //
@@ -62,7 +61,6 @@ namespace mscl
 
         PollGnssData() = delete;    //disabled default constructor
 
-    public:
         //Function: buildCommand
         //  Builds the bytes in the command
         //
@@ -101,7 +99,6 @@ namespace mscl
 
         PollEstFilterData() = delete;    //disabled default constructor
 
-    public:
         //Function: buildCommand
         //  Builds the bytes in the command
         //

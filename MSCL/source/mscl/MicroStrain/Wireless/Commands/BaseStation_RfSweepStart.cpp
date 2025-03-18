@@ -49,7 +49,7 @@ namespace mscl
         return cmd;
     }
 
-    BaseStation_RfSweepStart::Response::Response(std::weak_ptr<ResponseCollector> collector, uint32 min, uint32 max, uint32 interval, uint16 options):
+    BaseStation_RfSweepStart::Response::Response(std::weak_ptr<ResponseCollector> collector, uint32 min, uint32 max, uint32 interval, uint16 options) :
         WirelessResponsePattern(collector, WirelessProtocol::cmdId_base_rfScan_v1, WirelessProtocol::BASE_STATION_ADDRESS),
         m_min(min),
         m_max(max),

@@ -6,12 +6,8 @@
 
 #pragma once
 
-#include <map>
-#include <vector>
-
-#include "mscl/MicroStrain/Wireless/ChannelMask.h"
-#include "mscl/MicroStrain/Wireless/WirelessTypes.h"
 #include "mscl/MicroStrain/Wireless/Configuration/EepromLocation.h"
+#include "mscl/MicroStrain/Wireless/WirelessTypes.h"
 
 namespace mscl
 {

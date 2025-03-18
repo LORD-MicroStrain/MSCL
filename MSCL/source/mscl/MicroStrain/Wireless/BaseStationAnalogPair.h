@@ -6,15 +6,12 @@
 
 #pragma once
 
-#include "mscl/Types.h"
-
 namespace mscl
 {
     //API Class: BaseStationAnalogPair
     //    Represents an Analog Pairing on a BaseStation.
     class BaseStationAnalogPair
     {
-    private:
         //Constructor: BaseStationAnalogPair
         //    Creates a BaseStationAnalogPair object with the provided parameters.
         //    Note: This constructor is private to enforce using ::Float and ::NonFloat static functions for construction.
@@ -109,7 +106,7 @@ namespace mscl
 
         //API Function: floatData
         //    Sets whether floating point data is expected or not.
-        //    Note: If enabling, this will set outputVal_0V to 0 and outputVal_3V to 65535. You should update these values accordingly.
+        //    Note: If enabling, this will set outputVal_0V to 0 and outputVal_3V to 65,535. You should update these values accordingly.
         //    Note: If disabling, this will set outputVal_0V and outputVal_3V to <CHANNEL_NOT_FLOAT>.
         //
         //Parameters:

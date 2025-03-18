@@ -36,7 +36,7 @@ namespace mscl
     {
         ByteStream byteCommand;
         byteCommand.append_uint16(m_samplingTimeInMS);
-        return GenericMipCommand::buildCommand(commandType(), byteCommand.data()); ;
+        return GenericMipCommand::buildCommand(commandType(), byteCommand.data());
     }
 
 }

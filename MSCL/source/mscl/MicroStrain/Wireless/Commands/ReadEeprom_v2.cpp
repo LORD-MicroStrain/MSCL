@@ -42,7 +42,7 @@ namespace mscl
         return cmd;
     }
 
-    ReadEeprom_v2::Response::Response(NodeAddress nodeAddress, uint16 eepromAddress, std::weak_ptr<ResponseCollector> collector):
+    ReadEeprom_v2::Response::Response(NodeAddress nodeAddress, uint16 eepromAddress, std::weak_ptr<ResponseCollector> collector) :
         WirelessResponsePattern(collector, WirelessProtocol::cmdId_readEeprom_v2, nodeAddress),
         m_nodeAddress(nodeAddress),
         m_eepromAddress(eepromAddress),

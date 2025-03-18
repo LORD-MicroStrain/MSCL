@@ -10,7 +10,7 @@
 
 namespace mscl
 {
-    MipNodeInfo::MipNodeInfo(const MipNode_Impl* node):
+    MipNodeInfo::MipNodeInfo(const MipNode_Impl* node) :
         m_node(node),
         m_deviceInfo(std::bind(&MipNode_Impl::getDeviceInfo, m_node)),
         m_descriptors(std::bind(&MipNode_Impl::getDescriptorSets, m_node)),

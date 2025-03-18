@@ -15,6 +15,8 @@
 
 using namespace mscl;
 
+#include <turtle/mock.hpp>
+
 //declare a 'mock_baseStation class implementing the 'mockBaseStation' class
 MOCK_BASE_CLASS(mock_baseStationImpl, BaseStation_Impl)
 {

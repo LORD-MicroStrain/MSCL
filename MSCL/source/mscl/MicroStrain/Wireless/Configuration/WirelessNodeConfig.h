@@ -6,27 +6,21 @@
 
 #pragma once
 
-#include "ActivitySense.h"
-#include "ConfigIssue.h"
-#include "EventTriggerOptions.h"
-#include "FatigueOptions.h"
-#include "HistogramOptions.h"
-#include "TempSensorOptions.h"
-#include "mscl/Exceptions.h"
-#include "mscl/MicroStrain/LinearEquation.h"
-#include "mscl/MicroStrain/Wireless/ChannelMask.h"
+#include "mscl/MicroStrain/Wireless/Configuration/ActivitySense.h"
 #include "mscl/MicroStrain/Wireless/Configuration/DataModeMask.h"
-#include "mscl/MicroStrain/Wireless/Features/ChannelGroup.h"
-#include "mscl/MicroStrain/Wireless/WirelessModels.h"
-#include "mscl/MicroStrain/Wireless/WirelessTypes.h"
-#include "mscl/TimeSpan.h"
+#include "mscl/MicroStrain/Wireless/Configuration/EventTriggerOptions.h"
+#include "mscl/MicroStrain/Wireless/Configuration/FatigueOptions.h"
+#include "mscl/MicroStrain/Wireless/Configuration/HistogramOptions.h"
 
 namespace mscl
 {
     //forward declarations
-    class WirelessNode;
-    class NodeFeatures;
+    class ChannelGroup;
+    class LinearEquation;
     class NodeEepromHelper;
+    class NodeFeatures;
+    class TempSensorOptions;
+    class WirelessNode;
 
     //API Class: WirelessNodeConfig
     //    Class used for setting the configuration of <WirelessNode> objects.
@@ -228,7 +222,6 @@ namespace mscl
         //    The map of <ChannelMask> to <WirelessTypes::CalCoef_EquationType> to set.
         std::map<ChannelMask, WirelessTypes::CalCoef_EquationType> m_equationTypes;
 
-    private:
         //Function: curExcitationVoltage
         //    Gets the excitation voltage currently set, or from the node if not set.
         WirelessTypes::Voltage curExcitationVoltage(const NodeEepromHelper& eeprom) const;
@@ -332,7 +325,6 @@ namespace mscl
         //  true if a channel group was found that had the setting, and included as least one of the channel in the mask, false otherwise.
         bool findGroupWithChannelAndSetting(const ChannelMask& mask, WirelessTypes::ChannelGroupSetting setting, const NodeFeatures& features, ChannelGroup& foundGroup) const;
 
-    private:
         //Function: checkValue
         //    Throws an exception if an optional value isn't set.
         //
@@ -1060,7 +1052,6 @@ namespace mscl
         //  Sets the <WirelessTypes::SensorOutputMode> in this Config object.
         void sensorOutputMode(WirelessTypes::SensorOutputMode mode);
 
-    public:
         //Function: flashBandwidth
         //  Gets the flash bandwidth that is used by the provided settings.
         //

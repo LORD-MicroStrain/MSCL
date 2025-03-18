@@ -4,23 +4,16 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "NodeEepromHelper.h"
+#include "mscl/MicroStrain/Wireless/Configuration/NodeEepromHelper.h"
 
-#include "ActivitySense.h"
-#include "EventTriggerOptions.h"
-#include "FatigueOptions.h"
-#include "HistogramOptions.h"
-#include "InputRange.h"
-#include "NodeEepromMap.h"
-#include "WirelessNodeConfig.h"
+#include "mscl/MicroStrain/LinearEquation.h"
+#include "mscl/MicroStrain/Wireless/Configuration/NodeEepromMap.h"
+#include "mscl/MicroStrain/Wireless/Configuration/WirelessNodeConfig.h"
 #include "mscl/MicroStrain/Wireless/WirelessNode_Impl.h"
-#include "mscl/MicroStrain/Wireless/Features/NodeFeatures.h"
-#include "mscl/MicroStrain/Wireless/Features/FlashInfo.h"
-#include "mscl/Utils.h"
 
 namespace mscl
 {
-    NodeEepromHelper::NodeEepromHelper(WirelessNode_Impl* node):
+    NodeEepromHelper::NodeEepromHelper(WirelessNode_Impl* node) :
         m_node(node)
     {
     }
@@ -824,11 +817,9 @@ namespace mscl
                 //default to non-sync
                 return WirelessTypes::samplingMode_nonSync;
             }
-            else
-            {
-                //default to armed datalogging
-                return WirelessTypes::samplingMode_armedDatalog;
-            }
+
+            //default to armed datalogging
+            return WirelessTypes::samplingMode_armedDatalog;
         }
 
         //cast to a sampling mode and return

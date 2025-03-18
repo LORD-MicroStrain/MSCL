@@ -84,6 +84,7 @@
 %module mscl
 %{
 // Put headers and other declarations here
+#include "../stdafx.h"
 #include "../Exceptions.h"
 #include "../Bin.h"
 #include "../BitMask.h"

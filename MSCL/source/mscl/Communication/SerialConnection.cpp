@@ -11,7 +11,7 @@
 namespace mscl
 {
     //The constructor that sets up the SerialConnection
-    SerialConnection::SerialConnection(const std::string& port, uint32 baudRate):
+    SerialConnection::SerialConnection(const std::string& port, uint32 baudRate) :
         m_port(port),
         m_baudRate(baudRate)
     {

@@ -62,7 +62,6 @@ namespace mscl
         //  Typedef for a uuid to <WsdaInfo> map.
         typedef std::map<std::string, WsdaInfo> WsdaMap;
 
-    public:
         //API Default Constructor: WsdaFinder
         //  Creates a WsdaFinder object, starting the thread to search for WSDAs.
         //
@@ -78,7 +77,6 @@ namespace mscl
         WsdaFinder(const WsdaFinder&);              //copy constructor disabled
         WsdaFinder& operator=(const WsdaFinder&);   //assignment operator disabled
 
-    private:
         //Function: start
         //  Starts the search thread looking for upnp WSDAs.
         void start();
@@ -94,7 +92,6 @@ namespace mscl
         //  device - The <UpnpDevice> that was found.
         void onDeviceAdded(const UpnpDevice& device);
 
-    private:
         //Variable: m_upnpService
         //  The <UpnpService> that asynchronously searches for upnp devices.
         std::unique_ptr<UpnpService> m_upnpService;

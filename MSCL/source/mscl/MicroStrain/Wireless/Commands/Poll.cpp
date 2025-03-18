@@ -42,7 +42,7 @@ namespace mscl
         return cmd;
     }
 
-    Poll::Response::Response(NodeAddress nodeAddress, std::weak_ptr<ResponseCollector> collector):
+    Poll::Response::Response(NodeAddress nodeAddress, std::weak_ptr<ResponseCollector> collector) :
         WirelessResponsePattern(collector, WirelessProtocol::cmdId_poll, nodeAddress),
         m_nodeAddress(nodeAddress),
         m_started(false),

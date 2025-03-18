@@ -4,12 +4,14 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "NodeMemory_v2.h"
-#include "WirelessNode.h"
+#include "mscl/MicroStrain/Wireless/NodeMemory_v2.h"
+
+#include "mscl/MicroStrain/Wireless/BaseStation.h"
+#include "mscl/MicroStrain/Wireless/WirelessNode.h"
 
 namespace mscl
 {
-    NodeMemory_v2::NodeMemory_v2(WirelessNode& node, const FlashInfo& flashInfo, uint32 startAddress, uint32 size):
+    NodeMemory_v2::NodeMemory_v2(WirelessNode& node, const FlashInfo& flashInfo, uint32 startAddress, uint32 size) :
         NodeMemory(node),
         m_flashInfo(flashInfo),
         m_startAddress(startAddress),
@@ -46,7 +48,7 @@ namespace mscl
         if(m_downloadAddress >= m_startAddress)
         {
             //we've come back around to the start address, should be done downloading
-            if((m_downloadAddress == m_startAddress) && m_startedDownloading)
+            if(m_downloadAddress == m_startAddress && m_startedDownloading)
             {
                 return 0;
             }
@@ -56,25 +58,20 @@ namespace mscl
             {
                 return m_totalBytes - bytesRead;
             }
-            else
-            {
-                return 0;
-            }
-        }
-        //a rollover has occurred
-        else
-        {
-            uint32 totalReadBytes = m_flashInfo.storageSize - m_startAddress + m_downloadAddress;
 
-            if(totalReadBytes >= m_totalBytes)
-            {
-                return 0;
-            }
-            else
-            {
-                return m_totalBytes - totalReadBytes;
-            }
+            return 0;
         }
+
+        //a rollover has occurred
+
+        uint32 totalReadBytes = m_flashInfo.storageSize - m_startAddress + m_downloadAddress;
+
+        if(totalReadBytes >= m_totalBytes)
+        {
+            return 0;
+        }
+
+        return m_totalBytes - totalReadBytes;
     }
 
     void NodeMemory_v2::normalizeAddress()
@@ -172,7 +169,7 @@ namespace mscl
 
                 //calculate the index into buffer where the checksum should be located
                 //  3 bytes + bytesBeforeData in header + data
-                checksumPos = 3 + bytesBeforeData + (m_sweepSize * numSweeps);
+                checksumPos = 3 + bytesBeforeData + m_sweepSize * numSweeps;
             }
             else if(version == 1)
             {
@@ -228,7 +225,7 @@ namespace mscl
 
                 if(numActiveAlgorithms > 0)
                 {
-                    if(static_cast<uint64>(buffer.size()) < (ALG_META_OFFSET + (static_cast<uint64>(numActiveAlgorithms) * 3)))
+                    if(static_cast<uint64>(buffer.size()) < ALG_META_OFFSET + static_cast<uint64>(numActiveAlgorithms) * 3)
                     {
                         //not enough bytes in the buffer to verify a block header
                         needMoreData = true;
@@ -241,8 +238,8 @@ namespace mscl
                 ChannelMask chMask;
                 for(i = 0; i < numActiveAlgorithms; ++i)
                 {
-                    algorithmId = buffer.read_uint8(ALG_META_OFFSET + (i * 3));       //3 bytes per derived active channel
-                    chMask.fromMask(buffer.read_uint16(ALG_META_OFFSET + (i * 3) + 1, Utils::littleEndian));
+                    algorithmId = buffer.read_uint8(ALG_META_OFFSET + i * 3);       //3 bytes per derived active channel
+                    chMask.fromMask(buffer.read_uint16(ALG_META_OFFSET + i * 3 + 1, Utils::littleEndian));
 
                     try
                     {
@@ -263,12 +260,12 @@ namespace mscl
                 if(sweepType == sweepType_raw)
                 {
                     m_isMathData = false;
-                    checksumPos = 3 + bytesBeforeData + (m_sweepSize * numSweeps);
+                    checksumPos = 3 + bytesBeforeData + m_sweepSize * numSweeps;
                 }
                 else if(sweepType == sweepType_derived)
                 {
                     m_isMathData = true;
-                    checksumPos = 3 + bytesBeforeData + (m_derivedSweepSize * numSweeps);
+                    checksumPos = 3 + bytesBeforeData + m_derivedSweepSize * numSweeps;
                 }
             }
         }
@@ -288,11 +285,11 @@ namespace mscl
             //  2 bytes in header + data
             if(m_isMathData)
             {
-                checksumPos = 2 + (m_derivedSweepSize * numSweeps);
+                checksumPos = 2 + m_derivedSweepSize * numSweeps;
             }
             else
             {
-                checksumPos = 2 + (m_sweepSize * numSweeps);
+                checksumPos = 2 + m_sweepSize * numSweeps;
             }
         }
         else if(headerId == SESSION_CHANGE_HEADER_ID)
@@ -309,7 +306,7 @@ namespace mscl
 
             //calculate the index into buffer where the checksum should be located
             //  12 bytes in header + data
-            checksumPos = 12 + (m_sweepSize * numSweeps);
+            checksumPos = 12 + m_sweepSize * numSweeps;
         }
         else if(headerId == SESSION_CHANGE_HEADER_ID_V2)
         {
@@ -343,13 +340,13 @@ namespace mscl
             {
                 //calculate the index into buffer where the checksum should be located
                 //  13 bytes in header + data
-                checksumPos = 13 + (m_derivedSweepSize * numSweeps);
+                checksumPos = 13 + m_derivedSweepSize * numSweeps;
             }
             else
             {
                 //calculate the index into buffer where the checksum should be located
                 //  13 bytes in header + data
-                checksumPos = 13 + (m_sweepSize * numSweeps);
+                checksumPos = 13 + m_sweepSize * numSweeps;
             }
         }
 
@@ -408,7 +405,7 @@ namespace mscl
             m_previousDownloadAddress = m_downloadAddress;
             downloadedData = true;
 
-            //if we need more data to tell if its a valid block
+            //if we need more data to tell if it's a valid block
             if(needMoreData)
             {
                 //if the checksum position changed, we parsed a valid header
@@ -437,7 +434,7 @@ namespace mscl
 
         m_partialDownload = false;
 
-        //now that we moved the download address, if we are done downloading
+        //now that we moved the download address if we are done downloading
         if(downloadedData && bytesLeftToDownload() == 0)
         {
             //throw away any extra bytes we downloaded passed the last address
@@ -485,7 +482,7 @@ namespace mscl
             fillBuffer(m_nextData);
         }
 
-        //if we read all of the data in m_currentData
+        //if we read all the data in m_currentData
         if(m_readIndex >= m_currentData.size())
         {
             //copy the data in m_nextData to m_currentData
@@ -519,7 +516,7 @@ namespace mscl
             return true;
         }
 
-        return (m_readIndex >= m_currentData.size());
+        return m_readIndex >= m_currentData.size();
     }
 
     uint32 NodeMemory_v2::readIndex() const
@@ -551,6 +548,6 @@ namespace mscl
             return 100.0f;
         }
 
-        return (static_cast<float>(m_totalBytes - bytesRemaining()) / static_cast<float>(m_totalBytes)) * 100.0f;
+        return static_cast<float>(m_totalBytes - bytesRemaining()) / static_cast<float>(m_totalBytes) * 100.0f;
     }
 }

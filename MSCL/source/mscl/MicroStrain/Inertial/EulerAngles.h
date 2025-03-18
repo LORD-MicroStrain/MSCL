@@ -41,7 +41,6 @@ namespace mscl
         operator Rotation() const;
 #endif //SWIG
 
-    public:
         //API Function: asMipFieldValues
         //  Gets the current euler angles values formatted as a <MipFieldValues> object.
         //
@@ -56,7 +55,6 @@ namespace mscl
         //  appendTo - (reference) the <MipFieldValues> collection to append to
         void appendMipFieldValues(MipFieldValues& appendTo) const;
 
-    public:
         //API Function: roll
         //    Gets the roll angle.
         //
@@ -111,7 +109,6 @@ namespace mscl
         operator Rotation() const;
 #endif //SWIG
 
-    public:
         //API Function: asMipFieldValues
         //  Gets the current quaternion values formatted as a <MipFieldValues> object
         //
@@ -130,7 +127,6 @@ namespace mscl
         // normalize the quaternion value
         void normalize();
 
-    public:
         //API Function: q0
         //    Gets the 0-index value (usually w).
         //
@@ -179,7 +175,6 @@ namespace mscl
             QUATERNION   = 2
         };
 
-    public:
 
         //API Constructor: Rotation
         //  Constructs a Rotation object with default values.
@@ -207,7 +202,6 @@ namespace mscl
         //  offset - default: 0 - uint8 index offset to start reading from
         Rotation(const MipFieldValues& data, uint8 offset = 0);
 
-    public:
         //API Function: FromEulerAngles (static)
         //  Constructs a Rotation object based on the specified <EulerAngles>.
         //
@@ -234,7 +228,6 @@ namespace mscl
         operator Quaternion() const;
 #endif //SWIG
 
-    public:
         //API Function: asEulerAngles
         //  Creates an <EulerAngles> object with this object's rotation values.
         //  <Error_BadDataType> exception will be thrown if this Rotation object does not represent an EulerAngles rotation.

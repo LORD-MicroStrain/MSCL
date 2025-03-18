@@ -25,7 +25,7 @@ namespace mscl
     }
 
 
-    BaseStation_ReadEeprom::Response::Response(std::weak_ptr<ResponseCollector> collector):
+    BaseStation_ReadEeprom::Response::Response(std::weak_ptr<ResponseCollector> collector) :
         WirelessResponsePattern(collector, WirelessProtocol::cmdId_base_readEeprom, WirelessProtocol::BASE_STATION_ADDRESS),
         m_result(0)
     {

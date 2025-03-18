@@ -6,14 +6,9 @@
 
 #pragma once
 
-#include "mscl/Types.h"
-#include "WirelessModels.h"
-#include "WirelessNode.h"
-#include "WirelessTypes.h"
-#include "Configuration/WirelessNodeConfig.h"
+#include "mscl/MicroStrain/Wireless/Configuration/WirelessNodeConfig.h"
 #include "mscl/MicroStrain/Wireless/Features/ChannelGroup.h"
-
-#include <memory>
+#include "mscl/MicroStrain/Wireless/WirelessNode.h"
 
 namespace mscl
 {
@@ -29,17 +24,17 @@ namespace mscl
         //API Enum: NodeStatus
         //    The status of an individual node.
         //
-        //status_OK                    = 0 - The node successfully fits in the network.
-        //status_PoorCommunication    = 1 - The node failed to communicate.
-        //status_DoesNotFit            = 2 - The node is out of the network, as the bandwidth does not allow it.
-        //status_Contention            = 3 - The node is out of the network, as network contention does not allow it.
+        //status_OK                - 0 - The node successfully fits in the network.
+        //status_PoorCommunication - 1 - The node failed to communicate.
+        //status_DoesNotFit        - 2 - The node is out of the network, as the bandwidth does not allow it.
+        //status_Contention        - 3 - The node is out of the network, as network contention does not allow it.
         //====================================================================================================
         enum NodeStatus
         {
-            status_OK                    = 0,
-            status_PoorCommunication    = 1,
-            status_DoesNotFit            = 2,
-            status_Contention            = 3
+            status_OK                = 0,
+            status_PoorCommunication = 1,
+            status_DoesNotFit        = 2,
+            status_Contention        = 3
         };
 
     private:
@@ -67,11 +62,11 @@ namespace mscl
         WirelessModels::NodeModel m_model;
 
         //Variable: m_percentBandwidth
-        //    The standard percent of bandwidth that this node takes up
+        //    The standard percentage of bandwidth that this node takes up
         float m_percentBandwidth;
 
         //Variable: m_percentBandwidth_optimized
-        //    The space-optimized percent of bandwidth that this node takes up
+        //    The space-optimized percentage of bandwidth that this node takes up
         float m_percentBandwidth_optimized;
 
         //Variable: m_tdmaAddress
@@ -123,19 +118,19 @@ namespace mscl
         uint8 m_syncSamplingVersion;
 
         //Variable: m_optimized
-        //    Whether or not this node has attempted optimization
+        //    Whether this node has attempted optimization
         bool m_optimized;
 
         //Variable: m_configApplied
-        //    Whether or not the configuration has been applied for this node
+        //    Whether the configuration has been applied for this node
         bool m_configApplied;
 
         //Variable: m_startedSampling
-        //    Whether or not the Node has been send the Start Sync Sampling command.
+        //    Whether the Node has been sent the Start Sync Sampling command.
         bool m_startedSampling;
 
         //Variable: m_hasPendingConfig
-        //    Whether or not there is a "pending" configuration set for this Node.
+        //    Whether there is a "pending" configuration set for this Node.
         bool m_hasPendingConfig;
 
         //Variable: m_pendingConfig
@@ -152,22 +147,22 @@ namespace mscl
 
         //API Function: startedSampling
         //  Checks whether a Node has successfully started sampling.
-        //  Note: if this returns false, its not 100% gauranteed that the Node isn't sampling. It's possible the
+        //  Note: if this returns false, it's not 100% guaranteed that the Node isn't sampling. It's possible the
         //        node was successfully started, but that the response never got to the BaseStation.
         bool startedSampling() const;
 
         //API Function: configurationApplied
-        //    Gets whether or not the network configuration has been successfully applied to this node.
+        //    Gets whether the network configuration has been successfully applied to this node.
         //
         //Returns:
         //    true if the network configuration has been successfully applied, false otherwise.
         bool configurationApplied() const;
 
         //API Function: percentBandwidth
-        //    Gets the node's individual percent of bandwidth in the network.
+        //    Gets the node's individual percentage of bandwidth in the network.
         //
         //Returns:
-        //    The node's individual percent of bandwidth.
+        //    The node's individual percentage of bandwidth.
         float percentBandwidth() const;
 
         //API Function: tdmaAddress
@@ -217,7 +212,7 @@ namespace mscl
         WirelessTypes::DerivedChannelMasks supportedDerivedCategories() const;
 
         //Function: hasPendingConfig
-        //    Gets whether or not this network info has a pending configuration set.
+        //    Gets whether this network info has a pending configuration set.
         //
         //Returns:
         //    true if a pending config has been set, false otherwise
@@ -246,5 +241,4 @@ namespace mscl
         //  Gets the <ChannelGroups> for the Wireless Node.
         ChannelGroups channelGroups() const;
     };
-
 }

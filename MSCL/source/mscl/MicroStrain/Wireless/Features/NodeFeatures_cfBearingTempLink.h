@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "NodeFeatures.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures.h"
 
 namespace mscl
 {
@@ -15,18 +15,18 @@ namespace mscl
     class NodeFeatures_cfBearing : public NodeFeatures
     {
     public:
-        virtual ~NodeFeatures_cfBearing() {};
+        ~NodeFeatures_cfBearing() override = default;
 
         //Constructor: NodeFeatures_cfBearing
         //    Creates a NodeFeatures_cfBearing object.
         NodeFeatures_cfBearing(const NodeInfo& info);
 
-        virtual const WirelessTypes::DataCollectionMethods dataCollectionMethods() const final;
+        const WirelessTypes::DataCollectionMethods dataCollectionMethods() const final;
 
-        virtual const WirelessTypes::SamplingModes samplingModes() const override;
+        const WirelessTypes::SamplingModes samplingModes() const override;
 
-        virtual const WirelessTypes::DataFormats dataFormats() const override;
+        const WirelessTypes::DataFormats dataFormats() const override;
 
-        virtual const WirelessTypes::WirelessSampleRates sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const override;
+        const WirelessTypes::WirelessSampleRates sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const override;
     };
 }

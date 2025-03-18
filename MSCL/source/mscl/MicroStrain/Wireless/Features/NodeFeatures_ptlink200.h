@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "NodeFeatures_200series.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures_200series.h"
 
 namespace mscl
 {
@@ -14,29 +14,28 @@ namespace mscl
     //    Contains information on features for the PT-Link-200 nodes. Inherits from <NodeFeatures>.
     class NodeFeatures_ptlink200: public NodeFeatures_200series
     {
-    private:
         NodeFeatures_ptlink200();    //disabled default constructor
 
     public:
-        virtual ~NodeFeatures_ptlink200(){};
+        ~NodeFeatures_ptlink200() override = default;
 
         //Constructor: NodeFeatures_ptlink200
         //    Creates a NodeFeatures_ptlink200 object.
         NodeFeatures_ptlink200(const NodeInfo& info);
 
-        virtual bool supportsSensorDelayConfig() const override;
+        bool supportsSensorDelayConfig() const override;
 
-        virtual const WirelessTypes::DerivedChannelMasks channelsPerDerivedCategory() const override;
+        const WirelessTypes::DerivedChannelMasks channelsPerDerivedCategory() const override;
 
-        virtual const WirelessTypes::Filters lowPassFilters() const override;
+        const WirelessTypes::Filters lowPassFilters() const override;
 
-        virtual WirelessTypes::WirelessSampleRate maxSampleRateForLowPassFilter(WirelessTypes::Filter lowPassFilter, WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode, const ChannelMask& channels) const override;
+        WirelessTypes::WirelessSampleRate maxSampleRateForLowPassFilter(WirelessTypes::Filter lowPassFilter, WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode, const ChannelMask& channels) const override;
 
-        virtual const WirelessTypes::VoltageType adcVoltageInputType() const override;
+        const WirelessTypes::VoltageType adcVoltageInputType() const override;
 
-        virtual bool supportsPoll() const override;
+        bool supportsPoll() const override;
 
-        virtual const WirelessTypes::WirelessSampleRates sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const override;
+        const WirelessTypes::WirelessSampleRates sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const override;
 
         const uint32 minSensorDelay() const override;
 

@@ -4,10 +4,9 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "SyncNetworkInfo.h"
-#include "Configuration/WirelessNodeConfig.h"
-#include "Features/NodeFeatures.h"
-#include "mscl/Version.h"
+#include "mscl/MicroStrain/Wireless/SyncNetworkInfo.h"
+
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures.h"
 
 namespace mscl
 {
@@ -93,7 +92,7 @@ namespace mscl
 
     float SyncNetworkInfo::dutyCycle() const
     {
-        return static_cast<float>((m_txPerGroup * m_maxBytesPerPacket) / m_bytesPerSecond);
+        return static_cast<float>(m_txPerGroup * m_maxBytesPerPacket / m_bytesPerSecond);
     }
 
     void SyncNetworkInfo::dutyCycle(float percent)

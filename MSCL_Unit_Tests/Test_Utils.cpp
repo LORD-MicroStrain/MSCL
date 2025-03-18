@@ -7,7 +7,10 @@
 #include "mscl/Utils.h"
 
 using namespace mscl;
-using namespace mscl::Utils;
+
+DISABLE_WARNING_BOOST_START
+#include <boost/test/unit_test.hpp>
+DISABLE_WARNING_BOOST_END
 
 BOOST_AUTO_TEST_SUITE(Utils_Test)
 
@@ -20,16 +23,16 @@ BOOST_AUTO_TEST_SUITE(Utils_ByteOperations)
 BOOST_AUTO_TEST_CASE(Utils_MSB_LSB)
 {
     //check that the msb of 0x12 is 0x00
-    BOOST_CHECK_EQUAL( msb(0x12), 0x00 );
+    BOOST_CHECK_EQUAL( Utils::msb(0x12), 0x00 );
 
     //check that the msb of 0x3456 is 0x34
-    BOOST_CHECK_EQUAL( msb(0x3456), 0x34 );
+    BOOST_CHECK_EQUAL( Utils::msb(0x3456), 0x34 );
 
     //check that the lsb of 0x12 is 0x12
-    BOOST_CHECK_EQUAL( lsb(0x12), 0x12 );
+    BOOST_CHECK_EQUAL( Utils::lsb(0x12), 0x12 );
 
     //check that the lsb of 0x3456 is 0x56
-    BOOST_CHECK_EQUAL( lsb(0x3456), 0x56 );
+    BOOST_CHECK_EQUAL( Utils::lsb(0x3456), 0x56 );
 }
 
 BOOST_AUTO_TEST_CASE(Utils_splitFloatBigEndian)
@@ -220,7 +223,7 @@ BOOST_AUTO_TEST_CASE(Utils_splitWord)
     uint16 value = 0x1234;
 
     //convert the word value into 2 bytes
-    split_uint16(value, msb, lsb);
+    Utils::split_uint16(value, msb, lsb);
 
     //verify that the msb is now 0x12
     BOOST_CHECK_EQUAL(msb, 0x12);
@@ -232,7 +235,7 @@ BOOST_AUTO_TEST_CASE(Utils_splitWord)
     value = 0x56;
 
     //convert the word value into 2 bytes
-    split_uint16(value, msb, lsb);
+    Utils::split_uint16(value, msb, lsb);
 
     //verify that the msb is now 0x00
     BOOST_CHECK_EQUAL(msb, 0x00);
@@ -249,7 +252,7 @@ BOOST_AUTO_TEST_CASE(Utils_splitDWord)
     uint32 value = 0x12345678;
 
     //convert the dword value to 4 bytes
-    split_uint32(value, b1, b2, b3, b4);
+    Utils::split_uint32(value, b1, b2, b3, b4);
 
     //verify that b1 is now 0x12
     BOOST_CHECK_EQUAL(b1, 0x12);
@@ -267,7 +270,7 @@ BOOST_AUTO_TEST_CASE(Utils_splitDWord)
     uint16 wordVal = 0x1234;
 
     //convert the word value to 4 bytes
-    split_uint32(wordVal, b1, b2, b3, b4);
+    Utils::split_uint32(wordVal, b1, b2, b3, b4);
 
     //verify that b1 is now 0x00
     BOOST_CHECK_EQUAL(b1, 0x00);
@@ -290,7 +293,7 @@ BOOST_AUTO_TEST_CASE(Utils_Make_int16)
     uint8 lsb = 0x02;
 
     //build the bytes into a word
-    result = make_int16(msb, lsb);
+    result = Utils::make_int16(msb, lsb);
 
     //verify that the word result is now 0x
     BOOST_CHECK_EQUAL(result, -32766);
@@ -304,7 +307,7 @@ BOOST_AUTO_TEST_CASE(Utils_Make_uint16)
     uint8 lsb = 0x34;
 
     //build the bytes into a word
-    result = make_uint16(msb, lsb);
+    result = Utils::make_uint16(msb, lsb);
 
     //verify that the word result is now 0x1234
     BOOST_CHECK_EQUAL(result, 0x1234);
@@ -313,7 +316,7 @@ BOOST_AUTO_TEST_CASE(Utils_Make_uint16)
     lsb = 0x56;
 
     //build the bytes into a word
-    result = make_uint16(msb, lsb);
+    result = Utils::make_uint16(msb, lsb);
 
     //verify that the word result is now 0x56
     BOOST_CHECK_EQUAL(result, 0x56);
@@ -322,7 +325,7 @@ BOOST_AUTO_TEST_CASE(Utils_Make_uint16)
     lsb = 0x00;
 
     //build the bytes into a word
-    result = make_uint16(msb, lsb);
+    result = Utils::make_uint16(msb, lsb);
 
     //verify that the word result is now 0x7800
     BOOST_CHECK_EQUAL(result, 0x7800);
@@ -339,7 +342,7 @@ BOOST_AUTO_TEST_CASE(Utils_Make_uint32)
 
 
     //build the bytes into a dword
-    result = make_uint32(b1, b2, b3, b4);
+    result = Utils::make_uint32(b1, b2, b3, b4);
 
     //verify that the word result is now 0x12345678
     BOOST_CHECK_EQUAL(result, 0x12345678);
@@ -350,7 +353,7 @@ BOOST_AUTO_TEST_CASE(Utils_Make_uint32)
     b4 = 0x34;
 
     //build the bytes into a dword
-    result = make_uint32(b1, b2, b3, b4);
+    result = Utils::make_uint32(b1, b2, b3, b4);
 
     //verify that the dword result is now 0x1234
     BOOST_CHECK_EQUAL(result, 0x1234);
@@ -361,7 +364,7 @@ BOOST_AUTO_TEST_CASE(Utils_Make_uint32)
     b4 = 0x00;
 
     //build the bytes into a dword
-    result = make_uint32(b1, b2, b3, b4);
+    result = Utils::make_uint32(b1, b2, b3, b4);
 
     //verify that the word result is now 0x56780000
     BOOST_CHECK_EQUAL(result, 0x56780000);
@@ -385,7 +388,7 @@ BOOST_AUTO_TEST_CASE(Utils_GetSystemTime)
     BOOST_CHECK(diff >= sleepNano);
 
     // check diff within 10% of sleep time
-    BOOST_CHECK(diff < (sleepNano * 1.1));
+    BOOST_CHECK(diff < sleepNano * 1.1);
 }
 
 BOOST_AUTO_TEST_CASE(Utils_valueTypeSize)

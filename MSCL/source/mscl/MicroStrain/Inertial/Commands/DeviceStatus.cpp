@@ -361,7 +361,7 @@ namespace mscl
         break;
 
         default:
-            throw mscl::Error_NotSupported("MSCL support for Device Status (0x0C, 0x64) is not currently implemented for this device. Model number: " + std::to_string(returnData.modelNumber));
+            throw Error_NotSupported("MSCL support for Device Status (0x0C, 0x64) is not currently implemented for this device. Model number: " + std::to_string(returnData.modelNumber));
         }
 
         return returnData;

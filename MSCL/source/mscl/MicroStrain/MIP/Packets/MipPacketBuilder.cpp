@@ -10,7 +10,7 @@
 
 namespace mscl
 {
-    MipPacketBuilder::MipPacketBuilder(const uint8 descriptorSet, const MipDataField& field):
+    MipPacketBuilder::MipPacketBuilder(const uint8 descriptorSet, const MipDataField& field) :
         m_descriptorSet(descriptorSet)
     {
         //add the field to the vector of fields

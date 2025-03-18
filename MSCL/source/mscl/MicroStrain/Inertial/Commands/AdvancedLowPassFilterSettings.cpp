@@ -66,7 +66,6 @@ namespace mscl
             byteCommand.append_uint16(static_cast<uint16>(freq));
             byteCommand.append_uint8(0x00);
         }
-        return GenericMipCommand::buildCommand(commandType(), byteCommand.data()); ;
+        return GenericMipCommand::buildCommand(commandType(), byteCommand.data());
     }
-
 }

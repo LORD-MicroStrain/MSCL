@@ -26,7 +26,7 @@ namespace mscl
         return builder.buildPacket();
     }
 
-    Ping::Response::Response(std::weak_ptr<ResponseCollector> collector):
+    Ping::Response::Response(std::weak_ptr<ResponseCollector> collector) :
         GenericMipCommand::Response(MipTypes::CMD_PING, collector, true, false, "Ping")
     {
     }

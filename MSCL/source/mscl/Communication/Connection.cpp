@@ -65,7 +65,7 @@ namespace mscl
             throw Error_InvalidSerialPort(-999);
         }
 
-        return Connection::Serial(resolvedPort, baudRate);
+        return Serial(resolvedPort, baudRate);
     }
 
     Connection Connection::TcpIp(const std::string& serverAddress, uint16 serverPort, const std::string& interfaceAddress)

@@ -4,18 +4,17 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "RadioFeatures.h"
+#include "mscl/MicroStrain/Wireless/RadioFeatures.h"
 
 namespace mscl
 {
-    RadioFeatures::RadioFeatures():
+    RadioFeatures::RadioFeatures() :
         m_extendedRange(false)
-    {
-    }
+    {}
 
     RadioFeatures::RadioFeatures(uint16 eepromValue)
     {
-        //initialze all the features
+        //initialize all the features
         init(eepromValue);
     }
 

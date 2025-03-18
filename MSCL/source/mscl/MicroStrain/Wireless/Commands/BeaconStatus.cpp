@@ -8,13 +8,13 @@
 
 namespace mscl
 {
-    BeaconStatus::BeaconStatus():
+    BeaconStatus::BeaconStatus() :
         m_enabled(false),
         m_timestamp(0)
     {
     }
 
-    BeaconStatus::BeaconStatus(bool beaconEnabled, const Timestamp& currentTimestamp):
+    BeaconStatus::BeaconStatus(bool beaconEnabled, const Timestamp& currentTimestamp) :
         m_enabled(beaconEnabled),
         m_timestamp(currentTimestamp)
     {

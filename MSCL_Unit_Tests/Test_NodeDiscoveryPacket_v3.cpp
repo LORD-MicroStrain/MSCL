@@ -8,6 +8,10 @@
 
 using namespace mscl;
 
+DISABLE_WARNING_BOOST_START
+#include <boost/test/unit_test.hpp>
+DISABLE_WARNING_BOOST_END
+
 BOOST_AUTO_TEST_SUITE(NodeDiscoveryPacket_v3_Test)
 
 BOOST_AUTO_TEST_CASE(NodeDiscovery_v3_IntegrityCheck_Fail_PayloadSize)

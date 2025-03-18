@@ -49,7 +49,7 @@ namespace mscl
             //
             //Returns:
             //    true if the response pattern was found, false otherwise.
-            virtual bool matchSuccessResponse(const WirelessPacket& packet) override;
+            bool matchSuccessResponse(const WirelessPacket& packet) override;
         };
     };
 #endif

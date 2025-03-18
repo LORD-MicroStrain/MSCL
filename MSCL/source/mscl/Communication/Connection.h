@@ -48,7 +48,7 @@ namespace mscl
         Connection(std::shared_ptr<Connection_Impl_Base> impl);
 #endif
 
-        Connection(){};
+        Connection(){}
 
         //API Function: Serial
         //    A static function for creating a Connection object with a <SerialConnection> implementation.
@@ -140,7 +140,6 @@ namespace mscl
         //    The <Connection_Impl_Base> that contains all the implementation logic for the Connection class.
         std::shared_ptr<Connection_Impl_Base> m_impl;
 
-    private:
         //Function: registerParser
         //    Registers a function to handle the parsing of data when it is read in.
         //

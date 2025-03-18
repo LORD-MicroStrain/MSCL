@@ -15,7 +15,6 @@ namespace mscl
     //    Contains enumeration/types for various MIP information
     struct MipTypes
     {
-    public:
         //API Enums: DataClass
         //  The enums for all the different data classes of MIP data.
         //
@@ -1494,7 +1493,6 @@ namespace mscl
         //  If index known, pass in qualifier UNKNOWN
         static ChannelIndex findChannelIndex(ChannelField field, ChannelQualifier qualifier, uint8 index);
 
-    private:
         //Const: CHANNEL_NAMES
         //    An unordered_map mapping each <ChannelId> to its respective name (universal SensorCloud name).
         static const std::unordered_map<ChannelId, std::string, ChannelIdHash> CHANNEL_NAMES;
@@ -1773,7 +1771,6 @@ namespace mscl
         };
 #endif
 
-    public:
         //API Constructor: MipChannelIdentifier
         //  Default constructor
         MipChannelIdentifier() {}
@@ -1802,7 +1799,6 @@ namespace mscl
 
         ~MipChannelIdentifier() {}
 
-    public:
         //API Function: identifierType
         //  Returns the <MipChannelIdentifier::Type> specifier of this identifier.
         Type identifierType() const { return m_type; }
@@ -1998,7 +1994,6 @@ namespace mscl
         //  The <Bitfield> valid flags of this measurement.
         Bitfield m_validFlags;
 
-    protected:
         //Constructor: AidingMeasurementInput
         //  Constructs an AidingMeasurementInput object with default values
         AidingMeasurementInput() :
@@ -2149,14 +2144,14 @@ namespace mscl
         //
         //Parameters:
         //  values - <MipFieldValues> parameter list
-        virtual void parseMipFieldValues(const MipFieldValues& values) override;
+        void parseMipFieldValues(const MipFieldValues& values) override;
 
         //Function: appendMipFieldValues
         //  Appends the position measurement info to the provided <MipFieldValues> parameter list.
         //
         //Parameters:
         //  values - the <MipFieldValues> parameter list to append to
-        virtual void appendMipFieldValues(MipFieldValues& values) const override;
+        void appendMipFieldValues(MipFieldValues& values) const override;
 
     public:
         //API Function: position
@@ -2231,7 +2226,6 @@ namespace mscl
             HEIGHT_ABOVE_ELLIPSOID = MipTypes::Command::CMD_AIDING_HEIGHT_ABOVE_ELLIPSOID
         };
 
-    protected:
         //Variable: m_reference
         //  The height measurement reference
         Reference m_reference;
@@ -2266,14 +2260,14 @@ namespace mscl
         //
         //Parameters:
         //  values - <MipFieldValues> parameter list
-        virtual void parseMipFieldValues(const MipFieldValues& values) override;
+        void parseMipFieldValues(const MipFieldValues& values) override;
 
         //Function: appendMipFieldValues
         //  Appends the velocity measurement info to the provided <MipFieldValues> parameter list.
         //
         //Parameters:
         //  values - the <MipFieldValues> parameter list to append to
-        virtual void appendMipFieldValues(MipFieldValues& values) const override;
+        void appendMipFieldValues(MipFieldValues& values) const override;
 
     public:
         //API Function: height
@@ -2375,14 +2369,14 @@ namespace mscl
         //
         //Parameters:
         //  values - <MipFieldValues> parameter list
-        virtual void parseMipFieldValues(const MipFieldValues& values) override;
+        void parseMipFieldValues(const MipFieldValues& values) override;
 
         //Function: appendMipFieldValues
         //  Appends the velocity measurement info to the provided <MipFieldValues> parameter list.
         //
         //Parameters:
         //  values - the <MipFieldValues> parameter list to append to
-        virtual void appendMipFieldValues(MipFieldValues& values) const override;
+        void appendMipFieldValues(MipFieldValues& values) const override;
 
     public:
         //API Function: velocity
@@ -2479,14 +2473,14 @@ namespace mscl
         //
         //Parameters:
         //  values - <MipFieldValues> parameter list
-        virtual void parseMipFieldValues(const MipFieldValues& values) override;
+        void parseMipFieldValues(const MipFieldValues& values) override;
 
         //Function: appendMipFieldValues
         //  Appends the heading measurement info to the provided <MipFieldValues> parameter list.
         //
         //Parameters:
         //  values - the <MipFieldValues> parameter list to append to
-        virtual void appendMipFieldValues(MipFieldValues& values) const override;
+        void appendMipFieldValues(MipFieldValues& values) const override;
 
     public:
         //API Function: heading
@@ -2579,14 +2573,14 @@ namespace mscl
         //
         //Parameters:
         //  values - <MipFieldValues> parameter list
-        virtual void parseMipFieldValues(const MipFieldValues& values) override;
+        void parseMipFieldValues(const MipFieldValues& values) override;
 
         //Function: appendMipFieldValues
         //  Appends the velocity measurement info to the provided <MipFieldValues> parameter list.
         //
         //Parameters:
         //  values - the <MipFieldValues> parameter list to append to
-        virtual void appendMipFieldValues(MipFieldValues& values) const override;
+        void appendMipFieldValues(MipFieldValues& values) const override;
 
     public:
         //API Function: magneticField
@@ -2667,14 +2661,14 @@ namespace mscl
         //
         //Parameters:
         //  values - <MipFieldValues> parameter list
-        virtual void parseMipFieldValues(const MipFieldValues& values) override;
+        void parseMipFieldValues(const MipFieldValues& values) override;
 
         //Function: appendMipFieldValues
         //  Appends the velocity measurement info to the provided <MipFieldValues> parameter list.
         //
         //Parameters:
         //  values - the <MipFieldValues> parameter list to append to
-        virtual void appendMipFieldValues(MipFieldValues& values) const override;
+        void appendMipFieldValues(MipFieldValues& values) const override;
 
     public:
         //API Function: pressure
@@ -2953,7 +2947,6 @@ namespace mscl
         // The index ID of this range according to device manual
         uint8 m_id;
 
-    private:
         friend class MipNode_Impl;
         friend class InertialNode;
 
@@ -2999,7 +2992,6 @@ namespace mscl
     // Structure to hold all info for looking up supported sensor ranges for a device
     class SupportedSensorRanges
     {
-    private:
         // only MipNode_Impl can populate supported options
         friend class MipNode_Impl;
         SensorRangeOptions m_options;

@@ -36,12 +36,10 @@ namespace mscl
         //API Destructor: ~Vec3f
         ~Vec3f() {}
 
-    public:
         void fromMipFieldValues(const MipFieldValues& data, uint8 offset = 0);
         MipFieldValues asMipFieldValues() const;
         void appendMipFieldValues(MipFieldValues& appendTo) const;
 
-    public:
         //API Function: x
         float x() const { return vec_0; }
         void x(float x) { vec_0 = x; }
@@ -112,12 +110,10 @@ namespace mscl
         //    Destroys a TimeUpdate object.
         ~GeometricVector();
 
-    public:
         void fromMipFieldValues_includesFrame(const MipFieldValues& data, uint8 offset = 0);
         MipFieldValues asMipFieldValues_includeFrame() const;
         void appendMipFieldValues_includeFrame(MipFieldValues& appendTo) const;
 
-    public:
         //API Variable: referenceFrame
         //    The <PositionVelocityReferenceFrame> of this vector.
         //    Default: ECEF
@@ -166,7 +162,6 @@ namespace mscl
 
         ~Velocity() {}
 
-    public:
         //API Function: ECEF
         //    Creates a Velocity vectory with the reference frame set to Earth-Centered, Earth-Fixed
         //

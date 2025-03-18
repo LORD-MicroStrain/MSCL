@@ -6,9 +6,7 @@
 
 #pragma once
 
-#include <map>
 #include "mscl/MicroStrain/Wireless/WirelessTypes.h"
-#include "mscl/Types.h"
 
 namespace mscl
 {

@@ -4,8 +4,9 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "WirelessDataPacket.h"
-#include "mscl/Timestamp.h"
+#include "mscl/MicroStrain/Wireless/Packets/WirelessDataPacket.h"
+
+#include "mscl/MicroStrain/Wireless/DataSweep.h"
 
 namespace mscl
 {
@@ -27,7 +28,7 @@ namespace mscl
     void WirelessDataPacket::addDataPoint(ChannelData& container, uint8 channelNumber, int channelDataIndex, int sweepIndex, WirelessChannel::ChannelId channelId) const
     {
         //find the offset into the payload to get the data
-        uint32 offset = (sweepIndex * m_sweepSize) + (channelDataIndex * WirelessTypes::dataTypeSize(m_dataType)) + m_payloadOffsetChannelData;
+        uint32 offset = sweepIndex * m_sweepSize + channelDataIndex * WirelessTypes::dataTypeSize(m_dataType) + m_payloadOffsetChannelData;
 
         anyType data;
 
@@ -60,7 +61,7 @@ namespace mscl
 
     bool WirelessDataPacket::moreSweeps() const
     {
-        return (numSweepsRemaining() > 0);
+        return numSweepsRemaining() > 0;
     }
 
 
@@ -130,12 +131,12 @@ namespace mscl
             return true;
         }
 
-        return ((now - timestamp).getNanoseconds() < NANOS_IN_1_HOUR);
+        return (now - timestamp).getNanoseconds() < NANOS_IN_1_HOUR;
     }
 
     bool WirelessDataPacket::angleWithinRange(float angle)
     {
-        return (angle >= 0.0f && angle <= 360.0f);
+        return angle >= 0.0f && angle <= 360.0f;
     }
 
     void WirelessDataPacket::getPayloadData(size_t payloadPosition, anyType& result) const
@@ -162,7 +163,7 @@ namespace mscl
             case WirelessTypes::dataType_uint16_18bitTrunc:
             {
                 uint32 val = static_cast<uint32>(m_payload.read_uint16(payloadPosition));
-                result = (val << 2);
+                result = val << 2;
                 break;
             }
 
@@ -170,7 +171,7 @@ namespace mscl
             case WirelessTypes::dataType_uint16_24bitTrunc:
             {
                 uint32 val = static_cast<uint32>(m_payload.read_uint16(payloadPosition));
-                result = (val << 8);
+                result = val << 8;
                 break;
             }
 
@@ -178,7 +179,7 @@ namespace mscl
             case WirelessTypes::dataType_int16_20bitTrunc:
             {
                 int32 val = static_cast<int32>(m_payload.read_int16(payloadPosition));
-                result = (val << 6);
+                result = val << 6;
                 break;
             }
 
@@ -195,7 +196,7 @@ namespace mscl
                 result = m_payload.read_uint24(payloadPosition);
                 break;
 
-            //int24 value (we store this as a int32)
+            //int24 value (we store this as an int32)
             case WirelessTypes::dataType_int24_20bit:
                 result = m_payload.read_int24(payloadPosition);
                 break;

@@ -28,7 +28,7 @@ namespace mscl
         return cmd;
     }
 
-    BaseStation_Reset_v2::Response::Response(ResetType resetType, std::weak_ptr<ResponseCollector> collector):
+    BaseStation_Reset_v2::Response::Response(ResetType resetType, std::weak_ptr<ResponseCollector> collector) :
         WirelessResponsePattern(collector, WirelessProtocol::cmdId_baseReset_v2, WirelessProtocol::BASE_STATION_ADDRESS),
         m_resetType(resetType)
     {

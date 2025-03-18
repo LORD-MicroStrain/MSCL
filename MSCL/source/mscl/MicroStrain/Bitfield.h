@@ -27,7 +27,7 @@ namespace mscl
 
         //Destructor: ~Bitfield
         //  Default destructor for the Bitfield object
-        virtual ~Bitfield() {}
+        virtual ~Bitfield() = default;
 
     private:
         //Variable: m_value

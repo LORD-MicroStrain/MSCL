@@ -40,13 +40,12 @@ namespace mscl
             m_description(description)
         {}
 
-        virtual ~Error() throw()
-        {}
+        ~Error() throw() override {}
 
         //API Function: what
         //    overriding the default std::exception what() function,
         //    gets the description of the thrown exception
-        const char* what () const throw ()
+        const char* what () const throw () override
         {
             return m_description.c_str();
         }
@@ -79,8 +78,7 @@ namespace mscl
             Error(description)
         {}
 
-        ~Error_NotSupported() throw()
-        {}
+        ~Error_NotSupported() throw() override {}
     };
 
     //API Class: Error_NoData
@@ -103,8 +101,7 @@ namespace mscl
             Error(description)
         {}
 
-        ~Error_NoData() throw()
-        {}
+        ~Error_NoData() throw() override {}
     };
 
     //API Class: Error_BadDataType
@@ -118,8 +115,7 @@ namespace mscl
             Error("Data was accessed using the wrong data type.")
         {}
 
-        ~Error_BadDataType() throw()
-        {}
+        ~Error_BadDataType() throw() override {}
     };
 
     //API Class: Error_UnknownSampleRate
@@ -142,9 +138,7 @@ namespace mscl
             Error(description)
         {}
 
-        ~Error_UnknownSampleRate() throw()
-        {
-        }
+        ~Error_UnknownSampleRate() throw() override {}
     };
 
     //API Class: Error_Communication
@@ -169,9 +163,7 @@ namespace mscl
         {
         }
 
-        virtual ~Error_Communication() throw()
-        {
-        }
+        ~Error_Communication() throw() override {}
     };
 
     //API Class: Error_NodeCommunication
@@ -215,9 +207,7 @@ namespace mscl
             return m_nodeAddress;
         }
 
-        ~Error_NodeCommunication() throw()
-        {
-        }
+        ~Error_NodeCommunication() throw() override {}
     };
 
     //API Class: Error_Connection
@@ -270,7 +260,7 @@ namespace mscl
         {
         }
 
-        virtual ~Error_Connection() throw() {}
+        ~Error_Connection() throw() override {}
 
         //API Function: code
         //    gets the exception error code (system error codes, or -1 by default)
@@ -305,7 +295,7 @@ namespace mscl
         {
         }
 
-        ~Error_InvalidSerialPort() throw() {}
+        ~Error_InvalidSerialPort() throw() override {}
     };
 
     //API Class: Error_InvalidTcpServer
@@ -325,7 +315,7 @@ namespace mscl
             Error_Connection("Invalid TCP/IP Server: " + message, code)
         {}
 
-        ~Error_InvalidTcpServer() throw() {}
+        ~Error_InvalidTcpServer() throw() override {}
     };
 
     //API Class: Error_InvalidUnixSocket
@@ -345,8 +335,7 @@ namespace mscl
             Error_Connection("Invalid Unix Socket: " + message, code)
         {}
 
-        ~Error_InvalidUnixSocket() throw ()
-        {}
+        ~Error_InvalidUnixSocket() throw () override {}
     };
 
     //API Class: Error_MipCmdFailed
@@ -390,9 +379,7 @@ namespace mscl
             m_code(code)
         {}
 
-        ~Error_MipCmdFailed() throw ()
-        {
-        }
+        ~Error_MipCmdFailed() throw () override {}
 
         //API Function: code
         //    gets the exception error code
@@ -414,7 +401,6 @@ namespace mscl
     //    The Configuration is invalid.
     class Error_InvalidConfig : public Error
     {
-    private:
         //Variable: m_issues
         //    The <ConfigIssues> that caused the invalid configuration exception.
         ConfigIssues m_issues;
@@ -443,8 +429,7 @@ namespace mscl
             }
         }
 
-        virtual ~Error_InvalidConfig() throw ()
-        {}
+        ~Error_InvalidConfig() throw () override {}
 
         //API Function: issues
         //    Gets the <ConfigIssues> that caused the invalid configuration exception.
@@ -458,7 +443,6 @@ namespace mscl
     //    The Configuration for a WirelessNode is invalid.
     class Error_InvalidNodeConfig : public Error_InvalidConfig
     {
-    private:
         //Variable: m_nodeAddress
         //    The node address of the <WirelessNode> that the exception pertains to.
         NodeAddress m_nodeAddress;
@@ -475,9 +459,7 @@ namespace mscl
         {
         }
 
-        ~Error_InvalidNodeConfig() throw ()
-        {
-        }
+        ~Error_InvalidNodeConfig() throw () override {}
 
         //API Function: nodeAddress
         //    Gets the node address of the Node that this exception pertains to.

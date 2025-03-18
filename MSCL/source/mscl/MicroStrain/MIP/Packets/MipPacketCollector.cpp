@@ -10,7 +10,7 @@
 
 namespace mscl
 {
-    MipPacketCollector::MipPacketCollector():
+    MipPacketCollector::MipPacketCollector() :
         m_dataPackets(MAX_DATA_BUFFER_SIZE)
     {
     }

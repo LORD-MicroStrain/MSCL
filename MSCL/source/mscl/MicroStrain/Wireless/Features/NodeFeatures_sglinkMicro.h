@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "NodeFeatures.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures.h"
 
 namespace mscl
 {
@@ -14,22 +14,21 @@ namespace mscl
     //    Contains information on features for the SG-Link-Micro node. Inherits from <NodeFeatures>.
     class NodeFeatures_sglinkMicro: public NodeFeatures
     {
-    private:
         NodeFeatures_sglinkMicro();    //disabled default constructor
 
     public:
-        virtual ~NodeFeatures_sglinkMicro() {};
+        ~NodeFeatures_sglinkMicro() override = default;
 
         //Constructor: NodeFeatures_sglinkMicro
         //    Creates a NodeFeatures_sglinkMicro object.
         NodeFeatures_sglinkMicro(const NodeInfo& info);
 
-        virtual bool supportsSensorDelayConfig() const override;
+        bool supportsSensorDelayConfig() const override;
 
-        virtual const WirelessTypes::DataCollectionMethods dataCollectionMethods() const final;
+        const WirelessTypes::DataCollectionMethods dataCollectionMethods() const final;
 
-        virtual const WirelessTypes::DataFormats dataFormats() const override;
+        const WirelessTypes::DataFormats dataFormats() const override;
 
-        virtual const WirelessTypes::SamplingModes samplingModes() const override;
+        const WirelessTypes::SamplingModes samplingModes() const override;
     };
 }

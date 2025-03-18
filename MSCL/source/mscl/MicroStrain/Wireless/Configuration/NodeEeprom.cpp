@@ -4,17 +4,16 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "NodeEeprom.h"
+#include "mscl/MicroStrain/Wireless/Configuration/NodeEeprom.h"
+
+#include "mscl/MicroStrain/Wireless/Commands/WirelessProtocol.h"
+#include "mscl/MicroStrain/Wireless/Configuration/NodeEepromMap.h"
 #include "mscl/MicroStrain/Wireless/Features/NodeFeatures.h"
 #include "mscl/MicroStrain/Wireless/WirelessNode_Impl.h"
-#include "mscl/MicroStrain/Wireless/BaseStation.h"
-#include "mscl/MicroStrain/ByteStream.h"
-#include "mscl/Utils.h"
-#include "NodeEepromMap.h"
 
 namespace mscl
 {
-    NodeEeprom::NodeEeprom(const WirelessNode_Impl* node, const BaseStation& base, const NodeEepromSettings& settings):
+    NodeEeprom::NodeEeprom(const WirelessNode_Impl* node, const BaseStation& base, const NodeEepromSettings& settings) :
         Eeprom(settings.useEepromCache, settings.numRetries),
         m_node(node),
         m_baseStation(base),
@@ -30,7 +29,7 @@ namespace mscl
         {
             const WirelessProtocol& nodeProtocol = m_node->protocol(m_baseStation.communicationProtocol());
 
-            retryCount++;   //lets count the group read as a try
+            retryCount++;   //let's count the group read as a try
 
             //use Batch EEPROM read if supported
             if(nodeProtocol.supportsBatchEepromRead())
@@ -107,8 +106,8 @@ namespace mscl
         //loop through all the data in the page
         for(uint16 pos = 0; pos < dataLength; pos += 2)
         {
-            //calculate the eeprom location that this value should be stored in in the map
-            mapLocation = pos + (EEPROMS_PER_PAGE * pageIndex);
+            //calculate the eeprom location that this value should be stored in the map
+            mapLocation = pos + EEPROMS_PER_PAGE * pageIndex;
 
             //just storing everything as uint16
             uint16 eepromVal = pageData.read_uint16(pos);
@@ -131,7 +130,7 @@ namespace mscl
 
     void NodeEeprom::updateSettings(const NodeEepromSettings& settings)
     {
-        //update all of the provided settings
+        //update all the provided settings
         m_useGroupRead = settings.useGroupRead;
         setNumRetries(settings.numRetries);
         useCache(settings.useEepromCache);
@@ -204,7 +203,7 @@ namespace mscl
             uint16 valInCache;
             if(readCache(location, valInCache))
             {
-                //if the value in the cache is the same we are trying to write
+                //if the value in the cache is the same, we are trying to write
                 if(valInCache == value)
                 {
                     //do not need to write anything, just return

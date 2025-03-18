@@ -10,6 +10,10 @@
 
 using namespace mscl;
 
+DISABLE_WARNING_BOOST_START
+#include <boost/test/unit_test.hpp>
+DISABLE_WARNING_BOOST_END
+
 WirelessPacket buildWriteEepromResponse(int nodeAddress)
 {
     Bytes payload;
@@ -55,7 +59,7 @@ BOOST_AUTO_TEST_CASE(WriteEeprom_GetResponseResult)
     std::shared_ptr<ResponseCollector> rc(new ResponseCollector);
     WriteEeprom::Response response(123, rc);
 
-    //check that the the response result is what it should be
+    //check that the response result is what it should be
     BOOST_CHECK_EQUAL(response.success(), false);
 }
 

@@ -4,14 +4,15 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "NodeFeatures_sglink200oem.h"
-#include "AvailableSampleRates.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures_sglink200oem.h"
+
+#include "mscl/MicroStrain/SampleRate.h"
 #include "mscl/MicroStrain/Wireless/Configuration/NodeEepromMap.h"
-#include "mscl/Utils.h"
+#include "mscl/MicroStrain/Wireless/Features/AvailableSampleRates.h"
 
 namespace mscl
 {
-    NodeFeatures_sglink200oem::NodeFeatures_sglink200oem(const NodeInfo& info):
+    NodeFeatures_sglink200oem::NodeFeatures_sglink200oem(const NodeInfo& info) :
         NodeFeatures_200series(info)
     {
         addCalCoeffChannelGroup(1, "Differential", NodeEepromMap::CH_ACTION_SLOPE_1, NodeEepromMap::CH_ACTION_ID_1);

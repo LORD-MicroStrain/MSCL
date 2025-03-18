@@ -5,6 +5,7 @@
 *****************************************************************************************/
 
 #include "mscl/Communication/SerialConnection.h"
+#include "mscl/MicroStrain/ResponseCollector.h"
 #include "mscl/MicroStrain/ResponsePattern.h"
 #include "mscl/MicroStrain/Wireless/BaseStation.h"
 #include "mscl/MicroStrain/Wireless/Commands/LongPing.h"
@@ -15,11 +16,9 @@
 #include "mscl/MicroStrain/Wireless/WirelessNode.h"
 #include "mscl/Utils.h"
 
-#include "mock_BaseStation.h"
 #include "mock_WirelessNode.h"
 
 using namespace mscl;
-
 
 BOOST_AUTO_TEST_SUITE(WirelessNode_Test)
 
@@ -144,7 +143,7 @@ BOOST_AUTO_TEST_CASE(WirelessNode_readEepromuint16_pageDownload)
     //check the eeprom result is what we want
     BOOST_CHECK_EQUAL(result, 19);
 
-    result = node.readEeprom(10);    //this shouldnt have to read again, as the original page downloaded should cache it
+    result = node.readEeprom(10);    //this shouldn't have to read again, as the original page downloaded should cache it
 
     //check the eeprom result is again what we want
     BOOST_CHECK_EQUAL(result, 1);
@@ -447,7 +446,7 @@ BOOST_AUTO_TEST_CASE(NodeConfig_setBootMode)
     WirelessNode node(100, b);
     node.setImpl(impl);
 
-    MOCK_EXPECT(impl->protocol).returns(*(WirelessProtocol::v1_5().get()));
+    MOCK_EXPECT(impl->protocol).returns(*WirelessProtocol::v1_5().get());
 
     //MOCK_EXPECT(impl->readEeprom).with(NodeEepromMap::ASPP_VER).returns(Value::UINT16(0x0105));
 
@@ -485,7 +484,7 @@ BOOST_AUTO_TEST_CASE(NodeConfig_setInactivityTimeout)
     WirelessNode node(100, b);
     node.setImpl(impl);
 
-    MOCK_EXPECT(impl->protocol).returns(*(WirelessProtocol::v1_5().get()));
+    MOCK_EXPECT(impl->protocol).returns(*WirelessProtocol::v1_5().get());
 
     std::unique_ptr<NodeFeatures> features;
     expectNodeFeatures(features, impl);
@@ -546,7 +545,7 @@ BOOST_AUTO_TEST_CASE(NodeConfig_setTransmitPower)
     WirelessNode node(100, b);
     node.setImpl(impl);
 
-    MOCK_EXPECT(impl->protocol).returns(*(WirelessProtocol::v1_5().get()));
+    MOCK_EXPECT(impl->protocol).returns(*WirelessProtocol::v1_5().get());
 
     std::unique_ptr<NodeFeatures> features;
     expectNodeFeatures(features, impl);

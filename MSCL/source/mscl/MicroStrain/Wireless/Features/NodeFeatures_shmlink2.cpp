@@ -4,14 +4,14 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "NodeFeatures_shmlink2.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures_shmlink2.h"
+
 #include "mscl/MicroStrain/Wireless/Configuration/NodeEepromMap.h"
-#include "AvailableSampleRates.h"
-#include "mscl/Utils.h"
+#include "mscl/MicroStrain/Wireless/Features/AvailableSampleRates.h"
 
 namespace mscl
 {
-    NodeFeatures_shmlink2::NodeFeatures_shmlink2(const NodeInfo& info):
+    NodeFeatures_shmlink2::NodeFeatures_shmlink2(const NodeInfo& info) :
         NodeFeatures(info)
     {
         static const ChannelMask DIFF_CH1(BOOST_BINARY(00000001));    //ch1

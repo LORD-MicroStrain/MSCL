@@ -15,7 +15,6 @@ namespace mscl
     //    Contains logic for the base station read eeprom command
     class BaseStation_ReadEeprom
     {
-    private:
         BaseStation_ReadEeprom();                                            //default constructor disabled
         BaseStation_ReadEeprom(const BaseStation_ReadEeprom&);                //copy constructor disabled
         BaseStation_ReadEeprom& operator=(const BaseStation_ReadEeprom&);    //assignement operator disabled

@@ -4,19 +4,13 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include <math.h>
+#include "mscl/MicroStrain/Wireless/Packets/ShmPacket.h"
 
-#include "ShmPacket.h"
-#include "mscl/MicroStrain/Wireless/ChannelMask.h"
-#include "mscl/MicroStrain/Wireless/StructuralHealth.h"
-#include "mscl/MicroStrain/SampleUtils.h"
-#include "mscl/Histogram.h"
-#include "mscl/TimeSpan.h"
-#include "mscl/Types.h"
+#include "mscl/MicroStrain/Wireless/DataSweep.h"
 
 namespace mscl
 {
-    ShmPacket::ShmPacket(const WirelessPacket& packet):
+    ShmPacket::ShmPacket(const WirelessPacket& packet) :
         m_binCount(21)    //always 21 histogram bins in this packet
     {
         //construct the data packet from the wireless packet passed in
@@ -95,7 +89,7 @@ namespace mscl
         sweep.nodeAddress(m_nodeAddress);
         sweep.sampleRate(txRate);    //the histogram packet has a constant transmit rate of 1 sample every 30 seconds
 
-        //no timestamp comes with the histogram packet, so just stamp it with the current time
+        //no timestamp comes with the histogram packet, so stamp it with the current time
         sweep.timestamp(Timestamp::timeNow());
 
         sweep.nodeRssi(m_nodeRSSI);
@@ -111,7 +105,7 @@ namespace mscl
         for(size_t i = 0; i < m_binCount; i++)
         {
             //read the bin's count from the payload
-            count = m_payload.read_uint32(PAYLOAD_OFFSET_BIN_DATA + (i * DATA_SIZE));
+            count = m_payload.read_uint32(PAYLOAD_OFFSET_BIN_DATA + i * DATA_SIZE);
 
             //create the bin to add to the Histogram
             Bin bin(Value::UINT32(start), Value::UINT32(end), Value::UINT32(count));
@@ -129,7 +123,7 @@ namespace mscl
 
         //create and add the WirelessDataPoint to the ChannelData vector
         ChannelData chData;
-        auto chName = std::bind(ShmPacket::buildChannelName, angle);
+        auto chName = std::bind(buildChannelName, angle);
         chData.push_back(WirelessDataPoint(WirelessChannel::channel_structuralHealth, 0, chName, valueType_StructuralHealth, anyType(shm)));
 
         //add the channel data to the sweep
@@ -179,7 +173,7 @@ namespace mscl
         sweep.nodeAddress(m_nodeAddress);
         sweep.sampleRate(SampleRate::FromWirelessEepromValue(txRate));
 
-        //no timestamp comes with the histogram packet, so just stamp it with the current time
+        //no timestamp comes with the histogram packet, so stamp it with the current time
         sweep.timestamp(Timestamp::timeNow());
 
         sweep.nodeRssi(m_nodeRSSI);
@@ -195,7 +189,7 @@ namespace mscl
         for(size_t i = 0; i < m_binCount; i++)
         {
             //read the bin's count from the payload
-            count = m_payload.read_uint32(PAYLOAD_OFFSET_BIN_DATA + (i * DATA_SIZE));
+            count = m_payload.read_uint32(PAYLOAD_OFFSET_BIN_DATA + i * DATA_SIZE);
 
             //create the bin to add to the Histogram
             Bin bin(Value::UINT32(start), Value::UINT32(end), Value::UINT32(count));
@@ -213,7 +207,7 @@ namespace mscl
 
         //create and add the WirelessDataPoint to the ChannelData vector
         ChannelData chData;
-        auto chName = std::bind(ShmPacket::buildChannelName, angle);
+        auto chName = std::bind(buildChannelName, angle);
         chData.push_back(WirelessDataPoint(WirelessChannel::channel_structuralHealth, 0, chName, valueType_StructuralHealth, anyType(shm)));
 
         //add the channel data to the sweep

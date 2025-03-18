@@ -12,11 +12,9 @@
 #include "mscl/MicroStrain/Wireless/WirelessNode.h"
 #include "mscl/Utils.h"
 
-#include "mock_BaseStation.h"
 #include "mock_WirelessNode.h"
 
 using namespace mscl;
-
 
 BOOST_AUTO_TEST_SUITE(ChannelGroup_Test)
 
@@ -28,7 +26,7 @@ NodeInfo createInfo(WirelessModels::NodeModel node)
 BOOST_AUTO_TEST_CASE(ChannelGroup_channelGroups)
 {
     std::shared_ptr<NodeFeatures> sglink = NodeFeatures::create(createInfo(WirelessModels::node_sgLink));
-    mscl::ChannelGroups groups = sglink->channelGroups();
+    ChannelGroups groups = sglink->channelGroups();
 
     BOOST_CHECK_EQUAL(groups.size(), 4);
     BOOST_CHECK_EQUAL(groups.at(0).channels().toMask(), 1);    //differential channels
@@ -65,7 +63,7 @@ BOOST_AUTO_TEST_CASE(ChannelGroup_channelGroups)
 BOOST_AUTO_TEST_CASE(ChannelGroup_channelGroups_multiChannel)
 {
     std::shared_ptr<NodeFeatures> node = NodeFeatures::create(createInfo(WirelessModels::node_tcLink200));
-    mscl::ChannelGroups groups = node->channelGroups();
+    ChannelGroups groups = node->channelGroups();
 
     BOOST_CHECK_EQUAL(groups.size(), 16);
     BOOST_CHECK_EQUAL(groups.at(0).channels().toMask(), 1);     //cal coefficients ch1

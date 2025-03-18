@@ -8,7 +8,7 @@
 
 namespace mscl
 {
-    Matrix::Matrix():
+    Matrix::Matrix() :
         m_numRows(0),
         m_numColumns(0),
         m_valuesType(valueType_float),
@@ -16,7 +16,7 @@ namespace mscl
     {
     }
 
-    Matrix::Matrix(uint16 rows, uint16 columns, ValueType storedAs, const ByteStream& data):
+    Matrix::Matrix(uint16 rows, uint16 columns, ValueType storedAs, const ByteStream& data) :
         m_numRows(rows),
         m_numColumns(columns),
         m_data(data.data()),

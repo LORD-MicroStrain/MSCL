@@ -17,7 +17,6 @@ namespace mscl
     //    Contains information on which features are supported by an <InertialNode>.
     class MipNodeFeatures
     {
-    private:
         MipNodeFeatures();                                            //disabled default constructor
         MipNodeFeatures(const MipNodeFeatures&);                //disabled copy constructor
         MipNodeFeatures& operator=(const MipNodeFeatures&);    //disable assignment operator
@@ -27,7 +26,7 @@ namespace mscl
         mutable std::unique_ptr<MipNodeInfo> m_nodeInfo;
 
     public:
-        virtual ~MipNodeFeatures() {}
+        virtual ~MipNodeFeatures() = default;
 
     protected:
         friend class MipNode_Impl;

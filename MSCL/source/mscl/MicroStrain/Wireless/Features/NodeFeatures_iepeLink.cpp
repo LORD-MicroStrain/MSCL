@@ -4,16 +4,14 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "NodeFeatures_iepeLink.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures_iepeLink.h"
 
-#include "mscl/Exceptions.h"
 #include "mscl/MicroStrain/Wireless/Configuration/NodeEepromMap.h"
-#include "mscl/MicroStrain/Wireless/ChannelMask.h"
-#include "AvailableSampleRates.h"
+#include "mscl/MicroStrain/Wireless/Features/AvailableSampleRates.h"
 
 namespace mscl
 {
-    NodeFeatures_iepeLink::NodeFeatures_iepeLink(const NodeInfo& info):
+    NodeFeatures_iepeLink::NodeFeatures_iepeLink(const NodeInfo& info) :
         NodeFeatures(info)
     {
         addCalCoeffChannelGroup(1, "Acceleration", NodeEepromMap::CH_ACTION_SLOPE_1, NodeEepromMap::CH_ACTION_ID_1);

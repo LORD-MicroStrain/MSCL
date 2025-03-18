@@ -30,7 +30,6 @@ namespace mscl
         MipPacketBuilder(const MipPacketBuilder&);            //copy constructor disabled
         MipPacketBuilder& operator=(const MipPacketBuilder&); //assignment operator disabled
 
-    private:
         //Variable: m_descriptorSet
         //    The MIP Descriptor Set for the packet
         uint8 m_descriptorSet;

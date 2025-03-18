@@ -27,7 +27,7 @@ namespace mscl
         return builder.buildPacket();
     }
 
-    GetDeviceDescriptorSets::Response::Response(std::weak_ptr<ResponseCollector> collector):
+    GetDeviceDescriptorSets::Response::Response(std::weak_ptr<ResponseCollector> collector) :
         GenericMipCommand::Response(MipTypes::CMD_GET_DESCRIPTOR_SETS, collector, true, true, "Get Device Descriptor Sets")
     {}
 

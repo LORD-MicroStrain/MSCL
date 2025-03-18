@@ -4,7 +4,7 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "NodeDiscoveryPacket_v3.h"
+#include "mscl/MicroStrain/Wireless/Packets/NodeDiscoveryPacket_v3.h"
 
 namespace mscl
 {

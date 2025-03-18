@@ -4,14 +4,13 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "BaseStationFeatures_analog.h"
+#include "mscl/MicroStrain/Wireless/Features/BaseStationFeatures_analog.h"
 
 namespace mscl
 {
-    BaseStationFeatures_analog::BaseStationFeatures_analog(const BaseStationInfo& info):
+    BaseStationFeatures_analog::BaseStationFeatures_analog(const BaseStationInfo& info) :
         BaseStationFeatures(info)
-    {
-    }
+    {}
 
     uint8 BaseStationFeatures_analog::buttonCount() const
     {

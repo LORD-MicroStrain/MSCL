@@ -6,19 +6,32 @@
 
 #pragma once
 
-#include <mscl/MicroStrain/Wireless/Packets/WirelessPacketCollector.h>
 #include "mscl/Communication/RawBytePacketCollector.h"
-#include "mscl/MicroStrain/ResponseCollector.h"
 #include "mscl/MicroStrain/Wireless/BaseStationAnalogPair.h"
 #include "mscl/MicroStrain/Wireless/BaseStationButton.h"
 #include "mscl/MicroStrain/Wireless/Commands/AutoCal.h"
 #include "mscl/MicroStrain/Wireless/Commands/BeaconStatus.h"
 #include "mscl/MicroStrain/Wireless/Commands/PingResponse.h"
 #include "mscl/MicroStrain/Wireless/Commands/SetToIdleStatus.h"
-#include "mscl/MicroStrain/Wireless/WirelessParser.h"
+#include "mscl/MicroStrain/Wireless/Packets/WirelessPacketCollector.h"
+
+// #include "mscl/Communication/RawBytePacketCollector.h"
+// #include "mscl/MicroStrain/ResponseCollector.h"
+// #include "mscl/MicroStrain/Wireless/BaseStationAnalogPair.h"
+// #include "mscl/MicroStrain/Wireless/BaseStationButton.h"
+// #include "mscl/MicroStrain/Wireless/Commands/AutoCal.h"
+// #include "mscl/MicroStrain/Wireless/Commands/BeaconStatus.h"
+// #include "mscl/MicroStrain/Wireless/Commands/PingResponse.h"
+// #include "mscl/MicroStrain/Wireless/Commands/SetToIdleStatus.h"
+// #include "mscl/MicroStrain/Wireless/Packets/WirelessPacketCollector.h"
+// #include "mscl/MicroStrain/Wireless/WirelessParser.h"
 
 namespace mscl
 {
+    struct AutoCalCmdDetails;
+    class WirelessResponsePattern;
+    class WirelessParser;
+    class ResponseCollector;
     //forward declarations
     class AutoBalanceResult;
     class AutoCalResult;

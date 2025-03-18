@@ -44,7 +44,6 @@ namespace mscl
         //    The default constructor for a RawBytePacket object
         RawBytePacket();
 
-    public:
         //Typedef: Payload
         //    typedef for the bytes that make up a payload in a packet
         typedef ByteStream Payload;

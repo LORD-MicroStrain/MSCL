@@ -6,20 +6,17 @@
 
 #include "mscl/MicroStrain/Wireless/BaseStation_Impl.h"
 
-#include "mscl/MicroStrain/ResponsePattern.h"
+#include "mscl/MicroStrain/ResponseCollector.h"
 #include "mscl/MicroStrain/Wireless/BaseStation.h"
 #include "mscl/MicroStrain/Wireless/BaseStationInfo.h"
-#include "mscl/MicroStrain/Wireless/Commands/WirelessResponsePattern.h"
 #include "mscl/MicroStrain/Wireless/Configuration/BaseStationConfig.h"
 #include "mscl/MicroStrain/Wireless/Configuration/BaseStationEeprom.h"
 #include "mscl/MicroStrain/Wireless/Configuration/BaseStationEepromHelper.h"
 #include "mscl/MicroStrain/Wireless/Configuration/BaseStationEepromMap.h"
-#include "mscl/MicroStrain/Wireless/Configuration/EepromLocation.h"
 #include "mscl/MicroStrain/Wireless/Features/BaseStationFeatures.h"
 #include "mscl/MicroStrain/Wireless/NodeCommTimes.h"
+#include "mscl/MicroStrain/Wireless/WirelessParser.h"
 #include "mscl/ScopeHelper.h"
-#include "mscl/Utils.h"
-#include "mscl/Version.h"
 
 //Base Station commands
 #include "mscl/MicroStrain/Wireless/Commands/BaseStation_BeaconStatus.h"
@@ -39,9 +36,6 @@
 #include "mscl/MicroStrain/Wireless/Commands/ArmForDatalogging.h"
 #include "mscl/MicroStrain/Wireless/Commands/AutoBalance.h"
 #include "mscl/MicroStrain/Wireless/Commands/AutoBalance_v2.h"
-#include "mscl/MicroStrain/Wireless/Commands/AutoCal.h"
-#include "mscl/MicroStrain/Wireless/Commands/AutoCalInfo.h"
-#include "mscl/MicroStrain/Wireless/Commands/AutoCalResult.h"
 #include "mscl/MicroStrain/Wireless/Commands/BatchEepromRead.h"
 #include "mscl/MicroStrain/Wireless/Commands/Erase.h"
 #include "mscl/MicroStrain/Wireless/Commands/Erase_v2.h"
@@ -70,7 +64,7 @@
 namespace mscl
 {
     //Constructor
-    BaseStation_Impl::BaseStation_Impl(Connection connection, uint64 baseTimeout):
+    BaseStation_Impl::BaseStation_Impl(Connection connection, uint64 baseTimeout) :
         m_connection(connection),
         m_responseCollector(std::make_shared<ResponseCollector>()),
         m_baseCommandsTimeout(0),
@@ -91,7 +85,7 @@ namespace mscl
         m_connection.registerParser(std::bind(&BaseStation_Impl::parseData, this, std::placeholders::_1));
     }
 
-    BaseStation_Impl::BaseStation_Impl(Connection connection):
+    BaseStation_Impl::BaseStation_Impl(Connection connection) :
         m_connection(connection),
         m_responseCollector(std::make_shared<ResponseCollector>()),
         m_frequency(WirelessTypes::freq_unknown),
@@ -195,7 +189,7 @@ namespace mscl
 
     BaseStationEepromHelper& BaseStation_Impl::eeHelper() const
     {
-        return *(m_eepromHelper.get());
+        return *m_eepromHelper.get();
     }
 
     bool BaseStation_Impl::doCommand(WirelessResponsePattern& response, const ByteStream& cmdBytes, uint64 timeout)
@@ -238,7 +232,7 @@ namespace mscl
             m_features = BaseStationFeatures::create(info);
         }
 
-        return *(m_features.get());
+        return *m_features.get();
     }
 
     Connection& BaseStation_Impl::connection()
@@ -260,10 +254,10 @@ namespace mscl
         switch(commProtocol)
         {
             case WirelessTypes::commProtocol_lxrsPlus:
-                return *(m_protocol_lxrsPlus.get());
+                return *m_protocol_lxrsPlus.get();
 
             case WirelessTypes::commProtocol_lxrs:
-                return *(m_protocol_lxrs.get());
+                return *m_protocol_lxrs.get();
 
             default:
                 throw Error("Invalid CommProtocol (" + Utils::toStr(commProtocol) + ")");
@@ -422,7 +416,7 @@ namespace mscl
         uint64 timeNow = Utils::getCurrentSystemTime();
 
         //get the current milliseconds of the time
-        int milliseconds = (timeNow % TimeSpan::NANOSECONDS_PER_SECOND) / TimeSpan::NANOSECONDS_PER_MILLISECOND;
+        int milliseconds = timeNow % TimeSpan::NANOSECONDS_PER_SECOND / TimeSpan::NANOSECONDS_PER_MILLISECOND;
 
         //keep track of the closest milliseconds value to 0 milliseconds
         int closestMilli = milliseconds;
@@ -436,7 +430,7 @@ namespace mscl
             timeNow = Utils::getCurrentSystemTime();
 
             //get the current milliseconds of the time again
-            currentMilli = (timeNow % TimeSpan::NANOSECONDS_PER_SECOND) / TimeSpan::NANOSECONDS_PER_MILLISECOND;
+            currentMilli = timeNow % TimeSpan::NANOSECONDS_PER_SECOND / TimeSpan::NANOSECONDS_PER_MILLISECOND;
 
             //if we got closer to 0 milliseconds
             if(currentMilli >= closestMilli)
@@ -465,7 +459,7 @@ namespace mscl
         m_baseCommandsTimeout = timeout;
 
         //add more time for communication between Nodes and Bases
-        m_nodeCommandsTimeout = timeout + (timeout / 2) + 50;
+        m_nodeCommandsTimeout = timeout + timeout / 2 + 50;
     }
 
     uint64 BaseStation_Impl::timeout() const
@@ -923,7 +917,7 @@ namespace mscl
             pingSuccess = ping();
             retries++;
         }
-        while(!pingSuccess && (retries < MAX_RETRIES));
+        while(!pingSuccess && retries < MAX_RETRIES);
 
         if(!pingSuccess)
         {
@@ -956,7 +950,7 @@ namespace mscl
             pingSuccess = ping();
             retries++;
         }
-        while(!pingSuccess && (retries < MAX_RETRIES));
+        while(!pingSuccess && retries < MAX_RETRIES);
 
         if(!pingSuccess)
         {
@@ -1282,13 +1276,13 @@ namespace mscl
         {
             return m_eeprom->readEeprom(location);
         }
-        catch(mscl::Error_Communication&)
+        catch(Error_Communication&)
         {
-            throw mscl::Error_Communication("Failed to read the " + location.description() + " from the BaseStation");
+            throw Error_Communication("Failed to read the " + location.description() + " from the BaseStation");
         }
-        catch(mscl::Error_NotSupported&)
+        catch(Error_NotSupported&)
         {
-            throw mscl::Error_NotSupported("The BaseStation does not support reading the " + location.description());
+            throw Error_NotSupported("The BaseStation does not support reading the " + location.description());
         }
     }
 
@@ -1298,13 +1292,13 @@ namespace mscl
         {
             m_eeprom->writeEeprom(location, val);
         }
-        catch(mscl::Error_Communication&)
+        catch(Error_Communication&)
         {
-            throw mscl::Error_Communication("Failed to write the " + location.description() + " to the BaseStation");
+            throw Error_Communication("Failed to write the " + location.description() + " to the BaseStation");
         }
-        catch(mscl::Error_NotSupported&)
+        catch(Error_NotSupported&)
         {
-            throw mscl::Error_NotSupported("The BaseStation does not support writing the " + location.description());
+            throw Error_NotSupported("The BaseStation does not support writing the " + location.description());
         }
     }
 
@@ -1347,9 +1341,9 @@ namespace mscl
                 //write a 0x01 to the CYCLE_POWER eeprom location on the base station
                 writeEeprom(BaseStationEepromMap::CYCLE_POWER, Value::UINT16(RESET_BASE));
             }
-            catch(mscl::Error_Communication&)
+            catch(Error_Communication&)
             {
-                //an exception will be thrown due to no response, just continue on
+                //an exception will be thrown due to no response, continue on
             }
 
             //change the original timeout/retries back (and cancel the scope helpers)

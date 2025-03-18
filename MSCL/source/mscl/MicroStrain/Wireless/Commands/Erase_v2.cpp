@@ -40,7 +40,7 @@ namespace mscl
         return cmd;
     }
 
-    Erase_v2::Response::Response(NodeAddress nodeAddress, std::weak_ptr<ResponseCollector> collector):
+    Erase_v2::Response::Response(NodeAddress nodeAddress, std::weak_ptr<ResponseCollector> collector) :
         WirelessResponsePattern(collector, WirelessProtocol::cmdId_erase_v2, nodeAddress),
         m_nodeAddress(nodeAddress)
     {

@@ -40,7 +40,7 @@ namespace mscl
         return cmd;
     }
 
-    StartSyncSampling::Response::Response(NodeAddress nodeAddress, std::weak_ptr<ResponseCollector> collector):
+    StartSyncSampling::Response::Response(NodeAddress nodeAddress, std::weak_ptr<ResponseCollector> collector) :
         WirelessResponsePattern(collector, WirelessProtocol::cmdId_startSync_v1, nodeAddress),
         m_nodeAddress(nodeAddress)
     {

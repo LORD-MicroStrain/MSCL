@@ -4,19 +4,17 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "ChannelMask.h"
+#include "mscl/MicroStrain/Wireless/ChannelMask.h"
 
 namespace mscl
 {
-    ChannelMask::ChannelMask(uint16 channelMask):
+    ChannelMask::ChannelMask(uint16 channelMask) :
         m_bitMask(channelMask)
-    {
-    }
+    {}
 
-    ChannelMask::ChannelMask():
+    ChannelMask::ChannelMask() :
         m_bitMask(0)
-    {
-    }
+    {}
 
     bool ChannelMask::operator==(const ChannelMask& other) const
     {

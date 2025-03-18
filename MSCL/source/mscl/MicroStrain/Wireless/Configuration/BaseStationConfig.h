@@ -6,15 +6,14 @@
 
 #pragma once
 
-#include "mscl/Exceptions.h"
-#include "mscl/MicroStrain/Wireless/BaseStationAnalogPair.h"
-#include "mscl/MicroStrain/Wireless/BaseStationButton.h"
 #include "mscl/MicroStrain/Wireless/WirelessTypes.h"
 
 namespace mscl
 {
     //forward declarations
     class BaseStation;
+    class BaseStationAnalogPair;
+    class BaseStationButton;
     class BaseStationFeatures;
     class BaseStationEepromHelper;
 
@@ -73,7 +72,6 @@ namespace mscl
         //    The analog exceedance enable option to set.
         boost::optional<bool> m_analogExceedanceEnable;
 
-    private:
         //Function: checkValue
         //    Throws an exception if an optional value isn't set.
         //

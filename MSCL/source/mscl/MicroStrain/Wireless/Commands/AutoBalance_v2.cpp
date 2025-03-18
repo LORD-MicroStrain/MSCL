@@ -44,7 +44,7 @@ namespace mscl
         return cmd;
     }
 
-    AutoBalance_v2::Response::Response(NodeAddress nodeAddress, uint8 channelNumber, float targetPercent, std::weak_ptr<ResponseCollector> collector):
+    AutoBalance_v2::Response::Response(NodeAddress nodeAddress, uint8 channelNumber, float targetPercent, std::weak_ptr<ResponseCollector> collector) :
         WirelessResponsePattern(collector, WirelessProtocol::cmdId_autoBalance_v2, nodeAddress),
         m_nodeAddress(nodeAddress),
         m_channelNumber(channelNumber),

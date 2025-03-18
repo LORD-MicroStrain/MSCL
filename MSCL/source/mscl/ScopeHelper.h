@@ -12,7 +12,6 @@ namespace mscl
     //    Class that allows a function to be run when this object goes out of scope.
     class ScopeHelper
     {
-    private:
         //Variable: m_outOfScopeFunction
         //    The function to run when the ScopeHelper goes out of scope.
         std::function<void()> m_outOfScopeFunction;

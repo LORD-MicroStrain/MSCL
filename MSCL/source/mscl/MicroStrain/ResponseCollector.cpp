@@ -10,7 +10,7 @@
 
 namespace mscl
 {
-    ResponseCollector::ResponseCollector():
+    ResponseCollector::ResponseCollector() :
       m_connection(nullptr)
     { }
 

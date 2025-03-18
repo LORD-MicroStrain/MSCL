@@ -4,16 +4,15 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "NodeFeatures_200series.h"
-#include "AvailableSampleRates.h"
-#include "AvailableTransmitPowers.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures_200series.h"
+
+#include "mscl/MicroStrain/Wireless/Features/AvailableTransmitPowers.h"
 
 namespace mscl
 {
-    NodeFeatures_200series::NodeFeatures_200series(const NodeInfo& info):
+    NodeFeatures_200series::NodeFeatures_200series(const NodeInfo& info) :
         NodeFeatures(info)
-    {
-    }
+    {}
 
     const WirelessTypes::TransmitPowers NodeFeatures_200series::transmitPowers(WirelessTypes::CommProtocol commProtocol) const
     {

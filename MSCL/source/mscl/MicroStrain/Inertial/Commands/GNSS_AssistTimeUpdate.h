@@ -21,7 +21,7 @@ namespace mscl
         //Function: CommandId
         //Returns:
         //    MipTypes::Command - the command ID.
-        virtual MipTypes::Command commandId() const override { return MipTypes::CMD_GNSS_ASSIST_TIME_UPDATE; }
+        MipTypes::Command commandId() const override { return MipTypes::CMD_GNSS_ASSIST_TIME_UPDATE; }
 
     public:
         GNSS_AssistTimeUpdate();
@@ -30,8 +30,7 @@ namespace mscl
         //     FIELD_DATA_BYTE - Descriptor byte for the Field data.
         static const uint8 FIELD_DATA_BYTE = 0xA3;
 
-    public:
-        virtual ~GNSS_AssistTimeUpdate() {};
+        virtual ~GNSS_AssistTimeUpdate() {}
 
         //Function: buildCommand_get
         //    Builds the bytes for the "get" command.
@@ -54,7 +53,7 @@ namespace mscl
         {
             //Function: fieldDataByte
             //    Gets the data field descriptor byte
-            virtual uint8 fieldDataByte() const    override { return FIELD_DATA_BYTE; }
+            uint8 fieldDataByte() const    override { return FIELD_DATA_BYTE; }
 
         public:
             //Constructor: Response

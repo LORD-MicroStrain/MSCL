@@ -6,8 +6,6 @@
 
 #pragma once
 
-#include <map>
-#include <memory>
 #include "mscl/MicroStrain/Wireless/BaseStationInfo.h"
 
 namespace mscl
@@ -21,7 +19,7 @@ namespace mscl
         friend class BaseStationEeprom;
 
     public:
-        virtual ~BaseStationFeatures() {};
+        virtual ~BaseStationFeatures() = default;
 
     private:
         BaseStationFeatures();    //disabled default constructor
@@ -54,7 +52,6 @@ namespace mscl
         static std::unique_ptr<BaseStationFeatures> create(const BaseStationInfo& info);
 #endif
 
-    public:
         //API Function: supportsTransmitPower
         //    Checks if a <WirelessTypes::TransmitPower> is supported by this BaseStation.
         //

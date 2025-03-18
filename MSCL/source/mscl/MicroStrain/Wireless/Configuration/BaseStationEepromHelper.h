@@ -6,19 +6,17 @@
 
 #pragma once
 
-#include <memory>
-#include "EepromLocation.h"
-#include "mscl/Value.h"
-#include "mscl/Version.h"
+#include "mscl/MicroStrain/Wireless/BaseStationAnalogPair.h"
+#include "mscl/MicroStrain/Wireless/BaseStationButton.h"
 #include "mscl/MicroStrain/Wireless/WirelessModels.h"
 #include "mscl/MicroStrain/Wireless/WirelessTypes.h"
-#include "mscl/MicroStrain/Wireless/BaseStationButton.h"
-#include "mscl/MicroStrain/Wireless/BaseStationAnalogPair.h"
+#include "mscl/Value.h"
 
 namespace mscl
 {
     //forward declarations
     class BaseStation_Impl;
+    class EepromLocation;
 
     //Class: BaseStationEepromHelper
     //    A helper class for reading and writing to a BaseStation's Eeprom.
@@ -44,12 +42,10 @@ namespace mscl
         //    - <Error_NotSupported>: Analog Pairing is not supported.
         void checkAnalogPairingSupported() const;
 
-    private:
         //Variable: m_baseStation
         //    The <BaseStation_Impl> used by this eeprom helper.
         BaseStation_Impl* m_baseStation;
 
-    private:
         Value read(const EepromLocation& location) const;
         void write(const EepromLocation& location, const Value& val);
 

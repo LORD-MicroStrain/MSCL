@@ -299,13 +299,13 @@ namespace mscl
     template <typename IO_Object>
     void BoostCommunication<IO_Object>::stopIoService()
     {
-        m_ioContext->post([]() { throw Error_Connection("Stopping Data Thread."); });
+        m_ioContext->post([]()->void { throw Error_Connection("Stopping Data Thread."); });
     }
 
     template <typename IO_Object>
     void BoostCommunication<IO_Object>::stopIoServiceError(int errorCode)
     {
-        m_ioContext->post([&errorCode]() { throw Error_Connection(errorCode); });
+        m_ioContext->post([&errorCode]()->void { throw Error_Connection(errorCode); });
     }
 
     //read handler for the read loop, called when data has come in or the read operation has been canceled

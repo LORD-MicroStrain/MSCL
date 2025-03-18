@@ -4,7 +4,9 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "AvailableTransmitPowers.h"
+#include "mscl/MicroStrain/Wireless/Features/AvailableTransmitPowers.h"
+
+#include "mscl/MicroStrain/Wireless/Features/NodeInfo.h"
 
 namespace mscl
 {
@@ -103,15 +105,13 @@ namespace mscl
                             WirelessTypes::power_5dBm
                         };
                     }
-                    else
-                    {
-                        return {
-                            WirelessTypes::power_11dBm,
-                            WirelessTypes::power_5dBm,
-                            WirelessTypes::power_1dBm,
-                            WirelessTypes::power_0dBm
-                        };
-                    }
+
+                    return {
+                        WirelessTypes::power_11dBm,
+                        WirelessTypes::power_5dBm,
+                        WirelessTypes::power_1dBm,
+                        WirelessTypes::power_0dBm
+                    };
                 }
 
                 case WirelessModels::node_ptLink200:
@@ -151,14 +151,12 @@ namespace mscl
                             WirelessTypes::power_5dBm
                         };
                     }
-                    else
-                    {
-                        return {
-                            WirelessTypes::power_11dBm,
-                            WirelessTypes::power_5dBm,
-                            WirelessTypes::power_0dBm,
-                        };
-                    }
+
+                    return {
+                        WirelessTypes::power_11dBm,
+                        WirelessTypes::power_5dBm,
+                        WirelessTypes::power_0dBm,
+                    };
                 }
 
                 //all other nodes fall through to standard transmit powers below
@@ -224,14 +222,12 @@ namespace mscl
                         WirelessTypes::power_5dBm
                     };
                 }
-                else
-                {
-                    return {
-                        WirelessTypes::power_12dBm,
-                        WirelessTypes::power_5dBm,
-                        WirelessTypes::power_1dBm,
-                    };
-                }
+
+                return {
+                    WirelessTypes::power_12dBm,
+                    WirelessTypes::power_5dBm,
+                    WirelessTypes::power_1dBm,
+                };
             }
 
             case WirelessTypes::region_europeanUnion:
@@ -264,15 +260,13 @@ namespace mscl
                         WirelessTypes::power_0dBm
                     };
                 }
-                else
-                {
-                    return {
-                        WirelessTypes::power_16dBm,
-                        WirelessTypes::power_10dBm,
-                        WirelessTypes::power_5dBm,
-                        WirelessTypes::power_0dBm
-                    };
-                }
+
+                return {
+                    WirelessTypes::power_16dBm,
+                    WirelessTypes::power_10dBm,
+                    WirelessTypes::power_5dBm,
+                    WirelessTypes::power_0dBm
+                };
             }
         }
 
@@ -299,14 +293,12 @@ namespace mscl
                             WirelessTypes::power_5dBm
                         };
                     }
-                    else
-                    {
-                        return {
-                            WirelessTypes::power_11dBm,
-                            WirelessTypes::power_5dBm,
-                            WirelessTypes::power_0dBm,
-                        };
-                    }
+
+                    return {
+                        WirelessTypes::power_11dBm,
+                        WirelessTypes::power_5dBm,
+                        WirelessTypes::power_0dBm,
+                    };
                 }
 
                 //the rest of the BaseStations, in Japan
@@ -353,15 +345,13 @@ namespace mscl
                         WirelessTypes::power_0dBm
                     };
                 }
-                else
-                {
-                    return {
-                        WirelessTypes::power_16dBm,
-                        WirelessTypes::power_10dBm,
-                        WirelessTypes::power_5dBm,
-                        WirelessTypes::power_0dBm
-                    };
-                }
+
+                return {
+                    WirelessTypes::power_16dBm,
+                    WirelessTypes::power_10dBm,
+                    WirelessTypes::power_5dBm,
+                    WirelessTypes::power_0dBm
+                };
             }
         }
     }

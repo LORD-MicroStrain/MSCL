@@ -8,7 +8,7 @@
 
 namespace mscl
 {
-    AutoBalanceResult::AutoBalanceResult():
+    AutoBalanceResult::AutoBalanceResult() :
         m_errorCode(WirelessTypes::autobalance_notComplete),
         m_percentAchieved(0),
         m_hardwareOffset(0)

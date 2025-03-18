@@ -16,7 +16,6 @@ namespace mscl
     //    Contains information retrieved from an Inertial GetDeviceInfo command.
     struct MipDeviceInfo
     {
-    public:
         //Variable: fwVersion
         //    The firmware <Version>.
         Version fwVersion;
@@ -69,7 +68,7 @@ namespace mscl
         class Response : public GenericMipCommand::Response
         {
         protected:
-            virtual uint8 fieldDataByte() const override { return FIELD_DATA_BYTE; }
+            uint8 fieldDataByte() const override { return FIELD_DATA_BYTE; }
 
         public:
             //Constructor: Response
@@ -79,13 +78,12 @@ namespace mscl
             //    collector - The <ResponseCollector> used to register and unregister the response
             Response(std::weak_ptr<ResponseCollector> collector);
 
-        public:
             //Function: match_data
             //    Attempts to match an <MipDataField> to the expected data field response.
             //
             //Returns:
             //    true if the field matches the expected data, false if it does not.
-            virtual bool match_data(const MipDataField& field) override;
+            bool match_data(const MipDataField& field) override;
 
             //Function: parseResponse
             //    Parses a successfully matched response for the GetDeviceInfo command.

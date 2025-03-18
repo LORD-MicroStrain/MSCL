@@ -4,12 +4,13 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "MockNodeEeprom.h"
+#include "mscl/MicroStrain/Wireless/Configuration/MockNodeEeprom.h"
+
 #include "mscl/MicroStrain/Wireless/WirelessNode_Impl.h"
 
 namespace mscl
 {
-    MockNodeEeprom::MockNodeEeprom(const WirelessNode_Impl* node, const BaseStation& base, const NodeEepromSettings& settings):
+    MockNodeEeprom::MockNodeEeprom(const WirelessNode_Impl* node, const BaseStation& base, const NodeEepromSettings& settings) :
         NodeEeprom(node, base, settings)
     { }
 

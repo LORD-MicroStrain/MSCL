@@ -15,7 +15,6 @@ namespace mscl
     //    Contains logic for the Erase Node command
     class Erase
     {
-    private:
         Erase();                        //default constructor disabled
         Erase(const Erase&);            //copy constructor disabled
         Erase& operator=(const Erase&);    //assignment operator disabled
@@ -43,7 +42,6 @@ namespace mscl
             //    collector - The <ResponseCollector> used to register and unregister the response
             explicit Response(std::weak_ptr<ResponseCollector> collector);
 
-        public:
             //Function: match
             //    Checks if the bytes passed in match the response pattern from their current read position
             //
@@ -52,7 +50,7 @@ namespace mscl
             //
             //Returns:
             //    true if the response pattern was found, false otherwise
-            virtual bool match(DataBuffer& data) override;
+            bool match(DataBuffer& data) override;
         };
     };
 #endif

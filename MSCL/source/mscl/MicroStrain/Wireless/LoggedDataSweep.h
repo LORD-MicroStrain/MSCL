@@ -6,12 +6,7 @@
 
 #pragma once
 
-#include <memory>
-
-#include "mscl/MicroStrain/SampleRate.h"
-#include "mscl/Timestamp.h"
-#include "WirelessDataPoint.h"
-#include "WirelessTypes.h"
+#include "mscl/MicroStrain/Wireless/WirelessDataPoint.h"
 
 namespace mscl
 {
@@ -84,5 +79,4 @@ namespace mscl
     //API Typedef: LoggedDataSweeps
     //    Typedef for a vector of <LoggedDataSweep> objects.
     typedef std::vector<LoggedDataSweep> LoggedDataSweeps;
-
 }

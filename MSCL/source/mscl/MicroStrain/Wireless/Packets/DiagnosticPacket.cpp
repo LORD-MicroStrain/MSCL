@@ -4,7 +4,9 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "DiagnosticPacket.h"
+#include "mscl/MicroStrain/Wireless/Packets/DiagnosticPacket.h"
+
+#include "mscl/MicroStrain/Wireless/DataSweep.h"
 #include "mscl/MicroStrain/Wireless/NodeCommTimes.h"
 
 namespace mscl
@@ -57,7 +59,7 @@ namespace mscl
         uint8 infoLen = 0;
         uint8 infoId = 0;
 
-        //iterate over all of the info bytes
+        //iterate over all the info bytes
         while(infoByteCounter < numInfoItemBytes)
         {
             infoLen = payload.read_uint8();
@@ -66,7 +68,7 @@ namespace mscl
 
             addDataPoint(chData, payload, infoLen - 1, infoId, m_nodeAddress);
 
-            infoByteCounter += (infoLen + 1);
+            infoByteCounter += infoLen + 1;
         }
 
         //add the channel data to the sweep
@@ -135,7 +137,7 @@ namespace mscl
                 container.emplace_back(WirelessChannel::channel_diag_totalDroppedPackets, 0, valueType_uint32, anyType(payload.read_uint32()));
                 break;
 
-            //Built in Test result
+            //Built-in-Test result
             case 0x06:
                 //BIT
                 container.emplace_back(WirelessChannel::channel_diag_builtInTestResult, 0, valueType_uint32, anyType(payload.read_uint32()));

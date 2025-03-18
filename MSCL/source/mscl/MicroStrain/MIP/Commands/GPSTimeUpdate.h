@@ -24,7 +24,7 @@ namespace mscl
         //
         //Returns:
         //    MipTypes::Command - the command ID.
-        virtual MipTypes::Command commandId() const override { return MipTypes::CMD_GPS_TIME_UPDATE; }
+        MipTypes::Command commandId() const override { return MipTypes::CMD_GPS_TIME_UPDATE; }
 
         //API Enums: TimeFieldSelector
         //    The enums to represnt type of time being sent/received.
@@ -41,7 +41,6 @@ namespace mscl
         //      Creates a GPSTimeUpdate object.
         GPSTimeUpdate();
 
-    public:
         //  Destructor: ~GPSTimeUpdate
         virtual ~GPSTimeUpdate() {}
 
@@ -92,7 +91,7 @@ namespace mscl
         {
             //Function: fieldDataByte
             //    Gets the data field descriptor byte
-            virtual uint8 fieldDataByte() const  override { return m_fieldDataByte; }
+            uint8 fieldDataByte() const  override { return m_fieldDataByte; }
 
         public:
             //Constructor: Response

@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "NodeFeatures_200series.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures_200series.h"
 
 namespace mscl
 {
@@ -15,22 +15,22 @@ namespace mscl
     class NodeFeatures_tclink200oem : public NodeFeatures_200series
     {
     public:
-        virtual ~NodeFeatures_tclink200oem() {};
+        ~NodeFeatures_tclink200oem() override = default;
 
         //Constructor: NodeFeatures_tclink200oem
         //    Creates a NodeFeatures_tclink200oem object.
         NodeFeatures_tclink200oem(const NodeInfo& info);
 
-        virtual const WirelessTypes::SamplingModes samplingModes() const override;
+        const WirelessTypes::SamplingModes samplingModes() const override;
 
-        virtual const WirelessTypes::TransducerTypes transducerTypes() const override;
+        const WirelessTypes::TransducerTypes transducerTypes() const override;
 
-        virtual const WirelessTypes::DataFormats dataFormats() const override;
+        const WirelessTypes::DataFormats dataFormats() const override;
 
-        virtual const WirelessTypes::WirelessSampleRates sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const override;
+        const WirelessTypes::WirelessSampleRates sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const override;
 
-        virtual const WirelessTypes::Filters lowPassFilters() const override;
+        const WirelessTypes::Filters lowPassFilters() const override;
 
-        virtual WirelessTypes::WirelessSampleRate maxSampleRateForLowPassFilter(WirelessTypes::Filter lowPassFilter, WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode, const ChannelMask& channels) const override;
+        WirelessTypes::WirelessSampleRate maxSampleRateForLowPassFilter(WirelessTypes::Filter lowPassFilter, WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode, const ChannelMask& channels) const override;
     };
 }

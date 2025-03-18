@@ -4,18 +4,18 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "BaseStationInfo.h"
-#include "BaseStation_Impl.h"
+#include "mscl/MicroStrain/Wireless/BaseStationInfo.h"
+
+#include "mscl/MicroStrain/Wireless/BaseStation_Impl.h"
 
 namespace mscl
 {
     //read the required information from the BaseStation and store in the BaseStationInfo
     BaseStationInfo::BaseStationInfo(const BaseStation_Impl* base) :
         m_basestation(base)
-    {
-    }
+    {}
 
-    BaseStationInfo::BaseStationInfo(Version fw, WirelessModels::BaseModel model, WirelessTypes::RegionCode region, const Version& asppVer_lxrs, const Version& asppVer_lxrsPlus):
+    BaseStationInfo::BaseStationInfo(Version fw, WirelessModels::BaseModel model, WirelessTypes::RegionCode region, const Version& asppVer_lxrs, const Version& asppVer_lxrsPlus) :
         m_firmwareVersion(fw),
         m_model(model),
         m_regionCode(region),
@@ -65,7 +65,8 @@ namespace mscl
 
             return *m_protocol_lxrs;
         }
-        else if(commProtocol == WirelessTypes::commProtocol_lxrsPlus)
+
+        if(commProtocol == WirelessTypes::commProtocol_lxrsPlus)
         {
             if(!static_cast<bool>(m_protocol_lxrsPlus))
             {

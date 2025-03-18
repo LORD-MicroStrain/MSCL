@@ -17,7 +17,7 @@ namespace mscl
     {
     }
 
-    MipDataPoint::MipDataPoint(MipTypes::ChannelField field, MipTypes::ChannelQualifier qualifier, ValueType storedAsType, anyType value):
+    MipDataPoint::MipDataPoint(MipTypes::ChannelField field, MipTypes::ChannelQualifier qualifier, ValueType storedAsType, anyType value) :
         DataPoint(storedAsType, value),
         m_field(field),
         m_qualifier(qualifier),
@@ -26,7 +26,7 @@ namespace mscl
     {
     }
 
-    MipDataPoint::MipDataPoint(MipTypes::ChannelField field, MipTypes::ChannelQualifier qualifier, MipChannelIdentifiers addlIds, ValueType storedAsType, anyType value):
+    MipDataPoint::MipDataPoint(MipTypes::ChannelField field, MipTypes::ChannelQualifier qualifier, MipChannelIdentifiers addlIds, ValueType storedAsType, anyType value) :
         DataPoint(storedAsType, value),
         m_field(field),
         m_qualifier(qualifier),
@@ -45,7 +45,7 @@ namespace mscl
     {
     }
 
-    MipDataPoint::MipDataPoint(MipTypes::ChannelField field, MipTypes::ChannelQualifier qualifier, MipChannelIdentifiers addlIds, ValueType storedAsType, anyType value, bool valid):
+    MipDataPoint::MipDataPoint(MipTypes::ChannelField field, MipTypes::ChannelQualifier qualifier, MipChannelIdentifiers addlIds, ValueType storedAsType, anyType value, bool valid) :
         DataPoint(storedAsType, value),
         m_field(field),
         m_qualifier(qualifier),

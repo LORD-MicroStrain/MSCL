@@ -21,14 +21,13 @@ namespace mscl
         {
             return Version(1, 3);
         }
-        else if(fwVersion >= NodeFeatures::MIN_BASE_FW_PROTOCOL_1_1)
+
+        if(fwVersion >= NodeFeatures::MIN_BASE_FW_PROTOCOL_1_1)
         {
             return Version(1, 1);
         }
-        else
-        {
-            return Version(1, 0);
-        }
+
+        return Version(1, 0);
     }
 
     Version WirelessProtocol::asppVersionFromNodeFw(const Version& fwVersion)
@@ -37,22 +36,23 @@ namespace mscl
         {
             return Version(1, 5);
         }
-        else if(fwVersion >= NodeFeatures::MIN_NODE_FW_PROTOCOL_1_4)
+
+        if(fwVersion >= NodeFeatures::MIN_NODE_FW_PROTOCOL_1_4)
         {
             return Version(1, 4);
         }
-        else if(fwVersion >= NodeFeatures::MIN_NODE_FW_PROTOCOL_1_2)
+
+        if(fwVersion >= NodeFeatures::MIN_NODE_FW_PROTOCOL_1_2)
         {
             return Version(1, 2);
         }
-        else if(fwVersion >= NodeFeatures::MIN_NODE_FW_PROTOCOL_1_1)
+
+        if(fwVersion >= NodeFeatures::MIN_NODE_FW_PROTOCOL_1_1)
         {
             return Version(1, 1);
         }
-        else
-        {
-            return Version(1, 0);
-        }
+
+        return Version(1, 0);
     }
 
     std::unique_ptr<WirelessProtocol> WirelessProtocol::getProtocol(const Version& asppVersion)

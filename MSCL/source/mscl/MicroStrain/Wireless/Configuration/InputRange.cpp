@@ -4,9 +4,7 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "InputRange.h"
-
-#include "mscl/Utils.h"
+#include "mscl/MicroStrain/Wireless/Configuration/InputRange.h"
 
 namespace mscl
 {
@@ -316,7 +314,8 @@ namespace mscl
                 {
                     return RANGES_VLINK200_FULLDIFF_CHS;
                 }
-                else if(channelType == WirelessTypes::chType_singleEnded)
+
+                if(channelType == WirelessTypes::chType_singleEnded)
                 {
                     return RANGES_VLINK200_SINGLEENDED_CHS;
                 }
@@ -335,7 +334,8 @@ namespace mscl
                 {
                     return RANGES_ENVLINK_PRO_TEMPERATURE_CHS;
                 }
-                else if(channelType == WirelessTypes::chType_voltage)
+
+                if(channelType == WirelessTypes::chType_voltage)
                 {
                     return RANGES_ENVLINK_PRO_VOLTAGE_CHS;
                 }

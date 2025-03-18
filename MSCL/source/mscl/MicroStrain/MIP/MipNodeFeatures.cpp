@@ -11,7 +11,7 @@
 
 namespace mscl
 {
-    MipNodeFeatures::MipNodeFeatures(const MipNode_Impl* node):
+    MipNodeFeatures::MipNodeFeatures(const MipNode_Impl* node) :
         m_node(node)
     {}
 
@@ -184,7 +184,7 @@ namespace mscl
 
     const GnssSources MipNodeFeatures::supportedGnssSources() const
     {
-        if (!supportsCommand(mscl::MipTypes::Command::CMD_EF_GNSS_SRC_CTRL))
+        if (!supportsCommand(MipTypes::Command::CMD_EF_GNSS_SRC_CTRL))
         {
             return {};
         }
@@ -303,7 +303,7 @@ namespace mscl
 
     const VehicleModeTypes MipNodeFeatures::supportedVehicleModeTypes() const
     {
-        if (!supportsCommand(mscl::MipTypes::Command::CMD_EF_VEHIC_DYNAMICS_MODE))
+        if (!supportsCommand(MipTypes::Command::CMD_EF_VEHIC_DYNAMICS_MODE))
         {
             return VehicleModeTypes(0);
         }
@@ -334,9 +334,9 @@ namespace mscl
         }
     }
 
-    const mscl::StatusSelectors MipNodeFeatures::supportedStatusSelectors() const
+    const StatusSelectors MipNodeFeatures::supportedStatusSelectors() const
     {
-        if (!supportsCommand(mscl::MipTypes::Command::CMD_DEVICE_STATUS)) {
+        if (!supportsCommand(MipTypes::Command::CMD_DEVICE_STATUS)) {
             return{};
         }
 
@@ -417,7 +417,7 @@ namespace mscl
 
     const HeadingUpdateOptionsList MipNodeFeatures::supportedHeadingUpdateOptions() const
     {
-        if (!supportsCommand(mscl::MipTypes::Command::CMD_EF_HEADING_UPDATE_CTRL))
+        if (!supportsCommand(MipTypes::Command::CMD_EF_HEADING_UPDATE_CTRL))
         {
             return{ HeadingUpdateOptions(InertialTypes::HeadingUpdateEnableOption::ENABLE_NONE) };
         }
@@ -488,7 +488,7 @@ namespace mscl
 
     const HeadingAlignmentMethod MipNodeFeatures::supportedHeadingAlignmentMethods() const
     {
-        if (!supportsCommand(mscl::MipTypes::Command::CMD_EF_INITIALIZATION_CONFIG))
+        if (!supportsCommand(MipTypes::Command::CMD_EF_INITIALIZATION_CONFIG))
         {
             return HeadingAlignmentMethod(0);
         }
@@ -523,7 +523,7 @@ namespace mscl
 
     const EstimationControlOptions MipNodeFeatures::supportedEstimationControlOptions() const
     {
-        if (!supportsCommand(mscl::MipTypes::Command::CMD_EF_BIAS_EST_CTRL))
+        if (!supportsCommand(MipTypes::Command::CMD_EF_BIAS_EST_CTRL))
         {
             return{ EstimationControlOptions(0) };
         }
@@ -586,9 +586,9 @@ namespace mscl
 
     const AdaptiveMeasurementModes MipNodeFeatures::supportedAdaptiveMeasurementModes() const
     {
-        if (!supportsCommand(mscl::MipTypes::Command::CMD_EF_GRAV_MAGNITUDE_ERR_ADAPT_MEASURE)
-            && !supportsCommand(mscl::MipTypes::Command::CMD_EF_MAG_MAGNITUDE_ERR_ADAPT_MEASURE)
-            && !supportsCommand(mscl::MipTypes::Command::CMD_EF_MAG_DIP_ANGLE_ERR_ADAPT_MEASURE))
+        if (!supportsCommand(MipTypes::Command::CMD_EF_GRAV_MAGNITUDE_ERR_ADAPT_MEASURE)
+            && !supportsCommand(MipTypes::Command::CMD_EF_MAG_MAGNITUDE_ERR_ADAPT_MEASURE)
+            && !supportsCommand(MipTypes::Command::CMD_EF_MAG_DIP_ANGLE_ERR_ADAPT_MEASURE))
         {
             return{ AdaptiveMeasurementModes(0) };
         }
@@ -634,7 +634,7 @@ namespace mscl
 
     const AdaptiveFilterLevels MipNodeFeatures::supportedAdaptiveFilterLevels() const
     {
-        if (!supportsCommand(mscl::MipTypes::Command::CMD_EF_ADAPTIVE_FILTER_OPTIONS))
+        if (!supportsCommand(MipTypes::Command::CMD_EF_ADAPTIVE_FILTER_OPTIONS))
         {
             return{ AdaptiveFilterLevels(0) };
         }
@@ -669,7 +669,7 @@ namespace mscl
 
     const AidingMeasurementSourceOptions MipNodeFeatures::supportedAidingMeasurementOptions() const
     {
-        if (!supportsCommand(mscl::MipTypes::Command::CMD_EF_AIDING_MEASUREMENT_ENABLE))
+        if (!supportsCommand(MipTypes::Command::CMD_EF_AIDING_MEASUREMENT_ENABLE))
         {
             return{ AidingMeasurementSourceOptions(0) };
         }
@@ -731,7 +731,7 @@ namespace mscl
 
     const PpsSourceOptions MipNodeFeatures::supportedPpsSourceOptions() const
     {
-        if (!supportsCommand(mscl::MipTypes::Command::CMD_PPS_SOURCE))
+        if (!supportsCommand(MipTypes::Command::CMD_PPS_SOURCE))
         {
             return{ PpsSourceOptions(0) };
         }
@@ -794,7 +794,7 @@ namespace mscl
 
     const GpioPinModeOptions MipNodeFeatures::supportedGpioPinModes(GpioConfiguration::Feature feature, uint8 behavior) const
     {
-        if (!supportsCommand(mscl::MipTypes::Command::CMD_GPIO_CONFIGURATION))
+        if (!supportsCommand(MipTypes::Command::CMD_GPIO_CONFIGURATION))
         {
             return GpioPinModeOptions();
         }
@@ -874,7 +874,7 @@ namespace mscl
 
     const GpioBehaviorModes MipNodeFeatures::supportedGpioBehaviors(GpioConfiguration::Feature feature, GpioPinId pin) const
     {
-        if (!supportsCommand(mscl::MipTypes::Command::CMD_GPIO_CONFIGURATION) || feature == GpioConfiguration::UNUSED_FEATURE)
+        if (!supportsCommand(MipTypes::Command::CMD_GPIO_CONFIGURATION) || feature == GpioConfiguration::UNUSED_FEATURE)
         {
             return GpioBehaviorModes();
         }
@@ -1097,7 +1097,7 @@ namespace mscl
 
     const GpioFeatureBehaviors MipNodeFeatures::supportedGpioFeatures(uint8 pin) const
     {
-        if (!supportsCommand(mscl::MipTypes::Command::CMD_GPIO_CONFIGURATION))
+        if (!supportsCommand(MipTypes::Command::CMD_GPIO_CONFIGURATION))
         {
             return{};
         }
@@ -1114,7 +1114,7 @@ namespace mscl
 
     const GpioPinOptions MipNodeFeatures::supportedGpioConfigurations() const
     {
-        if (!supportsCommand(mscl::MipTypes::Command::CMD_GPIO_CONFIGURATION))
+        if (!supportsCommand(MipTypes::Command::CMD_GPIO_CONFIGURATION))
         {
             return GpioPinOptions();
         }
@@ -1320,7 +1320,7 @@ namespace mscl
 
     MipTypes::ChannelFieldQualifiers MipNodeFeatures::supportedEventThresholdChannels() const
     {
-        if (!supportsCommand(mscl::MipTypes::Command::CMD_EVENT_TRIGGER_CONFIGURATION))
+        if (!supportsCommand(MipTypes::Command::CMD_EVENT_TRIGGER_CONFIGURATION))
         {
             return{ MipTypes::ChannelFieldQualifiers() };
         }

@@ -81,7 +81,7 @@ namespace mscl
             //
             //Returns:
             //    true if the packet matches a response pattern, false otherwise.
-            virtual bool match(const WirelessPacket& packet) override;
+            bool match(const WirelessPacket& packet) override;
 
             //Function: started
             //  Checks if the set to idle operation has started or not.

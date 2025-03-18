@@ -4,18 +4,19 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "NodeDiscovery.h"
-#include "Configuration/NodeEepromMap.h"
-#include "Packets/WirelessPacket.h"
-#include "Packets/NodeDiscoveryPacket.h"
-#include "Packets/NodeDiscoveryPacket_v2.h"
-#include "Packets/NodeDiscoveryPacket_v3.h"
-#include "Packets/NodeDiscoveryPacket_v4.h"
-#include "Packets/NodeDiscoveryPacket_v5.h"
+#include "mscl/MicroStrain/Wireless/NodeDiscovery.h"
+
+#include "mscl/MicroStrain/Wireless/Configuration/NodeEepromMap.h"
+#include "mscl/MicroStrain/Wireless/Packets/NodeDiscoveryPacket.h"
+#include "mscl/MicroStrain/Wireless/Packets/NodeDiscoveryPacket_v2.h"
+#include "mscl/MicroStrain/Wireless/Packets/NodeDiscoveryPacket_v3.h"
+#include "mscl/MicroStrain/Wireless/Packets/NodeDiscoveryPacket_v4.h"
+#include "mscl/MicroStrain/Wireless/Packets/NodeDiscoveryPacket_v5.h"
+#include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
 
 namespace mscl
 {
-    NodeDiscovery::NodeDiscovery():
+    NodeDiscovery::NodeDiscovery() :
         m_nodeAddress(0),
         m_radioChannel(WirelessTypes::freq_unknown),
         m_panId(0),
@@ -29,10 +30,9 @@ namespace mscl
         m_bitResult(0),
         m_baseRssi(WirelessTypes::UNKNOWN_RSSI),
         m_timestamp(0)
-    {
-    }
+    {}
 
-    NodeDiscovery::NodeDiscovery(const WirelessPacket& packet):
+    NodeDiscovery::NodeDiscovery(const WirelessPacket& packet) :
         m_nodeAddress(packet.nodeAddress()),
         m_radioChannel(WirelessTypes::freq_unknown),
         m_panId(0),
@@ -116,7 +116,7 @@ namespace mscl
         //Model
         uint16 model = payload.read_uint16(Info::PAYLOAD_OFFSET_MODEL_NUMBER);
         uint16 modelOption = payload.read_uint16(Info::PAYLOAD_OFFSET_MODEL_OPTION);
-        m_model = static_cast<WirelessModels::NodeModel>((model * 10000) + modelOption);
+        m_model = static_cast<WirelessModels::NodeModel>(model * 10000 + modelOption);
 
         //Serial
         m_serialNumber = payload.read_uint32(Info::PAYLOAD_OFFSET_SERIAL_NUMBER);
@@ -150,7 +150,7 @@ namespace mscl
         //Model
         uint16 model = payload.read_uint16(Info::PAYLOAD_OFFSET_MODEL_NUMBER);
         uint16 modelOption = payload.read_uint16(Info::PAYLOAD_OFFSET_MODEL_OPTION);
-        m_model = static_cast<WirelessModels::NodeModel>((model * 10000) + modelOption);
+        m_model = static_cast<WirelessModels::NodeModel>(model * 10000 + modelOption);
 
         //Serial
         m_serialNumber = payload.read_uint32(Info::PAYLOAD_OFFSET_SERIAL_NUMBER);
@@ -205,7 +205,7 @@ namespace mscl
         //Model
         uint16 model = payload.read_uint16(Info::PAYLOAD_OFFSET_MODEL_NUMBER);
         uint16 modelOption = payload.read_uint16(Info::PAYLOAD_OFFSET_MODEL_OPTION);
-        m_model = static_cast<WirelessModels::NodeModel>((model * 10000) + modelOption);
+        m_model = static_cast<WirelessModels::NodeModel>(model * 10000 + modelOption);
 
         //Serial
         m_serialNumber = payload.read_uint32(Info::PAYLOAD_OFFSET_SERIAL_NUMBER);

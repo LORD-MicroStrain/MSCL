@@ -4,10 +4,10 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "BaseStationConfig.h"
-#include "mscl/MicroStrain/Wireless/BaseStation.h"
+#include "mscl/MicroStrain/Wireless/Configuration/BaseStationConfig.h"
+
+#include "mscl/MicroStrain/Wireless/Configuration/BaseStationEepromHelper.h"
 #include "mscl/MicroStrain/Wireless/Features/BaseStationFeatures.h"
-#include "BaseStationEepromHelper.h"
 
 namespace mscl
 {

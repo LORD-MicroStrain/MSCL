@@ -19,7 +19,7 @@ namespace mscl
         return cmd;
     }
 
-    BaseStation_Ping::Response::Response(std::weak_ptr<ResponseCollector> collector):
+    BaseStation_Ping::Response::Response(std::weak_ptr<ResponseCollector> collector) :
         WirelessResponsePattern(collector, WirelessProtocol::cmdId_basePing, WirelessProtocol::BASE_STATION_ADDRESS)
     {
     }

@@ -40,7 +40,7 @@ namespace mscl
         return cmd;
     }
 
-    LongPing::Response::Response(NodeAddress nodeAddress, std::weak_ptr<ResponseCollector> collector):
+    LongPing::Response::Response(NodeAddress nodeAddress, std::weak_ptr<ResponseCollector> collector) :
         WirelessResponsePattern(collector, WirelessProtocol::cmdId_longPing_v1, nodeAddress),
         m_nodeAddress(nodeAddress),
         m_result(PingResponse::ResponseFail())

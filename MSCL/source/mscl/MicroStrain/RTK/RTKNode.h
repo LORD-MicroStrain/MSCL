@@ -15,7 +15,6 @@ namespace mscl
     //    A class representing a MicroStrain RTK Node
     class RTKNode : public MipNode
     {
-    private:
         RTKNode();        //default constructor disabled
 
     public:

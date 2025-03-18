@@ -8,7 +8,7 @@
 
 namespace mscl
 {
-    AutoCalResult::AutoCalResult():
+    AutoCalResult::AutoCalResult() :
         m_completionFlag(WirelessTypes::autocal_notComplete)
     {
     }
@@ -21,7 +21,7 @@ namespace mscl
     //=====================================================
     //AutoCalResult_shmLink
     //=====================================================
-    AutoCalResult_shmLink::AutoCalResult_shmLink():
+    AutoCalResult_shmLink::AutoCalResult_shmLink() :
         AutoCalResult(),
         m_errorFlagCh1(WirelessTypes::autocalError_none),
         m_errorFlagCh2(WirelessTypes::autocalError_none),
@@ -72,7 +72,7 @@ namespace mscl
     //=====================================================
     //AutoCalResult_shmLink201
     //=====================================================
-    AutoCalResult_shmLink201::AutoCalResult_shmLink201():
+    AutoCalResult_shmLink201::AutoCalResult_shmLink201() :
         AutoCalResult(),
         m_errorFlagCh1(WirelessTypes::autocalError_none),
         m_errorFlagCh2(WirelessTypes::autocalError_none),
@@ -132,7 +132,7 @@ namespace mscl
     //=====================================================
     //AutoCalResult_shunt
     //=====================================================
-    AutoShuntCalResult::AutoShuntCalResult():
+    AutoShuntCalResult::AutoShuntCalResult() :
         AutoCalResult(),
         m_errorFlag(WirelessTypes::autocalError_none),
         m_slope(1.0f),

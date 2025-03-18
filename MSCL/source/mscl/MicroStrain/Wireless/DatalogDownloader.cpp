@@ -4,16 +4,14 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "DatalogDownloader.h"
+#include "mscl/MicroStrain/Wireless/DatalogDownloader.h"
 
-#include "Configuration/NodeEepromHelper.h"
-#include "Commands/DatalogSessionInfoResult.h"
-#include "Features/NodeFeatures.h"
-#include "Packets/WirelessDataPacket.h"
-#include "NodeMemory_v1.h"
-#include "NodeMemory_v2.h"
-#include "WirelessDataPoint.h"
-#include "mscl/Utils.h"
+#include "mscl/MicroStrain/Wireless/BaseStation.h"
+#include "mscl/MicroStrain/Wireless/Commands/DatalogSessionInfoResult.h"
+#include "mscl/MicroStrain/Wireless/Configuration/NodeEepromHelper.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures.h"
+#include "mscl/MicroStrain/Wireless/NodeMemory_v1.h"
+#include "mscl/MicroStrain/Wireless/NodeMemory_v2.h"
 
 namespace mscl
 {
@@ -21,7 +19,7 @@ namespace mscl
     const Version DatalogDownloader::HEADER_VERSION_2_0(2, 0);
     const Version DatalogDownloader::HEADER_VERSION_2_1(2, 1);
 
-    DatalogDownloader::DatalogDownloader(const WirelessNode& node):
+    DatalogDownloader::DatalogDownloader(const WirelessNode& node) :
         m_node(node),
         m_foundFirstTrigger(false),
         m_outOfMemory(false),
@@ -64,7 +62,7 @@ namespace mscl
         }
     }
 
-    DatalogDownloader::DatalogDownloader(const WirelessNode& node, uint32 startAddress, uint32 size):
+    DatalogDownloader::DatalogDownloader(const WirelessNode& node, uint32 startAddress, uint32 size) :
         m_node(node),
         m_foundFirstTrigger(false),
         m_outOfMemory(false),
@@ -193,7 +191,7 @@ namespace mscl
         //read the number of bytes per channel
         uint16 bytesPerChannel = m_nodeMemory->read_uint16();
 
-        //loop through all of the active channels to get channel action information
+        //loop through all the active channels to get channel action information
         uint8 channelItr = 0;
         uint8 lastChannel = m_sessionInfo.activeChannels.lastChEnabled();
 
@@ -274,7 +272,7 @@ namespace mscl
         uint32 timestampNanos = m_nodeMemory->read_uint32();
 
         //build the full nanosecond resolution timestamp
-        m_sessionInfo.tsCounter.reset(sampleRate(), ((static_cast<uint64>(timestampSeconds) * TimeSpan::NANOSECONDS_PER_SECOND) + timestampNanos));
+        m_sessionInfo.tsCounter.reset(sampleRate(), static_cast<uint64>(timestampSeconds) * TimeSpan::NANOSECONDS_PER_SECOND + timestampNanos);
 
         //====================================================
         //MOVE PASSED ANY EXTRA BYTES
@@ -315,7 +313,7 @@ namespace mscl
             //read the session index
             uint16 newSessionIndex = m_nodeMemory->read_uint16(Utils::littleEndian);
 
-            //only update sessionInfoUpdated flag if index has changed
+            //only update sessionInfoUpdated flag if the index has changed
             if(m_sessionInfo.sessionIndex != newSessionIndex)
             {
                 m_sessionInfo.sessionIndex = newSessionIndex;
@@ -354,13 +352,13 @@ namespace mscl
                 m_isMathData = true;
             }
 
-            //update the timestampCounter with the new timestamp, and adjust sample rate if sweep type has changed
+            //update the timestampCounter with the new timestamp, and adjust the sample rate if sweep type has changed
             m_sessionInfo.tsCounter.reset(sampleRate(), m_nodeMemory->read_uint64(Utils::littleEndian));
 
             //read the session index
             uint16 newSessionIndex = m_nodeMemory->read_uint16(Utils::littleEndian);
 
-            //only update sessionInfoUpdated flag if index has changed
+            //only update sessionInfoUpdated flag if the index has changed
             if(m_sessionInfo.sessionIndex != newSessionIndex)
             {
                 m_sessionInfo.sessionIndex = newSessionIndex;
@@ -399,7 +397,7 @@ namespace mscl
                 m_sessionInfo.sampleRate = SampleRate::FromWirelessEepromValue(rate);
                 m_sessionInfo.timeBetweenSweeps = m_sessionInfo.sampleRate.samplePeriod().getNanoseconds();
 
-                //update the timestampCounter with the new timestamp, and adjust sample rate if sweep type has changed
+                //update the timestampCounter with the new timestamp, and adjust the sample rate if sweep type has changed
                 m_sessionInfo.tsCounter.reset(sampleRate(), newTimestamp);
 
                 //read the active channel mask
@@ -430,7 +428,7 @@ namespace mscl
 
                 uint16 newSessionIndex = m_nodeMemory->read_uint16(Utils::littleEndian);
 
-                //only update sessionInfoUpdated flag if index has changed
+                //only update sessionInfoUpdated flag if the index has changed
                 if(!m_foundFirstTrigger || m_sessionInfo.sessionIndex != newSessionIndex)
                 {
                     m_sessionInfo.sessionIndex = newSessionIndex;
@@ -471,7 +469,7 @@ namespace mscl
 
                 m_sessionInfo.derivedTimeBetweenSweeps = m_sessionInfo.derivedRate.samplePeriod().getNanoseconds();
 
-                //update the timestampCounter with the new timestamp, and adjust sample rate if sweep type has changed
+                //update the timestampCounter with the new timestamp, and adjust the sample rate if sweep type has changed
                 m_sessionInfo.tsCounter.reset(sampleRate(), newTimestamp);
 
                 //parse the raw calibration data
@@ -490,7 +488,7 @@ namespace mscl
 
     void DatalogDownloader::parseRawCalData()
     {
-        //loop through all of the active channels to get channel action information
+        //loop through all the active channels to get channel action information
         uint8 channelItr = 0;
         uint8 lastChannel = m_sessionInfo.activeChannels.lastChEnabled();
 
@@ -563,7 +561,7 @@ namespace mscl
         uint16 channelMask = 0;
         uint8 algItr = 0;
 
-        //read and store all the math meta data
+        //read and store all the math metadata
         for(algItr = 0; algItr < numActiveAlgorithms; ++algItr)
         {
             id = static_cast<WirelessTypes::DerivedDataPacketAlgorithmId>(m_nodeMemory->read_uint8());
@@ -639,11 +637,11 @@ namespace mscl
                         dataPoint = m_nodeMemory->read_uint24(dataEndian);
                         break;
 
-                    //uint16 (from a 18-bit device, shift bits)
+                    //uint16 (from an 18-bit device, shift bits)
                     case WirelessTypes::dataType_uint16_18bitTrunc:
                     {
                         uint32 val = m_nodeMemory->read_uint16(dataEndian);
-                        dataPoint = (val << 2);
+                        dataPoint = val << 2;
                         break;
                     }
 
@@ -651,7 +649,7 @@ namespace mscl
                     case WirelessTypes::dataType_uint16_24bitTrunc:
                     {
                         uint32 val = m_nodeMemory->read_uint16(dataEndian);
-                        dataPoint = (val << 8);
+                        dataPoint = val << 8;
                         break;
                     }
 
@@ -659,7 +657,7 @@ namespace mscl
                     case WirelessTypes::dataType_int16_20bitTrunc:
                     {
                         int32 val = static_cast<int32>(m_nodeMemory->read_int16(dataEndian));
-                        dataPoint = (val << 6);
+                        dataPoint = val << 6;
                         break;
                     }
 
@@ -670,7 +668,7 @@ namespace mscl
                         break;
                     }
 
-                    //int24 (get as a int32)
+                    //int24 (get as an int32)
                     case WirelessTypes::dataType_int24_20bit:
                         dataPoint = m_nodeMemory->read_int24(dataEndian);
                         break;
@@ -725,7 +723,7 @@ namespace mscl
                     float value = m_nodeMemory->read_float(dataEndian);
 
                     //create a WirelessDataPoint and add it to the ChannelData vector
-                    WirelessChannel::ChannelId channelId = WirelessDataPacket::getMathChannelId(static_cast<WirelessTypes::DerivedDataPacketAlgorithmId>(meta.algorithmId), chNum);
+                    WirelessChannel::ChannelId channelId = WirelessDataPacket::getMathChannelId(meta.algorithmId, chNum);
 
                     //create the ChannelMask property indicating which channel it was derived from
                     ChannelMask propertyChMask;
@@ -805,10 +803,8 @@ namespace mscl
             {
                 return parseNextMathSweep();
             }
-            else
-            {
-                return parseNextSweep();
-            }
+
+            return parseNextSweep();
         }
         catch(Error_Communication&)
         {
@@ -850,10 +846,8 @@ namespace mscl
         {
             return m_sessionInfo.derivedRate;
         }
-        else
-        {
-            return m_sessionInfo.sampleRate;
-        }
+
+        return m_sessionInfo.sampleRate;
     }
 
     const std::string& DatalogDownloader::userString() const

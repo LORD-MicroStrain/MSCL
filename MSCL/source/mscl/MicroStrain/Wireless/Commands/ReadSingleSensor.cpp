@@ -23,7 +23,7 @@ namespace mscl
         return cmd;
     }
 
-    ReadSingleSensor::Response::Response(std::weak_ptr<ResponseCollector> collector):
+    ReadSingleSensor::Response::Response(std::weak_ptr<ResponseCollector> collector) :
         WirelessResponsePattern(collector, WirelessProtocol::cmdId_readSingleSensor, 0),    //note: passing 0 because this response doesn't check node address :(
         m_sensorValue(0)
     {

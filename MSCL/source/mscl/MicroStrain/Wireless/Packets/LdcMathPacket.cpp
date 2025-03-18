@@ -4,11 +4,9 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "LdcMathPacket.h"
-#include "mscl/MicroStrain/SampleUtils.h"
-#include "mscl/MicroStrain/Wireless/ChannelMask.h"
-#include "mscl/Utils.h"
+#include "mscl/MicroStrain/Wireless/Packets/LdcMathPacket.h"
 
+#include "mscl/MicroStrain/Wireless/DataSweep.h"
 
 namespace mscl
 {
@@ -52,7 +50,7 @@ namespace mscl
             rate = SampleRate::Seconds(calculationRate);
         }
 
-        //build up the Algorithm Meta Data
+        //build up the Algorithm Metadata
         std::vector<WirelessDataPacket::AlgorithmMetaData> metaData;
         metaData.reserve(numAlgorithms);
         for(uint8 i = 0; i < numAlgorithms; ++i)
@@ -157,7 +155,7 @@ namespace mscl
 
         //verify we have the expected number of channel bytes
         //  payload length - (# algorithms * 3 bytes per algorithm) - 8 standard payload bytes
-        if(expectedChannelBytes != (payload.size() - (numAlgorithms * 3) - 8))
+        if(expectedChannelBytes != payload.size() - numAlgorithms * 3 - 8)
         {
             return false;
         }

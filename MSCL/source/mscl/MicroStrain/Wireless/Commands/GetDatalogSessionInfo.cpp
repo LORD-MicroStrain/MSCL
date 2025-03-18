@@ -40,7 +40,7 @@ namespace mscl
         return cmd;
     }
 
-    GetDatalogSessionInfo::Response::Response(NodeAddress nodeAddress, std::weak_ptr<ResponseCollector> collector):
+    GetDatalogSessionInfo::Response::Response(NodeAddress nodeAddress, std::weak_ptr<ResponseCollector> collector) :
         WirelessResponsePattern(collector, WirelessProtocol::cmdId_logSessionInfo_v1, nodeAddress),
         m_nodeAddress(nodeAddress)
     {

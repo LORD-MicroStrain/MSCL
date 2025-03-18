@@ -28,7 +28,7 @@ namespace mscl
         return cmd;
     }
 
-    Reset_v2::Response::Response(NodeAddress nodeAddress, ResetType resetType, std::weak_ptr<ResponseCollector> collector):
+    Reset_v2::Response::Response(NodeAddress nodeAddress, ResetType resetType, std::weak_ptr<ResponseCollector> collector) :
         WirelessResponsePattern(collector, WirelessProtocol::cmdId_reset_v2, nodeAddress),
         m_nodeAddress(nodeAddress),
         m_resetType(resetType)

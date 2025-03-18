@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "mscl/MicroStrain/SampleRate.h"
+#include "mscl/MicroStrain/Wireless/WirelessTypes.h"
 
 namespace mscl
 {

@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <mscl/MicroStrain/Wireless/Commands/WirelessResponsePattern.h>
+#include "mscl/MicroStrain/Wireless/Commands/WirelessResponsePattern.h"
 #include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
 
 namespace mscl
@@ -58,7 +58,7 @@ namespace mscl
             //
             //Returns:
             //    true if the packet matches a response pattern, false otherwise
-            virtual bool matchSuccessResponse(const WirelessPacket& packet) override;
+            bool matchSuccessResponse(const WirelessPacket& packet) override;
         };
     };
 #endif

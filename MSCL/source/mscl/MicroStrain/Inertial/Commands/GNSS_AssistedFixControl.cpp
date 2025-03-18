@@ -10,7 +10,7 @@ namespace mscl
 {
     ByteStream GNSS_AssistedFixControl::buildCommand_get()
     {
-        mscl::Bytes fieldData;
+        Bytes fieldData;
         fieldData.push_back(MipTypes::READ_BACK_CURRENT_SETTINGS);
 
         return buildCommand(MipTypes::CMD_GNSS_ASSIST_FIX_CONTROL, fieldData);
@@ -20,7 +20,7 @@ namespace mscl
     {
         MipTypes::EnableSetting assistedFixOption = enableAssistedFix ? MipTypes::ENABLED : MipTypes::DISABLED;
         //create the field to add to the packet
-        mscl::Bytes fieldData;
+        Bytes fieldData;
         fieldData.push_back(MipTypes::USE_NEW_SETTINGS);
         fieldData.push_back( static_cast<unsigned char>(assistedFixOption));
         fieldData.push_back(NO_FLAGS_DEFINED);

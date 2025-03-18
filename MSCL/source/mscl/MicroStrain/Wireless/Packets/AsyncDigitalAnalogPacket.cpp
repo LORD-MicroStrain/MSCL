@@ -4,16 +4,12 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "mscl/Exceptions.h"
-#include "AsyncDigitalAnalogPacket.h"
-#include "mscl/MicroStrain/SampleUtils.h"
-#include "mscl/MicroStrain/Wireless/ChannelMask.h"
-#include "mscl/Types.h"
-#include "mscl/TimeSpan.h"
+#include "mscl/MicroStrain/Wireless/Packets/AsyncDigitalAnalogPacket.h"
+
+#include "mscl/MicroStrain/Wireless/DataSweep.h"
 
 namespace mscl
 {
-
     AsyncDigitalAnalogPacket::AsyncDigitalAnalogPacket(const WirelessPacket& packet)
     {
         //construct the data packet from the wireless packet passed in
@@ -43,7 +39,7 @@ namespace mscl
         uint64 timestampNanos    = m_payload.read_uint32(PAYLOAD_OFFSET_TS_NANOSEC);    //the timestamp (UTC) nanoseconds part
 
         //build the full nanosecond resolution timestamp from the seconds and nanoseconds values read above
-        uint64 packetTimestamp = (timestampSeconds * TimeSpan::NANOSECONDS_PER_SECOND) + timestampNanos;
+        uint64 packetTimestamp = timestampSeconds * TimeSpan::NANOSECONDS_PER_SECOND + timestampNanos;
 
         if(!timestampWithinRange(Timestamp(packetTimestamp)))
         {
@@ -85,7 +81,7 @@ namespace mscl
             byteItr += DIGITAL_LEN;
 
             //build this sweep's timestamp
-            sweep.timestamp(Timestamp(packetTimestamp + ((timeOffset * TimeSpan::NANOSECONDS_PER_SECOND) / 32768) ));
+            sweep.timestamp(Timestamp(packetTimestamp + timeOffset * TimeSpan::NANOSECONDS_PER_SECOND / 32768 ));
 
             //get this sweep's node and base rssi values
             sweep.nodeRssi(m_nodeRSSI);

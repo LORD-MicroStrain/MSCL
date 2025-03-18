@@ -22,7 +22,7 @@ namespace mscl
     {
     protected:
         MipNode() {}  //default constructor disabled
-        virtual ~MipNode() {}
+        virtual ~MipNode() = default;
 
         MipNode(Connection connection);
 
@@ -30,7 +30,6 @@ namespace mscl
         MipNode(std::shared_ptr<MipNode_Impl> impl);
 #endif
 
-    protected:
         //Variable: m_impl
         //    The <MipNode_Impl> class that contains all the implementation logic for the MipNode class.
         std::shared_ptr<MipNode_Impl> m_impl;

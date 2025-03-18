@@ -52,7 +52,7 @@ namespace mscl
         //  The wait time (in milliseconds) that was sent in the Base Station received response.
         uint64 m_baseReceivedWaitTime;
 
-        virtual bool matchBaseReceivedResponse(const WirelessPacket& packet) override;
+        bool matchBaseReceivedResponse(const WirelessPacket& packet) override;
 
     public:
         //Function: baseReceived

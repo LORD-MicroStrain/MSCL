@@ -49,7 +49,7 @@ namespace mscl
         return cmd;
     }
 
-    SetToIdle_v2::Response::Response(NodeAddress nodeAddress, std::weak_ptr<ResponseCollector> collector, const BaseStation& baseStation):
+    SetToIdle_v2::Response::Response(NodeAddress nodeAddress, std::weak_ptr<ResponseCollector> collector, const BaseStation& baseStation) :
         SetToIdle::Response(nodeAddress, collector, baseStation),
         m_started(false)
     {
@@ -106,7 +106,7 @@ namespace mscl
             return false;
         }
 
-        if(packet.asppVersion() == mscl::WirelessPacket::aspp_v3)
+        if(packet.asppVersion() == WirelessPacket::aspp_v3)
         {
             if(payload.size() != 11 ||
                payload.read_uint16(0) != WirelessProtocol::cmdId_stopNode_v2 ||     //command ID
@@ -148,7 +148,7 @@ namespace mscl
             return false;
         }
 
-        if(packet.asppVersion() == mscl::WirelessPacket::aspp_v3)
+        if(packet.asppVersion() == WirelessPacket::aspp_v3)
         {
             if(payload.size() != 7 ||                                               //payload length
                payload.read_uint16(0) != WirelessProtocol::cmdId_stopNode_v2 ||     //command ID

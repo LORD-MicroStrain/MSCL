@@ -4,8 +4,9 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "NodeMemory.h"
-#include "WirelessNode.h"
+#include "mscl/MicroStrain/Wireless/NodeMemory.h"
+
+#include "mscl/MicroStrain/Wireless/WirelessNode.h"
 
 namespace mscl
 {
@@ -61,10 +62,8 @@ namespace mscl
         {
             return Utils::make_uint32(0, b1, b2, b3, endian);
         }
-        else
-        {
-            return Utils::make_uint32(b1, b2, b3, 0, endian);
-        }
+
+        return Utils::make_uint32(b1, b2, b3, 0, endian);
     }
 
     uint32 NodeMemory::read_uint32(Utils::Endianness endian /*= Utils::bigEndian*/)
@@ -94,26 +93,20 @@ namespace mscl
                 //build an int32 from the 3 bytes (flip the upper bytes to make negative)
                 return Utils::make_int32(0xFF, b1, b2, b3, endian);
             }
-            else
-            {
-                //build an int32 from the 3 bytes (flip the upper bytes to make negative)
-                return Utils::make_int32(0x00, b1, b2, b3, endian);
-            }
+
+            //build an int32 from the 3 bytes (flip the upper bytes to make negative)
+            return Utils::make_int32(0x00, b1, b2, b3, endian);
         }
-        else
+
+        //if negative
+        if(Utils::bitIsSet(b3, 7))
         {
-            //if negative
-            if(Utils::bitIsSet(b3, 7))
-            {
-                //build an int32 from the 3 bytes (flip the upper bytes to make negative)
-                return Utils::make_int32(b1, b2, b3, 0xFF, endian);
-            }
-            else
-            {
-                //build an int32 from the 3 bytes (flip the upper bytes to make negative)
-                return Utils::make_int32(b1, b2, b3, 0x00, endian);
-            }
+            //build an int32 from the 3 bytes (flip the upper bytes to make negative)
+            return Utils::make_int32(b1, b2, b3, 0xFF, endian);
         }
+
+        //build an int32 from the 3 bytes (flip the upper bytes to make negative)
+        return Utils::make_int32(b1, b2, b3, 0x00, endian);
     }
 
     uint64 NodeMemory::read_uint64(Utils::Endianness endian /*= Utils::bigEndian*/)

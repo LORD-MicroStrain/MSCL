@@ -4,8 +4,9 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "Eeprom.h"
-#include "mscl/Utils.h"
+#include "mscl/MicroStrain/Wireless/Configuration/Eeprom.h"
+
+#include "mscl/MicroStrain/Wireless/Configuration/EepromLocation.h"
 
 namespace mscl
 {

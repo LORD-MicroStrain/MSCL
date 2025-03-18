@@ -4,7 +4,7 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "LoggedDataSweep.h"
+#include "mscl/MicroStrain/Wireless/LoggedDataSweep.h"
 
 namespace mscl
 {
@@ -12,16 +12,14 @@ namespace mscl
         m_timestamp(0),
         m_tick(0),
         m_calsApplied(false)
-    {
-    }
+    {}
 
     LoggedDataSweep::LoggedDataSweep(const Timestamp& timestamp, uint64 tick, const ChannelData& data, bool calsApplied) :
         m_timestamp(timestamp),
         m_tick(tick),
         m_data(data),
         m_calsApplied(calsApplied)
-    {
-    }
+    {}
 
     Timestamp LoggedDataSweep::timestamp() const
     {

@@ -16,8 +16,8 @@ namespace mscl
         std::string prepend = "";
         std::string append = "";
 
-        if (MipTypes::isGnssChannelField(field)
-            || MipTypes::isSharedChannelField(field))
+        if (isGnssChannelField(field)
+            || isSharedChannelField(field))
         {
             keyField = MipTypes::getChannelField_baseDataClass(field);
             prepend = MipTypes::getChannelNamePrependText(field);
@@ -1093,13 +1093,13 @@ namespace mscl
         { SpecifierId(AIDING_MEASUREMENT_TYPE, GNSS, 2), "rec" }
     });
 
-    bool mscl::MipChannelIdentifier::hasSpecifier() const
+    bool MipChannelIdentifier::hasSpecifier() const
     {
         std::string throwaway;
         return hasSpecifier(throwaway);
     }
 
-    bool mscl::MipChannelIdentifier::hasSpecifier(std::string& specifierName) const
+    bool MipChannelIdentifier::hasSpecifier(std::string& specifierName) const
     {
         //try to find the type in the map
         auto entry = SPECIFIER_NAMES.find(SpecifierId(m_type, m_id, m_specifier));
@@ -1409,12 +1409,12 @@ namespace mscl
             typeOptions = m_options.at(type);
             if (typeOptions.size() <= 0)
             {
-                throw mscl::Error_NotSupported("The specified Sensor Range type is not supported");
+                throw Error_NotSupported("The specified Sensor Range type is not supported");
             }
         }
         catch (const std::out_of_range&)
         {
-            throw mscl::Error_NotSupported("The specified Sensor Range type is not supported");
+            throw Error_NotSupported("The specified Sensor Range type is not supported");
         }
 
         // remove 5% for threshold comparison to account for rounding error

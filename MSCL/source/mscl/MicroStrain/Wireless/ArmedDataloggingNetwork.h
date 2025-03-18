@@ -6,24 +6,23 @@
 
 #pragma once
 
-#include "BaseStation.h"
-#include <map>
+#include "mscl/MicroStrain/Wireless/BaseStation.h"
 
 namespace mscl
 {
-    class WirelessNode;    //forward declarations
+    //forward declarations
+    class WirelessNode;
 
     //API Class: ArmedDataloggingNetwork
-    //    Used to setup and start an Armed Datalogging network of wireless nodes.
+    //    Used to set up and start an Armed Datalogging network of wireless nodes.
     class ArmedDataloggingNetwork
     {
-    private:
         ArmedDataloggingNetwork(const ArmedDataloggingNetwork&);            //copy constructor disabled
-        ArmedDataloggingNetwork& operator=(const ArmedDataloggingNetwork&);    //assignment operator disabled
+        ArmedDataloggingNetwork& operator=(const ArmedDataloggingNetwork&); //assignment operator disabled
 
     public:
         //API Constructor: ArmedDataloggingNetwork
-        //    Creates an ArmedDataloggingNetwork object used to setup and start an Armed Datalogging network.
+        //    Creates an ArmedDataloggingNetwork object used to set up and start an Armed Datalogging network.
         //
         //Parameters:
         //    networkBaseStation - The master <BaseStation> for this network. All <WirelessNode>s that are added must have this as their parent <BaseStation>.
@@ -42,14 +41,14 @@ namespace mscl
         //API Function: addNode
         //    Adds a <WirelessNode> to the Armed Datalogging network. If the Node already exists in the network, it will not be added.
         //    The Node's parent <BaseStation> should be the same as the network's master <BaseStation>.
-        //    The Node should have its sampling configuration set to Armed Datalogging mode prior to adding to be successfully added.
+        //    The Node should have its sampling configuration set to Armed Datalogging mode before adding to be successfully added.
         //
         //Parameters:
         //    node - The <WirelessNode> to add to the network.
-        //    message - A message to be set with the <WirelessNode>. This message can be retrieved when downloading the data from the Node. Will be trimmed to 50 chars if longer. (Default of "")
+        //    message - A message to be set with the <WirelessNode>. This message can be retrieved when downloading the data from the Node. It will be trimmed to 50 chars if longer. (Default of "")
         //
         //Exceptions:
-        //    - <Error>: The Node's parent <BaseStation> is different than the network's master <BaseStation>.
+        //    - <Error>: The Node's parent <BaseStation> is different from the network's master <BaseStation>.
         //    - <Error_InvalidNodeConfig>: The configuration is not set for Armed Datalogging mode.
         //    - <Error_NodeCommunication>: Failed to communicate with the Node.
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.

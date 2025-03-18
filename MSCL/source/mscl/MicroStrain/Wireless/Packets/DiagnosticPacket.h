@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "WirelessDataPacket.h"
+#include "mscl/MicroStrain/Wireless/Packets/WirelessDataPacket.h"
 
 namespace mscl
 {
@@ -19,7 +19,7 @@ namespace mscl
         //    Creates a DiagnosticPacket from the passed in <WirelessPacket>.
         //
         //Parameters:
-        //    packet - A <WirelessPacket> determined to be an DiagnosticPacket.
+        //    packet - A <WirelessPacket> determined to be a DiagnosticPacket.
         explicit DiagnosticPacket(const WirelessPacket& packet);
 
     private:
@@ -41,19 +41,18 @@ namespace mscl
         //    nodeAddress - The NodeAddress of the Node this data point was from.
         static void addDataPoint(ChannelData& container, DataBuffer& payload, uint8 infoLength, uint8 infoId, NodeAddress nodeAddress);
 
-    public:
         //Function: integrityCheck
-        //    Verifies that the packet is a well formed Diagnostic packet.
+        //    Verifies that the packet is a well-formed Diagnostic packet.
         //
         //Parameters:
         //    packet - The fully formed Wireless Packet to check the integrity of.
         //
         //Returns:
-        //    true if the packet is a well formed Diagnostic, false otherwise
+        //    true if the packet is a well-formed Diagnostic, false otherwise
         static bool integrityCheck(const WirelessPacket& packet);
 
         //Function: getUniqueId
-        //    Gets the unique Id of the <WirelessPacket> passed in
+        //    Gets the unique ID of the <WirelessPacket> passed in
         //
         //Parameters:
         //    packet - The <WirelessPacket> to get the unique id of
@@ -62,5 +61,4 @@ namespace mscl
         //    The <UniqueWirelessPacketId> of the passed in packet
         static UniqueWirelessPacketId getUniqueId(const WirelessPacket& packet);
     };
-
 }

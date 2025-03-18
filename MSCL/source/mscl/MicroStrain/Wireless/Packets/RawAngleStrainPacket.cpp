@@ -4,10 +4,11 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "RawAngleStrainPacket.h"
+#include "mscl/MicroStrain/Wireless/Packets/RawAngleStrainPacket.h"
+
 #include "mscl/MicroStrain/SampleUtils.h"
+#include "mscl/MicroStrain/Wireless/DataSweep.h"
 #include "mscl/TimestampCounter.h"
-#include "mscl/Utils.h"
 
 namespace mscl
 {
@@ -61,7 +62,7 @@ namespace mscl
         sweep.nodeAddress(m_nodeAddress);
         sweep.sampleRate(SampleUtils::convertToSampleRate(sampleRate));
 
-        //No timestamp comes with the packet, so just stamp it with the current time
+        //No timestamp comes with the packet, so stamp it with the current time
         sweep.timestamp(Timestamp::timeNow());
 
         //get this sweep's node and base rssi values
@@ -88,7 +89,7 @@ namespace mscl
                 }
 
                 chVal = payload.read_float();
-                auto chName = bind(RawAngleStrainPacket::buildChannelName, angle);
+                auto chName = bind(buildChannelName, angle);
 
                 WirelessDataPoint::ChannelProperties properties({std::make_pair(WirelessDataPoint::channelPropertyId_angle, Value::FLOAT(angle))});
                 chData.emplace_back(WC::channel_rawAngleStrain, i, chName, valueType_float, anyType(chVal), properties);
@@ -99,7 +100,7 @@ namespace mscl
             //the lower bound angle
             float lowerBound = payload.read_float();
 
-            //the upper bound angle
+            //the upper-bound angle
             float upperBound = payload.read_float();
 
             //the number of angles in the packet
@@ -120,7 +121,7 @@ namespace mscl
                 //read the channel value from the payload
                 chVal = payload.read_float();
 
-                auto chName = bind(RawAngleStrainPacket::buildChannelName, angle);
+                auto chName = bind(buildChannelName, angle);
 
                 WirelessDataPoint::ChannelProperties properties({std::make_pair(WirelessDataPoint::channelPropertyId_angle, Value::FLOAT(angle))});
                 chData.emplace_back(WC::channel_rawAngleStrain, i, chName, valueType_float, anyType(chVal), properties);
@@ -218,7 +219,7 @@ namespace mscl
                     }
 
                     chVal = payload.read_float();
-                    auto chName = bind(RawAngleStrainPacket::buildChannelName, angle);
+                    auto chName = bind(buildChannelName, angle);
 
                     WirelessDataPoint::ChannelProperties properties({std::make_pair(WirelessDataPoint::channelPropertyId_angle, Value::FLOAT(angle))});
                     chData.emplace_back(WC::channel_rawAngleStrain, i, chName, valueType_float, anyType(chVal), properties);
@@ -236,7 +237,7 @@ namespace mscl
             //the lower bound angle
             float lowerBound = payload.read_float();
 
-            //the upper bound angle
+            //the upper-bound angle
             float upperBound = payload.read_float();
 
             //the number of angles in the packet
@@ -289,7 +290,7 @@ namespace mscl
                     //read the channel value from the payload
                     chVal = payload.read_float();
 
-                    auto chName = bind(RawAngleStrainPacket::buildChannelName, angle);
+                    auto chName = bind(buildChannelName, angle);
 
                     WirelessDataPoint::ChannelProperties properties({std::make_pair(WirelessDataPoint::channelPropertyId_angle, Value::FLOAT(angle))});
                     chData.emplace_back(WC::channel_rawAngleStrain, i, chName, valueType_float, anyType(chVal), properties);
@@ -368,7 +369,7 @@ namespace mscl
         //calculate and add each angle to the vector
         for(uint8 i = 0; i < count; ++i)
         {
-            angles.emplace_back(Utils::normalizeAngle(low + (i * step)));
+            angles.emplace_back(Utils::normalizeAngle(low + i * step));
         }
 
         return angles;

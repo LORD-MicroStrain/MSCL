@@ -11,12 +11,12 @@
 
 namespace mscl
 {
-    GenericMipCmdResponse::GenericMipCmdResponse():
+    GenericMipCmdResponse::GenericMipCmdResponse() :
         MipCmdResponse()
     {
     }
 
-    GenericMipCmdResponse::GenericMipCmdResponse(ResponsePattern::State state, bool success, MipPacket::MipAckNack errorCode, std::string cmdName, ByteStream data):
+    GenericMipCmdResponse::GenericMipCmdResponse(ResponsePattern::State state, bool success, MipPacket::MipAckNack errorCode, std::string cmdName, ByteStream data) :
         MipCmdResponse(state, success, errorCode, cmdName),
         m_data(data)
     {
@@ -91,7 +91,7 @@ namespace mscl
         return static_cast<MipTypes::FunctionSelector>(commandBytes[CMD_FN_SELCTOR_INDEX]);
     }
 
-    GenericMipCommand::Response::Response(const MipTypes::Command& command, bool ackNackResponse, bool dataResponse, std::string cmdName, uint8 fieldDataByte):
+    GenericMipCommand::Response::Response(const MipTypes::Command& command, bool ackNackResponse, bool dataResponse, std::string cmdName, uint8 fieldDataByte) :
         ResponsePattern(),
         m_ackNackResponse(ackNackResponse),
         m_dataResponse(dataResponse),
@@ -101,7 +101,7 @@ namespace mscl
     {
     }
 
-    GenericMipCommand::Response::Response(const MipTypes::Command& command, bool ackNackResponse, bool dataResponse, std::string cmdName, MipResponseMatchValues matchData, uint8 fieldDataByte):
+    GenericMipCommand::Response::Response(const MipTypes::Command& command, bool ackNackResponse, bool dataResponse, std::string cmdName, MipResponseMatchValues matchData, uint8 fieldDataByte) :
         ResponsePattern(),
         m_ackNackResponse(ackNackResponse),
         m_dataResponse(dataResponse),
@@ -113,7 +113,7 @@ namespace mscl
     }
 
     GenericMipCommand::Response::Response(const MipTypes::Command& command, std::weak_ptr<ResponseCollector> collector,
-                                               bool ackNackResponse, bool dataResponse, const std::string& cmdName, uint8 fieldDataByte):
+                                               bool ackNackResponse, bool dataResponse, const std::string& cmdName, uint8 fieldDataByte) :
         ResponsePattern(collector),
         m_ackNackResponse(ackNackResponse),
         m_dataResponse(dataResponse),

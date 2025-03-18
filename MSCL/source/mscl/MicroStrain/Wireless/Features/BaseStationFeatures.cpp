@@ -4,16 +4,15 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "BaseStationFeatures.h"
+#include "mscl/MicroStrain/Wireless/Features/BaseStationFeatures.h"
 
-#include "BaseStationFeatures_analog.h"
-#include "BaseStationFeatures_rs232.h"
-#include "BaseStationFeatures_usb.h"
-#include "BaseStationFeatures_usb200.h"
-#include "BaseStationFeatures_wsda.h"
-#include "BaseStationFeatures_wsda2000.h"
-#include "AvailableTransmitPowers.h"
-#include "mscl/MicroStrain/Wireless/WirelessModels.h"
+#include "mscl/MicroStrain/Wireless/Features/AvailableTransmitPowers.h"
+#include "mscl/MicroStrain/Wireless/Features/BaseStationFeatures_analog.h"
+#include "mscl/MicroStrain/Wireless/Features/BaseStationFeatures_rs232.h"
+#include "mscl/MicroStrain/Wireless/Features/BaseStationFeatures_usb.h"
+#include "mscl/MicroStrain/Wireless/Features/BaseStationFeatures_usb200.h"
+#include "mscl/MicroStrain/Wireless/Features/BaseStationFeatures_wsda.h"
+#include "mscl/MicroStrain/Wireless/Features/BaseStationFeatures_wsda2000.h"
 
 namespace mscl
 {
@@ -60,23 +59,23 @@ namespace mscl
         const WirelessTypes::TransmitPowers supportedPowers = transmitPowers(commProtocol);
 
         //return the result of trying to find the power in the vector
-        return (std::find(supportedPowers.begin(), supportedPowers.end(), power) != supportedPowers.end());
+        return std::find(supportedPowers.begin(), supportedPowers.end(), power) != supportedPowers.end();
     }
 
     bool BaseStationFeatures::supportsCommunicationProtocol(WirelessTypes::CommProtocol protocol) const
     {
         const WirelessTypes::CommProtocols supportedProtocols = commProtocols();
-        return (std::find(supportedProtocols.begin(), supportedProtocols.end(), protocol) != supportedProtocols.end());
+        return std::find(supportedProtocols.begin(), supportedProtocols.end(), protocol) != supportedProtocols.end();
     }
 
     bool BaseStationFeatures::supportsButtons() const
     {
-        return (buttonCount() > 0);
+        return buttonCount() > 0;
     }
 
     bool BaseStationFeatures::supportsAnalogPairing() const
     {
-        return (analogPortCount() > 0);
+        return analogPortCount() > 0;
     }
 
     bool BaseStationFeatures::supportsBeaconStatus() const
@@ -90,7 +89,7 @@ namespace mscl
     {
         static const Version MIN_RF_SWEEP_FW(4, 30448);
 
-        return (m_baseInfo.firmwareVersion() >= MIN_RF_SWEEP_FW);
+        return m_baseInfo.firmwareVersion() >= MIN_RF_SWEEP_FW;
     }
 
     bool BaseStationFeatures::supportsCustomRfSweepMode() const
@@ -150,20 +149,20 @@ namespace mscl
     {
         static const Version MIN_NEW_TX_POWER_FW(4, 0);
 
-        return (m_baseInfo.firmwareVersion() >= MIN_NEW_TX_POWER_FW);
+        return m_baseInfo.firmwareVersion() >= MIN_NEW_TX_POWER_FW;
     }
 
     bool BaseStationFeatures::supportsEepromCommitViaRadioReset() const
     {
         static const Version MIN_EEPROM_COMMIT_RADIO_FW(4, 0);
 
-        return (m_baseInfo.firmwareVersion() >= MIN_EEPROM_COMMIT_RADIO_FW);
+        return m_baseInfo.firmwareVersion() >= MIN_EEPROM_COMMIT_RADIO_FW;
     }
 
     bool BaseStationFeatures::supportsEeprom1024AndAbove() const
     {
         static const Version HIGH_EEPROM_FW(4, 0);
 
-        return (m_baseInfo.firmwareVersion() >= HIGH_EEPROM_FW);
+        return m_baseInfo.firmwareVersion() >= HIGH_EEPROM_FW;
     }
 }

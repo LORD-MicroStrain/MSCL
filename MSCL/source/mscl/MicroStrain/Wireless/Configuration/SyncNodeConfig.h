@@ -7,10 +7,7 @@
 #pragma once
 
 #include "mscl/MicroStrain/SampleRate.h"
-#include "mscl/MicroStrain/Wireless/ChannelMask.h"
-#include "mscl/MicroStrain/Wireless/WirelessTypes.h"
-#include "mscl/TimeSpan.h"
-#include "mscl/MicroStrain/Wireless/WirelessNode.h"
+#include "mscl/MicroStrain/Wireless/Configuration/DataModeMask.h"
 #include "mscl/MicroStrain/Wireless/Configuration/NodeEepromHelper.h"
 
 namespace mscl
@@ -22,7 +19,6 @@ namespace mscl
     //    A helper class for reading and writing values used for Synchronized Sampling configuration
     class SyncNodeConfig
     {
-    private:
         SyncNodeConfig();    //disabled default constructor
 
     public:
@@ -192,7 +188,6 @@ namespace mscl
         //  Gets the diagnostic interval set on the Node.
         uint16 diagnosticInterval();
 
-    public:
         //Function: txPerGroup
         //    Writes the transmissions per group to the node.
         //

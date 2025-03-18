@@ -35,7 +35,6 @@ namespace mscl
         //    The maximum number of raw byte packets that can be stored in the circular buffer
         static const int MAX_DATA_BUFFER_SIZE = 1024 * 100;
 
-    private:
         //Variable: m_rawBytePackets
         //    A circular buffer that holds <RawBytePacket>s
         circular_data_buffer m_rawBytePackets;

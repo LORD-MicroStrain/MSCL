@@ -14,7 +14,6 @@ namespace mscl
     //  Represents a bitmask.
     class BitMask
     {
-    private:
         //Variable: m_numBits
         //  The number of bits that are being represented in the bitmask.
         uint8 m_numBits;
@@ -37,7 +36,7 @@ namespace mscl
 
         //API Destructor: ~BitMask
         //  Destroys a BitMask object.
-        virtual ~BitMask() {};
+        virtual ~BitMask() = default;
 
         //API Operator: ==
         //  Equal operator for comparing BitMasks.

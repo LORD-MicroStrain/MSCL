@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "NodeFeatures.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures.h"
 
 namespace mscl
 {
@@ -15,15 +15,14 @@ namespace mscl
     class NodeFeatures_glink2Internal : public NodeFeatures
     {
     public:
-        virtual ~NodeFeatures_glink2Internal(){};
+        ~NodeFeatures_glink2Internal() override = default;
 
         //Constructor: NodeFeatures_glink2Internal
         //    Creates a NodeFeatures_glink2Internal object.
         NodeFeatures_glink2Internal(const NodeInfo& info);
 
-    public:
-        virtual const WirelessTypes::WirelessSampleRates sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const override;
+        const WirelessTypes::WirelessSampleRates sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const override;
 
-        virtual const WirelessTypes::Filters antiAliasingFilters() const override;
+        const WirelessTypes::Filters antiAliasingFilters() const override;
     };
 }

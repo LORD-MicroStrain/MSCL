@@ -10,7 +10,7 @@
 
 namespace mscl
 {
-    MipDataPacket::MipDataPacket():
+    MipDataPacket::MipDataPacket() :
         m_collectedTime(0),
         m_deviceTime(0),
         m_hasDeviceTime(false),
@@ -19,7 +19,7 @@ namespace mscl
     {
     }
 
-    MipDataPacket::MipDataPacket(const MipPacket& packet):
+    MipDataPacket::MipDataPacket(const MipPacket& packet) :
         m_collectedTime(Timestamp::timeNow()),
         m_deviceTime(0),
         m_hasDeviceTime(false),

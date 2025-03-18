@@ -4,12 +4,17 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
+#include "mscl/MicroStrain/Wireless/DataSweep.h"
 #include "mscl/MicroStrain/DataBuffer.h"
 #include "mscl/MicroStrain/ResponsePattern.h"
 #include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
 #include "mscl/MicroStrain/Wireless/Packets/WirelessPacketCollector.h"
 
 using namespace mscl;
+
+DISABLE_WARNING_BOOST_START
+#include <boost/test/unit_test.hpp>
+DISABLE_WARNING_BOOST_END
 
 BOOST_AUTO_TEST_SUITE(WirelessPacketCollector_Test)
 
@@ -48,7 +53,7 @@ BOOST_AUTO_TEST_CASE(WirelessPacketCollector_AddDataPacket_SyncSampling)
 
     DataSweep sweep = sweeps.at(0);
 
-    //check that the sweep contains the data we setup
+    //check that the sweep contains the data we set up
     BOOST_CHECK_EQUAL(sweep.nodeAddress(), 567);
 }
 
@@ -79,7 +84,7 @@ BOOST_AUTO_TEST_CASE(WirelessPacketCollector_GetNextDataSweep_AddDataPacket_LDC)
 
     DataSweep sweep = sweeps.at(0);
 
-    //check that the sweep contains the data we setup
+    //check that the sweep contains the data we set up
     BOOST_CHECK_EQUAL(sweep.nodeAddress(), 678);
 }
 
@@ -87,7 +92,7 @@ BOOST_AUTO_TEST_CASE(WirelessPacketCollector_AddDataPacket_BufferedLdc)
 {
     //a valid buffered ldc packet payload
     Bytes payload;
-    payload.push_back(0x02);        //App Id
+    payload.push_back(0x02);        //App ID
     payload.push_back(0x01);        //channel mask
     payload.push_back(0x70);
     payload.push_back(0x03);        //data type
@@ -110,7 +115,7 @@ BOOST_AUTO_TEST_CASE(WirelessPacketCollector_AddDataPacket_BufferedLdc)
 
     DataSweep sweep = sweeps.at(0);
 
-    //check that the sweep contains the data we setup
+    //check that the sweep contains the data we set up
     BOOST_CHECK_EQUAL(sweep.nodeAddress(), 567);
 }
 
@@ -122,7 +127,7 @@ BOOST_AUTO_TEST_CASE(WirelessPacketCollector_GetDataSweeps_NoData)
     BOOST_CHECK_EQUAL(collector.totalSweeps(), 0);
 
     //verify that calling getDataSweeps with no max gives an empty vector back
-    std::vector<mscl::DataSweep> sweeps;
+    std::vector<DataSweep> sweeps;
     collector.getDataSweeps(sweeps);
     BOOST_CHECK_EQUAL(sweeps.size(), 0);
 

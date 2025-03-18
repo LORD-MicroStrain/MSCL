@@ -13,7 +13,6 @@ namespace mscl
     //    Contains logic for the Trigger Armed Datalogging Node command.
     class TriggerArmedDatalogging
     {
-    private:
         TriggerArmedDatalogging();                                          //disabled default constructor
         TriggerArmedDatalogging(const TriggerArmedDatalogging&);            //disabled copy constructor
         TriggerArmedDatalogging& operator=(const TriggerArmedDatalogging&); //disabled assignment operator

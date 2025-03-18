@@ -15,7 +15,6 @@ namespace mscl
     //    Contains logic for the ReadEeprom Node command
     class ReadEeprom
     {
-    private:
         ReadEeprom();                                //default constructor disabled
         ReadEeprom(const ReadEeprom&);                //copy constructor disabled
         ReadEeprom& operator=(const ReadEeprom&);    //assignment operator disabled
@@ -63,7 +62,7 @@ namespace mscl
             //
             //Returns:
             //    true if the packet matches a response pattern, false otherwise
-            virtual bool matchSuccessResponse(const WirelessPacket& packet) override;
+            bool matchSuccessResponse(const WirelessPacket& packet) override;
 
         public:
             //Function: eepromValue

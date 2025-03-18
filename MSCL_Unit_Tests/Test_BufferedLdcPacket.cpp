@@ -4,6 +4,7 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
+#include "mscl/MicroStrain/Wireless/DataSweep.h"
 #include "mscl/MicroStrain/Wireless/Packets/BufferedLdcPacket.h"
 #include "mscl/MicroStrain/Wireless/Packets/WirelessDataPacket.h"
 #include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
@@ -11,6 +12,10 @@
 #include "mscl/MicroStrain/Wireless/WirelessTypes.h"
 
 using namespace mscl;
+
+DISABLE_WARNING_BOOST_START
+#include <boost/test/unit_test.hpp>
+DISABLE_WARNING_BOOST_END
 
 BOOST_AUTO_TEST_SUITE(BufferedLdcPacket_Test)
 

@@ -40,7 +40,7 @@ namespace mscl
         return cmd;
     }
 
-    Sleep_v2::Response::Response(NodeAddress nodeAddress, std::weak_ptr<ResponseCollector> collector):
+    Sleep_v2::Response::Response(NodeAddress nodeAddress, std::weak_ptr<ResponseCollector> collector) :
         WirelessResponsePattern(collector, WirelessProtocol::cmdId_sleep, nodeAddress),
         m_nodeAddress(nodeAddress)
     {

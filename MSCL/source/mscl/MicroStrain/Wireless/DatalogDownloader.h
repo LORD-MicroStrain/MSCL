@@ -6,24 +6,19 @@
 
 #pragma once
 
-#include <memory>
-
-#include "CalCoefficients.h"
-#include "ChannelMask.h"
-#include "LoggedDataSweep.h"
-#include "WirelessNode.h"
-#include "WirelessTypes.h"
-#include "Packets/WirelessDataPacket.h"
-#include "mscl/TimestampCounter.h"
-#include "mscl/Version.h"
 #include "mscl/MicroStrain/SampleRate.h"
+#include "mscl/MicroStrain/Wireless/CalCoefficients.h"
+#include "mscl/MicroStrain/Wireless/LoggedDataSweep.h"
+#include "mscl/MicroStrain/Wireless/Packets/WirelessDataPacket.h"
+#include "mscl/MicroStrain/Wireless/WirelessNode.h"
+#include "mscl/MicroStrain/Wireless/WirelessTypes.h"
+#include "mscl/TimestampCounter.h"
 
 namespace mscl
 {
     class NodeMemory;
 
 #ifndef SWIG
-
     struct DatalogSessionInfo
     {
         //Variable: sessionInfoUpdated
@@ -167,11 +162,11 @@ namespace mscl
         WirelessNode m_node;
 
         //Variable: m_foundFirstTrigger
-        //    Whether or not the first trigger has been found.
+        //    Whether the first trigger has been found.
         bool m_foundFirstTrigger;
 
         //Variable: m_outOfMemory
-        //    Whether or not we requested data that is out of bounds of the memory.
+        //    Whether we requested data that is out of bounds of the memory.
         bool m_outOfMemory;
 
         //Variable: m_sweepCount
@@ -198,7 +193,6 @@ namespace mscl
         //  A vector of the <WirelessDataPacket::AlgorithmMetaData> for the current data section (gets updated each math block header).
         std::vector<WirelessDataPacket::AlgorithmMetaData> m_mathMetaDeta;
 
-    private:
         //Function: parseTriggerHeader_v1
         //    Parses a (v1) trigger header from the current byte position. The current datalogging session info in this class is updated.
         //
@@ -229,7 +223,7 @@ namespace mscl
 
     public:
         //API Function: complete
-        //  Checks if all of the data has been downloaded (no more data available).
+        //  Checks if all the data has been downloaded (no more data available).
         //  Note: This may be updated each time <getNextData> is called.
         //
         //Returns:
@@ -257,12 +251,12 @@ namespace mscl
         LoggedDataSweep getNextData();
 
         //API Function: metaDataUpdated
-        //  Gets whether the any of the meta data (sample rate, cal coefficients, etc) has been updated since the last call to <getNextData>.
+        //  Gets whether any of the metadata (sample rate, cal coefficients, etc.) has been updated since the last call to <getNextData>.
         //  This will be true for a single <LoggedDataSweep> (after calling <getNextData>), signifying that you should interrogate
-        //  all of the meta data on this DatalogDownloader object again to get updated information which may have changed.
+        //  all the metadata on this DatalogDownloader object again to get updated information which may have changed.
         //
         //Returns:
-        //  true if the meta data has been updated, false otherwise.
+        //  true if the metadata has been updated, false otherwise.
         bool metaDataUpdated() const;
 
         //API Function: calCoefficientsUpdated

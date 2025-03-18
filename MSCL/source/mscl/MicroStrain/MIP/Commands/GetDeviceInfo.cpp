@@ -27,7 +27,7 @@ namespace mscl
         return builder.buildPacket();
     }
 
-    GetDeviceInfo::Response::Response(std::weak_ptr<ResponseCollector> collector):
+    GetDeviceInfo::Response::Response(std::weak_ptr<ResponseCollector> collector) :
         GenericMipCommand::Response(MipTypes::CMD_GET_DEVICE_INFO, collector, true, true, "Get Device Info")
     {
     }

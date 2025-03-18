@@ -10,7 +10,7 @@ namespace mscl
 {
     ByteStream DisplacementOutputDataRate::buildCommand_get()
     {
-        mscl::Bytes fieldData;
+        Bytes fieldData;
         fieldData.push_back(MipTypes::READ_BACK_CURRENT_SETTINGS);
 
         return buildCommand(MipTypes::CMD_DISPLACEMENT_OUTPUT_RATE, fieldData);

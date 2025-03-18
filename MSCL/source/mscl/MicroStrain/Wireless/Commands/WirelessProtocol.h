@@ -29,7 +29,6 @@ namespace mscl
         friend class BaseStation_Impl;
         friend class NodeEeprom;
 
-    private:
         WirelessProtocol();
 
         //Variable: m_pingBase

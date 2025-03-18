@@ -14,8 +14,7 @@ namespace mscl
     //    Contains the logic for the DeviceTime command.
     class DeviceTime : private GenericMipCommand
     {
-    private:
-        DeviceTime() {};                //default constructor disabled
+        DeviceTime() {}                //default constructor disabled
 
          //Constants: Packet Bytes
          // FIELD_DATA_BYTE - Descriptor byte for the Field data.
@@ -29,7 +28,7 @@ namespace mscl
         class Response : public GenericMipCommand::Response
         {
         protected:
-            virtual uint8 fieldDataByte() const override { return FIELD_DATA_BYTE; }
+            uint8 fieldDataByte() const override { return FIELD_DATA_BYTE; }
 
         public:
             Response(std::weak_ptr<ResponseCollector> collector, bool dataResponseExpected);

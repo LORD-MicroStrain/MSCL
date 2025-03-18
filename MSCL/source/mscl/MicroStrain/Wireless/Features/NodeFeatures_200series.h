@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "NodeFeatures.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures.h"
 
 namespace mscl
 {
@@ -15,13 +15,12 @@ namespace mscl
     //    Inherits from <NodeFeatures>.
     class NodeFeatures_200series : public NodeFeatures
     {
-    private:
         NodeFeatures_200series();                                           //disabled default constructor
         NodeFeatures_200series(const NodeFeatures_200series&);              //disabled copy constructor
         NodeFeatures_200series& operator=(const NodeFeatures_200series&);   //disable assignment operator
 
     public:
-        virtual ~NodeFeatures_200series() {};
+        ~NodeFeatures_200series() override = default;
 
     protected:
         //Constructor: NodeFeatures_200series
@@ -32,10 +31,10 @@ namespace mscl
         NodeFeatures_200series(const NodeInfo& info);
 
     public:
-        virtual const WirelessTypes::TransmitPowers transmitPowers(WirelessTypes::CommProtocol commProtocol) const override;
-        virtual const WirelessTypes::TransmitPowers transmitPowers(WirelessTypes::RegionCode region, WirelessTypes::CommProtocol commProtocol) const override;
-        virtual const WirelessTypes::SamplingModes samplingModes() const override;
-        virtual const WirelessTypes::DataFormats dataFormats() const override;
-        virtual const WirelessTypes::StorageLimitModes storageLimitModes() const override;
+        const WirelessTypes::TransmitPowers transmitPowers(WirelessTypes::CommProtocol commProtocol) const override;
+        const WirelessTypes::TransmitPowers transmitPowers(WirelessTypes::RegionCode region, WirelessTypes::CommProtocol commProtocol) const override;
+        const WirelessTypes::SamplingModes samplingModes() const override;
+        const WirelessTypes::DataFormats dataFormats() const override;
+        const WirelessTypes::StorageLimitModes storageLimitModes() const override;
     };
 }

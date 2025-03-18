@@ -4,11 +4,11 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "DataModeMask.h"
+#include "mscl/MicroStrain/Wireless/Configuration/DataModeMask.h"
 
 namespace mscl
 {
-    DataModeMask::DataModeMask(WirelessTypes::DataMode mode):
+    DataModeMask::DataModeMask(WirelessTypes::DataMode mode) :
         rawModeEnabled(false),
         derivedModeEnabled(false)
     {
@@ -33,7 +33,7 @@ namespace mscl
         }
     }
 
-    DataModeMask::DataModeMask(const BitMask& mask):
+    DataModeMask::DataModeMask(const BitMask& mask) :
         rawModeEnabled(mask.enabled(dataModeBitPos_raw)),
         derivedModeEnabled(mask.enabled(dataModeBitPos_derived))
     {

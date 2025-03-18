@@ -42,7 +42,6 @@ namespace mscl
         //  The <MipNode_Impl> to use for lazy loading of values.
         const MipNode_Impl* m_node;
 
-    private:
         //Variable: m_deviceInfo
         //  The <MipDeviceInfo> of the Node (lazy loaded).
         Utils::Lazy<MipDeviceInfo> m_deviceInfo;

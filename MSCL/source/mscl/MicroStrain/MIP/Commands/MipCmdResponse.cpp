@@ -16,7 +16,7 @@ namespace mscl
     {
     }
 
-    MipCmdResponse::MipCmdResponse(ResponsePattern::State state, bool success, MipPacket::MipAckNack errorCode, std::string cmdName):
+    MipCmdResponse::MipCmdResponse(ResponsePattern::State state, bool success, MipPacket::MipAckNack errorCode, std::string cmdName) :
         m_responseState(state),
         m_success(success),
         m_ackNack(errorCode),

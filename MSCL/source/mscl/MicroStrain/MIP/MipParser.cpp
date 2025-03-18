@@ -14,7 +14,7 @@
 
 namespace mscl
 {
-    MipParser::MipParser(MipPacketCollector* packetCollector, std::weak_ptr<ResponseCollector> responseCollector, RawBytePacketCollector* rawBytePacketCollector):
+    MipParser::MipParser(MipPacketCollector* packetCollector, std::weak_ptr<ResponseCollector> responseCollector, RawBytePacketCollector* rawBytePacketCollector) :
         m_packetCollector(packetCollector),
         m_responseCollector(responseCollector),
         m_rawBytePacketCollector(rawBytePacketCollector)
@@ -111,7 +111,7 @@ namespace mscl
 
     void MipParser::parse(DataBuffer& data)
     {
-        mscl::Bytes rawBytes;
+        Bytes rawBytes;
 
         RawBytePacket rawBytePacket;
 
@@ -134,7 +134,7 @@ namespace mscl
             //if this is a MIP Start of Packet byte
             if(currentByte == MipPacketInfo::MIP_PACKET_SOP1)
             {
-                mscl::ReadBufferSavePoint savePoint(&data);
+                ReadBufferSavePoint savePoint(&data);
 
                 //check if the packet is a valid MIP packet, starting at this byte
                 parseResult = parseAsPacket(data, packet);
@@ -192,7 +192,7 @@ namespace mscl
             //if we didn't have enough data for a full packet
             if(notEnoughData)
             {
-                mscl::ReadBufferSavePoint savePoint(&data);
+                ReadBufferSavePoint savePoint(&data);
                 //look for packets after the current byte.
                 //    Even though this looks like it could be the start of a MIP packet,
                 //    if we find any full MIP packets inside of the these bytes, we need

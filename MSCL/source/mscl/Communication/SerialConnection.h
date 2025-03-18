@@ -16,12 +16,10 @@ namespace mscl
     {
         friend Connection Connection::Serial(const std::string& port, uint32 baudRate);
 
-    private:
         SerialConnection();                                        //default constructor disabled
         SerialConnection(const SerialConnection&);                //copy constructor disabled
         SerialConnection& operator=(const SerialConnection&);    //assignment operator disabled
 
-    private:
         //Constructor: SerialConnection
         //    Initializes the SerialConnection object.
         //
@@ -37,7 +35,7 @@ namespace mscl
     public:
         //Destructor: ~SerialConnection
         //    Destroys the SerialConnection object
-        virtual ~SerialConnection() {};
+        ~SerialConnection() override = default;
 
     private:
         //Variable: m_port

@@ -17,7 +17,6 @@ namespace mscl
     //  Contains logic for the Get Logged Data Node command.
     class GetLoggedData
     {
-    private:
         GetLoggedData() = delete;                                   //default constructor disabled
         GetLoggedData(const GetLoggedData&) = delete;               //copy constructor disabled
         GetLoggedData& operator=(const GetLoggedData&) = delete;    //assignment operator disabled

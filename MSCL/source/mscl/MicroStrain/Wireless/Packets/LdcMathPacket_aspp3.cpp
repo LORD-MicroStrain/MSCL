@@ -4,11 +4,9 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "LdcMathPacket_aspp3.h"
-#include "mscl/MicroStrain/SampleUtils.h"
-#include "mscl/MicroStrain/Wireless/ChannelMask.h"
-#include "mscl/Utils.h"
+#include "mscl/MicroStrain/Wireless/Packets/LdcMathPacket_aspp3.h"
 
+#include "mscl/MicroStrain/Wireless/DataSweep.h"
 
 namespace mscl
 {
@@ -33,7 +31,7 @@ namespace mscl
 
         //read the values from the payload
         payload.skipBytes(5);       //skipping model and Rate at which raw data was sampled (throwing away for now)
-        uint32 calculationRate      = payload.read_uint32();    //Rate at which processed data was sampled
+        uint32 calculationRate      = payload.read_uint32();    //The rate at which processed data was sampled
         uint16 tick                 = payload.read_uint16();
         const uint8 numAlgorithms   = payload.read_uint8();     //The number of algorithms being used
 
@@ -52,7 +50,7 @@ namespace mscl
             rate = SampleRate::Seconds(calculationRate);
         }
 
-        //build up the Algorithm Meta Data
+        //build up the Algorithm Metadata
         std::vector<WirelessDataPacket::AlgorithmMetaData> metaData;
         metaData.reserve(numAlgorithms);
         for(uint8 i = 0; i < numAlgorithms; ++i)
@@ -157,7 +155,7 @@ namespace mscl
 
         //verify we have the expected number of channel bytes
         //  payload length - (# algorithms * 3 bytes per algorithm) - 8 standard payload bytes
-        if(expectedChannelBytes != (payload.size() - (numAlgorithms * 3) - 12))
+        if(expectedChannelBytes != payload.size() - numAlgorithms * 3 - 12)
         {
             return false;
         }

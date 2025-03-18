@@ -33,7 +33,6 @@ namespace mscl
     //    The field parser for Event Source
     class FieldParser_EventSource : public MipSharedFieldParser
     {
-    private:
         FieldParser_EventSource() {}        //default constructor disabled
 
     public:
@@ -43,7 +42,7 @@ namespace mscl
         //Parameters:
         //    field - The <MipDataField> to parse for data points
         //    result - The <MipDataPoints> vector to store the data points in
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
 
         //Function: registerParser
         //    The static function that registers this parser with the list of parsers (called immediately)
@@ -52,7 +51,6 @@ namespace mscl
         //    true, just for assigning the REGISTERED constant to true
         static bool registerParser();
 
-    public:
         //Constant: FIELD_TYPE
         //    The 2-byte field type (Descriptor ID + Field ID) for this parser
         static const MipTypes::ChannelField FIELD_TYPE;
@@ -66,7 +64,6 @@ namespace mscl
     //    The field parser for Ticks
     class FieldParser_Ticks : public MipSharedFieldParser
     {
-    private:
         FieldParser_Ticks() {}        //default constructor disabled
 
     public:
@@ -76,7 +73,7 @@ namespace mscl
         //Parameters:
         //    field - The <MipDataField> to parse for data points
         //    result - The <MipDataPoints> vector to store the data points in
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
 
         //Function: registerParser
         //    The static function that registers this parser with the list of parsers (called immediately)
@@ -85,7 +82,6 @@ namespace mscl
         //    true, just for assigning the REGISTERED constant to true
         static bool registerParser();
 
-    public:
         //Constant: FIELD_TYPE
         //    The 2-byte field type (Descriptor ID + Field ID) for this parser
         static const MipTypes::ChannelField FIELD_TYPE;
@@ -99,7 +95,6 @@ namespace mscl
     //    The field parser for Delta Ticks
     class FieldParser_DeltaTicks : public MipSharedFieldParser
     {
-    private:
         FieldParser_DeltaTicks() {}        //default constructor disabled
 
     public:
@@ -109,7 +104,7 @@ namespace mscl
         //Parameters:
         //    field - The <MipDataField> to parse for data points
         //    result - The <MipDataPoints> vector to store the data points in
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
 
         //Function: registerParser
         //    The static function that registers this parser with the list of parsers (called immediately)
@@ -118,7 +113,6 @@ namespace mscl
         //    true, just for assigning the REGISTERED constant to true
         static bool registerParser();
 
-    public:
         //Constant: FIELD_TYPE
         //    The 2-byte field type (Descriptor ID + Field ID) for this parser
         static const MipTypes::ChannelField FIELD_TYPE;
@@ -132,14 +126,12 @@ namespace mscl
     //    The field parser for GPS Timestamp
     class FieldParser_GpsTimestamp : public MipSharedFieldParser
     {
-    private:
         //Constants: Valid Flags
         //    TOW_VALID        - b00000001 - The flag position for checking the GPS Time of Week flag
         //    WEEK_NUM_VALID   - b00000010 - The flag position for checking the GPS Week Number flag
         static const uint16 TOW_VALID = BOOST_BINARY(00000001);
         static const uint16 WEEK_NUM_VALID = BOOST_BINARY(00000010);
 
-    private:
         FieldParser_GpsTimestamp() {}        //default constructor disabled
 
     public:
@@ -149,7 +141,7 @@ namespace mscl
         //Parameters:
         //    field - The <MipDataField> to parse for data points
         //    result - The <MipDataPoints> vector to store the data points in
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
 
         //Function: registerParser
         //    The static function that registers this parser with the list of parsers (called immediately)
@@ -158,7 +150,6 @@ namespace mscl
         //    true, just for assigning the REGISTERED constant to true
         static bool registerParser();
 
-    public:
         //Constant: FIELD_TYPE
         //    The 2-byte field type (Descriptor ID + Field ID) for this parser
         static const MipTypes::ChannelField FIELD_TYPE;
@@ -172,7 +163,6 @@ namespace mscl
     //    The field parser for Delta Time
     class FieldParser_DeltaTime : public MipSharedFieldParser
     {
-    private:
         FieldParser_DeltaTime() {}        //default constructor disabled
 
     public:
@@ -182,7 +172,7 @@ namespace mscl
         //Parameters:
         //    field - The <MipDataField> to parse for data points
         //    result - The <MipDataPoints> vector to store the data points in
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
 
         //Function: registerParser
         //    The static function that registers this parser with the list of parsers (called immediately)
@@ -191,7 +181,6 @@ namespace mscl
         //    true, just for assigning the REGISTERED constant to true
         static bool registerParser();
 
-    public:
         //Constant: FIELD_TYPE
         //    The 2-byte field type (Descriptor ID + Field ID) for this parser
         static const MipTypes::ChannelField FIELD_TYPE;
@@ -214,7 +203,7 @@ namespace mscl
         //Parameters:
         //    field - The <MipDataField> to parse for data points
         //    result - The <MipDataPoints> vector to store the data points in
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
 
         //Function: registerParser
         //    The static function that registers this parser with the list of parsers (called immediately)
@@ -248,7 +237,7 @@ namespace mscl
         //Parameters:
         //    field - The <MipDataField> to parse for data points
         //    result - The <MipDataPoints> vector to store the data points in
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
 
         //Function: registerParser
         //    The static function that registers this parser with the list of parsers (called immediately)
@@ -282,7 +271,7 @@ namespace mscl
         //Parameters:
         //    field - The <MipDataField> to parse for data points
         //    result - The <MipDataPoints> vector to store the data points in
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
 
         //Function: registerParser
         //    The static function that registers this parser with the list of parsers (called immediately)
@@ -316,7 +305,7 @@ namespace mscl
         //Parameters:
         //    field - The <MipDataField> to parse for data points
         //    result - The <MipDataPoints> vector to store the data points in
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
 
         //Function: registerParser
         //    The static function that registers this parser with the list of parsers (called immediately)

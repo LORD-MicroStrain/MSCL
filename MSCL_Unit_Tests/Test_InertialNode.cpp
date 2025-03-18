@@ -13,7 +13,6 @@
 #include "mscl/MicroStrain/MIP/Packets/MipDataPacket.h"
 #include "mscl/Utils.h"
 
-#include "mock_Connection.h"
 #include "mock_InertialNode.h"
 
 using namespace mscl;

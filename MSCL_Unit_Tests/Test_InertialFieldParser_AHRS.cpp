@@ -11,6 +11,10 @@
 
 using namespace mscl;
 
+DISABLE_WARNING_BOOST_START
+#include <boost/test/unit_test.hpp>
+DISABLE_WARNING_BOOST_END
+
 BOOST_AUTO_TEST_SUITE(InertialFieldParser_Sensor_Test)
 
 BOOST_AUTO_TEST_CASE(InertialFieldParser_RawAccelVector_parse)

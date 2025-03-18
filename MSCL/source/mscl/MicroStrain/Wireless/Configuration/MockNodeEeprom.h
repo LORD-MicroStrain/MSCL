@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "NodeEeprom.h"
+#include "mscl/MicroStrain/Wireless/Configuration/NodeEeprom.h"
 
 namespace mscl
 {
@@ -24,11 +24,10 @@ namespace mscl
         //    settings - The <NodeEepromSettings> to use.
         MockNodeEeprom(const WirelessNode_Impl* node, const BaseStation& base, const NodeEepromSettings& settings);
 
-        virtual ~MockNodeEeprom() {};
+        ~MockNodeEeprom() override {}
 
-    public:
-        virtual uint16 readEeprom(uint16 location) override;
+        uint16 readEeprom(uint16 location) override;
 
-        virtual void writeEeprom(uint16 location, uint16 value) override;
+        void writeEeprom(uint16 location, uint16 value) override;
     };
 }

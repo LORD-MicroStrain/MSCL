@@ -8,7 +8,7 @@
 
 namespace mscl
 {
-    TimedCondition::TimedCondition():
+    TimedCondition::TimedCondition() :
         m_isNotified(false)
     {
     }

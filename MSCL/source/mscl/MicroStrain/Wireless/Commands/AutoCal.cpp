@@ -136,7 +136,7 @@ namespace mscl
         return cmd;
     }
 
-    AutoCal::Response::Response(NodeAddress nodeAddress, std::weak_ptr<ResponseCollector> collector):
+    AutoCal::Response::Response(NodeAddress nodeAddress, std::weak_ptr<ResponseCollector> collector) :
         WirelessResponsePattern(collector, WirelessProtocol::cmdId_autoCal_v1, nodeAddress),
         m_nodeAddress(nodeAddress),
         m_calStarted(false),
@@ -186,16 +186,14 @@ namespace mscl
 
                     return true;
                 }
-                else
-                {
-                    //got a bad status, so autocal won't be started (not expecting another packet)
-                    m_fullyMatched = true;
 
-                    //notify that the response was matched
-                    m_matchCondition.notify();
+                //got a bad status, so autocal won't be started (not expecting another packet)
+                m_fullyMatched = true;
 
-                    return true;
-                }
+                //notify that the response was matched
+                m_matchCondition.notify();
+
+                return true;
             }
         }
 
@@ -243,8 +241,8 @@ namespace mscl
         return true;
     }
 
-    AutoCal::ShmResponse::ShmResponse(NodeAddress nodeAddress, std::weak_ptr<ResponseCollector> collector):
-        AutoCal::Response(nodeAddress, collector)
+    AutoCal::ShmResponse::ShmResponse(NodeAddress nodeAddress, std::weak_ptr<ResponseCollector> collector) :
+        Response(nodeAddress, collector)
     {
     }
 
@@ -279,8 +277,8 @@ namespace mscl
         return true;
     }
 
-    AutoCal::Shm201Response::Shm201Response(NodeAddress nodeAddress, std::weak_ptr<ResponseCollector> collector):
-        AutoCal::Response(nodeAddress, collector)
+    AutoCal::Shm201Response::Shm201Response(NodeAddress nodeAddress, std::weak_ptr<ResponseCollector> collector) :
+        Response(nodeAddress, collector)
     {
     }
 
@@ -315,8 +313,8 @@ namespace mscl
         return true;
     }
 
-    AutoCal::ShuntCalResponse::ShuntCalResponse(NodeAddress nodeAddress, std::weak_ptr<ResponseCollector> collector, uint8 channelNumber):
-        AutoCal::Response(nodeAddress, collector),
+    AutoCal::ShuntCalResponse::ShuntCalResponse(NodeAddress nodeAddress, std::weak_ptr<ResponseCollector> collector, uint8 channelNumber) :
+        Response(nodeAddress, collector),
         m_channelNumber(channelNumber)
     {
     }

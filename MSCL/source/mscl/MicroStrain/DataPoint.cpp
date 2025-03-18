@@ -8,7 +8,7 @@
 
 namespace mscl
 {
-    DataPoint::DataPoint(ValueType type, const anyType& value, const ChannelProperties& channelProperties):
+    DataPoint::DataPoint(ValueType type, const anyType& value, const ChannelProperties& channelProperties) :
         Value(type, value),
         m_channelProperties(channelProperties)
     {

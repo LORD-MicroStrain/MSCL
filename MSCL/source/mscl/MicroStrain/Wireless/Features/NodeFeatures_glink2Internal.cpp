@@ -4,16 +4,14 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "NodeFeatures_glink2Internal.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures_glink2Internal.h"
 
-#include "mscl/Exceptions.h"
-#include "AvailableSampleRates.h"
 #include "mscl/MicroStrain/Wireless/Configuration/NodeEepromMap.h"
-#include "mscl/MicroStrain/Wireless/ChannelMask.h"
+#include "mscl/MicroStrain/Wireless/Features/AvailableSampleRates.h"
 
 namespace mscl
 {
-    NodeFeatures_glink2Internal::NodeFeatures_glink2Internal(const NodeInfo& info):
+    NodeFeatures_glink2Internal::NodeFeatures_glink2Internal(const NodeInfo& info) :
         NodeFeatures(info)
     {
         addCalCoeffChannelGroup(1, "Acceleration X", NodeEepromMap::CH_ACTION_SLOPE_1, NodeEepromMap::CH_ACTION_ID_1);

@@ -6,10 +6,8 @@
 
 #pragma once
 
-#include "BaseStation_Impl.h"
-#include "BaseStationInfo.h"
-#include "mscl/Communication/Connection.h"
-#include "mscl/Types.h"
+#include "mscl/MicroStrain/Wireless/BaseStationInfo.h"
+#include "mscl/MicroStrain/Wireless/BaseStation_Impl.h"
 
 namespace mscl
 {
@@ -27,7 +25,7 @@ namespace mscl
 
         //Destructor: ~BaseStation_Impl
         //    Destroys the BaseStation object
-        virtual ~MockBaseStation_Impl();
+        ~MockBaseStation_Impl() override;
 
     private:
         MockBaseStation_Impl() = delete;                                        //default constructor disabled
@@ -39,29 +37,29 @@ namespace mscl
         BaseStationInfo m_info;
 
     public:
-        virtual const BaseStationFeatures& features() const override;
+        const BaseStationFeatures& features() const override;
 
-        virtual const WirelessProtocol& protocol(WirelessTypes::CommProtocol commProtocol) const override;
+        const WirelessProtocol& protocol(WirelessTypes::CommProtocol commProtocol) const override;
 
-        virtual WirelessTypes::CommProtocol communicationProtocol() const override;
+        WirelessTypes::CommProtocol communicationProtocol() const override;
 
-        virtual bool ping() override;
+        bool ping() override;
 
-        virtual bool read(uint16 eepromAddress, uint16& result) override;
+        bool read(uint16 eepromAddress, uint16& result) override;
 
-        virtual bool write(uint16 eepromAddress, uint16 value) override;
+        bool write(uint16 eepromAddress, uint16 value) override;
 
-        virtual Timestamp enableBeacon() override;
+        Timestamp enableBeacon() override;
 
-        virtual Timestamp enableBeacon(uint32 utcTime) override;
+        Timestamp enableBeacon(uint32 utcTime) override;
 
-        virtual void disableBeacon() override;
+        void disableBeacon() override;
 
-        virtual BeaconStatus beaconStatus() override;
+        BeaconStatus beaconStatus() override;
 
         void startRfSweepMode() override;
 
-        virtual void startRfSweepMode(uint32 minFreq, uint32 maxFreq, uint32 interval, uint16 options) override;
+        void startRfSweepMode(uint32 minFreq, uint32 maxFreq, uint32 interval, uint16 options) override;
 
         void cyclePower(bool checkComm=true) override;
 

@@ -8,7 +8,7 @@
 
 namespace mscl
 {
-    Histogram::Histogram(const Value& binsStart, const Value& binsSize):
+    Histogram::Histogram(const Value& binsStart, const Value& binsSize) :
         m_binsStart(binsStart),
         m_binsSize(binsSize)
     {

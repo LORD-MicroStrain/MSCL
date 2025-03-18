@@ -18,7 +18,6 @@ namespace mscl
     //  Contains logic for the Get Datalog Session Info Node command.
     class GetDatalogSessionInfo
     {
-    private:
         GetDatalogSessionInfo() = delete;                                          //default constructor disabled
         GetDatalogSessionInfo(const GetDatalogSessionInfo&) = delete;              //copy constructor disabled
         GetDatalogSessionInfo& operator=(const GetDatalogSessionInfo&) = delete;   //assignment operator disabled

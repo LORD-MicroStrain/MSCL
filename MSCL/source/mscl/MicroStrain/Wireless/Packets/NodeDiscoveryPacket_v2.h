@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "WirelessPacket.h"
+#include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
 
 namespace mscl
 {
@@ -17,19 +17,19 @@ namespace mscl
     public:
         //=====================================================================================================
         //Constants: Node Discovery v2 Packet Information
-        //    PAYLOAD_OFFSET_RADIO_CHANNEL    - 0        - The offset into the payload to get the radio channel.
-        //    PAYLOAD_OFFSET_PAN_ID            - 1        - The offset into the payload to get the PAN id.
-        //    PAYLOAD_OFFSET_MODEL_NUMBER        - 3        - The offset into the payload to get the Model Number.
-        //    PAYLOAD_OFFSET_MODEL_OPTION        - 5        - The offset into the payload to get the Model Option.
-        //    PAYLOAD_OFFSET_SERIAL_NUMBER    - 7        - The offset into the payload to get the Serial Number.
-        //    PAYLOAD_OFFSET_FIRMWARE_VER        - 11    - The offset into the payload to get the Firmware Version.
+        //    PAYLOAD_OFFSET_RADIO_CHANNEL - 0  - The offset into the payload to get the radio channel.
+        //    PAYLOAD_OFFSET_PAN_ID        - 1  - The offset into the payload to get the PAN id.
+        //    PAYLOAD_OFFSET_MODEL_NUMBER  - 3  - The offset into the payload to get the Model Number.
+        //    PAYLOAD_OFFSET_MODEL_OPTION  - 5  - The offset into the payload to get the Model Option.
+        //    PAYLOAD_OFFSET_SERIAL_NUMBER - 7  - The offset into the payload to get the Serial Number.
+        //    PAYLOAD_OFFSET_FIRMWARE_VER  - 11 - The offset into the payload to get the Firmware Version.
         //=====================================================================================================
-        static const int PAYLOAD_OFFSET_RADIO_CHANNEL    = 0;
-        static const int PAYLOAD_OFFSET_PAN_ID            = 1;
-        static const int PAYLOAD_OFFSET_MODEL_NUMBER    = 3;
-        static const int PAYLOAD_OFFSET_MODEL_OPTION    = 5;
-        static const int PAYLOAD_OFFSET_SERIAL_NUMBER    = 7;
-        static const int PAYLOAD_OFFSET_FIRMWARE_VER    = 11;
+        static const int PAYLOAD_OFFSET_RADIO_CHANNEL = 0;
+        static const int PAYLOAD_OFFSET_PAN_ID        = 1;
+        static const int PAYLOAD_OFFSET_MODEL_NUMBER  = 3;
+        static const int PAYLOAD_OFFSET_MODEL_OPTION  = 5;
+        static const int PAYLOAD_OFFSET_SERIAL_NUMBER = 7;
+        static const int PAYLOAD_OFFSET_FIRMWARE_VER  = 11;
 
     private:
         NodeDiscoveryPacket_v2();    //default constructor disabled
@@ -40,13 +40,13 @@ namespace mscl
         static const DeliveryStopFlags stopFlags_nodeDiscovery;
 
         //Function: integrityCheck
-        //    Verifies that the packet is a well formed Node Discovery (v2) packet.
+        //    Verifies that the packet is a well-formed Node Discovery (v2) packet.
         //
         //Parameters:
         //    packet - The fully formed Wireless Packet to check the integrity of.
         //
         //Returns:
-        //    true is the packet is a well-formed Node Discovery (v2) Packet, false otherwise.
+        //    true if the packet is a well-formed Node Discovery (v2) Packet, false otherwise.
         static bool integrityCheck(const WirelessPacket& packet);
     };
 }

@@ -6,12 +6,8 @@
 
 #pragma once
 
-#include <memory>
-
 #include "mscl/MicroStrain/SampleRate.h"
-#include "mscl/Timestamp.h"
-#include "WirelessDataPoint.h"
-#include "WirelessTypes.h"
+#include "mscl/MicroStrain/Wireless/WirelessDataPoint.h"
 
 namespace mscl
 {
@@ -20,7 +16,6 @@ namespace mscl
     class DataSweep
     {
     public:
-
         //============================================================================
         //API Enums: SamplingType
         //    samplingType_NonSync                   - 0 - NonSynchronized sampling type
@@ -240,5 +235,4 @@ namespace mscl
     //API Typedef: DataSweeps
     //    Typedef for a vector of <DataSweep> objects.
     typedef std::vector<DataSweep> DataSweeps;
-
 }

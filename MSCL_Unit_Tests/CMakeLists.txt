@@ -53,7 +53,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
     ${Boost_LIBRARIES}
 )
 
-target_precompile_headers(${PROJECT_NAME} PRIVATE "${CMAKE_CURRENT_LIST_DIR}/stdafx.h")
+target_precompile_headers(${PROJECT_NAME} PRIVATE "${MSCL_INCLUDE_DIR}/mscl/stdafx.h")
 
 # Don't let MSCL find it's own libraries
 target_compile_definitions(${PROJECT_NAME} PRIVATE BOOST_ALL_NO_LIB)
@@ -68,7 +68,7 @@ if(MSVC)
 
     # Ignore some annoying linker warnings
     target_link_options(${PROJECT_NAME} PRIVATE
-        "$<$<CXX_COMPILER_ID:MSVC>:/ignore:4099>"
+        "/ignore:4099"
     )
 endif()
 

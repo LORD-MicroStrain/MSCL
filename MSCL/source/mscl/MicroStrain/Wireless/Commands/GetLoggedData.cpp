@@ -42,7 +42,7 @@ namespace mscl
         return cmd;
     }
 
-    GetLoggedData::Response::Response(NodeAddress nodeAddress, uint32 flashAddress, std::weak_ptr<ResponseCollector> collector):
+    GetLoggedData::Response::Response(NodeAddress nodeAddress, uint32 flashAddress, std::weak_ptr<ResponseCollector> collector) :
         WirelessResponsePattern(collector, WirelessProtocol::cmdId_getLogData_v1, nodeAddress),
         m_nodeAddress(nodeAddress),
         m_flashAddress(flashAddress)

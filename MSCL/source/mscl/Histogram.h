@@ -15,7 +15,6 @@ namespace mscl
     //    Represents a Histogram object.
     class Histogram
     {
-    private:
         Histogram();    //disable default constructor
 
     public:

@@ -63,7 +63,6 @@ namespace mscl
     //    Contains functions specific to input range for Wireless Nodes.
     class InputRangeHelper
     {
-    private:
         //Typedef: InputRangeMap
         //  typedef for a map of uint16 eeprom values to <WirelessTypes::InputRange> values.
         typedef std::map<uint16, InputRangeEntry> InputRangeMap;

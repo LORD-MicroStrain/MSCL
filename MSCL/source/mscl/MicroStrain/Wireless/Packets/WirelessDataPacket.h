@@ -6,18 +6,12 @@
 
 #pragma once
 
-#include <vector>
-
-#include "WirelessPacket.h"
-#include "mscl/MicroStrain/Wireless/ChannelMask.h"
-#include "mscl/MicroStrain/Wireless/WirelessChannel.h"
+#include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
 #include "mscl/MicroStrain/Wireless/WirelessDataPoint.h"
-#include "mscl/MicroStrain/Wireless/DataSweep.h"
-#include "mscl/MicroStrain/Wireless/WirelessTypes.h"
-#include "mscl/Types.h"
 
 namespace mscl
 {
+    class DataSweep;
     class Timestamp;
 
 #ifndef SWIG
@@ -30,10 +24,10 @@ namespace mscl
         //    The default constructor for a Wireless Data Packet
         WirelessDataPacket();
 
-        virtual ~WirelessDataPacket() {};
+        ~WirelessDataPacket() override = default;
 
         //Struct: AlgorithmMetaData
-        //  Represents meta data about Math Data Packets.
+        //  Represents meta-data about Math Data Packets.
         struct AlgorithmMetaData
         {
             //Variable: algorithmId
@@ -76,7 +70,6 @@ namespace mscl
         //    The offset into the payload of the data packet where channel data starts.
         uint16 m_payloadOffsetChannelData;
 
-    protected:
         //Function: addSweep
         //    Adds a single <DataSweep> to the data packet
         //
@@ -128,7 +121,7 @@ namespace mscl
         //  Checks if an angle from a Wireless Packet is within the valid range that MSCL accepts.
         //
         //Parameters:
-        //  angle - The angle (in degrees) to check if its within range.
+        //  angle - The angle (in degrees) to check if it's within range.
         //
         //Returns:
         //  true if the timestamp is within the valid range, false otherwise.
@@ -167,7 +160,7 @@ namespace mscl
         std::size_t numSweepsRemaining() const;
 
         //Function: moreSweeps
-        //    Whether or not there are more <DataSweep>s in the data packet
+        //    Whether there are more <DataSweep>s in the data packet
         //
         //Returns:
         //    true if there are more <DataSweep>s available, false otherwise

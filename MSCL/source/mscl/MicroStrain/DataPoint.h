@@ -26,7 +26,6 @@ namespace mscl
     //    - <WirelessDataPoint>
     class DataPoint : public Value
     {
-    private:
         DataPoint();        //default constructor disabled
 
     public:
@@ -57,7 +56,7 @@ namespace mscl
         DataPoint(ValueType type, const anyType& value, const ChannelProperties& channelProperties = ChannelProperties());
 #endif
 
-        virtual ~DataPoint(){}
+        ~DataPoint() override = default;
 
     protected:
         //Variable: m_channelProperties

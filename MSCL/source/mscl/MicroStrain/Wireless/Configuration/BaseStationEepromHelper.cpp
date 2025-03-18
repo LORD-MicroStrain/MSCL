@@ -4,16 +4,15 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "BaseStationEepromHelper.h"
-#include "BaseStationEeprom.h"
-#include "BaseStationEepromMap.h"
+#include "mscl/MicroStrain/Wireless/Configuration/BaseStationEepromHelper.h"
+
 #include "mscl/MicroStrain/Wireless/BaseStation_Impl.h"
+#include "mscl/MicroStrain/Wireless/Configuration/BaseStationEepromMap.h"
 #include "mscl/MicroStrain/Wireless/Features/BaseStationFeatures.h"
-#include "mscl/MicroStrain/Wireless/Commands/WirelessProtocol.h"
 
 namespace mscl
 {
-    BaseStationEepromHelper::BaseStationEepromHelper(BaseStation_Impl* basestation):
+    BaseStationEepromHelper::BaseStationEepromHelper(BaseStation_Impl* basestation) :
         m_baseStation(basestation)
     {
     }
@@ -85,17 +84,13 @@ namespace mscl
             {
                 return Version(3, 0);
             }
-            else
-            {
-                assert(false);  //need to add support for a new radio mode
-                return Version(1, 0);
-            }
+
+            assert(false);  //need to add support for a new radio mode
+            return Version(1, 0);
         }
-        else
-        {
-            //ASPP version is good in eeprom, just return that version number
-            return Version(Utils::msb(asppValue), Utils::lsb(asppValue));
-        }
+
+        //ASPP version is good in eeprom, just return that version number
+        return Version(Utils::msb(asppValue), Utils::lsb(asppValue));
     }
 
     WirelessTypes::CommProtocol BaseStationEepromHelper::read_commProtocol() const
@@ -167,16 +162,14 @@ namespace mscl
 
             return Version(major, minor);
         }
+
         //firmware versions >= 4 use the scheme [Major].[svnRevision]
-        else
-        {
-            uint16 fwValue2 = read(BaseStationEepromMap::FIRMWARE_VER2).as_uint16();
+        uint16 fwValue2 = read(BaseStationEepromMap::FIRMWARE_VER2).as_uint16();
 
-            //make the svn revision from the lsb of the first fw value, and the entire second fw value
-            uint32 svnRevision = Utils::make_uint32(0, Utils::lsb(fwValue1), Utils::msb(fwValue2), Utils::lsb(fwValue2));
+        //make the svn revision from the lsb of the first fw value, and the entire second fw value
+        uint32 svnRevision = Utils::make_uint32(0, Utils::lsb(fwValue1), Utils::msb(fwValue2), Utils::lsb(fwValue2));
 
-            return Version(major, svnRevision);
-        }
+        return Version(major, svnRevision);
     }
 
     uint8 BaseStationEepromHelper::read_fwVersionMajor() const
@@ -200,14 +193,12 @@ namespace mscl
             //convert the legacy model to the new model number and return it
             return WirelessModels::baseFromLegacyModel(model);
         }
-        else
-        {
-            //read the model option from eeprom
-            uint16 modelOption = read(BaseStationEepromMap::MODEL_OPTION).as_uint16();
 
-            //build the model and model class together to form the model number
-            return static_cast<WirelessModels::BaseModel>((model * 10000) + modelOption);
-        }
+        //read the model option from eeprom
+        uint16 modelOption = read(BaseStationEepromMap::MODEL_OPTION).as_uint16();
+
+        //build the model and model class together to form the model number
+        return static_cast<WirelessModels::BaseModel>(model * 10000 + modelOption);
     }
 
     std::string BaseStationEepromHelper::read_serial() const
@@ -258,13 +249,11 @@ namespace mscl
         {
             return static_cast<WirelessTypes::TransmitPower>(val);
         }
-        else
-        {
-            //legacy value, convert to current value before returning
 
-            //read and return the transmit power level
-            return WirelessTypes::legacyToTransmitPower(static_cast<WirelessTypes::LegacyTransmitPower>(val));
-        }
+        //legacy value, convert to current value before returning
+
+        //read and return the transmit power level
+        return WirelessTypes::legacyToTransmitPower(static_cast<WirelessTypes::LegacyTransmitPower>(val));
     }
 
     void BaseStationEepromHelper::write_transmitPower(WirelessTypes::TransmitPower power)

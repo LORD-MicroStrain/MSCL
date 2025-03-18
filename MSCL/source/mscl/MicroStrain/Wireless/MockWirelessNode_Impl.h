@@ -6,9 +6,8 @@
 
 #pragma once
 
-#include "WirelessNode_Impl.h"
-#include "Features/NodeInfo.h"
-#include "Features/NodeFeatures.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeInfo.h"
+#include "mscl/MicroStrain/Wireless/WirelessNode_Impl.h"
 
 namespace mscl
 {
@@ -21,7 +20,6 @@ namespace mscl
         MockWirelessNode_Impl(const MockWirelessNode_Impl&) = delete;               //copy constructor disabled
         MockWirelessNode_Impl& operator=(const MockWirelessNode_Impl&) = delete;    //assignment operator disabled
 
-    public:
         //Constructor: WirelessNode_Impl
         //    Creates a WirelessNode_Impl object.
         //
@@ -31,7 +29,7 @@ namespace mscl
         //    info - The <NodeInfo> of the Node
         MockWirelessNode_Impl(NodeAddress nodeAddress, const BaseStation& basestation, const NodeInfo& info);
 
-        virtual ~MockWirelessNode_Impl() {}
+        ~MockWirelessNode_Impl() override = default;
 
     private:
         //Variable: m_info
@@ -39,63 +37,63 @@ namespace mscl
         NodeInfo m_info;
 
     protected:
-        virtual NodeEeprom& eeprom() const;
+        NodeEeprom& eeprom() const override;
 
     public:
         virtual void importEepromCache(const WirelessTypes::EepromMap& eeproms) const;
 
-        virtual Value readEeprom(const EepromLocation& location) const;
+        Value readEeprom(const EepromLocation& location) const override;
 
-        virtual const NodeFeatures& features() const override;
+        const NodeFeatures& features() const override;
 
-        virtual const WirelessProtocol& protocol(WirelessTypes::CommProtocol commProtocol) const override;
+        const WirelessProtocol& protocol(WirelessTypes::CommProtocol commProtocol) const override;
 
-        virtual Version firmwareVersion() const override;
+        Version firmwareVersion() const override;
 
-        virtual WirelessModels::NodeModel model() const override;
+        WirelessModels::NodeModel model() const override;
 
-        virtual std::string serial() const override;
+        std::string serial() const override;
 
-        virtual WirelessTypes::MicroControllerType microcontroller() const override;
+        WirelessTypes::MicroControllerType microcontroller() const override;
 
-        virtual RadioFeatures radioFeatures() const override;
+        RadioFeatures radioFeatures() const override;
 
-        virtual uint64 dataStorageSize() const override;
+        uint64 dataStorageSize() const override;
 
-        virtual WirelessTypes::RegionCode regionCode() const override;
+        WirelessTypes::RegionCode regionCode() const override;
 
-        virtual uint16 getNumDatalogSessions() override;
+        uint16 getNumDatalogSessions() override;
 
-        virtual float percentFull() override;
+        float percentFull() override;
 
-        virtual PingResponse ping() override;
+        PingResponse ping() override;
 
-        virtual bool sleep() override;
+        bool sleep() override;
 
-        virtual void cyclePower() override;
+        void cyclePower() override;
 
-        virtual void resetRadio() override;
+        void resetRadio() override;
 
-        virtual SetToIdleStatus setToIdle() override;
+        SetToIdleStatus setToIdle() override;
 
-        virtual void erase() override;
+        void erase() override;
 
-        virtual bool startNonSyncSampling() override;
+        bool startNonSyncSampling() override;
 
-        virtual bool startSyncSampling() override;
+        bool startSyncSampling() override;
 
-        virtual void clearHistogram() override;
+        void clearHistogram() override;
 
-        virtual AutoBalanceResult autoBalance(const ChannelMask& mask, float targetPercent) override;
+        AutoBalanceResult autoBalance(const ChannelMask& mask, float targetPercent) override;
 
-        virtual AutoCalResult_shmLink autoCal_shmLink() override;
+        AutoCalResult_shmLink autoCal_shmLink() override;
 
-        virtual AutoCalResult_shmLink201 autoCal_shmLink201() override;
+        AutoCalResult_shmLink201 autoCal_shmLink201() override;
 
-        virtual AutoShuntCalResult autoShuntCal(const ChannelMask& mask, const ShuntCalCmdInfo& commandInfo) override;
+        AutoShuntCalResult autoShuntCal(const ChannelMask& mask, const ShuntCalCmdInfo& commandInfo) override;
 
-        virtual void getDiagnosticInfo(ChannelData& result) override;
+        void getDiagnosticInfo(ChannelData& result) override;
 
-        virtual bool testCommProtocol(WirelessTypes::CommProtocol commProtocol) override;
+        bool testCommProtocol(WirelessTypes::CommProtocol commProtocol) override;
     };
 }

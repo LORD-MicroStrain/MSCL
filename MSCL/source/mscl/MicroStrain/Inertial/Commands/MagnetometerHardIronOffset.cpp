@@ -58,7 +58,7 @@ namespace mscl
             byteCommand.append_float(m_offsetVector.y());
             byteCommand.append_float(m_offsetVector.z());
         }
-        return GenericMipCommand::buildCommand(commandType(), byteCommand.data()); ;
+        return GenericMipCommand::buildCommand(commandType(), byteCommand.data());
     }
 
 }

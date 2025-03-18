@@ -8,12 +8,12 @@
 
 namespace mscl
 {
-    LinearEquation::LinearEquation():
+    LinearEquation::LinearEquation() :
         m_slope(1.0f),
         m_offset(0.0f)
     { }
 
-    LinearEquation::LinearEquation(float slope, float offset):
+    LinearEquation::LinearEquation(float slope, float offset) :
         m_slope(slope),
         m_offset(offset)
     { }

@@ -4,9 +4,7 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "NodeEepromMap.h"
-
-#include "mscl/Types.h"
+#include "mscl/MicroStrain/Wireless/Configuration/NodeEepromMap.h"
 
 namespace mscl
 {

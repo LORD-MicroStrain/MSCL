@@ -87,7 +87,7 @@ namespace mscl
             //
             //Returns:
             //    true if the field matches the expected data, false if it does not.
-            virtual bool match_data(const MipDataField& field) override;
+            bool match_data(const MipDataField& field) override;
 
             //Function: parseResponse
             //    Parses a successfully matched response for the ContinuousDataStream command.

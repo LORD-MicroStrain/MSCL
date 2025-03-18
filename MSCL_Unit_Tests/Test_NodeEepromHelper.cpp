@@ -16,9 +16,7 @@
 
 using namespace mscl;
 
-
 BOOST_AUTO_TEST_SUITE(NodeEepromHelper_Test)
-
 
 BOOST_AUTO_TEST_CASE(NodeEepromHelper_writeChannelMask)
 {

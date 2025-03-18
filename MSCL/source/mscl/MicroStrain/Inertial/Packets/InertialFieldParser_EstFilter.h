@@ -18,7 +18,6 @@ namespace mscl
     //    The field parser for Filter Status data
     class FieldParser_FilterStatus : public MipFieldParser
     {
-    private:
         FieldParser_FilterStatus(){}        //default constructor disabled
 
     public:
@@ -28,7 +27,7 @@ namespace mscl
         //Parameters:
         //    field - The <MipDataField> to parse for data points
         //    result - The <MipDataPoints> vector to store the data points in
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
 
         //Function: registerParser
         //    The static function that registers this parser with the list of parsers (called immediately)
@@ -37,7 +36,6 @@ namespace mscl
         //    true, just for assigning the REGISTERED constant to true
         static bool registerParser();
 
-    public:
         //Constant: FIELD_TYPE
         //    The 2-byte field type (Descriptor ID + Field ID) for this parser
         static const MipTypes::ChannelField FIELD_TYPE;
@@ -51,19 +49,16 @@ namespace mscl
     //    The field parser for NAV GPS Timestamp data
     class FieldParser_NAV_GPS_Timestamp : public MipFieldParser
     {
-    private:
         //Constants: Valid Flags
         //    TIME_FLAG        - b00000001 - The flag position for checking the Valid Time flag
         static const uint16 TIME_FLAG        = BOOST_BINARY(00000001);
 
-    private:
         FieldParser_NAV_GPS_Timestamp(){}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
@@ -72,19 +67,16 @@ namespace mscl
     //    The field parser for Estimated LLH Position data
     class FieldParser_EstimatedLLHPosition : public MipFieldParser
     {
-    private:
         //Constants: Valid Flags
         //    LLH_FLAG        - b00000001 - The flag position for checking the LLH flag
         static const uint16 LLH_FLAG        = BOOST_BINARY(00000001);
 
-    private:
         FieldParser_EstimatedLLHPosition(){}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
@@ -93,19 +85,16 @@ namespace mscl
     //    The field parser for Estimated NED Velocity data
     class FieldParser_EstimatedNEDVelocity : public MipFieldParser
     {
-    private:
         //Constants: Valid Flags
         //    NED_FLAG        - b00000001 - The flag position for checking the NED Velocity flag
         static const uint16 NED_FLAG        = BOOST_BINARY(00000001);
 
-    private:
         FieldParser_EstimatedNEDVelocity(){}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
@@ -114,19 +103,16 @@ namespace mscl
     //    The field parser for Estimated Orientation Quaternion data
     class FieldParser_EstimatedQuaternion : public MipFieldParser
     {
-    private:
         //Constants: Valid Flags
         //    NED_FLAG        - b00000001 - The flag position for checking the Orientation Quaternion flag
         static const uint16 QUATERNION_FLAG        = BOOST_BINARY(00000001);
 
-    private:
         FieldParser_EstimatedQuaternion(){}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
@@ -135,19 +121,16 @@ namespace mscl
     //    The field parser for Estimated Orientation Matrix data
     class FieldParser_EstimatedMatrix : public MipFieldParser
     {
-    private:
         //Constants: Valid Flags
         //    NED_FLAG        - b00000001 - The flag position for checking the Orientation Quaternion flag
         static const uint16 MATRIX_FLAG        = BOOST_BINARY(00000001);
 
-    private:
         FieldParser_EstimatedMatrix(){}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
@@ -156,19 +139,16 @@ namespace mscl
     //    The field parser for Estimated Orientation Euler Angles data
     class FieldParser_EstimatedEulerAngles : public MipFieldParser
     {
-    private:
         //Constants: Valid Flags
         //    EULER_FLAG        - b00000001 - The flag position for checking the Orientation Quaternion flag
         static const uint16 EULER_FLAG        = BOOST_BINARY(00000001);
 
-    private:
         FieldParser_EstimatedEulerAngles(){}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
@@ -177,19 +157,16 @@ namespace mscl
     //    The field parser for Estimated Gyro Bias data
     class FieldParser_EstimatedGyroBias : public MipFieldParser
     {
-    private:
         //Constants: Valid Flags
         //    GYRO_FLAG        - b00000001 - The flag position for checking the Gyro Bias flag
         static const uint16 GYRO_FLAG        = BOOST_BINARY(00000001);
 
-    private:
         FieldParser_EstimatedGyroBias(){}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
@@ -198,19 +175,16 @@ namespace mscl
     //    The field parser for Estimated Accel Bias data
     class FieldParser_EstimatedAccelBias : public MipFieldParser
     {
-    private:
         //Constants: Valid Flags
         //    ACCEL_FLAG        - b00000001 - The flag position for checking the Accel Bias flag
         static const uint16 ACCEL_FLAG = BOOST_BINARY(00000001);
 
-    private:
         FieldParser_EstimatedAccelBias() {}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
@@ -219,19 +193,16 @@ namespace mscl
     //    The field parser for Estimated LLH Position Uncertainty data
     class FieldParser_EstimatedLLHPosUncertainty : public MipFieldParser
     {
-    private:
         //Constants: Valid Flags
         //    UNCERTAINTY_FLAG        - b00000001 - The flag position for checking the Uncertainty flag
         static const uint16 UNCERTAINTY_FLAG        = BOOST_BINARY(00000001);
 
-    private:
         FieldParser_EstimatedLLHPosUncertainty(){}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
@@ -240,19 +211,16 @@ namespace mscl
     //    The field parser for Estimated NED Velocity Uncertainty data
     class FieldParser_EstimatedNEDUncertainty : public MipFieldParser
     {
-    private:
         //Constants: Valid Flags
         //    UNCERTAINTY_FLAG        - b00000001 - The flag position for checking the Uncertainty flag
         static const uint16 UNCERTAINTY_FLAG        = BOOST_BINARY(00000001);
 
-    private:
         FieldParser_EstimatedNEDUncertainty(){}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
@@ -261,19 +229,16 @@ namespace mscl
     //    The field parser for Estimated Attitude Euler Angles Uncertainty data
     class FieldParser_EstimatedAttEulerUncertainty : public MipFieldParser
     {
-    private:
         //Constants: Valid Flags
         //    UNCERTAINTY_FLAG        - b00000001 - The flag position for checking the Uncertainty flag
         static const uint16 UNCERTAINTY_FLAG        = BOOST_BINARY(00000001);
 
-    private:
         FieldParser_EstimatedAttEulerUncertainty(){}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
@@ -282,19 +247,16 @@ namespace mscl
     //    The field parser for Estimated Gyro Bias Uncertainty data
     class FieldParser_EstimatedGyroBiasUncertainty : public MipFieldParser
     {
-    private:
         //Constants: Valid Flags
         //    UNCERTAINTY_FLAG        - b00000001 - The flag position for checking the Uncertainty flag
         static const uint16 UNCERTAINTY_FLAG        = BOOST_BINARY(00000001);
 
-    private:
         FieldParser_EstimatedGyroBiasUncertainty(){}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
@@ -303,19 +265,16 @@ namespace mscl
     //    The field parser for Estimated Accel Bias Uncertainty data
     class FieldParser_EstimatedAccelBiasUncertainty : public MipFieldParser
     {
-    private:
         //Constants: Valid Flags
         //    UNCERTAINTY_FLAG        - b00000001 - The flag position for checking the Uncertainty flag
         static const uint16 UNCERTAINTY_FLAG = BOOST_BINARY(00000001);
 
-    private:
         FieldParser_EstimatedAccelBiasUncertainty() {}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
@@ -324,19 +283,16 @@ namespace mscl
     //    The field parser for Estimated Linear Acceleration data
     class FieldParser_EstimatedLinearAccel : public MipFieldParser
     {
-    private:
         //Constants: Valid Flags
         //    ACCEL_FLAG        - b00000001 - The flag position for checking the Linear Acceleration flag
         static const uint16 ACCEL_FLAG        = BOOST_BINARY(00000001);
 
-    private:
         FieldParser_EstimatedLinearAccel(){}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
@@ -345,19 +301,17 @@ namespace mscl
     //    The field parser for Estimated Angular Rate data
     class FieldParser_EstimatedAngularRate : public MipFieldParser
     {
-    private:
+
         //Constants: Valid Flags
         //    RATE_FLAG        - b00000001 - The flag position for checking the Angular Rate flag
         static const uint16 RATE_FLAG        = BOOST_BINARY(00000001);
 
-    private:
         FieldParser_EstimatedAngularRate(){}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
@@ -366,19 +320,17 @@ namespace mscl
     //    The field parser for WGS84 Local Gravity Magnitude data
     class FieldParser_WGS84LocalGravMagnitude : public MipFieldParser
     {
-    private:
+
         //Constants: Valid Flags
         //    GRAV_FLAG        - b00000001 - The flag position for checking the Gravity Magnitude flag
         static const uint16 GRAV_FLAG        = BOOST_BINARY(00000001);
 
-    private:
         FieldParser_WGS84LocalGravMagnitude(){}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
@@ -387,19 +339,17 @@ namespace mscl
     //    The field parser for Estimated Attitude Uncertainty, Quaternion Elements data
     class FieldParser_EstimatedAttQuaternUncertainty : public MipFieldParser
     {
-    private:
+
         //Constants: Valid Flags
         //    UNCERT_FLAG        - b00000001 - The flag position for checking the Uncertainty flag
         static const uint16 UNCERT_FLAG        = BOOST_BINARY(00000001);
 
-    private:
         FieldParser_EstimatedAttQuaternUncertainty(){}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
@@ -408,19 +358,17 @@ namespace mscl
     //    The field parser for Estimated Gravity Vector data
     class FieldParser_EstimatedGravityVector : public MipFieldParser
     {
-    private:
+
         //Constants: Valid Flags
         //    GRAV_FLAG        - b00000001 - The flag position for checking the Gravity Vector flag
         static const uint16 GRAV_FLAG        = BOOST_BINARY(00000001);
 
-    private:
         FieldParser_EstimatedGravityVector(){}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
@@ -429,19 +377,17 @@ namespace mscl
     //    The field parser for Heading Update Source State data
     class FieldParser_HeadingUpdateSource : public MipFieldParser
     {
-    private:
+
         //Constants: Valid Flags
         //    HEADING_FLAG        - b00000001 - The flag position for checking the Heading Flag
         static const uint16 HEADING_FLAG        = BOOST_BINARY(00000001);
 
-    private:
         FieldParser_HeadingUpdateSource(){}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
@@ -450,19 +396,17 @@ namespace mscl
     //    The field parser for Magnetic Model Solution data
     class FieldParser_MagneticModelSolution : public MipFieldParser
     {
-    private:
+
         //Constants: Valid Flags
         //    SLN_FLAG        - b00000001 - The flag position for checking the Magnetic Model Solution Flag
         static const uint16 SLN_FLAG        = BOOST_BINARY(00000001);
 
-    private:
         FieldParser_MagneticModelSolution(){}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
@@ -471,19 +415,17 @@ namespace mscl
     //    The field parser for Estimated Gyro Scale Factor data
     class FieldParser_EstimatedGyroScaleFactor : public MipFieldParser
     {
-    private:
+
         //Constants: Valid Flags
         //    VALID_FLAG        - b00000001 - The flag position for checking the Estimated Gyro Scale Factor flag
         static const uint16 VALID_FLAG = BOOST_BINARY(00000001);
 
-    private:
         FieldParser_EstimatedGyroScaleFactor() {}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
@@ -492,19 +434,17 @@ namespace mscl
     //    The field parser for Estimated Accel Scale Factor data
     class FieldParser_EstimatedAccelScaleFactor : public MipFieldParser
     {
-    private:
+
         //Constants: Valid Flags
         //    VALID_FLAG        - b00000001 - The flag position for checking the Estimated Gyro Scale Factor flag
         static const uint16 VALID_FLAG = BOOST_BINARY(00000001);
 
-    private:
         FieldParser_EstimatedAccelScaleFactor() {}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
@@ -513,19 +453,17 @@ namespace mscl
     //    The field parser for Estimated Gyro Scale Factor Uncertainty data
     class FieldParser_EstimatedGyroScaleFactorUncertainty : public MipFieldParser
     {
-    private:
+
         //Constants: Valid Flags
         //    VALID_FLAG        - b00000001 - The flag position for checking the Estimated Gyro Scale Factor flag
         static const uint16 VALID_FLAG = BOOST_BINARY(00000001);
 
-    private:
         FieldParser_EstimatedGyroScaleFactorUncertainty() {}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
@@ -534,19 +472,17 @@ namespace mscl
     //    The field parser for Estimated Accel Scale Factor Uncertainty data
     class FieldParser_EstimatedAccelScaleFactorUncertainty : public MipFieldParser
     {
-    private:
+
         //Constants: Valid Flags
         //    VALID_FLAG        - b00000001 - The flag position for checking the Estimated Gyro Scale Factor flag
         static const uint16 VALID_FLAG = BOOST_BINARY(00000001);
 
-    private:
         FieldParser_EstimatedAccelScaleFactorUncertainty() {}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
@@ -555,19 +491,17 @@ namespace mscl
     //    The field parser for Compensated Acceleration data
     class FieldParser_CompensatedAccel : public MipFieldParser
     {
-    private:
+
         //Constants: Valid Flags
         //    VALID_FLAG        - b00000001 - The flag position for checking the Estimated Gyro Scale Factor flag
         static const uint16 VALID_FLAG = BOOST_BINARY(00000001);
 
-    private:
         FieldParser_CompensatedAccel() {}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
@@ -576,19 +510,17 @@ namespace mscl
     //    The field parser for Standard Atmosphere Model data
     class FieldParser_StdAtmModel : public MipFieldParser
     {
-    private:
+
         //Constants: Valid Flags
         //    VALID_FLAG        - b00000001 - The flag position for checking the Estimated Gyro Scale Factor flag
         static const uint16 VALID_FLAG = BOOST_BINARY(00000001);
 
-    private:
         FieldParser_StdAtmModel() {}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
@@ -597,40 +529,35 @@ namespace mscl
     //    The field parser for Pressure Altitude data
     class FieldParser_PressureAlt : public MipFieldParser
     {
-    private:
+
         //Constants: Valid Flags
         //    VALID_FLAG        - b00000001 - The flag position for checking the Estimated Gyro Scale Factor flag
         static const uint16 VALID_FLAG = BOOST_BINARY(00000001);
 
-    private:
         FieldParser_PressureAlt() {}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
 
     //Class: FieldParser_MagAutoHardIronOffset
     //    The field parser for Estimated Mag Auto Hard Iron Offset data
-    class FieldParser_MagAutoHardIronOffset: public MipFieldParser
+    class FieldParser_MagAutoHardIronOffset : public MipFieldParser
     {
-    private:
         //Constants: Valid Flags
         //    VECTOR_FLAG        - b00000001 - The flag position for checking the Vector flag
         static const uint16 VECTOR_FLAG = BOOST_BINARY(00000001);
 
-    private:
         FieldParser_MagAutoHardIronOffset() {}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
@@ -639,7 +566,7 @@ namespace mscl
     //    The field parser for Estimated Mag Auto Hard Iron Offset data
     class FieldParser_MagBias : public MipFieldParser
     {
-    private:
+
         //Constants: Valid Flags
         //    VALID_FLAG        - b00000001 - The flag position for checking the Mag Bias flag
         static const uint16 VALID_FLAG = BOOST_BINARY(00000001);
@@ -647,52 +574,45 @@ namespace mscl
         FieldParser_MagBias() {}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
 
     //Class: FieldParser_MagAutoSoftIronMatrix
     //    The field parser for Estimated Mag Auto Soft Iron Matrix data
-    class FieldParser_MagAutoSoftIronMatrix: public MipFieldParser
+    class FieldParser_MagAutoSoftIronMatrix : public MipFieldParser
     {
-    private:
         //Constants: Valid Flags
         //    MATRIX_FLAG        - b00000001 - The flag position for checking the Matrix flag
         static const uint16 MATRIX_FLAG = BOOST_BINARY(00000001);
 
-    private:
         FieldParser_MagAutoSoftIronMatrix() {}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
 
     //Class: FieldParser_MagAutoHardIronOffsetUncert
     //    The field parser for Estimated Mag Auto Hard Iron Offset Uncertainty data
-    class FieldParser_MagAutoHardIronOffsetUncert: public MipFieldParser
+    class FieldParser_MagAutoHardIronOffsetUncert : public MipFieldParser
     {
-    private:
         //Constants: Valid Flags
         //    VECTOR_FLAG        - b00000001 - The flag position for checking the Vector flag
         static const uint16 VECTOR_FLAG = BOOST_BINARY(00000001);
 
-    private:
         FieldParser_MagAutoHardIronOffsetUncert() {}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
@@ -701,7 +621,7 @@ namespace mscl
     //    The field parser for Estimated Mag Bias Uncertainty data
     class FieldParser_MagBiasUncert : public MipFieldParser
     {
-    private:
+
         //Constants: Valid Flags
         //    VALID_FLAG        - b00000001 - The flag position for checking the Mag Bias Uncertainty flag
         static const uint16 VALID_FLAG = BOOST_BINARY(00000001);
@@ -709,31 +629,27 @@ namespace mscl
         FieldParser_MagBiasUncert() {}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
 
     //Class: FieldParser_MagAutoSoftIronMatrixUncert
     //    The field parser for Estimated Mag Auto Soft Iron Matrix Uncertainty data
-    class FieldParser_MagAutoSoftIronMatrixUncert: public MipFieldParser
+    class FieldParser_MagAutoSoftIronMatrixUncert : public MipFieldParser
     {
-    private:
         //Constants: Valid Flags
         //    MATRIX_FLAG        - b00000001 - The flag position for checking the Matrix flag
         static const uint16 MATRIX_FLAG = BOOST_BINARY(00000001);
 
-    private:
         FieldParser_MagAutoSoftIronMatrixUncert() {}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
@@ -742,14 +658,13 @@ namespace mscl
     //    The field parser for the Estimated Magnetometer Covariance Matrix field
     class FieldParser_MagCovarianceMatrix : public MipFieldParser
     {
-    private:
+
         FieldParser_MagCovarianceMatrix() {}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
@@ -758,56 +673,49 @@ namespace mscl
     //    The field parser for the Magnetometer Residual Vector field
     class FieldParser_MagResidualVector : public MipFieldParser
     {
-    private:
+
         FieldParser_MagResidualVector() {}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
 
     //Class: FieldParser_GnssAntennaOffsetCorrection
     //    The field parser for GNSS Antenna Offset Correction data
-    class FieldParser_GnssAntennaOffsetCorrection: public MipFieldParser
+    class FieldParser_GnssAntennaOffsetCorrection : public MipFieldParser
     {
-    private:
         //Constants: Valid Flags
         //    VALID_FLAG        - b00000001 - The flag position for checking the Estimated Gyro Scale Factor flag
         static const uint16 VALID_FLAG = BOOST_BINARY(00000001);
 
-    private:
         FieldParser_GnssAntennaOffsetCorrection() {}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
 
     //Class: FieldParser_GnssAntennaOffsetCorrectionUncert
     //    The field parser for GNSS Antenna Offset Correction Uncertainty data
-    class FieldParser_GnssAntennaOffsetCorrectionUncert: public MipFieldParser
+    class FieldParser_GnssAntennaOffsetCorrectionUncert : public MipFieldParser
     {
-    private:
         //Constants: Valid Flags
         //    VALID_FLAG        - b00000001 - The flag position for checking the Estimated Gyro Scale Factor flag
         static const uint16 VALID_FLAG = BOOST_BINARY(00000001);
 
-    private:
         FieldParser_GnssAntennaOffsetCorrectionUncert() {}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
@@ -816,19 +724,17 @@ namespace mscl
     //    The field parser for GNSS Clock Correction data
     class FieldParser_GnssClockCorrection : public MipFieldParser
     {
-    private:
+
         //Constants: Valid Flags
         //    VALID_FLAG        - b00000001 - The flag position for checking the Estimated Gyro Scale Factor flag
         static const uint16 VALID_FLAG = BOOST_BINARY(00000001);
 
-    private:
         FieldParser_GnssClockCorrection() {}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
@@ -837,19 +743,17 @@ namespace mscl
     //    The field parser for GNSS Clock Correction Uncertainty data
     class FieldParser_GnssClockCorrectionUncert : public MipFieldParser
     {
-    private:
+
         //Constants: Valid Flags
         //    VALID_FLAG        - b00000001 - The flag position for checking the Estimated Gyro Scale Factor flag
         static const uint16 VALID_FLAG = BOOST_BINARY(00000001);
 
-    private:
         FieldParser_GnssClockCorrectionUncert() {}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
@@ -858,19 +762,17 @@ namespace mscl
     //    The field parser for GNSS Multi-Antenna Offset Correction data
     class FieldParser_GnssMultiAntennaOffsetCorrection : public MipFieldParser
     {
-    private:
+
         //Constants: Valid Flags
         //    VALID_FLAG        - b00000001 - The flag position for checking the Estimated Gyro Scale Factor flag
         static const uint16 VALID_FLAG = BOOST_BINARY(00000001);
 
-    private:
         FieldParser_GnssMultiAntennaOffsetCorrection() {}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
@@ -879,19 +781,17 @@ namespace mscl
     //    The field parser for GNSS Multi-Antenna Offset Correction Uncertainty data
     class FieldParser_GnssMultiAntennaOffsetCorrectionUncert : public MipFieldParser
     {
-    private:
+
         //Constants: Valid Flags
         //    VALID_FLAG        - b00000001 - The flag position for checking the Estimated Gyro Scale Factor flag
         static const uint16 VALID_FLAG = BOOST_BINARY(00000001);
 
-    private:
         FieldParser_GnssMultiAntennaOffsetCorrectionUncert() {}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
@@ -900,19 +800,17 @@ namespace mscl
     //    The field parser for ECEF Position Uncertainty data
     class FieldParser_EcefPositionUncert : public MipFieldParser
     {
-    private:
+
         //Constants: Valid Flags
         //    VALID_FLAG        - b00000001 - The flag position for checking the field data valid flag
         static const uint16 VALID_FLAG = BOOST_BINARY(00000001);
 
-    private:
         FieldParser_EcefPositionUncert() {}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
@@ -921,19 +819,17 @@ namespace mscl
     //    The field parser for ECEF Velocity Uncertainty data
     class FieldParser_EcefVelocityUncert : public MipFieldParser
     {
-    private:
+
         //Constants: Valid Flags
         //    VALID_FLAG        - b00000001 - The flag position for checking the field data valid flag
         static const uint16 VALID_FLAG = BOOST_BINARY(00000001);
 
-    private:
         FieldParser_EcefVelocityUncert() {}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
@@ -942,19 +838,17 @@ namespace mscl
     //    The field parser for ECEF Position data
     class FieldParser_EcefPosition : public MipFieldParser
     {
-    private:
+
         //Constants: Valid Flags
         //    VALID_FLAG        - b00000001 - The flag position for checking the field data valid flag
         static const uint16 VALID_FLAG = BOOST_BINARY(00000001);
 
-    private:
         FieldParser_EcefPosition() {}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
@@ -963,19 +857,17 @@ namespace mscl
     //    The field parser for ECEF Velocity data
     class FieldParser_EcefVelocity : public MipFieldParser
     {
-    private:
+
         //Constants: Valid Flags
         //    VALID_FLAG        - b00000001 - The flag position for checking the field data valid flag
         static const uint16 VALID_FLAG = BOOST_BINARY(00000001);
 
-    private:
         FieldParser_EcefVelocity() {}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
@@ -984,19 +876,17 @@ namespace mscl
     //    The field parser for NED Relative Position data
     class FieldParser_NedRelativePos : public MipFieldParser
     {
-    private:
+
         //Constants: Valid Flags
         //    VALID_FLAG        - b00000001 - The flag position for checking the field data valid flag
         static const uint16 VALID_FLAG = BOOST_BINARY(00000001);
 
-    private:
         FieldParser_NedRelativePos() {}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
@@ -1005,14 +895,13 @@ namespace mscl
     //    The field parser for the filter GNSS Position Aiding status
     class FieldParser_FilterPosAidingStatus : public MipFieldParser
     {
-    private:
+
         FieldParser_FilterPosAidingStatus() {}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
@@ -1021,14 +910,13 @@ namespace mscl
     //    The field parser for the filter GNSS Attitude Aiding status
     class FieldParser_FilterAttAidingStatus : public MipFieldParser
     {
-    private:
+
         FieldParser_FilterAttAidingStatus() {}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
@@ -1037,14 +925,13 @@ namespace mscl
     //    The field parser for the filter Aiding Measurement Summary
     class FieldParser_FilterAidingSummary : public MipFieldParser
     {
-    private:
+
         FieldParser_FilterAidingSummary() {}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
@@ -1053,14 +940,13 @@ namespace mscl
     //    The field parser for the filter Odometer Scale Factor Error
     class FieldParser_OdometerScaleError : public MipFieldParser
     {
-    private:
+
         FieldParser_OdometerScaleError() {}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
@@ -1069,14 +955,13 @@ namespace mscl
     //    The field parser for the filter Odometer Scale Factor Error Uncertainty
     class FieldParser_OdometerScaleErrorUncert : public MipFieldParser
     {
-    private:
+
         FieldParser_OdometerScaleErrorUncert() {}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
@@ -1085,14 +970,13 @@ namespace mscl
     //    The field parser for the filter GNSS Dual Antenna Status data
     class FieldParser_DualAntennaStatus : public MipFieldParser
     {
-    private:
+
         FieldParser_DualAntennaStatus() {}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
@@ -1101,14 +985,13 @@ namespace mscl
     //    The field parser for the filter Aiding Frame Config Error data
     class FieldParser_FrameConfigError : public MipFieldParser
     {
-    private:
+
         FieldParser_FrameConfigError() {}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
@@ -1117,14 +1000,13 @@ namespace mscl
     //    The field parser for the filter Aiding Frame Config Error Uncertainty data
     class FieldParser_FrameConfigErrorUnc : public MipFieldParser
     {
-    private:
+
         FieldParser_FrameConfigErrorUnc() {}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };

@@ -67,7 +67,6 @@ namespace mscl
                 }
             }
         }
-        return GenericMipCommand::buildCommand(commandType(), byteCommand.data()); ;
+        return GenericMipCommand::buildCommand(commandType(), byteCommand.data());
     }
-
 }

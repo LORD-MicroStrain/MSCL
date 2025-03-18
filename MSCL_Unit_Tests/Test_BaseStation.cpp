@@ -14,11 +14,11 @@
 #include "mscl/MicroStrain/Wireless/WirelessTypes.h"
 #include "mscl/Utils.h"
 
-using namespace mscl;
+#define BOOST_TEST_MODULE MSCL_Unit_Test
 
-#include "customErrorPolicyLogging.h"
 #include "mock_BaseStation.h"
-#include "mock_Connection.h"
+
+using namespace mscl;
 
 namespace mock
 {

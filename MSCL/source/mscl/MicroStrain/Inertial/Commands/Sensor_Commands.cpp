@@ -18,7 +18,7 @@ namespace mscl
         return GenericMipCommand::buildCommand(CMD_ID);
     }
 
-    GetSensorDataRateBase::Response::Response(std::weak_ptr<ResponseCollector> collector):
+    GetSensorDataRateBase::Response::Response(std::weak_ptr<ResponseCollector> collector) :
         GenericMipCommand::Response(MipTypes::CMD_GET_SENSOR_RATE_BASE, collector, true, true, "Get Sensor Data Rate Base")
     {}
 
@@ -89,7 +89,7 @@ namespace mscl
         return GenericMipCommand::buildCommand(CMD_ID, fieldData.data());
     }
 
-    SensorMessageFormat::Response::Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse):
+    SensorMessageFormat::Response::Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse) :
         GenericMipCommand::Response(MipTypes::CMD_SENSOR_MESSAGE_FORMAT, collector, true, dataResponse, "Sensor Message Format")
     {}
 

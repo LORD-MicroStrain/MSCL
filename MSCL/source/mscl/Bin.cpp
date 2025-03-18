@@ -8,7 +8,7 @@
 
 namespace mscl
 {
-    Bin::Bin(const Value& start, const Value& end, const Value& count):
+    Bin::Bin(const Value& start, const Value& end, const Value& count) :
         m_start(start),
         m_end(end),
         m_count(count)

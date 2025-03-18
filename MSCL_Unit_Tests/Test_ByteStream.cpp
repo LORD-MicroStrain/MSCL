@@ -8,6 +8,10 @@
 
 using namespace mscl;
 
+DISABLE_WARNING_BOOST_START
+#include <boost/test/unit_test.hpp>
+DISABLE_WARNING_BOOST_END
+
 BOOST_AUTO_TEST_SUITE(ByteStream_Test)
 
 //===================================================================================================================
@@ -88,13 +92,13 @@ BOOST_AUTO_TEST_CASE(ByteStream_EqualOperator)
     ByteStream bytes2(dataToCopy);
 
     //check that the ByteStreams are equal
-    BOOST_CHECK_EQUAL((bytes1 == bytes2), true);
+    BOOST_CHECK_EQUAL(bytes1 == bytes2, true);
 
     //add a byte to one of the ByteStreams
     bytes1.append_uint8(5);
 
     //check that the ByteStreams are no longer equal
-    BOOST_CHECK_EQUAL((bytes1 == bytes2), false);
+    BOOST_CHECK_EQUAL(bytes1 == bytes2, false);
 }
 
 BOOST_AUTO_TEST_CASE(ByteStream_Resize)
@@ -152,7 +156,7 @@ BOOST_AUTO_TEST_CASE(ByteStream_BeginEnd)
     it++;
 
     //check that the iterator now points at bytes.end()
-    BOOST_CHECK_EQUAL((it == bytes.end()), true);
+    BOOST_CHECK_EQUAL(it == bytes.end(), true);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

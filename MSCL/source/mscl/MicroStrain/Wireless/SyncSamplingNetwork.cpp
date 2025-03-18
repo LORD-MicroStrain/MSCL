@@ -4,21 +4,17 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "SyncSamplingNetwork.h"
+#include "mscl/MicroStrain/Wireless/SyncSamplingNetwork.h"
 
-#include "mscl/Utils.h"
-#include "WirelessNode.h"
-#include "WirelessTypes.h"
-#include "WirelessModels.h"
-#include "Configuration/SyncNodeConfig.h"
-#include "Configuration/WirelessNodeConfig.h"
-#include "SyncSamplingFormulas.h"
-#include "mscl/MicroStrain/SampleUtils.h"
+#include "mscl/MicroStrain/Wireless/Configuration/SyncNodeConfig.h"
 #include "mscl/MicroStrain/Wireless/NodeCommTimes.h"
+#include "mscl/MicroStrain/Wireless/SyncNetworkInfo.h"
+#include "mscl/MicroStrain/Wireless/SyncSamplingFormulas.h"
+#include "mscl/MicroStrain/Wireless/WirelessNode.h"
 
 namespace mscl
 {
-    SyncSamplingNetwork::SyncSamplingNetwork(const BaseStation& networkBaseStation):
+    SyncSamplingNetwork::SyncSamplingNetwork(const BaseStation& networkBaseStation) :
         m_networkBase(networkBaseStation),
         m_lossless(true),
         m_commProtocol(m_networkBase.communicationProtocol()),
@@ -125,7 +121,7 @@ namespace mscl
             m_allNodes.erase(node);
         }
 
-        //remove from the event nodes if its in that container
+        //remove from the event nodes if it's in that container
         node = std::find(m_eventNodes.begin(), m_eventNodes.end(), nodeAddress);
         if(node != m_eventNodes.end())
         {
@@ -133,7 +129,7 @@ namespace mscl
         }
         else
         {
-            //remove from the non-event nodes if its in that container
+            //remove from the non-event nodes if it's in that container
             node = std::find(m_nonEventNodes.begin(), m_nonEventNodes.end(), nodeAddress);
             if(node != m_nonEventNodes.end())
             {
@@ -173,7 +169,7 @@ namespace mscl
             sortByBandwidth( m_nonEventNodes );
 
             //find slots for each non-event node in the network
-            //  Note: node's status are set to OK or Does Not Fit in this function
+            //  Note: node's status is set to OK or Does Not Fit in this function
             findSlotsForNodes( m_nonEventNodes );
 
             //recalculate transmissions per group and bandwidth for event nodes
@@ -182,7 +178,7 @@ namespace mscl
             //sort the full list of nodes (event and non-event) by bandwidth
             sortByBandwidth(m_allNodes);
 
-            //find slots for full list of nodes
+            //find slots for a full list of nodes
             findSlotsForNodes(m_allNodes);
 
             //update the status of each node, and calculate the total percent bandwidth
@@ -410,7 +406,7 @@ namespace mscl
             throw Error("Node " + Utils::toStr(nodeAddress) + " was not found in the network.");
         }
 
-        return *(result->second.get());
+        return *result->second.get();
     }
 
     void SyncSamplingNetwork::calculateNetworkValues(NodeAddress nodeAddress, bool optimizeBandwidth)
@@ -427,7 +423,7 @@ namespace mscl
 
             uint16 totalChannels = config.activeChannelCount();
             SampleRate sampleRate = config.sampleRate();
-            bool diagnosticPacketEnabled = (config.diagnosticInterval() > 0);
+            bool diagnosticPacketEnabled = config.diagnosticInterval() > 0;
             uint8 bytesPerSample = WirelessTypes::dataFormatSize(config.dataFormat());
 
             uint32 maxRetransmissionPerBurst = 0;
@@ -440,7 +436,7 @@ namespace mscl
 
             DataModeMask mode = config.dataMode();
 
-            bool isBurstMode = (config.samplingMode() == WirelessTypes::samplingMode_syncBurst);
+            bool isBurstMode = config.samplingMode() == WirelessTypes::samplingMode_syncBurst;
 
             uint16 maxBytes;
             float derivedMaxBytes;
@@ -488,7 +484,7 @@ namespace mscl
 
                 if(mode.rawModeEnabled)
                 {
-                    if(nodeInfo.m_bytesPerSweep > (maxBytes / 2u))
+                    if(nodeInfo.m_bytesPerSweep > maxBytes / 2u)
                     {
                         nodeInfo.m_bytesPerSweep = static_cast<uint32>(maxBytes * std::ceil(static_cast<float>(nodeInfo.m_bytesPerSweep) / static_cast<float>(maxBytes)));
                     }
@@ -513,7 +509,7 @@ namespace mscl
                     if(count > 0)
                     {
                         derivedChannelCount += count;
-                        numDerivedNonChBytes += 3;  //3 per Derived Channel (may change based on channel in the future)
+                        numDerivedNonChBytes += 3;  //3 per Derived Channel (may change based on a channel in the future)
                     }
                 }
 
@@ -521,13 +517,13 @@ namespace mscl
 
                 uint16 derivedSweepSize = 4 * derivedChannelCount;
 
-                if(derivedSweepSize > (derivedMaxBytes / 2.0f))
+                if(derivedSweepSize > derivedMaxBytes / 2.0f)
                 {
                     derivedSweepSize = static_cast<uint16>(derivedMaxBytes * std::ceil(derivedSweepSize / derivedMaxBytes));
                 }
 
                 //Note: the +1 accounts for overhead needed because the Node isn't buffering multiple derived sweeps into one packet
-                derivedPacketsPerGroup = (static_cast<float>(config.derivedDataRate().samplesPerSecond()) * groupSize * derivedSweepSize / derivedMaxBytes) + 1;
+                derivedPacketsPerGroup = static_cast<float>(config.derivedDataRate().samplesPerSecond()) * groupSize * derivedSweepSize / derivedMaxBytes + 1;
             }
 
             if(isBurstMode)
@@ -546,7 +542,7 @@ namespace mscl
 
                 maxRetransmissionPerBurst = totalNeededTx;
 
-                //if there are not bytes per burst
+                //if there are no bytes per burst
                 if(nodeInfo.m_bytesPerBurst == 0 && !mode.derivedModeEnabled)
                 {
                     //the transmissions per group is 0
@@ -587,7 +583,7 @@ namespace mscl
             }
             else
             {
-                //calculate the percent of total bandwidth
+                //calculate the percentage of total bandwidth
                 percentBandwidth = SyncSamplingFormulas::percentBandwidth(txPerSecond, inLegacyMode(), m_commProtocol);
             }
 
@@ -672,7 +668,7 @@ namespace mscl
         float highestDutyCycle = 0.0;
         SyncNetworkInfo* highestDutyCycleNodeInfo = nullptr;
 
-        //make sure we aren't over using our slots
+        //make sure we aren't overusing our slots
         while(totalEventTxPerGroup() > largeSlotsLeft)
         {
             //divide the slots of the node with the highest duty cycle in half (ignoring nodes with 1 slot)
@@ -686,7 +682,7 @@ namespace mscl
                 //only look at nodes with more than 1 tx per group
                 if(nodeInfo.m_txPerGroup > 1)
                 {
-                    //keep track of the highest duty cycle
+                    //keep track of the highest-duty cycle
                     if(nodeInfo.dutyCycle() > highestDutyCycle)
                     {
                         highestDutyCycle = nodeInfo.dutyCycle();
@@ -772,7 +768,7 @@ namespace mscl
                 if(nodeInfo.m_status == SyncNetworkInfo::status_DoesNotFit)
                 {
                     //if the node looks like it should be able to fit as far as bandwidth is concerned
-                    if((nodeInfo.m_percentBandwidth + okStatusBandwidth) < 99.0)
+                    if(nodeInfo.m_percentBandwidth + okStatusBandwidth < 99.0)
                     {
                         //the node's status is labeled as "contention" (didn't find a slot due to other reasons besides bandwidth)
                         nodeInfo.m_status = SyncNetworkInfo::status_Contention;
@@ -801,22 +797,19 @@ namespace mscl
         {
             return true;
         }
-        else if(bandwidth2 > bandwidth1)
+
+        if(bandwidth2 > bandwidth1)
         {
             return false;
         }
-        else
+
+        //bandwidth is equal, so now we are sorting by Node Address
+        if(address2 < address1)
         {
-            //bandwidth is equal, so now we are sorting by Node Address
-            if(address2 < address1)
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
+            return false;
         }
+
+        return true;
     }
 
     bool SyncSamplingNetwork::findSlotsForNodes(const std::vector<NodeAddress>& nodes)
@@ -826,7 +819,7 @@ namespace mscl
         //find the correct number of total slots that we should use
         uint16 totalSlots = SyncSamplingFormulas::MAX_SLOTS;
 
-        //clear, than resize the slots container to the total slots
+        //clear, then resize the slots container to the total slots
         m_slots.clear();
         m_slots.resize(totalSlots, false);
         m_availableSlotCount = totalSlots;
@@ -931,7 +924,7 @@ namespace mscl
         }
 
         //determine the total number of transmissions required
-        uint16 totalTxRequired = (slotTotalPerNode / slotsBetweenTx);
+        uint16 totalTxRequired = slotTotalPerNode / slotsBetweenTx;
         uint16 numTxFound = 0;
 
         uint32 samplingDelayCheck = static_cast<uint32>(SyncSamplingFormulas::MAX_SLOTS / sampleRate.samplesPerSecond());
@@ -989,8 +982,8 @@ namespace mscl
 
                 checkSlotsItr = slotItr;
 
-                while( ((checkSlotsItr + slotSize - 1) < slotTotalPerNode) &&    //while there is room to continue looking
-                       (numTxFound < totalTxRequired) &&                         //and we haven't found all the transmission slots that are required
+                while( checkSlotsItr + slotSize - 1 < slotTotalPerNode &&    //while there is room to continue looking
+                       numTxFound < totalTxRequired &&                         //and we haven't found all the transmission slots that are required
                        !foundTakenSlot)                                          //and we haven't found a taken slot
                 {
                     //check that the next [slotSize] spaces are available
@@ -1017,14 +1010,14 @@ namespace mscl
                 }
 
                 //if we found the required number of transmission slots
-                if(!foundTakenSlot && (numTxFound >= totalTxRequired))
+                if(!foundTakenSlot && numTxFound >= totalTxRequired)
                 {
                     //this is the slot that will be assigned to the node
                     //Note: the Nodes use slots starting at 1 (not 0) so add 1
                     resultSlot = slotItr + 1;
 
                     //need to fill in all the slots that this node will be using (all the way up the line)
-                    while((slotItr + slotSize - 1) < totalSlots)
+                    while(slotItr + slotSize - 1 < totalSlots)
                     {
                         //loop through [slotSize] number of slots
                         for(uint16 writeSlot = 0; writeSlot < slotSize; ++writeSlot)
@@ -1139,15 +1132,13 @@ namespace mscl
                     //    Note: this is ok because we are working in reverse order of % bandwidth
                     return;
                 }
-                else
-                {
-                    //the network is still OK (slots found for all nodes)
-                    nodeInfo.m_optimized = true;
 
-                    //break out of the for loop once we found a node that was optimized
-                    //because the networkOrder vector was resorted. The while loop will force us to continue on.
-                    break;
-                }
+                //the network is still OK (slots found for all nodes)
+                nodeInfo.m_optimized = true;
+
+                //break out of the for loop once we found a node that was optimized
+                //because the networkOrder vector was resorted. The while loop will force us to continue on.
+                break;
             }
 
             //if we didn't find any nodes that needed optimizations
@@ -1188,7 +1179,7 @@ namespace mscl
 
                 //certain nodes with sample rates 32Hz and above need special delays
                 bool useSampleRate = false, tcLink6ch = false;
-                if((model == WirelessModels::node_tcLink_1ch || model == WirelessModels::node_rtdLink) && (config.sampleRate() >= SampleRate::Hertz(32)))
+                if((model == WirelessModels::node_tcLink_1ch || model == WirelessModels::node_rtdLink) && config.sampleRate() >= SampleRate::Hertz(32))
                 {
                     useSampleRate = true;
                 }
@@ -1217,10 +1208,10 @@ namespace mscl
                             if(useSampleRate)
                             {
                                 settlingTime *= 2;
-                                settlingTime -= static_cast<int32>((config.sampleRate().samplesPerSecond() * 1000) + 0.5);
+                                settlingTime -= static_cast<int32>(config.sampleRate().samplesPerSecond() * 1000 + 0.5);
 
                                 //settling time can't be less than 0
-                                Utils::checkBounds_min(settlingTime, static_cast<int32>(0));
+                                Utils::checkBounds_min(settlingTime, 0);
 
                                 extraThermo = 0;
                                 extraPerCh = 0;
@@ -1232,7 +1223,7 @@ namespace mscl
                             }
 
                             //add to the delayResult
-                            delayResult += (settlingTime + extraPerCh);
+                            delayResult += settlingTime + extraPerCh;
                         }
                         //channel 8
                         else if(chanItr == 8)
@@ -1392,7 +1383,7 @@ namespace mscl
                 //delay (in microseconds) = (eeprom delay + 5.0) * # active channels
                 float delayInMicrosec = static_cast<float>((delayEepromVal + 5.0) * config.activeChannels().count());
 
-                //round down to nearest millisecond
+                //round down to the nearest millisecond
                 delayResult = static_cast<int>(delayInMicrosec / 1000.0);
 
                 break;

@@ -4,31 +4,25 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "BaseStation.h"
-#include "BaseStation_Impl.h"
-#include "MockBaseStation_Impl.h"
-#include "mscl/MicroStrain/ByteStream.h"
-#include "mscl/MicroStrain/Wireless/Commands/WirelessResponsePattern.h"
-#include "Configuration/BaseStationEepromHelper.h"
-#include "Configuration/BaseStationConfig.h"
-#include "Features/BaseStationFeatures.h"
-#include "Commands/AutoCal.h"
-#include "Commands/DatalogSessionInfoResult.h"
+#include "mscl/MicroStrain/Wireless/BaseStation.h"
+
+#include "mscl/MicroStrain/Wireless/BaseStation_Impl.h"
+#include "mscl/MicroStrain/Wireless/MockBaseStation_Impl.h"
 
 namespace mscl
 {
     //Constructor
-    BaseStation::BaseStation(Connection& connection, uint64 baseTimeout):
+    BaseStation::BaseStation(Connection& connection, uint64 baseTimeout) :
         m_impl(std::make_shared<BaseStation_Impl>(connection, baseTimeout))
     {
     }
 
-    BaseStation::BaseStation(Connection& connection):
+    BaseStation::BaseStation(Connection& connection) :
         m_impl(std::make_shared<BaseStation_Impl>(connection))
     {
     }
 
-    BaseStation::BaseStation(std::shared_ptr<BaseStation_Impl> impl):
+    BaseStation::BaseStation(std::shared_ptr<BaseStation_Impl> impl) :
         m_impl(impl)
     {
     }
@@ -61,12 +55,12 @@ namespace mscl
 
     bool BaseStation::operator==(const BaseStation& src) const
     {
-        return (m_impl == src.m_impl);
+        return m_impl == src.m_impl;
     }
 
     bool BaseStation::operator!=(const BaseStation& src) const
     {
-        return (m_impl != src.m_impl);
+        return m_impl != src.m_impl;
     }
 
     std::string BaseStation::deviceName(const std::string& serial)

@@ -4,37 +4,33 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "WirelessChannel.h"
-#include "mscl/Utils.h"
+#include "mscl/MicroStrain/Wireless/WirelessChannel.h"
 
 namespace mscl
 {
-    WirelessChannel::WirelessChannel():
+    WirelessChannel::WirelessChannel() :
         m_chNumber(0),
-        m_id(WirelessChannel::channel_unknown),
+        m_id(channel_unknown),
         m_type(WirelessTypes::chType_none),
         m_description(""),
         m_adcResolution(0)
-    {
-    }
+    {}
 
-    WirelessChannel::WirelessChannel(uint8 chNumber, WirelessChannel::ChannelId id, WirelessTypes::ChannelType type, const std::string& description):
+    WirelessChannel::WirelessChannel(uint8 chNumber, ChannelId id, WirelessTypes::ChannelType type, const std::string& description) :
         m_chNumber(chNumber),
         m_id(id),
         m_type(type),
         m_description(description + " (ch" + Utils::toStr(chNumber) + ")"),
         m_adcResolution(0)
-    {
-    }
+    {}
 
-    WirelessChannel::WirelessChannel(uint8 chNumber, WirelessChannel::ChannelId id, WirelessTypes::ChannelType type, const std::string& description, uint8 adcResolution) :
+    WirelessChannel::WirelessChannel(uint8 chNumber, ChannelId id, WirelessTypes::ChannelType type, const std::string& description, uint8 adcResolution) :
         m_chNumber(chNumber),
         m_id(id),
         m_type(type),
         m_description(description + " (ch" + Utils::toStr(chNumber) + ")"),
         m_adcResolution(adcResolution)
-    {
-    }
+    {}
 
     uint8 WirelessChannel::channelNumber() const
     {
@@ -71,7 +67,7 @@ namespace mscl
         return static_cast<uint32>(std::pow(2, m_adcResolution));
     }
 
-    std::string WirelessChannel::channelName(WirelessChannel::ChannelId channelId)
+    std::string WirelessChannel::channelName(ChannelId channelId)
     {
         switch(channelId)
         {
@@ -322,7 +318,6 @@ namespace mscl
             case channel_14_mmps:                   return "ch14_mmps";
             case channel_15_mmps:                   return "ch15_mmps";
             case channel_16_mmps:                   return "ch16_mmps";
-
 
             default:
                 assert(false);

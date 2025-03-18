@@ -4,8 +4,10 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "NodeMemory_v1.h"
-#include "WirelessNode.h"
+#include "mscl/MicroStrain/Wireless/NodeMemory_v1.h"
+
+#include "mscl/MicroStrain/Wireless/BaseStation.h"
+#include "mscl/MicroStrain/Wireless/WirelessNode.h"
 #include "mscl/ScopeHelper.h"
 
 namespace mscl
@@ -41,13 +43,13 @@ namespace mscl
         }
 
         //each physical page is equal to 1 virtual page.
-        return (lastPage * DPAGE_SIZE) + (pageOffset);
+        return lastPage * DPAGE_SIZE + pageOffset;
     }
 
     void NodeMemory_v1::findPageAndOffset(uint32 bytePosition, uint16& page, uint16& offset) const
     {
         //calculate the page and offset
-        page = static_cast<uint16>((bytePosition / DPAGE_SIZE) + START_PAGE);
+        page = static_cast<uint16>(bytePosition / DPAGE_SIZE + START_PAGE);
         offset = bytePosition % DPAGE_SIZE;
     }
 
@@ -56,14 +58,14 @@ namespace mscl
         //if the requested data is in the currently downloaded data buffer
         if(page == m_currentPageNumber && !m_currentData.empty())
         {
-            //just return the address of m_currentPageData
+            //return the address of m_currentPageData
             return &m_currentData;
         }
 
         //if the requested data is in the previously downloaded data buffer
         if(page == m_previousPageNumber && !m_previousData.empty())
         {
-            //just return the address of m_previousPageData
+            //return the address of m_previousPageData
             return &m_previousData;
         }
 
@@ -133,7 +135,7 @@ namespace mscl
 
     bool NodeMemory_v1::isNextByteNewHeader()
     {
-        //store the current address so we can revert back to it
+        //store the current address so we can revert to it
         uint32 startAddress = m_currentAddress;
 
         //set m_currentAddress back to the start address when we are done in this function
@@ -207,7 +209,7 @@ namespace mscl
                 return false;
             }
 
-            //everthing looks like it is the start of a trigger
+            //everything looks like it is the start of a trigger
             return true;
         }
         catch(Error_NoData&)
@@ -243,6 +245,6 @@ namespace mscl
             return 100.0;
         }
 
-        return (static_cast<float>(m_currentAddress) / static_cast<float>(m_totalBytes)) * 100.0f;
+        return static_cast<float>(m_currentAddress) / static_cast<float>(m_totalBytes) * 100.0f;
     }
 }

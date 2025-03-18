@@ -8,7 +8,7 @@
 
 namespace mscl
 {
-    UpnpService::UpnpService(IUPnPDeviceFinderCallback& callback, BSTR description):
+    UpnpService::UpnpService(IUPnPDeviceFinderCallback& callback, BSTR description) :
         m_deviceFinderCallback(&callback),
         m_deviceFinder(nullptr),
         m_description(description),

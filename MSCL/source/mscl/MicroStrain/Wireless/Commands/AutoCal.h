@@ -154,7 +154,7 @@ namespace mscl
             //
             //Returns:
             //    true if the packet matches a response pattern, false otherwise
-            virtual bool match(const WirelessPacket& packet) override;
+            bool match(const WirelessPacket& packet) override;
 
         protected:
             //Function: match_nodeReceived
@@ -168,7 +168,7 @@ namespace mscl
             bool match_nodeReceived(const WirelessPacket& packet);
         };
 
-        class ShmResponse : public AutoCal::Response
+        class ShmResponse : public Response
         {
         public:
             //Constructor: ShmResponse
@@ -180,10 +180,10 @@ namespace mscl
             ShmResponse(NodeAddress nodeAddress, std::weak_ptr<ResponseCollector> collector);
 
         protected:
-            virtual bool matchSuccessResponse(const WirelessPacket& packet) override;
+            bool matchSuccessResponse(const WirelessPacket& packet) override;
         };
 
-        class Shm201Response: public AutoCal::Response
+        class Shm201Response: public Response
         {
         public:
             //Constructor: Shm201Response
@@ -195,10 +195,10 @@ namespace mscl
             Shm201Response(NodeAddress nodeAddress, std::weak_ptr<ResponseCollector> collector);
 
         protected:
-            virtual bool matchSuccessResponse(const WirelessPacket& packet) override;
+            bool matchSuccessResponse(const WirelessPacket& packet) override;
         };
 
-        class ShuntCalResponse : public AutoCal::Response
+        class ShuntCalResponse : public Response
         {
         public:
             //Constructor: ShuntCalResponse
@@ -216,7 +216,7 @@ namespace mscl
             uint8 m_channelNumber;
 
         protected:
-            virtual bool matchSuccessResponse(const WirelessPacket& packet) override;
+            bool matchSuccessResponse(const WirelessPacket& packet) override;
         };
     };
 }

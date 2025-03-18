@@ -6,8 +6,6 @@
 
 #include "mscl/MicroStrain/MIP/MipNode_Impl.h"
 
-#include "mscl/ScopeHelper.h"
-#include "mscl/MicroStrain/ResponseCollector.h"
 #include "mscl/MicroStrain/Displacement/Commands/DeviceTime.h"
 #include "mscl/MicroStrain/Displacement/Commands/DisplacementOutputDataRate.h"
 #include "mscl/MicroStrain/Displacement/Commands/GetAnalogToDisplacementCals.h"
@@ -51,8 +49,6 @@
 #include "mscl/MicroStrain/Inertial/Commands/Uint16Command.h"
 #include "mscl/MicroStrain/Inertial/Commands/Uint8Command.h"
 #include "mscl/MicroStrain/Inertial/Commands/VehicleDynamicsMode.h"
-#include "mscl/MicroStrain/MIP/MipNodeFeatures.h"
-#include "mscl/MicroStrain/MIP/MipParser.h"
 #include "mscl/MicroStrain/MIP/Commands/CyclePower.h"
 #include "mscl/MicroStrain/MIP/Commands/GetDeviceDescriptorSets.h"
 #include "mscl/MicroStrain/MIP/Commands/GetExtendedDeviceDescriptorSets.h"
@@ -61,13 +57,17 @@
 #include "mscl/MicroStrain/MIP/Commands/Mip_SetToIdle.h"
 #include "mscl/MicroStrain/MIP/Commands/Ping.h"
 #include "mscl/MicroStrain/MIP/Commands/Resume.h"
+#include "mscl/MicroStrain/MIP/MipNodeFeatures.h"
+#include "mscl/MicroStrain/MIP/MipParser.h"
 #include "mscl/MicroStrain/MIP/Packets/MipDataPacket.h"
+#include "mscl/MicroStrain/ResponseCollector.h"
 #include "mscl/MicroStrain/RTK/Commands/ActivationCode.h"
 #include "mscl/MicroStrain/RTK/Commands/DeviceStatusFlags.h"
+#include "mscl/ScopeHelper.h"
 
 namespace mscl
 {
-    MipNode_Impl::MipNode_Impl(Connection connection):
+    MipNode_Impl::MipNode_Impl(Connection connection) :
         m_connection(connection),
         m_commandsTimeout(COMMANDS_DEFAULT_TIMEOUT),
         m_sensorRateBase(0),
@@ -176,7 +176,7 @@ namespace mscl
             m_features = MipNodeFeatures::create(this);
         }
 
-        return *(m_features.get());
+        return *m_features.get();
     }
 
     Connection& MipNode_Impl::connection()
@@ -509,7 +509,7 @@ namespace mscl
         GnssReceivers receivers;
         for (uint8 i = 0; i < count; i++)
         {
-            uint8 index = (i * 3) + 1; // three values per element, first value count
+            uint8 index = i * 3 + 1; // three values per element, first value count
             receivers.push_back(GnssReceiverInfo(
                 ret[index].as_uint8(),                                       // receiver id
                 static_cast<MipTypes::DataClass>(ret[index + 1].as_uint8()), // associated data set
@@ -548,7 +548,7 @@ namespace mscl
                 }
 
                 uint8 count = ret[1].as_uint8();
-                size_t minSize = (FIRST_RANGE_INDEX + (count * RANGE_ENTRY_SIZE));
+                size_t minSize = FIRST_RANGE_INDEX + count * RANGE_ENTRY_SIZE;
                 if (ret.size() < minSize)
                 {
                     continue;
@@ -557,7 +557,7 @@ namespace mscl
                 SensorRanges typeRanges;
                 for (size_t i = 0; i < count; i++)
                 {
-                    size_t index = FIRST_RANGE_INDEX + (i * RANGE_ENTRY_SIZE);
+                    size_t index = FIRST_RANGE_INDEX + i * RANGE_ENTRY_SIZE;
 
                     // 1-indexed option id
                     uint8 optionId = ret[index].as_uint8();
@@ -650,7 +650,7 @@ namespace mscl
                     if (features().supportsCategory(option))
                     {
                         uint8 desc = legacyDevice ? ContinuousDataStream::getDeviceSelector(option) : static_cast<uint8>(option);
-                        params.push_back({ cmd, { Value::UINT8(static_cast<uint8>(desc)) } });
+                        params.push_back({ cmd, { Value::UINT8(desc) } });
                     }
                 }
 
@@ -1037,7 +1037,7 @@ namespace mscl
                     params.push_back(static_cast<uint8>(InertialTypes::DeviceSelector::DEVICE_GPS));
                     data = getUint8s(cmd, params);
                     set = Uint8Command::MakeSetCommand(cmd, data);
-                    s = (ByteStream)set;
+                    s = static_cast<ByteStream>(set);
                     setCmds.push_back(MipCommandBytes(cmd, s.data()));
                 }
                 break;
@@ -1417,7 +1417,8 @@ namespace mscl
                 uartBaudRate = &cmds;
                 continue;
             }
-            else if (cmds.id == MipTypes::CMD_COMM_PORT_SPEED)
+
+            if (cmds.id == MipTypes::CMD_COMM_PORT_SPEED)
             {
                 commPortSpeed = &cmds;
                 continue;
@@ -1518,7 +1519,7 @@ namespace mscl
             uint8 count = data[1].as_uint8();
             for (uint8 i = 0; i < count; i++)
             {
-                uint8 index = 2 + (i * 2);
+                uint8 index = 2 + i * 2;
                 uint8 desc = data[index].as_uint8();
                 uint16 decimation = data[index + 1].as_uint16();
 
@@ -2140,12 +2141,10 @@ namespace mscl
                 Value::UINT8(portId)
             })[1].as_uint32(); // first value echoes portId
         }
-        else
-        {
-            UARTBaudRate baudRateCmd = UARTBaudRate::MakeGetCommand();
-            GenericMipCmdResponse response = SendCommand(baudRateCmd);
-            return baudRateCmd.getResponseData(response);
-        }
+
+        UARTBaudRate baudRateCmd = UARTBaudRate::MakeGetCommand();
+        GenericMipCmdResponse response = SendCommand(baudRateCmd);
+        return baudRateCmd.getResponseData(response);
     }
 
     void MipNode_Impl::setLowPassFilterSettings(const LowPassFilterData& data) const

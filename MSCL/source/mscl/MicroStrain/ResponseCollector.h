@@ -39,7 +39,6 @@ namespace mscl
         ResponseCollector& operator=(const ResponseCollector&);                     //disable assignment operator
         //std::shared_ptr<ResponseCollector> operator=(const ResponseCollector&);     //assignement operator disabled
 
-    private:
         //Variable: m_expectedResponses
         //    Holds the response patterns that, if matched, belong to this collector
         std::vector<ResponseInfo> m_expectedResponses;

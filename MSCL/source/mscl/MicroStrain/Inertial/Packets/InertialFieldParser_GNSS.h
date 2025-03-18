@@ -20,7 +20,7 @@ namespace mscl
     {
     protected:
         MipGnssFieldParser() {}                //default constructor disabled
-        virtual ~MipGnssFieldParser() {}
+        ~MipGnssFieldParser() override = default;
 
     private:
         MipGnssFieldParser(const MipGnssFieldParser&);                //copy constructor disabled
@@ -33,7 +33,6 @@ namespace mscl
     //    The field parser for LLH Position data
     class FieldParser_LLHPosition : public MipGnssFieldParser
     {
-    private:
         //Constants: Valid Flags
         //    LAT_LONG_FLAG          - b00000001 - The flag position for checking the latitude and longitude flag
         //    ELLIPSOID_FLAG         - b00000010 - The flag position for checking the height above ellipsoid flag
@@ -46,7 +45,6 @@ namespace mscl
         static const uint16 HORIZ_ACCUR_FLAG       = BOOST_BINARY(00001000);
         static const uint16 VERT_ACCUR_FLAG        = BOOST_BINARY(00010000);
 
-    private:
         FieldParser_LLHPosition(){}        //default constructor disabled
 
     public:
@@ -56,7 +54,7 @@ namespace mscl
         //Parameters:
         //    field - The <MipDataField> to parse for data points
         //    result - The <MipDataPoints> vector to store the data points in
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
 
         //Function: registerParser
         //    The static function that registers this parser with the list of parsers (called immediately)
@@ -65,7 +63,6 @@ namespace mscl
         //    true, just for assigning the REGISTERED constant to true
         static bool registerParser();
 
-    public:
         //Constant: FIELD_TYPE
         //    The 2-byte field type (Descriptor ID + Field ID) for this parser
         static const MipTypes::ChannelField FIELD_TYPE;
@@ -79,21 +76,18 @@ namespace mscl
     //    The field parser for ECEF Position data
     class FieldParser_ECEFPosition : public MipGnssFieldParser
     {
-    private:
         //Constants: Valid Flags
         //    ECEF_POS_FLAG         - b00000001 - The flag position for checking the ECEF Position flag
         //    ELLIPSOID_FLAG        - b00000010 - The flag position for checking the position accuracy flag
         static const uint16 ECEF_POS_FLAG        = BOOST_BINARY(00000001);
         static const uint16 POS_ACCURACY_FLAG    = BOOST_BINARY(00000010);
 
-    private:
         FieldParser_ECEFPosition(){}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
@@ -102,7 +96,6 @@ namespace mscl
     //    The field parser for NED Velocity data
     class FieldParser_NEDVelocity : public MipGnssFieldParser
     {
-    private:
         //Constants: Valid Flags
         //    NED_VELOCITY_FLAG     - b00000001 - The flag position for checking the NED Velocity flag
         //    SPEED_FLAG            - b00000010 - The flag position for checking the Speed flag
@@ -117,14 +110,12 @@ namespace mscl
         static const uint16 SPEED_ACCUR_FLAG      = BOOST_BINARY(00010000);
         static const uint16 HEADING_ACCUR_FLAG    = BOOST_BINARY(00100000);
 
-    private:
         FieldParser_NEDVelocity(){}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
@@ -133,21 +124,18 @@ namespace mscl
     //    The field parser for ECEF Velocity data
     class FieldParser_ECEFVelocity : public MipGnssFieldParser
     {
-    private:
         //Constants: Valid Flags
         //    ECEF_VELOCITY_FLAG     - b00000001    - The flag position for checking the ECEF Velocity flag
         //    VELOCITY_ACCUR_FLAG    - b00000010 - The flag position for checking the Velocity Accuracy flag
         static const uint16 ECEF_VELOCITY_FLAG     = BOOST_BINARY(00000001);
         static const uint16 VELOCITY_ACCUR_FLAG    = BOOST_BINARY(00000010);
 
-    private:
         FieldParser_ECEFVelocity(){}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
@@ -156,7 +144,6 @@ namespace mscl
     //    The field parser for DOP data
     class FieldParser_DOP : public MipGnssFieldParser
     {
-    private:
         //Constants: Valid Flags
         //    GDOP_FLAG    - b00000001 - The flag position for checking the Geometric DOP flag
         //    PDOP_FLAG    - b00000010 - The flag position for checking the Position DOP flag
@@ -173,14 +160,12 @@ namespace mscl
         static const uint16 NDOP_FLAG    = BOOST_BINARY(00100000);
         static const uint16 EDOP_FLAG    = BOOST_BINARY(01000000);
 
-    private:
         FieldParser_DOP(){}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
@@ -189,21 +174,18 @@ namespace mscl
     //    The field parser for UTC Time data
     class FieldParser_UTCTime : public MipGnssFieldParser
     {
-    private:
         //Constants: Valid Flags
         //    GPS_TIME_DATE_VALID      - b00000001 - The flag position for checking the GPS Time and Date flag
         //    UTC_TIME_OFFSET_VALID    - b00000010 - The flag position for checking the UTC Time (leap seconds) flag
         static const uint16 GPS_TIME_DATE_VALID      = BOOST_BINARY(00000001);
         static const uint16 UTC_TIME_OFFSET_VALID    = BOOST_BINARY(00000010);
 
-    private:
         FieldParser_UTCTime(){}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
@@ -212,21 +194,19 @@ namespace mscl
     //    The field parser for GPS Time data
     class FieldParser_GPSTime : public MipGnssFieldParser
     {
-    private:
+
         //Constants: Valid Flags
         //    TOW_VALID        - b00000001 - The flag position for checking the GPS Time of Week flag
         //    WEEK_NUM_VALID   - b00000010 - The flag position for checking the GPS Week Number flag
         static const uint16 TOW_VALID         = BOOST_BINARY(00000001);
         static const uint16 WEEK_NUM_VALID    = BOOST_BINARY(00000010);
 
-    private:
         FieldParser_GPSTime(){}       //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
@@ -235,7 +215,7 @@ namespace mscl
     //    The field parser for Clock Info data
     class FieldParser_ClockInfo : public MipGnssFieldParser
     {
-    private:
+
         //Constants: Valid Flags
         //    BIAS_VALID         - b00000001 - The flag position for checking the Clock Bias flag
         //    DRIFT_VALID        - b00000010 - The flag position for checking the Drift flag
@@ -244,14 +224,12 @@ namespace mscl
         static const uint16 DRIFT_VALID        = BOOST_BINARY(00000010);
         static const uint16 ACCUR_VALID        = BOOST_BINARY(00000100);
 
-    private:
         FieldParser_ClockInfo(){}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
@@ -260,7 +238,7 @@ namespace mscl
     //    The field parser for GPS Fix Information data
     class FieldParser_GPSFixInfo : public MipGnssFieldParser
     {
-    private:
+
         //Constants: Valid Flags
         //    FIX_TYPE_VALID         - b00000001 - The flag position for checking the Fix Type flag
         //    NUM_SVS_VALID          - b00000010 - The flag position for checking the Number of SVs flag
@@ -269,14 +247,12 @@ namespace mscl
         static const uint16 NUM_SVS_VALID          = BOOST_BINARY(00000010);
         static const uint16 FIX_FLAGS_VALID        = BOOST_BINARY(00000100);
 
-    private:
         FieldParser_GPSFixInfo(){}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
@@ -285,7 +261,7 @@ namespace mscl
     //    The field parser for Space Vehicle Information data
     class FieldParser_SpaceVehicleInfo : public MipGnssFieldParser
     {
-    private:
+
         //Constants: Valid Flags
         //    CHANNEL_VALID          - b00000001 - The flag position for checking the Channel flag
         //    RATIO_VALID            - b00000100 - The flag position for checking the Carrier to Noise Ratio flag
@@ -298,14 +274,12 @@ namespace mscl
         static const uint16 ELEVATION_VALID        = BOOST_BINARY(00010000);
         static const uint16 SV_FLAGS_VALID         = BOOST_BINARY(00100000);
 
-    private:
         FieldParser_SpaceVehicleInfo(){}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
@@ -314,7 +288,7 @@ namespace mscl
     //    The field parser for Hardware Status Information data
     class FieldParser_HardwareStatus : public MipGnssFieldParser
     {
-    private:
+
         //Constants: Valid Flags
         //    SENSOR_STATE_VALID         - b00000001 - The flag position for checking the Sensor State flag
         //    ANTENNA_STATE_VALID        - b00000010 - The flag position for checking the Antenna State flag
@@ -323,23 +297,20 @@ namespace mscl
         static const uint16 ANTENNA_STATE_VALID        = BOOST_BINARY(00000010);
         static const uint16 ANTENNA_POWER_VALID        = BOOST_BINARY(00000100);
 
-    private:
         FieldParser_HardwareStatus(){}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
 
     //Class: FieldParser_DGNSSInfo
     //    The field parser for DGNSS Information data
-    class FieldParser_DGNSSInfo: public MipGnssFieldParser
+    class FieldParser_DGNSSInfo : public MipGnssFieldParser
     {
-    private:
         //Constants: Valid Flags
         //    LATEST_AGE_VALID          - b00000001 - The flag position for checking the Latest Age flag
         //    BASE_ID_VALID             - b00000010 - The flag position for checking the Base Station ID flag
@@ -350,23 +321,20 @@ namespace mscl
         static const uint16 BASE_STATUS_VALID     = BOOST_BINARY(00000100);
         static const uint16 NUM_CHANNELS_VALID    = BOOST_BINARY(00001000);
 
-    private:
         FieldParser_DGNSSInfo() {}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
 
     //Class: FieldParser_DGNSSChannelStatus
     //    The field parser for DGNSS Channel Status data
-    class FieldParser_DGNSSChannelStatus: public MipGnssFieldParser
+    class FieldParser_DGNSSChannelStatus : public MipGnssFieldParser
     {
-    private:
         //Constants: Valid Flags
         //    SV_ID_VALID                - b00000001 - The flag position for checking the Space Vehicle ID flag
         //    AGE_VALID                  - b00000010 - The flag position for checking the Age flag
@@ -377,14 +345,12 @@ namespace mscl
         static const uint16 CORRECTION_VALID           = BOOST_BINARY(00000100);
         static const uint16 RATE_CORRECTION_VALID      = BOOST_BINARY(00001000);
 
-    private:
         FieldParser_DGNSSChannelStatus() {}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
@@ -393,7 +359,7 @@ namespace mscl
     //    The field parser for Clock Info 2 data
     class FieldParser_ClockInfo2 : public MipGnssFieldParser
     {
-    private:
+
         //Constants: Valid Flags
         //    BIAS_VALID         - b00000001 - The flag position for checking the Clock Bias flag
         //    DRIFT_VALID        - b00000010 - The flag position for checking the Drift flag
@@ -405,14 +371,12 @@ namespace mscl
         static const uint16 BIAS_ACCUR_VALID = BOOST_BINARY(00000100);
         static const uint16 DRIFT_ACCUR_VALID = BOOST_BINARY(00001000);
 
-    private:
         FieldParser_ClockInfo2() {}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
@@ -421,19 +385,17 @@ namespace mscl
     //    The field parser for GPS Leap Seconds Data
     class FieldParser_GPSLeapSeconds : public MipGnssFieldParser
     {
-    private:
+
         //Constants: Valid Flags
         //    SECONDS_VALID            - b00000010 - The flag position for checking the Seconds Valid flag
         static const uint16 SECONDS_VALID = BOOST_BINARY(00000010);
 
-    private:
         FieldParser_GPSLeapSeconds() {}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
@@ -574,7 +536,7 @@ namespace mscl
     //    The field parser for GNSS Satellite Status data
     class FieldParser_GnssSatelliteStatus : public MipGnssFieldParser
     {
-    private:
+
         //Constants: Valid Flags
         //    TOW_VALID                 - b00000001 - The flag position for checking the Time of Week flag
         //    WEEK_NUMBER_VALID         - b00000010 - The flag position for checking the Week Number flag
@@ -586,14 +548,12 @@ namespace mscl
         static const uint16 AZIMUTH_VALID = BOOST_BINARY(00100000);
         static const uint16 HEALTH_VALID = BOOST_BINARY(01000000);
 
-    private:
         FieldParser_GnssSatelliteStatus() {}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
@@ -602,7 +562,7 @@ namespace mscl
     //    The field parser for GNSS Raw Observation data
     class FieldParser_GnssRawObservation : public MipGnssFieldParser
     {
-    private:
+
         //Constants: Valid Flags
         //    TOW_VALID                 - b0000000000000001 - The flag position for checking the Time of Week flag
         //    WEEK_NUMBER_VALID         - b0000000000000010 - The flag position for checking the Week Number flag
@@ -629,14 +589,12 @@ namespace mscl
         static const uint16 DOPPLER_UNC_VALID       = 16384;  //BOOST_BINARY(0100000000000000);
         static const uint16 LOCK_TIME_VALID         = 32768;  //BOOST_BINARY(1000000000000000);
 
-    private:
         FieldParser_GnssRawObservation() {}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
@@ -645,7 +603,7 @@ namespace mscl
     //    The field parser for GNSS Base Station Info data
     class FieldParser_GnssStationInfo : public MipGnssFieldParser
     {
-    private:
+
         //Constants: Valid Flags
         //    TOW_VALID                 - b00000001 - The flag position for checking the Time of Week flag
         //    WEEK_NUMBER_VALID         - b00000010 - The flag position for checking the Week Number flag
@@ -660,14 +618,12 @@ namespace mscl
         static const uint16 STATION_ID_VALID = BOOST_BINARY(00010000);
         static const uint16 INDICATORS_VALID = BOOST_BINARY(00100000);
 
-    private:
         FieldParser_GnssStationInfo() {}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
@@ -676,7 +632,7 @@ namespace mscl
     //    The field parser for RTK Corrections Status Data
     class FieldParser_RTKCorrectionsStatus : public MipGnssFieldParser
     {
-    private:
+
         //Constants: Valid Flags
         //    TOW_VALID                 - b00000001 - The flag position for checking the Time of Week flag
         //    WEEK_NUMBER_VALID         - b00000010 - The flag position for checking the Week Number flag
@@ -695,14 +651,12 @@ namespace mscl
         static const uint16 GALILEO_LATENCY_VALID     = BOOST_BINARY(01000000);
         static const uint16 BEIDOU_LATENCY_VALID      = BOOST_BINARY(10000000);
 
-    private:
         FieldParser_RTKCorrectionsStatus() {}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
@@ -711,7 +665,7 @@ namespace mscl
     //    The field parser for Ionospheric Correction Data
     class FieldParser_GPSIonosphericCorrection : public MipGnssFieldParser
     {
-    private:
+
         //Constants: Valid Flags
         //    TIME_OF_WEEK_VALID        - b00000001 - The flag position for checking the Time of Week flag
         //    WEEK_NUMBER_VALID         - b00000010 - The flag position for checking the Week Number flag
@@ -722,14 +676,12 @@ namespace mscl
         static const uint16 ALPHA_VALID = BOOST_BINARY(00000100);
         static const uint16 BETA_VALID = BOOST_BINARY(00001000);
 
-    private:
         FieldParser_GPSIonosphericCorrection() {}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
@@ -739,7 +691,7 @@ namespace mscl
     //    The field parser for Ionospheric Correction Data
     class FieldParser_IonosphericCorrection : public MipGnssFieldParser
     {
-    private:
+
         //Constants: Valid Flags
         //    TIME_OF_WEEK_VALID        - b00000001 - The flag position for checking the Time of Week flag
         //    WEEK_NUMBER_VALID         - b00000010 - The flag position for checking the Week Number flag
@@ -750,14 +702,12 @@ namespace mscl
         static const uint16 ALPHA_VALID = BOOST_BINARY(00000100);
         static const uint16 DISTURBANCE_FLAGS_VALID = BOOST_BINARY(00001000);
 
-    private:
         FieldParser_IonosphericCorrection() {}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };

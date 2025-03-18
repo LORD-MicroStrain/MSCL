@@ -29,7 +29,7 @@ namespace mscl
         return cmd;
     }
 
-    BatchEepromRead::Response::Response(NodeAddress nodeAddress, std::weak_ptr<ResponseCollector> collector):
+    BatchEepromRead::Response::Response(NodeAddress nodeAddress, std::weak_ptr<ResponseCollector> collector) :
         WirelessResponsePattern(collector, WirelessProtocol::cmdId_batchEepromRead, nodeAddress),
         m_nodeAddress(nodeAddress)
     {

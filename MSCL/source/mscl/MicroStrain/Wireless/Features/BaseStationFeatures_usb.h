@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "BaseStationFeatures.h"
+#include "mscl/MicroStrain/Wireless/Features/BaseStationFeatures.h"
 
 namespace mscl
 {
@@ -15,7 +15,7 @@ namespace mscl
     class BaseStationFeatures_usb : public BaseStationFeatures
     {
     public:
-        virtual ~BaseStationFeatures_usb() {}
+        ~BaseStationFeatures_usb() override = default;
 
         //Constructor: BaseStationFeatures_usb
         //    Creates a BaseStationFeatures_usb object.

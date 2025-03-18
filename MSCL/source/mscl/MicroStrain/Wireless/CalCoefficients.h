@@ -6,11 +6,9 @@
 
 #pragma once
 
-#include <map>
-
 #include "mscl/MicroStrain/LinearEquation.h"
-#include "WirelessChannel.h"
-#include "WirelessTypes.h"
+#include "mscl/MicroStrain/Wireless/WirelessChannel.h"
+#include "mscl/MicroStrain/Wireless/WirelessTypes.h"
 
 namespace mscl
 {
@@ -77,5 +75,5 @@ namespace mscl
 
     //API Typedef: ChannelCalMap
     //  A typedef for a map of <WirelessChannel::ChannelId>s to <CalCoefficients>.
-    typedef std::map<mscl::WirelessChannel::ChannelId, CalCoefficients> ChannelCalMap;
+    typedef std::map<WirelessChannel::ChannelId, CalCoefficients> ChannelCalMap;
 }

@@ -30,7 +30,7 @@ namespace mscl
         return cmd;
     }
 
-    SetToIdle::Response::Response(NodeAddress nodeAddress, std::weak_ptr<ResponseCollector> collector, const BaseStation& baseStation):
+    SetToIdle::Response::Response(NodeAddress nodeAddress, std::weak_ptr<ResponseCollector> collector, const BaseStation& baseStation) :
         WirelessResponsePattern(collector, WirelessProtocol::cmdId_stopNode, nodeAddress),
         m_nodeAddress(nodeAddress),
         m_result(SetToIdleStatus::setToIdleResult_notCompleted),

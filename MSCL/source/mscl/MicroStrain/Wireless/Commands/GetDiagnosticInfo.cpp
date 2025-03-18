@@ -41,7 +41,7 @@ namespace mscl
         return cmd;
     }
 
-    GetDiagnosticInfo::Response::Response(NodeAddress nodeAddress, std::weak_ptr<ResponseCollector> collector):
+    GetDiagnosticInfo::Response::Response(NodeAddress nodeAddress, std::weak_ptr<ResponseCollector> collector) :
         WirelessResponsePattern(collector, WirelessProtocol::cmdId_getDiagInfo_v1, nodeAddress),
         m_nodeAddress(nodeAddress)
     {

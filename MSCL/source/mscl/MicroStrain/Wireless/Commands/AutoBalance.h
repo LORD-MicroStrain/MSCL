@@ -12,7 +12,6 @@ namespace mscl
     //    Contains logic for the Auto Balance Node command.
     class AutoBalance
     {
-    private:
         AutoBalance();                                //default constructor disabled
         AutoBalance(const AutoBalance&);            //copy constructor disabled
         AutoBalance& operator=(const AutoBalance&);    //assignment operator disabled

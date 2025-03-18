@@ -6,20 +6,16 @@
 
 #pragma once
 
-#include "mscl/Types.h"
-
 namespace mscl
 {
     //Class: EepromLocation
     //    Represents a single Eeprom Location.
     class EepromLocation
     {
-    private:
         //Variable: m_nextId
         //    Used for setting a unique id for every EepromLocation that is created.
         static uint16 m_nextId;
 
-    private:
         //Variable: m_id
         //    A unique id for this EepromLocation object.
         uint16 m_id;

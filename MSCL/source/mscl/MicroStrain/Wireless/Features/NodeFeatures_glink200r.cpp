@@ -4,16 +4,14 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "NodeFeatures_glink200r.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures_glink200r.h"
 
-#include "mscl/Exceptions.h"
-#include "AvailableSampleRates.h"
 #include "mscl/MicroStrain/Wireless/Configuration/NodeEepromMap.h"
-#include "mscl/MicroStrain/Wireless/ChannelMask.h"
+#include "mscl/MicroStrain/Wireless/Features/AvailableSampleRates.h"
 
 namespace mscl
 {
-    NodeFeatures_glink200r::NodeFeatures_glink200r(const NodeInfo& info):
+    NodeFeatures_glink200r::NodeFeatures_glink200r(const NodeInfo& info) :
         NodeFeatures_200series(info)
     {
         addCalCoeffChannelGroup(1, "Acceleration X", NodeEepromMap::CH_ACTION_SLOPE_1, NodeEepromMap::CH_ACTION_ID_1);
@@ -36,10 +34,8 @@ namespace mscl
             {
                 return AvailableSampleRates::continuous_log_glink200r;
             }
-            else
-            {
-                return AvailableSampleRates::continuous_nonSync_glink200r;
-            }
+
+            return AvailableSampleRates::continuous_nonSync_glink200r;
 
         case WirelessTypes::samplingMode_sync:
         case WirelessTypes::samplingMode_syncEvent:
@@ -47,10 +43,8 @@ namespace mscl
             {
                 return AvailableSampleRates::continuous_log_glink200r;
             }
-            else
-            {
-                return AvailableSampleRates::continuous_sync_glink200r;
-            }
+
+            return AvailableSampleRates::continuous_sync_glink200r;
 
         case WirelessTypes::samplingMode_syncBurst:
         default:
