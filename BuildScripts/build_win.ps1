@@ -10,8 +10,8 @@ param (
     [String[]]$python2Dirs
 )
 
-try
-{
+# try
+# {
     # Get some directory information
     $script_dir = "${PSScriptRoot}"
     $project_dir = "${script_dir}/.."
@@ -143,9 +143,9 @@ try
             }
         }
     }
-}
-catch
-{
-    # Rethrow the exception to display in the console
-    throw $_
-}
+# }
+# catch
+# {
+#     # Rethrow the exception to display in the console
+#     throw $_
+# }
