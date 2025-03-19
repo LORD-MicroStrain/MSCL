@@ -79,4 +79,4 @@ namespace mscl
         //  The CRC checksum of all bytes in the ChecksumBuilder.
         uint32 crcChecksum() const;
     };
-}
+} // namespace mscl

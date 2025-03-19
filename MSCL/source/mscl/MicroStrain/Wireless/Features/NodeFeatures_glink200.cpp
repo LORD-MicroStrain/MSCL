@@ -142,4 +142,4 @@ namespace mscl
 
         return modes;
     }
-}
+} // namespace mscl

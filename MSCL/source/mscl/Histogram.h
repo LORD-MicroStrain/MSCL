@@ -70,4 +70,4 @@ namespace mscl
         //    bin - The <Bin> to add to the Histogram.
         void addBin(const Bin& bin);
     };
-}
+} // namespace mscl

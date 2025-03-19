@@ -451,4 +451,4 @@ namespace mscl
             result.push_back(range.second);
         }
     }
-}
+} // namespace mscl

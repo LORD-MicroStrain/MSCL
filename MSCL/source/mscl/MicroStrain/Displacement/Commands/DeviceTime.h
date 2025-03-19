@@ -21,7 +21,7 @@ namespace mscl
         static const uint8 FIELD_DATA_BYTE = 0x82;
 
     public:
-        virtual ~DeviceTime() {}
+        ~DeviceTime() override = default;
 
         static ByteStream buildCommand_get(uint64 nanoseconds);
 
@@ -34,4 +34,4 @@ namespace mscl
             Response(std::weak_ptr<ResponseCollector> collector, bool dataResponseExpected);
         };
     };
-}
+} // namespace mscl

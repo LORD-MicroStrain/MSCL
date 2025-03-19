@@ -206,4 +206,4 @@ namespace mscl
     //API Typedef: ConfigIssues
     //    typedef for a vector of <ConfigIssue> objects.
     typedef std::vector<ConfigIssue> ConfigIssues;
-}
+} // namespace mscl

@@ -12,15 +12,13 @@ namespace mscl
         m_sampleRate(SampleRate::Hertz(1)),
         m_time(0),
         m_sampleCount(0)
-    {
-    }
+    {}
 
     TimestampCounter::TimestampCounter(const SampleRate& sampleRate, uint64 startTime) :
         m_sampleRate(sampleRate),
         m_time(startTime),
         m_sampleCount(0)
-    {
-    }
+    {}
 
     void TimestampCounter::reset(const SampleRate& sampleRate, uint64 time)
     {
@@ -108,4 +106,4 @@ namespace mscl
                 return m_time;
         }
     }
-}
+} // namespace mscl

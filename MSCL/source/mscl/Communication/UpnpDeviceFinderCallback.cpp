@@ -10,8 +10,7 @@ namespace mscl
 {
     UpnpDeviceFinderCallback::UpnpDeviceFinderCallback() :
         m_refCount(0)
-    {
-    }
+    {}
 
     std::string UpnpDeviceFinderCallback::WstringToString(const std::wstring& in)
     {
@@ -192,4 +191,4 @@ namespace mscl
     {
         m_deviceAddedCallback = callback;
     }
-}
+} // namespace mscl

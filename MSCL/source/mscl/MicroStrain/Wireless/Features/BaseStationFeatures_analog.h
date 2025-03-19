@@ -38,4 +38,4 @@ namespace mscl
         //    The total number of analog ports that are supported.
         uint8 analogPortCount() const override;
     };
-}
+} // namespace mscl

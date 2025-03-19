@@ -22,7 +22,7 @@ namespace mscl
         //
         //Returns:
         //    std::string - the string name for this class.
-        virtual std::string commandName() const { return "DeviceStatus"; }
+        std::string commandName() const override { return "DeviceStatus"; }
 
         //Function: MakeGetCommand
         //
@@ -63,7 +63,7 @@ namespace mscl
 
         //Function: operator ByteStream
         //  Converts this class to a ByteStream.
-        operator ByteStream() const;
+        operator ByteStream() const override;
 
     private:
         // Function: Constructor DeviceStatus
@@ -74,19 +74,19 @@ namespace mscl
         //
         //Returns:
         //    MipTypes::Command - the command ID.
-        virtual MipTypes::Command commandType() const { return MipTypes::CMD_DEVICE_STATUS; }
+        MipTypes::Command commandType() const override { return MipTypes::CMD_DEVICE_STATUS; }
 
         //Function: fieldDataByte
         //
         //Returns:
         //    uint8 - the byte ID for field data in the reply.
-        virtual uint8 fieldDataByte() const { return 0x90; }
+        uint8 fieldDataByte() const override { return 0x90; }
 
         //Function: responseExpected
         //
         //Returns:
         //    bool - True indicates that a response should return from the device.
-        virtual bool responseExpected() const;
+        bool responseExpected() const override;
 
         //Variable: m_model
         //    The inertial <NodeModel> of the device.
@@ -98,7 +98,7 @@ namespace mscl
 
     public:
     // Destructor
-        ~DeviceStatus() { }
+        ~DeviceStatus() {}
     };
-#endif
-}
+#endif // !SWIG
+} // namespace mscl

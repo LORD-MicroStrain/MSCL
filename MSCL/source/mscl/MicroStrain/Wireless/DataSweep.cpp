@@ -119,4 +119,4 @@ namespace mscl
     {
         m_calsApplied = applied;
     }
-}
+} // namespace mscl

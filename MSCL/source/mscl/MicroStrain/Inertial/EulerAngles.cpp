@@ -10,8 +10,7 @@ namespace mscl
 {
     EulerAngles::EulerAngles() :
         EulerAngles(0.0f, 0.0f, 0.0f)
-    {
-    }
+    {}
 
     EulerAngles::EulerAngles(float roll, float pitch, float yaw) :
         Vector(ValueType::valueType_float, ByteStream())
@@ -37,7 +36,7 @@ namespace mscl
     {
         return Rotation::FromEulerAngles(*this);
     }
-#endif
+#endif // !SWIG
 
     MipFieldValues EulerAngles::asMipFieldValues() const
     {
@@ -77,8 +76,7 @@ namespace mscl
 
     Quaternion::Quaternion() :
         Quaternion(0.0f, 0.0f, 0.0f, 0.0f)
-    {
-    }
+    {}
 
     Quaternion::Quaternion(float q0, float q1, float q2, float q3) :
         Vector(ValueType::valueType_float, ByteStream())
@@ -105,7 +103,7 @@ namespace mscl
     {
         return Rotation::FromQuaternion(*this);
     }
-#endif
+#endif // !SWIG
 
     MipFieldValues Quaternion::asMipFieldValues() const
     {
@@ -225,7 +223,7 @@ namespace mscl
     {
         return asQuaternion();
     }
-#endif
+#endif // !SWIG
 
     EulerAngles Rotation::asEulerAngles() const
     {
@@ -272,4 +270,4 @@ namespace mscl
             appendTo.push_back(Value::FLOAT(0.0f));
         }
     }
-}
+} // namespace mscl

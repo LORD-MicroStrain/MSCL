@@ -102,4 +102,4 @@ namespace mscl
 
     void MockBaseStation_Impl::resetRadio()
     {}
-}
+} // namespace mscl

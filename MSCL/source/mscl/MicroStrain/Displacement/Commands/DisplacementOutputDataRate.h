@@ -22,7 +22,7 @@ namespace mscl
         static const uint8 FIELD_DATA_BYTE = 0x82;
 
     public:
-        virtual ~DisplacementOutputDataRate() {}
+        ~DisplacementOutputDataRate() override = default;
 
         static ByteStream buildCommand_get();
 
@@ -37,4 +37,4 @@ namespace mscl
             SampleRate parseResponse(const GenericMipCmdResponse& response) const;
         };
     };
-}
+} // namespace mscl

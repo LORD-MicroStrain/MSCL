@@ -1493,4 +1493,4 @@ namespace mscl
 
         return m_baseStation.node_testCommProtocol(m_address, commProtocol);
     }
-}
+} // namespace mscl

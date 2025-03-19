@@ -16,8 +16,7 @@ namespace mscl
         m_hasDeviceTime(false),
         m_deviceTimeValid(false),
         m_deviceTimeFlags(0)
-    {
-    }
+    {}
 
     MipDataPacket::MipDataPacket(const MipPacket& packet) :
         m_collectedTime(Timestamp::timeNow()),
@@ -251,4 +250,4 @@ namespace mscl
     {
         return m_deviceTimeFlags;
     }
-}
+} // namespace mscl

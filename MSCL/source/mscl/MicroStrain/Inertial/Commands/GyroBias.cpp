@@ -11,7 +11,7 @@ namespace mscl
     GyroBias::GyroBias(MipTypes::FunctionSelector function_selector, GeometricVector gyroBiasVector) :
         m_functionSelector(function_selector),
         m_gyroBiasVector(gyroBiasVector)
-    { }
+    {}
 
     GyroBias::GyroBias(MipTypes::FunctionSelector function_selector) :
         m_functionSelector(function_selector)
@@ -60,5 +60,4 @@ namespace mscl
         }
         return GenericMipCommand::buildCommand(commandType(), byteCommand.data());
     }
-
-}
+} // namespace mscl

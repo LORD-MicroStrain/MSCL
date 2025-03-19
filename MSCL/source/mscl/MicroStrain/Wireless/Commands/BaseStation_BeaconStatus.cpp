@@ -43,8 +43,7 @@ namespace mscl
 
     BaseStation_BeaconStatus::Response::Response(std::weak_ptr<ResponseCollector> collector) :
         WirelessResponsePattern(collector, WirelessProtocol::cmdId_base_getBeaconStatus_v1, WirelessProtocol::BASE_STATION_ADDRESS)
-    {
-    }
+    {}
 
     bool BaseStation_BeaconStatus::Response::matchSuccessResponse(const WirelessPacket& packet)
     {
@@ -102,4 +101,4 @@ namespace mscl
     {
         return m_result;
     }
-}
+} // namespace mscl

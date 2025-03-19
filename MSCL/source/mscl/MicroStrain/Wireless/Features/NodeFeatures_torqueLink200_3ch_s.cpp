@@ -78,4 +78,4 @@ namespace mscl
     {
         return {};
     }
-}
+} // namespace mscl

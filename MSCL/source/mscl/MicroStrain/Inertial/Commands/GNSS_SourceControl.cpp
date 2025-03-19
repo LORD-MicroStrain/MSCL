@@ -11,7 +11,7 @@ namespace mscl
     GNSS_SourceControl::GNSS_SourceControl(MipTypes::FunctionSelector function_selector, const InertialTypes::GNSS_Source& gnssSource) :
         m_functionSelector(function_selector),
         m_gnssSource(gnssSource)
-    { }
+    {}
 
     GNSS_SourceControl::GNSS_SourceControl(MipTypes::FunctionSelector function_selector) :
         m_functionSelector(function_selector)
@@ -57,5 +57,4 @@ namespace mscl
         }
         return GenericMipCommand::buildCommand(commandType(), byteCommand.data());
     }
-
-}
+} // namespace mscl

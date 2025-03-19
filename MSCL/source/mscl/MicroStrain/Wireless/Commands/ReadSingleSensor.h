@@ -63,5 +63,5 @@ namespace mscl
             uint16 sensorValue() const;
         };
     };
-#endif
-}
+#endif // !SWIG
+} // namespace mscl

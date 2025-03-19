@@ -550,4 +550,4 @@ namespace mscl
 
         return static_cast<float>(m_totalBytes - bytesRemaining()) / static_cast<float>(m_totalBytes) * 100.0f;
     }
-}
+} // namespace mscl

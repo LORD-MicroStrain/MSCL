@@ -1576,4 +1576,4 @@ namespace mscl
         MipFieldValues vals = m_impl->get(MipTypes::CMD_AIDING_PRESSURE, measurement.toMipFieldValues());
         return AidingMeasurementPressure(vals);
     }
-}
+} // namespace mscl

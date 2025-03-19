@@ -65,4 +65,4 @@ namespace mscl
 
         void resetRadio() override;
     };
-}
+} // namespace mscl

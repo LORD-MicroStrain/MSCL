@@ -10,13 +10,11 @@ namespace mscl
 {
     RawBytePacketCollector::RawBytePacketCollector() :
         m_rawBytePackets(MAX_DATA_BUFFER_SIZE)
-    {
-    }
+    {}
 
     //required (if taken out, causes runtime error on destruction of WirelessPacketCollector)
     RawBytePacketCollector::~RawBytePacketCollector()
-    {
-    }
+    {}
 
     void RawBytePacketCollector::requestRawBytePacketAddedNotification(std::function<void()> fnToCall)
     {
@@ -89,4 +87,4 @@ namespace mscl
         //return the number of packets in the buffer
         return static_cast<uint32>(m_rawBytePackets.size());
     }
-}
+} // namespace mscl

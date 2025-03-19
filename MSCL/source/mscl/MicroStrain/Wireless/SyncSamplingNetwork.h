@@ -392,4 +392,4 @@ namespace mscl
         //  true if in legacy mode, false otherwise.
         bool inLegacyMode();
     };
-}
+} // namespace mscl

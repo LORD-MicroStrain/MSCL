@@ -85,8 +85,7 @@ namespace mscl
 
     public:
         // Destructor
-        ~MagnetometerSoftIronMatrix() { }
+        ~MagnetometerSoftIronMatrix() {}
     };
-
-#endif
-}
+#endif // !SWIG
+} // namespace mscl

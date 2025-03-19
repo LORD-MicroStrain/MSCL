@@ -321,4 +321,4 @@ namespace mscl
             cmdId_poll                      = 0xDA7A
         };
     };
-}
+} // namespace mscl

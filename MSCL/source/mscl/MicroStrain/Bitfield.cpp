@@ -85,4 +85,4 @@ namespace mscl
 
         return count;
     }
-}
+} // namespace mscl

@@ -11,7 +11,7 @@ namespace mscl
     AccelBias::AccelBias(MipTypes::FunctionSelector functionSelector, const GeometricVector& accelerometerBiasVector) :
         m_functionSelector(functionSelector),
         m_accelerometerBiasVector(accelerometerBiasVector)
-    { }
+    {}
 
     AccelBias::AccelBias(MipTypes::FunctionSelector functionSelector) :
         m_functionSelector(functionSelector)
@@ -61,4 +61,4 @@ namespace mscl
         return GenericMipCommand::buildCommand(commandType(), byteCommand.data());
     }
 
-}
+} // namespace mscl

@@ -10,7 +10,7 @@ namespace mscl
 {
     MagnetometerCaptureAutoCalibration::MagnetometerCaptureAutoCalibration(MipTypes::FunctionSelector functionSelector) :
         m_functionSelector(functionSelector)
-    { }
+    {}
 
     bool MagnetometerCaptureAutoCalibration::responseExpected() const
     {
@@ -40,5 +40,4 @@ namespace mscl
         byteCommand.append_uint8(static_cast<uint8>(m_functionSelector));
         return GenericMipCommand::buildCommand(commandType(), byteCommand.data());
     }
-
-}
+} // namespace mscl

@@ -235,4 +235,4 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred.
         std::string read_string(uint32 length);
     };
-}
+} // namespace mscl

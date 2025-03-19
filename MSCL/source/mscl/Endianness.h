@@ -74,7 +74,7 @@ namespace mscl
     template<typename StaticType>
     StaticType SystemEndian_To_LittleEndian(StaticType val);
 
-#if defined(BOOST_ENDIAN_LITTLE_BYTE) || defined(BOOST_LITTLE_ENDIAN)
+#if defined BOOST_ENDIAN_LITTLE_BYTE  || defined BOOST_LITTLE_ENDIAN
     // Little endian system
     template<typename StaticType>
     StaticType BigEndian(StaticType val)
@@ -164,5 +164,5 @@ namespace mscl
         //big endian system, swap bytes to little endian
         return LittleEndian(val);
     }
-#endif
-}
+#endif // BOOST_ENDIAN_LITTLE_BYTE || BOOST_LITTLE_ENDIAN
+} // namespace mscl

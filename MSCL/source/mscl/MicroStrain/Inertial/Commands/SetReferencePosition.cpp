@@ -11,7 +11,7 @@ namespace mscl
     SetReferencePosition::SetReferencePosition(MipTypes::FunctionSelector function_selector, FixedReferencePositionData data) :
         m_functionSelector(function_selector),
         m_data(data)
-    { }
+    {}
 
     SetReferencePosition::SetReferencePosition(MipTypes::FunctionSelector function_selector) :
         m_functionSelector(function_selector)
@@ -66,4 +66,4 @@ namespace mscl
         }
         return GenericMipCommand::buildCommand(commandType(), byteCommand.data());
     }
-}
+} // namespace mscl

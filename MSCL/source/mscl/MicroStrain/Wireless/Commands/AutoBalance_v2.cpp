@@ -49,8 +49,7 @@ namespace mscl
         m_nodeAddress(nodeAddress),
         m_channelNumber(channelNumber),
         m_targetPercent(targetPercent)
-    {
-    }
+    {}
 
     bool AutoBalance_v2::Response::match(const WirelessPacket& packet)
     {
@@ -108,4 +107,4 @@ namespace mscl
     {
         return m_result;
     }
-}
+} // namespace mscl

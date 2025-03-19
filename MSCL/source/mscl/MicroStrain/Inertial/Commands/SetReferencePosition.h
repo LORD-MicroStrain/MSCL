@@ -85,8 +85,7 @@ namespace mscl
 
     public:
         // Destructor
-        ~SetReferencePosition() { }
+        ~SetReferencePosition() {}
     };
-
-#endif
-}
+#endif // !SWIG
+} // namespace mscl

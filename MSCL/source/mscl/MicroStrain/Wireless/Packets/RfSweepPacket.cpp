@@ -100,4 +100,4 @@ namespace mscl
         //packet looks valid
         return true;
     }
-}
+} // namespace mscl

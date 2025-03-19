@@ -12,7 +12,6 @@ namespace mscl
 {
 
 #ifndef SWIG
-
     //Class: MagnetometerCaptureAutoCalibration
     //    Contains the logic for the Inertial MagnetometerCaptureAutoCalibration command.
     class MagnetometerCaptureAutoCalibration : public MipCommand
@@ -75,8 +74,7 @@ namespace mscl
 
     public:
         // Destructor
-        ~MagnetometerCaptureAutoCalibration() { }
+        ~MagnetometerCaptureAutoCalibration() {}
     };
-
-#endif
-}
+#endif // !SWIG
+} // namespace mscl

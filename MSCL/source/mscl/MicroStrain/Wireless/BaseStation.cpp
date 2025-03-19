@@ -14,18 +14,15 @@ namespace mscl
     //Constructor
     BaseStation::BaseStation(Connection& connection, uint64 baseTimeout) :
         m_impl(std::make_shared<BaseStation_Impl>(connection, baseTimeout))
-    {
-    }
+    {}
 
     BaseStation::BaseStation(Connection& connection) :
         m_impl(std::make_shared<BaseStation_Impl>(connection))
-    {
-    }
+    {}
 
     BaseStation::BaseStation(std::shared_ptr<BaseStation_Impl> impl) :
         m_impl(impl)
-    {
-    }
+    {}
 
     BaseStation BaseStation::Mock(const BaseStationInfo& info)
     {
@@ -432,4 +429,4 @@ namespace mscl
         m_impl->getRawBytePackets(packets, timeout, maxPackets);
         return packets;
     }
-}
+} // namespace mscl

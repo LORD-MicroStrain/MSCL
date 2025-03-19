@@ -521,4 +521,4 @@ namespace mscl
         {WirelessTypes::sampleRate_128Hz},
         {WirelessTypes::sampleRate_64Hz},
         {WirelessTypes::sampleRate_32Hz}};
-}
+} // namespace mscl

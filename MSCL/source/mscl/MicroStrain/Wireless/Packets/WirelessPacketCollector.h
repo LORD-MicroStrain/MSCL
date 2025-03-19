@@ -121,4 +121,4 @@ namespace mscl
         //    - <Error_NoData>: There are no more data packets to obtain
         WirelessDataPacket getNextDataPacket(int timeout);
     };
-}
+} // namespace mscl

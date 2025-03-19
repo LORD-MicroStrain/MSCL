@@ -23,8 +23,7 @@ namespace mscl
         m_configApplied(false),
         m_disabledBeacon(false),
         m_availableSlotCount(0)
-    {
-    }
+    {}
 
     void SyncSamplingNetwork::addNodeToNetwork(WirelessNode& node, const WirelessNodeConfig* pendingConfig)
     {
@@ -1477,4 +1476,4 @@ namespace mscl
     }
 
     //TODO: possibly don't optimize nodes that already have extra bandwidth (are slow)
-}
+} // namespace mscl

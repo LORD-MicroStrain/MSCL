@@ -83,4 +83,4 @@ namespace mscl
 
         return result;
     }
-}
+} // namespace mscl

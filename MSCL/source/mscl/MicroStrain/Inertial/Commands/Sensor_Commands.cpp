@@ -98,5 +98,4 @@ namespace mscl
         return MIP_Commands::parseData_MessageFormat(response, fieldDataByte(), sampleRateBase);
     }
     //==========================================================================================
-
-}
+} // namespace mscl

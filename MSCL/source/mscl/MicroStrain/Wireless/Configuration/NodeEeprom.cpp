@@ -18,7 +18,7 @@ namespace mscl
         m_node(node),
         m_baseStation(base),
         m_useGroupRead(settings.useGroupRead)
-    { }
+    {}
 
     bool NodeEeprom::updateCacheFromDevice(uint16 location)
     {
@@ -248,4 +248,4 @@ namespace mscl
 
         throw Error_NodeCommunication(m_node->nodeAddress(), "Failed to write EEPROM " + Utils::toStr(location) + " to Node " + Utils::toStr(m_node->nodeAddress()));
     }
-}
+} // namespace mscl

@@ -355,4 +355,4 @@ namespace mscl
             }
         }
     }
-}
+} // namespace mscl

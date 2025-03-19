@@ -80,7 +80,7 @@ namespace mscl
         //Exceptions:
         //    - <Error_NotSupported>: The Node model is not supported by MSCL.
         static std::unique_ptr<NodeFeatures> create(const NodeInfo& info);
-#endif
+#endif // !SWIG
 
     protected:
         //Function: addCalCoeffChannelGroup
@@ -1241,4 +1241,4 @@ namespace mscl
         //  Checks if the Node supports reading eeprom location 1024 and above.
         virtual bool supportsEeprom1024AndAbove() const;
     };
-}
+} // namespace mscl

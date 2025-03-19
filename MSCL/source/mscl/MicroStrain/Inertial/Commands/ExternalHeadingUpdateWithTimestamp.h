@@ -70,8 +70,7 @@ namespace mscl
 
     public:
 	// Destructor
-        ~ExternalHeadingUpdateWithTimestamp() { }
+        ~ExternalHeadingUpdateWithTimestamp() {}
     };
-
-#endif
-}
+#endif // !SWIG
+} // namespace mscl

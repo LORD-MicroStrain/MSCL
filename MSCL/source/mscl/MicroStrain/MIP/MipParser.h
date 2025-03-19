@@ -134,4 +134,4 @@ namespace mscl
 
         void addRawBytePacket(Bytes& rawBytePacket, bool valid, bool packetFound);
     };
-}
+} // namespace mscl

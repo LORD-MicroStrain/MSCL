@@ -65,4 +65,4 @@ namespace mscl
     //API Typedef: Bins
     //    Typedef for a vector of <Bin> objects.
     typedef std::vector<Bin> Bins;
-}
+} // namespace mscl

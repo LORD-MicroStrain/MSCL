@@ -132,7 +132,7 @@ namespace mscl
         //Returns:
         //    true if the two BaseStation are not identical, false otherwise.
         bool operator!=(const BaseStation& src) const;
-#endif
+#endif // !SWIG
 
     private:
         BaseStation();        //default constructor disabled
@@ -1043,6 +1043,6 @@ namespace mscl
         //Exceptions:
         //    - <Error_Connection>: A connection error has occurred with the Node.
         RawBytePackets getRawBytePackets(uint32 timeout = 0, uint32 maxPackets = 0);
-#endif
+#endif // !SWIG
     };
-}
+} // namespace mscl

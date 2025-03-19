@@ -26,7 +26,7 @@ namespace mscl
         static const uint8 FIELD_DATA_BYTE = 0xA2;
 
     public:
-        virtual ~GNSS_AssistedFixControl() {}
+        ~GNSS_AssistedFixControl() override = default;
 
         //Function: buildCommand_get
         //    Builds the bytes for the "get" command.
@@ -73,6 +73,5 @@ namespace mscl
             bool parseResponse(const GenericMipCmdResponse& response) const;
         };
     };
-
-#endif
-}
+#endif // !SWIG
+} // namespace mscl

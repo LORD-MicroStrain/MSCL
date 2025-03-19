@@ -53,7 +53,7 @@ namespace mscl
             action_shortPress    = 0,
             action_longPress    = 1
         };
-#endif
+#endif // !SWIG
 
         //API Class: BaseStationButton
         //    Creates a default constructed BaseStationButton object.
@@ -109,4 +109,4 @@ namespace mscl
         //    address - The node address to target from the button's command.
         void nodeAddress(uint16 address);
     };
-}
+} // namespace mscl

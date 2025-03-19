@@ -65,4 +65,4 @@ namespace mscl
     {
         return m_thermistorType;
     }
-}
+} // namespace mscl

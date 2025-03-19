@@ -2143,4 +2143,4 @@ private:
        //    Important: if the UART Baud Rate is changed the connection to the port will be automatically closed and re-opened at the new baud rate.
        void processMipCommandBytes(MipCommandBytes& cmd);
     };
-}
+} // namespace mscl

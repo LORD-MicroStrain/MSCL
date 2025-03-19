@@ -49,4 +49,4 @@ namespace mscl
 
         const WirelessTypes::FatigueModes fatigueModes() const final;
     };
-}
+} // namespace mscl

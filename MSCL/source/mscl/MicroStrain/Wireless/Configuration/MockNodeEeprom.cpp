@@ -12,7 +12,7 @@ namespace mscl
 {
     MockNodeEeprom::MockNodeEeprom(const WirelessNode_Impl* node, const BaseStation& base, const NodeEepromSettings& settings) :
         NodeEeprom(node, base, settings)
-    { }
+    {}
 
     uint16 MockNodeEeprom::readEeprom(uint16 location)
     {
@@ -33,4 +33,4 @@ namespace mscl
     {
         updateCache(location, value);
     }
-}
+} // namespace mscl

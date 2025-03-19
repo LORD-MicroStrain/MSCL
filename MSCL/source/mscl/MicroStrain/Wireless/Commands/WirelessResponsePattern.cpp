@@ -17,8 +17,7 @@ namespace mscl
         m_nodeAddress(nodeAddress),
         m_baseReceived(false),
         m_baseReceivedWaitTime(0)
-    {
-    }
+    {}
 
     WirelessResponsePattern::WirelessResponsePattern(std::weak_ptr<ResponseCollector> collector, uint16 commandId, NodeAddress nodeAddress) :
         ResponsePattern(collector),
@@ -26,12 +25,10 @@ namespace mscl
         m_nodeAddress(nodeAddress),
         m_baseReceived(false),
         m_baseReceivedWaitTime(0)
-    {
-    }
+    {}
 
     WirelessResponsePattern::~WirelessResponsePattern()
-    {
-    }
+    {}
 
     bool WirelessResponsePattern::matchBaseReceivedResponse(const WirelessPacket& packet)
     {
@@ -84,4 +81,4 @@ namespace mscl
     {
         return m_baseReceivedWaitTime;
     }
-}
+} // namespace mscl

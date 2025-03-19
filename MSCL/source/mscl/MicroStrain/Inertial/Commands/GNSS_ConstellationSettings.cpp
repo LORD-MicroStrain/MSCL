@@ -11,7 +11,7 @@ namespace mscl
     GNSS_ConstellationSettings::GNSS_ConstellationSettings(MipTypes::FunctionSelector function_selector, ConstellationSettingsData dataToUse) :
         m_functionSelector(function_selector),
         m_data(dataToUse)
-    { }
+    {}
 
     GNSS_ConstellationSettings::GNSS_ConstellationSettings(MipTypes::FunctionSelector function_selector) :
         m_functionSelector(function_selector)
@@ -84,5 +84,4 @@ namespace mscl
         }
         return GenericMipCommand::buildCommand(commandType(), byteCommand.data());
     }
-
-}
+} // namespace mscl

@@ -91,7 +91,7 @@ namespace mscl
 
     public:
         // Destructor
-        ~FilterInitializationConfig() { }
+        ~FilterInitializationConfig() {}
     };
-#endif
-}
+#endif // !SWIG
+} // namespace mscl

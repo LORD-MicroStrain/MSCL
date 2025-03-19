@@ -12,7 +12,7 @@ namespace mscl
         m_cmd(cmd),
         m_functionSelector(function_selector),
         m_data(dataToUse)
-    { }
+    {}
 
     FloatCommand::FloatCommand(MipTypes::Command cmd, MipTypes::FunctionSelector function_selector) :
         m_cmd(cmd),
@@ -90,4 +90,4 @@ namespace mscl
 
         return GenericMipCommand::buildCommand(commandType(), byteCommand.data());
     }
-}
+} // namespace mscl

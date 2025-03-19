@@ -91,4 +91,4 @@ namespace mscl
         modes.push_back(WirelessTypes::storageLimit_overwrite);
         return modes;
     }
-}
+} // namespace mscl

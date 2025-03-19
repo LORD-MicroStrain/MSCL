@@ -281,4 +281,4 @@ namespace mscl
         //    enable - Whehter to enable or disable sending Histograms.
         void histogramEnable(bool enable);
     };
-}
+} // namespace mscl

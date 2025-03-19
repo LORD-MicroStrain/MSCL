@@ -24,4 +24,4 @@ namespace mscl
         //    info - A <BaseStationInfo> object representing standard information of the <BaseStation>.
         BaseStationFeatures_rs232(const BaseStationInfo& info);
     };
-}
+} // namespace mscl

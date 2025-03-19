@@ -58,7 +58,7 @@ namespace mscl
             ValueType type,
             const anyType& value,
             const ChannelProperties& channelProperties = ChannelProperties());
-#endif
+#endif // !SWIG
 
     private:
         //Variable: m_channelId
@@ -104,4 +104,4 @@ namespace mscl
     //API Typedef: ChannelData
     //    A typedef for a collection (vector) of <WirelessDataPoint>s
     typedef std::vector<WirelessDataPoint> ChannelData;
-}
+} // namespace mscl

@@ -31,8 +31,7 @@ namespace mscl
     BaseStation_Reset_v2::Response::Response(ResetType resetType, std::weak_ptr<ResponseCollector> collector) :
         WirelessResponsePattern(collector, WirelessProtocol::cmdId_baseReset_v2, WirelessProtocol::BASE_STATION_ADDRESS),
         m_resetType(resetType)
-    {
-    }
+    {}
 
     bool BaseStation_Reset_v2::Response::matchSuccessResponse(const WirelessPacket& packet)
     {
@@ -54,4 +53,4 @@ namespace mscl
         //if we made it here, the packet matches the response pattern
         return true;
     }
-}
+} // namespace mscl

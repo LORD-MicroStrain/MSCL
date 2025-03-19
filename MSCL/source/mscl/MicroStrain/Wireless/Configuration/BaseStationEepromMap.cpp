@@ -194,4 +194,4 @@ namespace mscl
     {
         return findAnalogEeprom(ANALOG_1_FLOAT_MIN, portNum);
     }
-}
+} // namespace mscl

@@ -96,4 +96,4 @@ namespace mscl
             MipDeviceInfo parseResponse(const GenericMipCmdResponse& response) const;
         };
     };
-}
+} // namespace mscl

@@ -22,7 +22,7 @@ namespace mscl
         ResponseInfo(ResponsePattern* responsePattern, std::size_t minBytePos):
           pattern(responsePattern),
           minBytePosition(minBytePos)
-        { }
+        {}
     };
 
     //Class: ResponseCollector
@@ -114,4 +114,4 @@ namespace mscl
         //    true if the packet matched an expected response, false otherwise
         bool matchExpected(MipDataField& field);
     };
-}
+} // namespace mscl

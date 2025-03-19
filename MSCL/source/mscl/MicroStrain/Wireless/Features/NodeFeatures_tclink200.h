@@ -41,4 +41,4 @@ namespace mscl
 
         bool supportsLowBatteryThresholdConfig() const override;
     };
-}
+} // namespace mscl

@@ -188,4 +188,4 @@ namespace mscl
 
         return ZUPTSettingsData(enabled, threshold);
     }
-}
+} // namespace mscl

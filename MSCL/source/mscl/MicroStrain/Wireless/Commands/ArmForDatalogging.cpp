@@ -50,8 +50,7 @@ namespace mscl
     ArmForDatalogging::Response::Response(NodeAddress nodeAddress, std::weak_ptr<ResponseCollector> collector) :
         WirelessResponsePattern(collector, WirelessProtocol::cmdId_armForDatalog, nodeAddress),
         m_nodeAddress(nodeAddress)
-    {
-    }
+    {}
 
     bool ArmForDatalogging::Response::matchSuccessResponse(const WirelessPacket& packet)
     {
@@ -80,4 +79,4 @@ namespace mscl
 
         return true;
     }
-}
+} // namespace mscl

@@ -70,4 +70,4 @@ namespace mscl
         //  Gets a description of this EEPROM location.
         std::string description() const;
     };
-}
+} // namespace mscl

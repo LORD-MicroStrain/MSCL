@@ -41,19 +41,16 @@ namespace mscl
         m_data(data),
         m_appendPosition(data.size()),
         m_readPosition(0)
-    {
-    }
+    {}
 
     DataBuffer::DataBuffer(const ByteStream& data) :
         m_data(data),
         m_appendPosition(data.size()),
         m_readPosition(0)
-    {
-    }
+    {}
 
     DataBuffer::~DataBuffer()
-    {
-    }
+    {}
 
     std::size_t DataBuffer::size() const
     {
@@ -353,8 +350,7 @@ namespace mscl
     ReadBufferSavePoint::ReadBufferSavePoint(DataBuffer* data) :
         m_data(data),
         m_savePosition(data->m_readPosition)
-    {
-    }
+    {}
 
     ReadBufferSavePoint::~ReadBufferSavePoint()
     {
@@ -373,4 +369,4 @@ namespace mscl
         //set the save position to the data's current read position
         m_savePosition = m_data->m_readPosition;
     }
-}
+} // namespace mscl

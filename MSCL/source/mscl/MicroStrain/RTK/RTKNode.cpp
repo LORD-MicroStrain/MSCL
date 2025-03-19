@@ -34,4 +34,4 @@ namespace mscl
     {
         return getDeviceStatusFlags().version();
     }
-}
+} // namespace mscl

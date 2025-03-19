@@ -1636,4 +1636,4 @@ namespace mscl
         //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         void write_derivedVelocityUnit(WirelessTypes::DerivedVelocityUnit unit);
     };
-}
+} // namespace mscl

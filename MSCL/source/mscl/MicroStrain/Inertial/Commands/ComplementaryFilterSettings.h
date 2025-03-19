@@ -21,7 +21,7 @@ namespace mscl
         //
         //Returns:
         //    std::string - the string name for this class.
-        virtual std::string commandName() const { return "ComplementaryFilterSettings"; }
+        std::string commandName() const override { return "ComplementaryFilterSettings"; }
 
         //Function: MakeSetCommand
         //
@@ -49,7 +49,7 @@ namespace mscl
 
         //Function: operator ByteStream
         //  Converts this class to a ByteStream.
-        operator ByteStream() const;
+        operator ByteStream() const override;
 
     private:
         // Function: Constructor ComplementaryFilterSettings
@@ -61,19 +61,19 @@ namespace mscl
         //
         //Returns:
         //    MipTypes::Command - the command ID.
-        virtual MipTypes::Command commandType() const { return MipTypes::CMD_COMPLEMENTARY_FILTER_SETTINGS; }
+        MipTypes::Command commandType() const override { return MipTypes::CMD_COMPLEMENTARY_FILTER_SETTINGS; }
 
         //Function: fieldDataByte
         //
         //Returns:
         //    uint8 - the byte ID for field data in the reply.
-        virtual uint8 fieldDataByte() const { return 0x97; }
+        uint8 fieldDataByte() const override { return 0x97; }
 
         //Function: responseExpected
         //
         //Returns:
         //    bool - True indicates that a response should return from the device.
-        virtual bool responseExpected() const;
+        bool responseExpected() const override;
 
         //Variable: m_functionSelector
         //    The FunctionSelector type of command to send, get/set, reset to factory defaults, et al.
@@ -85,8 +85,7 @@ namespace mscl
 
     public:
         // Destructor
-        ~ComplementaryFilterSettings() { }
+        ~ComplementaryFilterSettings() {}
     };
-
-#endif
-}
+#endif // !SWIG
+} // namespace mscl

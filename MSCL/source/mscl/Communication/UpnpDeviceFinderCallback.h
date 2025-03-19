@@ -58,5 +58,5 @@ namespace mscl
         void bindSearchComplete(std::function<void()> callback);
         void bindDeviceAdded(std::function<void(const UpnpDevice&)> callback);
     };
-}
-#endif
+} // namespace mscl
+#endif // _WIN32

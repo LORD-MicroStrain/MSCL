@@ -1030,7 +1030,7 @@ namespace mscl
         //  col - the column to set.
 #ifndef SWIG
         float operator() (uint8 row, uint8 col) const;
-#endif
+#endif // !SWIG
 
         //API Function: at
         //  Gets value at matrix index (row, col).
@@ -1115,7 +1115,7 @@ namespace mscl
         ZUPTSettingsData(bool enable, float threshold) :
         enabled(enable),
         threshold(threshold)
-    { }
+    {}
 
         //API Variable: enabled
         bool enabled;
@@ -1136,13 +1136,13 @@ namespace mscl
         //    pReference - the reference position
         FixedReferencePositionData(bool pEnable, Position pReference) :
             enable(pEnable),
-            referencePosition(pReference) { }
+            referencePosition(pReference) {}
 
         //API Constructor: FixedReferencePositionData
         //    Creates a FixedReferencePositionData object.
         FixedReferencePositionData() :
             enable(false),
-            referencePosition(Position()) { }
+            referencePosition(Position()) {}
 
         //API Variable: enable
         bool enable;
@@ -1243,7 +1243,7 @@ namespace mscl
             manualFilterBandwidthConfig(SET_TO_HALF_REPORTING_RATE),
             applyLowPassFilter(true),
             cutoffFrequency(0)
-        { }
+        {}
 
         // API Constructor: LowPassFilterData
         LowPassFilterData(MipTypes::ChannelField descriptor) :
@@ -1251,7 +1251,7 @@ namespace mscl
             manualFilterBandwidthConfig(SET_TO_HALF_REPORTING_RATE),
             applyLowPassFilter(true),
             cutoffFrequency(0)
-        { }
+        {}
 
         //API Variable: dataDescriptor
         //    the data descriptor these settings apply to
@@ -1316,7 +1316,7 @@ namespace mscl
             upCompensationTimeInSeconds(10),
             northCompensationEnabled(false),
             northCompensationTimeInSeconds(10)
-        { }
+        {}
 
         //API Variable: upCompensationEnabled
         //    determines whether or not the up compensation is enabled.
@@ -1344,8 +1344,7 @@ namespace mscl
         PpsPulseInfo():
             count(0),
             lastTimeinMS(0)
-        {
-        }
+        {}
 
         //API Variable: count
         //  The number of 1PPS pulses
@@ -1365,8 +1364,7 @@ namespace mscl
         StreamInfo():
             enabled(false),
             outgoingPacketsDropped(0)
-        {
-        }
+        {}
 
         //API Variable: enabled
         bool enabled;
@@ -1384,8 +1382,7 @@ namespace mscl
             messageParsingErrors(0),
             messagesRead(0),
             lastMessageReadinMS(0)
-        {
-        }
+        {}
 
         //API Variable: messageParsingErrors
         uint32 messageParsingErrors;
@@ -1409,8 +1406,7 @@ namespace mscl
             bytesRead(0),
             overrunsOnWrite(0),
             overrunsOnRead(0)
-        {
-        }
+        {}
 
         //API Variable: bytesWritten
         uint32 bytesWritten;
@@ -1435,8 +1431,7 @@ namespace mscl
             onBoardTemp(0),
             lastReadInMS(0),
             error(0)
-        {
-        }
+        {}
 
         //API Variable: onBoardTemp
         float onBoardTemp;
@@ -1831,7 +1826,7 @@ namespace mscl
             useInternalMagnetometer(false),
             useInternalGNSSVelocityVector(false),
             useExternalHeadingMessages(false)
-        { }
+        {}
 
         //API Constructor: HeadingUpdateOptions
         //  Updates this class from a <InertialTypes::HeadingUpdateEnableOption> according to the Communications Protocol.
@@ -2013,7 +2008,7 @@ namespace mscl
             tareRollAxis(tareRollAxis),
             tarePitchAxis(tarePitchAxis),
             tareYawAxis(tareYawAxis)
-        { }
+        {}
 
         //API Variable: tareRollAxis
         bool tareRollAxis;
@@ -2034,7 +2029,7 @@ namespace mscl
         GeographicSourceOptions() :
             source(InertialTypes::GeographicSourceOption::NONE),
             manual(0.0)
-        { }
+        {}
 
         //Constructor: GeographicSourceOptions
         //  constructs this class from a GeographicSourceOption and a float.
@@ -2072,7 +2067,7 @@ namespace mscl
             enableGNSSAntennaOffsetEstimation(false),
             enableHardIronAutoCalibration(false),
             enableSoftIronAutoCalibration(false)
-        { }
+        {}
 
         //Constructor: EstimationControlOptions
         //  constructs this class from a <uint16> estimation control according to the Communications Protocol.
@@ -2110,7 +2105,7 @@ namespace mscl
             heading (TRUE_HEADING),
             headingAngle(0),
             headingAngleUncertainty(0)
-        { }
+        {}
 
         //API Enum: HeadingType
         //    Dictates whether heading is relative to true north or magnetic north.
@@ -2383,7 +2378,7 @@ namespace mscl
         // API Function: explicit conversion from RTKDeviceStatusFlags to RTKDeviceStatusFlags_v1
         // Only C++ compatible
         explicit operator RTKDeviceStatusFlags_v1() const;
-#endif
+#endif // !SWIG
         //API Function: version
         uint8 version() const;
 
@@ -2555,7 +2550,7 @@ namespace mscl
         // API Function: explicit conversion from RTKDeviceStatusFlags_v1 to RTKDeviceStatusFlags
         // Only C++ compatible
         explicit operator RTKDeviceStatusFlags() const;
-#endif
+#endif // !SWIG
         //API Function: version
         uint8 version() const;
 
@@ -3621,4 +3616,4 @@ namespace mscl
     //API Typedef: MeasurementReferenceFrames
     //  A map of reference frame IDs with their associated <MeasurementReferenceFrame> values.
     typedef std::map<uint8, MeasurementReferenceFrame> MeasurementReferenceFrames;
-}
+} // namespace mscl

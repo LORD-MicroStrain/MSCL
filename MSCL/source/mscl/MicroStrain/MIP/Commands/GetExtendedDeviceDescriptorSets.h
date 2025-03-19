@@ -66,4 +66,4 @@ namespace mscl
             void parseResponse(const GenericMipCmdResponse& response, std::vector<uint16>& descriptors) const;
         };
     };
-}
+} // namespace mscl

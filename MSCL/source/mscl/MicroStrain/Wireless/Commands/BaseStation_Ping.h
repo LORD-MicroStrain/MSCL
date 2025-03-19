@@ -51,5 +51,5 @@ namespace mscl
             bool matchSuccessResponse(DataBuffer& data) override;
         };
     };
-#endif
-}
+#endif // !SWIG
+} // namespace mscl

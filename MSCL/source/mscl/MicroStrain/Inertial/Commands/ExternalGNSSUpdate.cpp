@@ -10,7 +10,7 @@ namespace mscl
 {
     ExternalGNSSUpdate::ExternalGNSSUpdate(const ExternalGNSSUpdateData& dataToUse) :
         m_data(dataToUse)
-    { }
+    {}
 
     ExternalGNSSUpdate ExternalGNSSUpdate::MakeCommand(const ExternalGNSSUpdateData& dataToUse)
     {
@@ -42,5 +42,4 @@ namespace mscl
 
         return GenericMipCommand::buildCommand(commandType(), byteCommand.data());
     }
-
-}
+} // namespace mscl

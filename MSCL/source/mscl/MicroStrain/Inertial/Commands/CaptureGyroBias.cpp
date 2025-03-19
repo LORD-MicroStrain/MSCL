@@ -10,7 +10,7 @@ namespace mscl
 {
     CaptureGyroBias::CaptureGyroBias(uint16 samplingTimeInMS) :
         m_samplingTimeInMS(samplingTimeInMS)
-    { }
+    {}
 
     CaptureGyroBias CaptureGyroBias::MakeCommand(uint16 dataToUse)
     {
@@ -38,5 +38,4 @@ namespace mscl
         byteCommand.append_uint16(m_samplingTimeInMS);
         return GenericMipCommand::buildCommand(commandType(), byteCommand.data());
     }
-
-}
+} // namespace mscl

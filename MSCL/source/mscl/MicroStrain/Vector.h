@@ -23,7 +23,7 @@ namespace mscl
         //Constructor: Vector
         //    Creates a Vector object given its data
         Vector(ValueType storedAs, const ByteStream& data);
-#endif
+#endif // !SWIG
 
     private:
         //Constant: ROW_POS = 0
@@ -90,4 +90,4 @@ namespace mscl
         //    - std::out_of_range: The position requested is out of range
         uint8 as_uint8At(uint16 index) const;
     };
-}
+} // namespace mscl

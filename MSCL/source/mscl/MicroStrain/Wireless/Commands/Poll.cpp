@@ -47,8 +47,7 @@ namespace mscl
         m_nodeAddress(nodeAddress),
         m_started(false),
         m_timeUntilCompletion(0.0f)
-    {
-    }
+    {}
 
     bool Poll::Response::started() const
     {
@@ -184,4 +183,4 @@ namespace mscl
 
         return true;
     }
-}
+} // namespace mscl

@@ -43,8 +43,7 @@ namespace mscl
     GetDatalogSessionInfo::Response::Response(NodeAddress nodeAddress, std::weak_ptr<ResponseCollector> collector) :
         WirelessResponsePattern(collector, WirelessProtocol::cmdId_logSessionInfo_v1, nodeAddress),
         m_nodeAddress(nodeAddress)
-    {
-    }
+    {}
 
     bool GetDatalogSessionInfo::Response::matchSuccessResponse(const WirelessPacket& packet)
     {
@@ -95,4 +94,4 @@ namespace mscl
     {
         return m_result;
     }
-}
+} // namespace mscl

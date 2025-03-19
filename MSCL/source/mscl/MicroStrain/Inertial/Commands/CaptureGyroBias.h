@@ -20,7 +20,7 @@ namespace mscl
         //
         //Returns:
         //    std::string - the string name for this class.
-        virtual std::string commandName() const { return "CaptureGyroBias"; }
+        std::string commandName() const override { return "CaptureGyroBias"; }
 
         //Function: MakeCommand
         //
@@ -36,7 +36,7 @@ namespace mscl
 
         //Function: operator ByteStream
         //  Converts this class to a ByteStream.
-        operator ByteStream() const;
+        operator ByteStream() const override;
 
     private:
         //Constructor: CaptureGyroBias
@@ -47,19 +47,19 @@ namespace mscl
         //
         //Returns:
         //    MipTypes::Command - the command ID.
-        virtual MipTypes::Command commandType() const { return MipTypes::CMD_CAP_GYRO_BIAS; }
+        MipTypes::Command commandType() const override { return MipTypes::CMD_CAP_GYRO_BIAS; }
 
         //Function: fieldDataByte
         //
         //Returns:
         //    uint8 - the byte ID for field data in the reply.
-        virtual uint8 fieldDataByte() const { return 0x9B; }
+        uint8 fieldDataByte() const override { return 0x9B; }
 
         //Function: responseExpected
         //
         //Returns:
         //    bool - True indicates that a response should return from the device.
-        virtual bool responseExpected() const;
+        bool responseExpected() const override;
 
         //Variable: samplingTimeInMS
         //    The <uint16> CaptureGyroBiasData to send to the device.
@@ -67,8 +67,7 @@ namespace mscl
 
     public:
 	// Destructor
-        ~CaptureGyroBias() { }
+        ~CaptureGyroBias() {}
     };
-
-#endif
-}
+#endif // !SWIG
+} // namespace mscl

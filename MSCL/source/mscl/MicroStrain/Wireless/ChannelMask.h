@@ -97,4 +97,4 @@ namespace mscl
         //    The channel number (ch1 = 1, ch16 = 16) of the last channel enabled. 0 if no channels are enabled.
         uint8 lastChEnabled() const;
     };
-}
+} // namespace mscl

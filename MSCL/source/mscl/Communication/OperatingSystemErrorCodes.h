@@ -15,5 +15,5 @@ namespace osErrorCodes
 #else
     //Linux specific error codes
     static const int FILE_NOT_FOUND = 2;
-#endif
-}
+#endif // _WIN32
+} // namespace osErrorCodes

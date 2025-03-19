@@ -16,6 +16,5 @@ namespace mscl
 
     Resume::Response::Response(std::weak_ptr<ResponseCollector> collector) :
         GenericMipCommand::Response(MipTypes::CMD_RESUME, collector, true, false, "Resume")
-    {
-    }
-}
+    {}
+} // namespace mscl

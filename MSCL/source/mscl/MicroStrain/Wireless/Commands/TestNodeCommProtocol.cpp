@@ -48,8 +48,7 @@ namespace mscl
         WirelessResponsePattern(collector, WirelessProtocol::cmdId_testNodeCommProtocol, nodeAddress),
         m_nodeAddress(nodeAddress),
         m_protocol(protocol)
-    {
-    }
+    {}
 
     bool TestNodeCommProtocol::Response::matchSuccessResponse(const WirelessPacket& packet)
     {
@@ -134,4 +133,4 @@ namespace mscl
 
         return true;
     }
-}
+} // namespace mscl

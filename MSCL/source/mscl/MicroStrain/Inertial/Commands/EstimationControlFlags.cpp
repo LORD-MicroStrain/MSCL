@@ -11,7 +11,7 @@ namespace mscl
     EstimationControlFlags::EstimationControlFlags(MipTypes::FunctionSelector function_selector, const uint16& dataToUse) :
         m_functionSelector(function_selector),
         m_ControlFlags(dataToUse)
-    { }
+    {}
 
     EstimationControlFlags::EstimationControlFlags(MipTypes::FunctionSelector function_selector) :
         m_functionSelector(function_selector)
@@ -57,5 +57,4 @@ namespace mscl
         }
         return GenericMipCommand::buildCommand(commandType(), byteCommand.data());
     }
-
-}
+} // namespace mscl

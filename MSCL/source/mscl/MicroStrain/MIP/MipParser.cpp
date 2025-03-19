@@ -8,9 +8,9 @@
 
 #include "mscl/Communication/RawBytePacketCollector.h"
 #include "mscl/MicroStrain/ChecksumBuilder.h"
-#include "mscl/MicroStrain/ResponseCollector.h"
 #include "mscl/MicroStrain/MIP/Packets/MipPacket.h"
 #include "mscl/MicroStrain/MIP/Packets/MipPacketCollector.h"
+#include "mscl/MicroStrain/ResponseCollector.h"
 
 namespace mscl
 {
@@ -18,8 +18,7 @@ namespace mscl
         m_packetCollector(packetCollector),
         m_responseCollector(responseCollector),
         m_rawBytePacketCollector(rawBytePacketCollector)
-    {
-    }
+    {}
 
     void MipParser::processPacket(MipPacket& packet)
     {
@@ -396,4 +395,4 @@ namespace mscl
 
         return mipParserResult_completePacket;
     }
-}
+} // namespace mscl

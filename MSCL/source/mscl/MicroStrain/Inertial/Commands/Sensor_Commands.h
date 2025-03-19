@@ -123,4 +123,4 @@ namespace mscl
             MipChannels parseResponse(const GenericMipCmdResponse& response, uint16 sampleRateBase) const;
         };
     };
-}
+} // namespace mscl

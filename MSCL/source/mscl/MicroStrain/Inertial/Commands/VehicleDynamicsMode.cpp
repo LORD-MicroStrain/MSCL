@@ -11,7 +11,7 @@ namespace mscl
     VehicleDynamicsMode::VehicleDynamicsMode(MipTypes::FunctionSelector function_selector, const InertialTypes::VehicleModeType& dataToUse) :
         m_functionSelector(function_selector),
         m_VehicleType(dataToUse)
-    { }
+    {}
 
     VehicleDynamicsMode::VehicleDynamicsMode(MipTypes::FunctionSelector function_selector) :
         m_functionSelector(function_selector)
@@ -57,5 +57,4 @@ namespace mscl
         }
         return GenericMipCommand::buildCommand(commandType(), byteCommand.data());
     }
-
-}
+} // namespace mscl

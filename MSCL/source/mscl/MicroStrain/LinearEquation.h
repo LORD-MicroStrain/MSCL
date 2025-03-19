@@ -64,4 +64,4 @@ namespace mscl
         //    The offset of the linear equation.
         float offset() const;
     };
-}
+} // namespace mscl

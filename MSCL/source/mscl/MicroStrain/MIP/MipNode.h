@@ -28,7 +28,7 @@ namespace mscl
 
 #ifndef SWIG
         MipNode(std::shared_ptr<MipNode_Impl> impl);
-#endif
+#endif // !SWIG
 
         //Variable: m_impl
         //    The <MipNode_Impl> class that contains all the implementation logic for the MipNode class.
@@ -53,7 +53,7 @@ namespace mscl
         //    - <Error_NotSupported>: The command is not supported by this Node.
         //    - <Error_MipCmdFailed>: The command has failed.
         virtual GenericMipCmdResponse doCommand(GenericMipCommand::Response& response, const ByteStream& command, bool verifySupported = true) const;
-#endif
+#endif // !SWIG
 
         //API Function: doCommand
         //  Note: This is an ADVANCED COMMAND. Most users will not need to use this.
@@ -508,4 +508,4 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the Node.
         RawBytePackets getRawBytePackets(uint32 timeout = 0, uint32 maxPackets = 0);
     };
-}
+} // namespace mscl

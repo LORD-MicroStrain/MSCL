@@ -21,7 +21,7 @@ namespace mscl
 		//
         //Returns:
         //    std::string - the string name for this class.
-        virtual std::string commandName() const { return "ExternalHeadingUpdate"; }
+        std::string commandName() const override { return "ExternalHeadingUpdate"; }
 
         //Function: MakeCommand
 		//
@@ -34,7 +34,7 @@ namespace mscl
 
         //Function: operator ByteStream
         //  Converts this class to a ByteStream.
-        operator ByteStream() const;
+        operator ByteStream() const override;
 
     private:
         // Function: Constructor ExternalHeadingUpdate
@@ -45,19 +45,19 @@ namespace mscl
 		//
         //Returns:
         //    MipTypes::Command - the command ID.
-        virtual MipTypes::Command commandType() const { return MipTypes::CMD_EF_EXTERN_HEADING_UPDATE; }
+        MipTypes::Command commandType() const override { return MipTypes::CMD_EF_EXTERN_HEADING_UPDATE; }
 
         //Function: fieldDataByte
 		//
         //Returns:
         //    uint8 - the byte ID for field data in the reply.
-        virtual uint8 fieldDataByte() const { return 0x00; }
+        uint8 fieldDataByte() const override { return 0x00; }
 
         //Function: responseExpected
 		//
         //Returns:
         //    bool - True indicates that a response should return from the device.
-        virtual bool responseExpected() const;
+        bool responseExpected() const override;
 
         //Variable: m_data
         //    The <HeadingData> to send to the device.
@@ -65,8 +65,7 @@ namespace mscl
 
     public:
 	// Destructor
-        ~ExternalHeadingUpdate() { }
+        ~ExternalHeadingUpdate() {}
     };
-
-#endif
-}
+#endif // !SWIG
+} // namespace mscl

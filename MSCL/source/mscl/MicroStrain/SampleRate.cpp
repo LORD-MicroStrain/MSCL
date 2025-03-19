@@ -13,14 +13,12 @@ namespace mscl
     SampleRate::SampleRate() :
         m_rateType(rateType_hertz),
         m_samples(1)
-    {
-    }
+    {}
 
     SampleRate::SampleRate(RateType type, uint32 samples) :
         m_rateType(type),
         m_samples(samples)
-    {
-    }
+    {}
 
     bool SampleRate::operator == (const SampleRate& other) const { return samplePeriod() == other.samplePeriod(); }
     bool SampleRate::operator != (const SampleRate& other) const { return samplePeriod() != other.samplePeriod(); }
@@ -297,4 +295,4 @@ namespace mscl
         TimeSpan newSamplePeriod = sampleRate.samplePeriod() * divisor;
         return fromTimeSpan(newSamplePeriod);
     }
-}
+} // namespace mscl

@@ -55,7 +55,7 @@ namespace mscl
         {
             return what();
         }
-#endif
+#endif // SWIGPYTHON
     };
 
     //API Class: Error_NotSupported
@@ -150,8 +150,7 @@ namespace mscl
         //    Initializes the Error_Communication object.
         Error_Communication() :
             Error("Failed to communicate with the device.")
-        {
-        }
+        {}
 
         //API Constructor: Error_Communication
         //    Initializes the Error_Communication object.
@@ -160,8 +159,7 @@ namespace mscl
         //    description - the description to set
         Error_Communication(const std::string& description) :
             Error(description)
-        {
-        }
+        {}
 
         ~Error_Communication() throw() override {}
     };
@@ -257,8 +255,7 @@ namespace mscl
         Error_Connection(const std::string& description, int code):
             Error(description),
             m_code(code)
-        {
-        }
+        {}
 
         ~Error_Connection() throw() override {}
 
@@ -274,7 +271,7 @@ namespace mscl
         {
             return code();
         }
-#endif
+#endif // SWIGPYTHON
     };
 
     //API Class: Error_InvalidSerialPort
@@ -292,8 +289,7 @@ namespace mscl
         //    code - the exception error code
         Error_InvalidSerialPort(int code):
             Error_Connection("Invalid Com Port.", code)
-        {
-        }
+        {}
 
         ~Error_InvalidSerialPort() throw() override {}
     };
@@ -393,7 +389,7 @@ namespace mscl
         {
             return code();
         }
-#endif
+#endif // SWIGPYTHON
     };
 
 
@@ -456,8 +452,7 @@ namespace mscl
         Error_InvalidNodeConfig(const ConfigIssues& issues, NodeAddress nodeAddress) :
             Error_InvalidConfig(issues),
             m_nodeAddress(nodeAddress)
-        {
-        }
+        {}
 
         ~Error_InvalidNodeConfig() throw () override {}
 
@@ -468,4 +463,4 @@ namespace mscl
             return m_nodeAddress;
         }
     };
-}
+} // namespace mscl

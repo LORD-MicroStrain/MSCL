@@ -146,4 +146,4 @@ namespace mscl
         //no bits were found to be enabled
         return -1;
     }
-}
+} // namespace mscl

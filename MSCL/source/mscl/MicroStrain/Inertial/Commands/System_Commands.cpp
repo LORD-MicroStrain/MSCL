@@ -99,4 +99,4 @@ namespace mscl
         return MIP_Commands::parseData_CommunicationMode(response);
     }
     //==========================================================================================
-}
+} // namespace mscl

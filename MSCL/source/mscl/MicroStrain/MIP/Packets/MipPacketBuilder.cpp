@@ -70,4 +70,4 @@ namespace mscl
         //return the result bytes that we created
         return result;
     }
-}
+} // namespace mscl

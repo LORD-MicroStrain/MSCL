@@ -37,9 +37,9 @@ namespace mscl
         {
             obj.write(boost::asio::buffer(data, data.size()));
         }
-#endif // MSCL_DISABLE_SSL
-#endif // MSCL_DISABLE_WEBSOCKETS
-    }
+#endif // !MSCL_DISABLE_SSL
+#endif // !MSCL_DISABLE_WEBSOCKETS
+    } // namespace details
 
     //Class: BoostCommunication
     //    The BoostCommunication object that is used for actual read/write communication for all Connection objects
@@ -175,8 +175,7 @@ namespace mscl
         m_bufferWriter(m_readBuffer.getBufferWriter()),
         m_parseDataFunction(nullptr),
         m_debugDataFunction(nullptr)
-    {
-    }
+    {}
 
     template <typename IO_Object>
     BoostCommunication<IO_Object>::~BoostCommunication()
@@ -362,4 +361,4 @@ namespace mscl
         //perform the actual port read again
         readSome();
     }
-}
+} // namespace mscl

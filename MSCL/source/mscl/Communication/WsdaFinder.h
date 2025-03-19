@@ -127,4 +127,4 @@ namespace mscl
         //  Clears out the list of found WSDAs and forces a restart of the upnp search.
         void restart();
     };
-}
+} // namespace mscl

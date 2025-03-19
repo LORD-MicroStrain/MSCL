@@ -81,4 +81,4 @@ namespace mscl
             const AutoBalanceResult& result() const;
         };
     };
-}
+} // namespace mscl

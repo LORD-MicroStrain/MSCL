@@ -52,8 +52,7 @@ namespace mscl
     SetToIdle_v2::Response::Response(NodeAddress nodeAddress, std::weak_ptr<ResponseCollector> collector, const BaseStation& baseStation) :
         SetToIdle::Response(nodeAddress, collector, baseStation),
         m_started(false)
-    {
-    }
+    {}
 
     SetToIdle_v2::Response::~Response()
     {
@@ -210,4 +209,4 @@ namespace mscl
     {
         return m_started;
     }
-}
+} // namespace mscl

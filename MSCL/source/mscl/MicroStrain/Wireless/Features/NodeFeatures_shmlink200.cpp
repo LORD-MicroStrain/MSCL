@@ -151,4 +151,4 @@ namespace mscl
 
         return HistogramRates;
     }
-}
+} // namespace mscl

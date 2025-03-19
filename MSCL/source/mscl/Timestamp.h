@@ -108,7 +108,7 @@ namespace mscl
         //Operator: >=
         //  Greater Than or Equal To operator for comparing Timestamps.
         virtual bool operator>=(const Timestamp& other) const;
-#endif
+#endif // !SWIG
 
         //API Function: nanoseconds
         //    Gets the number of nanoseconds since the specified epoch
@@ -193,4 +193,4 @@ namespace mscl
         //  Note: this uses the value stored in <Utils::gpsLeapSeconds> in its conversion.
         static uint64 utcTimeToGpsTime(uint64 utcNanoseconds);
     };
-}
+} // namespace mscl

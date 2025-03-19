@@ -11,7 +11,7 @@ namespace mscl
     GeographicSource::GeographicSource(MipTypes::FunctionSelector function_selector, const GeographicSourceOptions& dataToUse) :
         m_functionSelector(function_selector),
         m_sourceOptions(dataToUse)
-    { }
+    {}
 
     GeographicSource::GeographicSource(MipTypes::FunctionSelector function_selector) :
         m_functionSelector(function_selector)
@@ -147,5 +147,4 @@ namespace mscl
         GeographicSourceOptions dataToUse;  // The data won't get used for a get command.
         return MagneticFieldMagnitudeSource(MipTypes::READ_BACK_CURRENT_SETTINGS, dataToUse);
     }
-
-}
+} // namespace mscl

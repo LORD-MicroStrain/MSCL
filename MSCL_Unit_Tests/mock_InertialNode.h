@@ -18,8 +18,7 @@ MOCK_BASE_CLASS(mock_InertialNodeImpl, MipNode_Impl)
 {
     mock_InertialNodeImpl():
         MipNode_Impl(makeConnectionWithMockImpl())
-    {
-    }
+    {}
 
     MOCK_METHOD_EXT(getDeviceInfo, 0, mscl::MipDeviceInfo(), getDeviceInfo);
     MOCK_METHOD_EXT(getDescriptorSets, 0, std::vector<uint16>(), getDescriptorSets);

@@ -24,4 +24,4 @@ namespace mscl
         m_channels.emplace_back(3, WirelessChannel::channel_3, WirelessTypes::chType_acceleration, "Acceleration Z", 12);
         m_channels.emplace_back(4, WirelessChannel::channel_4, WirelessTypes::chType_temperature, "Internal Temperature");
     }
-}
+} // namespace mscl

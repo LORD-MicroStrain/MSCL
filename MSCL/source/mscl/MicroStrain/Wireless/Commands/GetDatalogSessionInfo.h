@@ -82,4 +82,4 @@ namespace mscl
             const DatalogSessionInfoResult& result() const;
         };
     };
-}
+} // namespace mscl

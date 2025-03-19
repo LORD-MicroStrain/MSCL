@@ -379,4 +379,4 @@ namespace mscl
     {
         return WirelessChannel::channelName(WirelessChannel::channel_rawAngleStrain) + "_angle" + Utils::toStrWithPrecision(angle, 2, true);
     }
-}
+} // namespace mscl

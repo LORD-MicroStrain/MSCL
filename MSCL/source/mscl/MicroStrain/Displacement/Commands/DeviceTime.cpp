@@ -19,6 +19,5 @@ namespace mscl
 
     DeviceTime::Response::Response(std::weak_ptr<ResponseCollector> collector, bool dataResponseExpected) :
         GenericMipCommand::Response(MipTypes::CMD_DISPLACEMENT_DEVICE_TIME, collector, true, dataResponseExpected, "Device Time")
-    {
-    }
-}
+    {}
+} // namespace mscl

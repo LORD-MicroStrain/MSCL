@@ -281,6 +281,6 @@ namespace mscl
         //Exceptions:
         //    - <Error>: Unknown model number.
         static BaseModel baseFromLegacyModel(uint16 legacyModel);
-#endif
+#endif // !SWIG
     };
-}
+} // namespace mscl

@@ -337,4 +337,4 @@ namespace mscl
         //    bytes - The payload of the packet, as a vector of bytes
         void payload(const Bytes& bytes);
     };
-}
+} // namespace mscl

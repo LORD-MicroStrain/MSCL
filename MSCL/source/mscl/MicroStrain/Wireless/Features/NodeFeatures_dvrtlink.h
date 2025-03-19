@@ -23,4 +23,4 @@ namespace mscl
 
         bool supportsSensorDelayConfig() const override;
     };
-}
+} // namespace mscl

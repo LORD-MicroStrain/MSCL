@@ -35,8 +35,7 @@ namespace mscl
     WriteEeprom::Response::Response(NodeAddress nodeAddress, std::weak_ptr<ResponseCollector> collector) :
         WirelessResponsePattern(collector, WirelessProtocol::cmdId_writeEeprom, nodeAddress),
         m_nodeAddress(nodeAddress)
-    {
-    }
+    {}
 
     bool WriteEeprom::Response::matchSuccessResponse(const WirelessPacket& packet)
     {
@@ -57,4 +56,4 @@ namespace mscl
         //if we made it here, the packet matches the response pattern
         return true;
     }
-}
+} // namespace mscl

@@ -247,4 +247,4 @@ namespace mscl
 
         return static_cast<float>(m_currentAddress) / static_cast<float>(m_totalBytes) * 100.0f;
     }
-}
+} // namespace mscl

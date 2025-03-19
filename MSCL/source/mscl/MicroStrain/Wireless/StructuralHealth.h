@@ -84,4 +84,4 @@ namespace mscl
         //    The <Histogram> that was calculated for the given angle.
         const Histogram& histogram() const;
     };
-}
+} // namespace mscl

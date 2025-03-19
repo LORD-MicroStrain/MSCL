@@ -11,7 +11,7 @@ namespace mscl
     DeviceStatus::DeviceStatus(MipModels::NodeModel model, DeviceStatusData::StatusSelector status_selector) :
         m_model(model),
         m_statusSelector(status_selector)
-    { }
+    {}
 
     DeviceStatus DeviceStatus::MakeGetCommand(MipModels::NodeModel model, DeviceStatusData::StatusSelector statusSelector)
     {
@@ -374,5 +374,4 @@ namespace mscl
         byteCommand.append_uint8(static_cast<uint8>(m_statusSelector));
         return GenericMipCommand::buildCommand(commandType(), byteCommand.data());
     }
-
-}
+} // namespace mscl

@@ -27,8 +27,7 @@ namespace mscl
     BaseStation_WriteEeprom::Response::Response(uint16 valueToWrite, std::weak_ptr<ResponseCollector> collector) :
         WirelessResponsePattern(collector, WirelessProtocol::cmdId_base_writeEeprom, WirelessProtocol::BASE_STATION_ADDRESS),
         m_valueWritten(valueToWrite)
-    {
-    }
+    {}
 
     bool BaseStation_WriteEeprom::Response::matchSuccessResponse(DataBuffer& data)
     {
@@ -104,4 +103,4 @@ namespace mscl
 
         return true;
     }
-}
+} // namespace mscl

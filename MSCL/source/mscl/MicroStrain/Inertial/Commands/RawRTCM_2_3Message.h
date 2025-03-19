@@ -65,8 +65,7 @@ namespace mscl
 
     public:
 	// Destructor
-        ~RawRTCM_2_3Message() { }
+        ~RawRTCM_2_3Message() {}
     };
-
-#endif
-}
+#endif // !SWIG
+} // namespace mscl

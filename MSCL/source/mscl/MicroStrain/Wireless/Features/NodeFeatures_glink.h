@@ -21,4 +21,4 @@ namespace mscl
         //    Creates a NodeFeatures_glink object.
         NodeFeatures_glink(const NodeInfo& info);
     };
-}
+} // namespace mscl

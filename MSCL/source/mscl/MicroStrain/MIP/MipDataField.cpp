@@ -10,19 +10,16 @@ namespace mscl
 {
     MipDataField::MipDataField() :
         m_fieldId(0)
-    {
-    }
+    {}
 
     MipDataField::MipDataField(uint16 fieldId) :
         m_fieldId(fieldId)
-    {
-    }
+    {}
 
     MipDataField::MipDataField(uint16 fieldId, Bytes fieldData) :
         m_fieldId(fieldId),
         m_fieldData(fieldData)
-    {
-    }
+    {}
 
     uint16 MipDataField::fieldId() const
     {
@@ -43,4 +40,4 @@ namespace mscl
     {
         return m_fieldData;
     }
-}
+} // namespace mscl

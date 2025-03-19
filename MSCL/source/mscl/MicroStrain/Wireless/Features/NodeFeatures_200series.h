@@ -37,4 +37,4 @@ namespace mscl
         const WirelessTypes::DataFormats dataFormats() const override;
         const WirelessTypes::StorageLimitModes storageLimitModes() const override;
     };
-}
+} // namespace mscl

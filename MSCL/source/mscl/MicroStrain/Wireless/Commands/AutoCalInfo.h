@@ -62,6 +62,6 @@ namespace mscl
             inputRange(WirelessTypes::range_1mV),
             hardwareOffset(0),
             excitationVoltage(WirelessTypes::voltage_1500mV)
-        { }
+        {}
     };
-}
+} // namespace mscl

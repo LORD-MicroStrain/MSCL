@@ -10,8 +10,7 @@ namespace mscl
 {
     TimedCondition::TimedCondition() :
         m_isNotified(false)
-    {
-    }
+    {}
 
     bool TimedCondition::timedWait(uint64 timeout)
     {
@@ -59,4 +58,4 @@ namespace mscl
         //notify the condition
         m_condition.notify_one();
     }
-}
+} // namespace mscl

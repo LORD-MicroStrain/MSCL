@@ -16,7 +16,7 @@
     //Typedef: hstring
     //    The "host-string" (as a string on MULTIBYTE) that can be used interchangably between unicode and multi-byte builds
     typedef std::string hstring;
-#endif
+#endif // UNICODE
 
 namespace mscl
 {
@@ -162,6 +162,6 @@ namespace mscl
         {
             return string_to_wstring(in);
         }
-#endif
+#endif // UNICODE
     }
-}
+} // namespace mscl

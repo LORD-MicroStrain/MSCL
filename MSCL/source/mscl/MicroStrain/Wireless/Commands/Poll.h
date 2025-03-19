@@ -110,4 +110,4 @@ namespace mscl
             bool matchSuccessResponse(const WirelessPacket& packet);
         };
     };
-}
+} // namespace mscl

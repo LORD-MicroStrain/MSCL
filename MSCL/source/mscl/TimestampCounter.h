@@ -73,4 +73,4 @@ namespace mscl
         uint64 m_time;
         size_t m_sampleCount;
     };
-}
+} // namespace mscl

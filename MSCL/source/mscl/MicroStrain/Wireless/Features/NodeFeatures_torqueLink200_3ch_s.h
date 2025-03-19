@@ -33,4 +33,4 @@ namespace mscl
 
         const WirelessTypes::Voltages excitationVoltages() const override;
     };
-}
+} // namespace mscl

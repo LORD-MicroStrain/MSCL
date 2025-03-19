@@ -101,4 +101,4 @@ namespace mscl
         //  The bit index of the highest bit enabled. -1 if no channels are enabled.
         virtual int16 lastBitEnabled() const;
     };
-}
+} // namespace mscl

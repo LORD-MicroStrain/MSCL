@@ -266,4 +266,4 @@ namespace mscl
         //  Gets the <Format> of this Rotation object.
         Format format() const { return m_format; }
     };
-}
+} // namespace mscl

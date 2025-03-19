@@ -199,7 +199,7 @@ namespace mscl
     public:
         //Destructor: ~Connection_Impl
         //    Destroys the Connection_Impl object
-        virtual ~Connection_Impl();
+        ~Connection_Impl() override;
 
     protected:
         //Variable: m_comm
@@ -278,7 +278,7 @@ namespace mscl
     protected:
         //Function: establishConnection
         //    Initializes and opens the current connection.
-        virtual void establishConnection() = 0;
+        void establishConnection() override = 0;
 
     public:
         //Function: description
@@ -457,8 +457,7 @@ namespace mscl
         m_errorMsg(""),
         m_rawByteMode(false),
         m_debugMode(false)
-    {
-    }
+    {}
 
     template <typename Comm_Object>
     Connection_Impl<Comm_Object>::~Connection_Impl()
@@ -771,19 +770,19 @@ namespace mscl
         //create a lock for thread safety
         std::unique_lock<std::mutex> lock(m_rawDataMutex);
 
-        auto timepoint = std::chrono::high_resolution_clock::now();
+        std::chrono::time_point<std::chrono::steady_clock> timepoint = std::chrono::high_resolution_clock::now();
 
         uint64 timeWaited = 0;
 
         do
         {
             // Try to find the pattern in the buffer. Will not find partial matches at the end as they require more data.
-            auto result = std::search(m_rawByteBuffer.begin(), m_rawByteBuffer.end(), pattern, pattern + length);
+            boost::circular_buffer_space_optimized<uint8>::iterator result = std::search(m_rawByteBuffer.begin(), m_rawByteBuffer.end(), pattern, pattern + length);
 
             // Found a match?
             if(result != m_rawByteBuffer.end())
             {
-                size_t endPos = (result - m_rawByteBuffer.begin()) + length - 1;
+                size_t endPos = result - m_rawByteBuffer.begin() + length - 1;
 
                 //add all of the bytes before and up to the end of the matched pattern to the result Bytes vector
                 for(size_t byteItr = 0; byteItr <= endPos; ++byteItr)
@@ -798,7 +797,7 @@ namespace mscl
             m_rawByteBufferCondition.wait_for(lock, std::chrono::milliseconds(timeout - timeWaited));
 
             // Update the timeout based on how long we just spent waiting.
-            auto now = std::chrono::high_resolution_clock::now();
+            std::chrono::time_point<std::chrono::steady_clock> now = std::chrono::high_resolution_clock::now();
             timeWaited += std::chrono::duration_cast<std::chrono::milliseconds>(now - timepoint).count();
             timepoint = now;
 
@@ -878,4 +877,4 @@ namespace mscl
             m_debugDataBuffer.pop_front();
         }
     }
-}
+} // namespace mscl

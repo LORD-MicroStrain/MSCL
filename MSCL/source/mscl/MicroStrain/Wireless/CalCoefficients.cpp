@@ -46,4 +46,4 @@ namespace mscl
     {
         return m_linearEq;
     }
-}
+} // namespace mscl

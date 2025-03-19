@@ -23,8 +23,7 @@ namespace mscl
 
     Erase::Response::Response(std::weak_ptr<ResponseCollector> collector) :
         WirelessResponsePattern(collector, WirelessProtocol::cmdId_erase, 0)    //note: passing 0 since this response doesn't check node address :(
-    {
-    }
+    {}
 
     bool Erase::Response::match(DataBuffer& data)
     {
@@ -78,4 +77,4 @@ namespace mscl
 
         return true;
     }
-}
+} // namespace mscl

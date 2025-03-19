@@ -15,8 +15,7 @@ namespace mscl
 {
     NodeEepromHelper::NodeEepromHelper(WirelessNode_Impl* node) :
         m_node(node)
-    {
-    }
+    {}
 
     Value NodeEepromHelper::read(const EepromLocation& location) const
     {
@@ -2112,4 +2111,4 @@ namespace mscl
     {
         write(NodeEepromMap::DERIVED_VELOCITY_UNIT, Value::UINT16(static_cast<uint16>(unit)));
     }
-}
+} // namespace mscl

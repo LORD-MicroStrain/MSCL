@@ -10,7 +10,7 @@ namespace mscl
 {
     ExternalHeadingUpdate::ExternalHeadingUpdate(const HeadingData& headingData) :
         m_headingData(headingData)
-    { }
+    {}
 
     ExternalHeadingUpdate ExternalHeadingUpdate::MakeCommand(const HeadingData& headingData)
     {
@@ -38,5 +38,4 @@ namespace mscl
 
         return GenericMipCommand::buildCommand(commandType(), byteCommand.data());
     }
-
-}
+} // namespace mscl

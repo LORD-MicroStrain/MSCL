@@ -10,8 +10,7 @@ namespace mscl
 {
     TimeSpan::TimeSpan(uint64 nanoseconds) :
         m_nanoseconds(nanoseconds)
-    {
-    }
+    {}
 
     bool TimeSpan::operator == (const TimeSpan& other) const { return compare(other) == 0; }
     bool TimeSpan::operator != (const TimeSpan& other) const { return compare(other) != 0; }
@@ -80,4 +79,4 @@ namespace mscl
         timeSpan.m_nanoseconds /= divisor;
         return timeSpan;
     }
-}
+} // namespace mscl

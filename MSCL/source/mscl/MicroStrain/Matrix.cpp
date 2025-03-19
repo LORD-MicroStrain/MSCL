@@ -13,8 +13,7 @@ namespace mscl
         m_numColumns(0),
         m_valuesType(valueType_float),
         m_valuesTypeSize(4)
-    {
-    }
+    {}
 
     Matrix::Matrix(uint16 rows, uint16 columns, ValueType storedAs, const ByteStream& data) :
         m_numRows(rows),
@@ -22,8 +21,7 @@ namespace mscl
         m_data(data.data()),
         m_valuesType(storedAs),
         m_valuesTypeSize(Utils::valueTypeSize(storedAs))
-    {
-    }
+    {}
 
     uint32 Matrix::getBytePos(uint16 row, uint16 col) const
     {
@@ -150,4 +148,4 @@ namespace mscl
 
         return result.str();
     }
-}
+} // namespace mscl

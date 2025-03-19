@@ -14,8 +14,7 @@
 namespace mscl
 {
     WirelessNodeConfig::WirelessNodeConfig()
-    {
-    }
+    {}
 
     WirelessTypes::Voltage WirelessNodeConfig::curExcitationVoltage(const NodeEepromHelper& eeprom) const
     {
@@ -2091,4 +2090,4 @@ namespace mscl
 
         return static_cast<float>(dataSize * numRawChannels * samplesPerSecond * dutyCycle + derivedBytesPerSweep / timeBetweenBursts.getSeconds());
     }
-}
+} // namespace mscl

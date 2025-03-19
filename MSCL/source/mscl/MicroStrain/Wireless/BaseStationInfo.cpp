@@ -21,8 +21,7 @@ namespace mscl
         m_regionCode(region),
         m_protocol_lxrs(*WirelessProtocol::getProtocol(asppVer_lxrs)),
         m_protocol_lxrsPlus(*WirelessProtocol::getProtocol(asppVer_lxrsPlus))
-    {
-    }
+    {}
 
     Version BaseStationInfo::firmwareVersion() const
     {
@@ -78,4 +77,4 @@ namespace mscl
 
         throw Error("Invalid CommProtocol (" + Utils::toStr(commProtocol) + ")");
     }
-}
+} // namespace mscl

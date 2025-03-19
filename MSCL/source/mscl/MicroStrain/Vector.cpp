@@ -45,4 +45,4 @@ namespace mscl
     {
         return columns();
     }
-}
+} // namespace mscl

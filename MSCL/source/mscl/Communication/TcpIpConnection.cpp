@@ -110,7 +110,7 @@ namespace mscl
                 DWORD dwBytesRet = 0;
 
                 WSAIoctl(m_ioPort->native_handle(), SIO_KEEPALIVE_VALS, &alive, sizeof(alive), NULL, 0, &dwBytesRet, NULL, NULL);
-#endif
+#endif // _WIN32
 
                 //setup m_comm by creating a new BoostCommunication object using the serial_port and io_context we created
                 m_comm.reset(new BoostCommunication<tcp::socket>(std::move(m_ioContext), std::move(m_ioPort)));
@@ -171,4 +171,4 @@ namespace mscl
         // Put the actor back to sleep.
         m_deadlineTimer->async_wait(std::bind(&TcpIpConnection::checkDeadline, this, error));
     }
-}
+} // namespace mscl

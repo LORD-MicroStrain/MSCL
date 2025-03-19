@@ -9,7 +9,7 @@
 namespace mscl
 {
     GPSTimeUpdate::GPSTimeUpdate()
-    { }
+    {}
 
     ByteStream GPSTimeUpdate::GetWeekValue()
     {
@@ -73,7 +73,7 @@ namespace mscl
                                          dataResponseExpected,
                                          "GPSTimeUpdate"),
         m_fieldDataByte(fieldDataByte)
-    { }
+    {}
 
     unsigned long GPSTimeUpdate::Response::parseResponse(const GenericMipCmdResponse& response) const
     {
@@ -81,4 +81,4 @@ namespace mscl
         uint32 timeValue = byteStream.read_uint32(0);
         return timeValue;
     }
-}
+} // namespace mscl

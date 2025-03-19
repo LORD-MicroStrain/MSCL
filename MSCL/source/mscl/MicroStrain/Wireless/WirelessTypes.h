@@ -1754,6 +1754,6 @@ namespace mscl
         //Returns:
         //  The number of derived bytes in a sweep for all the derived channels given.
         static uint32 derivedBytesPerSweep(const DerivedChannelMasks& derivedChannelMasks);
-#endif
+#endif // !SWIG
     };
-}
+} // namespace mscl

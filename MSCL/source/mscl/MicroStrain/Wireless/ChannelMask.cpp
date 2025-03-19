@@ -72,4 +72,4 @@ namespace mscl
 
         return static_cast<uint8>(result + 1);
     }
-}
+} // namespace mscl

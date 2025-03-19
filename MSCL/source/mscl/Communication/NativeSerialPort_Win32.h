@@ -153,4 +153,4 @@ namespace mscl
         //return the comm port handle
         return handle;
     }
-}
+} // namespace mscl

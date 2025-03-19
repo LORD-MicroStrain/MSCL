@@ -11,7 +11,7 @@ namespace mscl
     ExternalHeadingUpdateWithTimestamp::ExternalHeadingUpdateWithTimestamp(const HeadingData& headingData, const TimeUpdate& timestamp) :
         m_headingData(headingData),
         m_Timestamp (timestamp)
-    { }
+    {}
 
     ExternalHeadingUpdateWithTimestamp ExternalHeadingUpdateWithTimestamp::MakeCommand(const HeadingData& headingData, const TimeUpdate& timestamp)
     {
@@ -41,5 +41,4 @@ namespace mscl
 
         return GenericMipCommand::buildCommand(commandType(), byteCommand.data());
     }
-
-}
+} // namespace mscl

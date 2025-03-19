@@ -27,4 +27,4 @@ namespace mscl
         bool supportsRfSweepMode() const final;
         bool supportsCustomRfSweepMode() const final;
     };
-}
+} // namespace mscl

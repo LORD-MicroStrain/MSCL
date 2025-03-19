@@ -11,7 +11,7 @@ namespace mscl
     HeadingUpdateControl::HeadingUpdateControl(MipTypes::FunctionSelector function_selector, const HeadingUpdateOptions& headingUpdateOptions) :
         m_functionSelector(function_selector),
         m_HeadingUpdateOptions(headingUpdateOptions)
-    { }
+    {}
 
     HeadingUpdateControl::HeadingUpdateControl(MipTypes::FunctionSelector function_selector) :
         m_functionSelector(function_selector)
@@ -56,5 +56,4 @@ namespace mscl
         }
         return GenericMipCommand::buildCommand(commandType(), byteCommand.data());
     }
-
-}
+} // namespace mscl

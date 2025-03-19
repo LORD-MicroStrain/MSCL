@@ -11,12 +11,12 @@ namespace mscl
     LinearEquation::LinearEquation() :
         m_slope(1.0f),
         m_offset(0.0f)
-    { }
+    {}
 
     LinearEquation::LinearEquation(float slope, float offset) :
         m_slope(slope),
         m_offset(offset)
-    { }
+    {}
 
     void LinearEquation::slope(float slope)
     {
@@ -37,4 +37,4 @@ namespace mscl
     {
         return m_offset;
     }
-}
+} // namespace mscl

@@ -11,7 +11,7 @@ namespace mscl
     MagnetometerSoftIronMatrix::MagnetometerSoftIronMatrix(MipTypes::FunctionSelector function_selector, Matrix_3x3 matrix) :
         m_functionSelector(function_selector),
         m_matrix(matrix)
-    { }
+    {}
 
     MagnetometerSoftIronMatrix::MagnetometerSoftIronMatrix(MipTypes::FunctionSelector function_selector) :
         m_functionSelector(function_selector),
@@ -69,4 +69,4 @@ namespace mscl
         }
         return GenericMipCommand::buildCommand(commandType(), byteCommand.data());
     }
-}
+} // namespace mscl

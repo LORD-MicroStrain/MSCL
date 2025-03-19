@@ -43,4 +43,4 @@ namespace mscl
         //    eepromValue - The value from eeprom that determines the radio features
         void init(uint16 eepromValue);
     };
-}
+} // namespace mscl

@@ -110,8 +110,7 @@ namespace mscl
 
     ResetFilter::Response::Response(std::weak_ptr<ResponseCollector> collector) :
         GenericMipCommand::Response(MipTypes::CMD_EF_RESET_FILTER, collector, true, false, "Reset Filter")
-    {
-    }
+    {}
     //==========================================================================================
 
     //==========================================================================================
@@ -132,8 +131,7 @@ namespace mscl
 
     SetInitialAttitude::Response::Response(std::weak_ptr<ResponseCollector> collector) :
         GenericMipCommand::Response(MipTypes::CMD_EF_INIT_ATTITUDE, collector, true, false, "Set Initial Attitude")
-    {
-    }
+    {}
     //==========================================================================================
 
     //==========================================================================================
@@ -152,8 +150,7 @@ namespace mscl
 
     SetInitialHeading::Response::Response(std::weak_ptr<ResponseCollector> collector) :
         GenericMipCommand::Response(MipTypes::CMD_EF_INIT_HEADING, collector, true, false, "Set Initial Heading")
-    {
-    }
+    {}
     //==========================================================================================
 
     //==========================================================================================
@@ -187,8 +184,7 @@ namespace mscl
 
     AutoInitializeControl::Response::Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse) :
         GenericMipCommand::Response(MipTypes::CMD_EF_AUTO_INIT_CTRL, collector, true, dataResponse, "Auto-Initialization Control")
-    {
-    }
+    {}
 
     bool AutoInitializeControl::Response::parseResponse(const GenericMipCmdResponse& response) const
     {
@@ -227,8 +223,7 @@ namespace mscl
 
     AltitudeAidControl::Response::Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse) :
         GenericMipCommand::Response(MipTypes::CMD_EF_ALTITUDE_AID_CTRL, collector, true, dataResponse, "Altitude Aid Control")
-    {
-    }
+    {}
 
     bool AltitudeAidControl::Response::parseResponse(const GenericMipCmdResponse& response) const
     {
@@ -267,8 +262,7 @@ namespace mscl
 
     PitchRollAidControl::Response::Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse) :
         GenericMipCommand::Response(MipTypes::CMD_EF_PITCH_ROLL_AID_CTRL, collector, true, dataResponse, "Pitch/Roll Aid Control")
-    {
-    }
+    {}
 
     bool PitchRollAidControl::Response::parseResponse(const GenericMipCmdResponse& response) const
     {
@@ -310,8 +304,7 @@ namespace mscl
 
     VelocityZUPTControl::Response::Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse) :
         GenericMipCommand::Response(MipTypes::CMD_EF_ZERO_VEL_UPDATE_CTRL, collector, true, dataResponse, "Velocity ZUPT Control")
-    {
-    }
+    {}
 
     ZUPTSettingsData VelocityZUPTControl::Response::parseResponse(const GenericMipCmdResponse& response) const
     {
@@ -353,8 +346,7 @@ namespace mscl
 
     AngularRateZUPTControl::Response::Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse) :
         GenericMipCommand::Response(MipTypes::CMD_EF_ZERO_ANG_RATE_UPDATE_CTRL, collector, true, dataResponse, "Angular Rate ZUPT Control")
-    {
-    }
+    {}
 
     ZUPTSettingsData AngularRateZUPTControl::Response::parseResponse(const GenericMipCmdResponse& response) const
     {
@@ -380,8 +372,7 @@ namespace mscl
 
     TareOrientation::Response::Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse) :
         GenericMipCommand::Response(MipTypes::CMD_EF_TARE_ORIENT, collector, true, dataResponse, "Tare Orientation")
-    {
-    }
+    {}
 
     bool TareOrientation::Response::parseResponse(const GenericMipCmdResponse& response) const
     {
@@ -405,8 +396,7 @@ namespace mscl
 
     CmdedVelZupt::Response::Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse) :
         GenericMipCommand::Response(MipTypes::CMD_EF_CMDED_ZERO_VEL_UPDATE, collector, true, false, "Commanded Zero Velocity Update")
-    {
-    }
+    {}
     //==========================================================================================
 
     //==========================================================================================
@@ -425,8 +415,7 @@ namespace mscl
 
     CmdedAngularZupt::Response::Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse) :
         GenericMipCommand::Response(MipTypes::CMD_EF_CMDED_ZERO_ANG_RATE_UPDATE, collector, true, false, "Commanded Zero Angular Rate Update")
-    {
-    }
+    {}
     //==========================================================================================
 
     //==========================================================================================
@@ -462,8 +451,7 @@ namespace mscl
 
     SensorToVehicFrameTrans::Response::Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse) :
         GenericMipCommand::Response(MipTypes::CMD_EF_SENS_VEHIC_FRAME_ROTATION_EULER, collector, true, dataResponse, "Sensor to Vehicle Frame Transformation")
-    {
-    }
+    {}
 
     EulerAngles SensorToVehicFrameTrans::Response::parseResponse(const GenericMipCmdResponse& response) const
     {
@@ -504,8 +492,7 @@ namespace mscl
 
     SensorToVehicFrameOffset::Response::Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse) :
         GenericMipCommand::Response(MipTypes::CMD_EF_SENS_VEHIC_FRAME_OFFSET, collector, true, dataResponse, "Sensor to Vehicle Frame Offset")
-    {
-    }
+    {}
 
     PositionOffset SensorToVehicFrameOffset::Response::parseResponse(const GenericMipCmdResponse& response) const
     {
@@ -546,12 +533,11 @@ namespace mscl
 
     AntennaOffset::Response::Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse) :
         GenericMipCommand::Response(MipTypes::CMD_EF_ANTENNA_OFFSET, collector, true, dataResponse, "Antenna Offset")
-    {
-    }
+    {}
 
     PositionOffset AntennaOffset::Response::parseResponse(const GenericMipCmdResponse& response) const
     {
         return MIP_Commands::parseData_PositionOffset(response);
     }
     //==========================================================================================
-}
+} // namespace mscl

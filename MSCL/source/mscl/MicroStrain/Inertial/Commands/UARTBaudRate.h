@@ -95,8 +95,7 @@ namespace mscl
 
     public:
         // Destructor
-        ~UARTBaudRate() { }
+        ~UARTBaudRate() {}
     };
-
-#endif
-}
+#endif // !SWIG
+} // namespace mscl

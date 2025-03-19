@@ -61,4 +61,4 @@ namespace mscl
         //    true if the packet is a well-formed Node Discovery (v4) Packet, false otherwise.
         static bool integrityCheck(const WirelessPacket& packet);
     };
-}
+} // namespace mscl

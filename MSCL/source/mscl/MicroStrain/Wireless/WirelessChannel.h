@@ -621,7 +621,7 @@ namespace mscl
         //Exceptions:
         //    - <Error>: Unknown channel.
         static std::string channelName(ChannelId channelId);
-#endif
+#endif // !SWIG
     };
 
     //API Typedef: WirelessChannels
@@ -631,4 +631,4 @@ namespace mscl
     //API Typedef: WirelessPollData
     //  A typedef for a map of <WirelessChannel> to float values, used when polling a Wireless Node.
     typedef std::map<WirelessChannel::ChannelId, float> WirelessPollData;
-}
+} // namespace mscl

@@ -40,4 +40,4 @@ namespace mscl
     {
         return m_calsApplied;
     }
-}
+} // namespace mscl

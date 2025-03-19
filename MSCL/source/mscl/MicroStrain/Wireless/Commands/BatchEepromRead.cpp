@@ -32,8 +32,7 @@ namespace mscl
     BatchEepromRead::Response::Response(NodeAddress nodeAddress, std::weak_ptr<ResponseCollector> collector) :
         WirelessResponsePattern(collector, WirelessProtocol::cmdId_batchEepromRead, nodeAddress),
         m_nodeAddress(nodeAddress)
-    {
-    }
+    {}
 
     bool BatchEepromRead::Response::matchSuccessResponse(const WirelessPacket& packet)
     {
@@ -75,4 +74,4 @@ namespace mscl
 
         return m_eepromMap;
     }
-}
+} // namespace mscl

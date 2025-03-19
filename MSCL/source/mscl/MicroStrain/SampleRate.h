@@ -19,7 +19,7 @@ namespace mscl
         friend SampleRate operator*(uint32 factor, const SampleRate& sampleRate);
         friend SampleRate operator/(const SampleRate& sampleRate, uint32 divisor);
         friend SampleRate operator/(uint32 divisor, const SampleRate& sampleRate);
-#endif
+#endif // !SWIG
 
     public:
         //=====================================================================================================
@@ -57,7 +57,7 @@ namespace mscl
         bool operator > (const SampleRate& other) const;
         bool operator >= (const SampleRate& other) const;
         SampleRate& operator+=(uint32 samplesPerSecond);
-#endif
+#endif // !SWIG
 
 
         //API Function: str
@@ -219,5 +219,5 @@ namespace mscl
     SampleRate operator*(uint32 factor, const SampleRate& sampleRate);
     SampleRate operator/(const SampleRate& sampleRate, uint32 divisor);
     SampleRate operator/(uint32 divisor, const SampleRate& sampleRate);
-#endif
-}
+#endif // !SWIG
+} // namespace mscl

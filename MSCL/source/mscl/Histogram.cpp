@@ -11,8 +11,7 @@ namespace mscl
     Histogram::Histogram(const Value& binsStart, const Value& binsSize) :
         m_binsStart(binsStart),
         m_binsSize(binsSize)
-    {
-    }
+    {}
 
     Value Histogram::binsStart() const
     {
@@ -33,4 +32,4 @@ namespace mscl
     {
         m_bins.push_back(bin);
     }
-}
+} // namespace mscl

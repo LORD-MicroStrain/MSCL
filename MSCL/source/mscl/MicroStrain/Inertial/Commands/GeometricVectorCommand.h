@@ -94,7 +94,7 @@ namespace mscl
 
     public:
         // Destructor
-        ~GeometricVectorCommand() { }
+        ~GeometricVectorCommand() {}
     };
-#endif
-}
+#endif // !SWIG
+} // namespace mscl

@@ -41,4 +41,4 @@ namespace mscl
     {
         return Utils::msb(static_cast<uint16>(m_channelField));
     }
-}
+} // namespace mscl

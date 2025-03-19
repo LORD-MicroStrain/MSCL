@@ -73,5 +73,5 @@ namespace mscl
             uint16 eepromValue() const;
         };
     };
-#endif
-}
+#endif // !SWIG
+} // namespace mscl

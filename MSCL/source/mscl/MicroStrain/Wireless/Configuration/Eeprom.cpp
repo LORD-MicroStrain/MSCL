@@ -14,7 +14,7 @@ namespace mscl
         m_useCache(useCache),
         m_numRetries(numRetries),
         m_hasWritten(false)
-    { }
+    {}
 
     void Eeprom::useCache(bool enable)
     {
@@ -253,4 +253,4 @@ namespace mscl
     {
         writeEeprom(location, static_cast<uint16>(value));
     }
-}
+} // namespace mscl

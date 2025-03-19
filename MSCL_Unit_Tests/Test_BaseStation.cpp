@@ -27,7 +27,7 @@ namespace mock
     {
         return s << "ByteStream";
     }
-}
+} // namespace Mock
 
 
 BOOST_AUTO_TEST_SUITE(BaseStation_Test)

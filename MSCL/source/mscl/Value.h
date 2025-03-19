@@ -111,7 +111,7 @@ namespace mscl
         //Returns:
         //  A <Value> object holding the double.
         static Value DOUBLE(double value);
-#endif
+#endif // !SWIG
 
     protected:
         //Variable: m_value
@@ -255,4 +255,4 @@ namespace mscl
         //    - <Error_BadDataType>: The type to string conversion is not supported by this function
         virtual std::string as_string() const;
     };
-}
+} // namespace mscl

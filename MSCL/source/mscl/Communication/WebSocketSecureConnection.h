@@ -56,5 +56,4 @@ namespace mscl
 
         boost::asio::ssl::context m_sslContext;
     };
-
-}
+} // namespace mscl

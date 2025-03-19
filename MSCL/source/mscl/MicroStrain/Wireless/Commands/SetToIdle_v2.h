@@ -44,7 +44,7 @@ namespace mscl
 
             //Destructor: Response
             //    Destroys the SetToIdle Response object. This also cancels the SetToIdle operation on the BaseStation, if not already complete or canceled.
-            ~Response();
+            ~Response() override;
 
         private:
             //Variable: m_started
@@ -91,5 +91,5 @@ namespace mscl
             bool started();
         };
     }
-#endif
-}
+#endif // !SWIG
+} // namespace mscl

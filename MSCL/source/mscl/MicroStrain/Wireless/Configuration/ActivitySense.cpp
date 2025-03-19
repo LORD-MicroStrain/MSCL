@@ -14,8 +14,7 @@ namespace mscl
         m_inactivityThreshold(0.0),
         m_activityTime(0.0),
         m_inactivityTimeout(0.0)
-    {
-    }
+    {}
 
     bool ActivitySense::enabled() const
     {
@@ -66,4 +65,4 @@ namespace mscl
     {
         m_inactivityTimeout = timeout;
     }
-}
+} // namespace mscl

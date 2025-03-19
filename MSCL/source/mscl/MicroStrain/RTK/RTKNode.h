@@ -28,11 +28,11 @@ namespace mscl
         //    - <Error_Connection>: A problem occurred with the Connection.
         explicit RTKNode(Connection connection) : MipNode(connection) {}
 
-        virtual ~RTKNode() {}
+        ~RTKNode() override = default;
 
 #ifndef SWIG
         RTKNode(std::shared_ptr<MipNode_Impl> impl) : MipNode(impl) {} //constructor with direct underlying implementation for this class.
-#endif
+#endif // !SWIG
 
         //API Function: getCommunicationMode
         //    Gets the current communication mode that the node is in.
@@ -100,4 +100,4 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the RTKNode.
         uint8 getStatusBitfieldVersion() const;
     };
-}
+} // namespace mscl

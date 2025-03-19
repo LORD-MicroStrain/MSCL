@@ -105,4 +105,4 @@ namespace mscl
             throw Error_NotSupported("The sampling mode is not supported by this Node");
         }
     }
-}
+} // namespace mscl

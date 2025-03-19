@@ -29,4 +29,4 @@ namespace mscl
         //    Gets the number of nanoseconds since Unix Epoch, using a high-resolution clock.
         uint64 getCurrentSystemTime() const;
     };
-}
+} // namespace mscl

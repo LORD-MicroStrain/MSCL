@@ -33,4 +33,4 @@ namespace mscl
 
         virtual const WirelessTypes::StorageLimitModes storageLimitModes() const;
     };
-}
+} // namespace mscl

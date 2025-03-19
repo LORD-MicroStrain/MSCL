@@ -60,7 +60,7 @@ namespace mscl
         //Returns:
         //    A <GenericMipCmdResponse> representing a failed response from the command.
         static GenericMipCmdResponse ResponseFail(ResponsePattern::State errorState, MipPacket::MipAckNack errorCode, const std::string& cmdName);
-#endif
+#endif // !SWIG
 
     private:
         //Variable: m_data
@@ -320,4 +320,4 @@ namespace mscl
             GenericMipCmdResponse result();
         };
     };
-}
+} // namespace mscl

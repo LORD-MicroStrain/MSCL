@@ -42,8 +42,7 @@ namespace mscl
 
     BaseStation_Ping_v2::Response::Response(std::weak_ptr<ResponseCollector> collector) :
         WirelessResponsePattern(collector, WirelessProtocol::cmdId_basePing_v2, WirelessProtocol::BASE_STATION_ADDRESS)
-    {
-    }
+    {}
 
     bool BaseStation_Ping_v2::Response::matchSuccessResponse(const WirelessPacket& packet)
     {
@@ -64,4 +63,4 @@ namespace mscl
         //if we made it here, the packet matches the response pattern
         return true;
     }
-}
+} // namespace mscl

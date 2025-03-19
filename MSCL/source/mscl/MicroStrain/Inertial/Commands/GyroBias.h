@@ -84,8 +84,7 @@ namespace mscl
 
     public:
         // Destructor: ~GyroBias
-        ~GyroBias() { }
+        ~GyroBias() {}
     };
-
-#endif
-}
+#endif // !SWIG
+} // namespace mscl

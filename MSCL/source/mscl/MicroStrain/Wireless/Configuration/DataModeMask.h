@@ -62,4 +62,4 @@ namespace mscl
         //  Whether derived data mode is enabled or disabled.
         bool derivedModeEnabled;
     };
-}
+} // namespace mscl

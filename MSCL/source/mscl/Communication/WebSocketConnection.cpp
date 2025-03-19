@@ -5,7 +5,6 @@
 *****************************************************************************************/
 
 #ifndef MSCL_DISABLE_WEBSOCKETS
-
 #include "mscl/Communication/WebSocketConnection.h"
 
 #ifdef _WIN32
@@ -110,7 +109,7 @@ namespace mscl
                 DWORD dwBytesRet = 0;
 
                 WSAIoctl(m_ioPort->next_layer().native_handle(), SIO_KEEPALIVE_VALS, &alive, sizeof(alive), NULL, 0, &dwBytesRet, NULL, NULL);
-#endif
+#endif // _WIN32
 
                 //setup m_comm by creating a new BoostCommunication object using the serial_port and io_context we created
                 m_comm.reset(new BoostCommunication<websocket::stream<tcp::socket>>(std::move(m_ioContext), std::move(m_ioPort)));
@@ -130,5 +129,4 @@ namespace mscl
         }
     }
 }
-
 #endif // MSCL_DISABLE_WEBSOCKETS

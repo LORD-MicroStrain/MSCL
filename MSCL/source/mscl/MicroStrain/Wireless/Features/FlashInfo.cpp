@@ -48,4 +48,4 @@ namespace mscl
                 return FlashInfo(0, 0, 0, 0);
         }
     }
-}
+} // namespace mscl

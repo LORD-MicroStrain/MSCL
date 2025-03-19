@@ -26,4 +26,4 @@ namespace mscl
         const WirelessTypes::DataFormats dataFormats() const override;
         const WirelessTypes::CfcFilters cfcFilters() const override;
     };
-}
+} // namespace mscl

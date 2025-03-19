@@ -1233,4 +1233,4 @@ namespace mscl
         //  - <Error_Connection>: A connection error has occurred with the BaseStation.
         bool node_autocal(NodeAddress nodeAddress, const ByteStream& command, AutoCal::Response& response, AutoCalResult& result);
     };
-}
+} // namespace mscl

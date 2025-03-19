@@ -25,4 +25,4 @@ namespace mscl
 
         const WirelessTypes::Filters antiAliasingFilters() const override;
     };
-}
+} // namespace mscl

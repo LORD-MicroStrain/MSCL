@@ -241,4 +241,4 @@ namespace mscl
         //  Gets the <ChannelGroups> for the Wireless Node.
         ChannelGroups channelGroups() const;
     };
-}
+} // namespace mscl

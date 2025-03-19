@@ -16,8 +16,7 @@ namespace mscl
         m_sweepSize(0),
         m_numSweeps(0),
         m_payloadOffsetChannelData(0)
-    {
-    }
+    {}
 
     //    Adds a single DataSweep to the data packet
     void WirelessDataPacket::addSweep(const DataSweep& sweep)
@@ -207,4 +206,4 @@ namespace mscl
                 break;
         }
     }
-}
+} // namespace mscl

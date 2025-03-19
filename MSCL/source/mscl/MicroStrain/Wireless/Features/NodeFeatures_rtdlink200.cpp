@@ -201,4 +201,4 @@ namespace mscl
     {
         return m_nodeInfo.firmwareVersion() >= Version(12, 42296);
     }
-}
+} // namespace mscl

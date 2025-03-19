@@ -48,8 +48,7 @@ namespace mscl
         m_eepromAddress(eepromAddress),
         m_result(0),
         m_errorCode(WirelessPacket::error_none)
-    {
-    }
+    {}
 
     bool BaseStation_ReadEeprom_v2::Response::matchSuccessResponse(const WirelessPacket& packet)
     {
@@ -110,4 +109,4 @@ namespace mscl
     {
         return m_errorCode;
     }
-}
+} // namespace mscl

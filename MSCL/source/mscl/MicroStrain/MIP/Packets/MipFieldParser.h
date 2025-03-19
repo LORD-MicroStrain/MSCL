@@ -74,4 +74,4 @@ namespace mscl
         //    true if the flag position is valid, false if the flag position is invalid
         static bool pointIsValid(uint16 allFlags, uint16 flagPos);
     };
-}
+} // namespace mscl

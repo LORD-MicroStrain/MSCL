@@ -11,14 +11,12 @@ namespace mscl
     BeaconStatus::BeaconStatus() :
         m_enabled(false),
         m_timestamp(0)
-    {
-    }
+    {}
 
     BeaconStatus::BeaconStatus(bool beaconEnabled, const Timestamp& currentTimestamp) :
         m_enabled(beaconEnabled),
         m_timestamp(currentTimestamp)
-    {
-    }
+    {}
 
     bool BeaconStatus::enabled()
     {
@@ -29,4 +27,4 @@ namespace mscl
     {
         return m_timestamp;
     }
-}
+} // namespace mscl

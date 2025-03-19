@@ -89,7 +89,7 @@ namespace mscl
 
     public:
         // Destructor
-        ~SignalConditioningSettings() { }
+        ~SignalConditioningSettings() {}
     };
-#endif
-}
+#endif // !SWIG
+} // namespace mscl

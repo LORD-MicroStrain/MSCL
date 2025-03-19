@@ -75,4 +75,4 @@ namespace mscl
             return static_cast<BaseModel>(legacyModel);
         }
     }
-}
+} // namespace mscl

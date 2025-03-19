@@ -44,4 +44,4 @@ namespace mscl
             return DeviceState::deviceState_unknown;
         }
     }
-}
+} // namespace mscl

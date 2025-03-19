@@ -85,4 +85,4 @@ namespace mscl
         //  Note: this is only valid if <transducerType> returns <WirelessTypes::TransducerType::transducer_thermistor>.
         WirelessTypes::ThermistorType thermistorType() const;
     };
-}
+} // namespace mscl

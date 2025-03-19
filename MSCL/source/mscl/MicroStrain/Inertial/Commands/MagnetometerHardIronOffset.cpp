@@ -11,7 +11,7 @@ namespace mscl
     MagnetometerHardIronOffset::MagnetometerHardIronOffset(MipTypes::FunctionSelector function_selector, GeometricVector dataToUse) :
         m_functionSelector(function_selector),
         m_offsetVector(dataToUse)
-    { }
+    {}
 
     MagnetometerHardIronOffset::MagnetometerHardIronOffset(MipTypes::FunctionSelector function_selector) :
         m_functionSelector(function_selector)
@@ -60,5 +60,4 @@ namespace mscl
         }
         return GenericMipCommand::buildCommand(commandType(), byteCommand.data());
     }
-
-}
+} // namespace mscl

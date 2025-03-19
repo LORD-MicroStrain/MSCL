@@ -198,4 +198,4 @@ namespace mscl
         //  The percentage complete (0 - 100).
         float percentComplete() override;
     };
-}
+} // namespace mscl

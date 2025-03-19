@@ -137,4 +137,4 @@ namespace mscl
         assert(false);
         return rates.at(rates.size() - 1);
     }
-}
+} // namespace mscl

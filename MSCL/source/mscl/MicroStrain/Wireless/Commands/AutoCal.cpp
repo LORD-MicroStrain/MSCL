@@ -142,8 +142,7 @@ namespace mscl
         m_calStarted(false),
         m_completionFlag(WirelessTypes::autocal_notComplete),
         m_timeUntilCompletion(0.0f)
-    {
-    }
+    {}
 
     bool AutoCal::Response::calStarted() const
     {
@@ -243,8 +242,7 @@ namespace mscl
 
     AutoCal::ShmResponse::ShmResponse(NodeAddress nodeAddress, std::weak_ptr<ResponseCollector> collector) :
         Response(nodeAddress, collector)
-    {
-    }
+    {}
 
     bool AutoCal::ShmResponse::matchSuccessResponse(const WirelessPacket& packet)
     {
@@ -279,8 +277,7 @@ namespace mscl
 
     AutoCal::Shm201Response::Shm201Response(NodeAddress nodeAddress, std::weak_ptr<ResponseCollector> collector) :
         Response(nodeAddress, collector)
-    {
-    }
+    {}
 
     bool AutoCal::Shm201Response::matchSuccessResponse(const WirelessPacket& packet)
     {
@@ -316,8 +313,7 @@ namespace mscl
     AutoCal::ShuntCalResponse::ShuntCalResponse(NodeAddress nodeAddress, std::weak_ptr<ResponseCollector> collector, uint8 channelNumber) :
         Response(nodeAddress, collector),
         m_channelNumber(channelNumber)
-    {
-    }
+    {}
 
     bool AutoCal::ShuntCalResponse::matchSuccessResponse(const WirelessPacket& packet)
     {
@@ -350,4 +346,4 @@ namespace mscl
 
         return true;
     }
-}
+} // namespace mscl

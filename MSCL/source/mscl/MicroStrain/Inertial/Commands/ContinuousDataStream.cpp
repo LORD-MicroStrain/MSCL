@@ -94,4 +94,4 @@ namespace mscl
     {
         return MIP_Commands::parseData_ContinuousDataStream(response);
     }
-}
+} // namespace mscl

@@ -17,11 +17,10 @@ namespace mscl
 
     DeviceStatusFlags::Response::Response(std::weak_ptr<ResponseCollector> collector) :
         GenericMipCommand::Response(MipTypes::CMD_RTK_DEVICE_STATUS_FLAGS, collector, true, true, "Get RTK Device Status Flags")
-    {
-    }
+    {}
 
     RTKDeviceStatusFlags DeviceStatusFlags::Response::parseResponse(const GenericMipCmdResponse& response) const
     {
         return RTKDeviceStatusFlags(response.data().read_uint32(0));
     }
-}
+} // namespace mscl

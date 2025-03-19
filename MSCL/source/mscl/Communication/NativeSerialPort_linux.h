@@ -22,4 +22,4 @@ namespace mscl
     {
         return portName;
     }
-}
+} // namespace mscl

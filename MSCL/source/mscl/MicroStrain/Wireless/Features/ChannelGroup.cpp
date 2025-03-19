@@ -89,4 +89,4 @@ namespace mscl
     {
         return hasSetting(setting) && m_channels.enabled(channelNumber);
     }
-}
+} // namespace mscl

@@ -160,4 +160,4 @@ namespace mscl
         //    true if the command was a success, false otherwise.
         bool success() const;
     };
-}
+} // namespace mscl

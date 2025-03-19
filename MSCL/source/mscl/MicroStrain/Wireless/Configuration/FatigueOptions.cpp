@@ -11,14 +11,12 @@ namespace mscl
     SnCurveSegment::SnCurveSegment() :
         m_m(1.0),
         m_loga(0.0)
-    {
-    }
+    {}
 
     SnCurveSegment::SnCurveSegment(float m, float loga) :
         m_m(m),
         m_loga(loga)
-    {
-    }
+    {}
 
     float SnCurveSegment::m() const
     {
@@ -51,8 +49,7 @@ namespace mscl
         m_distMode_lowerBound(0.0f),
         m_distMode_upperBound(1.0f),
         m_histogramEnable(true)
-    {
-    }
+    {}
 
     float FatigueOptions::youngsModulus() const
     {
@@ -194,4 +191,4 @@ namespace mscl
     {
         m_histogramEnable = enable;
     }
-}
+} // namespace mscl

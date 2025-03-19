@@ -85,8 +85,7 @@ namespace mscl
 
     public:
         // Destructor
-        ~HeadingUpdateControl() { }
+        ~HeadingUpdateControl() {}
     };
-
-#endif
-}
+#endif // !SWIG
+} // namespace mscl

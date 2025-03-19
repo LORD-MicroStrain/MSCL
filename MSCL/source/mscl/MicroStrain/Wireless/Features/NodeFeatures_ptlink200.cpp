@@ -151,4 +151,4 @@ namespace mscl
 
         return static_cast<uint32>(TimeSpan::MilliSeconds(10).getMicroseconds());    //10 milliseconds
     }
-}
+} // namespace mscl

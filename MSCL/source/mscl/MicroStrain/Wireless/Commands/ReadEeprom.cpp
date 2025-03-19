@@ -35,8 +35,7 @@ namespace mscl
         WirelessResponsePattern(collector, WirelessProtocol::cmdId_readEeprom, nodeAddress),
         m_nodeAddress(nodeAddress),
         m_eepromValue(0)
-    {
-    }
+    {}
 
     bool ReadEeprom::Response::matchSuccessResponse(const WirelessPacket& packet)
     {
@@ -68,4 +67,4 @@ namespace mscl
 
         return m_eepromValue;
     }
-}
+} // namespace mscl

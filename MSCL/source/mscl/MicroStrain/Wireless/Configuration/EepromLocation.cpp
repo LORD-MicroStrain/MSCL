@@ -53,4 +53,4 @@ namespace mscl
     {
         return m_description + " (EEPROM " + Utils::toStr(m_location) + ")";
     }
-}
+} // namespace mscl

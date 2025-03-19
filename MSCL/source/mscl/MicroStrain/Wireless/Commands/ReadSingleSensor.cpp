@@ -26,8 +26,7 @@ namespace mscl
     ReadSingleSensor::Response::Response(std::weak_ptr<ResponseCollector> collector) :
         WirelessResponsePattern(collector, WirelessProtocol::cmdId_readSingleSensor, 0),    //note: passing 0 because this response doesn't check node address :(
         m_sensorValue(0)
-    {
-    }
+    {}
 
     bool ReadSingleSensor::Response::matchSuccessResponse(DataBuffer& data)
     {
@@ -79,4 +78,4 @@ namespace mscl
     {
         return m_sensorValue;
     }
-}
+} // namespace mscl

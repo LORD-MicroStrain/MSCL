@@ -258,4 +258,4 @@ namespace mscl
         //return the tick value
         return packet.payload().read_uint16(2);
     }
-}
+} // namespace mscl

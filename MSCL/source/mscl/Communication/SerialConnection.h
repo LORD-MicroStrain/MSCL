@@ -81,5 +81,4 @@ namespace mscl
         //    - <Error_Connection>: failed to get or set com port parameters
         virtual void establishConnection();
     };
-
-}
+} // namespace mscl

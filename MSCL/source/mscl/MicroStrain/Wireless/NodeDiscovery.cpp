@@ -313,4 +313,4 @@ namespace mscl
     {
         return m_timestamp;
     }
-}
+} // namespace mscl

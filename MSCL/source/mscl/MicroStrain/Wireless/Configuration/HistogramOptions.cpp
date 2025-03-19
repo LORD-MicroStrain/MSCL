@@ -12,8 +12,7 @@ namespace mscl
         m_transmitRate(WirelessTypes::sampleRate_30Sec),
         m_binStart(0),
         m_binSize(5)
-    {
-    }
+    {}
 
     WirelessTypes::WirelessSampleRate HistogramOptions::transmitRate() const
     {
@@ -44,4 +43,4 @@ namespace mscl
     {
         m_binSize = size;
     }
-}
+} // namespace mscl

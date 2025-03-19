@@ -58,4 +58,4 @@ namespace mscl
         //    The new hardware offset value after the autobalance.
         uint16 hardwareOffset() const;
     };
-}
+} // namespace mscl

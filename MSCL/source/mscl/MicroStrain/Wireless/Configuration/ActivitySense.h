@@ -120,4 +120,4 @@ namespace mscl
         //    timeout - The inactivity timeout value to set in this options object.
         void inactivityTimeout(float timeout);
     };
-}
+} // namespace mscl

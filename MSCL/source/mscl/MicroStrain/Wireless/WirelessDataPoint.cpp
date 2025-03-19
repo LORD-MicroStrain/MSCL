@@ -56,4 +56,4 @@ namespace mscl
     {
         return *m_channelName;
     }
-}
+} // namespace mscl

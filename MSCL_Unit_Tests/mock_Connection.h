@@ -33,8 +33,7 @@ public:
         responseItr(0),
         delay(0),
         useDelay(false)
-    {
-    }
+    {}
 
 private:
     mutable std::function<void(DataBuffer&)> parseFunc;
@@ -147,4 +146,4 @@ static Connection makeConnectionWithMockImpl()
 {
     static std::shared_ptr<Connection_Impl_Base> impl(new mockConnectionImpl);
     return Connection(impl);
-}
+} // namespace mscl

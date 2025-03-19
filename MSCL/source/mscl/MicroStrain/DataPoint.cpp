@@ -11,8 +11,7 @@ namespace mscl
     DataPoint::DataPoint(ValueType type, const anyType& value, const ChannelProperties& channelProperties) :
         Value(type, value),
         m_channelProperties(channelProperties)
-    {
-    }
+    {}
 
     const Value& DataPoint::channelProperty(ChannelPropertyId id) const
     {
@@ -169,4 +168,4 @@ namespace mscl
             throw Error_BadDataType();
         }
     }
-}
+} // namespace mscl

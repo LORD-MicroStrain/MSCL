@@ -301,4 +301,4 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the BaseStation.
         WirelessTypes::RegionCode read_regionCode() const;
     };
-}
+} // namespace mscl

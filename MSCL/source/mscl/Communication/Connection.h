@@ -46,7 +46,7 @@ namespace mscl
         //Parameters:
         //    impl - The <Connection_Impl> to use for this Connection.
         Connection(std::shared_ptr<Connection_Impl_Base> impl);
-#endif
+#endif // !SWIG
 
         Connection(){}
 
@@ -115,7 +115,7 @@ namespace mscl
         //Exceptions:
         //    - <Error_InvalidTcpServer>: the specified server address and/or server port is invalid.
         static Connection WebSocket(const std::string& host, uint16 port);
-#endif
+#endif // !MSCL_DISABLE_WEBSOCKETS
 
 #ifdef __linux__
         //API Function: UnixSocket
@@ -355,4 +355,4 @@ namespace mscl
         void updateBaudRate(uint32 baudRate);
     };
 
-}
+} // namespace mscl

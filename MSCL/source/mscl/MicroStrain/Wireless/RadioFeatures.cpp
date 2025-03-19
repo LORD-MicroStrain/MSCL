@@ -43,4 +43,4 @@ namespace mscl
     {
         return m_extendedRange;
     }
-}
+} // namespace mscl

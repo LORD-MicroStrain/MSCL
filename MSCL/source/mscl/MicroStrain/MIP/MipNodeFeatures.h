@@ -71,7 +71,7 @@ namespace mscl
         //Exceptions:
         //    - <Error_NotSupported>: The Node model is not supported by MSCL.
         static std::unique_ptr<MipNodeFeatures> create(const MipNode_Impl* node);
-#endif
+#endif // !SWIG
 
     public:
         //API Function: isChannelField
@@ -420,4 +420,4 @@ namespace mscl
         //    uint8 - the maximum supported reference frame ID
         uint8 maxMeasurementReferenceFrameId() const;
     };
-}
+} // namespace mscl

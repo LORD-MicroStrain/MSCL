@@ -13,8 +13,7 @@ namespace mscl
     ResponsePattern::ResponsePattern() :
         m_fullyMatched(false),
         m_success(false)
-    {
-    }
+    {}
 
     ResponsePattern::ResponsePattern(std::weak_ptr<ResponseCollector> collector) :
         m_collector(collector),
@@ -203,4 +202,4 @@ namespace mscl
 
         return m_success;
     }
-}
+} // namespace mscl

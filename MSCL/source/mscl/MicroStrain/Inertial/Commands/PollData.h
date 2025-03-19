@@ -122,4 +122,4 @@ namespace mscl
             Response(std::weak_ptr<ResponseCollector> collector);
         };
     };
-}
+} // namespace mscl

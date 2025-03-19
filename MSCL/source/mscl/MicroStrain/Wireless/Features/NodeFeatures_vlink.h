@@ -35,4 +35,4 @@ namespace mscl
 
         const uint32 defaultSensorDelay() const override;
     };
-}
+} // namespace mscl

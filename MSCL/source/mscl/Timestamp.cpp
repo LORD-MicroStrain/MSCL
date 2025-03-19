@@ -14,8 +14,7 @@ namespace mscl
     Timestamp::Timestamp(uint64 nanoseconds/*=0*/, Timestamp::Epoch epoch /*=UNIX*/) :
         m_nanoseconds(nanoseconds),
         m_epoch(epoch)
-    {
-    }
+    {}
 
     Timestamp::Timestamp(uint16 year, uint16 month, uint16 day, uint16 hour, uint16 minute, uint16 second, uint32 milli) :
         m_epoch(Timestamp::Epoch::UNIX)
@@ -190,7 +189,7 @@ namespace mscl
         gmtime_s(&myTm, &timeInSec);
 #else
         gmtime_r(&timeInSec, &myTm);
-#endif
+#endif // _WIN32
 
         //format the time into a string (in locale format)
         char out[100];
@@ -223,4 +222,4 @@ namespace mscl
         // nanoseconds since start of Unix time = (seconds between 1970 and 1980 - leap seconds since start of GPS time
         return static_cast<uint64>(utcNanoseconds - ((315964800 - Timestamp::getLeapSeconds()) * TimeSpan::NANOSECONDS_PER_SECOND));
     }
-}
+} // namespace mscl

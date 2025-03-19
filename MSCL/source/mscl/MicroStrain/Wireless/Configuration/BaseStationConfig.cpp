@@ -12,8 +12,7 @@
 namespace mscl
 {
     BaseStationConfig::BaseStationConfig()
-    {
-    }
+    {}
 
     WirelessTypes::TransmitPower BaseStationConfig::curTransmitPower(const BaseStationEepromHelper& eeprom) const
     {
@@ -294,4 +293,4 @@ namespace mscl
     {
         m_analogPairs[portNumber] = pair;
     }
-}
+} // namespace mscl

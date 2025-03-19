@@ -555,8 +555,7 @@ namespace mscl
                 m_loadFn(nullptr),
                 m_value(value),
                 m_loaded(true)
-            {
-            }
+            {}
 
             const T& operator*() const
             {
@@ -573,6 +572,6 @@ namespace mscl
             mutable T m_value;
             mutable bool m_loaded;
         };
-    }
-#endif
-}
+    } // namespace Utils
+#endif // !SWIG
+} // namespace mscl

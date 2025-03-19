@@ -99,7 +99,7 @@ namespace mscl
 
         //gets a reference to the WirelessProtocol for the Node for the given CommProtocol.
         const WirelessProtocol& protocol(WirelessTypes::CommProtocol commProtocol) const;
-#endif
+#endif // !SWIG
 
         //API Function: deviceName
         //    Static function for creating the universal sensor name that should be used for SensorCloud.
@@ -1342,4 +1342,4 @@ namespace mscl
         //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         WirelessTypes::DerivedVelocityUnit getDerivedVelocityUnit() const;
     };
-}
+} // namespace mscl

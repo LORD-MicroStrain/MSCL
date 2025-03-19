@@ -353,4 +353,4 @@ namespace mscl
         type = typeEeprom;
         value = valueEeprom;
     }
-}
+} // namespace mscl

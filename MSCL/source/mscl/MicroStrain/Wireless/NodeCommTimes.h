@@ -63,4 +63,4 @@ namespace mscl
         //  The <DeviceState> of the node address.
         static DeviceState getLastDeviceState(NodeAddress nodeAddress);
     };
-}
+} // namespace mscl

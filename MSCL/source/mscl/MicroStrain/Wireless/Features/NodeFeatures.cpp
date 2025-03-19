@@ -1851,4 +1851,4 @@ namespace mscl
 
         return m_nodeInfo.firmwareVersion() >= HIGH_EEPROM_FW;
     }
-}
+} // namespace mscl

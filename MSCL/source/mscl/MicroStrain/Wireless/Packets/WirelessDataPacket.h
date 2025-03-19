@@ -166,5 +166,5 @@ namespace mscl
         //    true if there are more <DataSweep>s available, false otherwise
         bool moreSweeps() const;
     };
-#endif
-}
+#endif // !SWIG
+} // namespace mscl

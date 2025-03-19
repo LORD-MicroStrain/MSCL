@@ -110,7 +110,7 @@ namespace mscl
 
     public:
         // Destructor
-        ~Uint8Command() { }
+        ~Uint8Command() {}
     };
-#endif
-}
+#endif // !SWIG
+} // namespace mscl

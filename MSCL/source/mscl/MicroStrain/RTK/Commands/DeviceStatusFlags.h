@@ -22,7 +22,7 @@ namespace mscl
         static const uint8 FIELD_DATA_BYTE = 0x81;
 
     public:
-        virtual ~DeviceStatusFlags() {}
+        ~DeviceStatusFlags() override = default;
 
         static ByteStream buildCommand_get();
 
@@ -37,4 +37,4 @@ namespace mscl
             RTKDeviceStatusFlags parseResponse(const GenericMipCmdResponse& response) const;
         };
     };
-}
+} // namespace mscl

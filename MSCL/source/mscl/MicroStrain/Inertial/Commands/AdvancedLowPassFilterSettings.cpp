@@ -12,7 +12,7 @@ namespace mscl
                                                                  const LowPassFilterData&        dataToUse) :
         m_functionSelector(function_selector),
         m_data(dataToUse)
-    { }
+    {}
 
     AdvancedLowPassFilterSettings::AdvancedLowPassFilterSettings(const MipTypes::FunctionSelector& function_selector,
                                                                  const MipTypes::ChannelField& descriptor) :
@@ -68,4 +68,4 @@ namespace mscl
         }
         return GenericMipCommand::buildCommand(commandType(), byteCommand.data());
     }
-}
+} // namespace mscl

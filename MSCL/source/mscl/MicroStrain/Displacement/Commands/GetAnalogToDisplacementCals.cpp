@@ -15,8 +15,7 @@ namespace mscl
 
     GetAnalogToDisplacementCals::Response::Response(std::weak_ptr<ResponseCollector> collector) :
         GenericMipCommand::Response(MipTypes::CMD_GET_ANALOG_DISPLACEMENT_CALS, collector, true, true, "Displacement Output Data Rate")
-    {
-    }
+    {}
 
     LinearEquation GetAnalogToDisplacementCals::Response::parseResponse(const GenericMipCmdResponse& response) const
     {
@@ -25,4 +24,4 @@ namespace mscl
 
         return LinearEquation(slope, offset);
     }
-}
+} // namespace mscl

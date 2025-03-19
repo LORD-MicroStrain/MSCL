@@ -104,10 +104,9 @@ namespace mscl
             valueType(valueType_uint16),
             userString(""),
             timestamp(0)
-        {
-        }
+        {}
     };
-#endif
+#endif // !SWIG
 
     //API Class: DatalogDownloader
     //    Used to download logged data from a WirelessNode.
@@ -305,4 +304,4 @@ namespace mscl
         //  The <ChannelCalMap> of <WirelessChannel::ChannelId>s to <CalCoefficients>.
         const ChannelCalMap& calCoefficients() const;
     };
-}
+} // namespace mscl

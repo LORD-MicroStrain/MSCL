@@ -66,4 +66,4 @@ namespace mscl
         //    size - The size of each bin in the Histogram.
         void binsSize(uint16 size);
     };
-}
+} // namespace mscl

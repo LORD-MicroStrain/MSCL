@@ -42,7 +42,7 @@ namespace mscl
         GPSTimeUpdate();
 
         //  Destructor: ~GPSTimeUpdate
-        virtual ~GPSTimeUpdate() {}
+        ~GPSTimeUpdate() override = default;
 
         //Function: GetWeekValue
         //    Builds the bytes to get the GPS week value.
@@ -117,5 +117,5 @@ namespace mscl
             const uint8 m_fieldDataByte;
         };
     };
-#endif
-}
+#endif // !SWIG
+} // namespace mscl

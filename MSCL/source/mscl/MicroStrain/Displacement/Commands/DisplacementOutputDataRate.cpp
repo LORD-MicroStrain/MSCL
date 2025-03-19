@@ -18,8 +18,7 @@ namespace mscl
 
     DisplacementOutputDataRate::Response::Response(std::weak_ptr<ResponseCollector> collector, bool dataResponseExpected) :
         GenericMipCommand::Response(MipTypes::CMD_DISPLACEMENT_OUTPUT_RATE, collector, true, dataResponseExpected, "Displacement Output Data Rate")
-    {
-    }
+    {}
 
     SampleRate DisplacementOutputDataRate::Response::parseResponse(const GenericMipCmdResponse& response) const
     {
@@ -27,4 +26,4 @@ namespace mscl
 
         return SampleRate::Hertz(hertzRate);
     }
-}
+} // namespace mscl

@@ -6,8 +6,8 @@
 
 #pragma once
 
-#include "mscl/MicroStrain/SampleRate.h"
 #include "mscl/MicroStrain/MIP/MipTypes.h"
+#include "mscl/MicroStrain/SampleRate.h"
 
 namespace mscl
 {
@@ -77,10 +77,10 @@ namespace mscl
         //Returns:
         //    The descriptor set byte of the Inertial Channel.
         uint8 descriptorSet() const;
-#endif
+#endif // !SWIG
     };
 
     //API Typedef: MipChannels
     //    typedef for a vector of <MipChannel> objects
     typedef std::vector<MipChannel> MipChannels;
-}
+} // namespace mscl

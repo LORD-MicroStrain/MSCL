@@ -323,4 +323,4 @@ namespace mscl
         //    commits all the currently read data so that it will not be reverted
         void commit();
     };
-}
+} // namespace mscl

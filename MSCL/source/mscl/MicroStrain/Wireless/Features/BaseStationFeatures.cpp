@@ -18,8 +18,7 @@ namespace mscl
 {
     BaseStationFeatures::BaseStationFeatures(const BaseStationInfo& info) :
         m_baseInfo(info)
-    {
-    }
+    {}
 
     std::unique_ptr<BaseStationFeatures> BaseStationFeatures::create(const BaseStationInfo& info)
     {
@@ -165,4 +164,4 @@ namespace mscl
 
         return m_baseInfo.firmwareVersion() >= HIGH_EEPROM_FW;
     }
-}
+} // namespace mscl

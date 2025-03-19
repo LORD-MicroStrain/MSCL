@@ -46,8 +46,7 @@ namespace mscl
         WirelessResponsePattern(collector, WirelessProtocol::cmdId_getLogData_v1, nodeAddress),
         m_nodeAddress(nodeAddress),
         m_flashAddress(flashAddress)
-    {
-    }
+    {}
 
     bool GetLoggedData::Response::matchSuccessResponse(const WirelessPacket& packet)
     {
@@ -110,4 +109,4 @@ namespace mscl
 
         return m_data;
     }
-}
+} // namespace mscl

@@ -43,6 +43,5 @@ namespace mscl
 
     DeviceStartupSettings::Response::Response(std::weak_ptr<ResponseCollector> collector) :
         GenericMipCommand::Response(MipTypes::CMD_SAVE_STARTUP_SETTINGS, collector, true, false, "Device Startup Settings")
-    {
-    }
-}
+    {}
+} // namespace mscl

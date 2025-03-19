@@ -11,8 +11,7 @@ namespace mscl
     ScopeHelper::ScopeHelper(std::function<void()> scopeFunction):
         m_outOfScopeFunction(scopeFunction),
         m_canceled(false)
-    {
-    }
+    {}
 
     ScopeHelper::~ScopeHelper()
     {
@@ -26,4 +25,4 @@ namespace mscl
     {
         m_canceled = true;
     }
-}
+} // namespace mscl

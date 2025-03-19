@@ -16,6 +16,5 @@ namespace mscl
 
     Mip_SetToIdle::Response::Response(std::weak_ptr<ResponseCollector> collector) :
         GenericMipCommand::Response(MipTypes::CMD_SET_IDLE, collector, true, false, "Set to Idle")
-    {
-    }
-}
+    {}
+} // namespace mscl

@@ -35,8 +35,7 @@ namespace mscl
         m_nodeAddress(nodeAddress),
         m_result(SetToIdleStatus::setToIdleResult_notCompleted),
         m_baseStation(baseStation)
-    {
-    }
+    {}
 
     SetToIdle::Response::~Response()
     {
@@ -136,4 +135,4 @@ namespace mscl
 
         return m_result;
     }
-}
+} // namespace mscl

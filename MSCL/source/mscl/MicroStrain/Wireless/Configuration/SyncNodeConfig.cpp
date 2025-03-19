@@ -14,8 +14,7 @@ namespace mscl
     SyncNodeConfig::SyncNodeConfig(const SyncNetworkInfo* networkInfo) :
         m_networkInfo(networkInfo),
         m_eepromHelper(networkInfo->m_node.eepromHelper())
-    {
-    }
+    {}
 
     SampleRate SyncNodeConfig::sampleRate()
     {
@@ -284,4 +283,4 @@ namespace mscl
     {
         m_eepromHelper.applyEepromChanges();
     }
-}
+} // namespace mscl

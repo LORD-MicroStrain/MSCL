@@ -99,10 +99,8 @@ namespace mscl
             {
                 return BigEndian_To_SystemEndian(result);
             }
-            else
-            {
-                return LittleEndian_To_SystemEndian(result);
-            }
+
+            return LittleEndian_To_SystemEndian(result);
         }
 
         int32 make_int32(uint8 low, uint8 byte2, uint8 byte3, uint8 high, Endianness endian /*= bigEndian*/)
@@ -122,10 +120,8 @@ namespace mscl
             {
                 return BigEndian_To_SystemEndian(result);
             }
-            else
-            {
-                return LittleEndian_To_SystemEndian(result);
-            }
+
+            return LittleEndian_To_SystemEndian(result);
         }
 
         void split_uint16(uint16 value, uint8& low, uint8& high, Endianness endian /*= bigEndian*/)
@@ -164,10 +160,8 @@ namespace mscl
             {
                 return BigEndian_To_SystemEndian(result);
             }
-            else
-            {
-                return LittleEndian_To_SystemEndian(result);
-            }
+
+            return LittleEndian_To_SystemEndian(result);
         }
 
         void split_uint32(uint32 value, uint8& low, uint8& byte2, uint8& byte3, uint8& high, Endianness endian /*= bigEndian*/)
@@ -237,10 +231,8 @@ namespace mscl
             {
                 return BigEndian_To_SystemEndian(result);
             }
-            else
-            {
-                return LittleEndian_To_SystemEndian(result);
-            }
+
+            return LittleEndian_To_SystemEndian(result);
         }
 
         uint64 make_uint64(uint8 low, uint8 byte2, uint8 byte3, uint8 byte4, uint8 byte5, uint8 byte6, uint8 byte7, uint8 high, Endianness endian /*= bigEndian*/)
@@ -264,10 +256,8 @@ namespace mscl
             {
                 return BigEndian_To_SystemEndian(result);
             }
-            else
-            {
-                return LittleEndian_To_SystemEndian(result);
-            }
+
+            return LittleEndian_To_SystemEndian(result);
         }
 
         void split_float(float value, uint8& low, uint8& byte2, uint8& byte3, uint8& high, Endianness endian /*= bigEndian*/)
@@ -310,10 +300,8 @@ namespace mscl
             {
                 return BigEndian_To_SystemEndian(result);
             }
-            else
-            {
-                return LittleEndian_To_SystemEndian(result);
-            }
+
+            return LittleEndian_To_SystemEndian(result);
         }
 
         void split_double(double value, uint8& low, uint8& byte2, uint8& byte3, uint8& byte4, uint8& byte5, uint8& byte6, uint8& byte7, uint8& high, Endianness endian /*= bigEndian*/)
@@ -364,10 +352,8 @@ namespace mscl
             {
                 return BigEndian_To_SystemEndian(result);
             }
-            else
-            {
-                return LittleEndian_To_SystemEndian(result);
-            }
+
+            return LittleEndian_To_SystemEndian(result);
         }
 
         //Function: getCurrentSystemTime
@@ -404,7 +390,7 @@ namespace mscl
 
         double radiansToDegrees(float angle)
         {
-            return (angle * 180.0 / 3.14159265358979323846);
+            return angle * 180.0 / 3.14159265358979323846;
         }
 
         void removeChar(std::string& src, char charToRemove)
@@ -426,7 +412,7 @@ namespace mscl
 
         bool containsStr(const std::string& src, const std::string& containsThis)
         {
-            return (src.find(containsThis) != std::string::npos);
+            return src.find(containsThis) != std::string::npos;
         }
 
         void strTrimLeft(std::string& src)
@@ -543,6 +529,6 @@ namespace mscl
 
             return angle;
         }
-    }
-#endif
-}
+    } // namespace Utils
+#endif // !SWIG
+} // namespace mscl

@@ -537,4 +537,4 @@ namespace mscl
     {
         return m_impl->getDerivedVelocityUnit();
     }
-}
+} // namespace mscl

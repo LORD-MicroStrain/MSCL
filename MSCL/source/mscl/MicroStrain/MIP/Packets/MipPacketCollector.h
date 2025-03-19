@@ -93,4 +93,4 @@ namespace mscl
         //    The total number of data packets that are currently in the buffer.
         uint32 totalPackets();
     };
-}
+} // namespace mscl

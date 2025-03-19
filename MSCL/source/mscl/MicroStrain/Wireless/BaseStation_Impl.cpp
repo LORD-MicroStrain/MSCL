@@ -1735,4 +1735,4 @@ namespace mscl
 
         return response.success();
     }
-}
+} // namespace mscl

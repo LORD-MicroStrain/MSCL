@@ -38,7 +38,7 @@ namespace mscl
 
 #ifndef SWIG
         DisplacementNode(std::shared_ptr<MipNode_Impl> impl); //constructor with direct underlying implementation for this class.
-#endif
+#endif // !SWIG
 
     private:
         //Variable: m_impl
@@ -62,7 +62,7 @@ namespace mscl
         //    - <Error_NotSupported>: The command is not supported by this Node.
         //    - <Error_MipCmdFailed>: The command has failed.
         virtual GenericMipCmdResponse doCommand(GenericMipCommand::Response& response, const ByteStream& command, bool verifySupported = true) const;
-#endif
+#endif // !SWIG
 
         //API Function: doCommand
         //  Note: This is an ADVANCED COMMAND. Most users will not need to use this.
@@ -346,5 +346,4 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the DisplacementNode.
         void setDeviceTime(uint64 nanoseconds);
     };
-
-}
+} // namespace mscl

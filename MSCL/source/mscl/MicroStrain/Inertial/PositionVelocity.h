@@ -313,4 +313,4 @@ namespace mscl
 
         ~GeometricUncertainty() {}
     };
-}
+} // namespace mscl

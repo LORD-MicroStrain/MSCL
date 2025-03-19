@@ -17,7 +17,7 @@ namespace mscl
         friend TimeSpan operator*(uint32 factor, TimeSpan timeSpan);
         friend TimeSpan operator/(TimeSpan timeSpan, uint32 divisor);
         friend TimeSpan operator/(uint32 divisor, TimeSpan timeSpan);
-#endif
+#endif // !SWIG
 
     public:
         //===========================================================================================
@@ -54,7 +54,7 @@ namespace mscl
         bool operator <= (const TimeSpan& other) const;
         bool operator > (const TimeSpan& other) const;
         bool operator >= (const TimeSpan& other) const;
-#endif
+#endif // !SWIG
 
     private:
         //Function: compare
@@ -172,5 +172,5 @@ namespace mscl
     TimeSpan operator*(uint32 factor, TimeSpan timeSpan);
     TimeSpan operator/(TimeSpan timeSpan, uint32 divisor);
     TimeSpan operator/(uint32 divisor, TimeSpan timeSpan);
-#endif
-}
+#endif // !SWIG
+} // namespace mscl

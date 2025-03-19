@@ -84,8 +84,7 @@ namespace mscl
 
     public:
         // Destructor
-        ~MagnetometerHardIronOffset() { }
+        ~MagnetometerHardIronOffset() {}
     };
-
-#endif
-}
+#endif // !SWIG
+} // namespace mscl

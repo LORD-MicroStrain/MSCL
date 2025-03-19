@@ -94,7 +94,7 @@ namespace mscl
 
     public:
         // Destructor
-        ~FloatCommand() { }
+        ~FloatCommand() {}
     };
-#endif
-}
+#endif // !SWIG
+} // namespace mscl

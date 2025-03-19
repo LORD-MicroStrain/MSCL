@@ -76,4 +76,4 @@ namespace mscl
             PingResponse result();
         };
     };
-}
+} // namespace mscl

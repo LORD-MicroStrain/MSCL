@@ -12,13 +12,11 @@ namespace mscl
 {
     DisplacementNode::DisplacementNode(Connection connection) :
         m_impl(std::make_shared<MipNode_Impl>(connection))
-    {
-    }
+    {}
 
     DisplacementNode::DisplacementNode(std::shared_ptr<MipNode_Impl> impl) :
         m_impl(impl)
-    {
-    }
+    {}
 
     const MipNodeFeatures& DisplacementNode::features()
     {
@@ -160,4 +158,4 @@ namespace mscl
     {
         return m_impl->setDeviceTime(nanoseconds);
     }
-}
+} // namespace mscl

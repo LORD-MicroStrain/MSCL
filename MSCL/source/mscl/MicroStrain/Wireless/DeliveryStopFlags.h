@@ -86,4 +86,4 @@ namespace mscl
         //    The delivery stop flag byte built from the current set stop flags
         uint8 toByte() const;
     };
-}
+} // namespace mscl

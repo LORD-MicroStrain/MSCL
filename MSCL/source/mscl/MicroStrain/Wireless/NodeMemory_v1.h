@@ -30,7 +30,7 @@ namespace mscl
 
         //Destructor: ~NodeMemory_v1
         //  Destroys a NodeMemory_v1 object.
-        virtual ~NodeMemory_v1() {}
+        ~NodeMemory_v1() override = default;
 
     private:
         NodeMemory_v1();                                //disabled default constructor
@@ -171,4 +171,4 @@ namespace mscl
         //float percentComplete(uint32 address) const override;
         float percentComplete() override;
     };
-}
+} // namespace mscl

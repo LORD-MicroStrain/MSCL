@@ -10,7 +10,7 @@ namespace mscl
 {
     RawRTCM_2_3Message::RawRTCM_2_3Message(const RTCMMessage& theMessage) :
         m_message(theMessage)
-    { }
+    {}
 
     RawRTCM_2_3Message RawRTCM_2_3Message::MakeCommand(const RTCMMessage& theMessage)
     {
@@ -28,5 +28,4 @@ namespace mscl
         byteCommand.append_string(m_message);
         return GenericMipCommand::buildCommand(commandType(), byteCommand.data());
     }
-
-}
+} // namespace mscl

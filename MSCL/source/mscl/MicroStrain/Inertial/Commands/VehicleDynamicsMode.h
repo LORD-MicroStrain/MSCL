@@ -85,8 +85,7 @@ namespace mscl
 
     public:
         // Destructor
-        ~VehicleDynamicsMode() { }
+        ~VehicleDynamicsMode() {}
     };
-
-#endif
-}
+#endif // !SWIG
+} // namespace mscl

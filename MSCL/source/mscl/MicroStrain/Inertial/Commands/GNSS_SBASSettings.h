@@ -66,7 +66,7 @@ namespace mscl
         SBASSettings(MipTypes::FunctionSelector function_selector, SBASSettingsData dataToUse) :
             m_functionSelector(function_selector),
             m_data(dataToUse)
-        { }
+        {}
 
         //Variable: m_functionSelector
         //  The MipTypes::FunctionSelector type of command to send, get/set, reset to factory defaults, et al.
@@ -78,8 +78,7 @@ namespace mscl
 
     public:
         //  Destructor
-        ~SBASSettings() { }
+        ~SBASSettings() {}
     };
-
-#endif
-}
+#endif // !SWIG
+} // namespace mscl

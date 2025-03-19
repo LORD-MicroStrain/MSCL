@@ -11,7 +11,7 @@ namespace mscl
     FilterInitializationConfig::FilterInitializationConfig(MipTypes::FunctionSelector function_selector, const FilterInitializationValues& dataToUse) :
         m_functionSelector(function_selector),
         m_data(dataToUse)
-    { }
+    {}
 
     FilterInitializationConfig::FilterInitializationConfig(MipTypes::FunctionSelector function_selector) :
         m_functionSelector(function_selector)
@@ -93,4 +93,4 @@ namespace mscl
 
         return GenericMipCommand::buildCommand(commandType(), byteCommand.data());
     }
-}
+} // namespace mscl

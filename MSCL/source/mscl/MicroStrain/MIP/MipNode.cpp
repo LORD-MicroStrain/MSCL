@@ -12,13 +12,11 @@ namespace mscl
 {
     MipNode::MipNode(Connection connection) :
         m_impl(std::make_shared<MipNode_Impl>(connection))
-    {
-    }
+    {}
 
     MipNode::MipNode(std::shared_ptr<MipNode_Impl> impl) :
         m_impl(impl)
-    {
-    }
+    {}
 
     GenericMipCmdResponse MipNode::doCommand(GenericMipCommand::Response& response, const ByteStream& command, bool verifySupported) const
     {
@@ -236,4 +234,4 @@ namespace mscl
         m_impl->getRawBytePackets(packets, timeout, maxPackets);
         return packets;
     }
-}
+} // namespace mscl

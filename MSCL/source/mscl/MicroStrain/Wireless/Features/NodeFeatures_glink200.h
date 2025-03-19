@@ -37,4 +37,4 @@ namespace mscl
 
         const WirelessTypes::SensorOutputModes sensorOutputModes() const override;
     };
-}
+} // namespace mscl

@@ -36,8 +36,7 @@ namespace mscl
     DataModeMask::DataModeMask(const BitMask& mask) :
         rawModeEnabled(mask.enabled(dataModeBitPos_raw)),
         derivedModeEnabled(mask.enabled(dataModeBitPos_derived))
-    {
-    }
+    {}
 
     BitMask DataModeMask::toMask() const
     {
@@ -75,4 +74,4 @@ namespace mscl
 
         return WirelessTypes::dataMode_none;
     }
-}
+} // namespace mscl

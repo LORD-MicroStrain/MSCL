@@ -22,13 +22,11 @@ MOCK_BASE_CLASS(mock_baseStationImpl, BaseStation_Impl)
 {
     mock_baseStationImpl():
         BaseStation_Impl(makeConnectionWithMockImpl(), 10)
-    {
-    }
+    {}
 
     mock_baseStationImpl(Connection c):
         BaseStation_Impl(c, 10)
-    {
-    }
+    {}
 
     MOCK_METHOD(ping, 0);
     MOCK_METHOD_EXT(readEeprom, 1, Value(const EepromLocation&), readEeprom);
@@ -90,4 +88,4 @@ static void expectBaseFeatures(std::unique_ptr<BaseStationFeatures>& features, s
     features = BaseStationFeatures::create(info);
 
     MOCK_EXPECT(impl->features).returns(std::ref(*features.get()));
-}
+} // namespace mscl

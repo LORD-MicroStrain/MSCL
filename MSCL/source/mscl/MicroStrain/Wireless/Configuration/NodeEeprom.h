@@ -36,8 +36,7 @@ namespace mscl
             useGroupRead(true),
             numRetries(3),
             useEepromCache(true)
-        {
-        }
+        {}
     };
 
     //Class: NodeEeprom
@@ -147,4 +146,4 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the BaseStation.
         void writeEeprom(uint16 location, uint16 value) override;
     };
-}
+} // namespace mscl

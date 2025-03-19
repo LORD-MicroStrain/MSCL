@@ -1077,4 +1077,4 @@ namespace mscl
                                           uint32 numSweeps,
                                           const TimeSpan& timeBetweenBursts);
     };
-}
+} // namespace mscl

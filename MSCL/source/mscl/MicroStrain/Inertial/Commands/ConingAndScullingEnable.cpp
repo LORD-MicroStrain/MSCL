@@ -11,7 +11,7 @@ namespace mscl
     ConingAndScullingEnable::ConingAndScullingEnable(MipTypes::FunctionSelector function_selector, bool enable) :
         m_functionSelector(function_selector),
         m_enabled(enable)
-    { }
+    {}
 
     ConingAndScullingEnable::ConingAndScullingEnable(MipTypes::FunctionSelector function_selector) :
         m_functionSelector(function_selector)
@@ -58,5 +58,4 @@ namespace mscl
         }
         return GenericMipCommand::buildCommand(commandType(), byteCommand.data());
     }
-
-}
+} // namespace mscl

@@ -278,4 +278,4 @@ namespace mscl
         //    pair - The <BaseStationAnalogPair> to set.
         void analogPairing(uint8 portNumber, const BaseStationAnalogPair& pair);
     };
-}
+} // namespace mscl

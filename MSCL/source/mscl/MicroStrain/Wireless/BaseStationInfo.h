@@ -30,7 +30,7 @@ namespace mscl
         //    - <Error_Communication>: Failed to read the value from the BaseStation.
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         BaseStationInfo(const BaseStation_Impl* base);
-#endif
+#endif // !SWIG
 
         //API Constructor: BaseStationInfo
         //    Creates a BaseStationInfo object.
@@ -74,6 +74,6 @@ namespace mscl
         WirelessModels::BaseModel model() const;
         WirelessTypes::RegionCode regionCode() const;
         const WirelessProtocol& protocol(WirelessTypes::CommProtocol commProtocol) const;
-#endif
+#endif // !SWIG
     };
-}
+} // namespace mscl

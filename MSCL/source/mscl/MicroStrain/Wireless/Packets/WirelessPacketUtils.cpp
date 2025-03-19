@@ -178,4 +178,4 @@ namespace mscl
             return false;
         }
     }
-}
+} // namespace mscl

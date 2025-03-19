@@ -32,7 +32,7 @@ namespace mscl
         //Parameters:
         //    packet - The <WirelessPacket> to create the NodeDiscovery object from
         explicit NodeDiscovery(const WirelessPacket& packet);
-#endif
+#endif // !SWIG
 
     private:
         //Variable: m_eepromMap
@@ -224,4 +224,4 @@ namespace mscl
     //API Typedef: NodeDiscoveries
     //    typedef for a vector of <NodeDiscovery> objects
     typedef std::vector<NodeDiscovery> NodeDiscoveries;
-}
+} // namespace mscl

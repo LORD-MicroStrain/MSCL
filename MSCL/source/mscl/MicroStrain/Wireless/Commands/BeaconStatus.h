@@ -44,4 +44,4 @@ namespace mscl
         //    Gets the current <Timestamp> of the beacon.
         const Timestamp& timestamp();
     };
-}
+} // namespace mscl

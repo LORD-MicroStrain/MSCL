@@ -114,4 +114,4 @@ namespace mscl
             uint8 parseResponse(const GenericMipCmdResponse& response) const;
         };
     };
-}
+} // namespace mscl

@@ -28,7 +28,7 @@ namespace mscl
         //    - <Error_NodeCommunication>: Failed to communicate with the Node.
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         NodeInfo(const WirelessNode_Impl* node);
-#endif
+#endif // !SWIG
 
         //Constructor: NodeInfo
         //    Creates a NodeInfo object.
@@ -71,6 +71,6 @@ namespace mscl
         //Function: regionCode
         //  Gets the <WirelessTypes::RegionCode> of the Node.
         WirelessTypes::RegionCode regionCode() const;
-#endif
+#endif // !SWIG
     };
-}
+} // namespace mscl

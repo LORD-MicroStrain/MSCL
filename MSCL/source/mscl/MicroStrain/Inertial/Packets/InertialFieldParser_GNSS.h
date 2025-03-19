@@ -711,4 +711,4 @@ namespace mscl
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
-}
+} // namespace mscl

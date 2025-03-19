@@ -31,4 +31,4 @@ namespace mscl
 
         const WirelessTypes::SamplingModes samplingModes() const override;
     };
-}
+} // namespace mscl

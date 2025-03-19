@@ -145,4 +145,4 @@ namespace mscl
         //    value - The output value to represent 3 Volts.
         void outputVal_3V(float value);
     };
-}
+} // namespace mscl

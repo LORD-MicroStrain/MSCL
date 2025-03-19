@@ -43,8 +43,7 @@ namespace mscl
     Sleep_v2::Response::Response(NodeAddress nodeAddress, std::weak_ptr<ResponseCollector> collector) :
         WirelessResponsePattern(collector, WirelessProtocol::cmdId_sleep, nodeAddress),
         m_nodeAddress(nodeAddress)
-    {
-    }
+    {}
 
     bool Sleep_v2::Response::matchSuccessResponse(const WirelessPacket& packet)
     {
@@ -65,4 +64,4 @@ namespace mscl
         //if we made it here, the packet matches the response pattern
         return true;
     }
-}
+} // namespace mscl

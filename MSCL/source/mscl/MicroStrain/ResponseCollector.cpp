@@ -12,7 +12,7 @@ namespace mscl
 {
     ResponseCollector::ResponseCollector() :
       m_connection(nullptr)
-    { }
+    {}
 
     void ResponseCollector::setConnection(Connection* connection)
     {
@@ -192,4 +192,4 @@ namespace mscl
 
         return false;
     }
-}
+} // namespace mscl

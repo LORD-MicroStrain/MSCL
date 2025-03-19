@@ -61,7 +61,5 @@ namespace mscl
             Response(std::weak_ptr<ResponseCollector> collector);
         };
     };
-
-#endif
-
-}
+#endif // !SWIG
+} // namespace mscl

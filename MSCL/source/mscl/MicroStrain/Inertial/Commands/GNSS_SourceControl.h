@@ -85,8 +85,7 @@ namespace mscl
 
     public:
         // Destructor
-        ~GNSS_SourceControl() { }
+        ~GNSS_SourceControl() {}
     };
-
-#endif
-}
+#endif // !SWIG
+} // namespace mscl

@@ -43,7 +43,7 @@ namespace mscl
             DuplicateCheckKey(NodeAddress address, WirelessPacket::PacketType packet):
                 nodeAddress(address),
                 packetType(packet)
-            { }
+            {}
         };
 
         //Constructor: WirelessParser
@@ -209,4 +209,4 @@ namespace mscl
     //Function: operator <
     //  Less than operator for <WirelessParser::DuplicateCheckKey> so that it can be used in a map.
     const bool operator < (const WirelessParser::DuplicateCheckKey& key1, const WirelessParser::DuplicateCheckKey& key2);
-}
+} // namespace mscl

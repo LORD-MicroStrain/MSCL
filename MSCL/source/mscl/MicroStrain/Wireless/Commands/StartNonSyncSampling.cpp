@@ -28,4 +28,4 @@ namespace mscl
 
         return cmd;
     }
-}
+} // namespace mscl

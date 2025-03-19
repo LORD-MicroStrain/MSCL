@@ -14,15 +14,13 @@ namespace mscl
         m_success(false),
         m_nodeRssi(WirelessTypes::UNKNOWN_RSSI),
         m_baseRssi(WirelessTypes::UNKNOWN_RSSI)
-    {
-    }
+    {}
 
     PingResponse::PingResponse(bool success, int16 nodeRssi, int16 baseRssi) :
         m_success(success),
         m_nodeRssi(nodeRssi),
         m_baseRssi(baseRssi)
-    {
-    }
+    {}
 
     PingResponse PingResponse::ResponseSuccess(int16 nodeRssi, int16 baseRssi)
     {
@@ -48,4 +46,4 @@ namespace mscl
     {
         return m_baseRssi;
     }
-}
+} // namespace mscl

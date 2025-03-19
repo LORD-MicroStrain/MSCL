@@ -62,4 +62,4 @@ namespace mscl
         //    - <Error_UnknownSampleRate>: The given <SampleRate> does not match a <WirelessTypes::WirelessSampleRate>.
         static WirelessTypes::WirelessSampleRate convertFromSampleRate(const SampleRate& rate);
     };
-}
+} // namespace mscl

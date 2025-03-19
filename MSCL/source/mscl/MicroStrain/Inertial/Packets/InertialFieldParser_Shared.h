@@ -20,7 +20,7 @@ namespace mscl
     {
     protected:
         MipSharedFieldParser() {}                //default constructor disabled
-        virtual ~MipSharedFieldParser() {}
+        ~MipSharedFieldParser() override = default;
 
     private:
         MipSharedFieldParser(const MipSharedFieldParser&);                //copy constructor disabled
@@ -325,4 +325,4 @@ namespace mscl
         //    This is used to call <registerParser> immediately
         static const bool REGISTERED;
     };
-}
+} // namespace mscl

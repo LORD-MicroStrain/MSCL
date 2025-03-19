@@ -17,8 +17,7 @@ namespace mscl
 
     ActivationCode::Response::Response(std::weak_ptr<ResponseCollector> collector) :
         GenericMipCommand::Response(MipTypes::CMD_RTK_ACTIVATION_CODE, collector, true, true, "Get RTK Activation Code")
-    {
-    }
+    {}
 
     std::string ActivationCode::Response::parseResponse(const GenericMipCmdResponse& response) const
     {
@@ -36,4 +35,4 @@ namespace mscl
         }
         return str;
     }
-}
+} // namespace mscl

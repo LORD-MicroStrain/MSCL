@@ -54,7 +54,7 @@ namespace mscl
         //    type - The <ValueType> of the data that is stored
         //    value - The data that is to be stored
         DataPoint(ValueType type, const anyType& value, const ChannelProperties& channelProperties = ChannelProperties());
-#endif
+#endif // !SWIG
 
         ~DataPoint() override = default;
 
@@ -151,4 +151,4 @@ namespace mscl
         //    - <Error_BadDataType>: The type in which the value was stored could not be converted to a string.
         std::string as_string() const override;
     };
-}
+} // namespace mscl

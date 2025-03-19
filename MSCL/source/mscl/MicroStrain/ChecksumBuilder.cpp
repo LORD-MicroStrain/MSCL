@@ -55,4 +55,4 @@ namespace mscl
         //calcualte the CRC checksum of all the bytes that are in m_bytes
         return m_bytes.calculateCrcChecksum(0, m_bytes.size() - 1);
     }
-}
+} // namespace mscl

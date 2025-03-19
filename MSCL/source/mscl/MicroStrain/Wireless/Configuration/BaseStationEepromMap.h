@@ -192,4 +192,4 @@ namespace mscl
         static const EepromLocation MIN_SOFT_VER_MINOR;        // The minimum software version for support of this device (minor).
         static const EepromLocation COMM_PROTOCOL;             // The communication protocol of the device.
     };
-}
+} // namespace mscl

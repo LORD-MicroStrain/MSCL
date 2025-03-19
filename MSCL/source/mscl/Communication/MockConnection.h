@@ -70,4 +70,4 @@ namespace mscl
 
         std::string port() const override { return ""; }
     };
-}
+} // namespace mscl

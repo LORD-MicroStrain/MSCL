@@ -25,7 +25,6 @@ namespace mscl
         };
 
 #ifndef SWIG
-
         //Function: nodeFromModelString
         //    Converts the model number string received from an InertialNode to a <NodeModel> enum.
         //
@@ -35,6 +34,6 @@ namespace mscl
         //Returns:
         //    A <NodeModel> enum created from the string.
         static NodeModel nodeFromModelString(const std::string& modelNumberString);
-#endif
+#endif // !SWIG
     };
-}
+} // namespace mscl

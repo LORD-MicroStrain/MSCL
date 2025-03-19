@@ -33,11 +33,11 @@ namespace mscl
         //    - <Error_Connection>: A problem occurred with the Connection.
         explicit InertialNode(Connection connection) : MipNode(connection) {}
 
-        virtual ~InertialNode() {}
+        ~InertialNode() override = default;
 
 #ifndef SWIG
         InertialNode(std::shared_ptr<MipNode_Impl> impl) : MipNode(impl) {} //constructor with direct underlying implementation for this class.
-#endif
+#endif // !SWIG
 
         //API Function: getDataPackets
         //    Gets up to the requested amount of data packets that have been collected.
@@ -2554,4 +2554,4 @@ namespace mscl
         AidingMeasurementMagneticField sendAidingMeasurement_readEcho(AidingMeasurementMagneticField measurement) const;
         AidingMeasurementPressure sendAidingMeasurement_readEcho(AidingMeasurementPressure measurement) const;
     };
-}
+} // namespace mscl

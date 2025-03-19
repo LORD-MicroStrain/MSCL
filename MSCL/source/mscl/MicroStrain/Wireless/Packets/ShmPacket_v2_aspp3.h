@@ -51,4 +51,4 @@ namespace mscl
         //  angle - The angle of the data.
         static std::string buildChannelName(float angle);
     };
-}
+} // namespace mscl

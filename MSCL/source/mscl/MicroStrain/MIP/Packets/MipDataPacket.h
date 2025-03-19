@@ -155,4 +155,4 @@ namespace mscl
     //API Typedef: MipDataPackets
     //    Typedef for a vector of <MipDataPacket> objects.
     typedef std::vector<MipDataPacket> MipDataPackets;
-}
+} // namespace mscl

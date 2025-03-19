@@ -27,7 +27,7 @@ namespace mscl
         //    useCache - Whether or not to use the eeprom cache.
         explicit BaseStationEeprom(BaseStation_Impl* base);
 
-        virtual ~BaseStationEeprom() {}
+        ~BaseStationEeprom() override = default;
 
     private:
         BaseStationEeprom();                                    //default constructor disabled
@@ -85,4 +85,4 @@ namespace mscl
         //                             A connection error has occurred with the BaseStation.
         void writeEeprom(uint16 location, uint16 value) override;
     };
-}
+} // namespace mscl

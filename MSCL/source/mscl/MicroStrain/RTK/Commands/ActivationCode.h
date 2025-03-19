@@ -36,4 +36,4 @@ namespace mscl
             std::string parseResponse(const GenericMipCmdResponse& response) const;
         };
     };
-}
+} // namespace mscl

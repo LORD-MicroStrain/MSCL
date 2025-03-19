@@ -8,7 +8,11 @@
 
 namespace mscl
 {
-    namespace SetToIdle { class Response; }    //forward declaration
+    //forward declaration
+    namespace SetToIdle
+    {
+        class Response;
+    } // namespace SetToIdle
 
     //API Class: SetToIdleStatus
     //    Holds the status information of the Set to Idle command.
@@ -41,7 +45,7 @@ namespace mscl
         //Parameters:
         //    response - A shared_ptr to the <SetToIdle::Response> that this status pertains to.
         SetToIdleStatus(std::shared_ptr<SetToIdle::Response> response);
-#endif
+#endif // !SWIG
 
     private:
         //Variable: m_response
@@ -80,4 +84,4 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the BaseStation.
         void cancel();
     };
-}
+} // namespace mscl

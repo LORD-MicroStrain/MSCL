@@ -14,8 +14,7 @@ namespace mscl
         m_qualifier(MipTypes::CH_UNKNOWN),
         m_hasValidFlag(false),
         m_valid(false)
-    {
-    }
+    {}
 
     MipDataPoint::MipDataPoint(MipTypes::ChannelField field, MipTypes::ChannelQualifier qualifier, ValueType storedAsType, anyType value) :
         DataPoint(storedAsType, value),
@@ -23,8 +22,7 @@ namespace mscl
         m_qualifier(qualifier),
         m_hasValidFlag(false),
         m_valid(true)
-    {
-    }
+    {}
 
     MipDataPoint::MipDataPoint(MipTypes::ChannelField field, MipTypes::ChannelQualifier qualifier, MipChannelIdentifiers addlIds, ValueType storedAsType, anyType value) :
         DataPoint(storedAsType, value),
@@ -33,8 +31,7 @@ namespace mscl
         m_addlIdentifiers(addlIds),
         m_hasValidFlag(false),
         m_valid(true)
-    {
-    }
+    {}
 
     MipDataPoint::MipDataPoint(MipTypes::ChannelField field, MipTypes::ChannelQualifier qualifier, ValueType storedAsType, anyType value, bool valid) :
         DataPoint(storedAsType, value),
@@ -42,8 +39,7 @@ namespace mscl
         m_qualifier(qualifier),
         m_hasValidFlag(true),
         m_valid(valid)
-    {
-    }
+    {}
 
     MipDataPoint::MipDataPoint(MipTypes::ChannelField field, MipTypes::ChannelQualifier qualifier, MipChannelIdentifiers addlIds, ValueType storedAsType, anyType value, bool valid) :
         DataPoint(storedAsType, value),
@@ -52,8 +48,7 @@ namespace mscl
         m_addlIdentifiers(addlIds),
         m_hasValidFlag(true),
         m_valid(valid)
-    {
-    }
+    {}
 
     MipTypes::ChannelField MipDataPoint::field() const
     {
@@ -98,4 +93,4 @@ namespace mscl
 
         return MipTypes::channelName(m_field, m_qualifier) + post;
     }
-}
+} // namespace mscl

@@ -50,8 +50,7 @@ namespace mscl
         m_eepromAddress(eepromAddress),
         m_eepromValue(valueWritten),
         m_errorCode(WirelessPacket::error_none)
-    {
-    }
+    {}
 
     bool WriteEeprom_v2::Response::matchSuccessResponse(const WirelessPacket& packet)
     {
@@ -144,4 +143,4 @@ namespace mscl
     {
         return m_errorCode;
     }
-}
+} // namespace mscl

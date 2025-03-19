@@ -121,4 +121,4 @@ namespace mscl
         //    0 if the 2 versions are equal, a negative number if the current Version is less than the parameter Version, a positive number if the current Version is greater than the parameter Version.
         int compare(const Version& cmp) const;
     };
-}
+} // namespace mscl

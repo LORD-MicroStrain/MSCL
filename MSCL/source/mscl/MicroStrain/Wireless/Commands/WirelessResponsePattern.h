@@ -29,7 +29,7 @@ namespace mscl
 
         //Destructor: ResponsePattern
         //    Destroys the ResponsePattern and unregisters this response from its <ResponseCollector>
-        virtual ~WirelessResponsePattern();
+        ~WirelessResponsePattern() override;
 
         WirelessResponsePattern() = delete;                                             //default constructor disabled
         WirelessResponsePattern(const WirelessResponsePattern&) = delete;               //copy constructor disabled
@@ -64,4 +64,4 @@ namespace mscl
         //  This is only valid if <baseReceived> returns true.
         uint64 baseReceivedWaitTime() const;
     };
-}
+} // namespace mscl

@@ -14,8 +14,7 @@ namespace mscl
 {
     BaseStationEepromHelper::BaseStationEepromHelper(BaseStation_Impl* basestation) :
         m_baseStation(basestation)
-    {
-    }
+    {}
 
     void BaseStationEepromHelper::checkAnalogPairingSupported() const
     {
@@ -446,4 +445,4 @@ namespace mscl
 
         return static_cast<WirelessTypes::RegionCode>(code);
     }
-}
+} // namespace mscl

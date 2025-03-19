@@ -126,8 +126,7 @@ namespace mscl
             }
         }
         catch(Error_NoData&)
-        {
-        }
+        {}
 
         //copy the config into the pending config
         m_pendingConfig = config;
@@ -145,4 +144,4 @@ namespace mscl
     {
         return m_node.features().channelGroups();
     }
-}
+} // namespace mscl

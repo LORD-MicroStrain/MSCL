@@ -27,4 +27,4 @@ namespace mscl
 
         bool supportsSensorDelayAlwaysOn() const override;
     };
-}
+} // namespace mscl

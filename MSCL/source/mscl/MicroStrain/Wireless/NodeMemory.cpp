@@ -13,8 +13,7 @@ namespace mscl
     NodeMemory::NodeMemory(WirelessNode& node) :
         m_node(node),
         m_totalBytes(0)
-    {
-    }
+    {}
 
     void NodeMemory::skipBytes(uint32 numBytesToSkip)
     {
@@ -149,4 +148,4 @@ namespace mscl
 
         return result;
     }
-}
+} // namespace mscl

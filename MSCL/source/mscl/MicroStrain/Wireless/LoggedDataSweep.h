@@ -79,4 +79,4 @@ namespace mscl
     //API Typedef: LoggedDataSweeps
     //    Typedef for a vector of <LoggedDataSweep> objects.
     typedef std::vector<LoggedDataSweep> LoggedDataSweeps;
-}
+} // namespace mscl

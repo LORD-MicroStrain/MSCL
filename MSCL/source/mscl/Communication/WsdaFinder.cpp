@@ -9,12 +9,12 @@
 namespace mscl
 {
     WsdaInfo::WsdaInfo()
-    { }
+    {}
 
     WsdaInfo::WsdaInfo(std::string url, std::string serial) :
         m_url(url),
         m_serial(serial)
-    { }
+    {}
 
     std::string WsdaInfo::ipAddress() const
     {
@@ -114,4 +114,4 @@ namespace mscl
 
         m_upnpService->restartSearch();
     }
-}
+} // namespace mscl

@@ -52,4 +52,4 @@ namespace mscl
             m_established = true;
         }
     }
-}
+} // namespace mscl

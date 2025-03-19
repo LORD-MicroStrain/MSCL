@@ -37,4 +37,4 @@ namespace mscl
             LinearEquation parseResponse(const GenericMipCmdResponse& response) const;
         };
     };
-}
+} // namespace mscl

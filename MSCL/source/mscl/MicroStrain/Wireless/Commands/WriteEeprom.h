@@ -62,5 +62,5 @@ namespace mscl
             bool matchSuccessResponse(const WirelessPacket& packet) override;
         };
     };
-#endif
-}
+#endif // !SWIG
+} // namespace mscl

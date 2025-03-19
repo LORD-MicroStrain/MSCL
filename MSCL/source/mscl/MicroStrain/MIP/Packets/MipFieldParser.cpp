@@ -92,4 +92,4 @@ namespace mscl
         //check the flag position against the allFlags value
         return ((allFlags & flagPos) > 0);
     }
-}
+} // namespace mscl

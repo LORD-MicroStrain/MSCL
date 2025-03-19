@@ -6,7 +6,7 @@
 #pragma once
 
 // MSVC
-#if defined(_MSC_VER)
+#if defined _MSC_VER
 #define _WINSOCK_DEPRECATED_NO_WARNINGS
 
 
@@ -22,7 +22,7 @@
 #define DISABLE_WARNING_FORCE_VALUE_TO_BOOL                 DISABLE_WARNING(4800)
 
 // GCC and Clang
-#elif defined(__GNUC__) || defined(__clang__)
+#elif defined __GNUC__ || defined __clang__
 #define DO_PRAGMA(X) _Pragma(#X)
 #define DISABLE_WARNING_PUSH           DO_PRAGMA(GCC diagnostic push)
 #define DISABLE_WARNING_POP            DO_PRAGMA(GCC diagnostic pop)
@@ -34,7 +34,6 @@
 #define DISABLE_WARNING_DECORATED_NAME_EXCEEDED
 #define DISABLE_WARNING_UNINITIALIZED_LOCAL_VARIABLE
 #define DISABLE_WARNING_FORCE_VALUE_TO_BOOL
-
 #else
 #define DISABLE_WARNING_PUSH
 #define DISABLE_WARNING_POP
@@ -45,8 +44,7 @@
 #define DISABLE_WARNING_DECORATED_NAME_EXCEEDED
 #define DISABLE_WARNING_UNINITIALIZED_LOCAL_VARIABLE
 #define DISABLE_WARNING_FORCE_VALUE_TO_BOOL
-
-#endif
+#endif // _MSC_VER
 
 // Disable all Boost warnings
 #define DISABLE_WARNING_BOOST_START                     \

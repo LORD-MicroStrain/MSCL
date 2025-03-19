@@ -96,4 +96,4 @@ namespace mscl
 
         bool testCommProtocol(WirelessTypes::CommProtocol commProtocol) override;
     };
-}
+} // namespace mscl

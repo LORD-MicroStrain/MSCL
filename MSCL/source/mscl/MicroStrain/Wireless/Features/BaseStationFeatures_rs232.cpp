@@ -11,4 +11,4 @@ namespace mscl
     BaseStationFeatures_rs232::BaseStationFeatures_rs232(const BaseStationInfo& info) :
         BaseStationFeatures(info)
     {}
-}
+} // namespace mscl

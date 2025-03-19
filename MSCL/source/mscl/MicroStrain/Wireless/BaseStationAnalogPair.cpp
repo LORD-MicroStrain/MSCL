@@ -15,16 +15,14 @@ namespace mscl
         m_nodeChannel(1),
         m_outputVal_0V(0),
         m_outputVal_3V(65535)
-    {
-    }
+    {}
 
     BaseStationAnalogPair::BaseStationAnalogPair(uint16 nodeAddress, uint8 nodeChannel, float output_0V, float output_3V) :
         m_nodeAddress(nodeAddress),
         m_nodeChannel(nodeChannel),
         m_outputVal_0V(output_0V),
         m_outputVal_3V(output_3V)
-    {
-    }
+    {}
 
     BaseStationAnalogPair BaseStationAnalogPair::Float(uint16 nodeAddress, uint8 nodeChannel, float output_0V, float output_3V)
     {
@@ -138,4 +136,4 @@ namespace mscl
             }
         }
     }
-}
+} // namespace mscl

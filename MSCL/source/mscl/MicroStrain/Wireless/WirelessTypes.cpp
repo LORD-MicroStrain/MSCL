@@ -269,4 +269,4 @@ namespace mscl
 
         return sweepSize;
     }
-}
+} // namespace mscl

@@ -21,4 +21,4 @@ namespace mscl
     {
         return 8;    //supports 8 analog out ports
     }
-}
+} // namespace mscl

@@ -46,7 +46,7 @@ namespace mscl
 
             //Destructor: Response
             //    Destroys the SetToIdle Response object. This also cancels the SetToIdle operation on the BaseStation, if not already complete or canceled.
-            virtual ~Response();
+            ~Response() override;
 
         protected:
             //Variable: m_nodeAddress
@@ -90,6 +90,6 @@ namespace mscl
             //    The <SetToIdleResult> containing the result of the Stop Node command.
             SetToIdleStatus::SetToIdleResult result();
         };
-    }
-#endif
-}
+    } // namespace SetToIdle
+#endif // !SWIG
+} // namespace mscl

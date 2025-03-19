@@ -11,7 +11,7 @@ namespace mscl
     SignalConditioningSettings::SignalConditioningSettings(MipTypes::FunctionSelector function_selector, const SignalConditioningValues& dataToUse) :
         m_functionSelector(function_selector),
         m_data(dataToUse)
-    { }
+    {}
 
     SignalConditioningSettings::SignalConditioningSettings(MipTypes::FunctionSelector function_selector) :
         m_functionSelector(function_selector)
@@ -70,4 +70,4 @@ namespace mscl
 
         return GenericMipCommand::buildCommand(commandType(), byteCommand.data());
     }
-}
+} // namespace mscl

@@ -30,4 +30,4 @@ namespace mscl
 
         void writeEeprom(uint16 location, uint16 value) override;
     };
-}
+} // namespace mscl

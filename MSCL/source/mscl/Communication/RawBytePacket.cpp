@@ -49,4 +49,4 @@ namespace mscl
 
         m_payload.appendBytes(bytes);
     }
-}
+} // namespace mscl

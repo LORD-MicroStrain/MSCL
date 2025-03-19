@@ -331,5 +331,5 @@ namespace SyncSamplingFormulas
         return 1.0f;
     }
 }
-#endif
-}
+#endif // !SWIG
+} // namespace SyncSamplingFormulas

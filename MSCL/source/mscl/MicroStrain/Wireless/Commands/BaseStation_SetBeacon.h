@@ -67,5 +67,5 @@ namespace mscl
             Timestamp beaconStartTime() const;
         };
     };
-#endif
-}
+#endif // !SWIG
+} // namespace mscl

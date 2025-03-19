@@ -40,4 +40,4 @@ namespace mscl
         //    true if the packet is a well-formed BeaconEchoPacket, false otherwise
         static bool integrityCheck(const WirelessPacket& packet);
     };
-}
+} // namespace mscl

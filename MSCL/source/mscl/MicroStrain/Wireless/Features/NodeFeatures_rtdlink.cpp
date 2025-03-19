@@ -83,4 +83,4 @@ namespace mscl
     {
         return maxSampleRateForSettlingTime_B(filterSettlingTime, sampleRates(samplingMode, dataCollectionMethod, dataMode));
     }
-}
+} // namespace mscl

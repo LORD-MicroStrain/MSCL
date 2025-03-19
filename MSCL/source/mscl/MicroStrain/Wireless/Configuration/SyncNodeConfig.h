@@ -247,4 +247,4 @@ namespace mscl
         //    Resets the radio/power on the Node to apply eeprom changes that have been made.
         void applyEepromChanges();
     };
-}
+} // namespace mscl

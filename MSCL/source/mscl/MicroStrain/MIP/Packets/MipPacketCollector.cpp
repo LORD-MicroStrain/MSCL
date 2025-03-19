@@ -12,13 +12,11 @@ namespace mscl
 {
     MipPacketCollector::MipPacketCollector() :
         m_dataPackets(MAX_DATA_BUFFER_SIZE)
-    {
-    }
+    {}
 
     //required (if taken out, causes runtime error on destruction of WirelessPacketCollector)
     MipPacketCollector::~MipPacketCollector()
-    {
-    }
+    {}
 
     void MipPacketCollector::adjustPacketTimestamp(MipDataPacket& packet)
     {
@@ -174,4 +172,4 @@ namespace mscl
         //return the number of packets in the buffer
         return static_cast<uint32>(m_dataPackets.size());
     }
-}
+} // namespace mscl

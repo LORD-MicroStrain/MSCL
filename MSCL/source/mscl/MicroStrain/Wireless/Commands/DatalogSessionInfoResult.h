@@ -28,7 +28,6 @@ namespace mscl
             sessionCount(0),
             startAddress(0),
             maxLoggedBytes(0)
-        {
-        }
+        {}
     };
-}
+} // namespace mscl

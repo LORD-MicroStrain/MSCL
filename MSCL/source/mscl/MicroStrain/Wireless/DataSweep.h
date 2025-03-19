@@ -229,10 +229,10 @@ namespace mscl
         //Parameters:
         //  applied - Whether the cals have been applied or not.
         void calApplied(bool applied);
-#endif
+#endif // !SWIG
     };
 
     //API Typedef: DataSweeps
     //    Typedef for a vector of <DataSweep> objects.
     typedef std::vector<DataSweep> DataSweeps;
-}
+} // namespace mscl

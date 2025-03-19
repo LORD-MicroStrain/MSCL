@@ -33,4 +33,4 @@ namespace mscl
         //    true if the packet's bytes are what they should be for its current type, false otherwise
         static bool packetIntegrityCheck(const WirelessPacket& packet);
     };
-}
+} // namespace mscl

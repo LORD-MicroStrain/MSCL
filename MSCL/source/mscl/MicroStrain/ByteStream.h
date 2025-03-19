@@ -432,5 +432,4 @@ namespace mscl
         //    - std::out_of_range: The index requested is out of range
         void verifyBytesInStream(std::size_t position, std::size_t length) const;
     };
-
-}
+} // namespace mscl

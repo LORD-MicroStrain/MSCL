@@ -187,7 +187,7 @@ namespace mscl
         m_second(MipModels::modifierFromModelNumber(modelNumber)),
         m_modelStr(MipModels::stringFromModelNumber(modelNumber))
     {}
-#endif
+#endif // !SWIG
 
     bool MipModel::operator==(const MipModel& compare) const
     {
@@ -238,4 +238,4 @@ namespace mscl
 
         return BASE_MODEL_MAP.at(modelInt);
     }
-}
+} // namespace mscl

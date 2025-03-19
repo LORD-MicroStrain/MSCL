@@ -37,4 +37,4 @@ namespace mscl
     {
         return true;
     }
-}
+} // namespace mscl

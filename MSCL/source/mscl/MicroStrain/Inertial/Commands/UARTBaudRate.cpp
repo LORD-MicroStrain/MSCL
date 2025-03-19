@@ -11,7 +11,7 @@ namespace mscl
     UARTBaudRate::UARTBaudRate(MipTypes::FunctionSelector function_selector, uint32 dataToUse) :
         m_functionSelector(function_selector),
         m_baudRate(dataToUse)
-    { }
+    {}
 
     UARTBaudRate::UARTBaudRate(MipTypes::FunctionSelector function_selector) :
         m_functionSelector(function_selector)
@@ -76,5 +76,4 @@ namespace mscl
         }
         return GenericMipCommand::buildCommand(commandType(), byteCommand.data());
     }
-
-}
+} // namespace mscl

@@ -12,8 +12,7 @@ namespace mscl
         m_start(start),
         m_end(end),
         m_count(count)
-    {
-    }
+    {}
 
     Value Bin::start() const
     {
@@ -29,4 +28,4 @@ namespace mscl
     {
         return m_count;
     }
-}
+} // namespace mscl

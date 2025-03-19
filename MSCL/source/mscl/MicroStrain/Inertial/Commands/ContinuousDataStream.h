@@ -64,8 +64,8 @@ namespace mscl
         class Response : public GenericMipCommand::Response
         {
         protected:
-            virtual MipTypes::Command commandId() const { return CMD_ID; }
-            virtual uint8 fieldDataByte() const            { return FIELD_DATA_BYTE; }
+            MipTypes::Command commandId() const override { return CMD_ID; }
+            uint8 fieldDataByte() const override { return FIELD_DATA_BYTE; }
 
         private:
             //Variable: m_deviceSelector
@@ -100,4 +100,4 @@ namespace mscl
             bool parseResponse(const GenericMipCmdResponse& response) const;
         };
     };
-}
+} // namespace mscl

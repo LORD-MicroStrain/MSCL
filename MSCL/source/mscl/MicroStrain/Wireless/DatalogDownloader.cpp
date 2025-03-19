@@ -859,4 +859,4 @@ namespace mscl
     {
         return m_sessionInfo.calCoefficients;
     }
-}
+} // namespace mscl

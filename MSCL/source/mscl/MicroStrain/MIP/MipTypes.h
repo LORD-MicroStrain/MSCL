@@ -1366,7 +1366,7 @@ namespace mscl
         {
             size_t operator()(const MipTypes::ChannelId& channelId) const;
         };
-#endif
+#endif // !SWIG
 
         //API Function: channelName
         //    Gets the name of the specified <ChannelId>.
@@ -1769,7 +1769,7 @@ namespace mscl
         {
             size_t operator()(const MipChannelIdentifier::SpecifierId& id) const;
         };
-#endif
+#endif // !SWIG
 
         //API Constructor: MipChannelIdentifier
         //  Default constructor
@@ -2867,7 +2867,7 @@ namespace mscl
         EventTypeInfo(const uint8 type, const uint8 maxInstances) :
             type(type),
             maxInstances(maxInstances)
-        { }
+        {}
 
         //API Variable: type
         //  The event type based on <EventSupportInfo::Query>
@@ -3021,4 +3021,4 @@ namespace mscl
         //  <SensorRange> - The closest supported range to the specified value
         SensorRange lookupRecommended(SensorRange::Type type, float range) const;
     };
-}
+} // namespace mscl

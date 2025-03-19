@@ -41,6 +41,5 @@ namespace mscl
         void setSearchComplete();
         void restartSearch();
     };
-}
-
-#endif
+} // namespace mscl
+#endif // _WIN32

@@ -69,7 +69,7 @@ namespace mscl
         //Parameters:
         //    set - The descriptor set value to set
         void descriptorSet(uint8 set);
-#endif
+#endif // !SWIG
         //API Function: isDataPacket
         //    Gets whether or not the packet is a data packet
         //
@@ -182,5 +182,5 @@ namespace mscl
             DESC_SET_DATA_SYSTEM         = MipTypes::CLASS_SYSTEM
         };
     };
-#endif
-}
+#endif // !SWIG
+} // namespace mscl

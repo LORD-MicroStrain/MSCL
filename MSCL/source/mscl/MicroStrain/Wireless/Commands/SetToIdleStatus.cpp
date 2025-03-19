@@ -13,8 +13,7 @@ namespace mscl
     SetToIdleStatus::SetToIdleStatus(std::shared_ptr<SetToIdle::Response> response) :
         m_response(response),
         m_complete(false)
-    {
-    }
+    {}
 
     SetToIdleStatus::SetToIdleResult SetToIdleStatus::result()
     {
@@ -40,4 +39,4 @@ namespace mscl
 
         m_complete = true;
     }
-}
+} // namespace mscl

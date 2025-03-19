@@ -12,7 +12,7 @@ namespace mscl
         vec_0(x),
         vec_1(y),
         vec_2(z)
-    { }
+    {}
 
     void Vec3f::fromMipFieldValues(const MipFieldValues& data, uint8 offset)
     {
@@ -41,15 +41,15 @@ namespace mscl
     GeometricVector::GeometricVector(float x_init, float y_init, float z_init, PositionVelocityReferenceFrame ref) :
         Vec3f(x_init, y_init, z_init),
         referenceFrame(ref)
-    { }
+    {}
 
     GeometricVector::GeometricVector() :
         Vec3f(),
         referenceFrame(PositionVelocityReferenceFrame::ECEF)
-    { }
+    {}
 
     GeometricVector::~GeometricVector()
-    { }
+    {}
 
     void GeometricVector::fromMipFieldValues_includesFrame(const MipFieldValues& data, uint8 offset)
     {
@@ -73,4 +73,4 @@ namespace mscl
         appendTo.push_back(Value::UINT8(static_cast<uint8>(referenceFrame)));
         Vec3f::appendMipFieldValues(appendTo);
     }
-}
+} // namespace mscl

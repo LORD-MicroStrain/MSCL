@@ -30,8 +30,7 @@ MOCK_BASE_CLASS(mock_WirelessNodeImpl, WirelessNode_Impl)
 
     mock_WirelessNodeImpl(BaseStation basestation, uint16 address) :
         WirelessNode_Impl(address, basestation)
-    {
-    }
+    {}
 
     MOCK_METHOD(ping, 0);
     MOCK_METHOD(cyclePower, 0);
@@ -50,23 +49,19 @@ MOCK_BASE_CLASS(mock_WirelessNodeImpl_Basic, WirelessNode_Impl)
 {
     mock_WirelessNodeImpl_Basic():
         WirelessNode_Impl(123, makeBaseStationWithMockImpl())
-    {
-    }
+    {}
 
     mock_WirelessNodeImpl_Basic(BaseStation basestation):
         WirelessNode_Impl(123, basestation)
-    {
-    }
+    {}
 
     mock_WirelessNodeImpl_Basic(uint16 address):
         WirelessNode_Impl(address, makeBaseStationWithMockImpl())
-    {
-    }
+    {}
 
     mock_WirelessNodeImpl_Basic(BaseStation basestation, uint16 address):
         WirelessNode_Impl(address, basestation)
-    {
-    }
+    {}
 
     MOCK_METHOD_EXT(readEeprom, 1, Value(const EepromLocation&), readEeprom);
     MOCK_METHOD_EXT(writeEeprom, 2, void(const EepromLocation&, const Value&), writeEeprom);
@@ -147,4 +142,4 @@ static void expectReadModel(std::shared_ptr<mock_WirelessNodeImpl_Basic> impl, W
 
     MOCK_EXPECT(impl->readEeprom).with(NodeEepromMap::MODEL_NUMBER).returns(Value(valueType_uint16, modelType));
     MOCK_EXPECT(impl->readEeprom).with(NodeEepromMap::MODEL_OPTION).returns(Value(valueType_uint16, modelOption));
-}
+} // namespace mscl

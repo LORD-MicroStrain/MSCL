@@ -45,4 +45,4 @@ namespace mscl
 
         const WirelessTypes::WirelessSampleRates histogramTransmitRates() const final;
     };
-}
+} // namespace mscl

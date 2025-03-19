@@ -12,8 +12,7 @@ namespace mscl
         m_errorCode(WirelessTypes::autobalance_notComplete),
         m_percentAchieved(0),
         m_hardwareOffset(0)
-    {
-    }
+    {}
 
     WirelessTypes::AutoBalanceErrorFlag AutoBalanceResult::errorCode() const
     {
@@ -29,4 +28,4 @@ namespace mscl
     {
         return m_hardwareOffset;
     }
-}
+} // namespace mscl

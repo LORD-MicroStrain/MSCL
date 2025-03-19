@@ -324,4 +324,4 @@ namespace mscl
                 return "unknown_" + Utils::toStr(channelId);
         }
     }
-}
+} // namespace mscl

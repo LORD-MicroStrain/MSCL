@@ -85,4 +85,4 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred.
         void triggerArmedNodes();
     };
-}
+} // namespace mscl

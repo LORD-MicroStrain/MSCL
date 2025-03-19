@@ -602,4 +602,4 @@ namespace mscl
         static const EepromLocation FACTORY_CH_ACTION_SLOPE_8;
         static const EepromLocation FACTORY_CH_ACTION_OFFSET_8;
     };
-}
+} // namespace mscl

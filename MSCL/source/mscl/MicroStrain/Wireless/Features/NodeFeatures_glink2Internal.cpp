@@ -62,4 +62,4 @@ namespace mscl
         };
         return filters;
     }
-}
+} // namespace mscl

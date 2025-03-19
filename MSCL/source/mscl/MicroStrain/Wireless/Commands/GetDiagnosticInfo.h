@@ -75,4 +75,4 @@ namespace mscl
             const ChannelData& result() const;
         };
     };
-}
+} // namespace mscl

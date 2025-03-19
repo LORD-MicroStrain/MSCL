@@ -652,7 +652,7 @@ namespace mscl
         DeviceStatusMap statusMap;
         DeviceStatusValueMap m = asValueMap();
 
-        for (auto kv : m)
+        for (const DeviceStatusValueMap::value_type& kv : m)
         {
             statusMap[kv.first] = kv.second.as_string();
         }

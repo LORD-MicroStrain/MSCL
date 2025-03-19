@@ -26,8 +26,7 @@ namespace mscl
 {
     Connection::Connection(std::shared_ptr<Connection_Impl_Base> impl) :
         m_impl(impl)
-    {
-    }
+    {}
 
     Connection Connection::Serial(const std::string& port, uint32 baudRate)
     {
@@ -42,11 +41,11 @@ namespace mscl
         std::string resolvedPort = resolvePath(port);
 
         //attempt to automatically discover the baud rate setting
-        auto ports = Devices::listPorts();
+        Devices::DeviceList ports = Devices::listPorts();
         uint32 baudRate = 921600;
         bool foundPort = false;
 
-        for(auto i : ports)
+        for(const Devices::DeviceList::value_type& i: ports)
         {
             if(i.first == resolvedPort)
             {
@@ -169,7 +168,7 @@ namespace mscl
         std::string result = path;
         //Note: do nothing on Windows
 
-#ifndef _WIN32
+#ifdef __linux__
         //Linux specific code
         boost::filesystem::path p(path);
 
@@ -178,7 +177,7 @@ namespace mscl
             p = boost::filesystem::read_symlink(p);
             result = p.string();
         }
-#endif
+#endif // __linux__
 
         return result;
     }
@@ -265,4 +264,4 @@ namespace mscl
     }
 
     //====================================================================================================================================================
-}
+} // namespace mscl

@@ -25,8 +25,7 @@ namespace mscl
     BaseStation_SetBeacon::Response::Response(uint64 utcTime, std::weak_ptr<ResponseCollector> collector) :
         WirelessResponsePattern(collector, WirelessProtocol::cmdId_base_setBeacon_v1, WirelessProtocol::BASE_STATION_ADDRESS),
         m_beaconStartTime(utcTime * TimeSpan::NANOSECONDS_PER_SECOND)
-    {
-    }
+    {}
 
     bool BaseStation_SetBeacon::Response::matchSuccessResponse(DataBuffer& data)
     {
@@ -59,4 +58,4 @@ namespace mscl
     {
         return m_beaconStartTime;
     }
-}
+} // namespace mscl

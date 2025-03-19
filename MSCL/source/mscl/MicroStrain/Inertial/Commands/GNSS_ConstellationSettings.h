@@ -84,8 +84,7 @@ namespace mscl
 
     public:
         // Destructor
-        ~GNSS_ConstellationSettings() { }
+        ~GNSS_ConstellationSettings() {}
     };
-
-#endif
-}
+#endif // !SWIG
+} // namespace mscl

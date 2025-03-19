@@ -32,4 +32,4 @@ namespace mscl
         //  Gets a list of transmit powers for the given information.
         static const WirelessTypes::TransmitPowers get(WirelessTypes::RegionCode region, WirelessModels::BaseModel model, const Version& fwVersion, WirelessTypes::CommProtocol commProtocol);
     };
-}
+} // namespace mscl

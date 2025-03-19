@@ -29,4 +29,4 @@ namespace mscl
         //    A <ByteStream> containing the command packet.
         static ByteStream buildCommand(NodeAddress nodeAddress, uint8 channelNumber, uint16 targetValue);
     };
-}
+} // namespace mscl

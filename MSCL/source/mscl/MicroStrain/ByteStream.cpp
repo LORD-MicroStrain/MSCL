@@ -9,13 +9,11 @@
 namespace mscl
 {
     ByteStream::ByteStream()
-    {
-    }
+    {}
 
     ByteStream::ByteStream(Bytes bytesToCopy) :
         m_bytes(bytesToCopy)
-    {
-    }
+    {}
 
     //byte access operator
     uint8& ByteStream::operator [](const std::size_t index)
@@ -467,4 +465,4 @@ namespace mscl
             throw std::out_of_range("The requested position is out of range");
         }
     }
-}
+} // namespace mscl

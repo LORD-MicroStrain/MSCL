@@ -54,7 +54,6 @@ namespace mscl
     typedef std::uint32_t NodeAddress;
 
 #ifndef SWIG
-
     //verify some standard information at compile time
     static_assert(sizeof(int) >= 4, "int is less than 4 bytes");
     static_assert(sizeof(std::int8_t) == sizeof(signed char), "int8_t != signed char");
@@ -109,8 +108,7 @@ namespace mscl
 
         return static_cast<Tout>(value);
     }
-
-#endif
+#endif // !SWIG
 
     //API Typedef: Bytes
     //    typedef for a vector of bytes.
@@ -181,4 +179,4 @@ namespace mscl
         deviceState_sampling_inactive   = 4,
         deviceState_unknown             = 255
     };
-}
+} // namespace mscl

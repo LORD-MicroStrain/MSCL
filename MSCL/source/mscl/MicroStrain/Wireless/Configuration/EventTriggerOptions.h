@@ -187,4 +187,4 @@ namespace mscl
         //  The <Triggers> as they are currently set.
         const Triggers& triggers() const;
     };
-}
+} // namespace mscl

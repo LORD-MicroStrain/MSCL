@@ -11,14 +11,12 @@ namespace mscl
     BaseStationButton::BaseStationButton() :
         m_command(btn_disabled),
         m_nodeAddress(0)
-    {
-    }
+    {}
 
     BaseStationButton::BaseStationButton(Command cmd, uint16 nodeAddress) :
         m_command(cmd),
         m_nodeAddress(nodeAddress)
-    {
-    }
+    {}
 
     BaseStationButton::Command BaseStationButton::command() const
     {
@@ -39,4 +37,4 @@ namespace mscl
     {
         m_nodeAddress = address;
     }
-}
+} // namespace mscl

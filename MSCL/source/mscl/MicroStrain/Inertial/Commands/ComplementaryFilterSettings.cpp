@@ -11,7 +11,7 @@ namespace mscl
     ComplementaryFilterSettings::ComplementaryFilterSettings(MipTypes::FunctionSelector function_selector, ComplementaryFilterData dataToUse) :
         m_functionSelector(function_selector),
         m_data(dataToUse)
-    { }
+    {}
 
     ComplementaryFilterSettings::ComplementaryFilterSettings(MipTypes::FunctionSelector function_selector) :
         m_functionSelector(function_selector)
@@ -65,5 +65,4 @@ namespace mscl
         }
         return GenericMipCommand::buildCommand(commandType(), byteCommand.data());
     }
-
-}
+} // namespace mscl

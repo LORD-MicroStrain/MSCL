@@ -98,4 +98,4 @@ namespace mscl
         //  mask - uint64 mask to calculate shift count for
         static uint8 shiftCount(uint64 mask);
     };
-}
+} // namespace mscl

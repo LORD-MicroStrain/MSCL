@@ -51,4 +51,4 @@ namespace mscl
         //    Unblocks the TimedCondition if it is currently blocked from calling timedWait()
         void notify();
     };
-}
+} // namespace mscl

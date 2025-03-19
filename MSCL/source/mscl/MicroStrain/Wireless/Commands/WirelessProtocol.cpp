@@ -12,8 +12,7 @@
 namespace mscl
 {
     WirelessProtocol::WirelessProtocol()
-    {
-    }
+    {}
 
     Version WirelessProtocol::asppVersionFromBaseFw(const Version& fwVersion)
     {
@@ -366,4 +365,4 @@ namespace mscl
     {
         return (m_testNodeCommProtocol != nullptr);
     }
-}
+} // namespace mscl

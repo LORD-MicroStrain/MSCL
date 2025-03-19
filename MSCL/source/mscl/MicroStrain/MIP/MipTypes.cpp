@@ -1451,4 +1451,4 @@ namespace mscl
 
         return closest;
     }
-}
+} // namespace mscl

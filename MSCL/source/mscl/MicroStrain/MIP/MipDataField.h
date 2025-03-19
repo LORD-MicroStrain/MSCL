@@ -75,5 +75,5 @@ namespace mscl
     //Typedef: MipDataFields
     //    Typedef for a vector of <MipDataField> objects
     typedef std::vector<MipDataField> MipDataFields;
-#endif
-}
+#endif // !SWIG
+} // namespace mscl

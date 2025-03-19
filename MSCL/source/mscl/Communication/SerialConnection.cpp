@@ -114,4 +114,4 @@ namespace mscl
         m_baudRate = baudRate;
         reconnect();
     }
-}
+} // namespace mscl

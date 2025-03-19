@@ -25,4 +25,4 @@ namespace mscl
 
         return m_baseInfo.firmwareVersion() >= MIN_RF_SWEEP_FW;
     }
-}
+} // namespace mscl

@@ -44,8 +44,7 @@ namespace mscl
         WirelessResponsePattern(collector, WirelessProtocol::cmdId_longPing_v1, nodeAddress),
         m_nodeAddress(nodeAddress),
         m_result(PingResponse::ResponseFail())
-    {
-    }
+    {}
 
     bool LongPing::Response::matchSuccessResponse(const WirelessPacket& packet)
     {
@@ -96,4 +95,4 @@ namespace mscl
     {
         return m_result;
     }
-}
+} // namespace mscl

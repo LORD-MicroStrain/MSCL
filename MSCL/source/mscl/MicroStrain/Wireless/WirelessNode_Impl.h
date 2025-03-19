@@ -1078,4 +1078,4 @@ namespace mscl
         //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         virtual bool testCommProtocol(WirelessTypes::CommProtocol commProtocol);
     };
-}
+} // namespace mscl

@@ -725,7 +725,7 @@ namespace mscl
         const bool ionosphericValid = pointIsValid(flags, IONOSPHERIC_CORRECTION_VALID);
 
         // identifiers
-        const auto chField = static_cast<MipTypes::ChannelField>(field.fieldId());
+        const MipTypes::ChannelField chField = static_cast<MipTypes::ChannelField>(field.fieldId());
         const MipChannelIdentifiers addlIds = {
             MipChannelIdentifier(MipChannelIdentifier::Type::GNSS_CONSTELLATION, gnssId),
             MipChannelIdentifier(MipChannelIdentifier::Type::GNSS_SATELLITE_ID,  satelliteId)
@@ -774,7 +774,7 @@ namespace mscl
         const bool spoofingValid = pointIsValid(flags, SPOOFING_VALID);
 
         // identifiers
-        const auto chField = static_cast<MipTypes::ChannelField>(field.fieldId());
+        const MipTypes::ChannelField chField = static_cast<MipTypes::ChannelField>(field.fieldId());
 
         MipChannelIdentifiers addlIds = {
             MipChannelIdentifier(MipChannelIdentifier::Type::GNSS_RF_BAND, rfBand)
@@ -1163,4 +1163,4 @@ namespace mscl
         return registerGnssParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
-}
+} // namespace mscl

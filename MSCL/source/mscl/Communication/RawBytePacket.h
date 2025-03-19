@@ -108,4 +108,4 @@ namespace mscl
     //API Typedef: RawBytePackets
     //    Typedef for a vector of <RawBytePacket> objects.
     typedef std::vector<RawBytePacket> RawBytePackets;
-}
+} // namespace mscl

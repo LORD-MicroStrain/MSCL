@@ -28,5 +28,5 @@ namespace mscl
         //    A <ByteStream> containing the command packet.
         static ByteStream buildCommand(NodeAddress nodeAddress);
     };
-#endif
-}
+#endif // !SWIG
+} // namespace mscl

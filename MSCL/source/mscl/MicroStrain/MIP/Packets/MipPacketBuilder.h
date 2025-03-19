@@ -53,4 +53,4 @@ namespace mscl
         //    A <ByteStream> containing the bytes that make up an Inertial Packet
         ByteStream buildPacket();
     };
-}
+} // namespace mscl

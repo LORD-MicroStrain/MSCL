@@ -55,8 +55,7 @@ namespace mscl
         m_max(max),
         m_interval(interval),
         m_options(options)
-    {
-    }
+    {}
 
     bool BaseStation_RfSweepStart::Response::matchSuccessResponse(const WirelessPacket& packet)
     {
@@ -80,4 +79,4 @@ namespace mscl
 
         return true;
     }
-}
+} // namespace mscl

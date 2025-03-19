@@ -63,4 +63,4 @@ namespace mscl
     //API Typedef: ConnectionDebugDataVec
     //  typedef for a vector of <ConnectionDebugData> objects.
     typedef std::vector<ConnectionDebugData> ConnectionDebugDataVec;
-}
+} // namespace mscl

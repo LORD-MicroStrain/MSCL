@@ -181,4 +181,4 @@ namespace mscl
     {
         m_payload.set(bytes);
     }
-}
+} // namespace mscl

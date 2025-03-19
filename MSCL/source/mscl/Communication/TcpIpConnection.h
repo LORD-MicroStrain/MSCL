@@ -73,5 +73,4 @@ namespace mscl
 
         std::unique_ptr<boost::asio::deadline_timer> m_deadlineTimer;
     };
-
-}
+} // namespace mscl

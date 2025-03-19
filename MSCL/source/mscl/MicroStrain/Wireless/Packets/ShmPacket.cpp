@@ -262,4 +262,4 @@ namespace mscl
     {
         return WirelessChannel::channelName(WirelessChannel::channel_structuralHealth) + "_angle" + Utils::toStrWithPrecision(angle, 2, true);
     }
-}
+} // namespace mscl

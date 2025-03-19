@@ -87,4 +87,4 @@ namespace mscl
             const ByteStream& data() const;
         };
     };
-}
+} // namespace mscl

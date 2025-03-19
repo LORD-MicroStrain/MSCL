@@ -42,8 +42,7 @@ namespace mscl
         m_eventActionInfo(std::bind(&MipNode_Impl::getEventInfo, m_node, EventSupportInfo::ACTIONS)),
         m_eventTriggerInfo(std::bind(&MipNode_Impl::getEventInfo, m_node, EventSupportInfo::TRIGGERS)),
         m_sensorRanges(std::bind(&MipNode_Impl::getSupportedSensorRanges, m_node))
-    {
-    }
+    {}
 
     MipNodeInfo::MipNodeInfo(const MipDeviceInfo& info,
                                 const std::vector<uint16>& supportedDescriptors,
@@ -116,4 +115,4 @@ namespace mscl
     {
         return *m_sensorRanges;
     }
-}
+} // namespace mscl

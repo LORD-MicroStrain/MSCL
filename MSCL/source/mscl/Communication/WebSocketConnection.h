@@ -54,5 +54,4 @@ namespace mscl
         //    The port for the connection.
         uint16 m_port;
     };
-
-}
+} // namespace mscl

@@ -162,4 +162,4 @@ namespace mscl
     {
         setSearchComplete();
     }
-}
+} // namespace mscl

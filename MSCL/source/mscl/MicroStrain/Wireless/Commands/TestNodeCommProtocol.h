@@ -78,4 +78,4 @@ namespace mscl
             bool matchFailResponse(const WirelessPacket& packet) override;
         };
     };
-}
+} // namespace mscl

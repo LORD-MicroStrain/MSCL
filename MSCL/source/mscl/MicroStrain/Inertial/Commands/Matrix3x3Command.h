@@ -95,7 +95,7 @@ namespace mscl
 
     public:
         // Destructor
-        ~Matrix3x3Command() { }
+        ~Matrix3x3Command() {}
     };
-#endif
-}
+#endif // !SWIG
+} // namespace mscl

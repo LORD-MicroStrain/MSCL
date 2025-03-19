@@ -30,7 +30,7 @@ namespace mscl
         //     FIELD_DATA_BYTE - Descriptor byte for the Field data.
         static const uint8 FIELD_DATA_BYTE = 0xA3;
 
-        virtual ~GNSS_AssistTimeUpdate() {}
+        ~GNSS_AssistTimeUpdate() override = default;
 
         //Function: buildCommand_get
         //    Builds the bytes for the "get" command.
@@ -74,6 +74,5 @@ namespace mscl
             TimeUpdate parseResponse(const GenericMipCmdResponse& response) const;
         };
     };
-
-#endif
-}
+#endif // !SWIG
+} // namespace mscl

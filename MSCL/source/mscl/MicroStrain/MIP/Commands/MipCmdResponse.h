@@ -6,8 +6,8 @@
 
 #pragma once
 
-#include "mscl/MicroStrain/ResponsePattern.h"
 #include "mscl/MicroStrain/MIP/Packets/MipPacket.h"
+#include "mscl/MicroStrain/ResponsePattern.h"
 
 namespace mscl
 {
@@ -75,4 +75,4 @@ namespace mscl
         //    The MIP ack/nack error code as a <MipPacket::MipAckNack>
         virtual MipPacket::MipAckNack errorCode() const;
     };
-}
+} // namespace mscl

@@ -6,8 +6,8 @@
 
 #include "mscl/MicroStrain/MIP/Commands/GetDeviceDescriptorSets.h"
 
-#include "mscl/MicroStrain/MIP/MipDataField.h"
 #include "mscl/MicroStrain/MIP/Commands/MIP_Commands.h"
+#include "mscl/MicroStrain/MIP/MipDataField.h"
 #include "mscl/MicroStrain/MIP/Packets/MipPacketBuilder.h"
 
 namespace mscl
@@ -49,4 +49,4 @@ namespace mscl
     {
         MIP_Commands::parseData_GetDeviceDescriptorSets(response, descriptors);
     }
-}
+} // namespace mscl

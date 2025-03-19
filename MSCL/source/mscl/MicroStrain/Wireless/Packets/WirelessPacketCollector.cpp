@@ -37,13 +37,11 @@ namespace mscl
     WirelessPacketCollector::WirelessPacketCollector() :
         m_dataPackets(MAX_DATA_BUFFER_SIZE),
         m_nodeDiscoveryPackets(MAX_DISCOVERY_BUFFER_SIZE)
-    {
-    }
+    {}
 
     //required (if taken out, causes runtime error on destruction of WirelessPacketCollector)
     WirelessPacketCollector::~WirelessPacketCollector()
-    {
-    }
+    {}
 
     void WirelessPacketCollector::addDataPacket(const WirelessPacket& packet)
     {
@@ -263,4 +261,4 @@ namespace mscl
         //return the vector container
         return result;
     }
-}
+} // namespace mscl

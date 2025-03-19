@@ -78,4 +78,4 @@ namespace mscl
         //Send a broadcast start command. All armed nodes in the network will start datalogging.
         m_networkBase.node_triggerArmedDatalogging(BaseStation::BROADCAST_NODE_ADDRESS);
     }
-}
+} // namespace mscl

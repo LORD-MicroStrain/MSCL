@@ -32,8 +32,7 @@ namespace mscl
         WirelessResponsePattern(collector, WirelessProtocol::cmdId_reset_v2, nodeAddress),
         m_nodeAddress(nodeAddress),
         m_resetType(resetType)
-    {
-    }
+    {}
 
     bool Reset_v2::Response::matchSuccessResponse(const WirelessPacket& packet)
     {
@@ -55,4 +54,4 @@ namespace mscl
         //if we made it here, the packet matches the response pattern
         return true;
     }
-}
+} // namespace mscl

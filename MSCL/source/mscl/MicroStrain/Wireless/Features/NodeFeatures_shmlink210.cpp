@@ -264,4 +264,4 @@ namespace mscl
                 throw Error_NotSupported("Unknown Sensor Delay Version");
         }
     }
-}
+} // namespace mscl

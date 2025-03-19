@@ -162,4 +162,4 @@ namespace mscl
         //return the eeprom value for this sample rate
         return itr->second;
     }
-}
+} // namespace mscl

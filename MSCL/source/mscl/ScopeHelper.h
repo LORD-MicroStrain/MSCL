@@ -41,4 +41,4 @@ namespace mscl
         //    the ScopeHelper is destroyed.
         void cancel();
     };
-}
+} // namespace mscl

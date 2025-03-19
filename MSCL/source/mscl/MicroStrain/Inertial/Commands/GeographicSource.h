@@ -97,7 +97,7 @@ namespace mscl
 
     public:
         // Destructor
-        ~GeographicSource() { }
+        ~GeographicSource() {}
     };
 
 
@@ -178,6 +178,5 @@ namespace mscl
         MagneticFieldMagnitudeSource(MipTypes::FunctionSelector function_selector, const GeographicSourceOptions& dataToUse);
         MagneticFieldMagnitudeSource(MipTypes::FunctionSelector function_selector);
     };
-
-#endif
-}
+#endif // !SWIG
+} // namespace mscl

@@ -11,8 +11,7 @@ namespace mscl
     HighResClock::HighResClock() :
         m_startHighResNanos(std::chrono::nanoseconds(std::chrono::high_resolution_clock::now().time_since_epoch()).count()),
         m_startSysTimeNanos(std::chrono::nanoseconds(std::chrono::system_clock::now().time_since_epoch()).count())
-    {
-    }
+    {}
 
     uint64 HighResClock::getCurrentSystemTime() const
     {
@@ -25,4 +24,4 @@ namespace mscl
         //add the difference from the high_res clock to the start system clock time to get the nanoseconds in system time
         return m_startSysTimeNanos + diff;
     }
-}
+} // namespace mscl

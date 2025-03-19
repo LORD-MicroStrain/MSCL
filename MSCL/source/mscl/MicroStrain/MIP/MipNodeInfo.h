@@ -6,8 +6,8 @@
 
 #pragma once
 
-#include "mscl/MicroStrain/SampleRate.h"
 #include "mscl/MicroStrain/MIP/Commands/GetDeviceInfo.h"
+#include "mscl/MicroStrain/SampleRate.h"
 
 namespace mscl
 {
@@ -107,4 +107,4 @@ namespace mscl
         // Gets the <SupportedSensorRanges> for this device
         const SupportedSensorRanges& supportedSensorRanges() const;
     };
-}
+} // namespace mscl

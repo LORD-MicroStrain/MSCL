@@ -12,15 +12,13 @@ namespace mscl
         m_channelNumber(1),
         m_type(WirelessTypes::eventTrigger_floor),
         m_value(0.0f)
-    {
-    }
+    {}
 
     Trigger::Trigger(uint8 channelNumber, WirelessTypes::EventTriggerType triggerType, float triggerValue) :
         m_channelNumber(channelNumber),
         m_type(triggerType),
         m_value(triggerValue)
-    {
-    }
+    {}
 
     uint8 Trigger::channelNumber() const
     {
@@ -58,8 +56,7 @@ namespace mscl
         m_triggerMask(0),
         m_preDuration(0),
         m_postDuration(0)
-    {
-    }
+    {}
 
     const BitMask& EventTriggerOptions::triggerMask() const
     {
@@ -127,4 +124,4 @@ namespace mscl
     {
         return m_triggers;
     }
-}
+} // namespace mscl

@@ -192,4 +192,4 @@ namespace mscl
 
         return 350;     //350 microseconds
     }
-}
+} // namespace mscl

@@ -29,8 +29,7 @@ namespace mscl
 
     GNSS_AssistedFixControl::Response::Response(std::weak_ptr<ResponseCollector> collector, bool ackNackExpected, bool dataResponseExpected) :
         GenericMipCommand::Response(MipTypes::CMD_GNSS_ASSIST_FIX_CONTROL, collector, ackNackExpected, dataResponseExpected, "GNSS_AssistedFixControl")
-    {
-    }
+    {}
 
     bool GNSS_AssistedFixControl::Response::parseResponse(const GenericMipCmdResponse& response) const
     {
@@ -43,4 +42,4 @@ namespace mscl
 
         return true;  // (theResult == 1)
     }
-}
+} // namespace mscl

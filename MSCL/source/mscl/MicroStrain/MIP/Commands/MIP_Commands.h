@@ -130,4 +130,4 @@ namespace mscl
         //    The <ZUPTSettingsData> containing the result that is parsed.
         static ZUPTSettingsData parseData_ZUPTControl(const GenericMipCmdResponse& response);
     };
-}
+} // namespace mscl

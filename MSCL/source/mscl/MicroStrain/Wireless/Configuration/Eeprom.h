@@ -308,4 +308,4 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the BaseStation.
         virtual void writeEeprom_int16(uint16 location, int16 value);
     };
-}
+} // namespace mscl

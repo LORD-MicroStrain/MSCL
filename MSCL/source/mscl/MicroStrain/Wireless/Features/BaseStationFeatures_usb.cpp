@@ -11,4 +11,4 @@ namespace mscl
     BaseStationFeatures_usb::BaseStationFeatures_usb(const BaseStationInfo& info) :
         BaseStationFeatures(info)
     {}
-}
+} // namespace mscl

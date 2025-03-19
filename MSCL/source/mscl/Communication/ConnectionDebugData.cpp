@@ -10,15 +10,13 @@ namespace mscl
 {
     ConnectionDebugData::ConnectionDebugData() :
         m_fromRead(true)
-    {
-    }
+    {}
 
     ConnectionDebugData::ConnectionDebugData(bool fromRead, const Bytes& data) :
         m_fromRead(fromRead),
         m_loggedTime(Timestamp::timeNow()),
         m_data(data)
-    {
-    }
+    {}
 
     bool ConnectionDebugData::fromRead() const
     {
@@ -34,4 +32,4 @@ namespace mscl
     {
         return m_data;
     }
-}
+} // namespace mscl
