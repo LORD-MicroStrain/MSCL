@@ -770,7 +770,7 @@ namespace mscl
         //create a lock for thread safety
         std::unique_lock<std::mutex> lock(m_rawDataMutex);
 
-        std::chrono::time_point<std::chrono::steady_clock> timepoint = std::chrono::high_resolution_clock::now();
+        std::chrono::time_point<std::chrono::high_resolution_clock> timepoint = std::chrono::high_resolution_clock::now();
 
         uint64 timeWaited = 0;
 
@@ -797,7 +797,7 @@ namespace mscl
             m_rawByteBufferCondition.wait_for(lock, std::chrono::milliseconds(timeout - timeWaited));
 
             // Update the timeout based on how long we just spent waiting.
-            std::chrono::time_point<std::chrono::steady_clock> now = std::chrono::high_resolution_clock::now();
+            std::chrono::time_point<std::chrono::high_resolution_clock> now = std::chrono::high_resolution_clock::now();
             timeWaited += std::chrono::duration_cast<std::chrono::milliseconds>(now - timepoint).count();
             timepoint = now;
 
