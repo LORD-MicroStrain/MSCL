@@ -30,7 +30,7 @@ namespace mscl
         }
 
         //bit 0 represents whether it is xr or not
-        if((eepromValue >> 0) & 1)
+        if(eepromValue >> 0 & 1)
         {
             xr = true;
         }

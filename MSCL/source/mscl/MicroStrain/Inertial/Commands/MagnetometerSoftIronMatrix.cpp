@@ -34,7 +34,7 @@ namespace mscl
 
     bool MagnetometerSoftIronMatrix::responseExpected() const
     {
-        return (m_functionSelector == MipTypes::READ_BACK_CURRENT_SETTINGS) ? true : false;
+        return m_functionSelector == MipTypes::READ_BACK_CURRENT_SETTINGS;
     }
 
     Matrix_3x3 MagnetometerSoftIronMatrix::getResponseData(const GenericMipCmdResponse& response)

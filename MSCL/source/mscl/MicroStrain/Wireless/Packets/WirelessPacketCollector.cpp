@@ -58,7 +58,7 @@ namespace mscl
            packetType != WirelessPacket::packetType_rfScanSweep &&
            packetType != WirelessPacket::packetType_beaconEcho)
         {
-            NodeCommTimes::updateDeviceState(packet.nodeAddress(), DeviceState::deviceState_sampling);
+            NodeCommTimes::updateDeviceState(packet.nodeAddress(), deviceState_sampling);
         }
 
         try

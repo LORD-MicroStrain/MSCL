@@ -69,7 +69,7 @@ namespace mscl
 
             //calculate the difference between the updated pc time (calculated from deltaDeviceTime), and the pc collected time that was assigned to the new packet
             uint64 packetCollectedTime = packet.collectedTimestamp().nanoseconds();
-            uint64 diff = (updatedPcTime < packetCollectedTime) ? (packetCollectedTime - updatedPcTime) : (updatedPcTime - packetCollectedTime);
+            uint64 diff = updatedPcTime < packetCollectedTime ? packetCollectedTime - updatedPcTime : updatedPcTime - packetCollectedTime;
 
             //if the difference between the calculated pc time, and the collected pc time is greater than we'd expect
             const uint64 MAX_DELTA_BETWEEN_ESTIMATE_AND_PC_TIME = 500000000; //0.5 seconds   //TODO: does this number need to be adjusted?
@@ -132,7 +132,7 @@ namespace mscl
         std::unique_lock<std::mutex> lock(m_packetMutex);
 
         //while we still need to get more packets (or we want to get all the packets)
-        while((packetCount < maxPackets) || (maxPackets == 0))
+        while(packetCount < maxPackets || maxPackets == 0)
         {
             //if there are no more packets
             if(m_dataPackets.size() <= 0)

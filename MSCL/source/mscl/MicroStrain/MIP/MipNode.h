@@ -35,7 +35,6 @@ namespace mscl
         std::shared_ptr<MipNode_Impl> m_impl;
 
     public:
-
 #ifndef SWIG
         //Function: doCommand
         //  Note: This is an ADVANCED COMMAND. Most users will not need to use this.

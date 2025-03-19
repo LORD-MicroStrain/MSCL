@@ -69,12 +69,12 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_setSingleValue)
     WirelessNode node(100, b);
     node.setImpl(impl);
 
-    MOCK_EXPECT(impl->protocol).returns(*(WirelessProtocol::v1_5().get()));
+    MOCK_EXPECT(impl->protocol).returns(*WirelessProtocol::v1_5().get());
 
     //make the features() function return the NodeFeatures we want
     NodeInfo info(Version(9, 9), WirelessModels::node_gLink_2g, WirelessTypes::region_usa);
     std::unique_ptr<NodeFeatures> features = NodeFeatures::create(info);
-    MOCK_EXPECT(impl->features).returns(std::ref(*(features.get())));
+    MOCK_EXPECT(impl->features).returns(std::ref(*features.get()));
 
     WirelessNodeConfig c;
     c.inactivityTimeout(4500);
@@ -95,12 +95,12 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_setMultipleValues)
     WirelessNode node(100, b);
     node.setImpl(impl);
 
-    MOCK_EXPECT(impl->protocol).returns(*(WirelessProtocol::v1_5().get()));
+    MOCK_EXPECT(impl->protocol).returns(*WirelessProtocol::v1_5().get());
 
     //make the features() function return the NodeFeatures we want
     NodeInfo info(Version(99, 9), WirelessModels::node_gLink_2g, WirelessTypes::region_usa);
     std::unique_ptr<NodeFeatures> features = NodeFeatures::create(info);
-    MOCK_EXPECT(impl->features).returns(std::ref(*(features.get())));
+    MOCK_EXPECT(impl->features).returns(std::ref(*features.get()));
 
     WirelessNodeConfig c;
     c.inactivityTimeout(200);
@@ -125,12 +125,12 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_unknownTransmitPowerButLowerSoOk)
     WirelessNode node(100, b);
     node.setImpl(impl);
 
-    MOCK_EXPECT(impl->protocol).returns(*(WirelessProtocol::v1_5().get()));
+    MOCK_EXPECT(impl->protocol).returns(*WirelessProtocol::v1_5().get());
 
     //make the features() function return the NodeFeatures we want
     NodeInfo info(Version(99, 9), WirelessModels::node_gLink_2g, WirelessTypes::region_usa);
     std::unique_ptr<NodeFeatures> features = NodeFeatures::create(info);
-    MOCK_EXPECT(impl->features).returns(std::ref(*(features.get())));
+    MOCK_EXPECT(impl->features).returns(std::ref(*features.get()));
 
     WirelessNodeConfig c;
     c.transmitPower(static_cast<WirelessTypes::TransmitPower>(3));  //this transmit power is not in our supported list, but should still work ok on the node
@@ -153,12 +153,12 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_failVerifyWhenApplying)
     WirelessNode node(100, b);
     node.setImpl(impl);
 
-    MOCK_EXPECT(impl->protocol).returns(*(WirelessProtocol::v1_5().get()));
+    MOCK_EXPECT(impl->protocol).returns(*WirelessProtocol::v1_5().get());
 
     //make the features() function return the NodeFeatures we want
     NodeInfo info(Version(9, 9), WirelessModels::node_tcLink_1ch, WirelessTypes::region_usa);    //note TC-Link
     std::unique_ptr<NodeFeatures> features = NodeFeatures::create(info);
-    MOCK_EXPECT(impl->features).returns(std::ref(*(features.get())));
+    MOCK_EXPECT(impl->features).returns(std::ref(*features.get()));
 
     WirelessNodeConfig c;
     c.samplingMode(WirelessTypes::samplingMode_syncBurst);    //note Burst mode
@@ -179,7 +179,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_verifyFail_activeChannels)
     //make the features() function return the NodeFeatures we want
     NodeInfo info(Version(9, 9), WirelessModels::node_tcLink_1ch, WirelessTypes::region_usa);    //note TC-Link
     std::unique_ptr<NodeFeatures> features = NodeFeatures::create(info);
-    MOCK_EXPECT(impl->features).returns(std::ref(*(features.get())));
+    MOCK_EXPECT(impl->features).returns(std::ref(*features.get()));
 
     WirelessNodeConfig c;
     ChannelMask chs;
@@ -206,7 +206,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_verifyFail_numSweeps)
     //make the features() function return the NodeFeatures we want
     NodeInfo info(Version(9, 9), WirelessModels::node_gLink_10g, WirelessTypes::region_usa);
     std::unique_ptr<NodeFeatures> features = NodeFeatures::create(info);
-    MOCK_EXPECT(impl->features).returns(std::ref(*(features.get())));
+    MOCK_EXPECT(impl->features).returns(std::ref(*features.get()));
 
     WirelessNodeConfig c;
     c.numSweeps(302);    //not a normalized sweeps value
@@ -230,7 +230,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_verifyFail_dataFormat)
     //make the features() function return the NodeFeatures we want
     NodeInfo info(Version(9, 9), WirelessModels::node_tcLink_3ch, WirelessTypes::region_usa);    //note TC-Link
     std::unique_ptr<NodeFeatures> features = NodeFeatures::create(info);
-    MOCK_EXPECT(impl->features).returns(std::ref(*(features.get())));
+    MOCK_EXPECT(impl->features).returns(std::ref(*features.get()));
 
     WirelessNodeConfig c;
     c.dataFormat(WirelessTypes::dataFormat_raw_uint16);    //not a supported data format
@@ -254,7 +254,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_verifyFail_timeBetweenBursts)
     //make the features() function return the NodeFeatures we want
     NodeInfo info(Version(9, 9), WirelessModels::node_gLink_10g, WirelessTypes::region_usa);
     std::unique_ptr<NodeFeatures> features = NodeFeatures::create(info);
-    MOCK_EXPECT(impl->features).returns(std::ref(*(features.get())));
+    MOCK_EXPECT(impl->features).returns(std::ref(*features.get()));
 
     WirelessNodeConfig c;
     TimeSpan ts = TimeSpan::Seconds(40198);
@@ -279,7 +279,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_verifyFail_timeBetweenBursts_notSupporte
     //make the features() function return the NodeFeatures we want
     NodeInfo info(Version(9, 9), WirelessModels::node_tcLink_1ch, WirelessTypes::region_usa);    //tc-link doesn't support burst
     std::unique_ptr<NodeFeatures> features = NodeFeatures::create(info);
-    MOCK_EXPECT(impl->features).returns(std::ref(*(features.get())));
+    MOCK_EXPECT(impl->features).returns(std::ref(*features.get()));
 
     WirelessNodeConfig c;
     TimeSpan ts = TimeSpan::Seconds(40198);
@@ -306,7 +306,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_verifyFail_multi)
     //make the features() function return the NodeFeatures we want
     NodeInfo info(Version(9, 9), WirelessModels::node_tcLink_1ch, WirelessTypes::region_usa);    //note TC-Link
     std::unique_ptr<NodeFeatures> features = NodeFeatures::create(info);
-    MOCK_EXPECT(impl->features).returns(std::ref(*(features.get())));
+    MOCK_EXPECT(impl->features).returns(std::ref(*features.get()));
 
     WirelessNodeConfig c;
     ChannelMask chs;
@@ -367,7 +367,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_verifyConflictsFail_sampleRate_channels)
     //make the features() function return the NodeFeatures we want
     NodeInfo info(Version(9, 9), WirelessModels::node_vLink, WirelessTypes::region_usa);    //note V-Link
     std::unique_ptr<NodeFeatures> features = NodeFeatures::create(info);
-    MOCK_EXPECT(impl->features).returns(std::ref(*(features.get())));
+    MOCK_EXPECT(impl->features).returns(std::ref(*features.get()));
 
     expectRead(impl, NodeEepromMap::SAMPLING_MODE, Value::UINT16(WirelessTypes::samplingMode_syncBurst));
     expectRead(impl, NodeEepromMap::SAMPLE_RATE, Value::UINT16(WirelessTypes::sampleRate_10kHz));
@@ -495,7 +495,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_checkRadioInterval)
     WirelessNode node(123, b);
     node.setImpl(impl);
 
-    MOCK_EXPECT(impl->protocol).returns(*(WirelessProtocol::v1_5().get()));
+    MOCK_EXPECT(impl->protocol).returns(*WirelessProtocol::v1_5().get());
 
     //make the features() function return the NodeFeatures we want
     std::unique_ptr<NodeFeatures> features;
@@ -522,7 +522,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_lostBeaconTimeout)
     WirelessNode node(123, b);
     node.setImpl(impl);
 
-    MOCK_EXPECT(impl->protocol).returns(*(WirelessProtocol::v1_5().get()));
+    MOCK_EXPECT(impl->protocol).returns(*WirelessProtocol::v1_5().get());
 
     std::unique_ptr<NodeFeatures> features;
     expectNodeFeatures(features, impl);
@@ -551,7 +551,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_bootMode)
     WirelessNode node(123, b);
     node.setImpl(impl);
 
-    MOCK_EXPECT(impl->protocol).returns(*(WirelessProtocol::v1_5().get()));
+    MOCK_EXPECT(impl->protocol).returns(*WirelessProtocol::v1_5().get());
 
     std::unique_ptr<NodeFeatures> features;
     expectNodeFeatures(features, impl, WirelessModels::node_iepeLink);
@@ -579,7 +579,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_filterSettlingTime)
         WirelessNode node(123, b);
         node.setImpl(impl);
 
-        MOCK_EXPECT(impl->protocol).returns(*(WirelessProtocol::v1_5().get()));
+        MOCK_EXPECT(impl->protocol).returns(*WirelessProtocol::v1_5().get());
 
         std::unique_ptr<NodeFeatures> features;
         expectNodeFeatures(features, impl, WirelessModels::node_tcLink_6ch);
@@ -613,7 +613,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_filterSettlingTime)
         WirelessNode node(123, b);
         node.setImpl(impl);
 
-        MOCK_EXPECT(impl->protocol).returns(*(WirelessProtocol::v1_5().get()));
+        MOCK_EXPECT(impl->protocol).returns(*WirelessProtocol::v1_5().get());
 
         std::unique_ptr<NodeFeatures> features;
         expectNodeFeatures(features, impl, WirelessModels::node_gLink_10g);
@@ -638,7 +638,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_filterSettlingTime)
         WirelessNode node(123, b);
         node.setImpl(impl);
 
-        MOCK_EXPECT(impl->protocol).returns(*(WirelessProtocol::v1_5().get()));
+        MOCK_EXPECT(impl->protocol).returns(*WirelessProtocol::v1_5().get());
 
         std::unique_ptr<NodeFeatures> features;
         expectNodeFeatures(features, impl, WirelessModels::node_tcLink_6ch);
@@ -676,7 +676,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_thermocoupleType)
         WirelessNode node(123, b);
         node.setImpl(impl);
 
-        MOCK_EXPECT(impl->protocol).returns(*(WirelessProtocol::v1_5().get()));
+        MOCK_EXPECT(impl->protocol).returns(*WirelessProtocol::v1_5().get());
 
         std::unique_ptr<NodeFeatures> features;
         expectNodeFeatures(features, impl, WirelessModels::node_gLink_10g);
@@ -701,7 +701,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_thermocoupleType)
         WirelessNode node(123, b);
         node.setImpl(impl);
 
-        MOCK_EXPECT(impl->protocol).returns(*(WirelessProtocol::v1_5().get()));
+        MOCK_EXPECT(impl->protocol).returns(*WirelessProtocol::v1_5().get());
 
         std::unique_ptr<NodeFeatures> features;
         expectNodeFeatures(features, impl, WirelessModels::node_tcLink_6ch);
@@ -730,7 +730,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_linearEquation)
     WirelessNode node(123, b);
     node.setImpl(impl);
 
-    MOCK_EXPECT(impl->protocol).returns(*(WirelessProtocol::v1_5().get()));
+    MOCK_EXPECT(impl->protocol).returns(*WirelessProtocol::v1_5().get());
 
     std::unique_ptr<NodeFeatures> features;
     expectNodeFeatures(features, impl, WirelessModels::node_gLink_10g);
@@ -885,7 +885,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_verify_dataMode)
 
     NodeInfo info(Version(10, 0), WirelessModels::node_sgLink, WirelessTypes::region_usa);
     std::unique_ptr<NodeFeatures> features = NodeFeatures::create(info);
-    MOCK_EXPECT(impl->features).returns(std::ref(*(features.get())));
+    MOCK_EXPECT(impl->features).returns(std::ref(*features.get()));
 
     WirelessNodeConfig c;
     c.sampleRate(WirelessTypes::WirelessSampleRate::sampleRate_256Hz);
@@ -924,7 +924,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_verify_derivedModeRate)
 
     NodeInfo info(Version(10, 34862), WirelessModels::node_gLink_200_8g, WirelessTypes::region_usa);
     std::unique_ptr<NodeFeatures> features = NodeFeatures::create(info);
-    MOCK_EXPECT(impl->features).returns(std::ref(*(features.get())));
+    MOCK_EXPECT(impl->features).returns(std::ref(*features.get()));
 
     WirelessNodeConfig c;
     c.sampleRate(WirelessTypes::WirelessSampleRate::sampleRate_256Hz);
@@ -973,7 +973,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_verify_derivedModeMask)
 
     NodeInfo info(Version(10, 34862), WirelessModels::node_gLink_200_8g, WirelessTypes::region_usa);
     std::unique_ptr<NodeFeatures> features = NodeFeatures::create(info);
-    MOCK_EXPECT(impl->features).returns(std::ref(*(features.get())));
+    MOCK_EXPECT(impl->features).returns(std::ref(*features.get()));
 
     WirelessNodeConfig c;
     c.sampleRate(WirelessTypes::WirelessSampleRate::sampleRate_256Hz);
@@ -1050,7 +1050,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_verify_derivedModeMask_invalidChannels)
 
     NodeInfo info(Version(12, 41496), WirelessModels::node_gLink_200_8g, WirelessTypes::region_usa);    //fw supports tilt
     std::unique_ptr<NodeFeatures> features = NodeFeatures::create(info);
-    MOCK_EXPECT(impl->features).returns(std::ref(*(features.get())));
+    MOCK_EXPECT(impl->features).returns(std::ref(*features.get()));
 
     WirelessNodeConfig c;
     c.sampleRate(WirelessTypes::WirelessSampleRate::sampleRate_256Hz);
@@ -1102,7 +1102,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_verify_channelMasks)
 
     NodeInfo info(Version(10, 34862), WirelessModels::node_gLink_200_8g, WirelessTypes::region_usa);
     std::unique_ptr<NodeFeatures> features = NodeFeatures::create(info);
-    MOCK_EXPECT(impl->features).returns(std::ref(*(features.get())));
+    MOCK_EXPECT(impl->features).returns(std::ref(*features.get()));
 
     WirelessNodeConfig c;
     c.sampleRate(WirelessTypes::WirelessSampleRate::sampleRate_256Hz);
@@ -1160,7 +1160,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_verify_derivedSampleRate)
 
     NodeInfo info(Version(10, 34862), WirelessModels::node_gLink_200_8g, WirelessTypes::region_usa);
     std::unique_ptr<NodeFeatures> features = NodeFeatures::create(info);
-    MOCK_EXPECT(impl->features).returns(std::ref(*(features.get())));
+    MOCK_EXPECT(impl->features).returns(std::ref(*features.get()));
 
     WirelessNodeConfig c;
     c.numSweeps(1000);

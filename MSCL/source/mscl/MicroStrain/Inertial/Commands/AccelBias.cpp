@@ -33,7 +33,7 @@ namespace mscl
 
     bool AccelBias::responseExpected() const
     {
-        return (m_functionSelector == MipTypes::READ_BACK_CURRENT_SETTINGS) ? true : false;
+        return m_functionSelector == MipTypes::READ_BACK_CURRENT_SETTINGS;
     }
 
     GeometricVector AccelBias::getResponseData(const GenericMipCmdResponse& response)

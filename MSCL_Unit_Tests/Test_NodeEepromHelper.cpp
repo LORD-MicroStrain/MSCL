@@ -72,7 +72,7 @@ BOOST_AUTO_TEST_CASE(NodeEepromHelper_writeNumSweeps)
 
     //make the features() function return the NodeFeatures we want
     std::unique_ptr<NodeFeatures> features = NodeFeatures::create(info);
-    MOCK_EXPECT(impl->features).returns(std::ref(*(features.get())));
+    MOCK_EXPECT(impl->features).returns(std::ref(*features.get()));
 
     MOCK_EXPECT(impl->writeEeprom).with(NodeEepromMap::NUM_SWEEPS, Value(valueType_uint16, static_cast<uint16>(979)));
 
@@ -339,7 +339,7 @@ BOOST_AUTO_TEST_CASE(NodeEepromHelper_setChannelCalCoefficients)
     expectWrite(impl, NodeEepromMap::CH_ACTION_ID_3, Value::UINT16(static_cast<uint16>(0x0401)));    //unit and equation
     expectRead(impl, NodeEepromMap::CH_ACTION_ID_3, Value::UINT16(static_cast<uint16>(0x0401)));
 
-    NodeEepromHelper c = (node.eepromHelper());
+    NodeEepromHelper c = node.eepromHelper();
 
     LinearEquation eq(2.345f, 0.0005f);
 
@@ -373,7 +373,7 @@ BOOST_AUTO_TEST_CASE(NodeEepromHelper_getTempSensorOptions_thermocouple)
     node.setImpl(impl);
 
     std::unique_ptr<NodeFeatures> features;
-    expectNodeFeatures(features, impl, mscl::WirelessModels::node_tcLink200_oem);
+    expectNodeFeatures(features, impl, WirelessModels::node_tcLink200_oem);
 
     uint16 rTypeThermo = 0b0000000000000011;    //R-Type Thermocouple
 
@@ -395,7 +395,7 @@ BOOST_AUTO_TEST_CASE(NodeEepromHelper_getTempSensorOptions_thermistor)
     node.setImpl(impl);
 
     std::unique_ptr<NodeFeatures> features;
-    expectNodeFeatures(features, impl, mscl::WirelessModels::node_tcLink200_oem);
+    expectNodeFeatures(features, impl, WirelessModels::node_tcLink200_oem);
 
     uint16 thermistor = 0b0100000000000100;    //Thermistor 44006/44031
 
@@ -417,7 +417,7 @@ BOOST_AUTO_TEST_CASE(NodeEepromHelper_getTempSensorOptions_rtd)
     node.setImpl(impl);
 
     std::unique_ptr<NodeFeatures> features;
-    expectNodeFeatures(features, impl, mscl::WirelessModels::node_tcLink200_oem);
+    expectNodeFeatures(features, impl, WirelessModels::node_tcLink200_oem);
 
     uint16 rtd = 0b0010000000000001;    //3-Wire RTD PT-10
 
@@ -440,7 +440,7 @@ BOOST_AUTO_TEST_CASE(NodeEepromHelper_setTempSensorOptions_thermocouple)
     node.setImpl(impl);
 
     std::unique_ptr<NodeFeatures> features;
-    expectNodeFeatures(features, impl, mscl::WirelessModels::node_tcLink200_oem);
+    expectNodeFeatures(features, impl, WirelessModels::node_tcLink200_oem);
 
     uint16 eTypeThermo = 0b0000000000000110;    //E-Type Thermocouple
 
@@ -460,7 +460,7 @@ BOOST_AUTO_TEST_CASE(NodeEepromHelper_setTempSensorOptions_thermistor)
     node.setImpl(impl);
 
     std::unique_ptr<NodeFeatures> features;
-    expectNodeFeatures(features, impl, mscl::WirelessModels::node_tcLink200_oem);
+    expectNodeFeatures(features, impl, WirelessModels::node_tcLink200_oem);
 
     uint16 thermistor = 0b0100000000000101;    //Thermistor 44008/44032
 
@@ -480,7 +480,7 @@ BOOST_AUTO_TEST_CASE(NodeEepromHelper_setTempSensorOptions_rtd)
     node.setImpl(impl);
 
     std::unique_ptr<NodeFeatures> features;
-    expectNodeFeatures(features, impl, mscl::WirelessModels::node_tcLink200_oem);
+    expectNodeFeatures(features, impl, WirelessModels::node_tcLink200_oem);
 
     uint16 rtd = 0b0010000000000010;    //3-Wire RTD PT-50
 

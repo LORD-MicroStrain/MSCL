@@ -82,7 +82,7 @@ namespace mscl
             inputRangeEepromVal = InputRangeHelper::inputRangeToEepromVal(info.inputRange, details.nodeType, details.chType);
         }
 
-        uint8 internalShunt = (info.useInternalShunt) ? 1 : 0;
+        uint8 internalShunt = info.useInternalShunt ? 1 : 0;
 
         //build the command ByteStream
         ByteStream cmd;

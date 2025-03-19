@@ -164,7 +164,7 @@ namespace mscl
 
     void MipNode_Impl::onDataPacketAdded()
     {
-        m_lastDeviceState = DeviceState::deviceState_sampling;
+        m_lastDeviceState = deviceState_sampling;
     }
 
     const MipNodeFeatures& MipNode_Impl::features() const
@@ -346,7 +346,7 @@ namespace mscl
         //send the command and wait for the response
         doCommand(r, Mip_SetToIdle::buildCommand(), false);
 
-        m_lastDeviceState = DeviceState::deviceState_idle;
+        m_lastDeviceState = deviceState_idle;
     }
 
     bool MipNode_Impl::cyclePower()

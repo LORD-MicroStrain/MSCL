@@ -129,9 +129,7 @@ namespace mscl
             CoUninitialize();
         }
         catch(...)
-        {
-            return;
-        }
+        {}
     }
 
     void UpnpService::setSearchComplete()

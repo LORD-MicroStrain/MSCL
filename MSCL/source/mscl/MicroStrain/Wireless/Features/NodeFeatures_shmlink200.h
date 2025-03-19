@@ -33,11 +33,11 @@ namespace mscl
 
         bool supportsHistogramRateConfig() const final;
 
-        virtual bool supportsHistogramEnableConfig() const;
+        bool supportsHistogramEnableConfig() const override;
 
         bool supportsActivitySense() const final;
 
-        virtual bool supportsAutoCal_shm() const;
+        bool supportsAutoCal_shm() const override;
 
         bool supportsSensorDelayConfig() const override;
 

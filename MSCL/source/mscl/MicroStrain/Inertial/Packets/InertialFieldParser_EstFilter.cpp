@@ -1748,7 +1748,7 @@ namespace mscl
         float z = bytes.read_float();
 
         Bytes remaining = bytes.bytesToRead();
-        Vector quat(ValueType::valueType_float, ByteStream(remaining));
+        Vector quat(valueType_float, ByteStream(remaining));
 
         // additional identifiers
         MipChannelIdentifiers addlIds = {
@@ -1790,7 +1790,7 @@ namespace mscl
         float yaw = bytes.read_float();
 
         Bytes remaining = bytes.bytesToRead();
-        Vector quat(ValueType::valueType_float, ByteStream(remaining));
+        Vector quat(valueType_float, ByteStream(remaining));
 
         // additional identifiers
         MipChannelIdentifiers addlIds = {

@@ -46,13 +46,13 @@ namespace mscl
         std::function<void(const UpnpDevice&)> m_deviceAddedCallback;
 
     public:
-        STDMETHODIMP QueryInterface(REFIID iid, LPVOID* ppvObject);
-        STDMETHODIMP_(ULONG) AddRef();
-        STDMETHODIMP_(ULONG) Release();
+        STDMETHODIMP QueryInterface(REFIID iid, LPVOID* ppvObject) override;
+        STDMETHODIMP_(ULONG) AddRef() override;
+        STDMETHODIMP_(ULONG) Release() override;
 
-        STDMETHODIMP DeviceAdded(LONG lFindData, IUPnPDevice* pDevice);
-        STDMETHODIMP DeviceRemoved(LONG lFindData, BSTR bstrUDN);
-        STDMETHODIMP SearchComplete(LONG lFindData);
+        STDMETHODIMP DeviceAdded(LONG lFindData, IUPnPDevice* pDevice) override;
+        STDMETHODIMP DeviceRemoved(LONG lFindData, BSTR bstrUDN) override;
+        STDMETHODIMP SearchComplete(LONG lFindData) override;
 
         void bindSearchComplete(std::function<void()> callback);
         void bindDeviceAdded(std::function<void(const UpnpDevice&)> callback);

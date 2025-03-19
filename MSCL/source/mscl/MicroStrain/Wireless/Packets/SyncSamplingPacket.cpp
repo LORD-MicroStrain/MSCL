@@ -138,7 +138,7 @@ namespace mscl
 
     bool SyncSamplingPacket::integrityCheck(const WirelessPacket& packet)
     {
-        const WirelessPacket::Payload& payload = packet.payload();
+        const Payload& payload = packet.payload();
 
         //verify the payload size
         if(payload.size() < PAYLOAD_OFFSET_CHANNEL_DATA)

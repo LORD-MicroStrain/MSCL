@@ -60,7 +60,7 @@ namespace mscl
         TimestampCounter tsCounter(rate, timestamp);
 
         //build up the Algorithm Metadata
-        std::vector<WirelessDataPacket::AlgorithmMetaData> metaData;
+        std::vector<AlgorithmMetaData> metaData;
         metaData.reserve(numAlgorithms);
         for(uint8 i = 0; i < numAlgorithms; ++i)
         {
@@ -102,7 +102,7 @@ namespace mscl
                     if(!alg.channelMask.enabled(chItr)) { continue; }
 
                     //add channel data
-                    WirelessChannel::ChannelId channelId = WirelessDataPacket::getMathChannelId(alg.algorithmId, chItr);
+                    WirelessChannel::ChannelId channelId = getMathChannelId(alg.algorithmId, chItr);
 
                     //create the ChannelMask property indicating which channel it was derived from
                     ChannelMask propertyChMask;
@@ -129,7 +129,7 @@ namespace mscl
 
     bool SyncSamplingMathPacket::integrityCheck(const WirelessPacket& packet)
     {
-        const WirelessPacket::Payload& payload = packet.payload();
+        const Payload& payload = packet.payload();
 
         //verify the payload size
         if(payload.size() < 23)

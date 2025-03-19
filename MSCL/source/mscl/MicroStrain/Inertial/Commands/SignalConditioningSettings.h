@@ -21,7 +21,7 @@ namespace mscl
         //
         //Returns:
         //    std::string - the string name for the command.
-        virtual std::string commandName() const { return "AHRSSignalConditioningSettings"; }
+        std::string commandName() const override { return "AHRSSignalConditioningSettings"; }
 
         //Function: MakeSetCommand
         //
@@ -49,7 +49,7 @@ namespace mscl
 
         //Function: operator ByteStream
         //  Converts this class to a ByteStream.
-        operator ByteStream() const;
+        operator ByteStream() const override;
 
     private:
         // Function: Constructor Uint8Command
@@ -61,19 +61,19 @@ namespace mscl
         //
         //Returns:
         //    MipTypes::Command - the command ID.
-        virtual MipTypes::Command commandType() const { return MipTypes::Command::CMD_SENSOR_SIG_COND_SETTINGS; }
+        MipTypes::Command commandType() const override { return MipTypes::Command::CMD_SENSOR_SIG_COND_SETTINGS; }
 
         //Function: fieldDataByte
         //
         //Returns:
         //    uint8 - the byte ID for field data in the reply.
-        virtual uint8 fieldDataByte() const { return 0x86; }
+        uint8 fieldDataByte() const override { return 0x86; }
 
         //Function: responseExpected
         //
         //Returns:
         //    bool - True indicates that a response should return from the device.
-        virtual bool responseExpected() const;
+        bool responseExpected() const override;
 
         //Variable: m_cmd
         //    The specific <MipTypes::Command> type of this object

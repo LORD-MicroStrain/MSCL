@@ -34,10 +34,10 @@ namespace mscl
         m_description(""),
         m_serial(""),
         m_baudRate(0),
-        m_connectionType(ConnectionType::connectionType_serial)
+        m_connectionType(connectionType_serial)
     {}
 
-    DeviceInfo::DeviceInfo(std::string description, std::string serial, uint32 baudRate, DeviceInfo::ConnectionType type) :
+    DeviceInfo::DeviceInfo(std::string description, std::string serial, uint32 baudRate, ConnectionType type) :
         m_description(description),
         m_serial(serial),
         m_baudRate(baudRate),
@@ -88,35 +88,33 @@ namespace mscl
 
             return "fd7a:cafa:0eb7:6578:" + serialHexStr + "::1";
         }
-        else
+
+        //this is a WSDA without an SAP number
+
+        uint32 linkTxSerial = 0;
+
+        for(uint16 i = 15; i >= 10; i--)
         {
-            //this is a WSDA without an SAP number
-
-            uint32 linkTxSerial = 0;
-
-            for(uint16 i = 15; i >= 10; i--)
+            char c = serial.at(i);
+            if(c >= '0' && c <= '9')
             {
-                char c = serial.at(i);
-                if(c >= '0' && c <= '9')
-                {
-                    linkTxSerial += static_cast<uint32>(std::pow(36u, 15-i)) * (c - '0');
-                }
-                else
-                {
-                    linkTxSerial += static_cast<uint32>(std::pow(36u, 15-i)) * ((c - 'A') + 10);
-                }
+                linkTxSerial += static_cast<uint32>(std::pow(36u, 15-i)) * (c - '0');
             }
-
-            //convert to an 8-digit hex string
-            std::stringstream stream;
-            stream << std::setfill('0') << std::setw(8) << std::hex << linkTxSerial;
-            std::string serialHexStr = stream.str();
-
-            //add a separator
-            serialHexStr.insert(4, ":");
-
-            return "fd7a:cafa:0eb7:6579:" + serialHexStr + "::1";
+            else
+            {
+                linkTxSerial += static_cast<uint32>(std::pow(36u, 15-i)) * (c - 'A' + 10);
+            }
         }
+
+        //convert to an 8-digit hex string
+        std::stringstream stream;
+        stream << std::setfill('0') << std::setw(8) << std::hex << linkTxSerial;
+        std::string serialHexStr = stream.str();
+
+        //add a separator
+        serialHexStr.insert(4, ":");
+
+        return "fd7a:cafa:0eb7:6579:" + serialHexStr + "::1";
     }
 
     bool Devices::matchesDevice(const std::string& info, const std::string& name, DeviceType devType, uint32& baudRate,

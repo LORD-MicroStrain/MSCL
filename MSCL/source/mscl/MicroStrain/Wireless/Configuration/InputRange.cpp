@@ -275,13 +275,27 @@ namespace mscl
             {
                 if(channelType == WirelessTypes::chType_fullDifferential)
                 {
-                    if(excitationVoltage == WirelessTypes::voltage_1500mV)      { return RANGES_SGLINK200_FULLDIFF_CHS_1500mV; }
-                    else if(excitationVoltage == WirelessTypes::voltage_2500mV) { return RANGES_SGLINK200_FULLDIFF_CHS_2500mV; }
+                    if(excitationVoltage == WirelessTypes::voltage_1500mV)
+                    {
+                        return RANGES_SGLINK200_FULLDIFF_CHS_1500mV;
+                    }
+
+                    if(excitationVoltage == WirelessTypes::voltage_2500mV)
+                    {
+                        return RANGES_SGLINK200_FULLDIFF_CHS_2500mV;
+                    }
                 }
                 else if(channelType == WirelessTypes::chType_singleEnded)
                 {
-                    if(excitationVoltage == WirelessTypes::voltage_1500mV)      { return RANGES_SGLINK200_SINGLEENDED_CHS_1500mV; }
-                    else if(excitationVoltage == WirelessTypes::voltage_2500mV) { return RANGES_SGLINK200_SINGLEENDED_CHS_2500mV; }
+                    if(excitationVoltage == WirelessTypes::voltage_1500mV)
+                    {
+                        return RANGES_SGLINK200_SINGLEENDED_CHS_1500mV;
+                    }
+
+                    if(excitationVoltage == WirelessTypes::voltage_2500mV)
+                    {
+                        return RANGES_SGLINK200_SINGLEENDED_CHS_2500mV;
+                    }
                 }
             }
 

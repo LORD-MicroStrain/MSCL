@@ -96,7 +96,7 @@ namespace mscl
         //
         //Returns:
         //    true if the packet is a well-formed HclSmartBearing_RawPacket Base Board packet, false otherwise.
-        static bool integrityCheck_baseBoard(const WirelessPacket::Payload& payload);
+        static bool integrityCheck_baseBoard(const Payload& payload);
 
         //Function: integrityCheck_strainBoard
         //    Verifies that the packet is a well-formed HclSmartBearing_RawPacket Strain Board packet.
@@ -106,7 +106,7 @@ namespace mscl
         //
         //Returns:
         //    true if the packet is a well-formed HclSmartBearing_RawPacket Strain Board packet, false otherwise.
-        static bool integrityCheck_strainBoard(const WirelessPacket::Payload& payload);
+        static bool integrityCheck_strainBoard(const Payload& payload);
 
         //Function: integrityCheck_inertialBoard
         //    Verifies that the packet is a well-formed HclSmartBearing_RawPacket Inertial Board packet.
@@ -116,7 +116,7 @@ namespace mscl
         //
         //Returns:
         //    true if the packet is a well-formed HclSmartBearing_RawPacket Inertial Board packet, false otherwise.
-        static bool integrityCheck_inertialBoard(const WirelessPacket::Payload& payload);
+        static bool integrityCheck_inertialBoard(const Payload& payload);
 
     public:
         //Function: integrityCheck

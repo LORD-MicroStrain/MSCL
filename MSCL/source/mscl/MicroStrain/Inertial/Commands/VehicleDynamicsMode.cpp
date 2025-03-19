@@ -33,7 +33,7 @@ namespace mscl
 
     bool VehicleDynamicsMode::responseExpected() const
     {
-        return (m_functionSelector == MipTypes::READ_BACK_CURRENT_SETTINGS) ? true : false;
+        return m_functionSelector == MipTypes::READ_BACK_CURRENT_SETTINGS;
     }
 
     InertialTypes::VehicleModeType VehicleDynamicsMode::getResponseData(const GenericMipCmdResponse& response)

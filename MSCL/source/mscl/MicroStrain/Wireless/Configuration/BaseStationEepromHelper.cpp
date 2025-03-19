@@ -314,7 +314,7 @@ namespace mscl
         checkAnalogPairingSupported();
 
         //read the value from eeprom
-        return (read(BaseStationEepromMap::ANALOG_PAIRING_ENABLE).as_uint16() == 1);
+        return read(BaseStationEepromMap::ANALOG_PAIRING_ENABLE).as_uint16() == 1;
     }
 
     void BaseStationEepromHelper::write_analogPairingEnabled(bool enable)
@@ -368,7 +368,7 @@ namespace mscl
         checkAnalogPairingSupported();
 
         //read and return the value from eeprom
-        return (read(BaseStationEepromMap::ANALOG_EXCEED_ENABLE).as_uint16() == 1);
+        return read(BaseStationEepromMap::ANALOG_EXCEED_ENABLE).as_uint16() == 1;
     }
 
     void BaseStationEepromHelper::write_analogExceedanceEnabled(bool enable)

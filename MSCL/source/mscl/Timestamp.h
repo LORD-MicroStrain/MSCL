@@ -43,7 +43,7 @@ namespace mscl
         //Parameters:
         //    nanoseconds - The number of nanoseconds since specified epoch (default of 0)
         //    epoch - The epoch of the timestamp (default Unix)
-        explicit Timestamp(uint64 nanoseconds = 0, Epoch epoch = Epoch::UNIX);
+        explicit Timestamp(uint64 nanoseconds = 0, Epoch epoch = UNIX);
 
         //API Constructor: Timestamp
         //    Creates a Timestamp object from the given year, month, day, hour, minute, second, millisecond parameters
@@ -152,7 +152,7 @@ namespace mscl
         //Parameters:
         //    nanosSinceEpoch - The number of nanoseconds since the unix epoch.
         //    epoch - the epoch for this value (default Unix)
-        void setTime(uint64 nanosSinceEpoch, Epoch epoch = Epoch::UNIX);
+        void setTime(uint64 nanosSinceEpoch, Epoch epoch = UNIX);
 
         //API Function: setTimeNow
         //    Sets the Timestamp object to the current system time in UTC

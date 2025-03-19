@@ -31,6 +31,6 @@ namespace mscl
 
         const WirelessTypes::Filters antiAliasingFilters() const override;
 
-        virtual const WirelessTypes::StorageLimitModes storageLimitModes() const;
+        const WirelessTypes::StorageLimitModes storageLimitModes() const override;
     };
 } // namespace mscl

@@ -173,7 +173,7 @@ namespace mscl
     {
         static const Version MIN_POLL_FW(12, 44849);
 
-        return (m_nodeInfo.firmwareVersion() >= MIN_POLL_FW);
+        return m_nodeInfo.firmwareVersion() >= MIN_POLL_FW;
     }
 
     const WirelessTypes::WirelessSampleRates NodeFeatures_sglink200oem::sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const

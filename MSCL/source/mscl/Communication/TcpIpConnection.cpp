@@ -102,7 +102,7 @@ namespace mscl
 
 #ifdef _WIN32
                 //enable and configure the keep-alive
-                struct tcp_keepalive alive;
+                tcp_keepalive alive;
                 alive.onoff = 1;                    //enable keep-alive
                 alive.keepalivetime = 30000;        //how long before starting to send keep-alive (milliseconds)
                 alive.keepaliveinterval = 1000;     //how often after the keepalivetime to send a keep-alive packet (milliseonds)

@@ -9,18 +9,18 @@
 namespace mscl
 {
     ConfigIssue::ConfigIssue() :
-        m_optionId(ConfigIssue::CONFIG_SAMPLING_MODE),
+        m_optionId(CONFIG_SAMPLING_MODE),
         m_description(""),
         m_isChannelGroupIssue(false)
     {}
 
-    ConfigIssue::ConfigIssue(ConfigIssue::ConfigOption optionId, const std::string& description) :
+    ConfigIssue::ConfigIssue(ConfigOption optionId, const std::string& description) :
         m_optionId(optionId),
         m_description(description),
         m_isChannelGroupIssue(false)
     {}
 
-    ConfigIssue::ConfigIssue(ConfigIssue::ConfigOption optionId, const std::string& description, const ChannelMask& mask) :
+    ConfigIssue::ConfigIssue(ConfigOption optionId, const std::string& description, const ChannelMask& mask) :
         m_optionId(optionId),
         m_description(description),
         m_isChannelGroupIssue(true),

@@ -12,7 +12,7 @@ namespace mscl
 {
     //Class: ActivationCode
     //    Contains the logic for the ActivationCode command.
-    class ActivationCode : private GenericMipCommand
+    class ActivationCode : GenericMipCommand
     {
         ActivationCode() {}                //default constructor disabled
 

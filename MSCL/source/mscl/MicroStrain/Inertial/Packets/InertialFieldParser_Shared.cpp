@@ -25,7 +25,7 @@ namespace mscl
         for (MipTypes::ChannelField field : fields)
         {
             // any failures should return false
-            registered = registered && MipFieldParser::registerParser(field, parser);
+            registered = registered && registerParser(field, parser);
         }
 
         return registered;
@@ -35,7 +35,7 @@ namespace mscl
     //=====================================================================================================================================================
     //                                                        FieldParser_EventSource
     const MipTypes::ChannelField FieldParser_EventSource::FIELD_TYPE = MipTypes::CH_FIELD_SENSOR_SHARED_EVENT_SOURCE;
-    const bool FieldParser_EventSource::REGISTERED = FieldParser_EventSource::registerParser();    //register the parser immediately
+    const bool FieldParser_EventSource::REGISTERED = registerParser();    //register the parser immediately
 
     void FieldParser_EventSource::parse(const MipDataField& field, MipDataPoints& result) const
     {
@@ -53,14 +53,14 @@ namespace mscl
     bool FieldParser_EventSource::registerParser()
     {
         static FieldParser_EventSource p;
-        return MipSharedFieldParser::registerSharedParser(FIELD_TYPE, &p);
+        return registerSharedParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
 
     //=====================================================================================================================================================
     //                                                        FieldParser_Ticks
     const MipTypes::ChannelField FieldParser_Ticks::FIELD_TYPE = MipTypes::CH_FIELD_SENSOR_SHARED_TICKS;
-    const bool FieldParser_Ticks::REGISTERED = FieldParser_Ticks::registerParser();    //register the parser immediately
+    const bool FieldParser_Ticks::REGISTERED = registerParser();    //register the parser immediately
 
     void FieldParser_Ticks::parse(const MipDataField& field, MipDataPoints& result) const
     {
@@ -78,14 +78,14 @@ namespace mscl
     bool FieldParser_Ticks::registerParser()
     {
         static FieldParser_Ticks p;
-        return MipSharedFieldParser::registerSharedParser(FIELD_TYPE, &p);
+        return registerSharedParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
 
     //=====================================================================================================================================================
     //                                                        FieldParser_DeltaTicks
     const MipTypes::ChannelField FieldParser_DeltaTicks::FIELD_TYPE = MipTypes::CH_FIELD_SENSOR_SHARED_DELTA_TICKS;
-    const bool FieldParser_DeltaTicks::REGISTERED = FieldParser_DeltaTicks::registerParser();    //register the parser immediately
+    const bool FieldParser_DeltaTicks::REGISTERED = registerParser();    //register the parser immediately
 
     void FieldParser_DeltaTicks::parse(const MipDataField& field, MipDataPoints& result) const
     {
@@ -103,14 +103,14 @@ namespace mscl
     bool FieldParser_DeltaTicks::registerParser()
     {
         static FieldParser_DeltaTicks p;
-        return MipSharedFieldParser::registerSharedParser(FIELD_TYPE, &p);
+        return registerSharedParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
 
     //=====================================================================================================================================================
     //                                                        FieldParser_GpsTimestamp
     const MipTypes::ChannelField FieldParser_GpsTimestamp::FIELD_TYPE = MipTypes::CH_FIELD_SENSOR_SHARED_GPS_TIMESTAMP;
-    const bool FieldParser_GpsTimestamp::REGISTERED = FieldParser_GpsTimestamp::registerParser();    //register the parser immediately
+    const bool FieldParser_GpsTimestamp::REGISTERED = registerParser();    //register the parser immediately
 
     void FieldParser_GpsTimestamp::parse(const MipDataField& field, MipDataPoints& result) const
     {
@@ -136,14 +136,14 @@ namespace mscl
     bool FieldParser_GpsTimestamp::registerParser()
     {
         static FieldParser_GpsTimestamp p;
-        return MipSharedFieldParser::registerSharedParser(FIELD_TYPE, &p);
+        return registerSharedParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
 
     //=====================================================================================================================================================
     //                                                        FieldParser_DeltaTime
     const MipTypes::ChannelField FieldParser_DeltaTime::FIELD_TYPE = MipTypes::CH_FIELD_SENSOR_SHARED_DELTA_TIMESTAMP;
-    const bool FieldParser_DeltaTime::REGISTERED = FieldParser_DeltaTime::registerParser();    //register the parser immediately
+    const bool FieldParser_DeltaTime::REGISTERED = registerParser();    //register the parser immediately
 
     void FieldParser_DeltaTime::parse(const MipDataField& field, MipDataPoints& result) const
     {
@@ -161,7 +161,7 @@ namespace mscl
     bool FieldParser_DeltaTime::registerParser()
     {
         static FieldParser_DeltaTime p;
-        return MipSharedFieldParser::registerSharedParser(FIELD_TYPE, &p);
+        return registerSharedParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
 

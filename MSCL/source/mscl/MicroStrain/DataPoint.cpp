@@ -140,7 +140,7 @@ namespace mscl
                 result << "0x" << std::setw(2) << static_cast<uint32>(*itr);
 
                 //if this isn't the last byte
-                if(itr != (data.end() - 1))
+                if(itr != data.end() - 1)
                 {
                     //add a separator
                     result << " ";

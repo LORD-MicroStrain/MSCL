@@ -1360,11 +1360,11 @@ namespace mscl
         //
         //Returns:
         //    The <DataClass> for the given channel ID.
-        static DataClass channelFieldToDataClass(MipTypes::ChannelField channelField);
+        static DataClass channelFieldToDataClass(ChannelField channelField);
 
         struct ChannelIdHash
         {
-            size_t operator()(const MipTypes::ChannelId& channelId) const;
+            size_t operator()(const ChannelId& channelId) const;
         };
 #endif // !SWIG
 
@@ -1753,7 +1753,7 @@ namespace mscl
         // Linux environments fail to automatically hash Type
         struct TypeHash
         {
-            size_t operator()(const MipChannelIdentifier::Type& type) const;
+            size_t operator()(const Type& type) const;
         };
 
         //Typedef: TypeId
@@ -1761,13 +1761,13 @@ namespace mscl
         typedef std::pair<Type, uint32> TypeId;
         struct TypeIdHash
         {
-            size_t operator()(const MipChannelIdentifier::TypeId& id) const;
+            size_t operator()(const TypeId& id) const;
         };
 
         typedef std::tuple<Type, uint32, uint32> SpecifierId;
         struct SpecifierIdHash
         {
-            size_t operator()(const MipChannelIdentifier::SpecifierId& id) const;
+            size_t operator()(const SpecifierId& id) const;
         };
 #endif // !SWIG
 
@@ -2242,7 +2242,7 @@ namespace mscl
         //API Constructor: AidingMeasurementHeight
         //  Constructs an AidingMeasurementHeight object with default values
         AidingMeasurementHeight() : AidingMeasurementInput(),
-            m_reference(Reference::HEIGHT_ABOVE_ELLIPSOID)
+            m_reference(HEIGHT_ABOVE_ELLIPSOID)
         {}
 
         //API Constructor: AidingMeasurementHeight
@@ -2834,7 +2834,7 @@ namespace mscl
         //API Function: interfaceId
         // Get the interface ID of the port
         // This is a combined value of the type and port ID
-        uint8 interfaceId() const { return (static_cast<uint8>(type) << 4) | id; }
+        uint8 interfaceId() const { return static_cast<uint8>(type) << 4 | id; }
 
         //API Variable: type
         // Port type (special, UART, etc.)

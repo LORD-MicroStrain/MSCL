@@ -32,7 +32,7 @@ namespace mscl
 
     bool SetReferencePosition::responseExpected() const
     {
-        return (m_functionSelector == MipTypes::READ_BACK_CURRENT_SETTINGS) ? true : false;
+        return m_functionSelector == MipTypes::READ_BACK_CURRENT_SETTINGS;
     }
 
     FixedReferencePositionData SetReferencePosition::getResponseData(const GenericMipCmdResponse& response)

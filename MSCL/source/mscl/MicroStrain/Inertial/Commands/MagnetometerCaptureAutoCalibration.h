@@ -10,7 +10,6 @@
 
 namespace mscl
 {
-
 #ifndef SWIG
     //Class: MagnetometerCaptureAutoCalibration
     //    Contains the logic for the Inertial MagnetometerCaptureAutoCalibration command.
@@ -21,7 +20,7 @@ namespace mscl
         //
         //Returns:
         //    std::string - the string name for this class.
-        virtual std::string commandName() const { return "MagnetometerCaptureAutoCalibration"; }
+        std::string commandName() const override { return "MagnetometerCaptureAutoCalibration"; }
 
         //Function: MakeCommand
         //
@@ -43,7 +42,7 @@ namespace mscl
 
         //Function: operator ByteStream
         //  Converts this class to a ByteStream.
-        operator ByteStream() const;
+        operator ByteStream() const override;
 
     private:
         //Constructor: MagnetometerCaptureAutoCalibration
@@ -54,13 +53,13 @@ namespace mscl
         //
         //Returns:
         //    MipTypes::Command - the command ID.
-        virtual MipTypes::Command commandType() const { return MipTypes::CMD_EF_MAG_CAPTURE_AUTO_CAL; }
+        MipTypes::Command commandType() const override { return MipTypes::CMD_EF_MAG_CAPTURE_AUTO_CAL; }
 
         //Function: responseExpected
         //
         //Returns:
         //    bool - True indicates that a response should return from the device.
-        virtual bool responseExpected() const;
+        bool responseExpected() const override;
 
         //Variable: m_functionSelector
         //    The FunctionSelector type of command to send, get/set, reset to factory defaults, et al.
@@ -70,7 +69,7 @@ namespace mscl
         //
         //Returns:
         //    uint8 - the byte ID for field data in the reply.
-        virtual uint8 fieldDataByte() const { return 0xF1; }
+        uint8 fieldDataByte() const override { return 0xF1; }
 
     public:
         // Destructor

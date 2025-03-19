@@ -612,7 +612,7 @@ namespace mscl
             //update the device state to idle
             //Note: this isn't always true, as the command that was just sent could have put the node to sleep or started
             //      it sampling, but those commands will update the device state separately immediately after this function
-            NodeCommTimes::updateDeviceState(nodeAddress, DeviceState::deviceState_idle);
+            NodeCommTimes::updateDeviceState(nodeAddress, deviceState_idle);
 
             return true;
         }
@@ -1512,7 +1512,7 @@ namespace mscl
 
         if(nodeProtocol.m_sleep(this, nodeAddress))
         {
-            NodeCommTimes::updateDeviceState(nodeAddress, DeviceState::deviceState_sleep);
+            NodeCommTimes::updateDeviceState(nodeAddress, deviceState_sleep);
             return true;
         }
 

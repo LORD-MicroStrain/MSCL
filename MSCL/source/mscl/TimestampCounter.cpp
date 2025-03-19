@@ -69,8 +69,8 @@ namespace mscl
                 //if we are going to roll back over 0
                 if(n > m_sampleCount)
                 {
-                    m_time -= TimeSpan::NANOSECONDS_PER_SECOND * ( ( (n - m_sampleCount) / m_sampleRate.samples() ) + 1);
-                    m_sampleCount = m_sampleRate.samples() - ( (n - m_sampleCount) % m_sampleRate.samples() );
+                    m_time -= TimeSpan::NANOSECONDS_PER_SECOND * ( (n - m_sampleCount) / m_sampleRate.samples() + 1);
+                    m_sampleCount = m_sampleRate.samples() - (n - m_sampleCount) % m_sampleRate.samples();
                 }
                 else
                 {
@@ -100,7 +100,7 @@ namespace mscl
         switch(m_sampleRate.rateType())
         {
             case SampleRate::rateType_hertz:
-                return m_time + ((static_cast<uint64>(m_sampleCount) * TimeSpan::NANOSECONDS_PER_SECOND) / m_sampleRate.samples());
+                return m_time + static_cast<uint64>(m_sampleCount) * TimeSpan::NANOSECONDS_PER_SECOND / m_sampleRate.samples();
 
             default:
                 return m_time;

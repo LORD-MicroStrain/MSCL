@@ -32,9 +32,9 @@ namespace mscl
     //initializes and opens the serial connection
     void SerialConnection::establishConnection()
     {
-        using ::boost::asio::io_context;
-        using ::boost::asio::serial_port;
-        using ::boost::asio::serial_port_base;
+        using boost::asio::io_context;
+        using boost::asio::serial_port;
+        using boost::asio::serial_port_base;
 
         //default flow control of None
         serial_port_base::flow_control::type flowControl = serial_port_base::flow_control::none;

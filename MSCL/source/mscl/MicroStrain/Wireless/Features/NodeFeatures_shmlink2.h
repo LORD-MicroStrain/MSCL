@@ -31,7 +31,7 @@ namespace mscl
 
         const WirelessTypes::WirelessSampleRates sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const override;
 
-        virtual bool supportsLimitedDuration() const;
+        bool supportsLimitedDuration() const override;
 
         bool supportsFatigueConfig() const final;
 
@@ -47,7 +47,7 @@ namespace mscl
 
         bool supportsHistogramRateConfig() const final;
 
-        virtual bool supportsHistogramEnableConfig() const;
+        bool supportsHistogramEnableConfig() const override;
 
         bool supportsActivitySense() const final;
 

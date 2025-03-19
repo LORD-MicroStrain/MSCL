@@ -89,7 +89,7 @@ namespace mscl
         //    north - initial x coordinate
         //    east - initial y coordinate
         //    down - initial z coordinate
-        static GeometricVector VectorNED(float north, float east, float down) { return GeometricVector(north, east, down, PositionVelocityReferenceFrame::LLH_NED); }
+        static GeometricVector VectorNED(float north, float east, float down) { return GeometricVector(north, east, down, LLH_NED); }
 
         //API Constructor: GeometricVector
         //    Creates a GeometricVector object.
@@ -99,7 +99,7 @@ namespace mscl
         //    y_init - initial y coordinate
         //    z_init - initial z coordinate
         //    ref - reference frame (default: ECEF)
-        GeometricVector(float x_init, float y_init, float z_init, PositionVelocityReferenceFrame ref = PositionVelocityReferenceFrame::ECEF);
+        GeometricVector(float x_init, float y_init, float z_init, PositionVelocityReferenceFrame ref = ECEF);
 
         //API Constructor: GeometricVector
         //    Creates a zero-filled GeometricVector object.
@@ -140,7 +140,7 @@ namespace mscl
     class PositionOffset : public GeometricVector
     {
     public:
-        PositionOffset(float x_init, float y_init, float z_init, PositionVelocityReferenceFrame ref = PositionVelocityReferenceFrame::ECEF) :
+        PositionOffset(float x_init, float y_init, float z_init, PositionVelocityReferenceFrame ref = ECEF) :
             GeometricVector(x_init, y_init, z_init, ref)
         {}
 
@@ -178,7 +178,7 @@ namespace mscl
         //    north - initial x coordinate
         //    east - initial y coordinate
         //    down - initial z coordinate
-        static Velocity NED(float north, float east, float down) { return Velocity(north, east, down, PositionVelocityReferenceFrame::LLH_NED); }
+        static Velocity NED(float north, float east, float down) { return Velocity(north, east, down, LLH_NED); }
 
         //API Function: Vehicle
         //    Creates a Velocity vector with the reference frame set to Vehicle
@@ -187,7 +187,7 @@ namespace mscl
         //    x - initial x coordinate
         //    y - initial y coordinate
         //    z - initial z coordinate
-        static Velocity Vehicle(float x, float y, float z) { return Velocity(x, y, z, PositionVelocityReferenceFrame::VEHICLE); }
+        static Velocity Vehicle(float x, float y, float z) { return Velocity(x, y, z, VEHICLE); }
     };
 
     //API Typedef: GeometricVectors
@@ -208,7 +208,7 @@ namespace mscl
         //    lat_init - initial latitude
         //    long_init - initial longitude
         //    alt_init - initial altitude
-        static Position LLH(double lat_init, double long_init, double alt_init) { return Position(lat_init, long_init, alt_init, PositionVelocityReferenceFrame::LLH_NED); }
+        static Position LLH(double lat_init, double long_init, double alt_init) { return Position(lat_init, long_init, alt_init, LLH_NED); }
 
         //API Function: ECEF
         //    Creates a Position object with the reference frame set to ECEF
@@ -227,7 +227,7 @@ namespace mscl
         //    long_init - initial longitude
         //    alt_init - initial altitude
         //    ref - reference frame (default: LLH)
-        Position(double lat_init, double long_init, double alt_init, PositionVelocityReferenceFrame ref = PositionVelocityReferenceFrame::LLH_NED) :
+        Position(double lat_init, double long_init, double alt_init, PositionVelocityReferenceFrame ref = LLH_NED) :
             referenceFrame(ref),
             position_0(lat_init),
             position_1(long_init),
@@ -237,7 +237,7 @@ namespace mscl
         //    Creates a zero-filled Position object.
         //    Default reference frame: LLH
         Position() :
-            referenceFrame(PositionVelocityReferenceFrame::LLH_NED),
+            referenceFrame(LLH_NED),
             position_0(0),
             position_1(0),
             position_2(0) {}
@@ -305,7 +305,7 @@ namespace mscl
             GeometricVector(x_init, y_init, z_init, correlatingValue.referenceFrame)
         {}
 
-        GeometricUncertainty(float x_init, float y_init, float z_init, PositionVelocityReferenceFrame ref = PositionVelocityReferenceFrame::ECEF) :
+        GeometricUncertainty(float x_init, float y_init, float z_init, PositionVelocityReferenceFrame ref = ECEF) :
             GeometricVector(x_init, y_init, z_init, ref)
         {}
 

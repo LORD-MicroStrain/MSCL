@@ -33,14 +33,14 @@ namespace mscl
 
     bool ConingAndScullingEnable::responseExpected() const
     {
-        return (m_functionSelector == MipTypes::READ_BACK_CURRENT_SETTINGS) ? true : false;
+        return m_functionSelector == MipTypes::READ_BACK_CURRENT_SETTINGS;
     }
 
     bool ConingAndScullingEnable::getResponseData(const GenericMipCmdResponse& response)
     {
         DataBuffer dataBuffer(response.data());
         bool enabled;
-        enabled = (dataBuffer.read_uint8() == MipTypes::ENABLED)? true : false;
+        enabled = dataBuffer.read_uint8() == MipTypes::ENABLED;
 
         return enabled;
     }

@@ -47,7 +47,7 @@ namespace mscl
         std::unique_lock<std::mutex> lock(m_packetMutex);
 
         //while we still need to get more packets (or we want to get all the packets)
-        while ((packetCount < maxPackets) || (maxPackets == 0))
+        while (packetCount < maxPackets || maxPackets == 0)
         {
             //if there are no more packets
             if (m_rawBytePackets.size() <= 0)

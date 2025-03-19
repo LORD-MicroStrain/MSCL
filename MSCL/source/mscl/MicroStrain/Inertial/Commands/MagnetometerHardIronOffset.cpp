@@ -33,7 +33,7 @@ namespace mscl
 
     bool MagnetometerHardIronOffset::responseExpected() const
     {
-        return (m_functionSelector == MipTypes::READ_BACK_CURRENT_SETTINGS) ? true : false;
+        return m_functionSelector == MipTypes::READ_BACK_CURRENT_SETTINGS;
     }
 
     GeometricVector MagnetometerHardIronOffset::getResponseData(const GenericMipCmdResponse& response)

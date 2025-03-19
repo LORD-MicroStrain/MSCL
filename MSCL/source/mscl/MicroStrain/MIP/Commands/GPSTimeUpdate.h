@@ -13,7 +13,7 @@ namespace mscl
 #ifndef SWIG
     //Class: GPSTimeUpdate
     //    Contains the logic for the Inertial GPSTimeUpdate command.
-    class GPSTimeUpdate : private GenericMipCommand
+    class GPSTimeUpdate : GenericMipCommand
     {
     public:
         static const uint8 FIELD_DATA_BYTE_WEEKS = 0x84;

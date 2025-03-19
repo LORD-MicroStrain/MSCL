@@ -59,7 +59,7 @@ namespace mscl
 
     std::size_t DataBuffer::bytesRemaining() const
     {
-        std::size_t result = (m_appendPosition - m_readPosition);
+        std::size_t result = m_appendPosition - m_readPosition;
 
         //make sure not negative
         assert(m_readPosition <= m_appendPosition);
@@ -83,7 +83,7 @@ namespace mscl
 
         if(bytesRemaining() < READ_SIZE)
         {
-            throw(std::out_of_range("No Data to read in buffer (peekByte)"));
+            throw std::out_of_range("No Data to read in buffer (peekByte)");
         }
 
         //read the next byte in the buffer
@@ -104,7 +104,7 @@ namespace mscl
 
         if(bytesRemaining() < READ_SIZE)
         {
-            throw(std::out_of_range("No data to read in buffer (read_int8)"));
+            throw std::out_of_range("No data to read in buffer (read_int8)");
         }
 
         //read the next byte in the buffer
@@ -123,7 +123,7 @@ namespace mscl
 
         if(bytesRemaining() < READ_SIZE)
         {
-            throw(std::out_of_range("No data to read in buffer (read_uint8)"));
+            throw std::out_of_range("No data to read in buffer (read_uint8)");
         }
 
         //read the next byte in the buffer
@@ -142,7 +142,7 @@ namespace mscl
 
         if(bytesRemaining() < READ_SIZE)
         {
-            throw(std::out_of_range("No data to read in buffer (read_int16)"));
+            throw std::out_of_range("No data to read in buffer (read_int16)");
         }
 
         //read the next byte in the buffer
@@ -161,7 +161,7 @@ namespace mscl
 
         if(bytesRemaining() < READ_SIZE)
         {
-            throw(std::out_of_range("No data to read in buffer (read_uint16)"));
+            throw std::out_of_range("No data to read in buffer (read_uint16)");
         }
 
         //read the next 2-byte word in the buffer
@@ -180,7 +180,7 @@ namespace mscl
 
         if(bytesRemaining() < READ_SIZE)
         {
-            throw(std::out_of_range("No data to read in buffer (read_uint32)"));
+            throw std::out_of_range("No data to read in buffer (read_uint32)");
         }
 
         //read the next dword in the buffer
@@ -199,7 +199,7 @@ namespace mscl
 
         if(bytesRemaining() < READ_SIZE)
         {
-            throw(std::out_of_range("No data to read in buffer (read_uint64)"));
+            throw std::out_of_range("No data to read in buffer (read_uint64)");
         }
 
         //read the next dword in the buffer
@@ -218,7 +218,7 @@ namespace mscl
 
         if(bytesRemaining() < READ_SIZE)
         {
-            throw(std::out_of_range("No data to read in buffer (read_float)"));
+            throw std::out_of_range("No data to read in buffer (read_float)");
         }
 
         //read the next dword in the buffer
@@ -237,7 +237,7 @@ namespace mscl
 
         if(bytesRemaining() < READ_SIZE)
         {
-            throw(std::out_of_range("No data to read in buffer (read_double)"));
+            throw std::out_of_range("No data to read in buffer (read_double)");
         }
 
         //read the next dword in the buffer
@@ -254,7 +254,7 @@ namespace mscl
     {
         if(bytesRemaining() < length)
         {
-            throw(std::out_of_range("No data to read in buffer (read_string)"));
+            throw std::out_of_range("No data to read in buffer (read_string)");
         }
 
         //read the string in the buffer
@@ -269,7 +269,7 @@ namespace mscl
 
     bool DataBuffer::moreToRead() const
     {
-        return (bytesRemaining() > 0);
+        return bytesRemaining() > 0;
     }
 
     std::size_t DataBuffer::shiftExtraToStart()

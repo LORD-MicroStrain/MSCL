@@ -131,7 +131,7 @@ namespace mscl
         using namespace std::placeholders;
         static const WirelessPacket::AsppVersion ASPP1 = WirelessPacket::aspp_v1;
 
-        std::unique_ptr<WirelessProtocol> result = WirelessProtocol::v1_0();
+        std::unique_ptr<WirelessProtocol> result = v1_0();
 
         //changes from v1.0
 
@@ -154,7 +154,7 @@ namespace mscl
         using namespace std::placeholders;
         static const WirelessPacket::AsppVersion ASPP1 = WirelessPacket::aspp_v1;
 
-        std::unique_ptr<WirelessProtocol> result = WirelessProtocol::v1_1();
+        std::unique_ptr<WirelessProtocol> result = v1_1();
 
         //changes from v1.1
 
@@ -172,7 +172,7 @@ namespace mscl
         using namespace std::placeholders;
         static const WirelessPacket::AsppVersion ASPP1 = WirelessPacket::aspp_v1;
 
-        std::unique_ptr<WirelessProtocol> result = WirelessProtocol::v1_2();
+        std::unique_ptr<WirelessProtocol> result = v1_2();
 
         //changes from v1.2
 
@@ -187,7 +187,7 @@ namespace mscl
         using namespace std::placeholders;
         static const WirelessPacket::AsppVersion ASPP1 = WirelessPacket::aspp_v1;
 
-        std::unique_ptr<WirelessProtocol> result = WirelessProtocol::v1_3();
+        std::unique_ptr<WirelessProtocol> result = v1_3();
 
         //changes from v1.3
 
@@ -204,7 +204,7 @@ namespace mscl
         using namespace std::placeholders;
         static const WirelessPacket::AsppVersion ASPP1 = WirelessPacket::aspp_v1;
 
-        std::unique_ptr<WirelessProtocol> result = WirelessProtocol::v1_4();
+        std::unique_ptr<WirelessProtocol> result = v1_4();
 
         //changes from v1.4
 
@@ -219,7 +219,7 @@ namespace mscl
     {
         using namespace std::placeholders;
 
-        std::unique_ptr<WirelessProtocol> result = WirelessProtocol::v1_5();
+        std::unique_ptr<WirelessProtocol> result = v1_5();
 
         //changes from v1.5
 
@@ -233,7 +233,7 @@ namespace mscl
     {
         using namespace std::placeholders;
 
-        std::unique_ptr<WirelessProtocol> result = WirelessProtocol::v1_6();
+        std::unique_ptr<WirelessProtocol> result = v1_6();
 
         //changes from v1.6
 
@@ -247,7 +247,7 @@ namespace mscl
     {
         using namespace std::placeholders;
 
-        std::unique_ptr<WirelessProtocol> result = WirelessProtocol::v1_7();
+        std::unique_ptr<WirelessProtocol> result = v1_7();
 
         //changes from v1.7
 
@@ -261,7 +261,7 @@ namespace mscl
     {
         using namespace std::placeholders;
 
-        std::unique_ptr<WirelessProtocol> result = WirelessProtocol::v1_8();
+        std::unique_ptr<WirelessProtocol> result = v1_8();
 
         //changes from v1.8
 
@@ -321,7 +321,7 @@ namespace mscl
     {
         using namespace std::placeholders;
 
-        std::unique_ptr<WirelessProtocol> result = WirelessProtocol::v3_0();
+        std::unique_ptr<WirelessProtocol> result = v3_0();
 
         //changes from v3.0
 
@@ -333,36 +333,36 @@ namespace mscl
 
     bool WirelessProtocol::supportsBeaconStatus() const
     {
-        return (m_beaconStatus != nullptr);
+        return m_beaconStatus != nullptr;
     }
 
     bool WirelessProtocol::supportsNodeHardReset() const
     {
-        return (m_hardReset != nullptr);
+        return m_hardReset != nullptr;
     }
 
     bool WirelessProtocol::supportsNodeSoftReset() const
     {
-        return (m_softReset != nullptr);
+        return m_softReset != nullptr;
     }
 
     bool WirelessProtocol::supportsBaseHardReset() const
     {
-        return (m_hardBaseReset != nullptr);
+        return m_hardBaseReset != nullptr;
     }
 
     bool WirelessProtocol::supportsBaseSoftReset() const
     {
-        return (m_softBaseReset != nullptr);
+        return m_softBaseReset != nullptr;
     }
 
     bool WirelessProtocol::supportsBatchEepromRead() const
     {
-        return (m_batchEepromRead != nullptr);
+        return m_batchEepromRead != nullptr;
     }
 
     bool WirelessProtocol::supportsTestCommProtocol() const
     {
-        return (m_testNodeCommProtocol != nullptr);
+        return m_testNodeCommProtocol != nullptr;
     }
 } // namespace mscl

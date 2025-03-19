@@ -21,18 +21,18 @@ namespace mscl
 
     bool SBASSettings::responseExpected() const
     {
-        return (m_functionSelector == MipTypes::READ_BACK_CURRENT_SETTINGS) ? true : false;
+        return m_functionSelector == MipTypes::READ_BACK_CURRENT_SETTINGS;
     }
 
     SBASSettingsData SBASSettings::getResponseData(const GenericMipCmdResponse& response)
     {
         DataBuffer dataBuffer(response.data());
         SBASSettingsData returnData;
-        returnData.enableSBAS = (dataBuffer.read_uint8() == MipTypes::ENABLED)? true : false;
+        returnData.enableSBAS = dataBuffer.read_uint8() == MipTypes::ENABLED;
         uint16 optionFlags = dataBuffer.read_uint16();
-        returnData.enableRanging = Utils::bitIsSet(optionFlags, 0) ? true : false;
-        returnData.enableCorrectionData = Utils::bitIsSet(optionFlags, 1) ? true : false;
-        returnData.applyIntegrityInfo = Utils::bitIsSet(optionFlags, 2) ? true : false;
+        returnData.enableRanging = Utils::bitIsSet(optionFlags, 0);
+        returnData.enableCorrectionData = Utils::bitIsSet(optionFlags, 1);
+        returnData.applyIntegrityInfo = Utils::bitIsSet(optionFlags, 2);
 
         uint8 numberOfSatellites = dataBuffer.read_uint8();
         for (uint8 satelliteNum = 0; satelliteNum < numberOfSatellites; ++satelliteNum)

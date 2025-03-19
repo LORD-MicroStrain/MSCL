@@ -35,7 +35,7 @@ namespace mscl
 
     bool AdvancedLowPassFilterSettings::responseExpected() const
     {
-        return (m_functionSelector == MipTypes::READ_BACK_CURRENT_SETTINGS) ? true : false;
+        return m_functionSelector == MipTypes::READ_BACK_CURRENT_SETTINGS;
     }
 
     LowPassFilterData AdvancedLowPassFilterSettings::getResponseData(const GenericMipCmdResponse& response)
@@ -43,7 +43,7 @@ namespace mscl
         DataBuffer dataBuffer(response.data());
         LowPassFilterData returnData;
         returnData.dataDescriptor = LowPassFilterData::getDataDescriptorFromUint8(dataBuffer.read_uint8());
-        returnData.applyLowPassFilter = (dataBuffer.read_uint8() == 0x01)? true : false;
+        returnData.applyLowPassFilter = dataBuffer.read_uint8() == 0x01;
         returnData.manualFilterBandwidthConfig = static_cast<LowPassFilterData::ManualFilterBandwidthConfig>(dataBuffer.read_uint8());
         returnData.cutoffFrequency = dataBuffer.read_uint16();
         return returnData;

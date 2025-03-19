@@ -27,46 +27,46 @@ namespace mscl
         ~MockConnection() override {}
 
     protected:
-        void establishConnection() override { return; }
+        void establishConnection() override {}
 
     public:
         std::string description() override { return "Mock Connection"; }
 
         Connection::ConnectionType type() override { return Connection::connectionType_serial; }
 
-        void disconnect() override { return; }
+        void disconnect() override {}
 
-        void reconnect() override { return; }
+        void reconnect() override {}
 
-        void registerParser(std::function<void(DataBuffer&)> parseFunction) override { return; }
+        void registerParser(std::function<void(DataBuffer&)> parseFunction) override {}
 
-        void unregisterParser() override { return; }
+        void unregisterParser() override {}
 
-        void throwIfError() override { return; }
+        void throwIfError() override {}
 
-        void write(const ByteStream& data) const override { return; }
+        void write(const ByteStream& data) const override {}
 
-        void write(const Bytes& bytes) const override { return; }
+        void write(const Bytes& bytes) const override {}
 
-        void clearBuffer() override { return; }
+        void clearBuffer() override {}
 
         std::size_t byteReadPos() const override { return 0; }
 
         std::size_t byteAppendPos() const override { return 0; }
 
-        void rawByteMode(bool enable) override { return; }
+        void rawByteMode(bool enable) override {}
 
         bool rawByteMode() override { return false; }
 
-        void getRawBytes(Bytes& bytes, uint32 timeout = 0, uint32 maxBytes = 0, uint32 minBytes = 0) override { return; }
+        void getRawBytes(Bytes& bytes, uint32 timeout = 0, uint32 maxBytes = 0, uint32 minBytes = 0) override {}
 
-        void getRawBytesWithPattern(Bytes& bytes, const uint8* pattern, size_t length, uint32 timeout = 0) override { return; }
+        void getRawBytesWithPattern(Bytes& bytes, const uint8* pattern, size_t length, uint32 timeout = 0) override {}
 
-        void debugMode(bool enable) override { return; }
+        void debugMode(bool enable) override {}
 
         bool debugMode() override { return false; }
 
-        void getDebugData(ConnectionDebugDataVec& data, uint32 timeout) override { return; }
+        void getDebugData(ConnectionDebugDataVec& data, uint32 timeout) override {}
 
         std::string port() const override { return ""; }
     };

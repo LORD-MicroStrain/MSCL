@@ -122,7 +122,7 @@ namespace mscl
         ReadBufferSavePoint savePoint(&data);
 
         //calc the number of bytes to read (all the bytes in the buffer, up to 266 total including what is in the buffer already)
-        size_t bytesToRead = std::min(data.bytesRemaining(), (TOTAL_SUCCESS_BYTES - m_dataPoints.size()));
+        size_t bytesToRead = std::min(data.bytesRemaining(), TOTAL_SUCCESS_BYTES - m_dataPoints.size());
 
         //go through the chunk of data bytes
         for(size_t byteItr = 0; byteItr < bytesToRead; ++byteItr)
@@ -144,7 +144,7 @@ namespace mscl
             m_dataPoints.resize(TOTAL_DATA_BYTES);
 
             //calculate our own checksum from the data points
-            uint16 calculatedChecksum = m_dataPoints.calculateSimpleChecksum(0, (TOTAL_DATA_BYTES-1));
+            uint16 calculatedChecksum = m_dataPoints.calculateSimpleChecksum(0, TOTAL_DATA_BYTES-1);
 
             //verify that the checksums are equal
             if(txChecksum != calculatedChecksum)

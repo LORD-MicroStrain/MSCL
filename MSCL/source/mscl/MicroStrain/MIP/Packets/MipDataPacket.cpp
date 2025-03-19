@@ -139,7 +139,7 @@ namespace mscl
         static const uint64 NANOS_IN_1_HOUR = 3600000000000;
 
         //not valid if time is more than 1 hour in the past or future
-        return ((timestamp - collectedTimestamp()).getNanoseconds() < NANOS_IN_1_HOUR);
+        return (timestamp - collectedTimestamp()).getNanoseconds() < NANOS_IN_1_HOUR;
     }
 
     void MipDataPacket::parseTimeStamp(const MipDataField& field)
@@ -153,7 +153,7 @@ namespace mscl
             case MipTypes::CH_FIELD_DISP_DISPLACEMENT_TS:
             {
                 m_deviceTimeFlags = bytes.read_uint8();
-                m_deviceTimeValid = (m_deviceTimeFlags == 1);
+                m_deviceTimeValid = m_deviceTimeFlags == 1;
                 m_deviceTime.setTime(bytes.read_uint64());
                 break;
             }

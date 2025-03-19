@@ -54,8 +54,8 @@ namespace mscl
 
         //this packet has hard-coded channel data
         ChannelData chData;
-        chData.emplace_back(WirelessChannel::channel_1, 1, ValueType::valueType_uint16, anyType(rpmChannel));
-        chData.emplace_back(WirelessChannel::channel_2, 2, ValueType::valueType_int16, anyType(temperatureChannel));
+        chData.emplace_back(WirelessChannel::channel_1, 1, valueType_uint16, anyType(rpmChannel));
+        chData.emplace_back(WirelessChannel::channel_2, 2, valueType_int16, anyType(temperatureChannel));
 
         //add the channel data to the sweep
         sweep.data(chData);
@@ -66,7 +66,7 @@ namespace mscl
 
     bool RollerPacket::integrityCheck(const WirelessPacket& packet)
     {
-        WirelessPacket::Payload payload = packet.payload();
+        Payload payload = packet.payload();
 
         //verify the payload size
         if(payload.size() != 5)

@@ -85,16 +85,14 @@ namespace mscl
 
                     return true;
                 }
-                else
-                {
-                    //got a bad status, so poll won't be started (not expecting another packet)
-                    m_fullyMatched = true;
 
-                    //notify that the response was matched
-                    m_matchCondition.notify();
+                //got a bad status, so poll won't be started (not expecting another packet)
+                m_fullyMatched = true;
 
-                    return true;
-                }
+                //notify that the response was matched
+                m_matchCondition.notify();
+
+                return true;
             }
         }
 

@@ -285,7 +285,7 @@ namespace mscl
         //
         //  Returns:
         //    string - model number string formatted as it would be read from a MIP device (ex: 62844220 -> "6284-4220")
-        static std::string stringFromModelNumber(MipModels::ModelNumber modelNumber);
+        static std::string stringFromModelNumber(ModelNumber modelNumber);
 
     private:
         // the value to multiply the node model section of a model number before adding the modifier

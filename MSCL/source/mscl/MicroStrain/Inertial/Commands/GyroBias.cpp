@@ -33,7 +33,7 @@ namespace mscl
 
     bool GyroBias::responseExpected() const
     {
-        return (m_functionSelector == MipTypes::READ_BACK_CURRENT_SETTINGS) ? true : false;
+        return m_functionSelector == MipTypes::READ_BACK_CURRENT_SETTINGS;
     }
 
     GeometricVector GyroBias::getResponseData(const GenericMipCmdResponse& response)

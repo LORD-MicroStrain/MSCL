@@ -75,7 +75,7 @@ namespace mscl
         {
             //success response
             m_result = SetToIdleStatus::setToIdleResult_success;
-            NodeCommTimes::updateDeviceState(m_nodeAddress, DeviceState::deviceState_idle);
+            NodeCommTimes::updateDeviceState(m_nodeAddress, deviceState_idle);
             m_success = true;
         }
         //response of 0x2101 is a canceled response

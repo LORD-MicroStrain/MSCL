@@ -1434,7 +1434,7 @@ namespace mscl
                 {
                     if(m_networkBase.node_startSyncSampling(nodeInfo.m_node.protocol(m_networkBase.communicationProtocol()), nodeAddress))
                     {
-                        NodeCommTimes::updateDeviceState(nodeAddress, DeviceState::deviceState_sampling);
+                        NodeCommTimes::updateDeviceState(nodeAddress, deviceState_sampling);
 
                         //mark this node as started sampling so that we don't apply it again on successive calls to this function
                         nodeInfo.m_startedSampling = true;

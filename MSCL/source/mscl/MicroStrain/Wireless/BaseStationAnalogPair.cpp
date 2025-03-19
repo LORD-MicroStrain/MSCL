@@ -8,7 +8,7 @@
 
 namespace mscl
 {
-    const float BaseStationAnalogPair::CHANNEL_NOT_FLOAT = Utils::make_float(0xFF, 0xFF, 0xFF, 0x7F, Utils::bigEndian);
+    const float BaseStationAnalogPair::CHANNEL_NOT_FLOAT = make_float(0xFF, 0xFF, 0xFF, 0x7F, Utils::bigEndian);
 
     BaseStationAnalogPair::BaseStationAnalogPair() :
         m_nodeAddress(0),

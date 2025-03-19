@@ -52,7 +52,7 @@ namespace mscl
         //
         //Returns:
         //    A description of the connection
-        virtual std::string description();
+        std::string description() override;
 
         //Function: port
         //    Gets a name of the connection port
@@ -79,6 +79,6 @@ namespace mscl
         //Exceptions:
         //    - <Error_InvalidSerialPort>: the specified com port is invalid
         //    - <Error_Connection>: failed to get or set com port parameters
-        virtual void establishConnection();
+        void establishConnection() override;
     };
 } // namespace mscl

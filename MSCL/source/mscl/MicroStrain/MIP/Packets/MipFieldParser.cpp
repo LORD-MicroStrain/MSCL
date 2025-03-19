@@ -90,6 +90,6 @@ namespace mscl
     bool MipFieldParser::pointIsValid(uint16 allFlags, uint16 flagPos)
     {
         //check the flag position against the allFlags value
-        return ((allFlags & flagPos) > 0);
+        return (allFlags & flagPos) > 0;
     }
 } // namespace mscl

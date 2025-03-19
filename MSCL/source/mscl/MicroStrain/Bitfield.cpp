@@ -74,13 +74,10 @@ namespace mscl
             throw Error_NoData("The bitfield mask is unset");
         }
 
-        else
+        while (shiftMap % 2 != 1)
         {
-            while (shiftMap % 2 != 1)
-            {
-                shiftMap = shiftMap >> 1;
-                count++;
-            }
+            shiftMap = shiftMap >> 1;
+            count++;
         }
 
         return count;

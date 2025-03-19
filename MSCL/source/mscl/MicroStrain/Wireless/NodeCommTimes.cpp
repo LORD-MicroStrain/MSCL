@@ -41,7 +41,7 @@ namespace mscl
         }
         catch(const std::out_of_range&)
         {
-            return DeviceState::deviceState_unknown;
+            return deviceState_unknown;
         }
     }
 } // namespace mscl

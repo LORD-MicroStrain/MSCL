@@ -124,7 +124,7 @@ namespace mscl
     bool MipNodeFeatures::supportsCommand(MipTypes::Command commandId) const
     {
         const auto& descriptors = nodeInfo().descriptors();
-        return (std::find(descriptors.begin(), descriptors.end(), static_cast<uint16>(commandId)) != descriptors.end());
+        return std::find(descriptors.begin(), descriptors.end(), static_cast<uint16>(commandId)) != descriptors.end();
     }
 
     MipTypes::MipCommands MipNodeFeatures::supportedCommands() const
@@ -163,7 +163,7 @@ namespace mscl
             m_nodeInfo.reset(new MipNodeInfo(m_node));
         }
 
-        return (*m_nodeInfo);
+        return *m_nodeInfo;
     }
 
     void MipNodeFeatures::resetNodeInfo()
@@ -500,17 +500,17 @@ namespace mscl
             case MipModels::node_3dm_gv7_ins:
             {
                 return HeadingAlignmentMethod(
-                    HeadingAlignmentOption::GNSS_Kinematic |
-                    HeadingAlignmentOption::Magnetometer |
-                    HeadingAlignmentOption::External
+                    GNSS_Kinematic |
+                    Magnetometer |
+                    External
                 );
             }
             case MipModels::node_3dm_gq7:
             {
                 return HeadingAlignmentMethod(
-                    HeadingAlignmentOption::GNSS_DualAntenna |
-                    HeadingAlignmentOption::GNSS_Kinematic |
-                    HeadingAlignmentOption::Magnetometer
+                    GNSS_DualAntenna |
+                    GNSS_Kinematic |
+                    Magnetometer
                 );
             }
             case MipModels::node_3dm_cv7_gnss_ins:

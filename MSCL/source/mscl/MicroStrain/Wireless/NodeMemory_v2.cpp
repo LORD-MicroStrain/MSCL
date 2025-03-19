@@ -528,7 +528,6 @@ namespace mscl
     {
         //setAddress is not supported by NodeMemory_v2! (TODO?)
         assert(false);
-        return;
     }
 
     uint32 NodeMemory_v2::bytesRemaining()

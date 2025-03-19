@@ -19,7 +19,7 @@ namespace mscl
     //=====================================================================================================================================================
     //                                                        FieldParser_RawPosition
     const MipTypes::ChannelField FieldParser_RawPosition::FIELD_TYPE = MipTypes::CH_FIELD_DISP_DISPLACEMENT_RAW;
-    const bool FieldParser_RawPosition::REGISTERED = FieldParser_RawPosition::registerParser();    //register the parser immediately
+    const bool FieldParser_RawPosition::REGISTERED = registerParser();    //register the parser immediately
 
     void FieldParser_RawPosition::parse(const MipDataField& field, MipDataPoints& result) const
     {
@@ -40,7 +40,7 @@ namespace mscl
     //=====================================================================================================================================================
     //                                                        FieldParser_Position
     const MipTypes::ChannelField FieldParser_Position::FIELD_TYPE = MipTypes::CH_FIELD_DISP_DISPLACEMENT_MM;
-    const bool FieldParser_Position::REGISTERED = FieldParser_Position::registerParser();    //register the parser immediately
+    const bool FieldParser_Position::REGISTERED = registerParser();    //register the parser immediately
 
     void FieldParser_Position::parse(const MipDataField& field, MipDataPoints& result) const
     {

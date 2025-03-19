@@ -32,7 +32,7 @@ namespace mscl
         for(MipDataField field : m_fields)
         {
             //field length = (1 field len byte + 1 field desc byte + n field data bytes)
-            size_t fieldLen = (1 + 1 + field.fieldData().size());
+            size_t fieldLen = 1 + 1 + field.fieldData().size();
 
             //increase the payload length
             payloadLen += static_cast<uint8>(fieldLen);

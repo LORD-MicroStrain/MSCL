@@ -30,15 +30,15 @@ namespace mscl
     SampleRate& SampleRate::operator+=(uint32 samplesPerSecond)
     {
         //if the rate type is seconds
-        if(m_rateType == SampleRate::rateType_seconds)
+        if(m_rateType == rateType_seconds)
         {
             //if we are adding more than the number of seconds in this sample rate
             //ex. 1 sample per 5 seconds + 10 seconds = 5Hz
             if(samplesPerSecond >= m_samples)
             {
                 //change to hertz
-                m_samples = (samplesPerSecond - m_samples);
-                m_rateType = SampleRate::rateType_hertz;
+                m_samples = samplesPerSecond - m_samples;
+                m_rateType = rateType_hertz;
             }
             //if we are adding seconds less than the current number of seconds in this sample rate
             //ex. 1 sample per 5 seconds + 2 seconds = 1 sample per 3 seconds
@@ -48,7 +48,7 @@ namespace mscl
                 m_samples -= samplesPerSecond;
             }
         }
-        else if(m_rateType == SampleRate::rateType_hertz)
+        else if(m_rateType == rateType_hertz)
         {
             //ex. 5Hz + 2 samples/second = 7Hz
 
@@ -191,8 +191,8 @@ namespace mscl
     {
         switch(m_rateType)
         {
-        case SampleRate::rateType_decimation:
-        case SampleRate::rateType_event:
+        case rateType_decimation:
+        case rateType_event:
             return static_cast<uint16>(m_samples);
 
         default:

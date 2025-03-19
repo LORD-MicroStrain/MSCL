@@ -284,7 +284,7 @@ namespace mscl
             return false;
         }
 
-        const WirelessPacket::Payload& payload = packet.payload();
+        const Payload& payload = packet.payload();
 
         //verify the payload size
         if(payload.size() < 4)
@@ -313,7 +313,7 @@ namespace mscl
         }
     }
 
-    bool HclSmartBearing_RawPacket::integrityCheck_baseBoard(const WirelessPacket::Payload& payload)
+    bool HclSmartBearing_RawPacket::integrityCheck_baseBoard(const Payload& payload)
     {
         //check payload size is exactly correct
         if(payload.size() != 75)
@@ -325,7 +325,7 @@ namespace mscl
         return true;
     }
 
-    bool HclSmartBearing_RawPacket::integrityCheck_strainBoard(const WirelessPacket::Payload& payload)
+    bool HclSmartBearing_RawPacket::integrityCheck_strainBoard(const Payload& payload)
     {
         //check payload size is exactly correct
         if(payload.size() != 85)
@@ -337,7 +337,7 @@ namespace mscl
         return true;
     }
 
-    bool HclSmartBearing_RawPacket::integrityCheck_inertialBoard(const WirelessPacket::Payload& payload)
+    bool HclSmartBearing_RawPacket::integrityCheck_inertialBoard(const Payload& payload)
     {
         //check payload size is exactly correct
         if(payload.size() != 41)

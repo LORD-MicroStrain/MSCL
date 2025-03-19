@@ -12,7 +12,6 @@
 
 namespace mscl
 {
-
     SyncSamplingPacket_v2_aspp3::SyncSamplingPacket_v2_aspp3(const WirelessPacket& packet)
     {
         //construct the data packet from the wireless packet passed in
@@ -123,7 +122,7 @@ namespace mscl
 
     bool SyncSamplingPacket_v2_aspp3::integrityCheck(const WirelessPacket& packet)
     {
-        WirelessPacket::Payload payload = packet.payload();
+        Payload payload = packet.payload();
 
         //verify the payload size
         if(payload.size() < PAYLOAD_OFFSET_CHANNEL_DATA)

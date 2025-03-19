@@ -77,10 +77,8 @@ namespace mscl
                 {
                     return AvailableSampleRates::continuous_shmLink2_2;
                 }
-                else
-                {
-                    return AvailableSampleRates::continuous_shmLink2;
-                }
+
+                return AvailableSampleRates::continuous_shmLink2;
             }
 
             default:

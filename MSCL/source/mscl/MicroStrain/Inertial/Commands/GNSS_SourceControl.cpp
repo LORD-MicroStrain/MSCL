@@ -33,7 +33,7 @@ namespace mscl
 
     bool GNSS_SourceControl::responseExpected() const
     {
-        return (m_functionSelector == MipTypes::READ_BACK_CURRENT_SETTINGS) ? true : false;
+        return m_functionSelector == MipTypes::READ_BACK_CURRENT_SETTINGS;
     }
 
     InertialTypes::GNSS_Source GNSS_SourceControl::getResponseData(const GenericMipCmdResponse& response)

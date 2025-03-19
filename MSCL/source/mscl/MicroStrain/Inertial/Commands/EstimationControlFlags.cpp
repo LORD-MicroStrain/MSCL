@@ -33,7 +33,7 @@ namespace mscl
 
     bool EstimationControlFlags::responseExpected() const
     {
-        return (m_functionSelector == MipTypes::READ_BACK_CURRENT_SETTINGS) ? true : false;
+        return m_functionSelector == MipTypes::READ_BACK_CURRENT_SETTINGS;
     }
 
     EstimationControlOptions EstimationControlFlags::getResponseData(const GenericMipCmdResponse& response)

@@ -122,8 +122,9 @@ namespace mscl
             m_matchCondition.notify();
             return true;
         }
+
         //if the bytes match the fail response
-        else if(matchFailResponse(data))
+        if(matchFailResponse(data))
         {
             //we have fully matched the response
             m_fullyMatched = true;
@@ -165,8 +166,9 @@ namespace mscl
             m_matchCondition.notify();
             return true;
         }
+
         //if the bytes match the fail response
-        else if(matchFailResponse(packet))
+        if(matchFailResponse(packet))
         {
             //we have fully matched the response
             m_fullyMatched = true;

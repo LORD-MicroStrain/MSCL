@@ -107,7 +107,7 @@ namespace mscl
             //    true if the packet matches the Node Received packet, false otherwise.
             bool match_nodeReceived(const WirelessPacket& packet);
 
-            bool matchSuccessResponse(const WirelessPacket& packet);
+            bool matchSuccessResponse(const WirelessPacket& packet) override;
         };
     };
 } // namespace mscl

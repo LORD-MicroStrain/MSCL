@@ -106,7 +106,7 @@ namespace mscl
 
             DiagnosticPacket::addDataPoint(m_result, payload, infoLen - 1, infoId, packet.nodeAddress());
 
-            infoByteCounter += (infoLen + 1);
+            infoByteCounter += infoLen + 1;
         }
 
         return true;

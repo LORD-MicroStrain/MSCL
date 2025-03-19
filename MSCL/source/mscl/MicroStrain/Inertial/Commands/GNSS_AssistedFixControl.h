@@ -13,7 +13,7 @@ namespace mscl
 #ifndef SWIG
     //Class: GNSS_AssistedFixControl
     //    Contains the logic for the Inertial GNSS Assist Fix Control command.
-    class GNSS_AssistedFixControl : private GenericMipCommand
+    class GNSS_AssistedFixControl : GenericMipCommand
     {
     public:
         static const int NO_FLAGS_DEFINED = 0xFF;

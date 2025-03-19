@@ -21,7 +21,7 @@ namespace mscl
         //
         //Returns:
         //    std::string - the string name for this class.
-        virtual std::string commandName() const { return m_commandName; }
+        std::string commandName() const override { return m_commandName; }
 
         //Function: MakeSetCommand
         //
@@ -49,7 +49,7 @@ namespace mscl
 
         //Function: operator ByteStream
         //  Converts this class to a ByteStream.
-        operator ByteStream() const;
+        operator ByteStream() const override;
 
     protected:
         // Function: Constructor GeographicSource
@@ -61,19 +61,19 @@ namespace mscl
         //
         //Returns:
         //    MipTypes::Command - the command ID.
-        virtual MipTypes::Command commandType() const { return m_commandType; }
+        MipTypes::Command commandType() const override { return m_commandType; }
 
         //Function: fieldDataByte
         //
         //Returns:
         //    uint8 - the byte ID for field data in the reply.
-        virtual uint8 fieldDataByte() const { return m_fieldDataByte; }
+        uint8 fieldDataByte() const override { return m_fieldDataByte; }
 
         //Function: responseExpected
         //
         //Returns:
         //    bool - True indicates that a response should return from the device.
-        virtual bool responseExpected() const;
+        bool responseExpected() const override;
 
         //Variable: m_functionSelector
         //    The FunctionSelector type of command to send, get/set, reset to factory defaults, et al.

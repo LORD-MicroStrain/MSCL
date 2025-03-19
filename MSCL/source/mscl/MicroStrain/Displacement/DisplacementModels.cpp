@@ -33,6 +33,6 @@ namespace mscl
         }
 
         //cast to a NodeModel and return
-        return static_cast<DisplacementModels::NodeModel>(modelNum);
+        return static_cast<NodeModel>(modelNum);
     }
 } // namespace mscl

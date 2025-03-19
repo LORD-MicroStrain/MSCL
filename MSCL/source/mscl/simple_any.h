@@ -75,32 +75,32 @@ namespace detail
         template<typename T>
         struct type_fxns
         {
-            inline static const TypeInfo& type()
+            static const TypeInfo& type()
             {
                 return typeid(T);
             }
 
-            inline static void create(void** dest, const void* src)
+            static void create(void** dest, const void* src)
             {
                 *dest = new T(*reinterpret_cast<const T*>(src));
             }
 
-            inline static void clone(void** dest, const void* const * src)
+            static void clone(void** dest, const void* const * src)
             {
                 *dest = new T(*reinterpret_cast<const T*>(*src));
             }
 
-            inline static void destroy(void** object)
+            static void destroy(void** object)
             {
                 delete reinterpret_cast<T*>(*object);
             }
 
-            inline static void* get(void** object)
+            static void* get(void** object)
             {
                 return *object;
             }
 
-            inline static const void* const_get(const void* const * object)
+            static const void* const_get(const void* const * object)
             {
                 return *object;
             }
@@ -117,32 +117,32 @@ namespace detail
         template<typename T>
         struct type_fxns
         {
-            inline static const TypeInfo& type()
+            static const TypeInfo& type()
             {
                 return typeid(T);
             }
 
-            inline static void create(void** dest, const void* src)
+            static void create(void** dest, const void* src)
             {
                 new(dest) T(*reinterpret_cast<const T*>(src));
             }
 
-            inline static void clone(void** dest, const void* const * src)
+            static void clone(void** dest, const void* const * src)
             {
                 new(dest) T(*reinterpret_cast<const T*>(src));
             }
 
-            inline static void destroy(void** object)
+            static void destroy(void** object)
             {
                 reinterpret_cast<T*>(object)->~T();
             }
 
-            inline static void* get(void** object)
+            static void* get(void** object)
             {
                 return reinterpret_cast<void*>(object);
             }
 
-            inline static const void* const_get(const void* const * object)
+            static const void* const_get(const void* const * object)
             {
                 return reinterpret_cast<const void*>(object);
             }

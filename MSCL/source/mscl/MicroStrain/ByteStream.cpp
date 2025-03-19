@@ -55,7 +55,7 @@ namespace mscl
     {
         uint8 low, high;
 
-        Utils::split_int16(value, low, high, endian);
+        split_int16(value, low, high, endian);
 
         m_bytes.push_back( low );
         m_bytes.push_back( high );
@@ -66,7 +66,7 @@ namespace mscl
     {
         uint8 low, high;
 
-        Utils::split_uint16(value, low, high, endian);
+        split_uint16(value, low, high, endian);
 
         m_bytes.push_back(low);
         m_bytes.push_back(high);
@@ -78,7 +78,7 @@ namespace mscl
         uint8 b1, b2, b3, b4;
 
         //split the value into 4 bytes
-        Utils::split_uint32(value, b1, b2, b3, b4, endian);
+        split_uint32(value, b1, b2, b3, b4, endian);
 
         m_bytes.push_back(b1);
         m_bytes.push_back(b2);
@@ -91,7 +91,7 @@ namespace mscl
         uint8 b1, b2, b3, b4, b5, b6, b7, b8;
 
         //split the value into 8 bytes
-        Utils::split_uint64(value, b1, b2, b3, b4, b5, b6, b7, b8, endian);
+        split_uint64(value, b1, b2, b3, b4, b5, b6, b7, b8, endian);
 
         m_bytes.push_back(b1);
         m_bytes.push_back(b2);
@@ -109,7 +109,7 @@ namespace mscl
         uint8 b1, b2, b3, b4;
 
         //split the value into 4 bytes (system to user requested endian)
-        Utils::split_float(value, b1, b2, b3, b4, endian);
+        split_float(value, b1, b2, b3, b4, endian);
 
         m_bytes.push_back(b1);
         m_bytes.push_back(b2);
@@ -123,7 +123,7 @@ namespace mscl
         uint8 b1, b2, b3, b4, b5, b6, b7, b8;
 
         //split the value into 8 bytes (system to user requested endian)
-        Utils::split_double(value, b1, b2, b3, b4, b5, b6, b7, b8, endian);
+        split_double(value, b1, b2, b3, b4, b5, b6, b7, b8, endian);
 
         m_bytes.push_back(b1);
         m_bytes.push_back(b2);
@@ -179,7 +179,7 @@ namespace mscl
         uint8 b1 = m_bytes.at(position);
         uint8 b2 = m_bytes.at(position + 1);
 
-        return Utils::make_int16(b1, b2, endian);
+        return make_int16(b1, b2, endian);
     }
 
     //read a WORD (2 bytes) from the bytestream
@@ -191,7 +191,7 @@ namespace mscl
         uint8 b1 = m_bytes.at(position);
         uint8 b2 = m_bytes.at(position + 1);
 
-        return Utils::make_uint16(b1, b2, endian);
+        return make_uint16(b1, b2, endian);
     }
 
     uint32 ByteStream::read_uint24(std::size_t position, Utils::Endianness endian /*= Utils::bigEndian*/) const
@@ -206,13 +206,11 @@ namespace mscl
         if(endian == Utils::bigEndian)
         {
             //build a uint32 from the 3 bytes
-            return Utils::make_uint32(0, b1, b2, b3, endian);
+            return make_uint32(0, b1, b2, b3, endian);
         }
-        else
-        {
-            //build a uint32 from the 3 bytes
-            return Utils::make_uint32(b1, b2, b3, 0, endian);
-        }
+
+        //build a uint32 from the 3 bytes
+        return make_uint32(b1, b2, b3, 0, endian);
     }
 
     int32 ByteStream::read_int24(std::size_t position, Utils::Endianness endian /*= Utils::bigEndian*/) const
@@ -230,28 +228,22 @@ namespace mscl
             if(Utils::bitIsSet(b1, 7))
             {
                 //build an int32 from the 3 bytes (flip the upper bytes to make negative)
-                return Utils::make_int32(0xFF, b1, b2, b3, endian);
+                return make_int32(0xFF, b1, b2, b3, endian);
             }
-            else
-            {
-                //build an int32 from the 3 bytes (flip the upper bytes to make negative)
-                return Utils::make_int32(0x00, b1, b2, b3, endian);
-            }
+
+            //build an int32 from the 3 bytes (flip the upper bytes to make negative)
+            return make_int32(0x00, b1, b2, b3, endian);
         }
-        else
+
+        //if negative
+        if(Utils::bitIsSet(b3, 7))
         {
-            //if negative
-            if(Utils::bitIsSet(b3, 7))
-            {
-                //build an int32 from the 3 bytes (flip the upper bytes to make negative)
-                return Utils::make_int32(b1, b2, b3, 0xFF, endian);
-            }
-            else
-            {
-                //build an int32 from the 3 bytes (flip the upper bytes to make negative)
-                return Utils::make_int32(b1, b2, b3, 0x00, endian);
-            }
+            //build an int32 from the 3 bytes (flip the upper bytes to make negative)
+            return make_int32(b1, b2, b3, 0xFF, endian);
         }
+
+        //build an int32 from the 3 bytes (flip the upper bytes to make negative)
+        return make_int32(b1, b2, b3, 0x00, endian);
     }
 
     //read a DWORD (4 bytes) from the bytestream
@@ -265,7 +257,7 @@ namespace mscl
         uint8 b3 = m_bytes.at(position + 2);
         uint8 b4 = m_bytes.at(position + 3);
 
-        return Utils::make_uint32(b1, b2, b3, b4, endian);
+        return make_uint32(b1, b2, b3, b4, endian);
     }
 
     uint64 ByteStream::read_uint64(std::size_t position, Utils::Endianness endian /*= Utils::bigEndian*/) const
@@ -282,7 +274,7 @@ namespace mscl
         uint8 b7 = m_bytes.at(position + 6);
         uint8 b8 = m_bytes.at(position + 7);
 
-        return Utils::make_uint64(b1, b2, b3, b4, b5, b6, b7, b8, endian);
+        return make_uint64(b1, b2, b3, b4, b5, b6, b7, b8, endian);
     }
 
     //read a float (4 bytes) from the bytestream
@@ -297,7 +289,7 @@ namespace mscl
         uint8 b4 = m_bytes.at(position + 3);
 
         //convert the bytes to a system endian float
-        return Utils::make_float(b1, b2, b3, b4, endian);
+        return make_float(b1, b2, b3, b4, endian);
     }
 
     double ByteStream::read_double(std::size_t position, Utils::Endianness endian /*= Utils::bigEndian*/) const
@@ -315,7 +307,7 @@ namespace mscl
         uint8 b8 = m_bytes.at(position + 7);
 
         //convert the bytes to a system endian double
-        return Utils::make_double(b1, b2, b3, b4, b5, b6, b7, b8, endian);
+        return make_double(b1, b2, b3, b4, b5, b6, b7, b8, endian);
     }
 
     std::string ByteStream::read_string(std::size_t position, std::size_t length) const
@@ -393,7 +385,7 @@ namespace mscl
     {
         assert(from <= to);                //Start position is after the End position
 
-        std::size_t numBytesToRead = (to + 1) - from;
+        std::size_t numBytesToRead = to + 1 - from;
 
         //check for out of bounds
         verifyBytesInStream(from, numBytesToRead);
@@ -410,7 +402,7 @@ namespace mscl
     {
         assert(from < to);                //Start position is after the End position
 
-        std::size_t numBytesToRead = (to + 1) - from;
+        std::size_t numBytesToRead = to + 1 - from;
 
         //check for out of bounds
         verifyBytesInStream(from, numBytesToRead);
@@ -430,7 +422,7 @@ namespace mscl
         }
 
         //get the final checksum from the 2 bytes
-        finalChecksum = (static_cast<uint16>(checksumByte1) << 8) | static_cast<uint16>(checksumByte2);
+        finalChecksum = static_cast<uint16>(checksumByte1) << 8 | static_cast<uint16>(checksumByte2);
 
         return finalChecksum;
     }
@@ -439,13 +431,13 @@ namespace mscl
     {
         assert(from < to);                //Start position is after the End position
 
-        std::size_t numBytesToRead = (to + 1) - from;
+        std::size_t numBytesToRead = to + 1 - from;
 
         //check for out of bounds
         verifyBytesInStream(from, numBytesToRead);
 
         boost::crc_32_type crc;
-        crc.process_bytes((m_bytes.data() + from), numBytesToRead);
+        crc.process_bytes(m_bytes.data() + from, numBytesToRead);
         return crc.checksum();
     }
 

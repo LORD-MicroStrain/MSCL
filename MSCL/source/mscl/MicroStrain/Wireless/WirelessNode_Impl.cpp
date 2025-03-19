@@ -1133,7 +1133,7 @@ namespace mscl
 
         if(success)
         {
-            NodeCommTimes::updateDeviceState(m_address, DeviceState::deviceState_sampling);
+            NodeCommTimes::updateDeviceState(m_address, deviceState_sampling);
         }
 
         return success;
@@ -1158,7 +1158,7 @@ namespace mscl
 
         if(success)
         {
-            NodeCommTimes::updateDeviceState(m_address, DeviceState::deviceState_sampling);
+            NodeCommTimes::updateDeviceState(m_address, deviceState_sampling);
         }
 
         return success;

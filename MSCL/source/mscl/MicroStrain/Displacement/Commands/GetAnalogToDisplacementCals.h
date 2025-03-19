@@ -13,7 +13,7 @@ namespace mscl
 {
     //Class: GetAnalogToDisplacementCals
     //    Contains the logic for the GetAnalogToDisplacementCals command.
-    class GetAnalogToDisplacementCals : private GenericMipCommand
+    class GetAnalogToDisplacementCals : GenericMipCommand
     {
         GetAnalogToDisplacementCals() {}                //default constructor disabled
 

@@ -12,7 +12,7 @@ namespace mscl
 {
     //Class: DeviceTime
     //    Contains the logic for the DeviceTime command.
-    class DeviceTime : private GenericMipCommand
+    class DeviceTime : GenericMipCommand
     {
         DeviceTime() {}                //default constructor disabled
 

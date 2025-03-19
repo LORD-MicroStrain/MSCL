@@ -15,7 +15,7 @@ namespace mscl
     //Class: GNSS_AssistTimeUpdate
     //    Contains the logic for the Inertial GNSS Assist TimeUpdate command.
     //    It is important to note that this command will get a Nack back every time after the first from power up.
-    class GNSS_AssistTimeUpdate : private GenericMipCommand
+    class GNSS_AssistTimeUpdate : GenericMipCommand
     {
     protected:
         //Function: CommandId

@@ -26,19 +26,19 @@ namespace mscl
     {
         switch(errorCode)
         {
-            case ResponseErrorCode::error_unknownEeprom:
+            case error_unknownEeprom:
                 throw Error_NotSupported("EEPROM " + Utils::toStr(location) + " is not supported.");
 
-            case ResponseErrorCode::error_outOfBounds:
+            case error_outOfBounds:
                 throw Error_NotSupported("The value is out of bounds for EEPROM " + Utils::toStr(location) + ".");
 
-            case ResponseErrorCode::error_readOnly:
+            case error_readOnly:
                 throw Error_NotSupported("EEPROM " + Utils::toStr(location) + " is read only.");
 
-            case ResponseErrorCode::error_hardwareError:    //for now, not turning hardware error into an exception (TODO)
-            case ResponseErrorCode::error_none:
+            case error_hardwareError:    //for now, not turning hardware error into an exception (TODO)
+            case error_none:
             default:
-                return;
+                break;
         }
     }
 
@@ -95,7 +95,7 @@ namespace mscl
         return m_asppVersion;
     }
 
-    void WirelessPacket::asppVersion(WirelessPacket::AsppVersion ver)
+    void WirelessPacket::asppVersion(AsppVersion ver)
     {
         m_asppVersion = ver;
     }

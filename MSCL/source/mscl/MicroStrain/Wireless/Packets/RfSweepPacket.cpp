@@ -75,7 +75,7 @@ namespace mscl
 
     bool RfSweepPacket::integrityCheck(const WirelessPacket& packet)
     {
-        WirelessPacket::Payload payload = packet.payload();
+        Payload payload = packet.payload();
 
         //verify the minimum payload size
         if(payload.size() < 14)

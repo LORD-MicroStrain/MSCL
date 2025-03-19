@@ -13,7 +13,7 @@ namespace mscl
 {
     //Class: DisplacementOutputDataRate
     //    Contains the logic for the DisplacementOutputDataRate command.
-    class DisplacementOutputDataRate : private GenericMipCommand
+    class DisplacementOutputDataRate : GenericMipCommand
     {
         DisplacementOutputDataRate() {}                //default constructor disabled
 

@@ -60,7 +60,7 @@ void WMI_Helper::connect()
         );
 
     //if we failed to initialize security
-    if (FAILED(hres) && (hres != RPC_E_TOO_LATE))
+    if (FAILED(hres) && hres != RPC_E_TOO_LATE)
     {
         CoUninitialize();
 

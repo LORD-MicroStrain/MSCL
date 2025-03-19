@@ -68,7 +68,7 @@ namespace mscl
 
     bool EventTriggerOptions::anyTriggersEnabled() const
     {
-        return (m_triggerMask.enabledCount() > 0);
+        return m_triggerMask.enabledCount() > 0;
     }
 
     bool EventTriggerOptions::triggerEnabled(uint8 triggerIndex) const

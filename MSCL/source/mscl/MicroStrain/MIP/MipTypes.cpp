@@ -19,13 +19,13 @@ namespace mscl
         if (isGnssChannelField(field)
             || isSharedChannelField(field))
         {
-            keyField = MipTypes::getChannelField_baseDataClass(field);
-            prepend = MipTypes::getChannelNamePrependText(field);
+            keyField = getChannelField_baseDataClass(field);
+            prepend = getChannelNamePrependText(field);
 
             // only get append string if field not already differentiated by class by prepend string
             if (prepend == "")
             {
-                append = MipTypes::getChannelNameAppendText(field);
+                append = getChannelNameAppendText(field);
             }
         }
 
@@ -46,12 +46,12 @@ namespace mscl
         return sensorcloudFilteredName;
     }
 
-    MipTypes::DataClass MipTypes::channelFieldToDataClass(MipTypes::ChannelField channelField)
+    MipTypes::DataClass MipTypes::channelFieldToDataClass(ChannelField channelField)
     {
         return static_cast<DataClass>(Utils::msb(static_cast<uint16>(channelField)));
     }
 
-    size_t MipTypes::ChannelIdHash::operator()(const MipTypes::ChannelId& channelId) const
+    size_t MipTypes::ChannelIdHash::operator()(const ChannelId& channelId) const
     {
         return channelId.first ^ channelId.second;
     }
@@ -745,45 +745,45 @@ namespace mscl
     std::vector<MipTypes::DataClass> MipTypes::GNSS_DATA_CLASSES()
     {
         return {
-            DataClass::CLASS_GNSS,
-            DataClass::CLASS_GNSS1,
-            DataClass::CLASS_GNSS2,
-            DataClass::CLASS_GNSS3,
-            DataClass::CLASS_GNSS4,
-            DataClass::CLASS_GNSS5
+            CLASS_GNSS,
+            CLASS_GNSS1,
+            CLASS_GNSS2,
+            CLASS_GNSS3,
+            CLASS_GNSS4,
+            CLASS_GNSS5
         };
     }
 
     std::vector<MipTypes::DataClass> MipTypes::INERTIAL_DATA_CLASSES()
     {
         return{
-            DataClass::CLASS_AHRS_IMU,
-            DataClass::CLASS_ESTFILTER,
-            DataClass::CLASS_GNSS,
-            DataClass::CLASS_GNSS1,
-            DataClass::CLASS_GNSS2,
-            DataClass::CLASS_GNSS3,
-            DataClass::CLASS_GNSS4,
-            DataClass::CLASS_GNSS5,
-            DataClass::CLASS_SYSTEM
+            CLASS_AHRS_IMU,
+            CLASS_ESTFILTER,
+            CLASS_GNSS,
+            CLASS_GNSS1,
+            CLASS_GNSS2,
+            CLASS_GNSS3,
+            CLASS_GNSS4,
+            CLASS_GNSS5,
+            CLASS_SYSTEM
         };
     }
 
-    MipTypes::MipChannelFields MipTypes::getChannelFields_allDataClasses(MipTypes::ChannelField chField)
+    MipTypes::MipChannelFields MipTypes::getChannelFields_allDataClasses(ChannelField chField)
     {
         MipChannelFields fields;
-        if (MipTypes::isSharedChannelField(chField))
+        if (isSharedChannelField(chField))
         {
             for (DataClass descSet : INERTIAL_DATA_CLASSES())
             {
-                fields.push_back(MipTypes::getChannelField_toDataClass(chField, descSet));
+                fields.push_back(getChannelField_toDataClass(chField, descSet));
             }
         }
-        else if (MipTypes::isGnssChannelField(chField)) // if shared field, already have all GNSS entries
+        else if (isGnssChannelField(chField)) // if shared field, already have all GNSS entries
         {
             for (DataClass descSet : GNSS_DATA_CLASSES())
             {
-                fields.push_back(MipTypes::getChannelField_toDataClass(chField, descSet));
+                fields.push_back(getChannelField_toDataClass(chField, descSet));
             }
         }
         else
@@ -794,77 +794,77 @@ namespace mscl
         return fields;
     }
 
-    MipTypes::ChannelField MipTypes::getChannelField_baseDataClass(MipTypes::ChannelField chField)
+    MipTypes::ChannelField MipTypes::getChannelField_baseDataClass(ChannelField chField)
     {
-        if (MipTypes::isSharedChannelField(chField))
+        if (isSharedChannelField(chField))
         {
-            return MipTypes::getChannelField_toDataClass(chField, DataClass::CLASS_AHRS_IMU);
+            return getChannelField_toDataClass(chField, CLASS_AHRS_IMU);
         }
 
-        if (MipTypes::isGnssChannelField(chField))
+        if (isGnssChannelField(chField))
         {
-            return MipTypes::getChannelField_toDataClass(chField, DataClass::CLASS_GNSS);
+            return getChannelField_toDataClass(chField, CLASS_GNSS);
         }
 
         return chField;
     }
 
-    MipTypes::ChannelField MipTypes::getChannelField_toDataClass(MipTypes::ChannelField chField, MipTypes::DataClass dataClass)
+    MipTypes::ChannelField MipTypes::getChannelField_toDataClass(ChannelField chField, DataClass dataClass)
     {
         uint8 fieldDesc = Utils::lsb(static_cast<uint16>(chField));
         uint16 newChField = Utils::make_uint16(static_cast<uint8>(dataClass), fieldDesc);
         return ChannelField(newChField);
     }
 
-    std::string MipTypes::getChannelNamePrependText(MipTypes::ChannelField chField)
+    std::string MipTypes::getChannelNamePrependText(ChannelField chField)
     {
-        switch (MipTypes::channelFieldToDataClass(chField))
+        switch (channelFieldToDataClass(chField))
         {
-        case DataClass::CLASS_GNSS1:
+        case CLASS_GNSS1:
             return "gnss1_";
-        case DataClass::CLASS_GNSS2:
+        case CLASS_GNSS2:
             return "gnss2_";
-        case DataClass::CLASS_GNSS3:
+        case CLASS_GNSS3:
             return "gnss3_";
-        case DataClass::CLASS_GNSS4:
+        case CLASS_GNSS4:
             return "gnss4_";
-        case DataClass::CLASS_GNSS5:
+        case CLASS_GNSS5:
             return "gnss5_";
 
-        case DataClass::CLASS_GNSS:
+        case CLASS_GNSS:
         default:
             return "";
         }
     }
 
-    std::string MipTypes::getChannelNameAppendText(MipTypes::ChannelField chField)
+    std::string MipTypes::getChannelNameAppendText(ChannelField chField)
     {
-        if (!MipTypes::isSharedChannelField(chField))
+        if (!isSharedChannelField(chField))
         {
             return "";
         }
 
-        switch (MipTypes::channelFieldToDataClass(chField))
+        switch (channelFieldToDataClass(chField))
         {
-        case DataClass::CLASS_AHRS_IMU:
+        case CLASS_AHRS_IMU:
             return "_ahrsImu";
-        case DataClass::CLASS_ESTFILTER:
+        case CLASS_ESTFILTER:
             return "_estFilter";
-        case DataClass::CLASS_GNSS:
+        case CLASS_GNSS:
             return "_gnss";
 
-        case DataClass::CLASS_GNSS1:
+        case CLASS_GNSS1:
             return "_gnss1";
-        case DataClass::CLASS_GNSS2:
+        case CLASS_GNSS2:
             return "_gnss2";
-        case DataClass::CLASS_GNSS3:
+        case CLASS_GNSS3:
             return "_gnss3";
-        case DataClass::CLASS_GNSS4:
+        case CLASS_GNSS4:
             return "_gnss4";
-        case DataClass::CLASS_GNSS5:
+        case CLASS_GNSS5:
             return "_gnss5";
 
-        case DataClass::CLASS_SYSTEM:
+        case CLASS_SYSTEM:
             return "_system";
 
         default:
@@ -872,17 +872,17 @@ namespace mscl
         }
     }
 
-    bool MipTypes::isGnssChannelField(MipTypes::ChannelField chField)
+    bool MipTypes::isGnssChannelField(ChannelField chField)
     {
         std::vector<DataClass> classes = GNSS_DATA_CLASSES();
-        return std::find(classes.begin(), classes.end(), MipTypes::channelFieldToDataClass(chField))
+        return std::find(classes.begin(), classes.end(), channelFieldToDataClass(chField))
             != classes.end();
     }
 
-    bool MipTypes::isSharedChannelField(MipTypes::ChannelField chField)
+    bool MipTypes::isSharedChannelField(ChannelField chField)
     {
         uint8 fieldDescriptor = Utils::lsb(static_cast<uint16>(chField));
-        return fieldDescriptor >= MipTypes::MIN_SHARED_FIELD_DESCRIPTOR;
+        return fieldDescriptor >= MIN_SHARED_FIELD_DESCRIPTOR;
     }
 
     MipTypes::ChannelFieldQualifiers MipTypes::channelFieldQualifiers(const MipChannelFields& fields)
@@ -912,7 +912,7 @@ namespace mscl
         return findChannelIndex(channelField, channelQualifier, 0).second;
     }
 
-    MipTypes::ChannelIndex MipTypes::findChannelIndex(MipTypes::ChannelField field, MipTypes::ChannelQualifier qualifier, uint8 index)
+    MipTypes::ChannelIndex MipTypes::findChannelIndex(ChannelField field, ChannelQualifier qualifier, uint8 index)
     {
         // Find the channel field if it exists
         const auto channelFieldEntry = CHANNEL_INDICES.find(field);
@@ -957,17 +957,17 @@ namespace mscl
         return{ CH_UNKNOWN, 0 };
     }
 
-    size_t MipChannelIdentifier::TypeHash::operator()(const MipChannelIdentifier::Type& type) const
+    size_t MipChannelIdentifier::TypeHash::operator()(const Type& type) const
     {
         return static_cast<size_t>(type);
     }
 
-    size_t MipChannelIdentifier::TypeIdHash::operator()(const MipChannelIdentifier::TypeId& id) const
+    size_t MipChannelIdentifier::TypeIdHash::operator()(const TypeId& id) const
     {
         return id.first ^ id.second;
     }
 
-    size_t MipChannelIdentifier::SpecifierIdHash::operator()(const MipChannelIdentifier::SpecifierId& id) const
+    size_t MipChannelIdentifier::SpecifierIdHash::operator()(const SpecifierId& id) const
     {
         return std::get<0>(id) ^ std::get<1>(id) ^ std::get<2>(id);
     }
@@ -1218,7 +1218,7 @@ namespace mscl
 
     AidingMeasurementHeight::AidingMeasurementHeight(const MipFieldValues& values) :
         AidingMeasurementInput(),
-        m_reference(AidingMeasurementHeight::Reference::HEIGHT_ABOVE_ELLIPSOID)
+        m_reference(HEIGHT_ABOVE_ELLIPSOID)
     {
         parseMipFieldValues(values);
     }
@@ -1435,8 +1435,8 @@ namespace mscl
             // than the difference of the previous closest
             // or previous closest is lower than the specified range
             // set new closest
-            float closestDiff = abs((range - closest.range()));
-            float diff = abs((range - option.range()));
+            float closestDiff = abs(range - closest.range());
+            float diff = abs(range - option.range());
             if (closestDiff > diff
                 || closest.range() < rangeWithWiggleRoom)
             {

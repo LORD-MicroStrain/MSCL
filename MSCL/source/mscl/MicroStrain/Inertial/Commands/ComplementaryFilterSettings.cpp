@@ -33,15 +33,15 @@ namespace mscl
 
     bool ComplementaryFilterSettings::responseExpected() const
     {
-        return (m_functionSelector == MipTypes::READ_BACK_CURRENT_SETTINGS) ? true : false;
+        return m_functionSelector == MipTypes::READ_BACK_CURRENT_SETTINGS;
     }
 
     ComplementaryFilterData ComplementaryFilterSettings::getResponseData(const GenericMipCmdResponse& response)
     {
         DataBuffer dataBuffer(response.data());
         ComplementaryFilterData returnData;
-        returnData.upCompensationEnabled = (dataBuffer.read_uint8() == MipTypes::ENABLED) ? true : false;
-        returnData.northCompensationEnabled = (dataBuffer.read_uint8() == MipTypes::ENABLED) ? true : false;
+        returnData.upCompensationEnabled = dataBuffer.read_uint8() == MipTypes::ENABLED;
+        returnData.northCompensationEnabled = dataBuffer.read_uint8() == MipTypes::ENABLED;
         returnData.upCompensationTimeInSeconds = dataBuffer.read_float();
         returnData.northCompensationTimeInSeconds = dataBuffer.read_float();
 

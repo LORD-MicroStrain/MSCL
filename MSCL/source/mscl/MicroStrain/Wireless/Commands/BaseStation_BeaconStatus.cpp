@@ -67,7 +67,7 @@ namespace mscl
         //build the current beacon timestamp
         uint64 timestampSec = payload.read_uint32(3);
         uint64 timestampNano = payload.read_uint32(7);
-        Timestamp time((timestampSec * TimeSpan::NANOSECONDS_PER_SECOND) + timestampNano);
+        Timestamp time(timestampSec * TimeSpan::NANOSECONDS_PER_SECOND + timestampNano);
 
         //build the BeaconStatus result object
         m_result = BeaconStatus(enabled, time);

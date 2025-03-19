@@ -308,7 +308,7 @@ namespace mscl
             //
             //Returns:
             //    true if the response pattern was matched, false otherwise
-            bool wait(uint64 timeout);
+            bool wait(uint64 timeout) override;
 
             //Function: result
             //    Gets the <GenericMipCmdResponse> that holds the result of the response

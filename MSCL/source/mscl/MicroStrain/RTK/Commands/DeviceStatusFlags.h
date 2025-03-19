@@ -13,7 +13,7 @@ namespace mscl
 {
     //Class: DeviceStatusFlags
     //    Contains the logic for the DeviceStatusFlags command.
-    class DeviceStatusFlags : private GenericMipCommand
+    class DeviceStatusFlags : GenericMipCommand
     {
         DeviceStatusFlags() {}                //default constructor disabled
 

@@ -67,7 +67,7 @@ namespace mscl
         {
             int16 val;
 
-            if (endian == Endianness::bigEndian)
+            if (endian == bigEndian)
             {
                 val = SystemEndian_To_BigEndian(value);
             }
@@ -95,7 +95,7 @@ namespace mscl
             temp[0] = low;
             temp[1] = high;
 
-            if (endian == Endianness::bigEndian)
+            if (endian == bigEndian)
             {
                 return BigEndian_To_SystemEndian(result);
             }
@@ -116,7 +116,7 @@ namespace mscl
             temp[2] = byte3;
             temp[3] = high;
 
-            if (endian == Endianness::bigEndian)
+            if (endian == bigEndian)
             {
                 return BigEndian_To_SystemEndian(result);
             }
@@ -128,7 +128,7 @@ namespace mscl
         {
             uint16 val;
 
-            if (endian == Endianness::bigEndian)
+            if (endian == bigEndian)
             {
                 val = SystemEndian_To_BigEndian(value);
             }
@@ -156,7 +156,7 @@ namespace mscl
             temp[0] = low;
             temp[1] = high;
 
-            if (endian == Endianness::bigEndian)
+            if (endian == bigEndian)
             {
                 return BigEndian_To_SystemEndian(result);
             }
@@ -168,7 +168,7 @@ namespace mscl
         {
             uint32 val;
 
-            if (endian == Endianness::bigEndian)
+            if (endian == bigEndian)
             {
                 val = SystemEndian_To_BigEndian(value);
             }
@@ -191,7 +191,7 @@ namespace mscl
         {
             uint64 val;
 
-            if (endian == Endianness::bigEndian)
+            if (endian == bigEndian)
             {
                 val = SystemEndian_To_BigEndian(value);
             }
@@ -227,7 +227,7 @@ namespace mscl
             temp[2] = byte3;
             temp[3] = high;
 
-            if (endian == Endianness::bigEndian)
+            if (endian == bigEndian)
             {
                 return BigEndian_To_SystemEndian(result);
             }
@@ -252,7 +252,7 @@ namespace mscl
             temp[6] = byte7;
             temp[7] = high;
 
-            if (endian == Endianness::bigEndian)
+            if (endian == bigEndian)
             {
                 return BigEndian_To_SystemEndian(result);
             }
@@ -264,7 +264,7 @@ namespace mscl
         {
             float val;
 
-            if (endian == Endianness::bigEndian)
+            if (endian == bigEndian)
             {
                 val = SystemEndian_To_BigEndian(value);
             }
@@ -296,7 +296,7 @@ namespace mscl
             temp[2] = byte3;
             temp[3] = high;
 
-            if (endian == Endianness::bigEndian)
+            if (endian == bigEndian)
             {
                 return BigEndian_To_SystemEndian(result);
             }
@@ -308,7 +308,7 @@ namespace mscl
         {
             double val;
 
-            if (endian == Endianness::bigEndian)
+            if (endian == bigEndian)
             {
                 val = SystemEndian_To_BigEndian(value);
             }
@@ -348,7 +348,7 @@ namespace mscl
             temp[6] = byte7;
             temp[7] = high;
 
-            if (endian == Endianness::bigEndian)
+            if (endian == bigEndian)
             {
                 return BigEndian_To_SystemEndian(result);
             }

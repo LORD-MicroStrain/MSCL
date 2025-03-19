@@ -1611,7 +1611,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_startSampling_withBase_pcTime)
     WirelessNode node(123, baseForNode);
     node.setImpl(impl);
 
-    MOCK_EXPECT(impl->protocol).returns(*(WirelessProtocol::v1_0().get()));
+    MOCK_EXPECT(impl->protocol).returns(*WirelessProtocol::v1_0().get());
 
     std::unique_ptr<NodeFeatures> features;
     expectNodeFeatures(features, impl);
@@ -1713,7 +1713,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_startSampling_withBase_timestamp)
     std::unique_ptr<NodeFeatures> features;
     expectNodeFeatures(features, impl);
 
-    MOCK_EXPECT(impl->protocol).returns(*(WirelessProtocol::v1_0().get()));
+    MOCK_EXPECT(impl->protocol).returns(*WirelessProtocol::v1_0().get());
 
     SyncSamplingNetwork nwk(baseForNode);
 
@@ -1811,7 +1811,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_startSampling_noBase)
     std::unique_ptr<NodeFeatures> features;
     expectNodeFeatures(features, impl);
 
-    MOCK_EXPECT(impl->protocol).returns(*(WirelessProtocol::v1_0().get()));
+    MOCK_EXPECT(impl->protocol).returns(*WirelessProtocol::v1_0().get());
 
     SyncSamplingNetwork nwk(baseForNode);
 
@@ -1907,7 +1907,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_startSampling_failSendStart)
     std::unique_ptr<NodeFeatures> features;
     expectNodeFeatures(features, impl);
 
-    MOCK_EXPECT(impl->protocol).returns(*(WirelessProtocol::v1_0().get()));
+    MOCK_EXPECT(impl->protocol).returns(*WirelessProtocol::v1_0().get());
 
     SyncSamplingNetwork nwk(baseForNode);
 
@@ -1962,7 +1962,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_startSampling_retry)
     std::unique_ptr<NodeFeatures> features;
     expectNodeFeatures(features, impl);
 
-    MOCK_EXPECT(impl->protocol).returns(*(WirelessProtocol::v1_0().get()));
+    MOCK_EXPECT(impl->protocol).returns(*WirelessProtocol::v1_0().get());
 
     SyncSamplingNetwork nwk(baseForNode);
 
@@ -1995,7 +1995,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_startSampling_retry)
     std::unique_ptr<NodeFeatures> features2;
     expectNodeFeatures(features2, impl2, WirelessModels::node_vLink);
 
-    MOCK_EXPECT(impl2->protocol).returns(*(WirelessProtocol::v1_0().get()));
+    MOCK_EXPECT(impl2->protocol).returns(*WirelessProtocol::v1_0().get());
 
     //eeprom reads performed by the SyncSamplingNetwork
     Sampling_Continuous s2;

@@ -15,7 +15,7 @@ namespace mscl
 
     Value::Value() :
         m_value(0.0f),
-        m_storedAs(ValueType::valueType_float)
+        m_storedAs(valueType_float)
     {}
 
     Value::Value(const Value& other) :
@@ -32,7 +32,7 @@ namespace mscl
 
     bool Value::operator==(const Value& other) const
     {
-        return ((m_storedAs == other.m_storedAs) && (isSameValue(other) ));
+        return m_storedAs == other.m_storedAs && isSameValue(other);
     }
 
     Value Value::BOOL(bool value)
@@ -108,7 +108,7 @@ namespace mscl
         {
             switch(m_storedAs)
             {
-                case valueType_float:       return (any_cast<float>(m_value));
+                case valueType_float:       return any_cast<float>(m_value);
                 case valueType_double:      return static_cast<float>(any_cast<double>(m_value));
                 case valueType_uint16:      return static_cast<float>(any_cast<uint16>(m_value));
                 case valueType_uint32:      return static_cast<float>(any_cast<uint32>(m_value));
@@ -137,7 +137,7 @@ namespace mscl
         {
             switch(m_storedAs)
             {
-                case valueType_double:      return (any_cast<double>(m_value));
+                case valueType_double:      return any_cast<double>(m_value);
                 case valueType_float:       return static_cast<double>(any_cast<float>(m_value));
                 case valueType_uint16:      return static_cast<double>(any_cast<uint16>(m_value));
                 case valueType_uint32:      return static_cast<double>(any_cast<uint32>(m_value));
@@ -311,7 +311,7 @@ namespace mscl
         {
             switch(m_storedAs)
             {
-                case valueType_int16:       return(any_cast<short>(m_value));
+                case valueType_int16:       return any_cast<short>(m_value);
                 case valueType_int32:       return static_cast<short>(any_cast<int>(m_value));
                 case valueType_uint32:      return static_cast<short>(any_cast<uint32>(m_value));
                 case valueType_uint64:      return static_cast<short>(any_cast<uint64>(m_value));

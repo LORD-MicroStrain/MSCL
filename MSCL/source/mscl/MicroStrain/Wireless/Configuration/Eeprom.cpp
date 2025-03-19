@@ -196,7 +196,7 @@ namespace mscl
         Utils::split_uint16(lsw, b3, b4);
 
         //convert the values into a float and return
-        return Utils::make_float(b1, b2, b3, b4, Utils::littleEndian);    //note that this just swapped endianness by passing the msb as the lsb
+        return make_float(b1, b2, b3, b4, Utils::littleEndian);    //note that this just swapped endianness by passing the msb as the lsb
     }
 
     uint32 Eeprom::readEeprom_uint32(uint16 location)
@@ -223,7 +223,7 @@ namespace mscl
         uint8 b1, b2, b3, b4;
 
         //split the float into its 4 bytes (in little endian)
-        Utils::split_float(value, b1, b2, b3, b4, Utils::littleEndian);
+        split_float(value, b1, b2, b3, b4, Utils::littleEndian);
 
         //write the first eeprom location
         writeEeprom(location, Utils::make_uint16(b1, b2));

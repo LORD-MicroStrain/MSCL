@@ -382,7 +382,6 @@ namespace mscl
         TareOrientation() = delete;
 
     public:
-
         //Function: buildCommand_set
         //    Builds the bytes for the "set" command.
         //

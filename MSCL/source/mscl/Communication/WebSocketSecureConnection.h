@@ -22,7 +22,7 @@ namespace mscl
         //
         //Returns:
         //    A description of the connection, in the form "Secure WebSocket, serverAddress:serverPort".
-        virtual std::string description();
+        std::string description() override;
 
     private:
         WebSocketSecureConnection() = delete;                                               //default constructor disabled
@@ -42,7 +42,7 @@ namespace mscl
         //
         //Exceptions:
         //    - <Error_InvalidTcpServer>: the specified server address and/or server port is invalid.
-        virtual void establishConnection();
+        void establishConnection() override;
 
         typedef boost::asio::ip::tcp tcp;
 

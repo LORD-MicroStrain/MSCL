@@ -121,7 +121,7 @@ namespace mscl
         //
         //Returns:
         //  A <WsdaMap> of the WSDAs that were found on the network.
-        WsdaFinder::WsdaMap found();
+        WsdaMap found();
 
         //API Function: restart
         //  Clears out the list of found WSDAs and forces a restart of the upnp search.

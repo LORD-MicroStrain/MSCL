@@ -181,7 +181,7 @@ namespace mscl
 
         if(status == SUCCESS)
         {
-            NodeCommTimes::updateDeviceState(m_nodeAddress, DeviceState::deviceState_idle);
+            NodeCommTimes::updateDeviceState(m_nodeAddress, deviceState_idle);
             m_result = SetToIdleStatus::setToIdleResult_success;
             m_success = true;
         }

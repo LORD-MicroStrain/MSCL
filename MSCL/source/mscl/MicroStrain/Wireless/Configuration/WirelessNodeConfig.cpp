@@ -182,11 +182,9 @@ namespace mscl
         {
             return m_eventTriggerOptions->triggerMask();
         }
-        else
-        {
-            //read the value from eeprom
-            return eeprom.read_eventTriggerMask();
-        }
+
+        //read the value from eeprom
+        return eeprom.read_eventTriggerMask();
     }
 
     LinearEquation WirelessNodeConfig::curLinearEquation(const ChannelMask& mask, const NodeEepromHelper& eeprom) const
@@ -733,21 +731,19 @@ namespace mscl
                         outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_DERIVED_MASK, "The Derived Channel category is not supported by this Node."));
                         break;
                     }
-                    else
+
+                    ChannelMask maskChs = mask.second;
+                    ChannelMask allowedChs = features.channelsPerDerivedCategory().at(mask.first);
+
+                    uint8 lastActiveCh = mask.second.lastChEnabled();
+
+                    //check if any channels are enabled that aren't allowed by this category
+                    for(uint8 i = 1; i <= lastActiveCh; ++i)
                     {
-                        ChannelMask maskChs = mask.second;
-                        ChannelMask allowedChs = features.channelsPerDerivedCategory().at(mask.first);
-
-                        uint8 lastActiveCh = mask.second.lastChEnabled();
-
-                        //check if any channels are enabled that aren't allowed by this category
-                        for(uint8 i = 1; i <= lastActiveCh; ++i)
+                        if(maskChs.enabled(i) && !allowedChs.enabled(i))
                         {
-                            if(maskChs.enabled(i) && !allowedChs.enabled(i))
-                            {
-                                outIssues.push_back(ConfigIssue(findDerivedMaskConfigIssue(mask.first), "The Channel Mask is invalid for the Derived Channel."));
-                                break;
-                            }
+                            outIssues.push_back(ConfigIssue(findDerivedMaskConfigIssue(mask.first), "The Channel Mask is invalid for the Derived Channel."));
+                            break;
                         }
                     }
                 }

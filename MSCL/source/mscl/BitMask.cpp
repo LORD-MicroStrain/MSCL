@@ -69,7 +69,7 @@ namespace mscl
         for(uint8 i = 0; i < m_numBits; i++)
         {
             //check each bit in the value to see if it is active (1)
-            m_mask.push_back((val & (1 << i)) != 0);
+            m_mask.push_back((val & 1 << i) != 0);
         }
     }
 
@@ -83,7 +83,7 @@ namespace mscl
             //if the bit is active
             if(m_mask.at(i))
             {
-                mask |= (1 << i);
+                mask |= 1 << i;
             }
         }
 
