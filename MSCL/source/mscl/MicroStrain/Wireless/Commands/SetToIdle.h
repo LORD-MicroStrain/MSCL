@@ -28,7 +28,6 @@ namespace mscl
         //    A <ByteStream> containing the SetToIdle command packet
         ByteStream buildCommand(NodeAddress nodeAddress);
 
-
     //public:
         //Class: Response
         //    Handles the response to the SetToIdle command

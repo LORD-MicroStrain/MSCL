@@ -76,8 +76,6 @@ namespace mscl
         ByteStream data() const;
     };
 
-
-
     //Class: GenericMipCommand
     //    Represents a base class for MIP commands
     class GenericMipCommand

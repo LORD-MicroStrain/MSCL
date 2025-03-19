@@ -24,7 +24,6 @@ namespace mscl
         m_channels.emplace_back(7, WirelessChannel::channel_7, WirelessTypes::chType_singleEnded, "Single-ended", 12);
         m_channels.emplace_back(8, WirelessChannel::channel_8, WirelessTypes::chType_temperature, "Internal Temperature");
 
-
         //Channel Groups
         static const ChannelMask DIFFERENTIAL_1(BOOST_BINARY(00000011));    //ch1 + 2
         static const ChannelMask DIFFERENTIAL_2(BOOST_BINARY(00001100));    //ch3 + 4

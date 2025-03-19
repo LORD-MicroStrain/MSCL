@@ -161,8 +161,6 @@ BOOST_AUTO_TEST_CASE(InertialParser_parseAsPacket_badPayload)
 
 BOOST_AUTO_TEST_SUITE_END()
 
-
-
 BOOST_AUTO_TEST_SUITE(InertialParser_ParseSuite)
 
 BOOST_AUTO_TEST_CASE(InertialParser_parse_validDataPacket_AfterBadBytes)
@@ -411,7 +409,5 @@ BOOST_AUTO_TEST_CASE(InertialParser_parse_validDataPacket_AfterNotEnoughData)
 }
 
 BOOST_AUTO_TEST_SUITE_END()
-
-
 
 BOOST_AUTO_TEST_SUITE_END()

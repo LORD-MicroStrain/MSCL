@@ -642,7 +642,6 @@ namespace mscl
                 throw Error_NotSupported("Unknown Excitation voltage for this Node.");
         }
 
-
     }
 
     WirelessTypes::Voltage WirelessNode_Impl::getAdcVoltageRef() const

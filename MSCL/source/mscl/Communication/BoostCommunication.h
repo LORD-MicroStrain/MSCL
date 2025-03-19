@@ -165,7 +165,6 @@ namespace mscl
         void disableDebugMode();
     };
 
-
     //Constructor
     template <typename IO_Object>
     BoostCommunication<IO_Object>::BoostCommunication(std::unique_ptr<boost::asio::io_context> ioContext, std::unique_ptr<IO_Object> ioObj):

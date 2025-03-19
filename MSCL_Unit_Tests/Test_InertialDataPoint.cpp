@@ -108,7 +108,6 @@ BOOST_AUTO_TEST_CASE(InertialDataPoint_asTimestamp)
     BOOST_CHECK_THROW(p1.as_Timestamp(), Error_BadDataType);
 }
 
-
 BOOST_AUTO_TEST_SUITE(InertialDataPoint_asString)
 
 BOOST_AUTO_TEST_CASE(InertialDataPoint_asString_uint8)
@@ -237,6 +236,5 @@ BOOST_AUTO_TEST_CASE(InertialDataPoint_asString_Bytes)
 }
 
 BOOST_AUTO_TEST_SUITE_END()
-
 
 BOOST_AUTO_TEST_SUITE_END()

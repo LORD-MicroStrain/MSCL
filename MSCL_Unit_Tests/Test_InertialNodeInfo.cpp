@@ -29,7 +29,6 @@ BOOST_AUTO_TEST_CASE(InertialNodeInfo_loadNodeInfo)
     //make the getDeviceInfo command return the response we created
     MOCK_EXPECT(impl->getDeviceInfo).once().returns(info);
 
-
     std::vector<uint16> fields;
     fields.push_back(MipTypes::CMD_SENSOR_MESSAGE_FORMAT);
     fields.push_back(MipTypes::CMD_GNSS_MESSAGE_FORMAT);

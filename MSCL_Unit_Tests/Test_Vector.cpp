@@ -23,7 +23,6 @@ BOOST_AUTO_TEST_CASE(Vector_valuesType)
     //check that the value type is correct
     BOOST_CHECK_EQUAL(v.valuesType(), valueType_float);
 
-
     Vector v2(valueType_int32, b);
 
     //check that the value type is correct
@@ -36,7 +35,6 @@ BOOST_AUTO_TEST_CASE(Vector_size)
     Vector v(valueType_float, b);
 
     Vector v3;
-
 
     //check that the size is 0
     BOOST_CHECK_EQUAL(v.size(), 0);

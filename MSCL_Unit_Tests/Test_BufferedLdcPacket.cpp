@@ -205,7 +205,6 @@ BOOST_AUTO_TEST_CASE(BufferedLdc_IntegrityCheck_Good)
     BOOST_CHECK_EQUAL(BufferedLdcPacket::integrityCheck(packet), true);
 }
 
-
 BOOST_AUTO_TEST_CASE(BufferedLdc_IntegrityCheck_SmallPayload)
 {
     Bytes payloadBytes;

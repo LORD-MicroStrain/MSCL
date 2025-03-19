@@ -32,7 +32,6 @@ BOOST_AUTO_TEST_CASE(Matrix_valuesType)
     //check that the value type is correct
     BOOST_CHECK_EQUAL(m.valuesType(), valueType_float);
 
-
     Matrix m2(0, 0, valueType_int32, b);
 
     //check that the value type is correct

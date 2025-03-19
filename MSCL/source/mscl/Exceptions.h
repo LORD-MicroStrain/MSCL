@@ -392,7 +392,6 @@ namespace mscl
 #endif // SWIGPYTHON
     };
 
-
     //API Class: Error_InvalidConfig
     //    The Configuration is invalid.
     class Error_InvalidConfig : public Error

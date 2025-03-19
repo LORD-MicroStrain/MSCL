@@ -29,7 +29,6 @@ struct TimedConditionFixture
 
 BOOST_FIXTURE_TEST_SUITE(TimedCondition_Test, TimedConditionFixture)
 
-
 BOOST_AUTO_TEST_CASE(TimedCondition_ConditionMet)
 {
     //create a thread that will notify the condition

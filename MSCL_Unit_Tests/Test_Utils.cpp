@@ -199,7 +199,6 @@ BOOST_AUTO_TEST_CASE(Utils_splitWord)
     //verify that the lsb is now 0x34
     BOOST_CHECK_EQUAL(lsb, 0x34);
 
-
     value = 0x56;
 
     //convert the word value into 2 bytes
@@ -233,7 +232,6 @@ BOOST_AUTO_TEST_CASE(Utils_splitDWord)
 
     //verify that b4 is now 0x78
     BOOST_CHECK_EQUAL(b4, 0x78);
-
 
     uint16 wordVal = 0x1234;
 
@@ -307,7 +305,6 @@ BOOST_AUTO_TEST_CASE(Utils_Make_uint32)
     uint8 b2 = 0x34;
     uint8 b3 = 0x56;
     uint8 b4 = 0x78;
-
 
     //build the bytes into a dword
     result = Utils::make_uint32(b1, b2, b3, b4);

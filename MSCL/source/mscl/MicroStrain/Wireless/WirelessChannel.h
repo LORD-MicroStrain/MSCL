@@ -555,7 +555,6 @@ namespace mscl
         //  The resolution of the A/D Converter for this channel.
         uint8 m_adcResolution;
 
-
     public:
         //API Function: channelNumber
         //    Gets the channel number of this channel on the Node.

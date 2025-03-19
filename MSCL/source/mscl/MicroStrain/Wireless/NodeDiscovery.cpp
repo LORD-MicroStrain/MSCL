@@ -95,7 +95,6 @@ namespace mscl
         uint16 legacyModel = payload.read_uint16(Info::PAYLOAD_OFFSET_MODEL_NUMBER);
         m_model = WirelessModels::nodeFromLegacyModel(legacyModel);
 
-
         //build the eeprom map for importing to cache
         m_eepromMap[NodeEepromMap::FREQUENCY.location()] = static_cast<uint16>(m_radioChannel);
         m_eepromMap[NodeEepromMap::LEGACY_MODEL_NUMBER.location()] = legacyModel;
@@ -124,7 +123,6 @@ namespace mscl
         //Firmware Version
         uint16 fwVersion = payload.read_uint16(Info::PAYLOAD_OFFSET_FIRMWARE_VER);
         m_firmwareVersion = Version(Utils::msb(fwVersion), Utils::lsb(fwVersion));
-
 
         //build the eeprom map for importing to cache
         m_eepromMap[NodeEepromMap::FREQUENCY.location()] = static_cast<uint16>(m_radioChannel);
@@ -166,7 +164,6 @@ namespace mscl
 
         //Default Mode
         m_defaultMode = static_cast<WirelessTypes::DefaultMode>(payload.read_uint16(Info::PAYLOAD_OFFSET_DEFAULT_MODE));
-
 
         //build the eeprom map for importing to cache
         m_eepromMap[NodeEepromMap::FREQUENCY.location()] = static_cast<uint16>(m_radioChannel);
@@ -228,7 +225,6 @@ namespace mscl
 
         //Default Mode
         m_defaultMode = static_cast<WirelessTypes::DefaultMode>(payload.read_uint16(Info::PAYLOAD_OFFSET_DEFAULT_MODE));
-
 
         //build the eeprom map for importing to cache
         m_eepromMap[NodeEepromMap::FREQUENCY.location()] = static_cast<uint16>(m_radioChannel);

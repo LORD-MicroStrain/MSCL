@@ -279,7 +279,6 @@ namespace mscl
 
     //////////  HeadingUpdateOptions  //////////
 
-
     InertialTypes::HeadingUpdateEnableOption HeadingUpdateOptions::AsOptionId() const
     {
         if (useInternalMagnetometer)
@@ -370,10 +369,7 @@ namespace mscl
         }
     }
 
-
-
     //////////  EstimationControlOptions  //////////
-
 
     uint16 EstimationControlOptions::AsUint16() const {
         uint16 intValue = 0;

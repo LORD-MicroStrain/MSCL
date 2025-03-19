@@ -165,7 +165,6 @@ namespace mscl
         //    true if the node can be assigned slot 1, false if it cannot be assigned slot 1
         bool canHaveFirstSlot(WirelessModels::NodeModel nodeModel, uint8 syncVersion);
 
-
         //==================================================================
         //BURST FORMULAS
         //==================================================================

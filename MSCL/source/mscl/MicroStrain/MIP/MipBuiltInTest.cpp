@@ -204,7 +204,6 @@ namespace mscl
         return static_cast<uint32>(value());
     }
 
-
     /**************
     ****  CV7  ****
     **************/
@@ -308,7 +307,6 @@ namespace mscl
         m_filter = CV7ContinuousBIT_Filter(buffer.read_uint32());
     }
 
-
     /**************************
     ****  CV7 System Bits  ****
     **************************/
@@ -382,7 +380,6 @@ namespace mscl
     {
         return m_system.process().filterStuck();
     }
-
 
     /***********************
     ****  CV7 IMU Bits  ****
@@ -488,7 +485,6 @@ namespace mscl
         return m_imu.factoryBitsInvalid();
     }
 
-
     /**************************
     ****  CV7 Filter Bits  ****
     **************************/
@@ -552,7 +548,6 @@ namespace mscl
                 filter().general().flags())
         };
     }
-
 
     /**************
     ****  GQ7  ****
@@ -870,7 +865,6 @@ namespace mscl
         m_gnss   = GQ7ContinuousBIT_GNSS(buffer.read_uint32());
     }
 
-
     /**************************
     ****  GQ7 System Bits  ****
     **************************/
@@ -980,7 +974,6 @@ namespace mscl
         return m_system.process().gnssDataFrameFault();
     }
 
-
     /*******************
     ****  IMU Bits  ****
     *******************/
@@ -1080,7 +1073,6 @@ namespace mscl
         return m_imu.sensors().pressureSelfTestFail();
     }
 
-
     /**************************
     ****  GQ7 Filter Bits  ****
     **************************/
@@ -1134,7 +1126,6 @@ namespace mscl
     {
         return m_filter.general().communicationErrorCommsUart();
     }
-
 
     /************************
     ****  GQ7 GNSS Bits  ****

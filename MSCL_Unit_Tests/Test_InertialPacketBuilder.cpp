@@ -99,7 +99,6 @@ BOOST_AUTO_TEST_CASE(InertialPacketBuilder_MultipleFields)
 
     builder.addField(field2);
 
-
     //build the packet
     ByteStream bytes = builder.buildPacket();
 

@@ -30,7 +30,6 @@ namespace mscl
         std::string upc;
     };
 
-
     class UpnpDeviceFinderCallback : public IUPnPDeviceFinderCallback
     {
     public:

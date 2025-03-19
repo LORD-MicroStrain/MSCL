@@ -24,7 +24,6 @@ namespace mscl
         return cmd;
     }
 
-
     BaseStation_ReadEeprom::Response::Response(std::weak_ptr<ResponseCollector> collector) :
         WirelessResponsePattern(collector, WirelessProtocol::cmdId_base_readEeprom, WirelessProtocol::BASE_STATION_ADDRESS),
         m_result(0)
@@ -48,7 +47,6 @@ namespace mscl
         {
             return false;
         }
-
 
         //the next two bytes should be the eeprom value
         uint16 eepromVal = data.read_uint16();

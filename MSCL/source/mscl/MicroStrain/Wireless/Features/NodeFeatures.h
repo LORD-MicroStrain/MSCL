@@ -615,7 +615,6 @@ namespace mscl
         //  true if the input range is supported, false if it is not.
         virtual bool supportsInputRange(WirelessTypes::InputRange range, const ChannelMask& channels) const;
 
-
         //API function: supportsInputRange
         //  Checks if a <WirelessTypes::InputRange> is supported by this Node for the given <ChannelMask>.
         //

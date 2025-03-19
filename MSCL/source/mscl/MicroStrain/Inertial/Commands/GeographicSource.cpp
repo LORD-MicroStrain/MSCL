@@ -61,7 +61,6 @@ namespace mscl
         return GenericMipCommand::buildCommand(commandType(), byteCommand.data());
     }
 
-
     // InclinationSource
     InclinationSource::InclinationSource(MipTypes::FunctionSelector function_selector, const GeographicSourceOptions& dataToUse) :
         GeographicSource(function_selector, dataToUse)
@@ -90,7 +89,6 @@ namespace mscl
         return InclinationSource(MipTypes::READ_BACK_CURRENT_SETTINGS, dataToUse);
     }
 
-
     // DeclinationSource
     DeclinationSource::DeclinationSource(MipTypes::FunctionSelector function_selector, const GeographicSourceOptions& dataToUse) :
         GeographicSource(function_selector, dataToUse)
@@ -118,7 +116,6 @@ namespace mscl
         GeographicSourceOptions dataToUse;  // The data won't get used for a get command.
         return DeclinationSource(MipTypes::READ_BACK_CURRENT_SETTINGS, dataToUse);
     }
-
 
     // MagneticFieldMagnitudeSource
     MagneticFieldMagnitudeSource::MagneticFieldMagnitudeSource(MipTypes::FunctionSelector function_selector, const GeographicSourceOptions& dataToUse) :

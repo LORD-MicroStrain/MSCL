@@ -50,8 +50,6 @@ namespace mscl
         m_value = value;
     }
 
-
-
     EventTriggerOptions::EventTriggerOptions() :
         m_triggerMask(0),
         m_preDuration(0),

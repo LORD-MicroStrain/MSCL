@@ -61,7 +61,6 @@ namespace mscl
         //  <Bytes> - Raw source data
         const Bytes& data() const;
 
-
         /**********************
         ****  System Bits  ****
         **********************/
@@ -100,7 +99,6 @@ namespace mscl
         //Returns:
         //  bool - true: A data buffer in the system has reached its capacity
         virtual bool bufferOverrun() const = 0;
-
 
         /*******************
         ****  IMU Bits  ****
@@ -232,7 +230,6 @@ namespace mscl
         //  bool - true: The internal self-test of the pressure sensor failed
         virtual bool pressureSelfTestFail() const = 0;
 
-
         /**********************
         ****  Filter Bits  ****
         **********************/
@@ -262,7 +259,6 @@ namespace mscl
         //  The original <Bytes> source data
         Bytes m_data;
     };
-
 
     /************************************************
     ****              Continuous BIT             ****
@@ -754,7 +750,6 @@ namespace mscl
         explicit ContinuousBIT_Filter(const uint32 bits) : Bitfield(bits) {}
     };
 
-
     /************************************************
     ****                   CV7                   ****
     ****     Structures for parsing CV7 BIT      ****
@@ -1073,7 +1068,6 @@ namespace mscl
         //  bytes - Flag values from Continuous Built-In Test
         explicit CV7ContinuousBIT(Bytes bytes);
 
-
         /**********************
         ****  System Bits  ****
         **********************/
@@ -1175,7 +1169,6 @@ namespace mscl
         //Returns:
         //  bool - true: No filter data received in 1 second
         bool filterStuck() const;
-
 
         /*******************
         ****  IMU Bits  ****
@@ -1321,7 +1314,6 @@ namespace mscl
         //  bool - true: Factory settings invalid. Device unusable
         bool factoryBitsInvalid() const;
 
-
         /**********************
         ****  Filter Bits  ****
         **********************/
@@ -1374,7 +1366,6 @@ namespace mscl
         //  <CV7ContinuousBIT_Filter> information for filter flags (bits 64-95)
         CV7ContinuousBIT_Filter m_filter;
     };
-
 
     /************************************************
     ****                   GQ7                   ****
@@ -2105,7 +2096,6 @@ namespace mscl
         //  bytes - Flag values from Continuous Built-In Test
         explicit GQ7ContinuousBIT(Bytes bytes);
 
-
         /**********************
         ****  System Bits  ****
         **********************/
@@ -2266,7 +2256,6 @@ namespace mscl
         //  bool - true: Missing GNSS data frame(s)
         bool gnssDataFrameFault() const;
 
-
         /*******************
         ****  IMU Bits  ****
         *******************/
@@ -2404,7 +2393,6 @@ namespace mscl
         //  bool - true: The internal self-test of the pressure sensor failed
         bool pressureSelfTestFail() const override;
 
-
         /**********************
         ****  Filter Bits  ****
         **********************/
@@ -2481,7 +2469,6 @@ namespace mscl
         //Returns:
         //  bool - true: No filter communication on the COMMS UART port
         bool filterCommunicationErrorCommsUart() const;
-
 
         /********************
         ****  GNSS Bits  ****

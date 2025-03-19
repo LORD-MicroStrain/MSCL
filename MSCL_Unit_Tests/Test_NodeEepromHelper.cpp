@@ -74,7 +74,6 @@ BOOST_AUTO_TEST_CASE(NodeEepromHelper_writeNumSweeps)
     std::unique_ptr<NodeFeatures> features = NodeFeatures::create(info);
     MOCK_EXPECT(impl->features).returns(std::ref(*(features.get())));
 
-
     MOCK_EXPECT(impl->writeEeprom).with(NodeEepromMap::NUM_SWEEPS, Value(valueType_uint16, static_cast<uint16>(979)));
 
     uint32 sweeps = features->normalizeNumSweeps(97845);
@@ -334,7 +333,6 @@ BOOST_AUTO_TEST_CASE(NodeEepromHelper_setChannelCalCoefficients)
     std::unique_ptr<NodeFeatures> features;
     expectNodeFeatures(features, impl);
 
-
     //we expect the following values to get written
     expectWrite(impl, NodeEepromMap::CH_ACTION_SLOPE_3, Value::FLOAT(2.345f));        //slope
     expectWrite(impl, NodeEepromMap::CH_ACTION_OFFSET_3, Value::FLOAT(0.0005f));    //offset
@@ -359,7 +357,6 @@ BOOST_AUTO_TEST_CASE(NodeEepromHelper_getNumDatalogSessions)
 
     std::unique_ptr<NodeFeatures> features;
     expectNodeFeatures(features, impl);
-
 
     NodeEepromHelper c(node.eepromHelper());
 

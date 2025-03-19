@@ -336,7 +336,6 @@ BOOST_AUTO_TEST_CASE(SyncPacket_IntegrityCheck_BadDataType)
     BOOST_CHECK_EQUAL(SyncSamplingPacket::integrityCheck(packet), false);
 }
 
-
 BOOST_AUTO_TEST_CASE(SyncPacket_IntegrityCheck_BadPacketType)
 {
     Bytes payloadBytes;
@@ -522,7 +521,6 @@ BOOST_AUTO_TEST_CASE(SyncPacket_Constructor_TimestampIncrementFastRates)
     DataSweeps sweeps;
     collector.getDataSweeps(sweeps);
     BOOST_CHECK_EQUAL(sweeps.size(), 3);
-
 
     BOOST_CHECK_EQUAL(sweeps.at(0).timestamp().nanoseconds(), 0);
     BOOST_CHECK_EQUAL(sweeps.at(1).timestamp().nanoseconds(), 976562);  //actually 976562.5 but we can't represent that in nanoseconds

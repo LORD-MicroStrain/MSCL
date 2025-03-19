@@ -161,7 +161,6 @@ BOOST_AUTO_TEST_CASE(ByteStream_BeginEnd)
 
 BOOST_AUTO_TEST_SUITE_END()
 
-
 //===================================================================================================================
 //                                                ByteStream Append Functions
 //===================================================================================================================
@@ -366,7 +365,6 @@ BOOST_AUTO_TEST_CASE(ByteStream_AppendByteStream)
 }
 
 BOOST_AUTO_TEST_SUITE_END()
-
 
 //===================================================================================================================
 //                                                ByteStream Read Functions
@@ -575,7 +573,6 @@ BOOST_AUTO_TEST_CASE(ByteStream_Read_string)
 
 BOOST_AUTO_TEST_SUITE_END()
 
-
 //===================================================================================================================
 //                                                ByteStream Checksums
 //===================================================================================================================
@@ -631,7 +628,5 @@ BOOST_AUTO_TEST_CASE(ByteStream_CrcChecksum)
 }
 
 BOOST_AUTO_TEST_SUITE_END()
-
-
 
 BOOST_AUTO_TEST_SUITE_END()

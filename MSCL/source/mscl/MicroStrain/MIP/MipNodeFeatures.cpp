@@ -1363,7 +1363,6 @@ namespace mscl
                 // (0x80, 0xD7)
                 MipTypes::CH_FIELD_SENSOR_SHARED_EXTERNAL_TIMESTAMP,
 
-
                 // 0x82 Filter Data
 
                 // (0x82, 0x03)
@@ -1400,7 +1399,6 @@ namespace mscl
                 MipTypes::CH_FIELD_ESTFILTER_SHARED_REFERENCE_TIMESTAMP,
                 // (0x82, 0xD7)
                 MipTypes::CH_FIELD_ESTFILTER_SHARED_EXTERNAL_TIMESTAMP,
-
 
                 // 0xA0 System Data
 

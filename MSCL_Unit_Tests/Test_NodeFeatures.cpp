@@ -623,7 +623,6 @@ BOOST_AUTO_TEST_CASE(NodeFeatures_normalizeSensorDelay_v4)
     BOOST_CHECK_EQUAL(features->normalizeSensorDelay(300000000), 300000000);    //maximum
     BOOST_CHECK_EQUAL(features->normalizeSensorDelay(750004103), 300000000);    //out of range max
 
-
     BOOST_CHECK_EQUAL(features->normalizeSensorDelay(16383), 16383);            //can go up to 16383 microseconds before switching to milliseconds
     BOOST_CHECK_EQUAL(features->normalizeSensorDelay(17383), 18000);            //can go up to 16383 microseconds before switching to milliseconds
     BOOST_CHECK_EQUAL(features->normalizeSensorDelay(16383000), 16383000);      //can go up to 16383000 milliseconds before switching to seconds

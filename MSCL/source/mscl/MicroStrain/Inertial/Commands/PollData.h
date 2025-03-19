@@ -47,9 +47,6 @@ namespace mscl
         };
     };
 
-
-
-
     //Class: PollGnssData
     //    Contains the logic for the Poll GNSS Data command
     class PollGnssData
@@ -84,9 +81,6 @@ namespace mscl
             Response(std::weak_ptr<ResponseCollector> collector);
         };
     };
-
-
-
 
     //Class: PollEstFilterData
     //    Contains the logic for the Poll Estimation Filter Data command

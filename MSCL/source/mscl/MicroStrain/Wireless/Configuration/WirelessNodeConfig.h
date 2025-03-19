@@ -439,7 +439,6 @@ namespace mscl
             }
         }
 
-
         //Function: verifySupported
         //    Checks whether all the configuration values are supported by the node.
         //

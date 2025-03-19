@@ -29,9 +29,7 @@ namespace mock
     }
 } // namespace Mock
 
-
 BOOST_AUTO_TEST_SUITE(BaseStation_Test)
-
 
 BOOST_AUTO_TEST_CASE(BaseStation_frequency)
 {
@@ -371,7 +369,6 @@ BOOST_AUTO_TEST_CASE(BaseStation_NodeEepromWrite_Fail_Timeout)
     BaseStation base(conn);
     base.timeout(1);
 
-
     //build the data to send
     ByteStream data;
     data.append_uint8(0xAA);
@@ -399,7 +396,6 @@ BOOST_AUTO_TEST_CASE(BaseStation_NodePageDownload_Success)
     }
     data.append_uint16(0x0000);//checksum
     connImpl->setResponseBytes(data);
-
 
     ByteStream resultData;
     bool result = base.node_pageDownload(*WirelessProtocol::v1_0().get(), 123, 0, resultData);
@@ -587,6 +583,5 @@ BOOST_AUTO_TEST_CASE(BaseStation_node_autocal_success)
 }
 
 BOOST_AUTO_TEST_SUITE_END()
-
 
 BOOST_AUTO_TEST_SUITE_END()

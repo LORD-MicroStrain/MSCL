@@ -62,7 +62,6 @@ BOOST_AUTO_TEST_CASE(WirelessPacketCollector_MatchExpected_Packet_Success)
     //create the response for the LongPing command with the node address
     LongPing::Response response(123, collector);
 
-
     //create a DataBuffer of Bytes
     Bytes b;
     b.push_back(0x00);

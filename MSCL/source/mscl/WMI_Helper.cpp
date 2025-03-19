@@ -59,7 +59,6 @@ void WMI_Helper::connect()
         NULL                         // Reserved
         );
 
-
     //if we failed to initialize security
     if (FAILED(hres) && (hres != RPC_E_TOO_LATE))
     {

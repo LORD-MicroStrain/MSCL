@@ -64,7 +64,6 @@ namespace mscl
         };
     };
 
-
     //Class: SensorMessageFormat
     //    Contains the logic for the "Sensor Data Message Format" command
     class SensorMessageFormat

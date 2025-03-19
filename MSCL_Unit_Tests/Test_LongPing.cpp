@@ -168,5 +168,4 @@ BOOST_AUTO_TEST_CASE(LongPing_Match_Success)
     BOOST_CHECK_EQUAL(response.result().success(), true);
 }
 
-
 BOOST_AUTO_TEST_SUITE_END()

@@ -63,8 +63,6 @@ namespace mscl
         return numSweepsRemaining() > 0;
     }
 
-
-
     //    Gets the WirelessChannel::ChannelId enum from the channel number
     WirelessChannel::ChannelId WirelessDataPacket::wirelessChannelFromChNum(int channelNum)
     {

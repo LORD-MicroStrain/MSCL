@@ -70,7 +70,6 @@ BOOST_AUTO_TEST_CASE(GetGpsDataRateBase_Match_Success)
 
 BOOST_AUTO_TEST_SUITE_END()    //End GetGpsDataRateBase
 
-
 BOOST_AUTO_TEST_SUITE(GpsCommands_GpsMessageFormat)
 
 BOOST_AUTO_TEST_CASE(GpsMessageFormat_buildCommand_get)
@@ -138,6 +137,5 @@ BOOST_AUTO_TEST_CASE(GpsMessageFormat_parseData)
 }
 
 BOOST_AUTO_TEST_SUITE_END()    //End GpsMessageFormat
-
 
 BOOST_AUTO_TEST_SUITE_END()

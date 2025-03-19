@@ -89,7 +89,6 @@ namespace mscl
         return GenericMipCommand::buildCommand(CMD_ID, fieldData.data());
     }
 
-
     EstFilterMessageFormat::Response::Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse) :
         GenericMipCommand::Response(MipTypes::CMD_EF_MESSAGE_FORMAT, collector, true, dataResponse, "Estimation Filter Message Format")
     {}

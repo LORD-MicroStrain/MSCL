@@ -44,7 +44,6 @@ namespace mscl
         return m_serial;
     }
 
-
     WsdaFinder::WsdaFinder()
     {
         start();

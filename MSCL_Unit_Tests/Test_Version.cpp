@@ -198,9 +198,7 @@ BOOST_AUTO_TEST_CASE(Version_FromString)
     BOOST_CHECK_EQUAL(v1.patchPart(), 4);
     BOOST_CHECK_EQUAL(v1.str(), "7.1.4");
 
-
     BOOST_CHECK_EQUAL(v1.fromString("HelloWorld"), false);
 }
-
 
 BOOST_AUTO_TEST_SUITE_END()

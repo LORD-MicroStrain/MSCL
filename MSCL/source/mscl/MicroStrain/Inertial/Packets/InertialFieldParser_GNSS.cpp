@@ -531,7 +531,6 @@ namespace mscl
     }
     //=====================================================================================================================================================
 
-
     //=====================================================================================================================================================
     //                                                        FieldParser_DGNSSChannelStatus
     const MipTypes::ChannelField FieldParser_DGNSSChannelStatus::FIELD_TYPE = MipTypes::CH_FIELD_GNSS_DGNSS_CHANNEL_STATUS;
@@ -574,7 +573,6 @@ namespace mscl
     }
     //=====================================================================================================================================================
 
-
     //=====================================================================================================================================================
     //                                                        FieldParser_ClockInfo2
     const MipTypes::ChannelField FieldParser_ClockInfo2::FIELD_TYPE = MipTypes::CH_FIELD_GNSS_CLOCK_INFO_2;
@@ -615,7 +613,6 @@ namespace mscl
     }
     //=====================================================================================================================================================
 
-
     //=====================================================================================================================================================
     //                                                        FieldParser_GPSLeapSeconds
     const MipTypes::ChannelField FieldParser_GPSLeapSeconds::FIELD_TYPE = MipTypes::CH_FIELD_GNSS_GPS_LEAP_SECONDS;
@@ -630,7 +627,6 @@ namespace mscl
 
         //get the valid flags
         uint16 flags = bytes.read_uint16();
-
 
         //get whether points are valid or invalid from the flags
         bool secondsValid = pointIsValid(flags, SECONDS_VALID);
@@ -890,7 +886,6 @@ namespace mscl
 
         float lockTime = bytes.read_float();
 
-
         //get the valid flags
         uint16 flags = bytes.read_uint16();
 
@@ -1116,7 +1111,6 @@ namespace mscl
         return registerGnssParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
-
 
     //=====================================================================================================================================================
     //                                                        FieldParser_IonosphericCorrection

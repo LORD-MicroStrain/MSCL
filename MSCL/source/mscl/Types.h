@@ -81,7 +81,6 @@ namespace mscl
     //    Typedef for a simple_any type
     typedef simple_any anyType;
 
-
     //Function: checked_cast
     //    Safely casts one type to another type using static_cast
     //    by checking the limit of the cast first

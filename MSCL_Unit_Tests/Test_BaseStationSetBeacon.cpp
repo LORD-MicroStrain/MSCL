@@ -26,7 +26,6 @@ Bytes buildBaseSetBeaconResponse()
     return bytes;
 }
 
-
 BOOST_AUTO_TEST_SUITE(BaseStationSetBeacon_Test)
 
 BOOST_AUTO_TEST_CASE(BaseStationSetBeacon_BuildCommand)

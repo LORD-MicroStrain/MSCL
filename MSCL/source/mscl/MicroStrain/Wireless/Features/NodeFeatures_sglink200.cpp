@@ -165,7 +165,6 @@ namespace mscl
         return NodeFeatures::maxSampleRate(samplingMode, channels, dataCollectionMethod, dataMode);
     }
 
-
     const WirelessTypes::Voltages NodeFeatures_sglink200::excitationVoltages() const
     {
         static const WirelessTypes::Voltages excitationVoltages = {

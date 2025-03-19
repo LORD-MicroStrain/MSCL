@@ -84,7 +84,6 @@ BOOST_AUTO_TEST_CASE(SampleUtils_convertFromSampleRate)
     BOOST_CHECK_EQUAL(SampleUtils::convertFromSampleRate(SampleRate::Seconds(2)), 114);
     BOOST_CHECK_EQUAL(SampleUtils::convertFromSampleRate(SampleRate::Seconds(3600)), 123);
 
-
     //check that an invalid sample rate throws an Error_UnknownSampleRate exception
     BOOST_CHECK_THROW(SampleUtils::convertFromSampleRate(SampleRate::Hertz(784)), Error_UnknownSampleRate);
 }

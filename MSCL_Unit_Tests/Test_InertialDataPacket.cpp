@@ -139,6 +139,4 @@ BOOST_AUTO_TEST_CASE(InertialDataPacket_CorruptedBytes)
     BOOST_CHECK_EQUAL(packet.data()[2].as_float(), 0.0);
 }
 
-
-
 BOOST_AUTO_TEST_SUITE_END()

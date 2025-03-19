@@ -87,7 +87,6 @@ namespace mscl
         ConnectionType connectionType() const;
     };
 
-
     //API Class: Devices
     //    Contains helper functions for accessing attached devices
     class Devices

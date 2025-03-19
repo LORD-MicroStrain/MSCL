@@ -202,7 +202,6 @@ namespace mscl
                 }
             }
 
-
             //data is not a packet at this point
 
             bytesRemaining = data.bytesRemaining();

@@ -103,7 +103,6 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_burst)
     std::unique_ptr<NodeFeatures> features;
     expectNodeFeatures(features, impl);
 
-
     //eeprom reads performed by the SyncSamplingNetwork
     Sampling_Burst s;
     s.retx = WirelessTypes::retransmission_on;
@@ -474,7 +473,6 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_noChannelMask)
     std::unique_ptr<NodeFeatures> features;
     expectNodeFeatures(features, impl);
 
-
     SyncSamplingNetwork nwk(b);
 
     //eeprom reads performed by the SyncSamplingNetwork
@@ -536,7 +534,6 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_burst_noChannelMask)
 
     std::unique_ptr<NodeFeatures> features;
     expectNodeFeatures(features, impl);
-
 
     SyncSamplingNetwork nwk(b);
 
@@ -603,7 +600,6 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_logOnly)
 
     std::unique_ptr<NodeFeatures> features;
     expectNodeFeatures(features, impl);
-
 
     SyncSamplingNetwork nwk(b);
 

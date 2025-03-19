@@ -175,7 +175,6 @@ namespace mscl
             QUATERNION   = 2
         };
 
-
         //API Constructor: Rotation
         //  Constructs a Rotation object with default values.
         Rotation() : Rotation(EulerAngles(0, 0, 0)) {}

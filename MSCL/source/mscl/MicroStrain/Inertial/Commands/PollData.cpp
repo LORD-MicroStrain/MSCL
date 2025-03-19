@@ -36,9 +36,6 @@ namespace mscl
         GenericMipCommand::Response(MipTypes::CMD_POLL_SENSOR_DATA, collector, true, false, "Poll IMU Data")
     {}
 
-
-
-
     ByteStream PollGnssData::buildCommand(const MipTypes::MipChannelFields& fields)
     {
         ByteStream fieldData;
@@ -66,9 +63,6 @@ namespace mscl
     PollGnssData::Response::Response(std::weak_ptr<ResponseCollector> collector) :
         GenericMipCommand::Response(MipTypes::CMD_POLL_GNSS_DATA, collector, true, false, "Poll GNSS Data")
     {}
-
-
-
 
     ByteStream PollEstFilterData::buildCommand(const MipTypes::MipChannelFields& fields)
     {

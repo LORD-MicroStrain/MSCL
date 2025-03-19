@@ -269,7 +269,6 @@ namespace mscl
         { ChannelId(CH_FIELD_GNSS_GALILEO_IONOSPHERIC_CORRECTION, CH_ALPHA), "galileoCorrAlpha" },
         { ChannelId(CH_FIELD_GNSS_GALILEO_IONOSPHERIC_CORRECTION, CH_DISTURBANCE_FLAGS), "galileoCorrDisturbanceFlags" },
 
-
         {ChannelId(CH_FIELD_ESTFILTER_ESTIMATED_LLH_POS, CH_LATITUDE), "estLatitude"},
         {ChannelId(CH_FIELD_ESTFILTER_ESTIMATED_LLH_POS, CH_LONGITUDE), "estLongitude"},
         {ChannelId(CH_FIELD_ESTFILTER_ESTIMATED_LLH_POS, CH_HEIGHT_ABOVE_ELLIPSOID), "estHeightAboveElipsoid"},
@@ -513,7 +512,6 @@ namespace mscl
         { ChannelId(CH_FIELD_SENSOR_SHARED_DELTA_EXTERNAL_TIME, CH_NANOSECONDS), "timeInfo_deltaExternalTime" },
     });
 
-
     const MipTypes::ChannelFieldQualifiers MipTypes::CHANNEL_INDICES(
     {
         // 0x80: Sensor Data
@@ -580,7 +578,6 @@ namespace mscl
             ChannelIndex(CH_TIMESTAMP, 1),
             ChannelIndex(CH_VALID_FLAGS, 2)
         } },
-
 
         // 0x82 Filter Data
 
@@ -696,7 +693,6 @@ namespace mscl
             ChannelIndex(CH_TIMESTAMP, 1),
             ChannelIndex(CH_VALID_FLAGS, 2)
         } },
-
 
         // 0xA0 System Data
 

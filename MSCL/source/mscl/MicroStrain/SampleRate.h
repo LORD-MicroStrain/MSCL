@@ -59,7 +59,6 @@ namespace mscl
         SampleRate& operator+=(uint32 samplesPerSecond);
 #endif // !SWIG
 
-
         //API Function: str
         //    Gets the string representation of the sample rate.
         //    Ex. 1Hz = "1-hertz", 10kHz = "10000-hertz", 1 per 10 seconds = "10-seconds", 1 per 1 minute = "60 seconds"

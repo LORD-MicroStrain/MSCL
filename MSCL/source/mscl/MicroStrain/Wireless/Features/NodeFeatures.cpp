@@ -1732,7 +1732,6 @@ namespace mscl
         return m_nodeInfo.firmwareVersion() >= MIN_STORAGE_LIMIT_FW;
     }
 
-
     uint8 NodeFeatures::datalogDownloadVersion() const
     {
         static const Version DL_V2(10, 31758);

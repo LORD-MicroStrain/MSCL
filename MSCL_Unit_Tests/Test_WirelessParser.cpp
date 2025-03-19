@@ -57,7 +57,6 @@ BOOST_AUTO_TEST_CASE(WirelessParser_parseAsPacket_NotEnoughData)
     BOOST_CHECK_EQUAL(parser.parseAsPacket(b2, packet, WirelessTypes::freq_14), WirelessParser::parsePacketResult_notEnoughData);
 }
 
-
 BOOST_AUTO_TEST_CASE(WirelessParser_parseAsPacket_InvalidPacket)
 {
     //enough bytes to be ASPP, but not a valid ASPP packet
@@ -333,7 +332,6 @@ BOOST_AUTO_TEST_CASE(WirelessParser_Parse_Duplicate)
 
     DataSweep sweep2 = sweeps.at(0);
 
-
     BOOST_CHECK_EQUAL(sweep2.tick(), 1);
     BOOST_CHECK_EQUAL(sweep2.frequency(), WirelessTypes::freq_15);
 }
@@ -510,7 +508,6 @@ BOOST_AUTO_TEST_CASE(WirelessParser_Parse_Bad_Followed_By_Good)
     //check that the sweep is what we stored there
     BOOST_CHECK_EQUAL(sweep.nodeAddress(), 456);
 }
-
 
 BOOST_AUTO_TEST_CASE(WirelessParser_Parse_Bad)
 {

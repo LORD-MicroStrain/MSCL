@@ -371,7 +371,6 @@ namespace mscl
         //get the checksum sent in the packet
         uint16 checksum = data.read_uint16();                    //Checksum
 
-
         //build the checksum to calculate from all the bytes
         ChecksumBuilder calcChecksum;
         calcChecksum.append_uint16(startOfPacket);
@@ -384,7 +383,6 @@ namespace mscl
             //Bad Checksum
             return mipParserResult_badChecksum;
         }
-
 
         //add all the info about the packet to the MipPacket reference passed in
         packet.descriptorSet(descriptorSet);

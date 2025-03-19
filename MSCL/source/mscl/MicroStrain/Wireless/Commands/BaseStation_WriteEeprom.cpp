@@ -57,7 +57,6 @@ namespace mscl
             return false;
         }
 
-
         //build the ChecksumBuilder with the necessary bytes
         ChecksumBuilder checksum;
         checksum.append_uint16(eepromVal);    //eeprom value
@@ -67,7 +66,6 @@ namespace mscl
         {
             return false;
         }
-
 
         //if we made it this far, we successfully matched everything
 

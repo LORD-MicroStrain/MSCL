@@ -354,7 +354,6 @@ BOOST_AUTO_TEST_CASE(WirelessNode_getSampling)
 
     expectGenericNodeFeatures(impl);
 
-
     MOCK_EXPECT(impl->readEeprom_uint16).once().returns(WirelessTypes::samplingMode_armedDatalog);                                        //sampling mode
     MOCK_EXPECT(impl->readEeprom_uint16).once().returns(0x017);                                                                            //active channels
     MOCK_EXPECT(impl->readEeprom_uint16).once().with(NodeEepromMap::DATALOG_SAMPLE_RATE.location()).returns(WirelessTypes::sampleRate_32Hz);    //sample rate
@@ -383,8 +382,6 @@ BOOST_AUTO_TEST_CASE(NodeConfig_setSampling)
     BaseStation b = makeBaseStationWithMockImpl();
     WirelessNode node(100, b);
     node.setImpl(impl);
-
-
 
     SamplingConfig sampling;
     sampling.samplingMode(WirelessTypes::samplingMode_nonSync);

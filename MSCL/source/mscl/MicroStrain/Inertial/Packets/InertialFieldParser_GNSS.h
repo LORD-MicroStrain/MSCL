@@ -686,7 +686,6 @@ namespace mscl
         static const bool REGISTERED;
     };
 
-
     //Class: FieldParser_IonosphericCorrection
     //    The field parser for Ionospheric Correction Data
     class FieldParser_IonosphericCorrection : public MipGnssFieldParser

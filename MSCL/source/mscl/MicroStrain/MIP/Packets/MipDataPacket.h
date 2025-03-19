@@ -106,7 +106,6 @@ namespace mscl
         //    The <MipDataPoints> that are contained within this packet.
         const MipDataPoints& data() const;
 
-
         //API Function: shared
         //    Gets the <MipSharedDataFields> object that makes the shared field information within this packet more easily accessible.
         //

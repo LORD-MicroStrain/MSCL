@@ -82,7 +82,6 @@ namespace mscl
             throw Error_InvalidSerialPort(last_error);
         }
 
-
         // Determine the initial serial port parameters.
         ::DCB dcb;
         std::memset(&dcb, 0, sizeof(DCB));

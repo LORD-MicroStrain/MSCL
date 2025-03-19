@@ -342,7 +342,6 @@ namespace mscl
             FILTERSTATUS_MOUNTING_TRANSFORM_WARNING = 0x0200,
         };
 
-
         //============================================================================================================
         //API Enum: FilterStatus_Initialization
         //    Binary flags that give information with the NAV Filter Status field when filter is not initialized. Each bit must be checked accordingly.
@@ -1444,7 +1443,6 @@ namespace mscl
         uint8 error;
     };
 
-
     //API Enum: DeviceStatusValues
     //    Keys corresponding to the device status values returned by <DeviceStatusData::asMap>, <DeviceStatusData::asValueMap>.
     //
@@ -1670,7 +1668,6 @@ namespace mscl
         //  get the device status as value map
         DeviceStatusValueMap asValueMap() const;
 
-
     private: // optional variables are private with public getters & setters
 
         //Function: checkValue
@@ -1759,11 +1756,9 @@ namespace mscl
         boost::optional<uint16> m_accelRange;
     };
 
-
     //API Typedef: StatusSelectors
     //  A vector of <StatusSelector> objects
     typedef std::vector<DeviceStatusData::StatusSelector> StatusSelectors;
-
 
     //API Struct: ExternalGNSSUpdateData
     //    Contains the data needed by the <InertialNode::sendExternalGNSSUpdate> method.
@@ -3373,7 +3368,6 @@ namespace mscl
         //  Action parameters
         EventActionParameters parameters;
     };
-
 
     //API Struct: EventTriggerInfo
     //  Information about an event trigger

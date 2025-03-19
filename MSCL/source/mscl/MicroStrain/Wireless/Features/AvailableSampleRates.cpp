@@ -61,7 +61,6 @@ namespace mscl
             {WirelessTypes::sampleRate_2Hz},
             {WirelessTypes::sampleRate_1Hz}};
 
-
     const WirelessTypes::WirelessSampleRates AvailableSampleRates::continuous_nonSync_vlink200 = {
         {WirelessTypes::sampleRate_512Hz},
         {WirelessTypes::sampleRate_256Hz},
@@ -296,8 +295,6 @@ namespace mscl
 
     const WirelessTypes::WirelessSampleRates AvailableSampleRates::armedDatalog_glink2 = burst_glink2; //same as burst
 
-
-
     const WirelessTypes::WirelessSampleRates AvailableSampleRates::burst_vlink = {
             {WirelessTypes::sampleRate_10kHz},
             {WirelessTypes::sampleRate_9kHz},
@@ -327,7 +324,6 @@ namespace mscl
             {WirelessTypes::sampleRate_10kHz},
             {WirelessTypes::sampleRate_1kHz}};
 
-
     const WirelessTypes::WirelessSampleRates AvailableSampleRates::continuous_tclink = {
             {WirelessTypes::sampleRate_8Hz},
             {WirelessTypes::sampleRate_4Hz},
@@ -343,8 +339,6 @@ namespace mscl
             {WirelessTypes::sampleRate_10Min},
             {WirelessTypes::sampleRate_30Min},
             {WirelessTypes::sampleRate_60Min}};
-
-
 
     const WirelessTypes::WirelessSampleRates AvailableSampleRates::continuous_tclink1ch = {
             {WirelessTypes::sampleRate_64Hz},
@@ -403,7 +397,6 @@ namespace mscl
         {WirelessTypes::sampleRate_10Min},
         {WirelessTypes::sampleRate_30Min},
         {WirelessTypes::sampleRate_60Min}};
-
 
     const WirelessTypes::WirelessSampleRates AvailableSampleRates::continuous_envlink = {
             {WirelessTypes::sampleRate_2Hz},

@@ -272,7 +272,6 @@ BOOST_AUTO_TEST_CASE(InertialNode_getMessageFormat_Sensor)
     //expect the getMessageFormat command
     MOCK_EXPECT(impl->doCommand).once().returns(GenericMipCmdResponse::ResponseSuccess("", data));
 
-
     MipChannels chs = node.getActiveChannelFields(MipTypes::CLASS_AHRS_IMU);
 
     //verify that the command returned the correct value
@@ -603,12 +602,10 @@ BOOST_AUTO_TEST_CASE(InertialNode_deviceName)
     BOOST_CHECK_EQUAL(InertialNode::deviceName(serial), "inertial-6225.01466");
 }
 
-
 //TODO: move this to displacement test area
 BOOST_AUTO_TEST_CASE(DisplacementNode_nodeFromModelString)
 {
     BOOST_CHECK_EQUAL(DisplacementModels::nodeFromModelString("6130-2000"), DisplacementModels::node_digitalDemod);
 }
-
 
 BOOST_AUTO_TEST_SUITE_END()

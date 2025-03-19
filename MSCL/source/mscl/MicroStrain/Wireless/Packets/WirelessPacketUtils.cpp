@@ -111,7 +111,6 @@ namespace mscl
                     break;
             }
 
-
             if(packet.asppVersion() == WirelessPacket::aspp_v3)
             {
                 //ASPP v3 Packets

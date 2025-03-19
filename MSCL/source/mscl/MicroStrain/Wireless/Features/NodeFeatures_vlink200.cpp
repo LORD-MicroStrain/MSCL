@@ -24,7 +24,6 @@ namespace mscl
         m_channels.emplace_back(7, WirelessChannel::channel_7, WirelessTypes::chType_singleEnded, "Single-ended", 18);
         m_channels.emplace_back(8, WirelessChannel::channel_8, WirelessTypes::chType_singleEnded, "Single-ended", 18);
 
-
         //Channel Groups
         static const ChannelMask DIFFERENTIAL_CH1(BOOST_BINARY(00000001));    //ch1
         static const ChannelMask DIFFERENTIAL_CH2(BOOST_BINARY(00000010));    //ch2

@@ -208,9 +208,6 @@ namespace SyncSamplingFormulas
         }
     }
 
-
-
-
     uint32 totalBytesPerBurst(uint32 bytesPerSweep, uint32 numSweeps)
     {
         return bytesPerSweep * numSweeps;

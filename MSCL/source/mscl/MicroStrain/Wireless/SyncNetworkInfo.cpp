@@ -79,7 +79,6 @@ namespace mscl
         return m_groupSize;
     }
 
-
     bool SyncNetworkInfo::hasPendingConfig() const
     {
         return m_hasPendingConfig;

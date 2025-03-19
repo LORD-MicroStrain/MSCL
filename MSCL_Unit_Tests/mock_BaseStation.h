@@ -72,7 +72,6 @@ static void expectCyclePower(std::shared_ptr<mock_baseStationImpl> impl)
     MOCK_EXPECT(impl->ping).returns(true);
 }
 
-
 static BaseStation makeBaseStationWithMockImpl()
 {
     static std::shared_ptr<BaseStation_Impl> impl(new mock_baseStationImpl());

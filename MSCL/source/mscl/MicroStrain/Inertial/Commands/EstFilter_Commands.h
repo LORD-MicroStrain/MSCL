@@ -367,7 +367,6 @@ namespace mscl
         };
     };
 
-
     //Class: TareOrientation
     //    Contains the logic for the "Tare Orientation" command
     class TareOrientation
@@ -471,7 +470,6 @@ namespace mscl
             Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse);
         };
     };
-
 
     //Class: CmdedAngularZupt
     //    Contains the logic for the "Commanded Zero Angular Rate Update" command

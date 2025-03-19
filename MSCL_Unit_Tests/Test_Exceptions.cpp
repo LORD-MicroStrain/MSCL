@@ -29,7 +29,6 @@ BOOST_AUTO_TEST_CASE(Exceptions_Error)
     //check that the standard text was received
     BOOST_CHECK_EQUAL(txt, "MSCL has thrown an exception.");
 
-
     try
     {
         txt = "";
@@ -63,7 +62,6 @@ BOOST_AUTO_TEST_CASE(Exceptions_ErrorNoData)
     //check that the standard text was received
     BOOST_CHECK_EQUAL(txt, "No data is available.");
 
-
     bool caughtException = false;
     try
     {
@@ -96,7 +94,6 @@ BOOST_AUTO_TEST_CASE(Exceptions_ErrorBadDataType)
     //check that the standard text was received
     BOOST_CHECK_EQUAL(txt, "Data was accessed using the wrong data type.");
 
-
     bool caughtException = false;
     try
     {
@@ -128,7 +125,6 @@ BOOST_AUTO_TEST_CASE(Exceptions_ErrorUnknownSampleRate)
 
     //check that the standard text was received
     BOOST_CHECK_EQUAL(txt, "Unknown Sample Rate.");
-
 
     bool caughtException = false;
     try
@@ -218,7 +214,6 @@ BOOST_AUTO_TEST_CASE(Exceptions_ErrorInvalidComPort)
     //check that we caught the exception using the base Error exception class
     BOOST_CHECK_EQUAL(caughtException, true);
 
-
     caughtException = false;
     try
     {
@@ -249,7 +244,6 @@ BOOST_AUTO_TEST_CASE(Exceptions_ErrorNotSupported)
 
     //check that the standard text was received
     BOOST_CHECK_EQUAL(txt, "This feature is not supported.");
-
 
     bool caughtException = false;
     try

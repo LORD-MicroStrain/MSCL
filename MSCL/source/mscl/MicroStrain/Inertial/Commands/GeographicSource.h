@@ -100,7 +100,6 @@ namespace mscl
         ~GeographicSource() {}
     };
 
-
     //Class: InclinationSource
     //    Contains the logic for the Inertial Inclination GeographicSource command.
     class InclinationSource : public GeographicSource {
@@ -127,7 +126,6 @@ namespace mscl
         InclinationSource(MipTypes::FunctionSelector function_selector);
     };
 
-
     //Class: DeclinationSource
     //    Contains the logic for the Inertial Declination GeographicSource command.
     class DeclinationSource : public GeographicSource {
@@ -153,7 +151,6 @@ namespace mscl
         DeclinationSource(MipTypes::FunctionSelector function_selector, const GeographicSourceOptions& dataToUse);
         DeclinationSource(MipTypes::FunctionSelector function_selector);
     };
-
 
     //Class: MagneticFieldMagnitudeSource
     //    Contains the logic for the Inertial Magnetic Field Magnitude GeographicSource command.

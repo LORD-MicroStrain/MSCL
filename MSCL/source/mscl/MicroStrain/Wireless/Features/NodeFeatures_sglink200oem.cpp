@@ -24,7 +24,6 @@ namespace mscl
         const ChannelMask SINGLE_ENDED_CHS(BOOST_BINARY(00000010));  //ch2
         const ChannelMask PULSE_CHS(BOOST_BINARY(00110000));         //ch5 and ch6
 
-
         if(info.firmwareVersion() >= Version(12, 42801))
         {
             m_channelGroups.emplace_back(DIFFERENTIAL_CHS, "Differential",
@@ -59,7 +58,6 @@ namespace mscl
                                              {WirelessTypes::chSetting_lowPassFilter, NodeEepromMap::LOW_PASS_FILTER_2}}
             );
         }
-
 
         m_channelGroups.emplace_back(PULSE_CHS, "Pulse Input",
                                      ChannelGroup::SettingsMap{

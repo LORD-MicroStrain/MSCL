@@ -38,7 +38,6 @@ namespace mscl
         m_loga = val;
     }
 
-
     FatigueOptions::FatigueOptions() :
         m_youngsModulus(0.2025f),
         m_poissonsRatio(0.3f),

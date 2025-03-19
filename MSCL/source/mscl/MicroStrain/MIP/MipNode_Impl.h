@@ -1200,7 +1200,6 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         Matrix_3x3 getMagnetometerSoftIronMatrix() const;
 
-
         //Function: setMagnetometerHardIronOffset
         //    Sets the magnetometer hard iron offset vector.
         //

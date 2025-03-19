@@ -72,7 +72,6 @@ BOOST_AUTO_TEST_CASE(GetEstFilterDataRateBase_Match_Success)
 
 BOOST_AUTO_TEST_SUITE_END()    //End GetEstFilterDataRateBase
 
-
 BOOST_AUTO_TEST_SUITE(EstFilterCommands_EstFilterMessageFormat)
 
 BOOST_AUTO_TEST_CASE(EstFilterMessageFormat_buildCommand_get)
@@ -211,7 +210,6 @@ BOOST_AUTO_TEST_CASE(SensorToVehicFrameTrans_parseData)
 
 BOOST_AUTO_TEST_SUITE_END()    //End EstFilterCommands_SensorToVehicFrameTrans
 
-
 BOOST_AUTO_TEST_SUITE(EstFilterCommands_SensorToVehicFrameOffset)
 
 BOOST_AUTO_TEST_CASE(SensorToVehicFrameOffset_buildCommand_get)
@@ -278,6 +276,5 @@ BOOST_AUTO_TEST_CASE(SensorToVehicFrameOffset_parseData)
 }
 
 BOOST_AUTO_TEST_SUITE_END()    //End EstFilterCommands_SensorToVehicFrameTrans
-
 
 BOOST_AUTO_TEST_SUITE_END()

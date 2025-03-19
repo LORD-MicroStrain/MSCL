@@ -18,7 +18,6 @@ DISABLE_WARNING_BOOST_END
 
 BOOST_AUTO_TEST_SUITE(GetDataRateBase_Test)
 
-
 //Sensor TESTS
 BOOST_AUTO_TEST_SUITE(GetDataRateBase_Test_Sensor)
 
@@ -171,7 +170,6 @@ BOOST_AUTO_TEST_CASE(GetDataRateBase_Sensor_Match_Success)
 
 BOOST_AUTO_TEST_SUITE_END()
 
-
 //GPS TESTS
 BOOST_AUTO_TEST_SUITE(GetDataRateBase_Test_GPS)
 
@@ -322,9 +320,7 @@ BOOST_AUTO_TEST_CASE(GetDataRateBase_GPS_Match_Success)
     BOOST_CHECK_EQUAL(response.result().data().read_uint16(0), 40);
 }
 
-
 BOOST_AUTO_TEST_SUITE_END()
-
 
 //EstFilter TESTS
 BOOST_AUTO_TEST_SUITE(GetDataRateBase_Test_EstFilter)
