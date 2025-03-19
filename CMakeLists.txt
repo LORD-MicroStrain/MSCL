@@ -105,13 +105,9 @@ if(MSVC)
 
     # Ignore warnings from the linker when it can't find a pdb file
     add_link_options(/ignore:4099)
-endif()
 
-# On Windows, add a few flags for compatibility with the old solution files
-if(WIN32)
+    # On Windows, add a few flags for compatibility with the old solution files
     add_compile_definitions(
-        WIN32
-        _WINDOWS
         _USRDLL
         NOMINMAX
         _WIN32_WINNT=0x0501

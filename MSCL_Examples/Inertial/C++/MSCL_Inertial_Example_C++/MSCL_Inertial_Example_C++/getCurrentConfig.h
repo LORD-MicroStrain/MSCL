@@ -1,65 +1,70 @@
 #pragma once
 
-#include "mscl/mscl.h"
+// MSCL common code header (used as precompiled header)
+#include <mscl/stdafx.h>
 
-//Example: Get Current Configuration
+#include <mscl/MicroStrain/Inertial/InertialNode.h>
+#include <mscl/MicroStrain/MIP/MipNodeFeatures.h>
+
+// Example: Get Current Configuration
 //  Shows how to read current configuration settings an Inertial Device.
 static void getCurrentConfig(mscl::InertialNode& node)
 {
-    //many other settings are available than shown below
-    //reference the documentation for the full list of commands
+    // Many other settings are available than shown below
+    // Reference the documentation for the full list of commands
 
-    //if the node supports AHRS/IMU
-    if(node.features().supportsCategory(mscl::MipTypes::CLASS_AHRS_IMU))
+    // If the node supports AHRS/IMU
+    if (node.features().supportsCategory(mscl::MipTypes::CLASS_AHRS_IMU))
     {
-        //get a list of the AHRS/IMU channels currently active on the Node
-        mscl::MipChannels ahrsImuActiveChs = node.getActiveChannelFields(mscl::MipTypes::CLASS_AHRS_IMU);
+        // Get a list of the AHRS/IMU channels currently active on the Node
+        const mscl::MipChannels ahrsImuActiveChs = node.getActiveChannelFields(mscl::MipTypes::CLASS_AHRS_IMU);
 
-        cout << "AHRS/IMU Channels" << endl;
-        cout << "-----------------" << endl;
-        for(mscl::MipChannel ch : ahrsImuActiveChs)
+        printf("AHRS/IMU Channels\n");
+        printf("-----------------\n");
+
+        for (const mscl::MipChannel& channel : ahrsImuActiveChs)
         {
-            cout << "Channel Field: " << std::hex << ch.channelField() << endl;
-            cout << "Sample Rate: " << ch.sampleRate().prettyStr() << endl << endl;
+            printf("Channel Field: 0x%04X\n", channel.channelField());
+            printf("Sample Rate: %s\n\n", channel.sampleRate().prettyStr().c_str());
         }
     }
 
-    //if the node supports Estimation Filter
-    if(node.features().supportsCategory(mscl::MipTypes::CLASS_ESTFILTER))
+    // If the node supports Estimation Filter
+    if (node.features().supportsCategory(mscl::MipTypes::CLASS_ESTFILTER))
     {
-        //get a list of the Estimation Filter channels currently active on the Node
-        mscl::MipChannels estFilterActiveChs = node.getActiveChannelFields(mscl::MipTypes::CLASS_ESTFILTER);
+        // Get a list of the Estimation Filter channels currently active on the Node
+        const mscl::MipChannels estFilterActiveChs = node.getActiveChannelFields(mscl::MipTypes::CLASS_ESTFILTER);
 
-        cout << endl;
-        cout << "Estimation Filter Channels" << endl;
-        cout << "--------------------------" << endl;
-        for(mscl::MipChannel ch : estFilterActiveChs)
+        printf("\nEstimation Filter Channels\n");
+        printf("--------------------------\n");
+
+        for (const mscl::MipChannel& channel : estFilterActiveChs)
         {
-            cout << "Channel Field: " << std::hex << ch.channelField() << endl;
-            cout << "Sample Rate: " << ch.sampleRate().prettyStr() << endl << endl;
+            printf("Channel Field: 0x%04X\n", channel.channelField());
+            printf("Sample Rate: %s\n\n", channel.sampleRate().prettyStr().c_str());
         }
     }
 
-    //if the node supports GNSS
-    if(node.features().supportsCategory(mscl::MipTypes::CLASS_GNSS))
+    // If the node supports GNSS
+    if (node.features().supportsCategory(mscl::MipTypes::CLASS_GNSS))
     {
-        //get a list of the GNSS channels currently active on the Node
-        mscl::MipChannels gnssActiveChs = node.getActiveChannelFields(mscl::MipTypes::CLASS_GNSS);
+        // Get a list of the GNSS channels currently active on the Node
+        const mscl::MipChannels gnssActiveChs = node.getActiveChannelFields(mscl::MipTypes::CLASS_GNSS);
 
-        cout << endl;
-        cout << "GNSS Channels" << endl;
-        cout << "-------------" << endl;
-        for(mscl::MipChannel ch : gnssActiveChs)
+        printf("\nGNSS Channels\n");
+        printf("-------------\n");
+
+        for (const mscl::MipChannel& channel : gnssActiveChs)
         {
-            cout << "Channel Field: " << std::hex << ch.channelField() << endl;
-            cout << "Sample Rate: " << ch.sampleRate().prettyStr() << endl << endl;
+            printf("Channel Field: 0x%04X\n", channel.channelField());
+            printf("Sample Rate: %s\n\n", channel.sampleRate().prettyStr().c_str());
         }
     }
 
-    cout << "Altitude Aiding enabled?: " << node.getAltitudeAid() << endl;
+    printf("Altitude Aiding enabled?: %s\n", node.getAltitudeAid() ? "TRUE" : "FALSE");
 
-    mscl::PositionOffset offset = node.getAntennaOffset();
-    cout << "Antenna Offset: x=" << offset.x() << " y=" << offset.y() << " z=" << offset.z() << endl;
+    const mscl::PositionOffset offset = node.getAntennaOffset();
+    printf("Antenna Offset: X = %000.03f Y = %000.03f Z = %000.03f\n", offset.x(), offset.y(), offset.z());
 
-    cout << "Pitch/Roll Aiding enabled?: " << node.getPitchRollAid() << endl;
+    printf("Pitch/Roll Aiding enabled?: %s\n", node.getPitchRollAid() ? "TRUE" : "FALSE");
 }

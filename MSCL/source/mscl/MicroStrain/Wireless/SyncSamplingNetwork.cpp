@@ -8,7 +8,6 @@
 
 #include "mscl/MicroStrain/Wireless/Configuration/SyncNodeConfig.h"
 #include "mscl/MicroStrain/Wireless/NodeCommTimes.h"
-#include "mscl/MicroStrain/Wireless/SyncNetworkInfo.h"
 #include "mscl/MicroStrain/Wireless/SyncSamplingFormulas.h"
 #include "mscl/MicroStrain/Wireless/WirelessNode.h"
 

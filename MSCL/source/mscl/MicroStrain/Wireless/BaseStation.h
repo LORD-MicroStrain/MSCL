@@ -5,6 +5,7 @@
 *****************************************************************************************/
 
 #pragma once
+
 #include "mscl/Communication/RawBytePacket.h"
 #include "mscl/MicroStrain/Wireless/BaseStationAnalogPair.h"
 #include "mscl/MicroStrain/Wireless/BaseStationButton.h"

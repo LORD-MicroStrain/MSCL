@@ -1,41 +1,43 @@
 #pragma once
 
-#include "mscl/mscl.h"
+// MSCL common code header (used as precompiled header)
+#include <mscl/stdafx.h>
 
-//Example: Parse Data
+#include <mscl/MicroStrain/Displacement/DisplacementNode.h>
+
+// Example: Parse Data
 //  Shows how to parse incoming data from a Displacement Device.
 //  Note that this example does not start a Node sampling (assumes it already is).
 static void parseData(mscl::DisplacementNode& node)
 {
-    //endless loop of reading in data
-    while(true)
+    // Endless loop of reading in data
+    while (true)
     {
-        //get all the data packets from the node, with a timeout of 500 milliseconds
-        mscl::MipDataPackets packets = node.getDataPackets(500);
-
-        for(mscl::MipDataPacket packet : packets)
+        // Loop through all the data packets from the node, with a timeout of 500 milliseconds
+        for (const mscl::MipDataPacket& packet : node.getDataPackets(500))
         {
-            //print out the data
-            cout << "Packet Received: ";
+            // Print out the data
+            printf("Packet Received: ");
 
-            //get the data in the packet
-            mscl::MipDataPoints data = packet.data();
-            mscl::MipDataPoint dataPoint;
-
-            //loop through all the data points in the packet
-            for(unsigned int itr = 0; itr < data.size(); itr++)
+            // Loop through all the data points in the packet
+            for (const mscl::MipDataPoint& dataPoint : packet.data())
             {
-                dataPoint = data[itr];
+                printf("%s: ", dataPoint.channelName().c_str());
 
-                cout << dataPoint.channelName() << ": ";
-
-                //print out the channel data
-                //Note: The as_string() function is being used here for simplicity. 
-                //      Other methods (ie. as_float, as_uint16, as_Vector) are also available.
+                // Print out the channel data
+                // Note: The as_string() function is being used here for simplicity.
+                //      Other methods (i.e., as_float, as_uint16, as_Vector) are also available.
                 //      To determine the format that a dataPoint is stored in, use dataPoint.storedAs().
-                cout << dataPoint.as_string() << " ";
+                printf("%s ", dataPoint.as_string().c_str());
+
+                // If the dataPoint is invalid
+                if (!dataPoint.valid())
+                {
+                    printf("[Invalid] ");
+                }
             }
-            cout << endl;
+
+            printf("\n");
         }
     }
 }

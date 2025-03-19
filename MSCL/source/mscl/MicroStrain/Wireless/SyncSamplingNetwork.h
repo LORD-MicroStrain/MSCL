@@ -7,11 +7,11 @@
 #pragma once
 
 #include "mscl/MicroStrain/Wireless/BaseStation.h"
+#include "mscl/MicroStrain/Wireless/SyncNetworkInfo.h"
 
 namespace mscl
 {
     class WirelessNodeConfig;
-    class SyncNetworkInfo;
     class WirelessNode;
 
     //API Class: SyncSamplingNetwork
@@ -41,7 +41,7 @@ namespace mscl
 
         //Variable: m_nodes
         //    A map of node addresses to <SyncNetworkInfo>s containing all the nodes that were added to the network.
-        std::map<NodeAddress, std::unique_ptr<SyncNetworkInfo> > m_nodes;
+        std::map<NodeAddress, std::unique_ptr<SyncNetworkInfo>> m_nodes;
 
         //Variable: m_allNodes
         //    A vector of node addresses for every node in the network.
@@ -56,7 +56,7 @@ namespace mscl
         std::vector<NodeAddress> m_nonEventNodes;
 
         //Variable: m_slots
-        //    A vector of bools representing all of the transmission slots. If a slot is set (true), it it taken. If a slot is unset (false), it is available.
+        //    A vector of bools representing all the transmission slots. If a slot is set (true), it it taken. If a slot is unset (false), it is available.
         std::vector<bool> m_slots;
 
         //Variable: m_lossless
@@ -68,7 +68,7 @@ namespace mscl
         WirelessTypes::CommProtocol m_commProtocol;
 
         //Variable: m_percentBandwidth
-        //    The percent of bandwidth for the entire Sync Sampling Network.
+        //    The percentage of bandwidth for the entire Sync Sampling Network.
         //    This includes nodes that could not find TDMA slots, but does not include nodes who failed to communicate.
         float m_percentBandwidth;
 
@@ -138,7 +138,7 @@ namespace mscl
         //    This includes nodes that could not find TDMA slots, but does not include nodes who failed to communicate (status of <status_PoorCommunication>).
         //
         //Returns:
-        //    The percent of bandwidth for the entire Sync Sampling Network.
+        //    The percentage of bandwidth for the entire Sync Sampling Network.
         float percentBandwidth() const;
 
         //API Function: ok
@@ -160,7 +160,7 @@ namespace mscl
 
         //API Function: lossless
         //    Gets whether the lossless option is enabled or not for the entire network (default of enabled).
-        //    The lossless feature enables buffering and retransmissions in order to provide 100% packet success rate under most operating conditions.
+        //    The lossless feature enables buffering and retransmissions to provide 100% packet success rate under most operating conditions.
         //    This does, however, have a possible increase in latency, especially in poor RF environments.
         //
         //Returns:
@@ -169,7 +169,7 @@ namespace mscl
 
         //API Function: lossless
         //    Enables or Disables the lossless option for the entire network. If changed, <refresh> will be called.
-        //    The lossless feature enables buffering and retransmissions in order to provide 100% packet success rate under most operating conditions.
+        //    The lossless feature enables buffering and retransmissions to provide 100% packet success rate under most operating conditions.
         //    This can, however, cause a possible increase in latency, especially in poor RF environments.
         //
         //Parameters:
@@ -193,7 +193,7 @@ namespace mscl
         //  Sets the <WirelessTypes::CommProtocol> for the network.
         //  The initial communicationProtocol is set to whichever mode the BaseStation was configured for when the network was first created.
         //  Changing this setting will call <refresh> and the network calculations (such as percentBandwidth) will be updated.
-        //  Note: Changing this does not actually change the protocol of the BaseStation or Nodes in the network. All devices must be changed to the same
+        //  Note: Changing this does not change the protocol of the BaseStation or Nodes in the network. All devices must be changed to the same
         //        <WirelessTypes::CommProtocol> that the network is set to before <applyConfiguration> is called, or else an exception will be thrown.
         //
         //Parameters:
@@ -206,7 +206,7 @@ namespace mscl
         void communicationProtocol(WirelessTypes::CommProtocol protocol);
 
         //API Function: applyConfiguration
-        //    Applies the Sync Sampling network settings to all of the nodes in the network.
+        //    Applies the Sync Sampling network settings to all the nodes in the network.
         //    This action is required before starting a Sync Sampling network. The network status must be OK before this can be called.
         //    Calling this function repeatedly will only affect the node's that haven't had their configuration applied successfully. This can be useful if some nodes successfully apply, while others fail to communicate.
         //    Note: This will clear any "pending" configurations that any nodes have in the network.
@@ -308,7 +308,7 @@ namespace mscl
         void updateNetworkStatus();
 
         //Function: sortByBandwidth
-        //    Sorts the vector of nodes by the percent of bandwidth (and by node address is bandwidth is the same).
+        //    Sorts the vector of nodes by the percentage of bandwidth (and by node address is bandwidth is the same).
         //
         //Parameters:
         //  container - The container of node addresses to sort by bandwidth.
@@ -328,10 +328,10 @@ namespace mscl
 
         //Function: findSlotsForNodes
         //    Finds TDMA slots for every Node in the given vector of nodes.
-        //    Note that this clears m_slots before finding new slots for all of the Nodes.
+        //    Note that this clears m_slots before finding new slots for all the Nodes.
         //
         //Parameters:
-        //  container - The container of node addresses to find slots for, sorted in order of priority.
+        //  container - The container of node addresses to find slots for sorted in order of priority.
         //
         //Returns:
         //    true if a slot was found for every node in the network, false if any of the nodes failed to find a slot.
