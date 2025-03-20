@@ -219,7 +219,7 @@ elseif(UNIX)
     )
 
     set(STATIC_COMPILE_OPTIONS
-        "-FPIC" # Normally static libraries aren't compiled with this flag, but we need it to compile our bindings properly
+        "-fPIC" # Normally static libraries aren't compiled with this flag, but we need it to compile our bindings properly
     )
 endif()
 
