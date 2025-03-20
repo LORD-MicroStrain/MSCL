@@ -10,16 +10,6 @@ param (
     [String[]]$python2Dirs
 )
 
-# Use 2>&1 at the end of a command to forward errors to the standard output and be able to catch them
-# I.E.
-#
-# cmd -option 2>&1
-#
-# OR (to use it on a new line)
-#
-# cmd -option `
-# 2>&1
-
 # Cache the error action to reset it later
 $CacheErrorActionPreference = ${ErrorActionPreference}
 
@@ -36,28 +26,40 @@ try
     $configs = "Debug", "Release"
 
     # Make sure the build directory exists
-    New-Item "${buildDir}" -ItemType Directory -Force `
-    2>&1
+    New-Item "${buildDir}" -ItemType Directory -Force
+
+    if (-Not ($?))
+    {
+        throw $_
+    }
 
     # Configure MSCL to build the documentation and zip examples only on x64 release
     if ("$arch" -eq "x64")
     {
         cmake -S "${project_dir}" -B "${buildDir}" -G "${generator}" -A "${arch}" -T "${toolset}" `
-        -DCMAKE_VERBOSE_MAKEFILE="ON" `
-        -DBUILD_SHARED_LIBS="OFF" `
-        -DMSCL_BUILD_PYTHON2="OFF" `
-        -DMSCL_BUILD_PYTHON3="OFF" `
-        -DMSCL_BUILD_CSHARP="OFF" `
-        -DMSCL_BUILD_TESTS="OFF" `
-        -DMSCL_BUILD_EXAMPLES="OFF" `
-        -DMSCL_ZIP_EXAMPLES="ON" `
-        -DMSCL_BUILD_DOCUMENTATION="ON" `
-        -DMSCL_BUILD_PACKAGE="ON" `
-        -DMSCL_BRANCH="${branch}" `
-        2>&1
+            -DCMAKE_VERBOSE_MAKEFILE="ON" `
+            -DBUILD_SHARED_LIBS="OFF" `
+            -DMSCL_BUILD_PYTHON2="OFF" `
+            -DMSCL_BUILD_PYTHON3="OFF" `
+            -DMSCL_BUILD_CSHARP="OFF" `
+            -DMSCL_BUILD_TESTS="OFF" `
+            -DMSCL_BUILD_EXAMPLES="OFF" `
+            -DMSCL_ZIP_EXAMPLES="ON" `
+            -DMSCL_BUILD_DOCUMENTATION="ON" `
+            -DMSCL_BUILD_PACKAGE="ON" `
+            -DMSCL_BRANCH="${branch}"
 
-        cmake --build "${buildDir}" --config "Release" --target package `
-        2>&1
+        if (-Not ($?))
+        {
+            throw $_
+        }
+
+        cmake --build "${buildDir}" --config "Release" --target package
+
+        if (-Not ($?))
+        {
+            throw $_
+        }
     }
 
     # Configure MSCL to build with everything except csharp, python2, and python3
@@ -72,17 +74,29 @@ try
         -DMSCL_ZIP_EXAMPLES="OFF" `
         -DMSCL_BUILD_DOCUMENTATION="OFF" `
         -DMSCL_BUILD_PACKAGE="ON" `
-        -DMSCL_BRANCH="${branch}" `
-        2>&1
+        -DMSCL_BRANCH="${branch}"
+
+    if (-Not ($?))
+    {
+        throw $_
+    }
 
     # Build multiple configurations
     foreach ($config in ${configs})
     {
-        cmake --build "${buildDir}" --config "${config}" --target package `
-        2>&1
+        cmake --build "${buildDir}" --config "${config}" --target package
 
-        cmake --build "${buildDir}" --config "${config}" --target "RUN_TESTS" `
-        2>&1
+        if (-Not ($?))
+        {
+            throw $_
+        }
+
+        cmake --build "${buildDir}" --config "${config}" --target "RUN_TESTS"
+
+        if (-Not ($?))
+        {
+            throw $_
+        }
     }
 
     # Build CSharp
@@ -97,14 +111,22 @@ try
         -DMSCL_ZIP_EXAMPLES="OFF" `
         -DMSCL_BUILD_DOCUMENTATION="OFF" `
         -DMSCL_BUILD_PACKAGE="ON" `
-        -DMSCL_BRANCH="${branch}" `
-        2>&1
+        -DMSCL_BRANCH="${branch}"
+
+    if (-Not ($?))
+    {
+        throw $_
+    }
 
     # Build multiple configurations for CSharp
     foreach ($config in ${configs})
     {
-        cmake --build "${buildDir}" --config "${config}" --target package `
-        2>&1
+        cmake --build "${buildDir}" --config "${config}" --target package
+
+        if (-Not ($?))
+        {
+            throw $_
+        }
     }
 
     # Build python3
@@ -128,14 +150,22 @@ try
                 -UPython3_ROOT -DPython3_ROOT="${python3Dir}" `
                 -UPython3_ROOT_DIR -DPython3_ROOT_DIR="${python3Dir}" `
                 -UPython3_INCLUDE_DIR `
-                -UPython3_EXECUTABLE -DPython3_EXECUTABLE="${python3Dir}/python.exe" `
-                2>&1
+                -UPython3_EXECUTABLE -DPython3_EXECUTABLE="${python3Dir}/python.exe"
+
+            if (-Not ($?))
+            {
+                throw $_
+            }
 
             # Build multiple configurations
             foreach ($config in ${configs})
             {
-                cmake --build "${buildDir}" --config "${config}" --target package `
-                2>&1
+                cmake --build "${buildDir}" --config "${config}" --target package
+
+                if (-Not ($?))
+                {
+                    throw $_
+                }
             }
         }
     }
@@ -161,14 +191,22 @@ try
                 -UPython2_ROOT -DPython2_ROOT="${python2Dir}" `
                 -UPython2_ROOT_DIR -DPython2_ROOT_DIR="${python2Dir}" `
                 -UPython2_INCLUDE_DIR `
-                -UPython2_EXECUTABLE -DPython2_EXECUTABLE="${python2Dir}/python.exe" `
-                2>&1
+                -UPython2_EXECUTABLE -DPython2_EXECUTABLE="${python2Dir}/python.exe"
+
+            if (-Not ($?))
+            {
+                throw $_
+            }
 
             # Build multiple configurations
             foreach ($config in ${configs})
             {
-                cmake --build "${buildDir}" --config "${config}" --target package `
-                2>&1
+                cmake --build "${buildDir}" --config "${config}" --target package
+
+                if (-Not ($?))
+                {
+                    throw $_
+                }
             }
         }
     }
