@@ -1,9 +1,3 @@
-# Make sure programming standards are enforced (Latest could break the script in future builds, but is most strict)
-Set-StrictMode -Version Latest
-
-# Stop executing when cmdlets fail (does not stop functions from stopping execution)
-$ErrorActionPreference = 'Stop'
-
 # Get arguments from the user
 param (
     [Parameter(Mandatory = $true, HelpMessage = 'The Directory to build MSCL in. Should be different than the MSCL source directory')]
@@ -16,6 +10,22 @@ param (
     [String[]]$python2Dirs
 )
 
+# Use 2>&1 at the end of a command to forward errors to the standard output and be able to catch them
+# I.E.
+#
+# cmd -option 2>&1
+#
+# OR (to use it on a new line)
+#
+# cmd -option `
+# 2>&1
+
+# Cache the error action to reset it later
+$CacheErrorActionPreference = ${ErrorActionPreference}
+
+# Stop executing when cmdlets fail (does not stop functions from stopping execution)
+$ErrorActionPreference = 'Stop'
+
 try
 {
     # Get some directory information
@@ -26,7 +36,8 @@ try
     $configs = "Debug", "Release"
 
     # Make sure the build directory exists
-    New-Item "${buildDir}" -ItemType Directory -Force
+    New-Item "${buildDir}" -ItemType Directory -Force `
+    2>&1
 
     # Configure MSCL to build the documentation and zip examples only on x64 release
     if ("$arch" -eq "x64")
@@ -42,9 +53,11 @@ try
         -DMSCL_ZIP_EXAMPLES="ON" `
         -DMSCL_BUILD_DOCUMENTATION="ON" `
         -DMSCL_BUILD_PACKAGE="ON" `
-        -DMSCL_BRANCH="${branch}"
+        -DMSCL_BRANCH="${branch}" `
+        2>&1
 
-        cmake --build "${buildDir}" --config "Release" --target package
+        cmake --build "${buildDir}" --config "Release" --target package `
+        2>&1
     }
 
     # Configure MSCL to build with everything except csharp, python2, and python3
@@ -59,13 +72,17 @@ try
         -DMSCL_ZIP_EXAMPLES="OFF" `
         -DMSCL_BUILD_DOCUMENTATION="OFF" `
         -DMSCL_BUILD_PACKAGE="ON" `
-        -DMSCL_BRANCH="${branch}"
+        -DMSCL_BRANCH="${branch}" `
+        2>&1
 
     # Build multiple configurations
     foreach ($config in ${configs})
     {
-        cmake --build "${buildDir}" --config "${config}" --target package
-        cmake --build "${buildDir}" --config "${config}" --target "RUN_TESTS"
+        cmake --build "${buildDir}" --config "${config}" --target package `
+        2>&1
+
+        cmake --build "${buildDir}" --config "${config}" --target "RUN_TESTS" `
+        2>&1
     }
 
     # Build CSharp
@@ -80,12 +97,14 @@ try
         -DMSCL_ZIP_EXAMPLES="OFF" `
         -DMSCL_BUILD_DOCUMENTATION="OFF" `
         -DMSCL_BUILD_PACKAGE="ON" `
-        -DMSCL_BRANCH="${branch}"
+        -DMSCL_BRANCH="${branch}" `
+        2>&1
 
     # Build multiple configurations for CSharp
     foreach ($config in ${configs})
     {
-        cmake --build "${buildDir}" --config "${config}" --target package
+        cmake --build "${buildDir}" --config "${config}" --target package `
+        2>&1
     }
 
     # Build python3
@@ -109,12 +128,14 @@ try
                 -UPython3_ROOT -DPython3_ROOT="${python3Dir}" `
                 -UPython3_ROOT_DIR -DPython3_ROOT_DIR="${python3Dir}" `
                 -UPython3_INCLUDE_DIR `
-                -UPython3_EXECUTABLE -DPython3_EXECUTABLE="${python3Dir}/python.exe"
+                -UPython3_EXECUTABLE -DPython3_EXECUTABLE="${python3Dir}/python.exe" `
+                2>&1
 
             # Build multiple configurations
             foreach ($config in ${configs})
             {
-                cmake --build "${buildDir}" --config "${config}" --target package
+                cmake --build "${buildDir}" --config "${config}" --target package `
+                2>&1
             }
         }
     }
@@ -140,18 +161,26 @@ try
                 -UPython2_ROOT -DPython2_ROOT="${python2Dir}" `
                 -UPython2_ROOT_DIR -DPython2_ROOT_DIR="${python2Dir}" `
                 -UPython2_INCLUDE_DIR `
-                -UPython2_EXECUTABLE -DPython2_EXECUTABLE="${python2Dir}/python.exe"
+                -UPython2_EXECUTABLE -DPython2_EXECUTABLE="${python2Dir}/python.exe" `
+                2>&1
 
             # Build multiple configurations
             foreach ($config in ${configs})
             {
-                cmake --build "${buildDir}" --config "${config}" --target package
+                cmake --build "${buildDir}" --config "${config}" --target package `
+                2>&1
             }
         }
     }
 }
 catch
 {
-    # Rethrow the exception to display in the console
-    throw $_
+    # Print the error to the console
+    $errorMessage = $_ | Out-String
+    Write-Host -ForegroundColor Red $errorMessage
+}
+finally
+{
+    # Reset the ErrorActionPreference
+    $ErrorActionPreference = ${CacheErrorActionPreference}
 }
