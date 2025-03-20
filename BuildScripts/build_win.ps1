@@ -18,6 +18,8 @@ $ErrorActionPreference = 'Stop'
 
 try
 {
+    throw 'Catch this error!!'
+    
     # Get some directory information
     $script_dir = "${PSScriptRoot}"
     $project_dir = "${script_dir}/.."
@@ -216,6 +218,7 @@ catch
     # Print the error to the console
     $errorMessage = $_ | Out-String
     Write-Host -ForegroundColor Red $errorMessage
+    throw $_
 }
 finally
 {
