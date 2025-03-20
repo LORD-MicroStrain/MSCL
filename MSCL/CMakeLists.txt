@@ -89,7 +89,7 @@ set_target_properties(${LIB_NAME_STATIC}
 )
 
 # Configure some precompiled headers
-target_precompile_headers(${LIB_NAME_STATIC} PUBLIC "${MSCL_PCH_FILE}")
+target_precompile_headers(${LIB_NAME_STATIC} PRIVATE "${MSCL_PCH_FILE}")
 
 # In order to copy the headers, create a cmake script that will do the copying
 set(MSCL_STATIC_HEADER_CP_SCRIPT ${CMAKE_BINARY_DIR}/${LIB_NAME_STATIC}_$<CONFIG>_header_cp.cmake)
@@ -151,7 +151,7 @@ if(BUILD_SHARED_LIBS)
     )
 
     # Configure some precompiled headers
-    target_precompile_headers(${LIB_NAME_SHARED} PUBLIC "${MSCL_PCH_FILE}")
+    target_precompile_headers(${LIB_NAME_SHARED} PRIVATE "${MSCL_PCH_FILE}")
 
     # In order to copy the headers, create a cmake script that will do the copying
     set(MSCL_SHARED_HEADER_CP_SCRIPT ${CMAKE_BINARY_DIR}/${LIB_NAME_SHARED}_$<CONFIG>_header_cp.cmake)
