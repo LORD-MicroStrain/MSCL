@@ -110,12 +110,6 @@ try
         throw $_
     }
 }
-catch
-{
-    # Print the error to the console
-    $errorMessage = $_ | Out-String
-    Write-Host -ForegroundColor Red $errorMessage
-}
 finally
 {
     # Reset the ErrorActionPreference
