@@ -1,3 +1,9 @@
+# Make sure programming standards are enforced (Latest could break the script in future builds, but is most strict)
+Set-StrictMode -Version Latest
+
+# Stop executing when cmdlets fail (does not stop functions from stopping execution)
+$ErrorActionPreference = 'Stop'
+
 # Get arguments from the user
 param (
     [Parameter(Mandatory = $true, HelpMessage = 'The Directory to build MSCL in. Should be different than the MSCL source directory')]
@@ -10,8 +16,8 @@ param (
     [String[]]$python2Dirs
 )
 
-# try
-# {
+try
+{
     # Get some directory information
     $script_dir = "${PSScriptRoot}"
     $project_dir = "${script_dir}/.."
@@ -143,9 +149,9 @@ param (
             }
         }
     }
-# }
-# catch
-# {
-#     # Rethrow the exception to display in the console
-#     throw $_
-# }
+}
+catch
+{
+    # Rethrow the exception to display in the console
+    throw $_
+}
