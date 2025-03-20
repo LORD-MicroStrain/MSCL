@@ -215,9 +215,7 @@ try
 }
 catch
 {
-    # Print the error to the console
-    $errorMessage = $_ | Out-String
-    Write-Host -ForegroundColor Red $errorMessage
+    # Propagate exception up to calling script
     throw $_
 }
 finally
