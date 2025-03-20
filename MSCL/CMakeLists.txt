@@ -203,11 +203,27 @@ endif()
 # Compiler definitions
 target_compile_definitions(${LIB_NAME_STATIC} PUBLIC ${LIB_DEFINES})
 target_include_directories(${LIB_NAME_STATIC} PUBLIC ${LIB_INCLUDE_DIRS})
-target_compile_options(${LIB_NAME_STATIC} PRIVATE
-    $<$<CXX_COMPILER_ID:GNU>:-fPIC> # Normally static libraries aren't compiled with this flag, but we need it to compile our bindings properly
-    $<$<CXX_COMPILER_ID:MSVC>:/MT$<$<CONFIG:Debug>:d>>
-    $<$<CXX_COMPILER_ID:MSVC>:/MP>
-)
+
+if(MSVC)
+    set(COMMON_COMPILE_OPTIONS
+        "/MP"
+    )
+
+    set(STATIC_COMPILE_OPTIONS
+        "${COMMON_COMPILE_OPTIONS}"
+        "/MT$<$<CONFIG:Debug>:d>"
+    )
+elseif(UNIX)
+    set(COMMON_COMPILE_OPTIONS
+        ${COMMON_COMPILE_OPTIONS}
+    )
+
+    set(STATIC_COMPILE_OPTIONS
+        "-FPIC" # Normally static libraries aren't compiled with this flag, but we need it to compile our bindings properly
+    )
+endif()
+
+target_compile_options(${LIB_NAME_STATIC} PRIVATE ${STATIC_COMPILE_OPTIONS})
 
 if(BUILD_SHARED_LIBS)
     if(MSVC)
@@ -239,6 +255,11 @@ if(MSCL_BUILD_PYTHON2 OR MSCL_BUILD_PYTHON3 OR MSCL_BUILD_CSHARP)
         # Linking through the MSCL cmake interface causes linker error 4197. This is related to swig and can be ignored
         #TODO: Figure out how to fix this linker error
         set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} /ignore:4197")
+
+        set(SWIG_COMPILE_OPTIONS
+            "${STATIC_COMPILE_OPTIONS}"
+            "/bigobj"
+        )
     endif()
 
     # Set up our source
@@ -248,7 +269,7 @@ if(MSCL_BUILD_PYTHON2 OR MSCL_BUILD_PYTHON3 OR MSCL_BUILD_CSHARP)
     set_property(SOURCE ${SWIG_SOURCE_FILES} PROPERTY CPLUSPLUS ON)
 
     # Different compile flags depending on the platform
-    set(PYTHON_COMPILE_OPTIONS $<$<CXX_COMPILER_ID:MSVC>:/bigobj /MT$<$<CONFIG:Debug>:d>>)
+    set(PYTHON_COMPILE_OPTIONS "${SWIG_COMPILE_OPTIONS}")
     set(PYTHON_LINK_OPTIONS $<$<CXX_COMPILER_ID:GNU>:-Wl,--no-as-needed>)
     set(PYTHON_LINK_LIBRARIES ${LIB_NAME_STATIC})
 
@@ -353,11 +374,7 @@ if(MSCL_BUILD_PYTHON2 OR MSCL_BUILD_PYTHON3 OR MSCL_BUILD_CSHARP)
         # Build the C++ wrapper
         add_library(${CSHARP_MODULE_NAME} SHARED ${CSHARP_MODULE_CPP_FILE})
 
-        target_compile_options(${CSHARP_MODULE_NAME} PRIVATE
-            /bigobj
-            /MT$<$<CONFIG:Debug>:d>
-            /MP
-        )
+        target_compile_options(${CSHARP_MODULE_NAME} PRIVATE "${SWIG_COMPILE_OPTIONS}")
         target_compile_definitions(${CSHARP_MODULE_NAME} PUBLIC
             ${LIB_DEFINES}
         )
