@@ -115,7 +115,6 @@ catch
     # Print the error to the console
     $errorMessage = $_ | Out-String
     Write-Host -ForegroundColor Red $errorMessage
-    throw $_
 }
 finally
 {
