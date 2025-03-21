@@ -74,5 +74,17 @@ if(MSVC)
     )
 endif()
 
-# Mark the tests to run when the test target is run
-add_test(NAME ${PROJECT_NAME} COMMAND ${PROJECT_NAME} --log_level=all --report_level=detailed)
+# Generate the list of test suites so each test result is output to the console
+set(TEST_NAME_REGEX "BOOST_AUTO_TEST_SUITE\\(([^)]+)\\)")
+
+foreach(SOURCE IN LISTS SRC_FILES)
+    file(READ "${SOURCE}" FILE_CONTENT)
+    string(REGEX MATCH "${TEST_NAME_REGEX}" OUT "${FILE_CONTENT}")
+    list(APPEND TEST_NAMES ${OUT})
+endforeach()
+
+list(TRANSFORM TEST_NAMES REPLACE "${TEST_NAME_REGEX}" "\\1")
+
+foreach(TEST_NAME IN LISTS TEST_NAMES)
+    add_test(NAME ${TEST_NAME} COMMAND ${PROJECT_NAME} --log_level=all --report_level=no --run_test=${TEST_NAME})
+endforeach()
