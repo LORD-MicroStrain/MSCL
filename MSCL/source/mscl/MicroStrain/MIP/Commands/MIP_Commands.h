@@ -13,7 +13,7 @@
 namespace mscl
 {
     class GenericMipCmdResponse;
-    class MipDeviceInfo;
+    struct MipDeviceInfo;
 
     //Class: MIP_Commands
     //    Contains helper functions for MIP Commands
