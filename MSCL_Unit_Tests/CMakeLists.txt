@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.16.0)
 project(MSCL_Unit_Tests)
 
+enable_testing()
+
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
@@ -73,4 +75,4 @@ if(MSVC)
 endif()
 
 # Mark the tests to run when the test target is run
-add_test(NAME ${PROJECT_NAME} COMMAND ${PROJECT_NAME} --log_level=test_suite --report_level=no)
+add_test(NAME ${PROJECT_NAME} COMMAND ${PROJECT_NAME} --log_level=all --report_level=detailed)

@@ -313,6 +313,5 @@ endif()
 add_subdirectory(MSCL)
 
 if(MSCL_BUILD_TESTS)
-    enable_testing()
     add_subdirectory(MSCL_Unit_Tests)
 endif()
