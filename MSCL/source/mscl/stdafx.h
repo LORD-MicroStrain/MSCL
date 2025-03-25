@@ -56,6 +56,7 @@
 
 // Disable all Boost warnings
 #define DISABLE_WARNING_BOOST_START                     \
+    DISABLE_WARNING_PUSH                                \
     DISABLE_WARNING_MACRO_REDEFINITION                  \
     DISABLE_WARNING_UNREFERENCED_FORMAL_PARAMETER       \
     DISABLE_WARNING_VARIABLE_INITIALIZE_NOT_REFERENCED  \
