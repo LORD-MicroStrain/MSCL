@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.16.0)
 project(MSCL
         LANGUAGES CXX
-        VERSION 67.2.0
+        VERSION 67.1.0
 )
 
 set(CMAKE_CONFIGURATION_TYPES "Release;Debug" CACHE STRING "Supported configuration types" FORCE)
