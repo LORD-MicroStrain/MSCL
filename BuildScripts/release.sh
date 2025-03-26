@@ -166,7 +166,7 @@ git add --all
 
 # Only commit if there are changes
 if ! git diff-index --quiet HEAD --; then
-  git commit -m "Adds/updates documentation for release ${release_name} at ${repo}@${mscl_commit}."
+  git commit -m "Adds/updates documentation for release ${release_name} at ${repo}@${mscl_commit}." --author="microstrain-build <support@sensorcloud.com>"
 
   GIT_ASKPASS="${git_askpass_file}" git push origin main
 else

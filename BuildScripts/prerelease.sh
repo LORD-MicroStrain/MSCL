@@ -157,7 +157,7 @@ git add --all
 
 # Only commit if there are changes
 if ! git diff-index --quiet HEAD --; then
-  git commit -m "Pre-release updates for release ${project_release_version}."
+  git commit -m "Pre-release updates for release ${project_release_version}." --author="microstrain-build <support@sensorcloud.com>"
 
   GIT_ASKPASS="${git_askpass_file}" git push origin ${target}
 else
