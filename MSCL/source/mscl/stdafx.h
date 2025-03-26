@@ -107,32 +107,32 @@ DISABLE_WARNING_BOOST_START
 #endif // !MSCL_DISABLE_WEBSOCKETS
 DISABLE_WARNING_BOOST_END
 
-#include <algorithm>                                               //for std::min, std::replace
-#include <array>                                                   //for std::array
-#include <bitset>                                                  //for std::bitset
+#include <algorithm>
+#include <array>
+#include <bitset>
 #include <cassert>
-#include <chrono>                                                  //for std::chrono::duration
+#include <chrono>
 #include <cmath>
-#include <condition_variable>                                      //for std::condition_variable
-#include <cstdint>                                                 //for std::uint16_t and like fixed-width types
+#include <condition_variable>
+#include <cstdint>
 #include <ctime>
-#include <exception>                                               //for std::exception
+#include <exception>
 #include <fstream>
-#include <functional>                                              //for std::function
-#include <iomanip>                                                 //for std::setprecision
-#include <map>                                                     //for std::map
-#include <memory>                                                  //for std::shared_ptr, std::unique_ptr
-#include <mutex>                                                   //for std::mutex
-#include <numeric>                                                 //for std::accumulate
+#include <functional>
+#include <iomanip>
+#include <map>
+#include <memory>
+#include <mutex>
+#include <numeric>
 #include <regex>
-#include <set>                                                     //for std::set
-#include <sstream>                                                 //for std::stringstream
-#include <string>                                                  //for std::string
-#include <thread>                                                   //for gmtime_r and gmtime_s
-#include <tuple>                                                   //for std:tuple, std::get
+#include <set>
+#include <sstream>
+#include <string>
+#include <thread>
+#include <tuple>
 #include <typeinfo>
-#include <unordered_map>                                           //for std::unordered_map
-#include <vector>                                                  //for std::vector
+#include <unordered_map>
+#include <vector>
 
 //common MSCL files that will rarely change
 #include "mscl/Types.h"
