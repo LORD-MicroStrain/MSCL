@@ -53,7 +53,7 @@ Point your compiler to the Boost headers and lib files:
 
 ## Linux
 
-Download the [pre-built Linux packages](https://github.com/LORD-MicroStrain/MSCL#mscl---the-microstrain-communication-library).
+Download the [pre-built Linux packages](https://github.com/LORD-MicroStrain/MSCL#downloads).
 
 To install the Ubuntu/Debian (.deb) package, run:
 
@@ -63,14 +63,6 @@ sudo apt install -f                 #install dependencies
 ```
 
 *Note:* to uninstall MSCL, run: `sudo dpkg --remove <PACKAGE_NAME>.deb`
-
-To install the CentOS/Redhat (.rpm) package, run:
-
-``` bash
-sudo yum install ./<PACKAGE_NAME>.rpm   #install MSCL and it's dependencies
-```
-
-*Note:* to uninstall MSCL, run: `sudo yum remove <PACKAGE_NAME>.rpm`
 
 ### Udev
 

@@ -53,7 +53,7 @@ RUN set -ex \
 ARG BOOST_VERSION=1.68.0
 RUN set -ex \
     && export boost_version_underscore=$(echo ${BOOST_VERSION} | tr '.' '_') \
-    && curl -fsSLo /tmp/boost_${boost_version_underscore}.tar.gz https://archives.boost.io/release/1.68.0/source/boost_${boost_version_underscore}.tar.gz \
+    && curl -fsSLo /tmp/boost_${boost_version_underscore}.tar.gz https://archives.boost.io/release/${BOOST_VERSION}/source/boost_${boost_version_underscore}.tar.gz \
     && tar -C /tmp/ -xzf /tmp/boost_${boost_version_underscore}.tar.gz \
     && cd /tmp/boost_${boost_version_underscore} \
     && ./bootstrap.sh \
