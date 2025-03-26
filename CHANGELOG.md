@@ -15,6 +15,8 @@ REMOVED - A function/class has been removed.
 ___
 
 ## Forthcoming
+
+## 67.1.0 - 2025-03-26
 - Wireless
     - Added G-Link-200-P support
 - Fixed .NET library packaging
