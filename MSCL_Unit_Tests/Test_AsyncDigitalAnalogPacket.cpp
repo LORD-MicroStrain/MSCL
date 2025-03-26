@@ -248,7 +248,7 @@ BOOST_AUTO_TEST_CASE(AsyncDigitalAnalogPacket_IntegrityCheck_BadStopFlags)
     BOOST_CHECK_EQUAL(AsyncDigitalAnalogPacket::integrityCheck(packet), false);
 }
 
-BOOST_AUTO_TEST_CASE(AsyncDigitalPacket_IntegrityCheck_BadPacketType)
+BOOST_AUTO_TEST_CASE(AsyncDigitalAnalogPacket_IntegrityCheck_BadPacketType)
 {
     Bytes payloadBytes;
     payloadBytes.push_back(1);        //channel mask - channel 1 and 9 active

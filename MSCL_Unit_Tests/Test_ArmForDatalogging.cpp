@@ -94,7 +94,7 @@ BOOST_AUTO_TEST_CASE(ArmForDatalogging_Response_constructor)
     BOOST_CHECK_EQUAL(response.success(), false);
 }
 
-BOOST_AUTO_TEST_CASE(StartSyncSampling_Response_match_success)
+BOOST_AUTO_TEST_CASE(ArmForDatalogging_Response_match_success)
 {
     std::shared_ptr<ResponseCollector> rc(new ResponseCollector);
     ArmForDatalogging::Response response(123, rc);

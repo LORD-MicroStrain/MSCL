@@ -98,7 +98,8 @@ BOOST_AUTO_TEST_CASE(TimestampCounter_2s)
     BOOST_CHECK_EQUAL(t.time(), 1505769566000000000);
 }
 
-BOOST_AUTO_TEST_CASE(TimestampCounter_86400s) //24 hours
+//24 hours
+BOOST_AUTO_TEST_CASE(TimestampCounter_86400s)
 {
     TimestampCounter t(SampleRate::Seconds(86400), 1505769554000000000);
 

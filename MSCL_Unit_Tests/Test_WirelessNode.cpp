@@ -344,67 +344,65 @@ BOOST_AUTO_TEST_CASE(WirelessNode_get_and_setBaseStation)
     BOOST_CHECK(node.getBaseStation().timeout() == 12000);
 }
 
-/*
-BOOST_AUTO_TEST_CASE(WirelessNode_getSampling)
-{
-    std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl(100));
-    BaseStation b = makeBaseStationWithMockImpl();
-    WirelessNode node(100, b);
-    node.setImpl(impl);
-
-    expectGenericNodeFeatures(impl);
-
-    MOCK_EXPECT(impl->readEeprom_uint16).once().returns(WirelessTypes::samplingMode_armedDatalog);                                        //sampling mode
-    MOCK_EXPECT(impl->readEeprom_uint16).once().returns(0x017);                                                                            //active channels
-    MOCK_EXPECT(impl->readEeprom_uint16).once().with(NodeEepromMap::DATALOG_SAMPLE_RATE.location()).returns(WirelessTypes::sampleRate_32Hz);    //sample rate
-    MOCK_EXPECT(impl->readEeprom_uint16).once().returns(40);                                                                            //num sweeps
-    MOCK_EXPECT(impl->readEeprom_uint16).once().with(NodeEepromMap::UNLIMITED_DATALOG.location()).returns(0);                            //unlimited duration
-    MOCK_EXPECT(impl->readEeprom_uint16).once().returns(WirelessTypes::dataFormat_cal_float);                                            //data format
-    MOCK_EXPECT(impl->readEeprom_uint16).once().returns(WirelessTypes::collectionMethod_logOnly);                                        //collection mode
-    MOCK_EXPECT(impl->readEeprom_uint16).once().returns(100);                                                                            //time between bursts
-
-    SamplingConfig sampling = node.getSamplingConfig();
-
-    //verify that loading from the node sets all the correct values
-    BOOST_CHECK_EQUAL(sampling.samplingMode(), WirelessTypes::samplingMode_armedDatalog);
-    BOOST_CHECK_EQUAL(sampling.activeChannels().toMask(), 0x17);
-    BOOST_CHECK_EQUAL(sampling.sampleRate(), WirelessTypes::sampleRate_32Hz);
-    BOOST_CHECK_EQUAL(sampling.numSweeps(), 4000);
-    BOOST_CHECK_EQUAL(sampling.unlimitedDuration(), false);
-    BOOST_CHECK_EQUAL(sampling.dataFormat(), WirelessTypes::dataFormat_cal_float);
-    BOOST_CHECK_EQUAL(sampling.dataCollectionMethod(), WirelessTypes::collectionMethod_logOnly);
-    BOOST_CHECK_EQUAL(sampling.timeBetweenBursts().getSeconds(), 100);
-}
-
-BOOST_AUTO_TEST_CASE(NodeConfig_setSampling)
-{
-    std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl(100));
-    BaseStation b = makeBaseStationWithMockImpl();
-    WirelessNode node(100, b);
-    node.setImpl(impl);
-
-    SamplingConfig sampling;
-    sampling.samplingMode(WirelessTypes::samplingMode_nonSync);
-    sampling.sampleRate(WirelessTypes::sampleRate_2Hz);
-
-    NodeInfo info(Version(9, 9), WirelessModels::node_gLink_2g, 200000);
-
-    //make the features() function return the NodeFeatures we want
-    std::unique_ptr<NodeFeatures> features = NodeFeatures::create(info);
-    MOCK_EXPECT(impl->features).returns(std::ref(*(features.get())));
-
-    //we expect the following values to get written
-    MOCK_EXPECT(impl->writeEeprom_uint16).once().with(NodeEepromMap::SAMPLING_MODE.location(), WirelessTypes::samplingMode_nonSync);        //sampling mode
-    MOCK_EXPECT(impl->writeEeprom_uint16).once().with(NodeEepromMap::ACTIVE_CHANNEL_MASK.location(), 0x01);                                    //active channels
-    MOCK_EXPECT(impl->writeEeprom_uint16).once().with(NodeEepromMap::SAMPLE_RATE.location(), WirelessTypes::sampleRate_2Hz);                //sample rate
-    MOCK_EXPECT(impl->writeEeprom_uint16).once().with(NodeEepromMap::NUM_SWEEPS.location(), 10);                                            //num sweeps
-    MOCK_EXPECT(impl->writeEeprom_uint16).once().with(NodeEepromMap::UNLIMITED_SAMPLING.location(), 1);                                        //unlimited duration
-    MOCK_EXPECT(impl->writeEeprom_uint16).once().with(NodeEepromMap::DATA_FORMAT.location(), WirelessTypes::dataFormat_raw_uint16);            //data format
-    MOCK_EXPECT(impl->writeEeprom_uint16).once().with(NodeEepromMap::COLLECTION_MODE.location(), WirelessTypes::collectionMethod_transmitOnly);    //collection mode
-
-    BOOST_CHECK_NO_THROW(node.setSamplingConfig(sampling));
-}
-*/
+// BOOST_AUTO_TEST_CASE(WirelessNode_getSampling)
+// {
+//     std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl(100));
+//     BaseStation b = makeBaseStationWithMockImpl();
+//     WirelessNode node(100, b);
+//     node.setImpl(impl);
+//
+//     expectGenericNodeFeatures(impl);
+//
+//     MOCK_EXPECT(impl->readEeprom_uint16).once().returns(WirelessTypes::samplingMode_armedDatalog);                                        //sampling mode
+//     MOCK_EXPECT(impl->readEeprom_uint16).once().returns(0x017);                                                                            //active channels
+//     MOCK_EXPECT(impl->readEeprom_uint16).once().with(NodeEepromMap::DATALOG_SAMPLE_RATE.location()).returns(WirelessTypes::sampleRate_32Hz);    //sample rate
+//     MOCK_EXPECT(impl->readEeprom_uint16).once().returns(40);                                                                            //num sweeps
+//     MOCK_EXPECT(impl->readEeprom_uint16).once().with(NodeEepromMap::UNLIMITED_DATALOG.location()).returns(0);                            //unlimited duration
+//     MOCK_EXPECT(impl->readEeprom_uint16).once().returns(WirelessTypes::dataFormat_cal_float);                                            //data format
+//     MOCK_EXPECT(impl->readEeprom_uint16).once().returns(WirelessTypes::collectionMethod_logOnly);                                        //collection mode
+//     MOCK_EXPECT(impl->readEeprom_uint16).once().returns(100);                                                                            //time between bursts
+//
+//     SamplingConfig sampling = node.getSamplingConfig();
+//
+//     //verify that loading from the node sets all the correct values
+//     BOOST_CHECK_EQUAL(sampling.samplingMode(), WirelessTypes::samplingMode_armedDatalog);
+//     BOOST_CHECK_EQUAL(sampling.activeChannels().toMask(), 0x17);
+//     BOOST_CHECK_EQUAL(sampling.sampleRate(), WirelessTypes::sampleRate_32Hz);
+//     BOOST_CHECK_EQUAL(sampling.numSweeps(), 4000);
+//     BOOST_CHECK_EQUAL(sampling.unlimitedDuration(), false);
+//     BOOST_CHECK_EQUAL(sampling.dataFormat(), WirelessTypes::dataFormat_cal_float);
+//     BOOST_CHECK_EQUAL(sampling.dataCollectionMethod(), WirelessTypes::collectionMethod_logOnly);
+//     BOOST_CHECK_EQUAL(sampling.timeBetweenBursts().getSeconds(), 100);
+// }
+//
+// BOOST_AUTO_TEST_CASE(NodeConfig_setSampling)
+// {
+//     std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl(100));
+//     BaseStation b = makeBaseStationWithMockImpl();
+//     WirelessNode node(100, b);
+//     node.setImpl(impl);
+//
+//     SamplingConfig sampling;
+//     sampling.samplingMode(WirelessTypes::samplingMode_nonSync);
+//     sampling.sampleRate(WirelessTypes::sampleRate_2Hz);
+//
+//     NodeInfo info(Version(9, 9), WirelessModels::node_gLink_2g, 200000);
+//
+//     //make the features() function return the NodeFeatures we want
+//     std::unique_ptr<NodeFeatures> features = NodeFeatures::create(info);
+//     MOCK_EXPECT(impl->features).returns(std::ref(*(features.get())));
+//
+//     //we expect the following values to get written
+//     MOCK_EXPECT(impl->writeEeprom_uint16).once().with(NodeEepromMap::SAMPLING_MODE.location(), WirelessTypes::samplingMode_nonSync);        //sampling mode
+//     MOCK_EXPECT(impl->writeEeprom_uint16).once().with(NodeEepromMap::ACTIVE_CHANNEL_MASK.location(), 0x01);                                    //active channels
+//     MOCK_EXPECT(impl->writeEeprom_uint16).once().with(NodeEepromMap::SAMPLE_RATE.location(), WirelessTypes::sampleRate_2Hz);                //sample rate
+//     MOCK_EXPECT(impl->writeEeprom_uint16).once().with(NodeEepromMap::NUM_SWEEPS.location(), 10);                                            //num sweeps
+//     MOCK_EXPECT(impl->writeEeprom_uint16).once().with(NodeEepromMap::UNLIMITED_SAMPLING.location(), 1);                                        //unlimited duration
+//     MOCK_EXPECT(impl->writeEeprom_uint16).once().with(NodeEepromMap::DATA_FORMAT.location(), WirelessTypes::dataFormat_raw_uint16);            //data format
+//     MOCK_EXPECT(impl->writeEeprom_uint16).once().with(NodeEepromMap::COLLECTION_MODE.location(), WirelessTypes::collectionMethod_transmitOnly);    //collection mode
+//
+//     BOOST_CHECK_NO_THROW(node.setSamplingConfig(sampling));
+// }
 
 BOOST_AUTO_TEST_CASE(NodeConfig_getNumDatalogSessions)
 {

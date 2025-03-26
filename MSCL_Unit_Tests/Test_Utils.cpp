@@ -493,84 +493,82 @@ BOOST_AUTO_TEST_CASE(Utils_filterSensorcloudName)
 }
 
 //TODO: Commented out the following because they give slightly different results on different machines (windows vs linux?)
-/*
-BOOST_AUTO_TEST_CASE(Utils_toStr)
-{
-    uint16 i = 64298;
-    BOOST_CHECK_EQUAL(Utils::toStr(i), "64298");
-
-    float f = 80045.942165472f;
-    BOOST_CHECK_CLOSE(f, 80045.945313, 0.000001);
-    BOOST_CHECK_EQUAL(Utils::toStr(f), "80045.945313");
-
-    double d = 197321454.00942165472843;
-    BOOST_CHECK_CLOSE(d, 197321454.00942165, 0.000000000000001);
-    BOOST_CHECK_EQUAL(Utils::toStr(d), "197321454.009422");
-
-    double d2 = 0.00942165472843;
-    BOOST_CHECK_CLOSE(d2, 0.00942165472843, 0.000000000000001);
-    BOOST_CHECK_EQUAL(Utils::toStr(d2), "0.009422");
-}
-
-BOOST_AUTO_TEST_CASE(Utils_toStrWithPrecision)
-{
-    uint16 i = 64298;
-    BOOST_CHECK_EQUAL(Utils::toStrWithPrecision(i), "64298");
-    BOOST_CHECK_EQUAL(Utils::toStrWithPrecision(i, 20), "64298");
-    BOOST_CHECK_EQUAL(Utils::toStrWithPrecision(i, 0), "64298");
-    BOOST_CHECK_EQUAL(Utils::toStrWithPrecision(i, 1), "64298");
-
-    float f = 80045.942165472f;
-    BOOST_CHECK_CLOSE(f, 80045.945313, 0.000001);
-    BOOST_CHECK_EQUAL(Utils::toStrWithPrecision(f), "80045.9");
-    BOOST_CHECK_EQUAL(Utils::toStrWithPrecision(f, 20), "80045.9453125");
-    BOOST_CHECK_EQUAL(Utils::toStrWithPrecision(f, 0), "80045.9");
-    BOOST_CHECK_EQUAL(Utils::toStrWithPrecision(f, 1), "8e+004");
-
-    double d = 197321454.00942165472843;
-    BOOST_CHECK_CLOSE(d, 197321454.00942165, 0.000000000000001);
-    BOOST_CHECK_EQUAL(Utils::toStrWithPrecision(d), "1.97321e+008");
-    BOOST_CHECK_EQUAL(Utils::toStrWithPrecision(d, 20), "197321454.00942165");
-    BOOST_CHECK_EQUAL(Utils::toStrWithPrecision(d, 0), "1.97321e+008");
-    BOOST_CHECK_EQUAL(Utils::toStrWithPrecision(d, 1), "2e+008");
-
-    double d2 = 0.00942165472843;
-    BOOST_CHECK_CLOSE(d2, 0.00942165472843, 0.000000000000001);
-    BOOST_CHECK_EQUAL(Utils::toStrWithPrecision(d2), "0.00942165");
-    BOOST_CHECK_EQUAL(Utils::toStrWithPrecision(d2, 20), "0.0094216547284300001");
-    BOOST_CHECK_EQUAL(Utils::toStrWithPrecision(d2, 0), "0.00942165");
-    BOOST_CHECK_EQUAL(Utils::toStrWithPrecision(d2, 1), "0.009");
-}
-
-BOOST_AUTO_TEST_CASE(Utils_toStrWithPrecision_fixed)
-{
-    uint16 i = 64298;
-    BOOST_CHECK_EQUAL(Utils::toStrWithPrecision(i), "64298");
-    BOOST_CHECK_EQUAL(Utils::toStrWithPrecision(i, 5, true), "64298");
-    BOOST_CHECK_EQUAL(Utils::toStrWithPrecision(i, 0, true), "64298");
-    BOOST_CHECK_EQUAL(Utils::toStrWithPrecision(i, 1, true), "64298");
-
-    float f = 80045.942165472f;
-    BOOST_CHECK_CLOSE(f, 80045.945313, 0.000001);
-    BOOST_CHECK_EQUAL(Utils::toStrWithPrecision(f), "80045.9");
-    BOOST_CHECK_EQUAL(Utils::toStrWithPrecision(f, 5, true), "80045.94531");
-    BOOST_CHECK_EQUAL(Utils::toStrWithPrecision(f, 0, true), "80046");
-    BOOST_CHECK_EQUAL(Utils::toStrWithPrecision(f, 1, true), "80045.9");
-
-    double d = 197321454.00942165472843;
-    BOOST_CHECK_CLOSE(d, 197321454.00942165, 0.000000000000001);
-    BOOST_CHECK_EQUAL(Utils::toStrWithPrecision(d), "1.97321e+008");
-    BOOST_CHECK_EQUAL(Utils::toStrWithPrecision(d, 5, true), "197321454.00942");
-    BOOST_CHECK_EQUAL(Utils::toStrWithPrecision(d, 0, true), "197321454");
-    BOOST_CHECK_EQUAL(Utils::toStrWithPrecision(d, 1, true), "197321454.0");
-
-    double d2 = 0.00942165472843;
-    BOOST_CHECK_CLOSE(d2, 0.00942165472843, 0.000000000000001);
-    BOOST_CHECK_EQUAL(Utils::toStrWithPrecision(d2), "0.00942165");
-    BOOST_CHECK_EQUAL(Utils::toStrWithPrecision(d2, 5, true), "0.00942");
-    BOOST_CHECK_EQUAL(Utils::toStrWithPrecision(d2, 0, true), "0");
-    BOOST_CHECK_EQUAL(Utils::toStrWithPrecision(d2, 1, true), "0.0");
-}
-*/
+// BOOST_AUTO_TEST_CASE(Utils_toStr)
+// {
+//     uint16 i = 64298;
+//     BOOST_CHECK_EQUAL(Utils::toStr(i), "64298");
+//
+//     float f = 80045.942165472f;
+//     BOOST_CHECK_CLOSE(f, 80045.945313, 0.000001);
+//     BOOST_CHECK_EQUAL(Utils::toStr(f), "80045.945313");
+//
+//     double d = 197321454.00942165472843;
+//     BOOST_CHECK_CLOSE(d, 197321454.00942165, 0.000000000000001);
+//     BOOST_CHECK_EQUAL(Utils::toStr(d), "197321454.009422");
+//
+//     double d2 = 0.00942165472843;
+//     BOOST_CHECK_CLOSE(d2, 0.00942165472843, 0.000000000000001);
+//     BOOST_CHECK_EQUAL(Utils::toStr(d2), "0.009422");
+// }
+//
+// BOOST_AUTO_TEST_CASE(Utils_toStrWithPrecision)
+// {
+//     uint16 i = 64298;
+//     BOOST_CHECK_EQUAL(Utils::toStrWithPrecision(i), "64298");
+//     BOOST_CHECK_EQUAL(Utils::toStrWithPrecision(i, 20), "64298");
+//     BOOST_CHECK_EQUAL(Utils::toStrWithPrecision(i, 0), "64298");
+//     BOOST_CHECK_EQUAL(Utils::toStrWithPrecision(i, 1), "64298");
+//
+//     float f = 80045.942165472f;
+//     BOOST_CHECK_CLOSE(f, 80045.945313, 0.000001);
+//     BOOST_CHECK_EQUAL(Utils::toStrWithPrecision(f), "80045.9");
+//     BOOST_CHECK_EQUAL(Utils::toStrWithPrecision(f, 20), "80045.9453125");
+//     BOOST_CHECK_EQUAL(Utils::toStrWithPrecision(f, 0), "80045.9");
+//     BOOST_CHECK_EQUAL(Utils::toStrWithPrecision(f, 1), "8e+004");
+//
+//     double d = 197321454.00942165472843;
+//     BOOST_CHECK_CLOSE(d, 197321454.00942165, 0.000000000000001);
+//     BOOST_CHECK_EQUAL(Utils::toStrWithPrecision(d), "1.97321e+008");
+//     BOOST_CHECK_EQUAL(Utils::toStrWithPrecision(d, 20), "197321454.00942165");
+//     BOOST_CHECK_EQUAL(Utils::toStrWithPrecision(d, 0), "1.97321e+008");
+//     BOOST_CHECK_EQUAL(Utils::toStrWithPrecision(d, 1), "2e+008");
+//
+//     double d2 = 0.00942165472843;
+//     BOOST_CHECK_CLOSE(d2, 0.00942165472843, 0.000000000000001);
+//     BOOST_CHECK_EQUAL(Utils::toStrWithPrecision(d2), "0.00942165");
+//     BOOST_CHECK_EQUAL(Utils::toStrWithPrecision(d2, 20), "0.0094216547284300001");
+//     BOOST_CHECK_EQUAL(Utils::toStrWithPrecision(d2, 0), "0.00942165");
+//     BOOST_CHECK_EQUAL(Utils::toStrWithPrecision(d2, 1), "0.009");
+// }
+//
+// BOOST_AUTO_TEST_CASE(Utils_toStrWithPrecision_fixed)
+// {
+//     uint16 i = 64298;
+//     BOOST_CHECK_EQUAL(Utils::toStrWithPrecision(i), "64298");
+//     BOOST_CHECK_EQUAL(Utils::toStrWithPrecision(i, 5, true), "64298");
+//     BOOST_CHECK_EQUAL(Utils::toStrWithPrecision(i, 0, true), "64298");
+//     BOOST_CHECK_EQUAL(Utils::toStrWithPrecision(i, 1, true), "64298");
+//
+//     float f = 80045.942165472f;
+//     BOOST_CHECK_CLOSE(f, 80045.945313, 0.000001);
+//     BOOST_CHECK_EQUAL(Utils::toStrWithPrecision(f), "80045.9");
+//     BOOST_CHECK_EQUAL(Utils::toStrWithPrecision(f, 5, true), "80045.94531");
+//     BOOST_CHECK_EQUAL(Utils::toStrWithPrecision(f, 0, true), "80046");
+//     BOOST_CHECK_EQUAL(Utils::toStrWithPrecision(f, 1, true), "80045.9");
+//
+//     double d = 197321454.00942165472843;
+//     BOOST_CHECK_CLOSE(d, 197321454.00942165, 0.000000000000001);
+//     BOOST_CHECK_EQUAL(Utils::toStrWithPrecision(d), "1.97321e+008");
+//     BOOST_CHECK_EQUAL(Utils::toStrWithPrecision(d, 5, true), "197321454.00942");
+//     BOOST_CHECK_EQUAL(Utils::toStrWithPrecision(d, 0, true), "197321454");
+//     BOOST_CHECK_EQUAL(Utils::toStrWithPrecision(d, 1, true), "197321454.0");
+//
+//     double d2 = 0.00942165472843;
+//     BOOST_CHECK_CLOSE(d2, 0.00942165472843, 0.000000000000001);
+//     BOOST_CHECK_EQUAL(Utils::toStrWithPrecision(d2), "0.00942165");
+//     BOOST_CHECK_EQUAL(Utils::toStrWithPrecision(d2, 5, true), "0.00942");
+//     BOOST_CHECK_EQUAL(Utils::toStrWithPrecision(d2, 0, true), "0");
+//     BOOST_CHECK_EQUAL(Utils::toStrWithPrecision(d2, 1, true), "0.0");
+// }
 
 BOOST_AUTO_TEST_SUITE_END()

@@ -167,38 +167,36 @@ BOOST_AUTO_TEST_CASE(PageDownload_MatchFail_Checksum)
     BOOST_CHECK_EQUAL(response.match(bytes), false);//second time through fails to match because of a bad checksum
 }
 
-/*
-BOOST_AUTO_TEST_CASE(PageDownload_MatchFailResponse_Success)
-{
-    std::shared_ptr<ResponseCollector> rc(new ResponseCollector);
-    PageDownload::Response response(rc);
-
-    DataBuffer bytes = buildPageDownloadFailResponse();
-
-    //first time through just matches the command id
-    BOOST_CHECK_EQUAL(response.match(bytes), true);
-    BOOST_CHECK_EQUAL(response.fullyMatched(), false);
-
-    //second time through should match the fail response id
-    BOOST_CHECK_EQUAL(response.match(bytes), true);
-    BOOST_CHECK_EQUAL(response.fullyMatched(), true);
-    BOOST_CHECK_EQUAL(response.success(), false);
-}
-
-BOOST_AUTO_TEST_CASE(PageDownload_MatchFailResponse_BadId)
-{
-    std::shared_ptr<ResponseCollector> rc(new ResponseCollector);
-    PageDownload::Response response(rc);
-
-    Bytes resultBytes;
-    resultBytes.push_back(0x05);    //command id
-    resultBytes.push_back(0x22);    //fail response id
-
-    DataBuffer bytes(resultBytes);
-
-    BOOST_CHECK_EQUAL(response.match(bytes), true);    //matches cmd id
-    BOOST_CHECK_EQUAL(response.match(bytes), false);
-}
-*/
+// BOOST_AUTO_TEST_CASE(PageDownload_MatchFailResponse_Success)
+// {
+//     std::shared_ptr<ResponseCollector> rc(new ResponseCollector);
+//     PageDownload::Response response(rc);
+//
+//     DataBuffer bytes = buildPageDownloadFailResponse();
+//
+//     //first time through just matches the command id
+//     BOOST_CHECK_EQUAL(response.match(bytes), true);
+//     BOOST_CHECK_EQUAL(response.fullyMatched(), false);
+//
+//     //second time through should match the fail response id
+//     BOOST_CHECK_EQUAL(response.match(bytes), true);
+//     BOOST_CHECK_EQUAL(response.fullyMatched(), true);
+//     BOOST_CHECK_EQUAL(response.success(), false);
+// }
+//
+// BOOST_AUTO_TEST_CASE(PageDownload_MatchFailResponse_BadId)
+// {
+//     std::shared_ptr<ResponseCollector> rc(new ResponseCollector);
+//     PageDownload::Response response(rc);
+//
+//     Bytes resultBytes;
+//     resultBytes.push_back(0x05);    //command id
+//     resultBytes.push_back(0x22);    //fail response id
+//
+//     DataBuffer bytes(resultBytes);
+//
+//     BOOST_CHECK_EQUAL(response.match(bytes), true);    //matches cmd id
+//     BOOST_CHECK_EQUAL(response.match(bytes), false);
+// }
 
 BOOST_AUTO_TEST_SUITE_END()

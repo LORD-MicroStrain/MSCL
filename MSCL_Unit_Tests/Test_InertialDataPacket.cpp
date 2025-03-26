@@ -103,12 +103,10 @@ BOOST_AUTO_TEST_CASE(InertialDataPacket_ParseValidData_multipleFields)
     BOOST_CHECK_EQUAL(packet.data()[1].valid(), true);
 }
 
-/*
-BOOST_AUTO_TEST_CASE(InertialDataPacket_ParseInvalidData)
-{
-    //TODO: parse packets with invalid data, make sure they show as invalid
-}
-*/
+// BOOST_AUTO_TEST_CASE(InertialDataPacket_ParseInvalidData)
+// {
+//     //TODO: parse packets with invalid data, make sure they show as invalid
+// }
 
 BOOST_AUTO_TEST_CASE(InertialDataPacket_CorruptedBytes)
 {

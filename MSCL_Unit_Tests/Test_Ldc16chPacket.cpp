@@ -18,7 +18,7 @@ DISABLE_WARNING_BOOST_END
 
 BOOST_AUTO_TEST_SUITE(Ldc16chPacket_Test)
 
-BOOST_AUTO_TEST_CASE(LdcPacket_Constructor_4ByteFloat)
+BOOST_AUTO_TEST_CASE(Ldc16chPacket_Constructor_4ByteFloat)
 {
     Bytes payloadBytes;
     payloadBytes.push_back(0);        //channel mask
