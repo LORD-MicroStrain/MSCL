@@ -6,9 +6,7 @@
 
 #pragma once
 
-#include "ByteStream.h"
-#include "mscl/Types.h"
-#include <string>
+#include "mscl/MicroStrain/ByteStream.h"
 
 namespace mscl
 {
@@ -72,7 +70,6 @@ namespace mscl
     {
         friend class ReadBufferSavePoint;//give ReadBufferSavePoint access to our private variables
 
-    private:
         //Variable: m_data
         //    The underlying ByteStream that holds the data
         ByteStream m_data;
@@ -85,7 +82,6 @@ namespace mscl
         //    The current position in the buffer for reading data
         std::size_t m_readPosition;
 
-    private:
         DataBuffer();//    Disabled default constructor
 
     public:
@@ -114,7 +110,6 @@ namespace mscl
         //    Default destructor for the DataBuffer object
         virtual ~DataBuffer();
 
-    public:
         //Function: peekByte
         //    Gets the next byte from the buffer without moving the read position
         //
@@ -328,4 +323,4 @@ namespace mscl
         //    commits all the currently read data so that it will not be reverted
         void commit();
     };
-}
+} // namespace mscl

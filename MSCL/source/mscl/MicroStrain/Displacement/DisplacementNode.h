@@ -6,14 +6,10 @@
 
 #pragma once
 
-#include "mscl/MicroStrain/MIP/MipNodeInfo.h"
-#include "mscl/MicroStrain/MIP/MipChannel.h"
-#include "mscl/MicroStrain/MIP/MipTypes.h"
-#include "mscl/MicroStrain/MIP/Commands/MipCmdResponse.h"
-#include "mscl/MicroStrain/MIP/Packets/MipDataPacket.h"
-#include "DisplacementModels.h"
-#include "mscl/Communication/Connection.h"
+#include "mscl/MicroStrain/Displacement/DisplacementModels.h"
 #include "mscl/MicroStrain/LinearEquation.h"
+#include "mscl/MicroStrain/MIP/Commands/GenericMipCommand.h"
+#include "mscl/MicroStrain/MIP/Packets/MipDataPacket.h"
 
 namespace mscl
 {
@@ -25,7 +21,6 @@ namespace mscl
     //    A class representing a MicroStrain Displacement Node
     class DisplacementNode
     {
-    private:
         DisplacementNode();        //default constructor disabled
 
     public:
@@ -39,11 +34,11 @@ namespace mscl
         //    - <Error_Connection>: A problem occured with the Connection.
         explicit DisplacementNode(Connection connection);
 
-        virtual ~DisplacementNode() {}
+        virtual ~DisplacementNode() = default;
 
 #ifndef SWIG
         DisplacementNode(std::shared_ptr<MipNode_Impl> impl); //constructor with direct underlying implementation for this class.
-#endif
+#endif // !SWIG
 
     private:
         //Variable: m_impl
@@ -67,7 +62,7 @@ namespace mscl
         //    - <Error_NotSupported>: The command is not supported by this Node.
         //    - <Error_MipCmdFailed>: The command has failed.
         virtual GenericMipCmdResponse doCommand(GenericMipCommand::Response& response, const ByteStream& command, bool verifySupported = true) const;
-#endif
+#endif // !SWIG
 
         //API Function: doCommand
         //  Note: This is an ADVANCED COMMAND. Most users will not need to use this.
@@ -351,5 +346,4 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the DisplacementNode.
         void setDeviceTime(uint64 nanoseconds);
     };
-
-}
+} // namespace mscl

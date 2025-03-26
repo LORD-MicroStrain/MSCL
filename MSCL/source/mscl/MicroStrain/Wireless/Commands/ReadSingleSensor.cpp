@@ -4,10 +4,10 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "ReadSingleSensor.h"
-#include "WirelessProtocol.h"
+#include "mscl/MicroStrain/Wireless/Commands/ReadSingleSensor.h"
+
 #include "mscl/MicroStrain/ChecksumBuilder.h"
+#include "mscl/MicroStrain/Wireless/Commands/WirelessProtocol.h"
 
 namespace mscl
 {
@@ -23,11 +23,10 @@ namespace mscl
         return cmd;
     }
 
-    ReadSingleSensor::Response::Response(std::weak_ptr<ResponseCollector> collector):
+    ReadSingleSensor::Response::Response(std::weak_ptr<ResponseCollector> collector) :
         WirelessResponsePattern(collector, WirelessProtocol::cmdId_readSingleSensor, 0),    //note: passing 0 because this response doesn't check node address :(
         m_sensorValue(0)
-    {
-    }
+    {}
 
     bool ReadSingleSensor::Response::matchSuccessResponse(DataBuffer& data)
     {
@@ -79,4 +78,4 @@ namespace mscl
     {
         return m_sensorValue;
     }
-}
+} // namespace mscl

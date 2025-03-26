@@ -5,15 +5,16 @@
 *****************************************************************************************/
 
 #include "mscl/MicroStrain/Wireless/Packets/RawAngleStrainPacket.h"
+#include "mscl/MicroStrain/Wireless/Packets/WirelessDataPacket.h"
 #include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
 #include "mscl/MicroStrain/Wireless/Packets/WirelessPacketCollector.h"
-#include "mscl/MicroStrain/Wireless/Packets/WirelessDataPacket.h"
-#include "mscl/Exceptions.h"
 #include "mscl/Utils.h"
 
-#include <boost/test/unit_test.hpp>
-
 using namespace mscl;
+
+DISABLE_WARNING_BOOST_START
+#include <boost/test/unit_test.hpp>
+DISABLE_WARNING_BOOST_END
 
 BOOST_AUTO_TEST_SUITE(normalizeAngle_fn)
 

@@ -6,17 +6,12 @@
 
 #pragma once
 
-#include "mscl/MicroStrain/ByteStream.h"
-#include "mscl/MicroStrain/ResponsePattern.h"
-#include "mscl/Types.h"
-
 namespace mscl
 {
     //Class: AutoBalance
     //    Contains logic for the Auto Balance Node command.
     class AutoBalance
     {
-    private:
         AutoBalance();                                //default constructor disabled
         AutoBalance(const AutoBalance&);            //copy constructor disabled
         AutoBalance& operator=(const AutoBalance&);    //assignment operator disabled
@@ -34,4 +29,4 @@ namespace mscl
         //    A <ByteStream> containing the command packet.
         static ByteStream buildCommand(NodeAddress nodeAddress, uint8 channelNumber, uint16 targetValue);
     };
-}
+} // namespace mscl

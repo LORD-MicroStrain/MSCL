@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "NodeFeatures_200series.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures_200series.h"
 
 namespace mscl
 {
@@ -14,37 +14,35 @@ namespace mscl
     //    Contains information on features for the SHM-Link 200 node.
     class NodeFeatures_shmlink200 : public NodeFeatures_200series
     {
-    private:
         NodeFeatures_shmlink200();    //disabled default constructor
 
     public:
-        virtual ~NodeFeatures_shmlink200() {};
+        ~NodeFeatures_shmlink200() override = default;
 
         //Constructor: NodeFeatures_shmlink200
         //    Creates a NodeFeatures_shmlink200 object.
         NodeFeatures_shmlink200(const NodeInfo& info);
 
-    public:
-        virtual const WirelessTypes::DataFormats dataFormats() const final;
+        const WirelessTypes::DataFormats dataFormats() const final;
 
-        virtual const WirelessTypes::SamplingModes samplingModes() const final;
+        const WirelessTypes::SamplingModes samplingModes() const final;
 
-        virtual const WirelessTypes::WirelessSampleRates sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const override;
+        const WirelessTypes::WirelessSampleRates sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const override;
 
-        virtual bool supportsHistogramConfig() const final;
+        bool supportsHistogramConfig() const final;
 
-        virtual bool supportsHistogramRateConfig() const final;
+        bool supportsHistogramRateConfig() const final;
 
-        virtual bool supportsHistogramEnableConfig() const;
+        bool supportsHistogramEnableConfig() const override;
 
-        virtual bool supportsActivitySense() const final;
+        bool supportsActivitySense() const final;
 
-        virtual bool supportsAutoCal_shm() const;
+        bool supportsAutoCal_shm() const override;
 
-        virtual bool supportsSensorDelayConfig() const override;
+        bool supportsSensorDelayConfig() const override;
 
-        virtual bool supportsSensorDelayAlwaysOn() const override;
+        bool supportsSensorDelayAlwaysOn() const override;
 
-        virtual const WirelessTypes::WirelessSampleRates histogramTransmitRates() const final;
+        const WirelessTypes::WirelessSampleRates histogramTransmitRates() const final;
     };
-}
+} // namespace mscl

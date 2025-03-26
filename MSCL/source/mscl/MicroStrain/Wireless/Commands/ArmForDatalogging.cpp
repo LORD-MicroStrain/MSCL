@@ -4,14 +4,13 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "ArmForDatalogging.h"
-#include "WirelessProtocol.h"
+#include "mscl/MicroStrain/Wireless/Commands/ArmForDatalogging.h"
+
+#include "mscl/MicroStrain/Wireless/Commands/WirelessProtocol.h"
 #include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
 
 namespace mscl
 {
-
     ByteStream ArmForDatalogging::buildCommand(NodeAddress nodeAddress, const std::string& message)
     {
         std::string messageCpy = message;
@@ -48,11 +47,10 @@ namespace mscl
         return cmd;
     }
 
-    ArmForDatalogging::Response::Response(NodeAddress nodeAddress, std::weak_ptr<ResponseCollector> collector):
+    ArmForDatalogging::Response::Response(NodeAddress nodeAddress, std::weak_ptr<ResponseCollector> collector) :
         WirelessResponsePattern(collector, WirelessProtocol::cmdId_armForDatalog, nodeAddress),
         m_nodeAddress(nodeAddress)
-    {
-    }
+    {}
 
     bool ArmForDatalogging::Response::matchSuccessResponse(const WirelessPacket& packet)
     {
@@ -81,4 +79,4 @@ namespace mscl
 
         return true;
     }
-}
+} // namespace mscl

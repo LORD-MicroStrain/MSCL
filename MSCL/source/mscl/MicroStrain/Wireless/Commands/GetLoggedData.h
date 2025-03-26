@@ -6,8 +6,7 @@
 
 #pragma once
 
-#include "mscl/MicroStrain/ByteStream.h"
-#include "WirelessResponsePattern.h"
+#include "mscl/MicroStrain/Wireless/Commands/WirelessResponsePattern.h"
 #include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
 
 namespace mscl
@@ -18,7 +17,6 @@ namespace mscl
     //  Contains logic for the Get Logged Data Node command.
     class GetLoggedData
     {
-    private:
         GetLoggedData() = delete;                                   //default constructor disabled
         GetLoggedData(const GetLoggedData&) = delete;               //copy constructor disabled
         GetLoggedData& operator=(const GetLoggedData&) = delete;    //assignment operator disabled
@@ -89,4 +87,4 @@ namespace mscl
             const ByteStream& data() const;
         };
     };
-}
+} // namespace mscl

@@ -6,17 +6,9 @@
 
 #pragma once
 
-#include "mscl/Types.h"
-#include "mscl/MicroStrain/Matrix.h"
-#include "mscl/MicroStrain/Bitfield.h"
-#include "mscl/MicroStrain/SampleRate.h"
-#include "mscl/MicroStrain/MIP/MipTypes.h"
 #include "mscl/MicroStrain/Inertial/EulerAngles.h"
-#include "mscl/MicroStrain/Inertial/PositionVelocity.h"
-#include <array>
-#include <boost/optional.hpp>
-#include "mscl/Exceptions.h"
-
+#include "mscl/MicroStrain/MIP/MipTypes.h"
+#include "mscl/MicroStrain/SampleRate.h"
 
 namespace mscl
 {
@@ -349,7 +341,6 @@ namespace mscl
             FILTERSTATUS_ANT_LEVER_ARM_WARNING = 0x0100,
             FILTERSTATUS_MOUNTING_TRANSFORM_WARNING = 0x0200,
         };
-
 
         //============================================================================================================
         //API Enum: FilterStatus_Initialization
@@ -888,7 +879,6 @@ namespace mscl
         //  Destructor for NmeaMessageFormat object.
         ~NmeaMessageFormat() {}
 
-    public:
         //API Function: sentenceType
         //  Sets the NMEA <SentenceType>.
         //
@@ -1039,7 +1029,7 @@ namespace mscl
         //  col - the column to set.
 #ifndef SWIG
         float operator() (uint8 row, uint8 col) const;
-#endif
+#endif // !SWIG
 
         //API Function: at
         //  Gets value at matrix index (row, col).
@@ -1124,7 +1114,7 @@ namespace mscl
         ZUPTSettingsData(bool enable, float threshold) :
         enabled(enable),
         threshold(threshold)
-    { }
+    {}
 
         //API Variable: enabled
         bool enabled;
@@ -1145,13 +1135,13 @@ namespace mscl
         //    pReference - the reference position
         FixedReferencePositionData(bool pEnable, Position pReference) :
             enable(pEnable),
-            referencePosition(pReference) { }
+            referencePosition(pReference) {}
 
         //API Constructor: FixedReferencePositionData
         //    Creates a FixedReferencePositionData object.
         FixedReferencePositionData() :
             enable(false),
-            referencePosition(Position()) { }
+            referencePosition(Position()) {}
 
         //API Variable: enable
         bool enable;
@@ -1248,19 +1238,19 @@ namespace mscl
 
         // API Constructor: LowPassFilterData
         LowPassFilterData() :
-            dataDescriptor(mscl::MipTypes::ChannelField::CH_FIELD_SENSOR_SCALED_ACCEL_VEC),
+            dataDescriptor(MipTypes::ChannelField::CH_FIELD_SENSOR_SCALED_ACCEL_VEC),
             manualFilterBandwidthConfig(SET_TO_HALF_REPORTING_RATE),
             applyLowPassFilter(true),
             cutoffFrequency(0)
-        { }
+        {}
 
         // API Constructor: LowPassFilterData
-        LowPassFilterData(mscl::MipTypes::ChannelField descriptor) :
+        LowPassFilterData(MipTypes::ChannelField descriptor) :
             dataDescriptor(descriptor),
             manualFilterBandwidthConfig(SET_TO_HALF_REPORTING_RATE),
             applyLowPassFilter(true),
             cutoffFrequency(0)
-        { }
+        {}
 
         //API Variable: dataDescriptor
         //    the data descriptor these settings apply to
@@ -1275,7 +1265,7 @@ namespace mscl
         //  CH_FIELD_ESTFILTER_ESTIMATED_LINEAR_ACCEL   = 0x820D
         //  CH_FIELD_ESTFILTER_ESTIMATED_ANGULAR_RATE   = 0x820E
         //  CH_FIELD_ESTFILTER_COMPENSATED_ACCEL        = 0x821C
-        mscl::MipTypes::ChannelField dataDescriptor;
+        MipTypes::ChannelField dataDescriptor;
 
         //API Variable: manualFilterBandwidthConfig
         //  The <ManualFilterBandwidthConfig> to use.
@@ -1289,7 +1279,6 @@ namespace mscl
         //    Sets the cutoff frequency, only if manualFilterBandwidthConfig == USER_SPECIFIED_CUTOFF_FREQ
         float cutoffFrequency;
 
-    public:
         //API Function: getDataDescriptorForCommand
         //    Formats the given <MipTypes::ChannelField> data descriptor to be written to a <ByteStream> command.
         //
@@ -1298,7 +1287,7 @@ namespace mscl
         //
         //Returns:
         //    uint8 - the provided descriptor cast to uint8
-        static uint8 getDataDescriptorForCommand(mscl::MipTypes::ChannelField descriptor) { return static_cast<uint8>(descriptor); }
+        static uint8 getDataDescriptorForCommand(MipTypes::ChannelField descriptor) { return static_cast<uint8>(descriptor); }
 
         //API Function: getDataDescriptorFromUint8
         //    Gets the <MipTypes::ChannelField> data descriptor represented by the given <uint8> descriptor.
@@ -1308,7 +1297,7 @@ namespace mscl
         //
         //Returns:
         //    <MipTypes::ChannelField> - the provided descriptor cast to <MipTypes::ChannelField>
-        static mscl::MipTypes::ChannelField getDataDescriptorFromUint8(uint8 descriptor) { return static_cast<mscl::MipTypes::ChannelField>(descriptor | 0x8000); }
+        static MipTypes::ChannelField getDataDescriptorFromUint8(uint8 descriptor) { return static_cast<MipTypes::ChannelField>(descriptor | 0x8000); }
     };
 
     //API Typedef: LowPassFilterConfig
@@ -1326,7 +1315,7 @@ namespace mscl
             upCompensationTimeInSeconds(10),
             northCompensationEnabled(false),
             northCompensationTimeInSeconds(10)
-        { }
+        {}
 
         //API Variable: upCompensationEnabled
         //    determines whether or not the up compensation is enabled.
@@ -1349,14 +1338,12 @@ namespace mscl
     //    Contains the 1PPS Pulse info for <DeviceStatusData>.
     struct PpsPulseInfo
     {
-    public:
         // API Constructor: PpsPulseInfo
         //    Creates a PpsPulseInfo object with default values.
         PpsPulseInfo():
             count(0),
             lastTimeinMS(0)
-        {
-        };
+        {}
 
         //API Variable: count
         //  The number of 1PPS pulses
@@ -1371,14 +1358,12 @@ namespace mscl
     //    Contains stream info for <DeviceStatusData>.
     struct StreamInfo
     {
-    public:
         // API Constructor: StreamInfo
         //    Creates a StreamInfo object with default values.
         StreamInfo():
             enabled(false),
             outgoingPacketsDropped(0)
-        {
-        };
+        {}
 
         //API Variable: enabled
         bool enabled;
@@ -1390,15 +1375,13 @@ namespace mscl
     //API Struct: DeviceMessageInfo
     struct DeviceMessageInfo
     {
-    public:
         // API Constructor: DeviceMessageInfo
         //    Creates a DeviceMessageInfo object with default values.
         DeviceMessageInfo():
             messageParsingErrors(0),
             messagesRead(0),
             lastMessageReadinMS(0)
-        {
-        };
+        {}
 
         //API Variable: messageParsingErrors
         uint32 messageParsingErrors;
@@ -1415,7 +1398,6 @@ namespace mscl
     //    Contains USB or COM port info for <DeviceStatusData>.
     struct PortInfo
     {
-    public:
         // API Constructor: PortInfo
         //    Creates a PortInfo object with default values.
         PortInfo():
@@ -1423,8 +1405,7 @@ namespace mscl
             bytesRead(0),
             overrunsOnWrite(0),
             overrunsOnRead(0)
-        {
-        };
+        {}
 
         //API Variable: bytesWritten
         uint32 bytesWritten;
@@ -1443,15 +1424,13 @@ namespace mscl
     //    Contains internal temperature info for <DeviceStatusData>.
     struct TemperatureInfo
     {
-    public:
         // API Constructor: TemperatureInfo
         //    Creates a TemperatureInfo object with default values.
         TemperatureInfo():
             onBoardTemp(0),
             lastReadInMS(0),
             error(0)
-        {
-        };
+        {}
 
         //API Variable: onBoardTemp
         float onBoardTemp;
@@ -1463,7 +1442,6 @@ namespace mscl
         //API Variable: error
         uint8 error;
     };
-
 
     //API Enum: DeviceStatusValues
     //    Keys corresponding to the device status values returned by <DeviceStatusData::asMap>, <DeviceStatusData::asValueMap>.
@@ -1571,7 +1549,7 @@ namespace mscl
 
         // API Constructor: DeviceStatusData
         //    Creates a DeviceStatusData object with default values.
-        DeviceStatusData() {};
+        DeviceStatusData() {}
 
         //API Variable: model
         uint16 modelNumber;
@@ -1684,12 +1662,11 @@ namespace mscl
 
         //API Function: asMap
         //  get the device status as a map
-        mscl::DeviceStatusMap asMap() const;
+        DeviceStatusMap asMap() const;
 
         //API Function: asValueMap
         //  get the device status as value map
-        mscl::DeviceStatusValueMap asValueMap() const;
-
+        DeviceStatusValueMap asValueMap() const;
 
     private: // optional variables are private with public getters & setters
 
@@ -1779,19 +1756,14 @@ namespace mscl
         boost::optional<uint16> m_accelRange;
     };
 
-
-
     //API Typedef: StatusSelectors
     //  A vector of <StatusSelector> objects
     typedef std::vector<DeviceStatusData::StatusSelector> StatusSelectors;
-
 
     //API Struct: ExternalGNSSUpdateData
     //    Contains the data needed by the <InertialNode::sendExternalGNSSUpdate> method.
     struct ExternalGNSSUpdateData
     {
-    public:
-
         //API Variable: gpsTimeOfWeek
         double gpsTimeOfWeek;
 
@@ -1840,7 +1812,6 @@ namespace mscl
     //    Some, all, or none of the options can be set as heading aids.
     struct HeadingUpdateOptions
     {
-    public:
         //API Function: operator <InertialTypes::HeadingUpdateEnableOption>
         //  Converts this class to a <InertialTypes::HeadingUpdateEnableOption>.
         InertialTypes::HeadingUpdateEnableOption AsOptionId() const;
@@ -1850,7 +1821,7 @@ namespace mscl
             useInternalMagnetometer(false),
             useInternalGNSSVelocityVector(false),
             useExternalHeadingMessages(false)
-        { }
+        {}
 
         //API Constructor: HeadingUpdateOptions
         //  Updates this class from a <InertialTypes::HeadingUpdateEnableOption> according to the Communications Protocol.
@@ -1971,9 +1942,9 @@ namespace mscl
         //  autoHeadingAlignmentMethod - <HeadingAlignmentMethod>::GNSS_Kinematic
         //  referenceFrame - <PositionVelocityReferenceFrame>::ECEF
         FilterInitializationValues() :
-            initialValuesSource(FilterInitialValuesSource::Automatic),
-            autoHeadingAlignmentMethod(HeadingAlignmentOption::GNSS_Kinematic),
-            referenceFrame(PositionVelocityReferenceFrame::ECEF) {}
+            initialValuesSource(Automatic),
+            autoHeadingAlignmentMethod(GNSS_Kinematic),
+            referenceFrame(ECEF) {}
 
         //API Variable: autoInitialize
         bool autoInitialize;
@@ -2001,29 +1972,28 @@ namespace mscl
         //    Checks the value of initialValuesSource to determine if the initial heading needs to be set manually.
         bool manualHeading()
         {
-            return initialValuesSource == FilterInitialValuesSource::UserSpecified_Heading
-                || initialValuesSource == FilterInitialValuesSource::UserSpecified_Attitude
-                || initialValuesSource == FilterInitialValuesSource::UserSpecified_All;
-        };
+            return initialValuesSource == UserSpecified_Heading
+                || initialValuesSource == UserSpecified_Attitude
+                || initialValuesSource == UserSpecified_All;
+        }
 
         //API Function: manualAttitude
         //    Checks the value of initialValuesSource to determine if the initial heading, pitch, and roll need to be set manually.
         bool manualAttitude()
         {
-            return initialValuesSource == FilterInitialValuesSource::UserSpecified_Attitude
-                || initialValuesSource == FilterInitialValuesSource::UserSpecified_All;
-        };
+            return initialValuesSource == UserSpecified_Attitude
+                || initialValuesSource == UserSpecified_All;
+        }
 
         //API Function: manualPositionVelocity
         //    Checks the value of initialValuesSource to determine if the initial position and velocity need to be set manually.
-        bool manualPositionVelocity() { return initialValuesSource == FilterInitialValuesSource::UserSpecified_All; }
+        bool manualPositionVelocity() { return initialValuesSource == UserSpecified_All; }
     };
 
     //API Struct: TareAxisValues
     //    Contains the possible axis bitfield values.
     struct TareAxisValues
     {
-    public:
         //Function: operator <InertialTypes::HeadingUpdateEnableOption>
         //  Converts this class to a uint8.
         uint8 asUint8() const;
@@ -2033,7 +2003,7 @@ namespace mscl
             tareRollAxis(tareRollAxis),
             tarePitchAxis(tarePitchAxis),
             tareYawAxis(tareYawAxis)
-        { };
+        {}
 
         //API Variable: tareRollAxis
         bool tareRollAxis;
@@ -2050,12 +2020,11 @@ namespace mscl
     //    Determines the sources for Declination, Inclination, and Magnitude.
     struct GeographicSourceOptions
     {
-    public:
         //Constructor: GeographicSourceOptions
         GeographicSourceOptions() :
             source(InertialTypes::GeographicSourceOption::NONE),
             manual(0.0)
-        { }
+        {}
 
         //Constructor: GeographicSourceOptions
         //  constructs this class from a GeographicSourceOption and a float.
@@ -2080,9 +2049,8 @@ namespace mscl
     //    Some, all, or none of the options can be set as estimation controls.
     struct EstimationControlOptions
     {
-    public:
-        //Function: operator <mscl::uint16>
-        //  Converts this class to a <mscl::uint16>.
+        //Function: operator <uint16>
+        //  Converts this class to a <uint16>.
         uint16 AsUint16() const;
 
         //Constructor: EstimationControlOptions
@@ -2094,14 +2062,14 @@ namespace mscl
             enableGNSSAntennaOffsetEstimation(false),
             enableHardIronAutoCalibration(false),
             enableSoftIronAutoCalibration(false)
-        { }
+        {}
 
         //Constructor: EstimationControlOptions
-        //  constructs this class from a <mscl::uint16> estimation control according to the Communications Protocol.
+        //  constructs this class from a <uint16> estimation control according to the Communications Protocol.
         //
         //Parameters:
         //  estimationControlData - The estimation control data used to fill in this object.
-        EstimationControlOptions(const mscl::uint16& estimationControlData);
+        EstimationControlOptions(const uint16& estimationControlData);
 
         //API Variable: enableGyroBiasEstimation
         bool enableGyroBiasEstimation;
@@ -2128,12 +2096,11 @@ namespace mscl
     //API Struct: HeadingData
     struct HeadingData
     {
-    public:
         HeadingData () :
             heading (TRUE_HEADING),
             headingAngle(0),
             headingAngleUncertainty(0)
-        { }
+        {}
 
         //API Enum: HeadingType
         //    Dictates whether heading is relative to true north or magnetic north.
@@ -2153,7 +2120,6 @@ namespace mscl
     //API Struct: AdaptiveMeasurementData
     struct AdaptiveMeasurementData
     {
-    public:
         //API Constructor: AdaptiveMeasurementData
         //    Initialize an AdaptiveMeasurementData object with default values
         AdaptiveMeasurementData() :
@@ -2191,20 +2157,19 @@ namespace mscl
     //API Struct: AutoAdaptiveFilterOptions
     struct AutoAdaptiveFilterOptions
     {
-    public:
         //API Constructor: AutoAdaptiveFilterOptions
         //  Initializes a AutoAdaptiveFilterOptions object with default values
         AutoAdaptiveFilterOptions() :
             level(InertialTypes::FILTERING_MODERATE),
             timeLimit(0)
-        {};
+        {}
 
         //API Constructor: AutoAdaptiveFilterOptions
         //  Initializes a AutoAdaptiveFilterOptions object with specified values
         AutoAdaptiveFilterOptions(InertialTypes::AutoAdaptiveFilteringLevel lvl, uint16 limit) :
             level(lvl),
             timeLimit(limit)
-        {};
+        {}
 
         //API Variable: level
         //  The auto-adaptive filter operating level
@@ -2222,7 +2187,6 @@ namespace mscl
     //API Struct: SignalConditioningValues
     struct SignalConditioningValues
     {
-    public:
         //API Enum: DataConditioningFlags
         //    Indicates the bit value used to enable/disable data conditioning features
         enum DataConditioningFlags
@@ -2269,28 +2233,27 @@ namespace mscl
         MagPowerBandwidthSettings magBandwidthPower;
 
         //Constructor: SignalConditioningValues
-        SignalConditioningValues() {};
+        SignalConditioningValues() {}
 
         //API Function: conditioningOptionOn
         //    Checks whether the specified conditioning option bit is 1.
-        bool conditioningOptionOn(DataConditioningFlags option) { return (dataConditioningFlags & static_cast<uint16>(option)) > 0; };
-        bool conditioningOptionOn(uint16 options) { return (dataConditioningFlags & options) > 0; };
+        bool conditioningOptionOn(DataConditioningFlags option) { return (dataConditioningFlags & static_cast<uint16>(option)) > 0; }
+        bool conditioningOptionOn(uint16 options) { return (dataConditioningFlags & options) > 0; }
 
         //API Function: setConditioningOptionOn
         //    Sets the specified conditioning option bit to 1.
-        void setConditioningOptionOn(DataConditioningFlags option) { dataConditioningFlags = dataConditioningFlags | static_cast<uint16>(option); };
-        void setConditioningOptionOn(uint16 options) { dataConditioningFlags = dataConditioningFlags | options; };
+        void setConditioningOptionOn(DataConditioningFlags option) { dataConditioningFlags = dataConditioningFlags | static_cast<uint16>(option); }
+        void setConditioningOptionOn(uint16 options) { dataConditioningFlags = dataConditioningFlags | options; }
 
         //API Function: setConditioningOptionOff
         //    Sets the specified conditioning option bit to 0.
-        void setConditioningOptionOff(DataConditioningFlags option) { dataConditioningFlags = dataConditioningFlags & ~static_cast<uint16>(option); };
-        void setConditioningOptionOff(uint16 options) { dataConditioningFlags = dataConditioningFlags & ~options; };
+        void setConditioningOptionOff(DataConditioningFlags option) { dataConditioningFlags = dataConditioningFlags & ~static_cast<uint16>(option); }
+        void setConditioningOptionOff(uint16 options) { dataConditioningFlags = dataConditioningFlags & ~options; }
     };
 
     //API Struct: EnableDisableMeasurements
     struct EnableDisableMeasurements
     {
-    public:
         //API Enum: MeasurementOptions
         //    Indicates the bit value used to enable/disable available measurement options
         enum MeasurementOptions
@@ -2300,19 +2263,19 @@ namespace mscl
         };
 
         //Constructor: EnableDisableMeasurements
-        EnableDisableMeasurements() {};
+        EnableDisableMeasurements() {}
 
         //Constructor: EnableDisableMeasurements
         EnableDisableMeasurements(uint16 option) :
-            measurementOptions(option) {};
+            measurementOptions(option) {}
 
         //API Variable: measurementOptions
         uint16 measurementOptions;
 
         //API Function: optionEnabled
         //    Checks whether the specified option is enabled.
-        bool optionEnabled(MeasurementOptions option) { return (measurementOptions & static_cast<uint16>(option)) > 0; };
-        bool optionEnabled(uint16 options) { return (measurementOptions & options) > 0; };
+        bool optionEnabled(MeasurementOptions option) { return (measurementOptions & static_cast<uint16>(option)) > 0; }
+        bool optionEnabled(uint16 options) { return (measurementOptions & options) > 0; }
 
         //API Function: enableOption
         //    Enables the specified option.
@@ -2410,7 +2373,7 @@ namespace mscl
         // API Function: explicit conversion from RTKDeviceStatusFlags to RTKDeviceStatusFlags_v1
         // Only C++ compatible
         explicit operator RTKDeviceStatusFlags_v1() const;
-#endif
+#endif // !SWIG
         //API Function: version
         uint8 version() const;
 
@@ -2582,7 +2545,7 @@ namespace mscl
         // API Function: explicit conversion from RTKDeviceStatusFlags_v1 to RTKDeviceStatusFlags
         // Only C++ compatible
         explicit operator RTKDeviceStatusFlags() const;
-#endif
+#endif // !SWIG
         //API Function: version
         uint8 version() const;
 
@@ -2659,7 +2622,6 @@ namespace mscl
             B2 = 0x02
         };
 
-    public:
         //API Constructor: GnssSignalConfiguration
         GnssSignalConfiguration();
 
@@ -2680,8 +2642,8 @@ namespace mscl
 
         //API Function: gpsSignalValue
         //  Gets or sets the underlying value for the GPS signal bitfield
-        void gpsSignalValue(uint8 val) { m_gpsSignals.value(val); };
-        uint8 gpsSignalValue() { return static_cast<uint8>(m_gpsSignals.value()); };
+        void gpsSignalValue(uint8 val) { m_gpsSignals.value(val); }
+        uint8 gpsSignalValue() { return static_cast<uint8>(m_gpsSignals.value()); }
 
         //API Function: enableGlonassSignal
         //  Enable or disable specified GLONASS signal
@@ -2693,8 +2655,8 @@ namespace mscl
 
         //API Function: glonassSignalValue
         //  Gets or sets the underlying value for the GLONASS signal bitfield
-        void glonassSignalValue(uint8 val) { m_glonassSignals.value(val); };
-        uint8 glonassSignalValue() { return static_cast<uint8>(m_glonassSignals.value()); };
+        void glonassSignalValue(uint8 val) { m_glonassSignals.value(val); }
+        uint8 glonassSignalValue() { return static_cast<uint8>(m_glonassSignals.value()); }
 
         //API Function: enableGalileoSignal
         //  Enable or disable specified Galileo signal
@@ -2706,8 +2668,8 @@ namespace mscl
 
         //API Function: galileoSignalValue
         //  Gets or sets the underlying value for the Galileo signal bitfield
-        void galileoSignalValue(uint8 val) { m_galileoSignals.value(val); };
-        uint8 galileoSignalValue() { return static_cast<uint8>(m_galileoSignals.value()); };
+        void galileoSignalValue(uint8 val) { m_galileoSignals.value(val); }
+        uint8 galileoSignalValue() { return static_cast<uint8>(m_galileoSignals.value()); }
 
         //API Function: enableBeiDouSignal
         //  Enable or disable specified BeiDou signal
@@ -2719,8 +2681,8 @@ namespace mscl
 
         //API Function: beidouSignalValue
         //  Gets or sets the underlying value for the BeiDou signal bitfield
-        void beidouSignalValue(uint8 val) { m_beidouSignals.value(val); };
-        uint8 beidouSignalValue() { return static_cast<uint8>(m_beidouSignals.value()); };
+        void beidouSignalValue(uint8 val) { m_beidouSignals.value(val); }
+        uint8 beidouSignalValue() { return static_cast<uint8>(m_beidouSignals.value()); }
     };
 
     typedef std::map<MipChannelIdentifier::GnssConstellationIds, std::vector<uint8>> GnssSignalConfigOptions;
@@ -2917,8 +2879,7 @@ namespace mscl
             QUADRATURE  = 0x02
         };
 
-    public:
-        OdometerConfiguration() {};
+        OdometerConfiguration() {}
 
         //API Function: mode
         //  Get/Set the mode
@@ -3353,7 +3314,6 @@ namespace mscl
         //  <MipTypes::ChannelField>s to output when the event occurs
         std::array<MipTypes::ChannelField, MAX_DESCRIPTORS> m_channelFields;
 
-    private:
         //Function: filterFields
         //  Removes fields not in the specified <MipTypes::DataClass>
         MipTypes::MipChannelFields filterFields(const MipTypes::MipChannelFields& fields);
@@ -3408,7 +3368,6 @@ namespace mscl
         //  Action parameters
         EventActionParameters parameters;
     };
-
 
     //API Struct: EventTriggerInfo
     //  Information about an event trigger
@@ -3518,7 +3477,7 @@ namespace mscl
         //  Constructs a MeasurementReferenceFrame object with default values
         MeasurementReferenceFrame()
         {
-            m_translation.referenceFrame = PositionVelocityReferenceFrame::VEHICLE;
+            m_translation.referenceFrame = VEHICLE;
         }
 
         //API Constructor: MeasurementReferenceFrame
@@ -3531,7 +3490,7 @@ namespace mscl
             m_translation(translation),
             m_rotation(rotation)
         {
-            m_translation.referenceFrame = PositionVelocityReferenceFrame::VEHICLE;
+            m_translation.referenceFrame = VEHICLE;
         }
 
         //API Constructor: MeasurementReferenceFrame
@@ -3549,7 +3508,7 @@ namespace mscl
             index += 1;
 
             m_translation.fromMipFieldValues(data, index);
-            m_translation.referenceFrame = PositionVelocityReferenceFrame::VEHICLE;
+            m_translation.referenceFrame = VEHICLE;
             index += 3;
 
             if (format == Rotation::EULER_ANGLES)
@@ -3564,7 +3523,6 @@ namespace mscl
             }
         }
 
-    public:
         //API Function: asMipFieldValues
         //  Gets the current reference frame values formatted as a <MipFieldValues> object
         //
@@ -3652,4 +3610,4 @@ namespace mscl
     //API Typedef: MeasurementReferenceFrames
     //  A map of reference frame IDs with their associated <MeasurementReferenceFrame> values.
     typedef std::map<uint8, MeasurementReferenceFrame> MeasurementReferenceFrames;
-}
+} // namespace mscl

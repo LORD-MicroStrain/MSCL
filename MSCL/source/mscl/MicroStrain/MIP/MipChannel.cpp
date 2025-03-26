@@ -4,14 +4,11 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "MipChannel.h"
-#include "mscl/MicroStrain/Inertial/InertialNode.h"
-#include "mscl/Utils.h"
+#include "mscl/MicroStrain/MIP/MipChannel.h"
 
 namespace mscl
 {
-    MipChannel::MipChannel():
+    MipChannel::MipChannel() :
         m_channelField(static_cast<MipTypes::ChannelField>(0))
     {}
 
@@ -44,4 +41,4 @@ namespace mscl
     {
         return Utils::msb(static_cast<uint16>(m_channelField));
     }
-}
+} // namespace mscl

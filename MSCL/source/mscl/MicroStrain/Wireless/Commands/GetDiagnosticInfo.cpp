@@ -4,11 +4,9 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "GetDiagnosticInfo.h"
-#include "WirelessProtocol.h"
-#include "mscl/MicroStrain/ByteStream.h"
-#include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
+#include "mscl/MicroStrain/Wireless/Commands/GetDiagnosticInfo.h"
+
+#include "mscl/MicroStrain/Wireless/Commands/WirelessProtocol.h"
 #include "mscl/MicroStrain/Wireless/Packets/DiagnosticPacket.h"
 
 namespace mscl
@@ -43,11 +41,10 @@ namespace mscl
         return cmd;
     }
 
-    GetDiagnosticInfo::Response::Response(NodeAddress nodeAddress, std::weak_ptr<ResponseCollector> collector):
+    GetDiagnosticInfo::Response::Response(NodeAddress nodeAddress, std::weak_ptr<ResponseCollector> collector) :
         WirelessResponsePattern(collector, WirelessProtocol::cmdId_getDiagInfo_v1, nodeAddress),
         m_nodeAddress(nodeAddress)
-    {
-    }
+    {}
 
     bool GetDiagnosticInfo::Response::matchSuccessResponse(const WirelessPacket& packet)
     {
@@ -109,7 +106,7 @@ namespace mscl
 
             DiagnosticPacket::addDataPoint(m_result, payload, infoLen - 1, infoId, packet.nodeAddress());
 
-            infoByteCounter += (infoLen + 1);
+            infoByteCounter += infoLen + 1;
         }
 
         return true;
@@ -122,4 +119,4 @@ namespace mscl
 
         return m_result;
     }
-}
+} // namespace mscl

@@ -4,13 +4,15 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "mscl/MicroStrain/Wireless/Features/NodeFeatures.h"
-#include "mscl/Exceptions.h"
+#include "mscl/MicroStrain/SampleRate.h"
 #include "mscl/MicroStrain/Wireless/ChannelMask.h"
-
-#include <boost/test/unit_test.hpp>
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures.h"
 
 using namespace mscl;
+
+DISABLE_WARNING_BOOST_START
+#include <boost/test/unit_test.hpp>
+DISABLE_WARNING_BOOST_END
 
 BOOST_AUTO_TEST_SUITE(NodeFeatures_Test)
 
@@ -620,7 +622,6 @@ BOOST_AUTO_TEST_CASE(NodeFeatures_normalizeSensorDelay_v4)
     BOOST_CHECK_EQUAL(features->normalizeSensorDelay(1000), 1000);              //minimum (besides off)
     BOOST_CHECK_EQUAL(features->normalizeSensorDelay(300000000), 300000000);    //maximum
     BOOST_CHECK_EQUAL(features->normalizeSensorDelay(750004103), 300000000);    //out of range max
-
 
     BOOST_CHECK_EQUAL(features->normalizeSensorDelay(16383), 16383);            //can go up to 16383 microseconds before switching to milliseconds
     BOOST_CHECK_EQUAL(features->normalizeSensorDelay(17383), 18000);            //can go up to 16383 microseconds before switching to milliseconds

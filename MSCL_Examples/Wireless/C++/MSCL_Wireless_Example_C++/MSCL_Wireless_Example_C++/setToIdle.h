@@ -1,44 +1,51 @@
 #pragma once
 
-#include "mscl/mscl.h"
+// MSCL common code header (typically used as a precompiled header)
+#include <mscl/stdafx.h>
+
+#include <mscl/MicroStrain/Wireless/WirelessNode.h>
 
 static void setToIdle(mscl::WirelessNode& node)
 {
-    //call the set to idle function and get the resulting SetToIdleStatus object
+    // Call the set to idle function and get the resulting SetToIdleStatus object
     //  Note: This starts the set to idle node command, which is an ongoing operation. The SetToIdleStatus should be queried for progress.
     mscl::SetToIdleStatus status = node.setToIdle();
 
-    cout << "Setting Node to Idle";
+    printf("Setting Node to Idle");
 
-    //using the SetToIdleStatus object, check if the Set to Idle operation is complete.
-    //Note: we are specifying a timeout of 300 milliseconds here which is the maximum
+    // Using the SetToIdleStatus object, check if the Set to Idle operation is complete.
+    // Note: we are specifying a timeout of 300 milliseconds here which is the maximum
     //      amount of time that the complete function will block if the Set to Idle
     //      operation has not finished. Leaving this blank defaults to a timeout of 10ms.
-    while(!status.complete(300))
+    while (!status.complete(300))
     {
-        //Note: the Set to Idle operation can be canceled by calling status.cancel()
-        cout << ".";
+        // Note: the Set to Idle operation can be canceled by calling status.cancel()
+        printf(".");
     }
 
-    //at this point, the Set to Idle operation has completed
+    // At this point, the Set to Idle operation has completed
 
-    //check the result of the Set to Idle operation
-    switch(status.result())
+    // Check the result of the Set to Idle operation
+    switch (status.result())
     {
-        //completed successfully
+        // Completed successfully
         case mscl::SetToIdleStatus::setToIdleResult_success:
-            cout << "Successfully set to idle!" << endl;
+        {
+            printf("Successfully set to idle!\n");
             break;
-
-        //canceled by the user
+        }
+        // Canceled by the user
         case mscl::SetToIdleStatus::setToIdleResult_canceled:
-            cout << "Set to Idle was canceled!" << endl;
+        {
+            printf("Set to Idle was canceled!\n");
             break;
-
-        //failed to perform the operation
+        }
+        // Failed to perform the operation
         case mscl::SetToIdleStatus::setToIdleResult_failed:
         default:
-            cout << "Set to Idle has failed!" << endl;
+        {
+            printf("Set to Idle has failed!\n");
             break;
+        }
     }
 }

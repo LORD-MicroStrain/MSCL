@@ -4,14 +4,13 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "NodeFeatures_sglinkoem.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures_sglinkoem.h"
+
 #include "mscl/MicroStrain/Wireless/Configuration/NodeEepromMap.h"
-#include "mscl/Utils.h"
 
 namespace mscl
 {
-    NodeFeatures_sglinkoem::NodeFeatures_sglinkoem(const NodeInfo& info):
+    NodeFeatures_sglinkoem::NodeFeatures_sglinkoem(const NodeInfo& info) :
         NodeFeatures(info)
     {
         addCalCoeffChannelGroup(1, "Differential", NodeEepromMap::CH_ACTION_SLOPE_1, NodeEepromMap::CH_ACTION_ID_1);
@@ -68,4 +67,4 @@ namespace mscl
 
         return static_cast<uint32>(TimeSpan::MilliSeconds(5).getMicroseconds());     //5 milliseconds
     }
-}
+} // namespace mscl

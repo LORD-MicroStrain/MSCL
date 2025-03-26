@@ -6,18 +6,15 @@
 
 #pragma once
 
-#include "WirelessResponsePattern.h"
-#include "mscl/Timestamp.h"
+#include "mscl/MicroStrain/Wireless/Commands/WirelessResponsePattern.h"
 
 namespace mscl
 {
 #ifndef SWIG
-
     //Class: BaseStation_SetBeacon
     //    Contains logic for the base station set (enable/disable) beacon command
     class BaseStation_SetBeacon
     {
-    private:
         BaseStation_SetBeacon();                                            //default constructor disabled
         BaseStation_SetBeacon(const BaseStation_SetBeacon&);                //copy constructor disabled
         BaseStation_SetBeacon& operator=(const BaseStation_SetBeacon&);        //assignement operator disabled
@@ -60,7 +57,7 @@ namespace mscl
             //
             //Returns:
             //    true if the response pattern was found, false otherwise
-            virtual bool matchSuccessResponse(DataBuffer& data) override;
+            bool matchSuccessResponse(DataBuffer& data) override;
 
             //Function: beaconStartTime
             //    Gets the start time that was sent to enable the beacon
@@ -70,7 +67,5 @@ namespace mscl
             Timestamp beaconStartTime() const;
         };
     };
-
-#endif
-
-}
+#endif // !SWIG
+} // namespace mscl

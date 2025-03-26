@@ -4,32 +4,28 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "ConfigIssue.h"
+#include "mscl/MicroStrain/Wireless/Configuration/ConfigIssue.h"
 
 namespace mscl
 {
-    ConfigIssue::ConfigIssue():
-        m_optionId(ConfigIssue::CONFIG_SAMPLING_MODE),
+    ConfigIssue::ConfigIssue() :
+        m_optionId(CONFIG_SAMPLING_MODE),
         m_description(""),
         m_isChannelGroupIssue(false)
-    {
-    }
+    {}
 
-    ConfigIssue::ConfigIssue(ConfigIssue::ConfigOption optionId, const std::string& description):
+    ConfigIssue::ConfigIssue(ConfigOption optionId, const std::string& description) :
         m_optionId(optionId),
         m_description(description),
         m_isChannelGroupIssue(false)
-    {
-    }
+    {}
 
-    ConfigIssue::ConfigIssue(ConfigIssue::ConfigOption optionId, const std::string& description, const ChannelMask& mask):
+    ConfigIssue::ConfigIssue(ConfigOption optionId, const std::string& description, const ChannelMask& mask) :
         m_optionId(optionId),
         m_description(description),
         m_isChannelGroupIssue(true),
         m_channelMask(mask)
-    {
-    }
+    {}
 
     ConfigIssue::ConfigOption ConfigIssue::id() const
     {
@@ -50,4 +46,4 @@ namespace mscl
     {
         return m_channelMask;
     }
-}
+} // namespace mscl

@@ -4,16 +4,13 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "mscl/Types.h"
 #include "mscl/Utils.h"
-#include "mscl/Exceptions.h"
-
-#include <boost/detail/endian.hpp>
-#include <boost/test/unit_test.hpp>
-#include <turtle/mock.hpp>
 
 using namespace mscl;
-using namespace mscl::Utils;
+
+DISABLE_WARNING_BOOST_START
+#include <boost/test/unit_test.hpp>
+DISABLE_WARNING_BOOST_END
 
 BOOST_AUTO_TEST_SUITE(Utils_Test)
 
@@ -26,108 +23,91 @@ BOOST_AUTO_TEST_SUITE(Utils_ByteOperations)
 BOOST_AUTO_TEST_CASE(Utils_MSB_LSB)
 {
     //check that the msb of 0x12 is 0x00
-    BOOST_CHECK_EQUAL( msb(0x12), 0x00 );
+    BOOST_CHECK_EQUAL( Utils::msb(0x12), 0x00 );
 
     //check that the msb of 0x3456 is 0x34
-    BOOST_CHECK_EQUAL( msb(0x3456), 0x34 );
+    BOOST_CHECK_EQUAL( Utils::msb(0x3456), 0x34 );
 
     //check that the lsb of 0x12 is 0x12
-    BOOST_CHECK_EQUAL( lsb(0x12), 0x12 );
+    BOOST_CHECK_EQUAL( Utils::lsb(0x12), 0x12 );
 
     //check that the lsb of 0x3456 is 0x56
-    BOOST_CHECK_EQUAL( lsb(0x3456), 0x56 );
+    BOOST_CHECK_EQUAL( Utils::lsb(0x3456), 0x56 );
 }
 
 BOOST_AUTO_TEST_CASE(Utils_splitFloatBigEndian)
 {
     uint8 b1, b2, b3, b4;
 
-    Utils::split_float(123.456789f, b1, b2, b3, b4, Utils::bigEndian);
+    split_float(123.456789f, b1, b2, b3, b4, Utils::bigEndian);
 
-#if defined (BOOST_LITTLE_ENDIAN)
-
+#if defined BOOST_ENDIAN_LITTLE_BYTE || defined BOOST_LITTLE_ENDIAN
     BOOST_CHECK_EQUAL(b1, 0x42);
     BOOST_CHECK_EQUAL(b2, 0xF6);
     BOOST_CHECK_EQUAL(b3, 0xE9);
     BOOST_CHECK_EQUAL(b4, 0xE0);
-
 #else
-
     BOOST_CHECK_EQUAL(b1, 0xE0);
     BOOST_CHECK_EQUAL(b2, 0xE9);
     BOOST_CHECK_EQUAL(b3, 0xF6);
     BOOST_CHECK_EQUAL(b4, 0x42);
-
-#endif
+#endif // BOOST_ENDIAN_LITTLE_BYTE || BOOST_LITTLE_ENDIAN
 }
 
 BOOST_AUTO_TEST_CASE(Utils_splitFloatLittleEndian)
 {
     uint8 b1, b2, b3, b4;
 
-    Utils::split_float(123.456789f, b1, b2, b3, b4, Utils::littleEndian);
+    split_float(123.456789f, b1, b2, b3, b4, Utils::littleEndian);
 
-#if defined (BOOST_LITTLE_ENDIAN)
-
+#if defined BOOST_ENDIAN_LITTLE_BYTE || defined BOOST_LITTLE_ENDIAN
     BOOST_CHECK_EQUAL(b1, 0xE0);
     BOOST_CHECK_EQUAL(b2, 0xE9);
     BOOST_CHECK_EQUAL(b3, 0xF6);
     BOOST_CHECK_EQUAL(b4, 0x42);
-
 #else
-
     BOOST_CHECK_EQUAL(b1, 0x42);
     BOOST_CHECK_EQUAL(b2, 0xF6);
     BOOST_CHECK_EQUAL(b3, 0xE9);
     BOOST_CHECK_EQUAL(b4, 0xE0);
-
-#endif
+#endif // BOOST_ENDIAN_LITTLE_BYTE || BOOST_LITTLE_ENDIAN
 }
 
 BOOST_AUTO_TEST_CASE(Utils_makeFloatBigEndian)
 {
 
-#if defined (BOOST_LITTLE_ENDIAN)
-
-    float val = Utils::make_float(0x42, 0xF6, 0xE9, 0xE0, Utils::bigEndian);
+#if defined BOOST_ENDIAN_LITTLE_BYTE  || defined BOOST_LITTLE_ENDIAN
+    float val = make_float(0x42, 0xF6, 0xE9, 0xE0, Utils::bigEndian);
 
     BOOST_CHECK_CLOSE(val, 123.456789, 0.00001);
-
 #else
-
     float val = Utils::make_float(0xE0, 0xE9, 0xF6, 0x42, Utils::bigEndian);
 
     BOOST_CHECK_CLOSE(val, 123.456789, 0.00001);
-
-#endif
+#endif // BOOST_ENDIAN_LITTLE_BYTE  || BOOST_LITTLE_ENDIAN
 }
 
 BOOST_AUTO_TEST_CASE(Utils_makeFloatLittleEndian)
 {
 
-#if defined (BOOST_LITTLE_ENDIAN)
-
-    float val = Utils::make_float(0xE0, 0xE9, 0xF6, 0x42, Utils::littleEndian);
+#if defined BOOST_ENDIAN_LITTLE_BYTE || defined BOOST_LITTLE_ENDIAN
+    float val = make_float(0xE0, 0xE9, 0xF6, 0x42, Utils::littleEndian);
 
     BOOST_CHECK_CLOSE(val, 123.456789, 0.00001);
-
 #else
-
     float val = Utils::make_float(0x42, 0xF6, 0xE9, 0xE0, Utils::littleEndian);
 
     BOOST_CHECK_CLOSE(val, 123.456789, 0.00001);
-
-#endif
+#endif // BOOST_ENDIAN_LITTLE_BYTE || BOOST_LITTLE_ENDIAN
 }
 
 BOOST_AUTO_TEST_CASE(Utils_splitDoubleBigEndian)
 {
     uint8 b1, b2, b3, b4, b5, b6, b7, b8;
 
-    Utils::split_double(12.34567, b1, b2, b3, b4, b5, b6, b7, b8, Utils::bigEndian);
+    split_double(12.34567, b1, b2, b3, b4, b5, b6, b7, b8, Utils::bigEndian);
 
-#if defined (BOOST_LITTLE_ENDIAN)
-
+#if defined BOOST_ENDIAN_LITTLE_BYTE || defined BOOST_LITTLE_ENDIAN
     BOOST_CHECK_EQUAL(b1, 0x40);
     BOOST_CHECK_EQUAL(b2, 0x28);
     BOOST_CHECK_EQUAL(b3, 0xB0);
@@ -136,9 +116,7 @@ BOOST_AUTO_TEST_CASE(Utils_splitDoubleBigEndian)
     BOOST_CHECK_EQUAL(b6, 0x82);
     BOOST_CHECK_EQUAL(b7, 0x6A);
     BOOST_CHECK_EQUAL(b8, 0xA9);
-
 #else
-
     BOOST_CHECK_EQUAL(b1, 0xA9);
     BOOST_CHECK_EQUAL(b2, 0x6A);
     BOOST_CHECK_EQUAL(b3, 0x82);
@@ -147,18 +125,16 @@ BOOST_AUTO_TEST_CASE(Utils_splitDoubleBigEndian)
     BOOST_CHECK_EQUAL(b6, 0xB0);
     BOOST_CHECK_EQUAL(b7, 0x28);
     BOOST_CHECK_EQUAL(b8, 0x40);
-
-#endif
+#endif // BOOST_ENDIAN_LITTLE_BYTE || BOOST_LITTLE_ENDIAN
 }
 
 BOOST_AUTO_TEST_CASE(Utils_splitDoubleLittleEndian)
 {
     uint8 b1, b2, b3, b4, b5, b6, b7, b8;
 
-    Utils::split_double(12.34567, b1, b2, b3, b4, b5, b6, b7, b8, Utils::littleEndian);
+    split_double(12.34567, b1, b2, b3, b4, b5, b6, b7, b8, Utils::littleEndian);
 
-#if defined (BOOST_LITTLE_ENDIAN)
-
+#if defined BOOST_ENDIAN_LITTLE_BYTE || defined BOOST_LITTLE_ENDIAN
     BOOST_CHECK_EQUAL(b1, 0xA9);
     BOOST_CHECK_EQUAL(b2, 0x6A);
     BOOST_CHECK_EQUAL(b3, 0x82);
@@ -167,9 +143,7 @@ BOOST_AUTO_TEST_CASE(Utils_splitDoubleLittleEndian)
     BOOST_CHECK_EQUAL(b6, 0xB0);
     BOOST_CHECK_EQUAL(b7, 0x28);
     BOOST_CHECK_EQUAL(b8, 0x40);
-
 #else
-
     BOOST_CHECK_EQUAL(b1, 0x40);
     BOOST_CHECK_EQUAL(b2, 0x28);
     BOOST_CHECK_EQUAL(b3, 0xB0);
@@ -178,44 +152,35 @@ BOOST_AUTO_TEST_CASE(Utils_splitDoubleLittleEndian)
     BOOST_CHECK_EQUAL(b6, 0x82);
     BOOST_CHECK_EQUAL(b7, 0x6A);
     BOOST_CHECK_EQUAL(b8, 0xA9);
-
-#endif
+#endif // BOOST_ENDIAN_LITTLE_BYTE || BOOST_LITTLE_ENDIAN
 }
 
 BOOST_AUTO_TEST_CASE(Utils_makeDoubleBigEndian)
 {
 
-#if defined (BOOST_LITTLE_ENDIAN)
-
-    double val = Utils::make_double(0x40, 0x28, 0xb0, 0xfb, 0xa8, 0x82, 0x6a, 0xa9, Utils::bigEndian);
+#if defined BOOST_ENDIAN_LITTLE_BYTE || defined BOOST_LITTLE_ENDIAN
+    double val = make_double(0x40, 0x28, 0xb0, 0xfb, 0xa8, 0x82, 0x6a, 0xa9, Utils::bigEndian);
 
     BOOST_CHECK_CLOSE(val, 12.34567, 0.00001);
-
 #else
-
     double val = Utils::make_double(0xa9, 0x6a, 0x82, 0xa8, 0xfb, 0xb0, 0x28, 0x40, Utils::bigEndian);
 
     BOOST_CHECK_CLOSE(val, 12.34567, 0.00001);
-
-#endif
+#endif // BOOST_ENDIAN_LITTLE_BYTE || BOOST_LITTLE_ENDIAN
 }
 
 BOOST_AUTO_TEST_CASE(Utils_makeDoubleLittleEndian)
 {
 
-#if defined (BOOST_LITTLE_ENDIAN)
-
-    double val = Utils::make_double(0xa9, 0x6a, 0x82, 0xa8, 0xfb, 0xb0, 0x28, 0x40, Utils::littleEndian);
+#if defined BOOST_ENDIAN_LITTLE_BYTE || defined BOOST_LITTLE_ENDIAN
+    double val = make_double(0xa9, 0x6a, 0x82, 0xa8, 0xfb, 0xb0, 0x28, 0x40, Utils::littleEndian);
 
     BOOST_CHECK_CLOSE(val, 12.34567, 0.00001);
-
 #else
-
     double val = Utils::make_double(0x40, 0x28, 0xb0, 0xfb, 0xa8, 0x82, 0x6a, 0xa9, Utils::littleEndian);
 
     BOOST_CHECK_CLOSE(val, 12.34567, 0.00001);
-
-#endif
+#endif // BOOST_ENDIAN_LITTLE_BYTE || BOOST_LITTLE_ENDIAN
 }
 
 //Test the splitWord() function
@@ -226,7 +191,7 @@ BOOST_AUTO_TEST_CASE(Utils_splitWord)
     uint16 value = 0x1234;
 
     //convert the word value into 2 bytes
-    split_uint16(value, msb, lsb);
+    Utils::split_uint16(value, msb, lsb);
 
     //verify that the msb is now 0x12
     BOOST_CHECK_EQUAL(msb, 0x12);
@@ -234,11 +199,10 @@ BOOST_AUTO_TEST_CASE(Utils_splitWord)
     //verify that the lsb is now 0x34
     BOOST_CHECK_EQUAL(lsb, 0x34);
 
-
     value = 0x56;
 
     //convert the word value into 2 bytes
-    split_uint16(value, msb, lsb);
+    Utils::split_uint16(value, msb, lsb);
 
     //verify that the msb is now 0x00
     BOOST_CHECK_EQUAL(msb, 0x00);
@@ -255,7 +219,7 @@ BOOST_AUTO_TEST_CASE(Utils_splitDWord)
     uint32 value = 0x12345678;
 
     //convert the dword value to 4 bytes
-    split_uint32(value, b1, b2, b3, b4);
+    Utils::split_uint32(value, b1, b2, b3, b4);
 
     //verify that b1 is now 0x12
     BOOST_CHECK_EQUAL(b1, 0x12);
@@ -269,11 +233,10 @@ BOOST_AUTO_TEST_CASE(Utils_splitDWord)
     //verify that b4 is now 0x78
     BOOST_CHECK_EQUAL(b4, 0x78);
 
-
     uint16 wordVal = 0x1234;
 
     //convert the word value to 4 bytes
-    split_uint32(wordVal, b1, b2, b3, b4);
+    Utils::split_uint32(wordVal, b1, b2, b3, b4);
 
     //verify that b1 is now 0x00
     BOOST_CHECK_EQUAL(b1, 0x00);
@@ -296,7 +259,7 @@ BOOST_AUTO_TEST_CASE(Utils_Make_int16)
     uint8 lsb = 0x02;
 
     //build the bytes into a word
-    result = make_int16(msb, lsb);
+    result = Utils::make_int16(msb, lsb);
 
     //verify that the word result is now 0x
     BOOST_CHECK_EQUAL(result, -32766);
@@ -310,7 +273,7 @@ BOOST_AUTO_TEST_CASE(Utils_Make_uint16)
     uint8 lsb = 0x34;
 
     //build the bytes into a word
-    result = make_uint16(msb, lsb);
+    result = Utils::make_uint16(msb, lsb);
 
     //verify that the word result is now 0x1234
     BOOST_CHECK_EQUAL(result, 0x1234);
@@ -319,7 +282,7 @@ BOOST_AUTO_TEST_CASE(Utils_Make_uint16)
     lsb = 0x56;
 
     //build the bytes into a word
-    result = make_uint16(msb, lsb);
+    result = Utils::make_uint16(msb, lsb);
 
     //verify that the word result is now 0x56
     BOOST_CHECK_EQUAL(result, 0x56);
@@ -328,7 +291,7 @@ BOOST_AUTO_TEST_CASE(Utils_Make_uint16)
     lsb = 0x00;
 
     //build the bytes into a word
-    result = make_uint16(msb, lsb);
+    result = Utils::make_uint16(msb, lsb);
 
     //verify that the word result is now 0x7800
     BOOST_CHECK_EQUAL(result, 0x7800);
@@ -343,9 +306,8 @@ BOOST_AUTO_TEST_CASE(Utils_Make_uint32)
     uint8 b3 = 0x56;
     uint8 b4 = 0x78;
 
-
     //build the bytes into a dword
-    result = make_uint32(b1, b2, b3, b4);
+    result = Utils::make_uint32(b1, b2, b3, b4);
 
     //verify that the word result is now 0x12345678
     BOOST_CHECK_EQUAL(result, 0x12345678);
@@ -356,7 +318,7 @@ BOOST_AUTO_TEST_CASE(Utils_Make_uint32)
     b4 = 0x34;
 
     //build the bytes into a dword
-    result = make_uint32(b1, b2, b3, b4);
+    result = Utils::make_uint32(b1, b2, b3, b4);
 
     //verify that the dword result is now 0x1234
     BOOST_CHECK_EQUAL(result, 0x1234);
@@ -367,7 +329,7 @@ BOOST_AUTO_TEST_CASE(Utils_Make_uint32)
     b4 = 0x00;
 
     //build the bytes into a dword
-    result = make_uint32(b1, b2, b3, b4);
+    result = Utils::make_uint32(b1, b2, b3, b4);
 
     //verify that the word result is now 0x56780000
     BOOST_CHECK_EQUAL(result, 0x56780000);
@@ -391,7 +353,7 @@ BOOST_AUTO_TEST_CASE(Utils_GetSystemTime)
     BOOST_CHECK(diff >= sleepNano);
 
     // check diff within 10% of sleep time
-    BOOST_CHECK(diff < (sleepNano * 1.1));
+    BOOST_CHECK(diff < sleepNano * 1.1);
 }
 
 BOOST_AUTO_TEST_CASE(Utils_valueTypeSize)

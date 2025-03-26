@@ -4,19 +4,17 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "RadioFeatures.h"
+#include "mscl/MicroStrain/Wireless/RadioFeatures.h"
 
 namespace mscl
 {
-    RadioFeatures::RadioFeatures():
+    RadioFeatures::RadioFeatures() :
         m_extendedRange(false)
-    {
-    }
+    {}
 
     RadioFeatures::RadioFeatures(uint16 eepromValue)
     {
-        //initialze all the features
+        //initialize all the features
         init(eepromValue);
     }
 
@@ -32,7 +30,7 @@ namespace mscl
         }
 
         //bit 0 represents whether it is xr or not
-        if((eepromValue >> 0) & 1)
+        if(eepromValue >> 0 & 1)
         {
             xr = true;
         }
@@ -45,4 +43,4 @@ namespace mscl
     {
         return m_extendedRange;
     }
-}
+} // namespace mscl

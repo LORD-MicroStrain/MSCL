@@ -4,14 +4,12 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
+#include "mscl/MicroStrain/Wireless/Commands/BaseStation_Ping.h"
 
-#include "BaseStation_Ping.h"
-#include "WirelessProtocol.h"
+#include "mscl/MicroStrain/Wireless/Commands/WirelessProtocol.h"
 
 namespace mscl
 {
-
     ByteStream BaseStation_Ping::buildCommand()
     {
         //build the command ByteStream
@@ -21,10 +19,9 @@ namespace mscl
         return cmd;
     }
 
-    BaseStation_Ping::Response::Response(std::weak_ptr<ResponseCollector> collector):
+    BaseStation_Ping::Response::Response(std::weak_ptr<ResponseCollector> collector) :
         WirelessResponsePattern(collector, WirelessProtocol::cmdId_basePing, WirelessProtocol::BASE_STATION_ADDRESS)
-    {
-    }
+    {}
 
     bool BaseStation_Ping::Response::matchSuccessResponse(DataBuffer& data)
     {
@@ -56,4 +53,4 @@ namespace mscl
 
         return true;
     }
-}
+} // namespace mscl

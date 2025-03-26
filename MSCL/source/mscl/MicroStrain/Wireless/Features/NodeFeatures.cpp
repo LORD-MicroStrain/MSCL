@@ -4,71 +4,61 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures.h"
 
-#include <functional>
-#include <memory>
-
-#include "mscl/Exceptions.h"
-
-#include "NodeFeatures.h"
-#include "NodeFeatures_wirelessImpactSensor.h"
-#include "NodeFeatures_cfBearingTempLink.h"
-#include "NodeFeatures_dvrtlink.h"
-#include "NodeFeatures_envlinkMini.h"
-#include "NodeFeatures_envlinkPro.h"
-#include "NodeFeatures_glink.h"
-#include "NodeFeatures_glink2External.h"
-#include "NodeFeatures_glink2Internal.h"
-#include "NodeFeatures_glink200.h"
-#include "NodeFeatures_glink200r.h"
-#include "NodeFeatures_iepeLink.h"
-#include "NodeFeatures_ptlink200.h"
-#include "NodeFeatures_rtdlink.h"
-#include "NodeFeatures_rtdlink200.h"
-#include "NodeFeatures_sglink.h"
-#include "NodeFeatures_sglinkoem.h"
-#include "NodeFeatures_sglinkoemHermetic.h"
-#include "NodeFeatures_sglinkoemNoXR.h"
-#include "NodeFeatures_sglinkMicro.h"
-#include "NodeFeatures_sglinkrgd.h"
-#include "NodeFeatures_sglink200.h"
-#include "NodeFeatures_sglink200oem.h"
-#include "NodeFeatures_shmlink.h"
-#include "NodeFeatures_shmlink2.h"
-#include "NodeFeatures_shmlink200.h"
-#include "NodeFeatures_shmlink201.h"
-#include "NodeFeatures_shmlink201FullBridge.h"
-#include "NodeFeatures_shmlink210.h"
-#include "NodeFeatures_tclink1ch.h"
-#include "NodeFeatures_tclink200.h"
-#include "NodeFeatures_tclink200oem.h"
-#include "NodeFeatures_tclink3ch.h"
-#include "NodeFeatures_tclink6ch.h"
-#include "NodeFeatures_torqueLink.h"
-#include "NodeFeatures_torqueLink200.h"
-#include "NodeFeatures_torqueLink200_3ch.h"
-#include "NodeFeatures_torqueLink200_3ch_s.h"
-#include "NodeFeatures_vlink200.h"
-#include "NodeFeatures_vlink.h"
-#include "NodeFeatures_vlink_legacy.h"
-
-#include "mscl/Utils.h"
-#include "AvailableSampleRates.h"
-#include "AvailableTransmitPowers.h"
-#include "mscl/MicroStrain/Wireless/SyncSamplingFormulas.h"
-#include "mscl/MicroStrain/Wireless/ChannelMask.h"
-#include "mscl/MicroStrain/Wireless/Configuration/InputRange.h"
+#include "mscl/MicroStrain/SampleRate.h"
+#include "mscl/MicroStrain/Wireless/Configuration/DataModeMask.h"
 #include "mscl/MicroStrain/Wireless/Configuration/NodeEepromHelper.h"
-#include "mscl/MicroStrain/Wireless/Configuration/NodeEepromMap.h"
 #include "mscl/MicroStrain/Wireless/Configuration/WirelessNodeConfig.h"
+#include "mscl/MicroStrain/Wireless/Features/AvailableSampleRates.h"
+#include "mscl/MicroStrain/Wireless/Features/AvailableTransmitPowers.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures_cfBearingTempLink.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures_dvrtlink.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures_envlinkMini.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures_envlinkPro.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures_glink.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures_glink200.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures_glink200r.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures_glink2External.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures_glink2Internal.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures_iepeLink.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures_ptlink200.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures_rtdlink.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures_rtdlink200.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures_sglink.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures_sglink200.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures_sglink200oem.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures_sglinkMicro.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures_sglinkoem.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures_sglinkoemHermetic.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures_sglinkoemNoXR.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures_sglinkrgd.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures_shmlink.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures_shmlink2.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures_shmlink200.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures_shmlink201.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures_shmlink201FullBridge.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures_shmlink210.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures_tclink1ch.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures_tclink200.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures_tclink200oem.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures_tclink3ch.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures_tclink6ch.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures_torqueLink.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures_torqueLink200.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures_torqueLink200_3ch.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures_torqueLink200_3ch_s.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures_vlink.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures_vlink200.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures_vlink_legacy.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures_wirelessImpactSensor.h"
+#include "mscl/MicroStrain/Wireless/SyncSamplingFormulas.h"
 
 namespace mscl
 {
-    NodeFeatures::NodeFeatures(const NodeInfo& info):
+    NodeFeatures::NodeFeatures(const NodeInfo& info) :
         m_nodeInfo(info)
-    {
-    }
+    {}
 
     const Version NodeFeatures::MIN_NODE_FW_PROTOCOL_1_5(10, 33392);
     const Version NodeFeatures::MIN_NODE_FW_PROTOCOL_1_4(10, 31758);
@@ -300,22 +290,23 @@ namespace mscl
         {
             return WirelessTypes::settling_4ms;
         }
-        else if(rate >= SampleRate::Hertz(4))    //4 Hz
+
+        if(rate >= SampleRate::Hertz(4))    //4 Hz
         {
             return WirelessTypes::settling_8ms;
         }
-        else if(rate >= SampleRate::Hertz(2))    //2 Hz
+
+        if(rate >= SampleRate::Hertz(2))    //2 Hz
         {
             return WirelessTypes::settling_16ms;
         }
-        else if(rate >= SampleRate::Hertz(1))    //1 Hz
+
+        if(rate >= SampleRate::Hertz(1))    //1 Hz
         {
             return WirelessTypes::settling_60ms;
         }
-        else
-        {
-            return WirelessTypes::settling_200ms;
-        }
+
+        return WirelessTypes::settling_200ms;
     }
 
     WirelessTypes::SettlingTime NodeFeatures::maxFilterSettlingTime_B(const SampleRate& rate)
@@ -324,22 +315,23 @@ namespace mscl
         {
             return WirelessTypes::settling_4ms;
         }
-        else if(rate >= SampleRate::Hertz(32))    //32 Hz
+
+        if(rate >= SampleRate::Hertz(32))    //32 Hz
         {
             return WirelessTypes::settling_8ms;
         }
-        else if(rate >= SampleRate::Hertz(16))    //16 Hz
+
+        if(rate >= SampleRate::Hertz(16))    //16 Hz
         {
             return WirelessTypes::settling_16ms;
         }
-        else if(rate >= SampleRate::Hertz(8))    //8 Hz
+
+        if(rate >= SampleRate::Hertz(8))    //8 Hz
         {
             return WirelessTypes::settling_32ms;
         }
-        else
-        {
-            return WirelessTypes::settling_200ms;
-        }
+
+        return WirelessTypes::settling_200ms;
     }
 
     WirelessTypes::WirelessSampleRate NodeFeatures::maxSampleRateForSettlingTime_A(WirelessTypes::SettlingTime settlingTime, const WirelessTypes::WirelessSampleRates& rates)
@@ -350,7 +342,8 @@ namespace mscl
         {
             return rates.at(0);
         }
-        else if(settlingTime <= WirelessTypes::settling_8ms)
+
+        if(settlingTime <= WirelessTypes::settling_8ms)
         {
             maxRate = SampleRate::Hertz(4);
         }
@@ -391,7 +384,8 @@ namespace mscl
         {
             return rates.at(0);
         }
-        else if(settlingTime <= WirelessTypes::settling_8ms)
+
+        if(settlingTime <= WirelessTypes::settling_8ms)
         {
             maxRate = SampleRate::Hertz(32);
         }
@@ -447,7 +441,7 @@ namespace mscl
 
         uint64 timeInSeconds = result.getSeconds();
 
-        //if the total seconds in the timespan is more than we can set when using "seconds"
+        //if the total seconds in the timespan are more than we can set when using "seconds"
         if(timeInSeconds > NodeEepromHelper::TIME_BETWEEN_BURSTS_MAX_SECS)
         {
             //convert from seconds to minutes (rounding up)
@@ -625,9 +619,9 @@ namespace mscl
     bool NodeFeatures::supportsLostBeaconTimeout() const
     {
         //if the node supports sync sampling, it supports lost beacon timeout
-        return (supportsSamplingMode(WirelessTypes::samplingMode_sync) ||
-                supportsSamplingMode(WirelessTypes::samplingMode_syncBurst) ||
-                supportsSamplingMode(WirelessTypes::samplingMode_syncEvent));
+        return supportsSamplingMode(WirelessTypes::samplingMode_sync) ||
+               supportsSamplingMode(WirelessTypes::samplingMode_syncBurst) ||
+               supportsSamplingMode(WirelessTypes::samplingMode_syncEvent);
     }
 
     bool NodeFeatures::supportsPullUpResistor() const
@@ -722,15 +716,15 @@ namespace mscl
 
     bool NodeFeatures::supportsEventTrigger() const
     {
-        return (supportsSamplingMode(WirelessTypes::samplingMode_nonSyncEvent) ||
-                supportsSamplingMode(WirelessTypes::samplingMode_syncEvent));
+        return supportsSamplingMode(WirelessTypes::samplingMode_nonSyncEvent) ||
+               supportsSamplingMode(WirelessTypes::samplingMode_syncEvent);
     }
 
     bool NodeFeatures::supportsDiagnosticInfo() const
     {
         static const Version MIN_DIAGNOSTIC_SUPPORT(10, 30957);
 
-        return (m_nodeInfo.firmwareVersion() >= MIN_DIAGNOSTIC_SUPPORT);
+        return m_nodeInfo.firmwareVersion() >= MIN_DIAGNOSTIC_SUPPORT;
     }
 
     bool NodeFeatures::supportsLoggedData() const
@@ -769,12 +763,12 @@ namespace mscl
 
     bool NodeFeatures::supportsSensorOutputMode() const
     {
-        return (sensorOutputModes().size() > 0);
+        return !sensorOutputModes().empty();
     }
 
     bool NodeFeatures::supportsCfcFilterConfiguration() const
     {
-        return (cfcFilters().size() > 0);
+        return !cfcFilters().empty();
     }
 
     bool NodeFeatures::supportsAutoBalance() const
@@ -813,7 +807,7 @@ namespace mscl
         const WirelessTypes::SamplingModes& supportedModes = samplingModes();
 
         //return the result of trying to find the sampling mode in the vector
-        return (std::find(supportedModes.begin(), supportedModes.end(), samplingMode) != supportedModes.end());
+        return std::find(supportedModes.begin(), supportedModes.end(), samplingMode) != supportedModes.end();
     }
 
     bool NodeFeatures::supportsSampleRate(WirelessTypes::WirelessSampleRate sampleRate, WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const
@@ -824,7 +818,7 @@ namespace mscl
             const WirelessTypes::WirelessSampleRates& supportedRates = sampleRates(samplingMode, dataCollectionMethod, dataMode);
 
             //return the result of trying to find the sample rate in the vector
-            return (std::find(supportedRates.begin(), supportedRates.end(), sampleRate) != supportedRates.end());
+            return std::find(supportedRates.begin(), supportedRates.end(), sampleRate) != supportedRates.end();
         }
         catch(Error_NotSupported&)
         {
@@ -836,7 +830,7 @@ namespace mscl
     bool NodeFeatures::supportsCommunicationProtocol(WirelessTypes::CommProtocol protocol) const
     {
         const WirelessTypes::CommProtocols& supportedProtocols = commProtocols();
-        return (std::find(supportedProtocols.begin(), supportedProtocols.end(), protocol) != supportedProtocols.end());
+        return std::find(supportedProtocols.begin(), supportedProtocols.end(), protocol) != supportedProtocols.end();
     }
 
     bool NodeFeatures::supportsDataFormat(WirelessTypes::DataFormat dataFormat) const
@@ -845,7 +839,7 @@ namespace mscl
         const WirelessTypes::DataFormats& supportedFormats = dataFormats();
 
         //return the result of trying to find the data format in the vector
-        return (std::find(supportedFormats.begin(), supportedFormats.end(), dataFormat) != supportedFormats.end());
+        return std::find(supportedFormats.begin(), supportedFormats.end(), dataFormat) != supportedFormats.end();
     }
 
     bool NodeFeatures::supportsDefaultMode(WirelessTypes::DefaultMode mode) const
@@ -854,7 +848,7 @@ namespace mscl
         const WirelessTypes::DefaultModes& supportedModes = defaultModes();
 
         //return the result of trying to find the boot mode in the vector
-        return (std::find(supportedModes.begin(), supportedModes.end(), mode) != supportedModes.end());
+        return std::find(supportedModes.begin(), supportedModes.end(), mode) != supportedModes.end();
     }
 
     bool NodeFeatures::supportsDataCollectionMethod(WirelessTypes::DataCollectionMethod collectionMethod) const
@@ -863,7 +857,7 @@ namespace mscl
         const WirelessTypes::DataCollectionMethods& supportedMethods = dataCollectionMethods();
 
         //return the result of trying to find the collection method in the vector
-        return (std::find(supportedMethods.begin(), supportedMethods.end(), collectionMethod) != supportedMethods.end());
+        return std::find(supportedMethods.begin(), supportedMethods.end(), collectionMethod) != supportedMethods.end();
     }
 
     bool NodeFeatures::supportsTransmitPower(WirelessTypes::TransmitPower power, WirelessTypes::CommProtocol commProtocol) const
@@ -872,7 +866,7 @@ namespace mscl
         const WirelessTypes::TransmitPowers& supportedPowers = transmitPowers(commProtocol);
 
         //return the result of trying to find the power in the vector
-        return (std::find(supportedPowers.begin(), supportedPowers.end(), power) != supportedPowers.end());
+        return std::find(supportedPowers.begin(), supportedPowers.end(), power) != supportedPowers.end();
     }
 
     bool NodeFeatures::supportsDataMode(WirelessTypes::DataMode dataMode) const
@@ -881,13 +875,13 @@ namespace mscl
         const WirelessTypes::DataModes& supportedModes = dataModes();
 
         //return the result of trying to find the mode in the vector
-        return (std::find(supportedModes.begin(), supportedModes.end(), dataMode) != supportedModes.end());
+        return std::find(supportedModes.begin(), supportedModes.end(), dataMode) != supportedModes.end();
     }
 
     bool NodeFeatures::supportsTransducerType(WirelessTypes::TransducerType transducerType) const
     {
         const WirelessTypes::TransducerTypes& supportedTypes = transducerTypes();
-        return (std::find(supportedTypes.begin(), supportedTypes.end(), transducerType) != supportedTypes.end());
+        return std::find(supportedTypes.begin(), supportedTypes.end(), transducerType) != supportedTypes.end();
     }
 
     bool NodeFeatures::supportsFatigueMode(WirelessTypes::FatigueMode mode) const
@@ -896,35 +890,35 @@ namespace mscl
         const WirelessTypes::FatigueModes& modes = fatigueModes();
 
         //result the result of trying to find the mode in the vector
-        return (std::find(modes.begin(), modes.end(), mode) != modes.end());
+        return std::find(modes.begin(), modes.end(), mode) != modes.end();
     }
 
     bool NodeFeatures::supportsInputRange(WirelessTypes::InputRange range, const ChannelMask& channels) const
     {
         const InputRanges& ranges = inputRanges(channels);
 
-        return (std::find_if(ranges.begin(), ranges.end(), [&range](const InputRangeEntry& r)->bool { return r.inputRange == range; }) != ranges.end());
+        return std::find_if(ranges.begin(), ranges.end(), [&range](const InputRangeEntry& r)->bool { return r.inputRange == range; }) != ranges.end();
     }
 
     bool NodeFeatures::supportsInputRange(WirelessTypes::InputRange range, const ChannelMask& channels, WirelessTypes::Voltage excitationVoltage) const
     {
         const InputRanges& ranges = inputRanges(channels, excitationVoltage);
 
-        return (std::find_if(ranges.begin(), ranges.end(), [&range](const InputRangeEntry& r)->bool { return r.inputRange == range; }) != ranges.end());
+        return std::find_if(ranges.begin(), ranges.end(), [&range](const InputRangeEntry& r)->bool { return r.inputRange == range; }) != ranges.end();
     }
 
     bool NodeFeatures::supportsCentisecondEventDuration() const
     {
         static const Version MIN_SUB_SECOND_FW(10, 0);
 
-        return (m_nodeInfo.firmwareVersion() >= MIN_SUB_SECOND_FW);
+        return m_nodeInfo.firmwareVersion() >= MIN_SUB_SECOND_FW;
     }
 
     bool NodeFeatures::supportsGetDiagnosticInfo() const
     {
         static const Version MIN_GET_DIAG_INFO_FW(10, 33392);
 
-        return (m_nodeInfo.firmwareVersion() >= MIN_GET_DIAG_INFO_FW);
+        return m_nodeInfo.firmwareVersion() >= MIN_GET_DIAG_INFO_FW;
     }
 
     bool NodeFeatures::supportsNonSyncLogWithTimestamps() const
@@ -937,7 +931,7 @@ namespace mscl
         }
 
         //ASPP v1.5 added support for this
-        return (m_nodeInfo.firmwareVersion() >= MIN_NODE_FW_PROTOCOL_1_5);
+        return m_nodeInfo.firmwareVersion() >= MIN_NODE_FW_PROTOCOL_1_5;
     }
 
     bool NodeFeatures::supportsDerivedCategory(WirelessTypes::DerivedCategory category) const
@@ -945,7 +939,7 @@ namespace mscl
         WirelessTypes::DerivedChannelMasks cats = channelsPerDerivedCategory();
 
         //return the result of trying to find the math channel in the vector
-        return (cats.find(category) != cats.end());
+        return cats.find(category) != cats.end();
     }
 
     bool NodeFeatures::supportsRawDataMode() const
@@ -964,8 +958,8 @@ namespace mscl
 
     bool NodeFeatures::supportsDerivedDataMode() const
     {
-        //if any derived channels are avaiable, derived data mode should be available
-        return (channelsPerDerivedCategory().size() > 0);
+        //if any derived channels are available, derived data mode should be available
+        return !channelsPerDerivedCategory().empty();
     }
 
     bool NodeFeatures::supportsDerivedVelocityUnitConfig() const
@@ -988,7 +982,7 @@ namespace mscl
         //get all the sample rates supported
         WirelessTypes::WirelessSampleRates rates = sampleRates(samplingMode, dataCollectionMethod, dataMode);
 
-        //get the first rate in the sample rates, which should be the fastest
+        //get the first-rate in the sample rates, which should be the fastest
         WirelessTypes::WirelessSampleRate maxRate = rates.front();
 
         //gen 2 nodes don't have any sample rate limits
@@ -1071,10 +1065,8 @@ namespace mscl
             //get the max sweeps per burst
             return maxSweepsPerBurst(dataMode, dataFormat, channels);
         }
-        else
-        {
-            return 6553400;
-        }
+
+        return 6553400;
     }
 
     uint32 NodeFeatures::maxSweepsPerBurst(WirelessTypes::DataMode dataMode, WirelessTypes::DataFormat dataFormat, const ChannelMask& channels) const
@@ -1097,18 +1089,14 @@ namespace mscl
             DataModeMask mode(dataMode);
             if(mode.rawModeEnabled)
             {
-                return static_cast<uint32>((maxBytes - 300) / bytesPerSweep);
+                return (maxBytes - 300) / bytesPerSweep;
             }
-            else //if(mode.derivedModeEnabled)
-            {
-                return 6553400;
-            }
+
+            return 6553400;
         }
-        else
-        {
-            //calculate and return the max number of sweeps per burst
-            return static_cast<uint32>(maxBytes / bytesPerSweep);
-        }
+
+        //calculate and return the max number of sweeps per burst
+        return maxBytes / bytesPerSweep;
     }
 
     TimeSpan NodeFeatures::minTimeBetweenBursts(WirelessTypes::DataMode dataMode,
@@ -1234,13 +1222,13 @@ namespace mscl
             case WirelessTypes::dataMode_derived:
             {
                 uint32 mathSweeps = (ramSize - 300) / mathBytesPerSweep;
-                return static_cast<uint32>((mathSweeps / derivedDataRate.samplesPerSecond()) * 1000);
+                return static_cast<uint32>(mathSweeps / derivedDataRate.samplesPerSecond() * 1000);
             }
 
             //Raw + Derived
             case WirelessTypes::dataMode_raw_derived:
             {
-                double superSweepSize = (1 / derivedDataRate.samplesPerSecond()) * rawBytesPerSweep * rawSampleRate.samplesPerSecond() + 26 + mathBytesPerSweep;
+                double superSweepSize = 1 / derivedDataRate.samplesPerSecond() * rawBytesPerSweep * rawSampleRate.samplesPerSecond() + 26 + mathBytesPerSweep;
                 double superSweepsPerBuffer = (ramSize - 300) / superSweepSize;
                 double numSweeps = std::floor(superSweepsPerBuffer * rawSampleRate.samplesPerSecond() / derivedDataRate.samplesPerSecond());
                 return static_cast<uint32>(numSweeps / rawSampleRate.samplesPerSecond() * 1000);
@@ -1663,7 +1651,7 @@ namespace mscl
         //all nodes currently support raw data mode
         result.push_back(WirelessTypes::dataMode_raw);
 
-        if(channelsPerDerivedCategory().size() > 0)
+        if(!channelsPerDerivedCategory().empty())
         {
             result.push_back(WirelessTypes::dataMode_derived);
 
@@ -1684,7 +1672,7 @@ namespace mscl
     {
         static const Version MIN_NEW_TX_POWER_FW(10, 0);
 
-        return (m_nodeInfo.firmwareVersion() >= MIN_NEW_TX_POWER_FW);
+        return m_nodeInfo.firmwareVersion() >= MIN_NEW_TX_POWER_FW;
     }
 
     bool NodeFeatures::hasMaxSampleRatePerFilterAndAdcChCount() const
@@ -1710,14 +1698,14 @@ namespace mscl
     {
         static const Version MIN_SLEEP_INTERVAL_SECONDS_FW(10, 0);
 
-        return (m_nodeInfo.firmwareVersion() >= MIN_SLEEP_INTERVAL_SECONDS_FW);
+        return m_nodeInfo.firmwareVersion() >= MIN_SLEEP_INTERVAL_SECONDS_FW;
     }
 
     bool NodeFeatures::supportsEepromCommitViaRadioReset() const
     {
         static const Version MIN_EEPROM_COMMIT_RADIO_FW(10, 30072);
 
-        return (m_nodeInfo.firmwareVersion() >= MIN_EEPROM_COMMIT_RADIO_FW);
+        return m_nodeInfo.firmwareVersion() >= MIN_EEPROM_COMMIT_RADIO_FW;
     }
 
     bool NodeFeatures::supportsFlashId() const
@@ -1729,7 +1717,7 @@ namespace mscl
 
         static const Version MIN_FLASH_ID_FW(10, 31758);
 
-        return (m_nodeInfo.firmwareVersion() >= MIN_FLASH_ID_FW);
+        return m_nodeInfo.firmwareVersion() >= MIN_FLASH_ID_FW;
     }
 
     bool NodeFeatures::supportsStorageLimitModeConfig() const
@@ -1741,9 +1729,8 @@ namespace mscl
 
         static const Version MIN_STORAGE_LIMIT_FW(10, 31758);
 
-        return (m_nodeInfo.firmwareVersion() >= MIN_STORAGE_LIMIT_FW);
+        return m_nodeInfo.firmwareVersion() >= MIN_STORAGE_LIMIT_FW;
     }
-
 
     uint8 NodeFeatures::datalogDownloadVersion() const
     {
@@ -1847,20 +1834,20 @@ namespace mscl
     {
         static const Version DATA_MODE_FW(10, 34862);
 
-        return (m_nodeInfo.firmwareVersion() >= DATA_MODE_FW);
+        return m_nodeInfo.firmwareVersion() >= DATA_MODE_FW;
     }
 
     bool NodeFeatures::supportsCommProtocolEeprom() const
     {
         static const Version COMM_PROTOCOL_FW(11, 0);
 
-        return (m_nodeInfo.firmwareVersion() >= COMM_PROTOCOL_FW);
+        return m_nodeInfo.firmwareVersion() >= COMM_PROTOCOL_FW;
     }
 
     bool NodeFeatures::supportsEeprom1024AndAbove() const
     {
         static const Version HIGH_EEPROM_FW(10, 0);
 
-        return (m_nodeInfo.firmwareVersion() >= HIGH_EEPROM_FW);
+        return m_nodeInfo.firmwareVersion() >= HIGH_EEPROM_FW;
     }
-}
+} // namespace mscl

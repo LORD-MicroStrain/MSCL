@@ -4,10 +4,9 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "AutoBalance_v2.h"
-#include "WirelessProtocol.h"
-#include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
+#include "mscl/MicroStrain/Wireless/Commands/AutoBalance_v2.h"
+
+#include "mscl/MicroStrain/Wireless/Commands/WirelessProtocol.h"
 
 namespace mscl
 {
@@ -45,13 +44,12 @@ namespace mscl
         return cmd;
     }
 
-    AutoBalance_v2::Response::Response(NodeAddress nodeAddress, uint8 channelNumber, float targetPercent, std::weak_ptr<ResponseCollector> collector):
+    AutoBalance_v2::Response::Response(NodeAddress nodeAddress, uint8 channelNumber, float targetPercent, std::weak_ptr<ResponseCollector> collector) :
         WirelessResponsePattern(collector, WirelessProtocol::cmdId_autoBalance_v2, nodeAddress),
         m_nodeAddress(nodeAddress),
         m_channelNumber(channelNumber),
         m_targetPercent(targetPercent)
-    {
-    }
+    {}
 
     bool AutoBalance_v2::Response::match(const WirelessPacket& packet)
     {
@@ -109,4 +107,4 @@ namespace mscl
     {
         return m_result;
     }
-}
+} // namespace mscl

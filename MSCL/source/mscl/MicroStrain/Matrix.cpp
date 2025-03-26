@@ -4,31 +4,24 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-
-#include "Matrix.h"
-#include "DataBuffer.h"
-#include "ByteStream.h"
-#include "mscl/Utils.h"
+#include "mscl/MicroStrain/Matrix.h"
 
 namespace mscl
 {
-    Matrix::Matrix():
+    Matrix::Matrix() :
         m_numRows(0),
         m_numColumns(0),
         m_valuesType(valueType_float),
         m_valuesTypeSize(4)
-    {
-    }
+    {}
 
-    Matrix::Matrix(uint16 rows, uint16 columns, ValueType storedAs, const ByteStream& data):
+    Matrix::Matrix(uint16 rows, uint16 columns, ValueType storedAs, const ByteStream& data) :
         m_numRows(rows),
         m_numColumns(columns),
-        m_data(data.data()),
         m_valuesType(storedAs),
-        m_valuesTypeSize(Utils::valueTypeSize(storedAs))
-    {
-    }
+        m_valuesTypeSize(Utils::valueTypeSize(storedAs)),
+        m_data(data.data())
+    {}
 
     uint32 Matrix::getBytePos(uint16 row, uint16 col) const
     {
@@ -36,7 +29,7 @@ namespace mscl
         checkIndex(row, col);
 
         //byte position = (row * (bytes per column * # columns)) + (column * bytes per column)
-        return (row * (m_valuesTypeSize * m_numColumns)) + (col * m_valuesTypeSize);
+        return row * (m_valuesTypeSize * m_numColumns) + col * m_valuesTypeSize;
     }
 
     void Matrix::checkIndex(uint16 row, uint16 col) const
@@ -46,8 +39,9 @@ namespace mscl
         {
             throw std::out_of_range("The row index is out of range");
         }
+
         //check the columns
-        else if(col >= m_numColumns)
+        if(col >= m_numColumns)
         {
             throw std::out_of_range("The column index is out of range");
         }
@@ -132,7 +126,7 @@ namespace mscl
                 }
 
                 //if this isn't the last column in the row
-                if(col != (m_numColumns - 1))
+                if(col != m_numColumns - 1)
                 {
                     //add a separator
                     result << ",";
@@ -141,7 +135,7 @@ namespace mscl
             result << "]";
 
             //if this isnt the last row
-            if(row != (m_numRows - 1))
+            if(row != m_numRows - 1)
             {
                 //add a separator
                 result << ",";
@@ -155,4 +149,4 @@ namespace mscl
 
         return result.str();
     }
-}
+} // namespace mscl

@@ -4,9 +4,7 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "mscl/MicroStrain/MIP/Commands/MIP_Commands.h"
-#include "DeviceStartupSettings.h"
+#include "mscl/MicroStrain/Inertial/Commands/DeviceStartupSettings.h"
 
 namespace mscl
 {
@@ -43,8 +41,7 @@ namespace mscl
         return GenericMipCommand::buildCommand(CMD_ID, fieldData.data());
     }
 
-    DeviceStartupSettings::Response::Response(std::weak_ptr<ResponseCollector> collector):
+    DeviceStartupSettings::Response::Response(std::weak_ptr<ResponseCollector> collector) :
         GenericMipCommand::Response(MipTypes::CMD_SAVE_STARTUP_SETTINGS, collector, true, false, "Device Startup Settings")
-    {
-    }
-}
+    {}
+} // namespace mscl

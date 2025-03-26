@@ -4,17 +4,14 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
+#include "mscl/Communication/SerialConnection.h"
 
-#include "OperatingSystemErrorCodes.h"
-#include "SerialConnection.h"
-#include "NativeSerialPort.h"
-#include "mscl/Utils.h"
+#include "mscl/Communication/NativeSerialPort.h"
 
 namespace mscl
 {
     //The constructor that sets up the SerialConnection
-    SerialConnection::SerialConnection(const std::string& port, uint32 baudRate):
+    SerialConnection::SerialConnection(const std::string& port, uint32 baudRate) :
         m_port(port),
         m_baudRate(baudRate)
     {
@@ -35,9 +32,9 @@ namespace mscl
     //initializes and opens the serial connection
     void SerialConnection::establishConnection()
     {
-        using ::boost::asio::io_context;
-        using ::boost::asio::serial_port;
-        using ::boost::asio::serial_port_base;
+        using boost::asio::io_context;
+        using boost::asio::serial_port;
+        using boost::asio::serial_port_base;
 
         //default flow control of None
         serial_port_base::flow_control::type flowControl = serial_port_base::flow_control::none;
@@ -117,4 +114,4 @@ namespace mscl
         m_baudRate = baudRate;
         reconnect();
     }
-}
+} // namespace mscl

@@ -4,23 +4,19 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "MipNode.h"
+#include "mscl/MicroStrain/MIP/MipNode.h"
 
 #include "mscl/MicroStrain/MIP/MipNode_Impl.h"
-#include "mscl/MicroStrain/MIP/MipNodeFeatures.h"
 
 namespace mscl
 {
     MipNode::MipNode(Connection connection) :
         m_impl(std::make_shared<MipNode_Impl>(connection))
-    {
-    }
+    {}
 
     MipNode::MipNode(std::shared_ptr<MipNode_Impl> impl) :
         m_impl(impl)
-    {
-    }
+    {}
 
     GenericMipCmdResponse MipNode::doCommand(GenericMipCommand::Response& response, const ByteStream& command, bool verifySupported) const
     {
@@ -238,4 +234,4 @@ namespace mscl
         m_impl->getRawBytePackets(packets, timeout, maxPackets);
         return packets;
     }
-}
+} // namespace mscl

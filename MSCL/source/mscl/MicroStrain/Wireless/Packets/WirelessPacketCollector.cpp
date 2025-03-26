@@ -4,48 +4,44 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
+#include "mscl/MicroStrain/Wireless/Packets/WirelessPacketCollector.h"
 
-#include <chrono>
-#include "mscl/Exceptions.h"
-#include "AsyncDigitalAnalogPacket.h"
-#include "AsyncDigitalPacket.h"
-#include "BeaconEchoPacket.h"
-#include "BufferedLdcPacket.h"
-#include "BufferedLdcPacket_v2.h"
-#include "DiagnosticPacket.h"
-#include "HclSmartBearing_CalPacket.h"
-#include "HclSmartBearing_RawPacket.h"
-#include "LdcPacket.h"
-#include "LdcMathPacket.h"
-#include "LdcMathPacket_aspp3.h"
-#include "LdcPacket_v2.h"
-#include "LdcPacket_v2_aspp3.h"
-#include "RawAngleStrainPacket.h"
-#include "RfSweepPacket.h"
-#include "RollerPacket.h"
-#include "ShmPacket.h"
-#include "ShmPacket_v2_aspp3.h"
-#include "SyncSamplingPacket.h"
-#include "SyncSamplingMathPacket.h"
-#include "SyncSamplingMathPacket_aspp3.h"
-#include "SyncSamplingPacket_v2.h"
-#include "SyncSamplingPacket_v2_aspp3.h"
-#include "WirelessPacketCollector.h"
+#include "mscl/MicroStrain/Wireless/DataSweep.h"
 #include "mscl/MicroStrain/Wireless/NodeCommTimes.h"
+#include "mscl/MicroStrain/Wireless/Packets/AsyncDigitalAnalogPacket.h"
+#include "mscl/MicroStrain/Wireless/Packets/AsyncDigitalPacket.h"
+#include "mscl/MicroStrain/Wireless/Packets/BeaconEchoPacket.h"
+#include "mscl/MicroStrain/Wireless/Packets/BufferedLdcPacket.h"
+#include "mscl/MicroStrain/Wireless/Packets/BufferedLdcPacket_v2.h"
+#include "mscl/MicroStrain/Wireless/Packets/DiagnosticPacket.h"
+#include "mscl/MicroStrain/Wireless/Packets/HclSmartBearing_CalPacket.h"
+#include "mscl/MicroStrain/Wireless/Packets/HclSmartBearing_RawPacket.h"
+#include "mscl/MicroStrain/Wireless/Packets/LdcMathPacket.h"
+#include "mscl/MicroStrain/Wireless/Packets/LdcMathPacket_aspp3.h"
+#include "mscl/MicroStrain/Wireless/Packets/LdcPacket.h"
+#include "mscl/MicroStrain/Wireless/Packets/LdcPacket_v2.h"
+#include "mscl/MicroStrain/Wireless/Packets/LdcPacket_v2_aspp3.h"
+#include "mscl/MicroStrain/Wireless/Packets/RawAngleStrainPacket.h"
+#include "mscl/MicroStrain/Wireless/Packets/RfSweepPacket.h"
+#include "mscl/MicroStrain/Wireless/Packets/RollerPacket.h"
+#include "mscl/MicroStrain/Wireless/Packets/ShmPacket.h"
+#include "mscl/MicroStrain/Wireless/Packets/ShmPacket_v2_aspp3.h"
+#include "mscl/MicroStrain/Wireless/Packets/SyncSamplingMathPacket.h"
+#include "mscl/MicroStrain/Wireless/Packets/SyncSamplingMathPacket_aspp3.h"
+#include "mscl/MicroStrain/Wireless/Packets/SyncSamplingPacket.h"
+#include "mscl/MicroStrain/Wireless/Packets/SyncSamplingPacket_v2.h"
+#include "mscl/MicroStrain/Wireless/Packets/SyncSamplingPacket_v2_aspp3.h"
 
 namespace mscl
 {
-    WirelessPacketCollector::WirelessPacketCollector():
+    WirelessPacketCollector::WirelessPacketCollector() :
         m_dataPackets(MAX_DATA_BUFFER_SIZE),
         m_nodeDiscoveryPackets(MAX_DISCOVERY_BUFFER_SIZE)
-    {
-    }
+    {}
 
     //required (if taken out, causes runtime error on destruction of WirelessPacketCollector)
     WirelessPacketCollector::~WirelessPacketCollector()
-    {
-    }
+    {}
 
     void WirelessPacketCollector::addDataPacket(const WirelessPacket& packet)
     {
@@ -62,7 +58,7 @@ namespace mscl
            packetType != WirelessPacket::packetType_rfScanSweep &&
            packetType != WirelessPacket::packetType_beaconEcho)
         {
-            NodeCommTimes::updateDeviceState(packet.nodeAddress(), DeviceState::deviceState_sampling);
+            NodeCommTimes::updateDeviceState(packet.nodeAddress(), deviceState_sampling);
         }
 
         try
@@ -121,12 +117,12 @@ namespace mscl
                 }
             }
 
-            //notify the read thread, if it is waiting for data to be put into the buffer
+            //notify the read thread if it is waiting for data to be put into the buffer
             m_emptyBufferCondition.notify_one();
         }
         catch(std::exception&)
         {
-            //there was an error building one of the packets, just return
+            //there was an error building one of the packets, return
         }
     }
 
@@ -178,7 +174,7 @@ namespace mscl
         std::unique_lock<std::mutex> lock(m_packetMutex);
 
         //while we still need to get more sweeps (or we want to get all the sweeps)
-        while((sweepCount < maxSweeps) || (maxSweeps == 0))
+        while(sweepCount < maxSweeps || maxSweeps == 0)
         {
             //if there are no more sweeps in the current packet
             if(!m_currentDataPacket.moreSweeps())
@@ -186,7 +182,7 @@ namespace mscl
                 //if there are no packets
                 if(m_dataPackets.size() <= 0)
                 {
-                    //if there is a timeout and we haven't received any data
+                    //if there is a timeout, and we haven't received any data
                     if(timeout > 0 && sweepCount == 0)
                     {
                         //wait for the timeout or data to come in
@@ -265,4 +261,4 @@ namespace mscl
         //return the vector container
         return result;
     }
-}
+} // namespace mscl

@@ -6,7 +6,6 @@
 
 #pragma once
 
-#include "mscl/MicroStrain/ByteStream.h"
 #include "mscl/MicroStrain/Wireless/DeliveryStopFlags.h"
 #include "mscl/MicroStrain/Wireless/WirelessTypes.h"
 
@@ -145,8 +144,8 @@ namespace mscl
         //
         //    error_none            - 0x00 - No Error.
         //    error_unknownEeprom   - 0x01 - An Unknown/Unsupported Eeprom was attempted to be accessed.
-        //    error_outOfBounds     - 0x02 - An out of bounds value was attempted to be used.
-        //    error_readOnly        - 0x03 - Attempted to write to a read only Eeprom location.
+        //    error_outOfBounds     - 0x02 - An out-of-bounds value was attempted to be used.
+        //    error_readOnly        - 0x03 - Attempted to write to a read-only Eeprom location.
         //    error_hardwareError   - 0x04 - A hardware error has occurred.
         //===================================================
         enum ResponseErrorCode
@@ -158,12 +157,11 @@ namespace mscl
             error_hardwareError   = 0x04
         };
 
-    public:
         //Constructor: WirelessPacket
         //    The default constructor for a wireless packet
         WirelessPacket();
 
-        virtual ~WirelessPacket() {};
+        virtual ~WirelessPacket() {}
 
         //Function: throwEepromResponseError
         //    Throws an exception based on a <ResponseErrorCode> from a read/write eeprom command.
@@ -213,21 +211,21 @@ namespace mscl
 
     public:
         //Function: isDataPacket
-        //    Gets whether or not the packet is a Data packet.
+        //    Gets whether the packet is a Data packet.
         //
         //Returns:
         //    true if the packet is a data packet, false otherwise.
         //bool isDataPacket() const;
 
         //Function: isDataPacket
-        //    Gets whether or not the packet is a Data packet.
+        //    Gets whether the packet is a Data packet.
         //
         //Returns:
         //    true if the packet is a data packet, false otherwise.
         static bool isDataPacket(PacketType type);
 
         //Function: isDiscoveryPacket
-        //    Gets whether or not the packet is a Node Discovery packet.
+        //    Gets whether the packet is a Node Discovery packet.
         //
         //Returns:
         //    true if the packet is a discovery packet, false otherwise.
@@ -339,4 +337,4 @@ namespace mscl
         //    bytes - The payload of the packet, as a vector of bytes
         void payload(const Bytes& bytes);
     };
-}
+} // namespace mscl

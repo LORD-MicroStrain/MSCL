@@ -6,21 +6,17 @@
 
 #pragma once
 
-#include "mscl/MicroStrain/ByteStream.h"
-#include "WirelessResponsePattern.h"
-#include "mscl/Types.h"
+#include "mscl/MicroStrain/Wireless/Commands/WirelessResponsePattern.h"
 
 namespace mscl
 {
-    //Title: PageDownload
-
 #ifndef SWIG
+    //Title: PageDownload
 
     //Class: PageDownload
     //    Contains logic for the PageDownload Node command
     class PageDownload
     {
-    private:
         PageDownload();                                    //default constructor disabled
         PageDownload(const PageDownload&);                //copy constructor disabled
         PageDownload& operator=(const PageDownload&);    //assignment operator disabled
@@ -67,7 +63,7 @@ namespace mscl
             //
             //Returns:
             //    true if the bytes match a response pattern, false otherwise
-            virtual bool match(DataBuffer& data) override;
+            bool match(DataBuffer& data) override;
 
             //Function: dataPoints
             //    Gets the dataPoints that were downloaded from the Node
@@ -108,6 +104,5 @@ namespace mscl
             bool matchFailResponse(DataBuffer& data) override;
         };
     };
-
-#endif
-}
+#endif // !SWIG
+} // namespace mscl

@@ -5,6 +5,7 @@
 *****************************************************************************************/
 
 #include "mscl/MicroStrain/Inertial/Commands/System_Commands.h"
+
 #include "mscl/MicroStrain/MIP/Commands/MIP_Commands.h"
 
 namespace mscl
@@ -47,7 +48,7 @@ namespace mscl
         return GenericMipCommand::buildCommand(CMD_ID, fieldData.data());
     }
 
-    InterfaceControl::Response::Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse):
+    InterfaceControl::Response::Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse) :
         GenericMipCommand::Response(MipTypes::CMD_INTERFACE_CONTROL, collector, true, dataResponse, "Interface Control")
     {}
 
@@ -89,7 +90,7 @@ namespace mscl
         return GenericMipCommand::buildCommand(CMD_ID, fieldData.data());
     }
 
-    CommunicationMode::Response::Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse):
+    CommunicationMode::Response::Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse) :
         GenericMipCommand::Response(MipTypes::CMD_COMMUNICATION_MODE, collector, true, dataResponse, "Communication Mode")
     {}
 
@@ -98,4 +99,4 @@ namespace mscl
         return MIP_Commands::parseData_CommunicationMode(response);
     }
     //==========================================================================================
-}
+} // namespace mscl

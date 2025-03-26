@@ -4,15 +4,14 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "NodeFeatures_vlink.h"
-#include "AvailableSampleRates.h"
-#include "mscl/MicroStrain/Wireless/ChannelMask.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures_vlink.h"
+
 #include "mscl/MicroStrain/Wireless/Configuration/NodeEepromMap.h"
+#include "mscl/MicroStrain/Wireless/Features/AvailableSampleRates.h"
 
 namespace mscl
 {
-    NodeFeatures_vlink::NodeFeatures_vlink(const NodeInfo& info):
+    NodeFeatures_vlink::NodeFeatures_vlink(const NodeInfo& info) :
         NodeFeatures(info)
     {
         //Channels
@@ -24,7 +23,6 @@ namespace mscl
         m_channels.emplace_back(6, WirelessChannel::channel_6, WirelessTypes::chType_singleEnded, "Single-ended", 16);
         m_channels.emplace_back(7, WirelessChannel::channel_7, WirelessTypes::chType_singleEnded, "Single-ended", 16);
         m_channels.emplace_back(8, WirelessChannel::channel_8, WirelessTypes::chType_temperature, "Internal Temperature");
-
 
         //Channel Groups
         static const ChannelMask DIFFERENTIAL_CH1(BOOST_BINARY(00000001));    //ch1
@@ -126,7 +124,8 @@ namespace mscl
                     return WirelessTypes::sampleRate_2kHz;
             }
         }
-        else if(samplingMode == WirelessTypes::samplingMode_armedDatalog)
+
+        if(samplingMode == WirelessTypes::samplingMode_armedDatalog)
         {
             //determine the actual max rate based on the # of active channels
             switch(channelCount)
@@ -149,12 +148,10 @@ namespace mscl
                     return WirelessTypes::sampleRate_3kHz;
             }
         }
+
         //number of channels has no affect on sample rate
-        else
-        {
-            //just return the result of the parent class' function
-            return NodeFeatures::maxSampleRate(samplingMode, channels, dataCollectionMethod, dataMode);
-        }
+        //just return the result of the parent class' function
+        return NodeFeatures::maxSampleRate(samplingMode, channels, dataCollectionMethod, dataMode);
     }
 
     const uint32 NodeFeatures_vlink::minSensorDelay() const
@@ -186,4 +183,4 @@ namespace mscl
 
         return static_cast<uint32>(TimeSpan::MilliSeconds(10).getMicroseconds());     //10 milliseconds
     }
-}
+} // namespace mscl

@@ -4,20 +4,17 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-
-#include "ActivitySense.h"
+#include "mscl/MicroStrain/Wireless/Configuration/ActivitySense.h"
 
 namespace mscl
 {
-    ActivitySense::ActivitySense():
+    ActivitySense::ActivitySense() :
         m_enabled(false),
         m_activityThreshold(0.0),
         m_inactivityThreshold(0.0),
         m_activityTime(0.0),
         m_inactivityTimeout(0.0)
-    {
-    }
+    {}
 
     bool ActivitySense::enabled() const
     {
@@ -68,4 +65,4 @@ namespace mscl
     {
         m_inactivityTimeout = timeout;
     }
-}
+} // namespace mscl

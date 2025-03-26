@@ -4,13 +4,9 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
+#include "mscl/MicroStrain/Wireless/Packets/LdcMathPacket_aspp3.h"
 
-#include "LdcMathPacket_aspp3.h"
-#include "mscl/MicroStrain/SampleUtils.h"
-#include "mscl/MicroStrain/Wireless/ChannelMask.h"
-#include "mscl/Utils.h"
-
+#include "mscl/MicroStrain/Wireless/DataSweep.h"
 
 namespace mscl
 {
@@ -35,7 +31,7 @@ namespace mscl
 
         //read the values from the payload
         payload.skipBytes(5);       //skipping model and Rate at which raw data was sampled (throwing away for now)
-        uint32 calculationRate      = payload.read_uint32();    //Rate at which processed data was sampled
+        uint32 calculationRate      = payload.read_uint32();    //The rate at which processed data was sampled
         uint16 tick                 = payload.read_uint16();
         const uint8 numAlgorithms   = payload.read_uint8();     //The number of algorithms being used
 
@@ -54,8 +50,8 @@ namespace mscl
             rate = SampleRate::Seconds(calculationRate);
         }
 
-        //build up the Algorithm Meta Data
-        std::vector<WirelessDataPacket::AlgorithmMetaData> metaData;
+        //build up the Algorithm Metadata
+        std::vector<AlgorithmMetaData> metaData;
         metaData.reserve(numAlgorithms);
         for(uint8 i = 0; i < numAlgorithms; ++i)
         {
@@ -95,7 +91,7 @@ namespace mscl
                 if(!alg.channelMask.enabled(chItr)) { continue; }
 
                 //add channel data
-                WirelessChannel::ChannelId channelId = WirelessDataPacket::getMathChannelId(alg.algorithmId, chItr);
+                WirelessChannel::ChannelId channelId = getMathChannelId(alg.algorithmId, chItr);
 
                 //create the ChannelMask property indicating which channel it was derived from
                 ChannelMask propertyChMask;
@@ -118,7 +114,7 @@ namespace mscl
 
     bool LdcMathPacket_aspp3::integrityCheck(const WirelessPacket& packet)
     {
-        const WirelessPacket::Payload& payload = packet.payload();
+        const Payload& payload = packet.payload();
 
         //verify the payload size
         if(payload.size() < 19)
@@ -159,7 +155,7 @@ namespace mscl
 
         //verify we have the expected number of channel bytes
         //  payload length - (# algorithms * 3 bytes per algorithm) - 8 standard payload bytes
-        if(expectedChannelBytes != (payload.size() - (numAlgorithms * 3) - 12))
+        if(expectedChannelBytes != payload.size() - numAlgorithms * 3 - 12)
         {
             return false;
         }
@@ -175,4 +171,4 @@ namespace mscl
         //return the tick value
         return packet.payload().read_uint16(PAYLOAD_OFFSET_TICK);
     }
-}
+} // namespace mscl

@@ -4,15 +4,13 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
+#include "mscl/MicroStrain/Inertial/Packets/InertialFieldParser_EstFilter.h"
 
-#include "InertialFieldParser_EstFilter.h"
-#include "mscl/MicroStrain/MIP/Packets/MipDataPacket.h"
-#include "mscl/MicroStrain/DataBuffer.h"
+#include "mscl/MicroStrain/MIP/MipDataField.h"
 
 namespace mscl
 {
-    //the classes in this file do not get referenced anywhere, therefore the
+    //the classes in this file do not get referenced anywhere, therefore, the
     //linker will not include this compilation unit when statically
     //linking to an executable. Defining this variable, and then using it
     //elsewhere, will force this file to be included
@@ -21,7 +19,7 @@ namespace mscl
     //=====================================================================================================================================================
     //                                                        FieldParser_FilterStatus
     const MipTypes::ChannelField FieldParser_FilterStatus::FIELD_TYPE = MipTypes::CH_FIELD_ESTFILTER_FILTER_STATUS;
-    const bool FieldParser_FilterStatus::REGISTERED = FieldParser_FilterStatus::registerParser();    //register the parser immediately
+    const bool FieldParser_FilterStatus::REGISTERED = registerParser();    //register the parser immediately
 
     void FieldParser_FilterStatus::parse(const MipDataField& field, MipDataPoints& result) const
     {
@@ -52,7 +50,7 @@ namespace mscl
     //=====================================================================================================================================================
     //                                                        FieldParser_NAV_GPS_Timestamp
     const MipTypes::ChannelField FieldParser_NAV_GPS_Timestamp::FIELD_TYPE = MipTypes::CH_FIELD_ESTFILTER_GPS_TIMESTAMP;
-    const bool FieldParser_NAV_GPS_Timestamp::REGISTERED = FieldParser_NAV_GPS_Timestamp::registerParser();    //register the parser immediately
+    const bool FieldParser_NAV_GPS_Timestamp::REGISTERED = registerParser();    //register the parser immediately
 
     void FieldParser_NAV_GPS_Timestamp::parse(const MipDataField& field, MipDataPoints& result) const
     {
@@ -85,7 +83,7 @@ namespace mscl
     //=====================================================================================================================================================
     //                                                        FieldParser_EstimatedLLHPosition
     const MipTypes::ChannelField FieldParser_EstimatedLLHPosition::FIELD_TYPE = MipTypes::CH_FIELD_ESTFILTER_ESTIMATED_LLH_POS;
-    const bool FieldParser_EstimatedLLHPosition::REGISTERED = FieldParser_EstimatedLLHPosition::registerParser();    //register the parser immediately
+    const bool FieldParser_EstimatedLLHPosition::REGISTERED = registerParser();    //register the parser immediately
 
     void FieldParser_EstimatedLLHPosition::parse(const MipDataField& field, MipDataPoints& result) const
     {
@@ -122,7 +120,7 @@ namespace mscl
     //=====================================================================================================================================================
     //                                                        FieldParser_EstimatedNEDVelocity
     const MipTypes::ChannelField FieldParser_EstimatedNEDVelocity::FIELD_TYPE = MipTypes::CH_FIELD_ESTFILTER_ESTIMATED_NED_VELOCITY;
-    const bool FieldParser_EstimatedNEDVelocity::REGISTERED = FieldParser_EstimatedNEDVelocity::registerParser();    //register the parser immediately
+    const bool FieldParser_EstimatedNEDVelocity::REGISTERED = registerParser();    //register the parser immediately
 
     void FieldParser_EstimatedNEDVelocity::parse(const MipDataField& field, MipDataPoints& result) const
     {
@@ -159,7 +157,7 @@ namespace mscl
     //=====================================================================================================================================================
     //                                                        FieldParser_EstimatedQuaternion
     const MipTypes::ChannelField FieldParser_EstimatedQuaternion::FIELD_TYPE = MipTypes::CH_FIELD_ESTFILTER_ESTIMATED_ORIENT_QUATERNION;
-    const bool FieldParser_EstimatedQuaternion::REGISTERED = FieldParser_EstimatedQuaternion::registerParser();    //register the parser immediately
+    const bool FieldParser_EstimatedQuaternion::REGISTERED = registerParser();    //register the parser immediately
 
     void FieldParser_EstimatedQuaternion::parse(const MipDataField& field, MipDataPoints& result) const
     {
@@ -187,7 +185,7 @@ namespace mscl
     //=====================================================================================================================================================
     //                                                        FieldParser_EstimatedMatrix
     const MipTypes::ChannelField FieldParser_EstimatedMatrix::FIELD_TYPE = MipTypes::CH_FIELD_ESTFILTER_ESTIMATED_ORIENT_MATRIX;
-    const bool FieldParser_EstimatedMatrix::REGISTERED = FieldParser_EstimatedMatrix::registerParser();    //register the parser immediately
+    const bool FieldParser_EstimatedMatrix::REGISTERED = registerParser();    //register the parser immediately
 
     void FieldParser_EstimatedMatrix::parse(const MipDataField& field, MipDataPoints& result) const
     {
@@ -215,7 +213,7 @@ namespace mscl
     //=====================================================================================================================================================
     //                                                        FieldParser_EstimatedEulerAngles
     const MipTypes::ChannelField FieldParser_EstimatedEulerAngles::FIELD_TYPE = MipTypes::CH_FIELD_ESTFILTER_ESTIMATED_ORIENT_EULER;
-    const bool FieldParser_EstimatedEulerAngles::REGISTERED = FieldParser_EstimatedEulerAngles::registerParser();    //register the parser immediately
+    const bool FieldParser_EstimatedEulerAngles::REGISTERED = registerParser();    //register the parser immediately
 
     void FieldParser_EstimatedEulerAngles::parse(const MipDataField& field, MipDataPoints& result) const
     {
@@ -248,7 +246,7 @@ namespace mscl
     //=====================================================================================================================================================
     //                                                        FieldParser_EstimatedGyroBias
     const MipTypes::ChannelField FieldParser_EstimatedGyroBias::FIELD_TYPE = MipTypes::CH_FIELD_ESTFILTER_ESTIMATED_GYRO_BIAS;
-    const bool FieldParser_EstimatedGyroBias::REGISTERED = FieldParser_EstimatedGyroBias::registerParser();    //register the parser immediately
+    const bool FieldParser_EstimatedGyroBias::REGISTERED = registerParser();    //register the parser immediately
 
     void FieldParser_EstimatedGyroBias::parse(const MipDataField& field, MipDataPoints& result) const
     {
@@ -281,7 +279,7 @@ namespace mscl
     //=====================================================================================================================================================
     //                                                        FieldParser_EstimatedAccelBias
     const MipTypes::ChannelField FieldParser_EstimatedAccelBias::FIELD_TYPE = MipTypes::CH_FIELD_ESTFILTER_ESTIMATED_ACCEL_BIAS;
-    const bool FieldParser_EstimatedAccelBias::REGISTERED = FieldParser_EstimatedAccelBias::registerParser();    //register the parser immediately
+    const bool FieldParser_EstimatedAccelBias::REGISTERED = registerParser();    //register the parser immediately
 
     void FieldParser_EstimatedAccelBias::parse(const MipDataField& field, MipDataPoints& result) const
     {
@@ -314,7 +312,7 @@ namespace mscl
     //=====================================================================================================================================================
     //                                                        FieldParser_EstimatedLLHPosUncertainty
     const MipTypes::ChannelField FieldParser_EstimatedLLHPosUncertainty::FIELD_TYPE = MipTypes::CH_FIELD_ESTFILTER_ESTIMATED_LLH_UNCERT;
-    const bool FieldParser_EstimatedLLHPosUncertainty::REGISTERED = FieldParser_EstimatedLLHPosUncertainty::registerParser();    //register the parser immediately
+    const bool FieldParser_EstimatedLLHPosUncertainty::REGISTERED = registerParser();    //register the parser immediately
 
     void FieldParser_EstimatedLLHPosUncertainty::parse(const MipDataField& field, MipDataPoints& result) const
     {
@@ -347,7 +345,7 @@ namespace mscl
     //=====================================================================================================================================================
     //                                                        FieldParser_EstimatedNEDUncertainty
     const MipTypes::ChannelField FieldParser_EstimatedNEDUncertainty::FIELD_TYPE = MipTypes::CH_FIELD_ESTFILTER_ESTIMATED_NED_UNCERT;
-    const bool FieldParser_EstimatedNEDUncertainty::REGISTERED = FieldParser_EstimatedNEDUncertainty::registerParser();    //register the parser immediately
+    const bool FieldParser_EstimatedNEDUncertainty::REGISTERED = registerParser();    //register the parser immediately
 
     void FieldParser_EstimatedNEDUncertainty::parse(const MipDataField& field, MipDataPoints& result) const
     {
@@ -380,7 +378,7 @@ namespace mscl
     //=====================================================================================================================================================
     //                                                        FieldParser_EstimatedAttEulerUncertainty
     const MipTypes::ChannelField FieldParser_EstimatedAttEulerUncertainty::FIELD_TYPE = MipTypes::CH_FIELD_ESTFILTER_ESTIMATED_ATT_UNCERT_EULER;
-    const bool FieldParser_EstimatedAttEulerUncertainty::REGISTERED = FieldParser_EstimatedAttEulerUncertainty::registerParser();    //register the parser immediately
+    const bool FieldParser_EstimatedAttEulerUncertainty::REGISTERED = registerParser();    //register the parser immediately
 
     void FieldParser_EstimatedAttEulerUncertainty::parse(const MipDataField& field, MipDataPoints& result) const
     {
@@ -413,7 +411,7 @@ namespace mscl
     //=====================================================================================================================================================
     //                                                        FieldParser_EstimatedGyroBiasUncertainty
     const MipTypes::ChannelField FieldParser_EstimatedGyroBiasUncertainty::FIELD_TYPE = MipTypes::CH_FIELD_ESTFILTER_ESTIMATED_GYRO_BIAS_UNCERT;
-    const bool FieldParser_EstimatedGyroBiasUncertainty::REGISTERED = FieldParser_EstimatedGyroBiasUncertainty::registerParser();    //register the parser immediately
+    const bool FieldParser_EstimatedGyroBiasUncertainty::REGISTERED = registerParser();    //register the parser immediately
 
     void FieldParser_EstimatedGyroBiasUncertainty::parse(const MipDataField& field, MipDataPoints& result) const
     {
@@ -446,7 +444,7 @@ namespace mscl
     //=====================================================================================================================================================
     //                                                        FieldParser_EstimatedAccelBiasUncertainty
     const MipTypes::ChannelField FieldParser_EstimatedAccelBiasUncertainty::FIELD_TYPE = MipTypes::CH_FIELD_ESTFILTER_ESTIMATED_ACCEL_BIAS_UNCERT;
-    const bool FieldParser_EstimatedAccelBiasUncertainty::REGISTERED = FieldParser_EstimatedAccelBiasUncertainty::registerParser();    //register the parser immediately
+    const bool FieldParser_EstimatedAccelBiasUncertainty::REGISTERED = registerParser();    //register the parser immediately
 
     void FieldParser_EstimatedAccelBiasUncertainty::parse(const MipDataField& field, MipDataPoints& result) const
     {
@@ -479,7 +477,7 @@ namespace mscl
     //=====================================================================================================================================================
     //                                                        FieldParser_EstimatedLinearAccel
     const MipTypes::ChannelField FieldParser_EstimatedLinearAccel::FIELD_TYPE = MipTypes::CH_FIELD_ESTFILTER_ESTIMATED_LINEAR_ACCEL;
-    const bool FieldParser_EstimatedLinearAccel::REGISTERED = FieldParser_EstimatedLinearAccel::registerParser();    //register the parser immediately
+    const bool FieldParser_EstimatedLinearAccel::REGISTERED = registerParser();    //register the parser immediately
 
     void FieldParser_EstimatedLinearAccel::parse(const MipDataField& field, MipDataPoints& result) const
     {
@@ -512,7 +510,7 @@ namespace mscl
     //=====================================================================================================================================================
     //                                                        FieldParser_EstimatedAngularRate
     const MipTypes::ChannelField FieldParser_EstimatedAngularRate::FIELD_TYPE = MipTypes::CH_FIELD_ESTFILTER_ESTIMATED_ANGULAR_RATE;
-    const bool FieldParser_EstimatedAngularRate::REGISTERED = FieldParser_EstimatedAngularRate::registerParser();    //register the parser immediately
+    const bool FieldParser_EstimatedAngularRate::REGISTERED = registerParser();    //register the parser immediately
 
     void FieldParser_EstimatedAngularRate::parse(const MipDataField& field, MipDataPoints& result) const
     {
@@ -545,7 +543,7 @@ namespace mscl
     //=====================================================================================================================================================
     //                                                        FieldParser_WGS84LocalGravMagnitude
     const MipTypes::ChannelField FieldParser_WGS84LocalGravMagnitude::FIELD_TYPE = MipTypes::CH_FIELD_ESTFILTER_WGS84_LOC_GRAV_MAGNITUDE;
-    const bool FieldParser_WGS84LocalGravMagnitude::REGISTERED = FieldParser_WGS84LocalGravMagnitude::registerParser();    //register the parser immediately
+    const bool FieldParser_WGS84LocalGravMagnitude::REGISTERED = registerParser();    //register the parser immediately
 
     void FieldParser_WGS84LocalGravMagnitude::parse(const MipDataField& field, MipDataPoints& result) const
     {
@@ -574,7 +572,7 @@ namespace mscl
     //=====================================================================================================================================================
     //                                                        FieldParser_EstimatedAttQuaternUncertainty
     const MipTypes::ChannelField FieldParser_EstimatedAttQuaternUncertainty::FIELD_TYPE = MipTypes::CH_FIELD_ESTFILTER_ESTIMATED_ATT_UNCERT_QUAT;
-    const bool FieldParser_EstimatedAttQuaternUncertainty::REGISTERED = FieldParser_EstimatedAttQuaternUncertainty::registerParser();    //register the parser immediately
+    const bool FieldParser_EstimatedAttQuaternUncertainty::REGISTERED = registerParser();    //register the parser immediately
 
     void FieldParser_EstimatedAttQuaternUncertainty::parse(const MipDataField& field, MipDataPoints& result) const
     {
@@ -602,7 +600,7 @@ namespace mscl
     //=====================================================================================================================================================
     //                                                        FieldParser_EstimatedGravityVector
     const MipTypes::ChannelField FieldParser_EstimatedGravityVector::FIELD_TYPE = MipTypes::CH_FIELD_ESTFILTER_ESTIMATED_GRAVITY_VECTOR;
-    const bool FieldParser_EstimatedGravityVector::REGISTERED = FieldParser_EstimatedGravityVector::registerParser();    //register the parser immediately
+    const bool FieldParser_EstimatedGravityVector::REGISTERED = registerParser();    //register the parser immediately
 
     void FieldParser_EstimatedGravityVector::parse(const MipDataField& field, MipDataPoints& result) const
     {
@@ -635,7 +633,7 @@ namespace mscl
     //=====================================================================================================================================================
     //                                                        FieldParser_HeadingUpdateSource
     const MipTypes::ChannelField FieldParser_HeadingUpdateSource::FIELD_TYPE = MipTypes::CH_FIELD_ESTFILTER_HEADING_UPDATE_SOURCE;
-    const bool FieldParser_HeadingUpdateSource::REGISTERED = FieldParser_HeadingUpdateSource::registerParser();    //register the parser immediately
+    const bool FieldParser_HeadingUpdateSource::REGISTERED = registerParser();    //register the parser immediately
 
     void FieldParser_HeadingUpdateSource::parse(const MipDataField& field, MipDataPoints& result) const
     {
@@ -672,7 +670,7 @@ namespace mscl
     //=====================================================================================================================================================
     //                                                        FieldParser_MagneticModelSolution
     const MipTypes::ChannelField FieldParser_MagneticModelSolution::FIELD_TYPE = MipTypes::CH_FIELD_ESTFILTER_MAGNETIC_MODEL_SLN;
-    const bool FieldParser_MagneticModelSolution::REGISTERED = FieldParser_MagneticModelSolution::registerParser();    //register the parser immediately
+    const bool FieldParser_MagneticModelSolution::REGISTERED = registerParser();    //register the parser immediately
 
     void FieldParser_MagneticModelSolution::parse(const MipDataField& field, MipDataPoints& result) const
     {
@@ -709,7 +707,7 @@ namespace mscl
     //=====================================================================================================================================================
     //                                                        FieldParser_EstimatedGyroScaleFactor
     const MipTypes::ChannelField FieldParser_EstimatedGyroScaleFactor::FIELD_TYPE = MipTypes::CH_FIELD_ESTFILTER_ESTIMATED_GYRO_SCALE_FACTOR;
-    const bool FieldParser_EstimatedGyroScaleFactor::REGISTERED = FieldParser_EstimatedGyroScaleFactor::registerParser();    //register the parser immediately
+    const bool FieldParser_EstimatedGyroScaleFactor::REGISTERED = registerParser();    //register the parser immediately
 
     void FieldParser_EstimatedGyroScaleFactor::parse(const MipDataField& field, MipDataPoints& result) const
     {
@@ -742,7 +740,7 @@ namespace mscl
     //=====================================================================================================================================================
     //                                                        FieldParser_EstimatedAccelScaleFactor
     const MipTypes::ChannelField FieldParser_EstimatedAccelScaleFactor::FIELD_TYPE = MipTypes::CH_FIELD_ESTFILTER_ACCEL_SCALE_FACTOR;
-    const bool FieldParser_EstimatedAccelScaleFactor::REGISTERED = FieldParser_EstimatedAccelScaleFactor::registerParser();    //register the parser immediately
+    const bool FieldParser_EstimatedAccelScaleFactor::REGISTERED = registerParser();    //register the parser immediately
 
     void FieldParser_EstimatedAccelScaleFactor::parse(const MipDataField& field, MipDataPoints& result) const
     {
@@ -775,7 +773,7 @@ namespace mscl
     //=====================================================================================================================================================
     //                                                        FieldParser_EstimatedGyroScaleFactorUncertainty
     const MipTypes::ChannelField FieldParser_EstimatedGyroScaleFactorUncertainty::FIELD_TYPE = MipTypes::CH_FIELD_ESTFILTER_GYRO_SCALE_FACTOR_UNCERT;
-    const bool FieldParser_EstimatedGyroScaleFactorUncertainty::REGISTERED = FieldParser_EstimatedGyroScaleFactorUncertainty::registerParser();    //register the parser immediately
+    const bool FieldParser_EstimatedGyroScaleFactorUncertainty::REGISTERED = registerParser();    //register the parser immediately
 
     void FieldParser_EstimatedGyroScaleFactorUncertainty::parse(const MipDataField& field, MipDataPoints& result) const
     {
@@ -805,12 +803,10 @@ namespace mscl
     }
     //=====================================================================================================================================================
 
-
-
     //=====================================================================================================================================================
     //                                                        FieldParser_EstimatedAccelScaleFactorUncertainty
     const MipTypes::ChannelField FieldParser_EstimatedAccelScaleFactorUncertainty::FIELD_TYPE = MipTypes::CH_FIELD_ESTFILTER_ACCEL_SCALE_FACTOR_UNCERT;
-    const bool FieldParser_EstimatedAccelScaleFactorUncertainty::REGISTERED = FieldParser_EstimatedAccelScaleFactorUncertainty::registerParser();    //register the parser immediately
+    const bool FieldParser_EstimatedAccelScaleFactorUncertainty::REGISTERED = registerParser();    //register the parser immediately
 
     void FieldParser_EstimatedAccelScaleFactorUncertainty::parse(const MipDataField& field, MipDataPoints& result) const
     {
@@ -843,7 +839,7 @@ namespace mscl
     //=====================================================================================================================================================
     //                                                        FieldParser_MagBias
     const MipTypes::ChannelField FieldParser_MagBias::FIELD_TYPE = MipTypes::CH_FIELD_ESTFILTER_MAG_BIAS;
-    const bool FieldParser_MagBias::REGISTERED = FieldParser_MagBias::registerParser();    //register the parser immediately
+    const bool FieldParser_MagBias::REGISTERED = registerParser();    //register the parser immediately
 
     void FieldParser_MagBias::parse(const MipDataField& field, MipDataPoints& result) const
     {
@@ -876,7 +872,7 @@ namespace mscl
     //=====================================================================================================================================================
     //                                                        FieldParser_CompensatedAccel
     const MipTypes::ChannelField FieldParser_CompensatedAccel::FIELD_TYPE = MipTypes::CH_FIELD_ESTFILTER_COMPENSATED_ACCEL;
-    const bool FieldParser_CompensatedAccel::REGISTERED = FieldParser_CompensatedAccel::registerParser();    //register the parser immediately
+    const bool FieldParser_CompensatedAccel::REGISTERED = registerParser();    //register the parser immediately
 
     void FieldParser_CompensatedAccel::parse(const MipDataField& field, MipDataPoints& result) const
     {
@@ -906,11 +902,10 @@ namespace mscl
     }
     //=====================================================================================================================================================
 
-
     //=====================================================================================================================================================
     //                                                        FieldParser_StdAtmModel
     const MipTypes::ChannelField FieldParser_StdAtmModel::FIELD_TYPE = MipTypes::CH_FIELD_ESTFILTER_STD_ATMOSPHERE_MODEL;
-    const bool FieldParser_StdAtmModel::REGISTERED = FieldParser_StdAtmModel::registerParser();    //register the parser immediately
+    const bool FieldParser_StdAtmModel::REGISTERED = registerParser();    //register the parser immediately
 
     void FieldParser_StdAtmModel::parse(const MipDataField& field, MipDataPoints& result) const
     {
@@ -947,7 +942,7 @@ namespace mscl
     //=====================================================================================================================================================
     //                                                        FieldParser_PressureAlt
     const MipTypes::ChannelField FieldParser_PressureAlt::FIELD_TYPE = MipTypes::CH_FIELD_ESTFILTER_PRESSURE_ALTITUDE;
-    const bool FieldParser_PressureAlt::REGISTERED = FieldParser_PressureAlt::registerParser();    //register the parser immediately
+    const bool FieldParser_PressureAlt::REGISTERED = registerParser();    //register the parser immediately
 
     void FieldParser_PressureAlt::parse(const MipDataField& field, MipDataPoints& result) const
     {
@@ -976,7 +971,7 @@ namespace mscl
     //=====================================================================================================================================================
     //                                                        FieldParser_MagAutoHardIronOffset
     const MipTypes::ChannelField FieldParser_MagAutoHardIronOffset::FIELD_TYPE = MipTypes::CH_FIELD_ESTFILTER_MAG_AUTO_HARD_IRON_OFFSET;
-    const bool FieldParser_MagAutoHardIronOffset::REGISTERED = FieldParser_MagAutoHardIronOffset::registerParser();    //register the parser immediately
+    const bool FieldParser_MagAutoHardIronOffset::REGISTERED = registerParser();    //register the parser immediately
 
     void FieldParser_MagAutoHardIronOffset::parse(const MipDataField& field, MipDataPoints& result) const
     {
@@ -1009,7 +1004,7 @@ namespace mscl
     //=====================================================================================================================================================
     //                                                        FieldParser_MagAutoSoftIronMatrix
     const MipTypes::ChannelField FieldParser_MagAutoSoftIronMatrix::FIELD_TYPE = MipTypes::CH_FIELD_ESTFILTER_MAG_AUTO_SOFT_IRON_MATRIX;
-    const bool FieldParser_MagAutoSoftIronMatrix::REGISTERED = FieldParser_MagAutoSoftIronMatrix::registerParser();    //register the parser immediately
+    const bool FieldParser_MagAutoSoftIronMatrix::REGISTERED = registerParser();    //register the parser immediately
 
     void FieldParser_MagAutoSoftIronMatrix::parse(const MipDataField& field, MipDataPoints& result) const
     {
@@ -1037,7 +1032,7 @@ namespace mscl
     //=====================================================================================================================================================
     //                                                        FieldParser_MagAutoHardIronOffsetUncert
     const MipTypes::ChannelField FieldParser_MagAutoHardIronOffsetUncert::FIELD_TYPE = MipTypes::CH_FIELD_ESTFILTER_MAG_AUTO_HARD_IRON_OFFSET_UNCERT;
-    const bool FieldParser_MagAutoHardIronOffsetUncert::REGISTERED = FieldParser_MagAutoHardIronOffsetUncert::registerParser();    //register the parser immediately
+    const bool FieldParser_MagAutoHardIronOffsetUncert::REGISTERED = registerParser();    //register the parser immediately
 
     void FieldParser_MagAutoHardIronOffsetUncert::parse(const MipDataField& field, MipDataPoints& result) const
     {
@@ -1070,7 +1065,7 @@ namespace mscl
     //=====================================================================================================================================================
     //                                                        FieldParser_MagBiasUncert
     const MipTypes::ChannelField FieldParser_MagBiasUncert::FIELD_TYPE = MipTypes::CH_FIELD_ESTFILTER_MAG_BIAS_UNCERT;
-    const bool FieldParser_MagBiasUncert::REGISTERED = FieldParser_MagBiasUncert::registerParser();    //register the parser immediately
+    const bool FieldParser_MagBiasUncert::REGISTERED = registerParser();    //register the parser immediately
 
     void FieldParser_MagBiasUncert::parse(const MipDataField& field, MipDataPoints& result) const
     {
@@ -1103,7 +1098,7 @@ namespace mscl
     //=====================================================================================================================================================
     //                                                        FieldParser_MagAutoSoftIronMatrixUncert
     const MipTypes::ChannelField FieldParser_MagAutoSoftIronMatrixUncert::FIELD_TYPE = MipTypes::CH_FIELD_ESTFILTER_MAG_AUTO_SOFT_IRON_MATRIX_UNCERT;
-    const bool FieldParser_MagAutoSoftIronMatrixUncert::REGISTERED = FieldParser_MagAutoSoftIronMatrixUncert::registerParser();    //register the parser immediately
+    const bool FieldParser_MagAutoSoftIronMatrixUncert::REGISTERED = registerParser();    //register the parser immediately
 
     void FieldParser_MagAutoSoftIronMatrixUncert::parse(const MipDataField& field, MipDataPoints& result) const
     {
@@ -1131,7 +1126,7 @@ namespace mscl
     //=====================================================================================================================================================
     //                                                        FieldParser_MagCovarianceMatrix
     const MipTypes::ChannelField FieldParser_MagCovarianceMatrix::FIELD_TYPE = MipTypes::CH_FIELD_ESTFILTER_MAG_COVARIANCE_MATRIX;
-    const bool FieldParser_MagCovarianceMatrix::REGISTERED = FieldParser_MagCovarianceMatrix::registerParser();    //register the parser immediately
+    const bool FieldParser_MagCovarianceMatrix::REGISTERED = registerParser();    //register the parser immediately
 
     void FieldParser_MagCovarianceMatrix::parse(const MipDataField& field, MipDataPoints& result) const
     {
@@ -1160,7 +1155,7 @@ namespace mscl
     //=====================================================================================================================================================
     //                                                        FieldParser_MagResidualVector
     const MipTypes::ChannelField FieldParser_MagResidualVector::FIELD_TYPE = MipTypes::CH_FIELD_ESTFILTER_MAG_RESIDUAL_VECTOR;
-    const bool FieldParser_MagResidualVector::REGISTERED = FieldParser_MagResidualVector::registerParser();    //register the parser immediately
+    const bool FieldParser_MagResidualVector::REGISTERED = registerParser();    //register the parser immediately
 
     void FieldParser_MagResidualVector::parse(const MipDataField& field, MipDataPoints& result) const
     {
@@ -1188,7 +1183,7 @@ namespace mscl
     //=====================================================================================================================================================
     //                                                        FieldParser_GnssAntennaOffsetCorrection
     const MipTypes::ChannelField FieldParser_GnssAntennaOffsetCorrection::FIELD_TYPE = MipTypes::CH_FIELD_ESTFILTER_GNSS_ANTENNA_CORRECTION;
-    const bool FieldParser_GnssAntennaOffsetCorrection::REGISTERED = FieldParser_GnssAntennaOffsetCorrection::registerParser();    //register the parser immediately
+    const bool FieldParser_GnssAntennaOffsetCorrection::REGISTERED = registerParser();    //register the parser immediately
 
     void FieldParser_GnssAntennaOffsetCorrection::parse(const MipDataField& field, MipDataPoints& result) const
     {
@@ -1221,7 +1216,7 @@ namespace mscl
     //=====================================================================================================================================================
     //                                                        FieldParser_GnssAntennaOffsetCorrectionUncert
     const MipTypes::ChannelField FieldParser_GnssAntennaOffsetCorrectionUncert::FIELD_TYPE = MipTypes::CH_FIELD_ESTFILTER_GNSS_ANTENNA_CORRECTION_UNCERT;
-    const bool FieldParser_GnssAntennaOffsetCorrectionUncert::REGISTERED = FieldParser_GnssAntennaOffsetCorrectionUncert::registerParser();    //register the parser immediately
+    const bool FieldParser_GnssAntennaOffsetCorrectionUncert::REGISTERED = registerParser();    //register the parser immediately
 
     void FieldParser_GnssAntennaOffsetCorrectionUncert::parse(const MipDataField& field, MipDataPoints& result) const
     {
@@ -1254,7 +1249,7 @@ namespace mscl
     //=====================================================================================================================================================
     //                                                        FieldParser_GnssClockCorrection
     const MipTypes::ChannelField FieldParser_GnssClockCorrection::FIELD_TYPE = MipTypes::CH_FIELD_ESTFILTER_GNSS_CLOCK_CORRECTION;
-    const bool FieldParser_GnssClockCorrection::REGISTERED = FieldParser_GnssClockCorrection::registerParser();    //register the parser immediately
+    const bool FieldParser_GnssClockCorrection::REGISTERED = registerParser();    //register the parser immediately
 
     void FieldParser_GnssClockCorrection::parse(const MipDataField& field, MipDataPoints& result) const
     {
@@ -1291,7 +1286,7 @@ namespace mscl
     //=====================================================================================================================================================
     //                                                        FieldParser_GnssClockCorrectionUncert
     const MipTypes::ChannelField FieldParser_GnssClockCorrectionUncert::FIELD_TYPE = MipTypes::CH_FIELD_ESTFILTER_GNSS_CLOCK_CORRECTION_UNCERT;
-    const bool FieldParser_GnssClockCorrectionUncert::REGISTERED = FieldParser_GnssClockCorrectionUncert::registerParser();    //register the parser immediately
+    const bool FieldParser_GnssClockCorrectionUncert::REGISTERED = registerParser();    //register the parser immediately
 
     void FieldParser_GnssClockCorrectionUncert::parse(const MipDataField& field, MipDataPoints& result) const
     {
@@ -1328,7 +1323,7 @@ namespace mscl
     //=====================================================================================================================================================
     //                                                        FieldParser_GnssMultiAntennaOffsetCorrection
     const MipTypes::ChannelField FieldParser_GnssMultiAntennaOffsetCorrection::FIELD_TYPE = MipTypes::CH_FIELD_ESTFILTER_GNSS_MULTI_ANTENNA_CORRECTION;
-    const bool FieldParser_GnssMultiAntennaOffsetCorrection::REGISTERED = FieldParser_GnssMultiAntennaOffsetCorrection::registerParser();    //register the parser immediately
+    const bool FieldParser_GnssMultiAntennaOffsetCorrection::REGISTERED = registerParser();    //register the parser immediately
 
     void FieldParser_GnssMultiAntennaOffsetCorrection::parse(const MipDataField& field, MipDataPoints& result) const
     {
@@ -1367,7 +1362,7 @@ namespace mscl
     //=====================================================================================================================================================
     //                                                        FieldParser_GnssMultiAntennaOffsetCorrectionUncert
     const MipTypes::ChannelField FieldParser_GnssMultiAntennaOffsetCorrectionUncert::FIELD_TYPE = MipTypes::CH_FIELD_ESTFILTER_GNSS_MULTI_ANTENNA_CORRECTION_UNCERT;
-    const bool FieldParser_GnssMultiAntennaOffsetCorrectionUncert::REGISTERED = FieldParser_GnssMultiAntennaOffsetCorrectionUncert::registerParser();    //register the parser immediately
+    const bool FieldParser_GnssMultiAntennaOffsetCorrectionUncert::REGISTERED = registerParser();    //register the parser immediately
 
     void FieldParser_GnssMultiAntennaOffsetCorrectionUncert::parse(const MipDataField& field, MipDataPoints& result) const
     {
@@ -1406,7 +1401,7 @@ namespace mscl
     //=====================================================================================================================================================
     //                                                        FieldParser_EcefPositionUncert
     const MipTypes::ChannelField FieldParser_EcefPositionUncert::FIELD_TYPE = MipTypes::CH_FIELD_ESTFILTER_ECEF_POS_UNCERT;
-    const bool FieldParser_EcefPositionUncert::REGISTERED = FieldParser_EcefPositionUncert::registerParser();    //register the parser immediately
+    const bool FieldParser_EcefPositionUncert::REGISTERED = registerParser();    //register the parser immediately
 
     void FieldParser_EcefPositionUncert::parse(const MipDataField& field, MipDataPoints& result) const
     {
@@ -1439,7 +1434,7 @@ namespace mscl
     //=====================================================================================================================================================
     //                                                        FieldParser_EcefVelocityUncert
     const MipTypes::ChannelField FieldParser_EcefVelocityUncert::FIELD_TYPE = MipTypes::CH_FIELD_ESTFILTER_ECEF_VEL_UNCERT;
-    const bool FieldParser_EcefVelocityUncert::REGISTERED = FieldParser_EcefVelocityUncert::registerParser();    //register the parser immediately
+    const bool FieldParser_EcefVelocityUncert::REGISTERED = registerParser();    //register the parser immediately
 
     void FieldParser_EcefVelocityUncert::parse(const MipDataField& field, MipDataPoints& result) const
     {
@@ -1472,7 +1467,7 @@ namespace mscl
     //=====================================================================================================================================================
     //                                                        FieldParser_EcefPosition
     const MipTypes::ChannelField FieldParser_EcefPosition::FIELD_TYPE = MipTypes::CH_FIELD_ESTFILTER_ECEF_POS;
-    const bool FieldParser_EcefPosition::REGISTERED = FieldParser_EcefPosition::registerParser();    //register the parser immediately
+    const bool FieldParser_EcefPosition::REGISTERED = registerParser();    //register the parser immediately
 
     void FieldParser_EcefPosition::parse(const MipDataField& field, MipDataPoints& result) const
     {
@@ -1505,7 +1500,7 @@ namespace mscl
     //=====================================================================================================================================================
     //                                                        FieldParser_EcefVelocity
     const MipTypes::ChannelField FieldParser_EcefVelocity::FIELD_TYPE = MipTypes::CH_FIELD_ESTFILTER_ECEF_VEL;
-    const bool FieldParser_EcefVelocity::REGISTERED = FieldParser_EcefVelocity::registerParser();    //register the parser immediately
+    const bool FieldParser_EcefVelocity::REGISTERED = registerParser();    //register the parser immediately
 
     void FieldParser_EcefVelocity::parse(const MipDataField& field, MipDataPoints& result) const
     {
@@ -1538,7 +1533,7 @@ namespace mscl
     //=====================================================================================================================================================
     //                                                        FieldParser_NedRelativePos
     const MipTypes::ChannelField FieldParser_NedRelativePos::FIELD_TYPE = MipTypes::CH_FIELD_ESTFILTER_NED_RELATIVE_POS;
-    const bool FieldParser_NedRelativePos::REGISTERED = FieldParser_NedRelativePos::registerParser();    //register the parser immediately
+    const bool FieldParser_NedRelativePos::REGISTERED = registerParser();    //register the parser immediately
 
     void FieldParser_NedRelativePos::parse(const MipDataField& field, MipDataPoints& result) const
     {
@@ -1571,7 +1566,7 @@ namespace mscl
     //=====================================================================================================================================================
     //                                                        FieldParser_FilterPosAidingStatus
     const MipTypes::ChannelField FieldParser_FilterPosAidingStatus::FIELD_TYPE = MipTypes::CH_FIELD_ESTFILTER_POSITION_AIDING_STATUS;
-    const bool FieldParser_FilterPosAidingStatus::REGISTERED = FieldParser_FilterPosAidingStatus::registerParser();    //register the parser immediately
+    const bool FieldParser_FilterPosAidingStatus::REGISTERED = registerParser();    //register the parser immediately
 
     void FieldParser_FilterPosAidingStatus::parse(const MipDataField& field, MipDataPoints& result) const
     {
@@ -1602,7 +1597,7 @@ namespace mscl
     //=====================================================================================================================================================
     //                                                        FieldParser_FilterAttAidingStatus
     const MipTypes::ChannelField FieldParser_FilterAttAidingStatus::FIELD_TYPE = MipTypes::CH_FIELD_ESTFILTER_ATTITUDE_AIDING_STATUS;
-    const bool FieldParser_FilterAttAidingStatus::REGISTERED = FieldParser_FilterAttAidingStatus::registerParser();    //register the parser immediately
+    const bool FieldParser_FilterAttAidingStatus::REGISTERED = registerParser();    //register the parser immediately
 
     void FieldParser_FilterAttAidingStatus::parse(const MipDataField& field, MipDataPoints& result) const
     {
@@ -1627,7 +1622,7 @@ namespace mscl
     //=====================================================================================================================================================
     //                                                        FieldParser_FilterAidingSummary
     const MipTypes::ChannelField FieldParser_FilterAidingSummary::FIELD_TYPE = MipTypes::CH_FIELD_ESTFILTER_AIDING_MEASURE_SUMMARY;
-    const bool FieldParser_FilterAidingSummary::REGISTERED = FieldParser_FilterAidingSummary::registerParser();    //register the parser immediately
+    const bool FieldParser_FilterAidingSummary::REGISTERED = registerParser();    //register the parser immediately
 
     void FieldParser_FilterAidingSummary::parse(const MipDataField& field, MipDataPoints& result) const
     {
@@ -1659,7 +1654,7 @@ namespace mscl
     //=====================================================================================================================================================
     //                                                        FieldParser_OdometerScaleError
     const MipTypes::ChannelField FieldParser_OdometerScaleError::FIELD_TYPE = MipTypes::CH_FIELD_ESTFILTER_ODOMETER_SCALE_FACTOR_ERROR;
-    const bool FieldParser_OdometerScaleError::REGISTERED = FieldParser_OdometerScaleError::registerParser();    //register the parser immediately
+    const bool FieldParser_OdometerScaleError::REGISTERED = registerParser();    //register the parser immediately
 
     void FieldParser_OdometerScaleError::parse(const MipDataField& field, MipDataPoints& result) const
     {
@@ -1683,7 +1678,7 @@ namespace mscl
     //=====================================================================================================================================================
     //                                                        FieldParser_OdometerScaleErrorUncert
     const MipTypes::ChannelField FieldParser_OdometerScaleErrorUncert::FIELD_TYPE = MipTypes::CH_FIELD_ESTFILTER_ODOMETER_SCALE_FACTOR_ERROR_UNCERT;
-    const bool FieldParser_OdometerScaleErrorUncert::REGISTERED = FieldParser_OdometerScaleErrorUncert::registerParser();    //register the parser immediately
+    const bool FieldParser_OdometerScaleErrorUncert::REGISTERED = registerParser();    //register the parser immediately
 
     void FieldParser_OdometerScaleErrorUncert::parse(const MipDataField& field, MipDataPoints& result) const
     {
@@ -1707,7 +1702,7 @@ namespace mscl
     //=====================================================================================================================================================
     //                                                        FieldParser_DualAntennaStatus
     const MipTypes::ChannelField FieldParser_DualAntennaStatus::FIELD_TYPE = MipTypes::CH_FIELD_ESTFILTER_GNSS_DUAL_ANTENNA_STATUS;
-    const bool FieldParser_DualAntennaStatus::REGISTERED = FieldParser_DualAntennaStatus::registerParser();    //register the parser immediately
+    const bool FieldParser_DualAntennaStatus::REGISTERED = registerParser();    //register the parser immediately
 
     void FieldParser_DualAntennaStatus::parse(const MipDataField& field, MipDataPoints& result) const
     {
@@ -1739,7 +1734,7 @@ namespace mscl
     //=====================================================================================================================================================
     //                                                        FieldParser_FrameConfigError
     const MipTypes::ChannelField FieldParser_FrameConfigError::FIELD_TYPE = MipTypes::CH_FIELD_ESTFILTER_FRAME_CONFIG_ERROR;
-    const bool FieldParser_FrameConfigError::REGISTERED = FieldParser_FrameConfigError::registerParser();    //register the parser immediately
+    const bool FieldParser_FrameConfigError::REGISTERED = registerParser();    //register the parser immediately
 
     void FieldParser_FrameConfigError::parse(const MipDataField& field, MipDataPoints& result) const
     {
@@ -1753,7 +1748,7 @@ namespace mscl
         float z = bytes.read_float();
 
         Bytes remaining = bytes.bytesToRead();
-        Vector quat(ValueType::valueType_float, ByteStream(remaining));
+        Vector quat(valueType_float, ByteStream(remaining));
 
         // additional identifiers
         MipChannelIdentifiers addlIds = {
@@ -1777,7 +1772,7 @@ namespace mscl
     //=====================================================================================================================================================
     //                                                        FieldParser_FrameConfigErrorUnc
     const MipTypes::ChannelField FieldParser_FrameConfigErrorUnc::FIELD_TYPE = MipTypes::CH_FIELD_ESTFILTER_FRAME_CONFIG_ERROR_UNCERT;
-    const bool FieldParser_FrameConfigErrorUnc::REGISTERED = FieldParser_FrameConfigErrorUnc::registerParser();    //register the parser immediately
+    const bool FieldParser_FrameConfigErrorUnc::REGISTERED = registerParser();    //register the parser immediately
 
     void FieldParser_FrameConfigErrorUnc::parse(const MipDataField& field, MipDataPoints& result) const
     {
@@ -1795,7 +1790,7 @@ namespace mscl
         float yaw = bytes.read_float();
 
         Bytes remaining = bytes.bytesToRead();
-        Vector quat(ValueType::valueType_float, ByteStream(remaining));
+        Vector quat(valueType_float, ByteStream(remaining));
 
         // additional identifiers
         MipChannelIdentifiers addlIds = {
@@ -1818,4 +1813,4 @@ namespace mscl
         return MipFieldParser::registerParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
-}
+} // namespace mscl

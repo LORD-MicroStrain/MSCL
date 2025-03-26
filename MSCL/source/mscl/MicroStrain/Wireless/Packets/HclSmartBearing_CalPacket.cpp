@@ -4,20 +4,14 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
+#include "mscl/MicroStrain/Wireless/Packets/HclSmartBearing_CalPacket.h"
 
-#include "mscl/Exceptions.h"
-#include "HclSmartBearing_CalPacket.h"
-#include "mscl/MicroStrain/Wireless/ChannelMask.h"
 #include "mscl/MicroStrain/SampleUtils.h"
-#include "mscl/MicroStrain/Vector.h"
-#include "mscl/TimeSpan.h"
+#include "mscl/MicroStrain/Wireless/DataSweep.h"
 #include "mscl/TimestampCounter.h"
-#include "mscl/Types.h"
 
 namespace mscl
 {
-
     HclSmartBearing_CalPacket::HclSmartBearing_CalPacket(const WirelessPacket& packet)
     {
         //construct the data packet from the wireless packet passed in
@@ -45,7 +39,7 @@ namespace mscl
         uint64 timestampNanos = m_payload.read_uint32(PAYLOAD_OFFSET_TS_NANOSEC);    //the timestamp (UTC) nanoseconds part
 
         //build the full nanosecond resolution timestamp from the seconds and nanoseconds values read above
-        uint64 realTimestamp = (timestampSeconds * TimeSpan::NANOSECONDS_PER_SECOND) + timestampNanos;
+        uint64 realTimestamp = timestampSeconds * TimeSpan::NANOSECONDS_PER_SECOND + timestampNanos;
 
         if(!timestampWithinRange(Timestamp(realTimestamp)))
         {
@@ -108,7 +102,7 @@ namespace mscl
 
             readOffset += m_sweepSize;
 
-            //add all of the channel data to the sweep
+            //add all the channel data to the sweep
             sweep.data(chData);
 
             //add the sweep to the container of sweeps
@@ -132,7 +126,7 @@ namespace mscl
             return false;
         }
 
-        const WirelessPacket::Payload& payload = packet.payload();
+        const Payload& payload = packet.payload();
 
         //verify the payload size
         if(payload.size() < 42)
@@ -148,4 +142,4 @@ namespace mscl
         //return the tick value
         return packet.payload().read_uint16(PAYLOAD_OFFSET_TICK);
     }
-}
+} // namespace mscl

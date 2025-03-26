@@ -6,9 +6,6 @@
 
 #pragma once
 
-#include <string>
-#include <map>
-
 namespace mscl
 {
     //API Title: Devices
@@ -90,12 +87,10 @@ namespace mscl
         ConnectionType connectionType() const;
     };
 
-
     //API Class: Devices
     //    Contains helper functions for accessing attached devices
     class Devices
     {
-    private:
         //Enums: DeviceType
         //    TYPE_ALL            - 0 - All Devices
         //    TYPE_BASESTATION    - 1 - Device of a BaseStation type
@@ -118,7 +113,6 @@ namespace mscl
         Devices(const Devices&) = delete;               //copy constructor disabled
         Devices& operator=(const Devices&) = delete;    //assignment operator disabled
 
-    public:
         //API Function: listBaseStations
         //    Gets a list of all the attached (USB) BaseStations.
         //    Note that this is solely going by listed devices that use our driver, so this may pick up similar devices that are not BaseStations.

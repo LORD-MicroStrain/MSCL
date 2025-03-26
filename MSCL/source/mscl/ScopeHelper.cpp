@@ -4,16 +4,14 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "ScopeHelper.h"
+#include "mscl/ScopeHelper.h"
 
 namespace mscl
 {
     ScopeHelper::ScopeHelper(std::function<void()> scopeFunction):
         m_outOfScopeFunction(scopeFunction),
         m_canceled(false)
-    {
-    }
+    {}
 
     ScopeHelper::~ScopeHelper()
     {
@@ -27,4 +25,4 @@ namespace mscl
     {
         m_canceled = true;
     }
-}
+} // namespace mscl

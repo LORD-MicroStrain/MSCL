@@ -6,14 +6,7 @@
 
 #pragma once
 
-#include "Connection.h"
-#include "Connection_Impl.h"
-#include "BoostCommunication.h"
-
-#include <boost/asio.hpp>
-#include <boost/beast.hpp>
-
-#include <string>
+#include "mscl/Communication/Connection_Impl.h"
 
 namespace mscl
 {
@@ -29,7 +22,7 @@ namespace mscl
         //
         //Returns:
         //    A description of the connection, in the form "WebSocket, serverAddress:serverPort".
-        virtual std::string description();
+        std::string description() override;
 
     private:
         WebSocketConnection() = delete;                                      //default constructor disabled
@@ -49,9 +42,8 @@ namespace mscl
         //
         //Exceptions:
         //    - <Error_InvalidTcpServer>: the specified server address and/or server port is invalid.
-        virtual void establishConnection();
+        void establishConnection() override;
 
-    private:
         typedef boost::asio::ip::tcp tcp;
 
         //Variable: m_host
@@ -62,5 +54,4 @@ namespace mscl
         //    The port for the connection.
         uint16 m_port;
     };
-
-}
+} // namespace mscl

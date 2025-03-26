@@ -4,9 +4,7 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-
-#include "Bitfield.h"
+#include "mscl/MicroStrain/Bitfield.h"
 
 namespace mscl
 {
@@ -76,15 +74,12 @@ namespace mscl
             throw Error_NoData("The bitfield mask is unset");
         }
 
-        else
+        while (shiftMap % 2 != 1)
         {
-            while (shiftMap % 2 != 1)
-            {
-                shiftMap = shiftMap >> 1;
-                count++;
-            }
+            shiftMap = shiftMap >> 1;
+            count++;
         }
 
         return count;
     }
-}
+} // namespace mscl

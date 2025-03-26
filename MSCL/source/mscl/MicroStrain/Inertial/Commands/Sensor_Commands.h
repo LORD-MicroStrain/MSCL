@@ -45,7 +45,7 @@ namespace mscl
         protected:
             //Function: fieldDataByte
             //    Gets the data field descriptor byte
-            virtual uint8 fieldDataByte() const override { return FIELD_DATA_BYTE; }
+            uint8 fieldDataByte() const override { return FIELD_DATA_BYTE; }
 
         public:
             //Constructor: Response
@@ -63,7 +63,6 @@ namespace mscl
             uint16 parseResponse(const GenericMipCmdResponse& response) const;
         };
     };
-
 
     //Class: SensorMessageFormat
     //    Contains the logic for the "Sensor Data Message Format" command
@@ -116,11 +115,11 @@ namespace mscl
         class Response : public GenericMipCommand::Response
         {
         protected:
-            virtual uint8 fieldDataByte() const    override { return FIELD_DATA_BYTE; }
+            uint8 fieldDataByte() const    override { return FIELD_DATA_BYTE; }
 
         public:
             Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse);
             MipChannels parseResponse(const GenericMipCmdResponse& response, uint16 sampleRateBase) const;
         };
     };
-}
+} // namespace mscl

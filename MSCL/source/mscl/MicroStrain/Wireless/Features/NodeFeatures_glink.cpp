@@ -4,15 +4,13 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "NodeFeatures_glink.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures_glink.h"
 
 #include "mscl/MicroStrain/Wireless/Configuration/NodeEepromMap.h"
-#include "mscl/MicroStrain/Wireless/ChannelMask.h"
 
 namespace mscl
 {
-    NodeFeatures_glink::NodeFeatures_glink(const NodeInfo& info):
+    NodeFeatures_glink::NodeFeatures_glink(const NodeInfo& info) :
         NodeFeatures(info)
     {
         addCalCoeffChannelGroup(1, "Acceleration X", NodeEepromMap::CH_ACTION_SLOPE_1, NodeEepromMap::CH_ACTION_ID_1);
@@ -26,4 +24,4 @@ namespace mscl
         m_channels.emplace_back(3, WirelessChannel::channel_3, WirelessTypes::chType_acceleration, "Acceleration Z", 12);
         m_channels.emplace_back(4, WirelessChannel::channel_4, WirelessTypes::chType_temperature, "Internal Temperature");
     }
-}
+} // namespace mscl

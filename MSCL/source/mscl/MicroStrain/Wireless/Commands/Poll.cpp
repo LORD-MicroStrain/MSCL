@@ -4,11 +4,9 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "Poll.h"
-#include "WirelessProtocol.h"
-#include "mscl/MicroStrain/ByteStream.h"
-#include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
+#include "mscl/MicroStrain/Wireless/Commands/Poll.h"
+
+#include "mscl/MicroStrain/Wireless/Commands/WirelessProtocol.h"
 
 namespace mscl
 {
@@ -44,13 +42,12 @@ namespace mscl
         return cmd;
     }
 
-    Poll::Response::Response(NodeAddress nodeAddress, std::weak_ptr<ResponseCollector> collector):
+    Poll::Response::Response(NodeAddress nodeAddress, std::weak_ptr<ResponseCollector> collector) :
         WirelessResponsePattern(collector, WirelessProtocol::cmdId_poll, nodeAddress),
         m_nodeAddress(nodeAddress),
         m_started(false),
         m_timeUntilCompletion(0.0f)
-    {
-    }
+    {}
 
     bool Poll::Response::started() const
     {
@@ -88,16 +85,14 @@ namespace mscl
 
                     return true;
                 }
-                else
-                {
-                    //got a bad status, so poll won't be started (not expecting another packet)
-                    m_fullyMatched = true;
 
-                    //notify that the response was matched
-                    m_matchCondition.notify();
+                //got a bad status, so poll won't be started (not expecting another packet)
+                m_fullyMatched = true;
 
-                    return true;
-                }
+                //notify that the response was matched
+                m_matchCondition.notify();
+
+                return true;
             }
         }
 
@@ -186,4 +181,4 @@ namespace mscl
 
         return true;
     }
-}
+} // namespace mscl

@@ -4,10 +4,7 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "InputRange.h"
-
-#include "mscl/Utils.h"
+#include "mscl/MicroStrain/Wireless/Configuration/InputRange.h"
 
 namespace mscl
 {
@@ -278,13 +275,27 @@ namespace mscl
             {
                 if(channelType == WirelessTypes::chType_fullDifferential)
                 {
-                    if(excitationVoltage == WirelessTypes::voltage_1500mV)      { return RANGES_SGLINK200_FULLDIFF_CHS_1500mV; }
-                    else if(excitationVoltage == WirelessTypes::voltage_2500mV) { return RANGES_SGLINK200_FULLDIFF_CHS_2500mV; }
+                    if(excitationVoltage == WirelessTypes::voltage_1500mV)
+                    {
+                        return RANGES_SGLINK200_FULLDIFF_CHS_1500mV;
+                    }
+
+                    if(excitationVoltage == WirelessTypes::voltage_2500mV)
+                    {
+                        return RANGES_SGLINK200_FULLDIFF_CHS_2500mV;
+                    }
                 }
                 else if(channelType == WirelessTypes::chType_singleEnded)
                 {
-                    if(excitationVoltage == WirelessTypes::voltage_1500mV)      { return RANGES_SGLINK200_SINGLEENDED_CHS_1500mV; }
-                    else if(excitationVoltage == WirelessTypes::voltage_2500mV) { return RANGES_SGLINK200_SINGLEENDED_CHS_2500mV; }
+                    if(excitationVoltage == WirelessTypes::voltage_1500mV)
+                    {
+                        return RANGES_SGLINK200_SINGLEENDED_CHS_1500mV;
+                    }
+
+                    if(excitationVoltage == WirelessTypes::voltage_2500mV)
+                    {
+                        return RANGES_SGLINK200_SINGLEENDED_CHS_2500mV;
+                    }
                 }
             }
 
@@ -317,7 +328,8 @@ namespace mscl
                 {
                     return RANGES_VLINK200_FULLDIFF_CHS;
                 }
-                else if(channelType == WirelessTypes::chType_singleEnded)
+
+                if(channelType == WirelessTypes::chType_singleEnded)
                 {
                     return RANGES_VLINK200_SINGLEENDED_CHS;
                 }
@@ -336,7 +348,8 @@ namespace mscl
                 {
                     return RANGES_ENVLINK_PRO_TEMPERATURE_CHS;
                 }
-                else if(channelType == WirelessTypes::chType_voltage)
+
+                if(channelType == WirelessTypes::chType_voltage)
                 {
                     return RANGES_ENVLINK_PRO_VOLTAGE_CHS;
                 }
@@ -452,4 +465,4 @@ namespace mscl
             result.push_back(range.second);
         }
     }
-}
+} // namespace mscl

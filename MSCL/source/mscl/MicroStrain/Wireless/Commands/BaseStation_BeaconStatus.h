@@ -6,15 +6,13 @@
 
 #pragma once
 
-#include "WirelessResponsePattern.h"
+#include "mscl/MicroStrain/Wireless/Commands/BeaconStatus.h"
+#include "mscl/MicroStrain/Wireless/Commands/WirelessResponsePattern.h"
 #include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
-#include "mscl/Timestamp.h"
-#include "BeaconStatus.h"
 
 namespace mscl
 {
 #ifndef SWIG
-
     //Class: BaseStation_BeaconStatus
     //    Contains logic for the base station Get Beacon Status command.
     class BaseStation_BeaconStatus
@@ -24,7 +22,6 @@ namespace mscl
         BaseStation_BeaconStatus(const BaseStation_BeaconStatus&) = delete;             //copy constructor disabled
         BaseStation_BeaconStatus& operator=(const BaseStation_BeaconStatus&) = delete;  //assignement operator disabled
 
-    public:
         //Function: buildCommand
         //    Builds the beacon status command.
         //
@@ -76,7 +73,5 @@ namespace mscl
             bool matchFailResponse(const WirelessPacket& packet) override;
         };
     };
-
-#endif
-
-}
+#endif // !SWIG
+} // namespace mscl

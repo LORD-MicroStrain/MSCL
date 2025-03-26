@@ -4,12 +4,14 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "mscl/MicroStrain/Vector.h"
 #include "mscl/MicroStrain/ByteStream.h"
-
-#include <boost/test/unit_test.hpp>
+#include "mscl/MicroStrain/Vector.h"
 
 using namespace mscl;
+
+DISABLE_WARNING_BOOST_START
+#include <boost/test/unit_test.hpp>
+DISABLE_WARNING_BOOST_END
 
 BOOST_AUTO_TEST_SUITE(Vector_Test)
 
@@ -20,7 +22,6 @@ BOOST_AUTO_TEST_CASE(Vector_valuesType)
 
     //check that the value type is correct
     BOOST_CHECK_EQUAL(v.valuesType(), valueType_float);
-
 
     Vector v2(valueType_int32, b);
 
@@ -34,7 +35,6 @@ BOOST_AUTO_TEST_CASE(Vector_size)
     Vector v(valueType_float, b);
 
     Vector v3;
-
 
     //check that the size is 0
     BOOST_CHECK_EQUAL(v.size(), 0);

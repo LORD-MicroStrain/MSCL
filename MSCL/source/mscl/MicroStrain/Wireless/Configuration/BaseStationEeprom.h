@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "Eeprom.h"
+#include "mscl/MicroStrain/Wireless/Configuration/Eeprom.h"
 
 namespace mscl
 {
@@ -27,14 +27,13 @@ namespace mscl
         //    useCache - Whether or not to use the eeprom cache.
         explicit BaseStationEeprom(BaseStation_Impl* base);
 
-        virtual ~BaseStationEeprom() {};
+        ~BaseStationEeprom() override = default;
 
     private:
         BaseStationEeprom();                                    //default constructor disabled
         BaseStationEeprom(const BaseStationEeprom&);            //copy constructor disabled
         BaseStationEeprom& operator=(const BaseStationEeprom&);    //assignment operator disabled
 
-    private:
         //Variable: m_baseStation
         //    The <BaseStation_Impl> to use for communication.
         BaseStation_Impl* m_baseStation;
@@ -49,7 +48,7 @@ namespace mscl
         //
         //Returns:
         //    true if the value was read from the device and the cache has been updated, false otherwise.
-        virtual bool updateCacheFromDevice(uint16 location) override;
+        bool updateCacheFromDevice(uint16 location) override;
 
     public:
         using Eeprom::readEeprom;
@@ -69,7 +68,7 @@ namespace mscl
         //Exceptions:
         //    - <Error_Connection>: Failed to read the value from the BaseStation.
         //                             A connection error has occurred with the BaseStation.
-        virtual uint16 readEeprom(uint16 location) override;
+        uint16 readEeprom(uint16 location) override;
 
         //Function: writeEeprom
         //    Attempts to write an eeprom value to the BaseStation.
@@ -84,6 +83,6 @@ namespace mscl
         //Exceptions:
         //    - <Error_Connection>: Failed to read the value from the BaseStation.
         //                             A connection error has occurred with the BaseStation.
-        virtual void writeEeprom(uint16 location, uint16 value) override;
+        void writeEeprom(uint16 location, uint16 value) override;
     };
-}
+} // namespace mscl

@@ -4,18 +4,17 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "StructuralHealth.h"
+#include "mscl/MicroStrain/Wireless/StructuralHealth.h"
 
 namespace mscl
 {
-    StructuralHealth::StructuralHealth(float angle, uint32 uptime, float damage, const SampleRate& processingRate, const Histogram& histogram):
+    StructuralHealth::StructuralHealth(float angle, uint32 uptime, float damage, const SampleRate& processingRate, const Histogram& histogram) :
         m_angle(angle),
         m_uptime(uptime),
         m_damage(damage),
         m_processingRate(processingRate),
         m_histogram(histogram)
-    { }
+    {}
 
     float StructuralHealth::angle() const
     {
@@ -41,4 +40,4 @@ namespace mscl
     {
         return m_histogram;
     }
-}
+} // namespace mscl

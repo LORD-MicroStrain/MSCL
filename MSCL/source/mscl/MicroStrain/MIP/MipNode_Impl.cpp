@@ -4,43 +4,28 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "MipNode_Impl.h"
+#include "mscl/MicroStrain/MIP/MipNode_Impl.h"
 
-#include "mscl/Utils.h"
-#include "mscl/ScopeHelper.h"
-#include "MipParser.h"
-#include "MipNodeInfo.h"
-#include "MipNodeFeatures.h"
-#include "Commands/CyclePower.h"
-#include "Commands/GetDeviceDescriptorSets.h"
-#include "Commands/GetExtendedDeviceDescriptorSets.h"
-#include "Commands/GPSTimeUpdate.h"
-#include "Commands/Mip_SetToIdle.h"
-#include "Commands/Resume.h"
 #include "mscl/MicroStrain/Displacement/Commands/DeviceTime.h"
 #include "mscl/MicroStrain/Displacement/Commands/DisplacementOutputDataRate.h"
 #include "mscl/MicroStrain/Displacement/Commands/GetAnalogToDisplacementCals.h"
-#include "mscl/MicroStrain/RTK/Commands/DeviceStatusFlags.h"
-#include "mscl/MicroStrain/RTK/Commands/ActivationCode.h"
 #include "mscl/MicroStrain/Inertial/Commands/AccelBias.h"
 #include "mscl/MicroStrain/Inertial/Commands/AdaptiveMeasurement.h"
 #include "mscl/MicroStrain/Inertial/Commands/AdvancedLowPassFilterSettings.h"
 #include "mscl/MicroStrain/Inertial/Commands/CaptureGyroBias.h"
-#include "mscl/MicroStrain/Inertial/Commands/MagnetometerCaptureAutoCalibration.h"
 #include "mscl/MicroStrain/Inertial/Commands/ComplementaryFilterSettings.h"
 #include "mscl/MicroStrain/Inertial/Commands/ConingAndScullingEnable.h"
 #include "mscl/MicroStrain/Inertial/Commands/ContinuousDataStream.h"
 #include "mscl/MicroStrain/Inertial/Commands/DeviceStartupSettings.h"
 #include "mscl/MicroStrain/Inertial/Commands/DeviceStatus.h"
-#include "mscl/MicroStrain/Inertial/Commands/EstimationControlFlags.h"
-#include "mscl/MicroStrain/Inertial/Commands/FilterInitializationConfig.h"
-#include "mscl/MicroStrain/Inertial/Commands/GeographicSource.h"
 #include "mscl/MicroStrain/Inertial/Commands/EstFilter_Commands.h"
+#include "mscl/MicroStrain/Inertial/Commands/EstimationControlFlags.h"
 #include "mscl/MicroStrain/Inertial/Commands/ExternalGNSSUpdate.h"
 #include "mscl/MicroStrain/Inertial/Commands/ExternalHeadingUpdate.h"
 #include "mscl/MicroStrain/Inertial/Commands/ExternalHeadingUpdateWithTimestamp.h"
+#include "mscl/MicroStrain/Inertial/Commands/FilterInitializationConfig.h"
 #include "mscl/MicroStrain/Inertial/Commands/FloatCommand.h"
+#include "mscl/MicroStrain/Inertial/Commands/GeographicSource.h"
 #include "mscl/MicroStrain/Inertial/Commands/GeometricVectorCommand.h"
 #include "mscl/MicroStrain/Inertial/Commands/GNSS_AssistedFixControl.h"
 #include "mscl/MicroStrain/Inertial/Commands/GNSS_AssistTimeUpdate.h"
@@ -50,6 +35,7 @@
 #include "mscl/MicroStrain/Inertial/Commands/GNSS_SourceControl.h"
 #include "mscl/MicroStrain/Inertial/Commands/GyroBias.h"
 #include "mscl/MicroStrain/Inertial/Commands/HeadingUpdateControl.h"
+#include "mscl/MicroStrain/Inertial/Commands/MagnetometerCaptureAutoCalibration.h"
 #include "mscl/MicroStrain/Inertial/Commands/MagnetometerHardIronOffset.h"
 #include "mscl/MicroStrain/Inertial/Commands/MagnetometerSoftIronMatrix.h"
 #include "mscl/MicroStrain/Inertial/Commands/Matrix3x3Command.h"
@@ -60,13 +46,28 @@
 #include "mscl/MicroStrain/Inertial/Commands/SignalConditioningSettings.h"
 #include "mscl/MicroStrain/Inertial/Commands/System_Commands.h"
 #include "mscl/MicroStrain/Inertial/Commands/UARTBaudRate.h"
-#include "mscl/MicroStrain/Inertial/Commands/Uint8Command.h"
 #include "mscl/MicroStrain/Inertial/Commands/Uint16Command.h"
+#include "mscl/MicroStrain/Inertial/Commands/Uint8Command.h"
 #include "mscl/MicroStrain/Inertial/Commands/VehicleDynamicsMode.h"
+#include "mscl/MicroStrain/MIP/Commands/CyclePower.h"
+#include "mscl/MicroStrain/MIP/Commands/GetDeviceDescriptorSets.h"
+#include "mscl/MicroStrain/MIP/Commands/GetExtendedDeviceDescriptorSets.h"
+#include "mscl/MicroStrain/MIP/Commands/GPSTimeUpdate.h"
+#include "mscl/MicroStrain/MIP/Commands/MipCommand.h"
+#include "mscl/MicroStrain/MIP/Commands/Mip_SetToIdle.h"
+#include "mscl/MicroStrain/MIP/Commands/Ping.h"
+#include "mscl/MicroStrain/MIP/Commands/Resume.h"
+#include "mscl/MicroStrain/MIP/MipNodeFeatures.h"
+#include "mscl/MicroStrain/MIP/MipParser.h"
+#include "mscl/MicroStrain/MIP/Packets/MipDataPacket.h"
+#include "mscl/MicroStrain/ResponseCollector.h"
+#include "mscl/MicroStrain/RTK/Commands/ActivationCode.h"
+#include "mscl/MicroStrain/RTK/Commands/DeviceStatusFlags.h"
+#include "mscl/ScopeHelper.h"
 
 namespace mscl
 {
-    MipNode_Impl::MipNode_Impl(Connection connection):
+    MipNode_Impl::MipNode_Impl(Connection connection) :
         m_connection(connection),
         m_commandsTimeout(COMMANDS_DEFAULT_TIMEOUT),
         m_sensorRateBase(0),
@@ -163,7 +164,7 @@ namespace mscl
 
     void MipNode_Impl::onDataPacketAdded()
     {
-        m_lastDeviceState = DeviceState::deviceState_sampling;
+        m_lastDeviceState = deviceState_sampling;
     }
 
     const MipNodeFeatures& MipNode_Impl::features() const
@@ -175,7 +176,7 @@ namespace mscl
             m_features = MipNodeFeatures::create(this);
         }
 
-        return *(m_features.get());
+        return *m_features.get();
     }
 
     Connection& MipNode_Impl::connection()
@@ -345,7 +346,7 @@ namespace mscl
         //send the command and wait for the response
         doCommand(r, Mip_SetToIdle::buildCommand(), false);
 
-        m_lastDeviceState = DeviceState::deviceState_idle;
+        m_lastDeviceState = deviceState_idle;
     }
 
     bool MipNode_Impl::cyclePower()
@@ -508,7 +509,7 @@ namespace mscl
         GnssReceivers receivers;
         for (uint8 i = 0; i < count; i++)
         {
-            uint8 index = (i * 3) + 1; // three values per element, first value count
+            uint8 index = i * 3 + 1; // three values per element, first value count
             receivers.push_back(GnssReceiverInfo(
                 ret[index].as_uint8(),                                       // receiver id
                 static_cast<MipTypes::DataClass>(ret[index + 1].as_uint8()), // associated data set
@@ -547,7 +548,7 @@ namespace mscl
                 }
 
                 uint8 count = ret[1].as_uint8();
-                size_t minSize = (FIRST_RANGE_INDEX + (count * RANGE_ENTRY_SIZE));
+                size_t minSize = FIRST_RANGE_INDEX + count * RANGE_ENTRY_SIZE;
                 if (ret.size() < minSize)
                 {
                     continue;
@@ -556,7 +557,7 @@ namespace mscl
                 SensorRanges typeRanges;
                 for (size_t i = 0; i < count; i++)
                 {
-                    size_t index = FIRST_RANGE_INDEX + (i * RANGE_ENTRY_SIZE);
+                    size_t index = FIRST_RANGE_INDEX + i * RANGE_ENTRY_SIZE;
 
                     // 1-indexed option id
                     uint8 optionId = ret[index].as_uint8();
@@ -649,7 +650,7 @@ namespace mscl
                     if (features().supportsCategory(option))
                     {
                         uint8 desc = legacyDevice ? ContinuousDataStream::getDeviceSelector(option) : static_cast<uint8>(option);
-                        params.push_back({ cmd, { Value::UINT8(static_cast<uint8>(desc)) } });
+                        params.push_back({ cmd, { Value::UINT8(desc) } });
                     }
                 }
 
@@ -1036,7 +1037,7 @@ namespace mscl
                     params.push_back(static_cast<uint8>(InertialTypes::DeviceSelector::DEVICE_GPS));
                     data = getUint8s(cmd, params);
                     set = Uint8Command::MakeSetCommand(cmd, data);
-                    s = (ByteStream)set;
+                    s = static_cast<ByteStream>(set);
                     setCmds.push_back(MipCommandBytes(cmd, s.data()));
                 }
                 break;
@@ -1416,7 +1417,8 @@ namespace mscl
                 uartBaudRate = &cmds;
                 continue;
             }
-            else if (cmds.id == MipTypes::CMD_COMM_PORT_SPEED)
+
+            if (cmds.id == MipTypes::CMD_COMM_PORT_SPEED)
             {
                 commPortSpeed = &cmds;
                 continue;
@@ -1517,7 +1519,7 @@ namespace mscl
             uint8 count = data[1].as_uint8();
             for (uint8 i = 0; i < count; i++)
             {
-                uint8 index = 2 + (i * 2);
+                uint8 index = 2 + i * 2;
                 uint8 desc = data[index].as_uint8();
                 uint16 decimation = data[index + 1].as_uint16();
 
@@ -2139,12 +2141,10 @@ namespace mscl
                 Value::UINT8(portId)
             })[1].as_uint32(); // first value echoes portId
         }
-        else
-        {
-            UARTBaudRate baudRateCmd = UARTBaudRate::MakeGetCommand();
-            GenericMipCmdResponse response = SendCommand(baudRateCmd);
-            return baudRateCmd.getResponseData(response);
-        }
+
+        UARTBaudRate baudRateCmd = UARTBaudRate::MakeGetCommand();
+        GenericMipCmdResponse response = SendCommand(baudRateCmd);
+        return baudRateCmd.getResponseData(response);
     }
 
     void MipNode_Impl::setLowPassFilterSettings(const LowPassFilterData& data) const
@@ -2673,4 +2673,4 @@ namespace mscl
             }
         }
     }
-}
+} // namespace mscl

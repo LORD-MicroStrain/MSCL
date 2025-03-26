@@ -4,18 +4,14 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "AccelBias.h"
-#include "mscl/MicroStrain/MIP/MipDataField.h"
-#include "mscl/MicroStrain/MIP/Packets/MipPacketBuilder.h"
-#include "mscl/MicroStrain/MIP/MipTypes.h"
+#include "mscl/MicroStrain/Inertial/Commands/AccelBias.h"
 
 namespace mscl
 {
     AccelBias::AccelBias(MipTypes::FunctionSelector functionSelector, const GeometricVector& accelerometerBiasVector) :
         m_functionSelector(functionSelector),
         m_accelerometerBiasVector(accelerometerBiasVector)
-    { }
+    {}
 
     AccelBias::AccelBias(MipTypes::FunctionSelector functionSelector) :
         m_functionSelector(functionSelector)
@@ -37,7 +33,7 @@ namespace mscl
 
     bool AccelBias::responseExpected() const
     {
-        return (m_functionSelector == MipTypes::READ_BACK_CURRENT_SETTINGS) ? true : false;
+        return m_functionSelector == MipTypes::READ_BACK_CURRENT_SETTINGS;
     }
 
     GeometricVector AccelBias::getResponseData(const GenericMipCmdResponse& response)
@@ -65,4 +61,4 @@ namespace mscl
         return GenericMipCommand::buildCommand(commandType(), byteCommand.data());
     }
 
-}
+} // namespace mscl

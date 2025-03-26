@@ -4,19 +4,14 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "FilterInitializationConfig.h"
-#include "mscl/MicroStrain/MIP/MipDataField.h"
-#include "mscl/MicroStrain/MIP/Packets/MipPacketBuilder.h"
-#include "mscl/MicroStrain/MIP/MipTypes.h"
-#include "mscl/MicroStrain/MIP/Commands/MIP_Commands.h"
+#include "mscl/MicroStrain/Inertial/Commands/FilterInitializationConfig.h"
 
 namespace mscl
 {
     FilterInitializationConfig::FilterInitializationConfig(MipTypes::FunctionSelector function_selector, const FilterInitializationValues& dataToUse) :
         m_functionSelector(function_selector),
         m_data(dataToUse)
-    { }
+    {}
 
     FilterInitializationConfig::FilterInitializationConfig(MipTypes::FunctionSelector function_selector) :
         m_functionSelector(function_selector)
@@ -98,4 +93,4 @@ namespace mscl
 
         return GenericMipCommand::buildCommand(commandType(), byteCommand.data());
     }
-}
+} // namespace mscl

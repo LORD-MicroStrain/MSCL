@@ -4,23 +4,21 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "MipParser.h"
+#include "mscl/MicroStrain/MIP/MipParser.h"
 
-#include "mscl/Utils.h"
-#include "Packets/MipPacketCollector.h"
-#include "mscl/MicroStrain/ResponseCollector.h"
-#include "mscl/MicroStrain/DataBuffer.h"
+#include "mscl/Communication/RawBytePacketCollector.h"
 #include "mscl/MicroStrain/ChecksumBuilder.h"
+#include "mscl/MicroStrain/MIP/Packets/MipPacket.h"
+#include "mscl/MicroStrain/MIP/Packets/MipPacketCollector.h"
+#include "mscl/MicroStrain/ResponseCollector.h"
 
 namespace mscl
 {
-    MipParser::MipParser(MipPacketCollector* packetCollector, std::weak_ptr<ResponseCollector> responseCollector, RawBytePacketCollector* rawBytePacketCollector):
+    MipParser::MipParser(MipPacketCollector* packetCollector, std::weak_ptr<ResponseCollector> responseCollector, RawBytePacketCollector* rawBytePacketCollector) :
         m_packetCollector(packetCollector),
         m_responseCollector(responseCollector),
         m_rawBytePacketCollector(rawBytePacketCollector)
-    {
-    }
+    {}
 
     void MipParser::processPacket(MipPacket& packet)
     {
@@ -112,7 +110,7 @@ namespace mscl
 
     void MipParser::parse(DataBuffer& data)
     {
-        mscl::Bytes rawBytes;
+        Bytes rawBytes;
 
         RawBytePacket rawBytePacket;
 
@@ -135,7 +133,7 @@ namespace mscl
             //if this is a MIP Start of Packet byte
             if(currentByte == MipPacketInfo::MIP_PACKET_SOP1)
             {
-                mscl::ReadBufferSavePoint savePoint(&data);
+                ReadBufferSavePoint savePoint(&data);
 
                 //check if the packet is a valid MIP packet, starting at this byte
                 parseResult = parseAsPacket(data, packet);
@@ -193,7 +191,7 @@ namespace mscl
             //if we didn't have enough data for a full packet
             if(notEnoughData)
             {
-                mscl::ReadBufferSavePoint savePoint(&data);
+                ReadBufferSavePoint savePoint(&data);
                 //look for packets after the current byte.
                 //    Even though this looks like it could be the start of a MIP packet,
                 //    if we find any full MIP packets inside of the these bytes, we need
@@ -373,7 +371,6 @@ namespace mscl
         //get the checksum sent in the packet
         uint16 checksum = data.read_uint16();                    //Checksum
 
-
         //build the checksum to calculate from all the bytes
         ChecksumBuilder calcChecksum;
         calcChecksum.append_uint16(startOfPacket);
@@ -387,7 +384,6 @@ namespace mscl
             return mipParserResult_badChecksum;
         }
 
-
         //add all the info about the packet to the MipPacket reference passed in
         packet.descriptorSet(descriptorSet);
         packet.payload(payload);
@@ -397,4 +393,4 @@ namespace mscl
 
         return mipParserResult_completePacket;
     }
-}
+} // namespace mscl

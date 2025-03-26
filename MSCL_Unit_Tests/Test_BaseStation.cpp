@@ -4,49 +4,32 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "mscl/MicroStrain/Wireless/BaseStation.h"
-#include "mscl/Communication/Connection.h"
 #include "mscl/Communication/SerialConnection.h"
-#include "mscl/Utils.h"
-#include "mscl/Exceptions.h"
-#include "mscl/TimeSpan.h"
 #include "mscl/MicroStrain/ByteStream.h"
-#include "mscl/MicroStrain/Wireless/Configuration/BaseStationEepromMap.h"
-#include "mscl/MicroStrain/Wireless/WirelessTypes.h"
+#include "mscl/MicroStrain/Wireless/BaseStation.h"
 #include "mscl/MicroStrain/Wireless/Commands/AutoCal.h"
 #include "mscl/MicroStrain/Wireless/Commands/AutoCalResult.h"
 #include "mscl/MicroStrain/Wireless/Commands/WirelessProtocol.h"
-#include <vector>
-
-
-
-#include "customErrorPolicyLogging.h"
+#include "mscl/MicroStrain/Wireless/Configuration/BaseStationEepromMap.h"
+#include "mscl/MicroStrain/Wireless/WirelessTypes.h"
+#include "mscl/Utils.h"
 
 #define BOOST_TEST_MODULE MSCL_Unit_Test
 
-
-
-#include <boost/test/unit_test.hpp>
-#include <turtle/mock.hpp>
+#include "mock_BaseStation.h"
 
 using namespace mscl;
 
-#include "mock_Connection.h"
-#include "mock_BaseStation.h"
-
-
 namespace mock
 {
-    //Override the output of Bytes so it doesn't print a 'soh' character and break xml
+    //Override the output of Bytes so it doesn't print a 'soh' character and break XML
     inline stream& operator<<( stream& s, const ByteStream& v )
     {
         return s << "ByteStream";
     }
-}
-
+} // namespace Mock
 
 BOOST_AUTO_TEST_SUITE(BaseStation_Test)
-
 
 BOOST_AUTO_TEST_CASE(BaseStation_frequency)
 {
@@ -234,7 +217,7 @@ BOOST_AUTO_TEST_CASE(BaseStation_changeFrequency_success)
     BaseStation base(baseImpl);
 
     MOCK_EXPECT(baseImpl->communicationProtocol).returns(WirelessTypes::commProtocol_lxrs);
-    MOCK_EXPECT(baseImpl->protocol).returns(*(WirelessProtocol::v1_5().get()));
+    MOCK_EXPECT(baseImpl->protocol).returns(*WirelessProtocol::v1_5().get());
     //expectRead(baseImpl, BaseStationEepromMap::ASPP_VER_LXRS, Value::UINT16((uint16)(0x0100)));
     expectWrite(baseImpl, BaseStationEepromMap::FREQUENCY, Value::UINT16(14));
     expectWrite(baseImpl, BaseStationEepromMap::CYCLE_POWER, Value::UINT16(2));
@@ -271,7 +254,7 @@ BOOST_AUTO_TEST_CASE(BaseStation_NodeLongPing_Success)
     connImpl->setResponseBytes(data);
 
     //send the node_ping command
-    PingResponse result = base.node_ping(*(WirelessProtocol::v1_0().get()), 327);
+    PingResponse result = base.node_ping(*WirelessProtocol::v1_0().get(), 327);
 
     BOOST_CHECK_EQUAL(result.success(), true);
     BOOST_CHECK_EQUAL(result.nodeRssi(), 1);
@@ -293,7 +276,7 @@ BOOST_AUTO_TEST_CASE(BaseStation_NodeLongPing_Fail_Timeout)
     connImpl->setResponseBytes(data);
 
     //call the node_ping command
-    PingResponse result = base.node_ping(*(WirelessProtocol::v1_0().get()), 327);
+    PingResponse result = base.node_ping(*WirelessProtocol::v1_0().get(), 327);
 
     int unknownRssi = WirelessTypes::UNKNOWN_RSSI;
 
@@ -324,7 +307,7 @@ BOOST_AUTO_TEST_CASE(BaseStation_NodeEepromRead_Success)
     connImpl->setResponseBytes(data);
 
     uint16 eepromValue;
-    bool success = base.node_readEeprom(*(WirelessProtocol::v1_0().get()), 327, 112, eepromValue);
+    bool success = base.node_readEeprom(*WirelessProtocol::v1_0().get(), 327, 112, eepromValue);
 
     BOOST_CHECK_EQUAL(success, true);
     BOOST_CHECK_EQUAL(eepromValue, 2423);
@@ -340,7 +323,7 @@ BOOST_AUTO_TEST_CASE(BaseStation_NodeEepromRead_Fail_Timeout)
     base.timeout(1);
 
     uint16 eepromValue = 0;
-    bool result = base.node_readEeprom(*(WirelessProtocol::v1_0().get()), 327, 112, eepromValue);
+    bool result = base.node_readEeprom(*WirelessProtocol::v1_0().get(), 327, 112, eepromValue);
 
     BOOST_CHECK_EQUAL(result, false);
     BOOST_CHECK_EQUAL(eepromValue, 0);
@@ -372,7 +355,7 @@ BOOST_AUTO_TEST_CASE(BaseStation_NodeEepromWrite_Success)
     data.append_uint16(data.calculateSimpleChecksum(1, 7));    //checksum
     connImpl->setResponseBytes(data);
 
-    bool result = base.node_writeEeprom(*(WirelessProtocol::v1_0().get()), 327, 112, 456);
+    bool result = base.node_writeEeprom(*WirelessProtocol::v1_0().get(), 327, 112, 456);
 
     BOOST_CHECK_EQUAL(result, true);
 }
@@ -386,13 +369,12 @@ BOOST_AUTO_TEST_CASE(BaseStation_NodeEepromWrite_Fail_Timeout)
     BaseStation base(conn);
     base.timeout(1);
 
-
     //build the data to send
     ByteStream data;
     data.append_uint8(0xAA);
     connImpl->setResponseBytes(data);
 
-    bool result = base.node_writeEeprom(*(WirelessProtocol::v1_0().get()), 327, 112, 456);
+    bool result = base.node_writeEeprom(*WirelessProtocol::v1_0().get(), 327, 112, 456);
 
     BOOST_CHECK_EQUAL(result, false);
 }
@@ -415,9 +397,8 @@ BOOST_AUTO_TEST_CASE(BaseStation_NodePageDownload_Success)
     data.append_uint16(0x0000);//checksum
     connImpl->setResponseBytes(data);
 
-
     ByteStream resultData;
-    bool result = base.node_pageDownload(*(WirelessProtocol::v1_0().get()), 123, 0, resultData);
+    bool result = base.node_pageDownload(*WirelessProtocol::v1_0().get(), 123, 0, resultData);
 
     BOOST_CHECK_EQUAL(result, true);
     BOOST_CHECK_EQUAL(resultData.size(), 264);
@@ -440,7 +421,7 @@ BOOST_AUTO_TEST_CASE(BaseStation_NodePageDownload_FailResponse)
     connImpl->setResponseBytes(data);
 
     ByteStream resultData;
-    bool result = base.node_pageDownload(*(WirelessProtocol::v1_0().get()), 123, 0, resultData);
+    bool result = base.node_pageDownload(*WirelessProtocol::v1_0().get(), 123, 0, resultData);
 
     BOOST_CHECK_EQUAL(result, false);
     BOOST_CHECK_EQUAL(resultData.size(), 0);
@@ -469,10 +450,10 @@ BOOST_AUTO_TEST_CASE(BaseStation_node_startSyncSampling)
     data.append_uint16(data.calculateSimpleChecksum(1, 8));    //checksum
     connImpl->setResponseBytes(data);
 
-    BOOST_CHECK_EQUAL(base.node_startSyncSampling(*(WirelessProtocol::v1_0().get()), 327), true);
+    BOOST_CHECK_EQUAL(base.node_startSyncSampling(*WirelessProtocol::v1_0().get(), 327), true);
 
     //send the command again, but fail this time
-    BOOST_CHECK_EQUAL(base.node_startSyncSampling(*(WirelessProtocol::v1_0().get()), 400), false);
+    BOOST_CHECK_EQUAL(base.node_startSyncSampling(*WirelessProtocol::v1_0().get(), 400), false);
 }
 
 BOOST_AUTO_TEST_CASE(BaseStation_getButtonLongPress)
@@ -542,7 +523,7 @@ BOOST_AUTO_TEST_CASE(BaseStation_node_autocal_fail)
     connImpl->setResponseBytes(data);
 
     AutoCalResult_shmLink result;
-    BOOST_CHECK_EQUAL(base.node_autocal_shm(*(WirelessProtocol::v1_2().get()), 327, result), false);
+    BOOST_CHECK_EQUAL(base.node_autocal_shm(*WirelessProtocol::v1_2().get(), 327, result), false);
 
     BOOST_CHECK_EQUAL(result.completionFlag(), WirelessTypes::autocal_notComplete);
 }
@@ -596,12 +577,11 @@ BOOST_AUTO_TEST_CASE(BaseStation_node_autocal_success)
     connImpl->setResponseBytesWithDelay(responses, 2000);
 
     AutoCalResult_shmLink result;
-    BOOST_CHECK_EQUAL(base.node_autocal_shm(*(WirelessProtocol::v1_2().get()), 327, result), true);
+    BOOST_CHECK_EQUAL(base.node_autocal_shm(*WirelessProtocol::v1_2().get(), 327, result), true);
 
     BOOST_CHECK_EQUAL(result.completionFlag(), WirelessTypes::autocal_success);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
-
 
 BOOST_AUTO_TEST_SUITE_END()

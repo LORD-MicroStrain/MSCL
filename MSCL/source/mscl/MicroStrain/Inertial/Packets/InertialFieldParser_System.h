@@ -104,4 +104,4 @@ namespace mscl
         //    Whether this parser is registered. This will always be true. This is used to call registerParser() immediately
         static const bool REGISTERED;
     };
-}
+} // namespace mscl

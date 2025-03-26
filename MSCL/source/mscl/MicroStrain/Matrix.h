@@ -6,9 +6,6 @@
 
 #pragma once
 
-#include "mscl/Types.h"
-#include "ByteStream.h"
-
 namespace mscl
 {
     //API Class: Matrix
@@ -30,7 +27,7 @@ namespace mscl
         //    storedAs - The <ValueType> representing how all the values in the Matrix are stored
         //    data - The <ByteStream> that hold the values to be stored in the Matrix
         Matrix(uint16 rows, uint16 columns, ValueType storedAs, const ByteStream& data);
-#endif
+#endif // !SWIG
     protected:
         //Variable: m_numRows
         //    The number of rows in the Matrix
@@ -48,12 +45,10 @@ namespace mscl
         //    The size of each values' type within the Matrix
         uint32 m_valuesTypeSize;
 
-    protected:
         //Variable: m_data
         //    A vector of vectors making the matrix that contains all the data values
         ByteStream m_data;
 
-    protected:
         //Function: getBytePos
         //    Gets the byte position to read in data from the m_data <ByteStream>
         //
@@ -161,4 +156,4 @@ namespace mscl
         //    A string representing the entire Matrix object (ex. "[[0,0.1,0.2],[1,1.1,1.2],[2,2.1,2.2]]")
         std::string str() const;
     };
-}
+} // namespace mscl

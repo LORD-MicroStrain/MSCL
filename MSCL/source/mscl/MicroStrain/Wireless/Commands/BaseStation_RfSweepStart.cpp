@@ -4,11 +4,9 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
+#include "mscl/MicroStrain/Wireless/Commands/BaseStation_RfSweepStart.h"
 
-#include "BaseStation_RfSweepStart.h"
-#include "WirelessProtocol.h"
-#include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
+#include "mscl/MicroStrain/Wireless/Commands/WirelessProtocol.h"
 
 namespace mscl
 {
@@ -51,14 +49,13 @@ namespace mscl
         return cmd;
     }
 
-    BaseStation_RfSweepStart::Response::Response(std::weak_ptr<ResponseCollector> collector, uint32 min, uint32 max, uint32 interval, uint16 options):
+    BaseStation_RfSweepStart::Response::Response(std::weak_ptr<ResponseCollector> collector, uint32 min, uint32 max, uint32 interval, uint16 options) :
         WirelessResponsePattern(collector, WirelessProtocol::cmdId_base_rfScan_v1, WirelessProtocol::BASE_STATION_ADDRESS),
         m_min(min),
         m_max(max),
         m_interval(interval),
         m_options(options)
-    {
-    }
+    {}
 
     bool BaseStation_RfSweepStart::Response::matchSuccessResponse(const WirelessPacket& packet)
     {
@@ -82,4 +79,4 @@ namespace mscl
 
         return true;
     }
-}
+} // namespace mscl

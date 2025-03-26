@@ -4,18 +4,10 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "InertialNode.h"
+#include "mscl/MicroStrain/Inertial/InertialNode.h"
 
-#include "mscl/Types.h"
-#include "mscl/Communication/SerialConnection.h"
-#include "mscl/MicroStrain/MIP/Commands/MIP_Commands.h"
 #include "mscl/MicroStrain/MIP/MipNodeFeatures.h"
-#include "mscl/MicroStrain/MIP/Packets/MipPacket.h"
 #include "mscl/MicroStrain/MIP/MipNode_Impl.h"
-
-#include <algorithm>
-
 
 namespace mscl
 {
@@ -331,7 +323,7 @@ namespace mscl
         m_impl->setGNSSAssistTimeUpdate(timeUpdate);
     }
 
-    mscl::uint32 InertialNode::getGPSTimeUpdate(MipTypes::TimeFrame timeFrame)
+    uint32 InertialNode::getGPSTimeUpdate(MipTypes::TimeFrame timeFrame)
     {
         switch (timeFrame)
         {
@@ -344,7 +336,7 @@ namespace mscl
         }
     }
 
-    void InertialNode::setGPSTimeUpdate(MipTypes::TimeFrame timeFrame, mscl::uint32 time)
+    void InertialNode::setGPSTimeUpdate(MipTypes::TimeFrame timeFrame, uint32 time)
     {
         m_impl->setGPSTimeUpdate(timeFrame, time);
     }
@@ -1171,7 +1163,7 @@ namespace mscl
     void InertialNode::setRelativePositionReference(PositionReferenceConfiguration ref)
     {
         m_impl->set(MipTypes::CMD_EF_RELATIVE_POSITION_REF, {
-            Value::UINT8((ref.autoConfig ? 0x00 : 0x01)), // saved to device as enum - auto: 0, manual: 1
+            Value::UINT8(ref.autoConfig ? 0x00 : 0x01), // saved to device as enum - auto: 0, manual: 1
             Value::UINT8(static_cast<uint8>(ref.position.referenceFrame)),
             Value::DOUBLE(ref.position.x()),
             Value::DOUBLE(ref.position.y()),
@@ -1274,10 +1266,10 @@ namespace mscl
             Value::UINT8(static_cast<uint8_t>(config.type())),
             Value::UINT32(config.currentKeyTow()),
             Value::UINT16(config.currentKeyWeek()),
-            Value(ValueType::valueType_string, config.currentKey()),
+            Value(valueType_string, config.currentKey()),
             Value::UINT32(config.nextKeyTow()),
             Value::UINT16(config.nextKeyWeek()),
-            Value(ValueType::valueType_string, config.nextKey()),
+            Value(valueType_string, config.nextKey()),
         });
     }
 
@@ -1458,11 +1450,11 @@ namespace mscl
     {
         switch (measurement.referenceFrame())
         {
-        case PositionVelocityReferenceFrame::ECEF:
+        case ECEF:
             m_impl->run(MipTypes::CMD_AIDING_POS_ECEF, measurement.toMipFieldValues());
             return;
 
-        case PositionVelocityReferenceFrame::LLH_NED:
+        case LLH_NED:
             m_impl->run(MipTypes::CMD_AIDING_POS_LLH, measurement.toMipFieldValues());
             return;
 
@@ -1482,15 +1474,15 @@ namespace mscl
     {
         switch (measurement.referenceFrame())
         {
-        case PositionVelocityReferenceFrame::ECEF:
+        case ECEF:
             m_impl->run(MipTypes::CMD_AIDING_VEL_ECEF, measurement.toMipFieldValues());
             return;
 
-        case PositionVelocityReferenceFrame::LLH_NED:
+        case LLH_NED:
             m_impl->run(MipTypes::CMD_AIDING_VEL_NED, measurement.toMipFieldValues());
             return;
 
-        case PositionVelocityReferenceFrame::VEHICLE:
+        case VEHICLE:
             m_impl->run(MipTypes::CMD_AIDING_VEL_BODY_FRAME, measurement.toMipFieldValues());
             return;
 
@@ -1521,11 +1513,11 @@ namespace mscl
         MipFieldValues vals;
         switch (measurement.referenceFrame())
         {
-        case PositionVelocityReferenceFrame::ECEF:
+        case ECEF:
             vals = m_impl->get(MipTypes::CMD_AIDING_POS_ECEF, measurement.toMipFieldValues());
             break;
 
-        case PositionVelocityReferenceFrame::LLH_NED:
+        case LLH_NED:
             vals = m_impl->get(MipTypes::CMD_AIDING_POS_LLH, measurement.toMipFieldValues());
             break;
 
@@ -1548,15 +1540,15 @@ namespace mscl
 
         switch (measurement.referenceFrame())
         {
-        case PositionVelocityReferenceFrame::ECEF:
+        case ECEF:
             vals = m_impl->get(MipTypes::CMD_AIDING_VEL_ECEF, measurement.toMipFieldValues());
             break;
 
-        case PositionVelocityReferenceFrame::LLH_NED:
+        case LLH_NED:
             vals = m_impl->get(MipTypes::CMD_AIDING_VEL_NED, measurement.toMipFieldValues());
             break;
 
-        case PositionVelocityReferenceFrame::VEHICLE:
+        case VEHICLE:
             vals = m_impl->get(MipTypes::CMD_AIDING_VEL_BODY_FRAME, measurement.toMipFieldValues());
             break;
 
@@ -1584,4 +1576,4 @@ namespace mscl
         MipFieldValues vals = m_impl->get(MipTypes::CMD_AIDING_PRESSURE, measurement.toMipFieldValues());
         return AidingMeasurementPressure(vals);
     }
-}
+} // namespace mscl

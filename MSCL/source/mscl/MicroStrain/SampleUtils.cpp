@@ -4,10 +4,9 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
+#include "mscl/MicroStrain/SampleUtils.h"
 
-#include "SampleUtils.h"
-#include "mscl/Exceptions.h"
+#include "mscl/MicroStrain/SampleRate.h"
 
 namespace mscl
 {
@@ -163,4 +162,4 @@ namespace mscl
         //return the eeprom value for this sample rate
         return itr->second;
     }
-}
+} // namespace mscl

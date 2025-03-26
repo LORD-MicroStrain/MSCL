@@ -7,29 +7,26 @@
 #pragma once
 
 #include "mscl/MicroStrain/MIP/Commands/GenericMipCommand.h"
-#include "mscl/MicroStrain/ResponseCollector.h"
 
 namespace mscl
 {
-
 #ifndef SWIG
-
     //Class: GNSS_AssistedFixControl
     //    Contains the logic for the Inertial GNSS Assist Fix Control command.
-    class GNSS_AssistedFixControl : private GenericMipCommand
+    class GNSS_AssistedFixControl : GenericMipCommand
     {
     public:
         static const int NO_FLAGS_DEFINED = 0xFF;
 
     private:
-        GNSS_AssistedFixControl() {};                //default constructor disabled
+        GNSS_AssistedFixControl() {}                //default constructor disabled
 
          //Constants: Packet Bytes
          //     FIELD_DATA_BYTE - Descriptor byte for the Field data.
         static const uint8 FIELD_DATA_BYTE = 0xA2;
 
     public:
-        virtual ~GNSS_AssistedFixControl() {};
+        ~GNSS_AssistedFixControl() override = default;
 
         //Function: buildCommand_get
         //    Builds the bytes for the "get" command.
@@ -55,7 +52,7 @@ namespace mscl
         protected:
             //Function: fieldDataByte
             //    Gets the data field descriptor byte
-            virtual uint8 fieldDataByte() const    override { return FIELD_DATA_BYTE; }
+            uint8 fieldDataByte() const    override { return FIELD_DATA_BYTE; }
 
         public:
             //Constructor: Response
@@ -76,6 +73,5 @@ namespace mscl
             bool parseResponse(const GenericMipCmdResponse& response) const;
         };
     };
-
-#endif
-}
+#endif // !SWIG
+} // namespace mscl

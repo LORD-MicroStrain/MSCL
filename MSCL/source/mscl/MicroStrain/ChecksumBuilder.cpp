@@ -4,9 +4,7 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-
-#include "ChecksumBuilder.h"
+#include "mscl/MicroStrain/ChecksumBuilder.h"
 
 namespace mscl
 {
@@ -57,4 +55,4 @@ namespace mscl
         //calcualte the CRC checksum of all the bytes that are in m_bytes
         return m_bytes.calculateCrcChecksum(0, m_bytes.size() - 1);
     }
-}
+} // namespace mscl

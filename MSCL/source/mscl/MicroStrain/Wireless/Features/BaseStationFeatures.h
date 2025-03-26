@@ -6,8 +6,6 @@
 
 #pragma once
 
-#include <map>
-#include <memory>
 #include "mscl/MicroStrain/Wireless/BaseStationInfo.h"
 
 namespace mscl
@@ -21,7 +19,7 @@ namespace mscl
         friend class BaseStationEeprom;
 
     public:
-        virtual ~BaseStationFeatures() {};
+        virtual ~BaseStationFeatures() = default;
 
     private:
         BaseStationFeatures();    //disabled default constructor
@@ -52,9 +50,8 @@ namespace mscl
         //Exceptions:
         //    - <Error_NotSupported>: The BaseStation model is not supported by MSCL.
         static std::unique_ptr<BaseStationFeatures> create(const BaseStationInfo& info);
-#endif
+#endif // !SWIG
 
-    public:
         //API Function: supportsTransmitPower
         //    Checks if a <WirelessTypes::TransmitPower> is supported by this BaseStation.
         //
@@ -191,4 +188,4 @@ namespace mscl
         //  Checks if the Node supports reading eeprom location 1024 and above.
         virtual bool supportsEeprom1024AndAbove() const;
     };
-}
+} // namespace mscl

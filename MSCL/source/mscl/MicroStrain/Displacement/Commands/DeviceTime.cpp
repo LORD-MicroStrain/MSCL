@@ -4,12 +4,7 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "DeviceTime.h"
-#include "mscl/MicroStrain/MIP/MipDataField.h"
-#include "mscl/MicroStrain/MIP/Packets/MipPacketBuilder.h"
-#include "mscl/MicroStrain/MIP/MipTypes.h"
-#include "mscl/MicroStrain/MIP/Commands/MIP_Commands.h"
+#include "mscl/MicroStrain/Displacement/Commands/DeviceTime.h"
 
 namespace mscl
 {
@@ -24,6 +19,5 @@ namespace mscl
 
     DeviceTime::Response::Response(std::weak_ptr<ResponseCollector> collector, bool dataResponseExpected) :
         GenericMipCommand::Response(MipTypes::CMD_DISPLACEMENT_DEVICE_TIME, collector, true, dataResponseExpected, "Device Time")
-    {
-    }
-}
+    {}
+} // namespace mscl

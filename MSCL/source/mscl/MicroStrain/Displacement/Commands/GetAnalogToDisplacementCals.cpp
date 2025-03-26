@@ -4,12 +4,7 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "GetAnalogToDisplacementCals.h"
-#include "mscl/MicroStrain/MIP/MipDataField.h"
-#include "mscl/MicroStrain/MIP/Packets/MipPacketBuilder.h"
-#include "mscl/MicroStrain/MIP/MipTypes.h"
-#include "mscl/MicroStrain/MIP/Commands/MIP_Commands.h"
+#include "mscl/MicroStrain/Displacement/Commands/GetAnalogToDisplacementCals.h"
 
 namespace mscl
 {
@@ -20,8 +15,7 @@ namespace mscl
 
     GetAnalogToDisplacementCals::Response::Response(std::weak_ptr<ResponseCollector> collector) :
         GenericMipCommand::Response(MipTypes::CMD_GET_ANALOG_DISPLACEMENT_CALS, collector, true, true, "Displacement Output Data Rate")
-    {
-    }
+    {}
 
     LinearEquation GetAnalogToDisplacementCals::Response::parseResponse(const GenericMipCmdResponse& response) const
     {
@@ -30,4 +24,4 @@ namespace mscl
 
         return LinearEquation(slope, offset);
     }
-}
+} // namespace mscl

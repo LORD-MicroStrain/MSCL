@@ -4,26 +4,21 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
 #include "mscl/MicroStrain/MIP/Commands/GenericMipCommand.h"
 
-#include "mscl/Utils.h"
 #include "mscl/MicroStrain/MIP/MipDataField.h"
 #include "mscl/MicroStrain/MIP/Packets/MipPacketBuilder.h"
-#include "mscl/MicroStrain/MIP/Packets/MipPacket.h"
 
 namespace mscl
 {
-    GenericMipCmdResponse::GenericMipCmdResponse():
+    GenericMipCmdResponse::GenericMipCmdResponse() :
         MipCmdResponse()
-    {
-    }
+    {}
 
-    GenericMipCmdResponse::GenericMipCmdResponse(ResponsePattern::State state, bool success, MipPacket::MipAckNack errorCode, std::string cmdName, ByteStream data):
+    GenericMipCmdResponse::GenericMipCmdResponse(ResponsePattern::State state, bool success, MipPacket::MipAckNack errorCode, std::string cmdName, ByteStream data) :
         MipCmdResponse(state, success, errorCode, cmdName),
         m_data(data)
-    {
-    }
+    {}
 
     GenericMipCmdResponse GenericMipCmdResponse::ResponseSuccess(const std::string& cmdName, ByteStream data /*= ByteStream()*/)
     {
@@ -40,7 +35,6 @@ namespace mscl
         //return the ByteStream containing the data from the response
         return m_data;
     }
-
 
     ByteStream GenericMipCommand::buildCommand(uint8 descSetId, uint8 cmdByte, const Bytes& fieldData) //fieldData=Bytes()
     {
@@ -95,37 +89,34 @@ namespace mscl
         return static_cast<MipTypes::FunctionSelector>(commandBytes[CMD_FN_SELCTOR_INDEX]);
     }
 
-    GenericMipCommand::Response::Response(const MipTypes::Command& command, bool ackNackResponse, bool dataResponse, std::string cmdName, uint8 fieldDataByte):
+    GenericMipCommand::Response::Response(const MipTypes::Command& command, bool ackNackResponse, bool dataResponse, std::string cmdName, uint8 fieldDataByte) :
         ResponsePattern(),
         m_ackNackResponse(ackNackResponse),
         m_dataResponse(dataResponse),
         m_command(command),
         m_commandName(cmdName),
 		m_fieldDataByte(fieldDataByte)
-    {
-    }
+    {}
 
-    GenericMipCommand::Response::Response(const MipTypes::Command& command, bool ackNackResponse, bool dataResponse, std::string cmdName, MipResponseMatchValues matchData, uint8 fieldDataByte):
+    GenericMipCommand::Response::Response(const MipTypes::Command& command, bool ackNackResponse, bool dataResponse, std::string cmdName, MipResponseMatchValues matchData, uint8 fieldDataByte) :
         ResponsePattern(),
         m_ackNackResponse(ackNackResponse),
         m_dataResponse(dataResponse),
         m_command(command),
         m_commandName(cmdName),
-        m_matchData(matchData),
-		m_fieldDataByte(fieldDataByte)
-    {
-    }
+        m_fieldDataByte(fieldDataByte),
+		m_matchData(matchData)
+    {}
 
     GenericMipCommand::Response::Response(const MipTypes::Command& command, std::weak_ptr<ResponseCollector> collector,
-                                               bool ackNackResponse, bool dataResponse, const std::string& cmdName, uint8 fieldDataByte):
+                                               bool ackNackResponse, bool dataResponse, const std::string& cmdName, uint8 fieldDataByte) :
         ResponsePattern(collector),
         m_ackNackResponse(ackNackResponse),
         m_dataResponse(dataResponse),
         m_command(command),
         m_commandName(cmdName),
         m_fieldDataByte(fieldDataByte)
-    {
-    }
+    {}
 
     GenericMipCommand::Response::Response(const MipTypes::Command& command, std::weak_ptr<ResponseCollector> collector,
         bool ackNackResponse, bool dataResponse, const std::string& cmdName, MipResponseMatchValues matchData, uint8 fieldDataByte) :
@@ -134,10 +125,9 @@ namespace mscl
         m_dataResponse(dataResponse),
         m_command(command),
         m_commandName(cmdName),
-        m_matchData(matchData),
-        m_fieldDataByte(fieldDataByte)
-    {
-    }
+        m_fieldDataByte(fieldDataByte),
+        m_matchData(matchData)
+    {}
 
     uint8 GenericMipCommand::Response::fieldDataByte() const
     {
@@ -289,7 +279,7 @@ namespace mscl
             return true;
         }
 
-        for (auto entry : m_matchData)
+        for (const MipResponseMatchValues::value_type& entry : m_matchData)
         {
             ByteStream data = field.fieldData();
             size_t index = entry.first;
@@ -297,8 +287,7 @@ namespace mscl
             switch (type)
             {
             case valueType_bool:
-                if (data.size() <= index + 1
-                    || (data.read_uint8(index) > 0) != entry.second.as_bool())
+                if (data.size() <= index + 1 || data.read_uint8(index) > 0 != entry.second.as_bool())
                 {
                     return false;
                 }
@@ -380,4 +369,4 @@ namespace mscl
     {
         return m_result;
     }
-}
+} // namespace mscl

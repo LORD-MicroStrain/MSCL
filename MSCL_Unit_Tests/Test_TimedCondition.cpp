@@ -4,14 +4,13 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "mscl/TimedCondition.h"
-#include "mscl/TimeSpan.h"
 #include "mscl/Utils.h"
-#include <thread>
-
-#include <boost/test/unit_test.hpp>
 
 using namespace mscl;
+
+DISABLE_WARNING_BOOST_START
+#include <boost/test/unit_test.hpp>
+DISABLE_WARNING_BOOST_END
 
 struct TimedConditionFixture
 {
@@ -29,7 +28,6 @@ struct TimedConditionFixture
 //static TimedCondition condition;
 
 BOOST_FIXTURE_TEST_SUITE(TimedCondition_Test, TimedConditionFixture)
-
 
 BOOST_AUTO_TEST_CASE(TimedCondition_ConditionMet)
 {

@@ -4,11 +4,9 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "SetToIdle.h"
-#include "WirelessProtocol.h"
-#include "mscl/MicroStrain/ByteStream.h"
-#include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
+#include "mscl/MicroStrain/Wireless/Commands/SetToIdle.h"
+
+#include "mscl/MicroStrain/Wireless/Commands/WirelessProtocol.h"
 #include "mscl/MicroStrain/Wireless/NodeCommTimes.h"
 
 namespace mscl
@@ -32,13 +30,12 @@ namespace mscl
         return cmd;
     }
 
-    SetToIdle::Response::Response(NodeAddress nodeAddress, std::weak_ptr<ResponseCollector> collector, const BaseStation& baseStation):
+    SetToIdle::Response::Response(NodeAddress nodeAddress, std::weak_ptr<ResponseCollector> collector, const BaseStation& baseStation) :
         WirelessResponsePattern(collector, WirelessProtocol::cmdId_stopNode, nodeAddress),
         m_nodeAddress(nodeAddress),
         m_result(SetToIdleStatus::setToIdleResult_notCompleted),
         m_baseStation(baseStation)
-    {
-    }
+    {}
 
     SetToIdle::Response::~Response()
     {
@@ -78,7 +75,7 @@ namespace mscl
         {
             //success response
             m_result = SetToIdleStatus::setToIdleResult_success;
-            NodeCommTimes::updateDeviceState(m_nodeAddress, DeviceState::deviceState_idle);
+            NodeCommTimes::updateDeviceState(m_nodeAddress, deviceState_idle);
             m_success = true;
         }
         //response of 0x2101 is a canceled response
@@ -138,4 +135,4 @@ namespace mscl
 
         return m_result;
     }
-}
+} // namespace mscl

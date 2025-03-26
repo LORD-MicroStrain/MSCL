@@ -4,11 +4,9 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "SyncNetworkInfo.h"
-#include "Configuration/WirelessNodeConfig.h"
-#include "Features/NodeFeatures.h"
-#include "mscl/Version.h"
+#include "mscl/MicroStrain/Wireless/SyncNetworkInfo.h"
+
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures.h"
 
 namespace mscl
 {
@@ -81,7 +79,6 @@ namespace mscl
         return m_groupSize;
     }
 
-
     bool SyncNetworkInfo::hasPendingConfig() const
     {
         return m_hasPendingConfig;
@@ -94,7 +91,7 @@ namespace mscl
 
     float SyncNetworkInfo::dutyCycle() const
     {
-        return static_cast<float>((m_txPerGroup * m_maxBytesPerPacket) / m_bytesPerSecond);
+        return static_cast<float>(m_txPerGroup * m_maxBytesPerPacket / m_bytesPerSecond);
     }
 
     void SyncNetworkInfo::dutyCycle(float percent)
@@ -128,8 +125,7 @@ namespace mscl
             }
         }
         catch(Error_NoData&)
-        {
-        }
+        {}
 
         //copy the config into the pending config
         m_pendingConfig = config;
@@ -147,4 +143,4 @@ namespace mscl
     {
         return m_node.features().channelGroups();
     }
-}
+} // namespace mscl

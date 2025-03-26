@@ -4,19 +4,14 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "ComplementaryFilterSettings.h"
-#include "mscl/MicroStrain/MIP/MipDataField.h"
-#include "mscl/MicroStrain/MIP/Packets/MipPacketBuilder.h"
-#include "mscl/MicroStrain/MIP/MipTypes.h"
-#include "mscl/MicroStrain/MIP/Commands/MIP_Commands.h"
+#include "mscl/MicroStrain/Inertial/Commands/ComplementaryFilterSettings.h"
 
 namespace mscl
 {
     ComplementaryFilterSettings::ComplementaryFilterSettings(MipTypes::FunctionSelector function_selector, ComplementaryFilterData dataToUse) :
         m_functionSelector(function_selector),
         m_data(dataToUse)
-    { }
+    {}
 
     ComplementaryFilterSettings::ComplementaryFilterSettings(MipTypes::FunctionSelector function_selector) :
         m_functionSelector(function_selector)
@@ -38,15 +33,15 @@ namespace mscl
 
     bool ComplementaryFilterSettings::responseExpected() const
     {
-        return (m_functionSelector == MipTypes::READ_BACK_CURRENT_SETTINGS) ? true : false;
+        return m_functionSelector == MipTypes::READ_BACK_CURRENT_SETTINGS;
     }
 
     ComplementaryFilterData ComplementaryFilterSettings::getResponseData(const GenericMipCmdResponse& response)
     {
         DataBuffer dataBuffer(response.data());
         ComplementaryFilterData returnData;
-        returnData.upCompensationEnabled = (dataBuffer.read_uint8() == MipTypes::ENABLED) ? true : false;
-        returnData.northCompensationEnabled = (dataBuffer.read_uint8() == MipTypes::ENABLED) ? true : false;
+        returnData.upCompensationEnabled = dataBuffer.read_uint8() == MipTypes::ENABLED;
+        returnData.northCompensationEnabled = dataBuffer.read_uint8() == MipTypes::ENABLED;
         returnData.upCompensationTimeInSeconds = dataBuffer.read_float();
         returnData.northCompensationTimeInSeconds = dataBuffer.read_float();
 
@@ -70,5 +65,4 @@ namespace mscl
         }
         return GenericMipCommand::buildCommand(commandType(), byteCommand.data());
     }
-
-}
+} // namespace mscl

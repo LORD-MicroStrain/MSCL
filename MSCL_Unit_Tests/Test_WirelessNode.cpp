@@ -4,23 +4,21 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "mscl/MicroStrain/Wireless/WirelessNode.h"
+#include "mscl/Communication/SerialConnection.h"
+#include "mscl/MicroStrain/ResponseCollector.h"
+#include "mscl/MicroStrain/ResponsePattern.h"
 #include "mscl/MicroStrain/Wireless/BaseStation.h"
 #include "mscl/MicroStrain/Wireless/Commands/LongPing.h"
-#include "mscl/MicroStrain/ResponsePattern.h"
-#include "mscl/Communication/SerialConnection.h"
-#include "mscl/Communication/Connection.h"
-#include "mscl/Utils.h"
-#include "mscl/MicroStrain/Wireless/Features/NodeFeatures.h"
-#include "mscl/MicroStrain/Wireless/Commands/SetToIdleStatus.h"
 #include "mscl/MicroStrain/Wireless/Commands/SetToIdle.h"
+#include "mscl/MicroStrain/Wireless/Commands/SetToIdleStatus.h"
 #include "mscl/MicroStrain/Wireless/Configuration/WirelessNodeConfig.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures.h"
+#include "mscl/MicroStrain/Wireless/WirelessNode.h"
+#include "mscl/Utils.h"
 
-#include <boost/test/unit_test.hpp>
-#include "mock_BaseStation.h"
 #include "mock_WirelessNode.h"
-using namespace mscl;
 
+using namespace mscl;
 
 BOOST_AUTO_TEST_SUITE(WirelessNode_Test)
 
@@ -145,7 +143,7 @@ BOOST_AUTO_TEST_CASE(WirelessNode_readEepromuint16_pageDownload)
     //check the eeprom result is what we want
     BOOST_CHECK_EQUAL(result, 19);
 
-    result = node.readEeprom(10);    //this shouldnt have to read again, as the original page downloaded should cache it
+    result = node.readEeprom(10);    //this shouldn't have to read again, as the original page downloaded should cache it
 
     //check the eeprom result is again what we want
     BOOST_CHECK_EQUAL(result, 1);
@@ -356,7 +354,6 @@ BOOST_AUTO_TEST_CASE(WirelessNode_getSampling)
 
     expectGenericNodeFeatures(impl);
 
-
     MOCK_EXPECT(impl->readEeprom_uint16).once().returns(WirelessTypes::samplingMode_armedDatalog);                                        //sampling mode
     MOCK_EXPECT(impl->readEeprom_uint16).once().returns(0x017);                                                                            //active channels
     MOCK_EXPECT(impl->readEeprom_uint16).once().with(NodeEepromMap::DATALOG_SAMPLE_RATE.location()).returns(WirelessTypes::sampleRate_32Hz);    //sample rate
@@ -385,8 +382,6 @@ BOOST_AUTO_TEST_CASE(NodeConfig_setSampling)
     BaseStation b = makeBaseStationWithMockImpl();
     WirelessNode node(100, b);
     node.setImpl(impl);
-
-
 
     SamplingConfig sampling;
     sampling.samplingMode(WirelessTypes::samplingMode_nonSync);
@@ -448,7 +443,7 @@ BOOST_AUTO_TEST_CASE(NodeConfig_setBootMode)
     WirelessNode node(100, b);
     node.setImpl(impl);
 
-    MOCK_EXPECT(impl->protocol).returns(*(WirelessProtocol::v1_5().get()));
+    MOCK_EXPECT(impl->protocol).returns(*WirelessProtocol::v1_5().get());
 
     //MOCK_EXPECT(impl->readEeprom).with(NodeEepromMap::ASPP_VER).returns(Value::UINT16(0x0105));
 
@@ -486,7 +481,7 @@ BOOST_AUTO_TEST_CASE(NodeConfig_setInactivityTimeout)
     WirelessNode node(100, b);
     node.setImpl(impl);
 
-    MOCK_EXPECT(impl->protocol).returns(*(WirelessProtocol::v1_5().get()));
+    MOCK_EXPECT(impl->protocol).returns(*WirelessProtocol::v1_5().get());
 
     std::unique_ptr<NodeFeatures> features;
     expectNodeFeatures(features, impl);
@@ -547,7 +542,7 @@ BOOST_AUTO_TEST_CASE(NodeConfig_setTransmitPower)
     WirelessNode node(100, b);
     node.setImpl(impl);
 
-    MOCK_EXPECT(impl->protocol).returns(*(WirelessProtocol::v1_5().get()));
+    MOCK_EXPECT(impl->protocol).returns(*WirelessProtocol::v1_5().get());
 
     std::unique_ptr<NodeFeatures> features;
     expectNodeFeatures(features, impl);

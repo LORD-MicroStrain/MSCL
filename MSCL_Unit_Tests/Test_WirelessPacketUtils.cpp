@@ -4,18 +4,20 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
-#include "mscl/MicroStrain/Wireless/Packets/WirelessPacketUtils.h"
+#include "mscl/Communication/RawBytePacketCollector.h"
 #include "mscl/MicroStrain/ByteStream.h"
 #include "mscl/MicroStrain/DataBuffer.h"
-#include "mscl/MicroStrain/Wireless/Packets/WirelessPacketCollector.h"
-#include "mscl/MicroStrain/Wireless/WirelessParser.h"
 #include "mscl/MicroStrain/ResponseCollector.h"
-
-#include <boost/test/unit_test.hpp>
-#include <turtle/mock.hpp>
+#include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
+#include "mscl/MicroStrain/Wireless/Packets/WirelessPacketCollector.h"
+#include "mscl/MicroStrain/Wireless/Packets/WirelessPacketUtils.h"
+#include "mscl/MicroStrain/Wireless/WirelessParser.h"
 
 using namespace mscl;
+
+DISABLE_WARNING_BOOST_START
+#include <boost/test/unit_test.hpp>
+DISABLE_WARNING_BOOST_END
 
 BOOST_AUTO_TEST_SUITE(WirelessPacketUtils_Test)
 
@@ -426,7 +428,7 @@ BOOST_AUTO_TEST_CASE(WirelessPacketUtils_CorrectPacketType_SHMLink)
 
     WirelessPacketUtils::correctPacketType(packet);
 
-    //check that the packet's type has been changed to a SHM
+    //check that the packet's type has been changed to an SHM
     BOOST_CHECK_EQUAL(packet.type(), WirelessPacket::packetType_SHM);
 }
 

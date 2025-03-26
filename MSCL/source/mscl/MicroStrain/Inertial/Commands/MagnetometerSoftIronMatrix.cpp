@@ -4,19 +4,14 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "MagnetometerSoftIronMatrix.h"
-#include "mscl/MicroStrain/MIP/MipDataField.h"
-#include "mscl/MicroStrain/MIP/Packets/MipPacketBuilder.h"
-#include "mscl/MicroStrain/MIP/MipTypes.h"
-#include "mscl/MicroStrain/MIP/Commands/MIP_Commands.h"
+#include "mscl/MicroStrain/Inertial/Commands/MagnetometerSoftIronMatrix.h"
 
 namespace mscl
 {
     MagnetometerSoftIronMatrix::MagnetometerSoftIronMatrix(MipTypes::FunctionSelector function_selector, Matrix_3x3 matrix) :
         m_functionSelector(function_selector),
         m_matrix(matrix)
-    { }
+    {}
 
     MagnetometerSoftIronMatrix::MagnetometerSoftIronMatrix(MipTypes::FunctionSelector function_selector) :
         m_functionSelector(function_selector),
@@ -39,7 +34,7 @@ namespace mscl
 
     bool MagnetometerSoftIronMatrix::responseExpected() const
     {
-        return (m_functionSelector == MipTypes::READ_BACK_CURRENT_SETTINGS) ? true : false;
+        return m_functionSelector == MipTypes::READ_BACK_CURRENT_SETTINGS;
     }
 
     Matrix_3x3 MagnetometerSoftIronMatrix::getResponseData(const GenericMipCmdResponse& response)
@@ -72,7 +67,6 @@ namespace mscl
                 }
             }
         }
-        return GenericMipCommand::buildCommand(commandType(), byteCommand.data()); ;
+        return GenericMipCommand::buildCommand(commandType(), byteCommand.data());
     }
-
-}
+} // namespace mscl

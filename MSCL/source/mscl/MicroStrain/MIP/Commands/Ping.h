@@ -10,9 +10,7 @@
 
 namespace mscl
 {
-
 #ifndef SWIG
-
     //Class: Ping
     //    Contains the logic for the Inertial Ping command.
     class Ping
@@ -46,7 +44,5 @@ namespace mscl
             Response(std::weak_ptr<ResponseCollector> collector);
         };
     };
-
-#endif
-
-}
+#endif // !SWIG
+} // namespace mscl

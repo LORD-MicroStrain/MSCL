@@ -4,10 +4,9 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "GetDatalogSessionInfo.h"
-#include "WirelessProtocol.h"
-#include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
+#include "mscl/MicroStrain/Wireless/Commands/GetDatalogSessionInfo.h"
+
+#include "mscl/MicroStrain/Wireless/Commands/WirelessProtocol.h"
 
 namespace mscl
 {
@@ -41,11 +40,10 @@ namespace mscl
         return cmd;
     }
 
-    GetDatalogSessionInfo::Response::Response(NodeAddress nodeAddress, std::weak_ptr<ResponseCollector> collector):
+    GetDatalogSessionInfo::Response::Response(NodeAddress nodeAddress, std::weak_ptr<ResponseCollector> collector) :
         WirelessResponsePattern(collector, WirelessProtocol::cmdId_logSessionInfo_v1, nodeAddress),
         m_nodeAddress(nodeAddress)
-    {
-    }
+    {}
 
     bool GetDatalogSessionInfo::Response::matchSuccessResponse(const WirelessPacket& packet)
     {
@@ -96,4 +94,4 @@ namespace mscl
     {
         return m_result;
     }
-}
+} // namespace mscl

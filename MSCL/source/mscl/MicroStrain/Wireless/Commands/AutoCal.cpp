@@ -4,13 +4,10 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "AutoCal.h"
-#include "AutoCalInfo.h"
-#include "WirelessProtocol.h"
-#include "mscl/MicroStrain/ByteStream.h"
+#include "mscl/MicroStrain/Wireless/Commands/AutoCal.h"
+
+#include "mscl/MicroStrain/Wireless/Commands/WirelessProtocol.h"
 #include "mscl/MicroStrain/Wireless/Configuration/InputRange.h"
-#include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
 
 namespace mscl
 {
@@ -85,7 +82,7 @@ namespace mscl
             inputRangeEepromVal = InputRangeHelper::inputRangeToEepromVal(info.inputRange, details.nodeType, details.chType);
         }
 
-        uint8 internalShunt = (info.useInternalShunt) ? 1 : 0;
+        uint8 internalShunt = info.useInternalShunt ? 1 : 0;
 
         //build the command ByteStream
         ByteStream cmd;
@@ -139,14 +136,13 @@ namespace mscl
         return cmd;
     }
 
-    AutoCal::Response::Response(NodeAddress nodeAddress, std::weak_ptr<ResponseCollector> collector):
+    AutoCal::Response::Response(NodeAddress nodeAddress, std::weak_ptr<ResponseCollector> collector) :
         WirelessResponsePattern(collector, WirelessProtocol::cmdId_autoCal_v1, nodeAddress),
         m_nodeAddress(nodeAddress),
         m_calStarted(false),
         m_completionFlag(WirelessTypes::autocal_notComplete),
         m_timeUntilCompletion(0.0f)
-    {
-    }
+    {}
 
     bool AutoCal::Response::calStarted() const
     {
@@ -189,16 +185,14 @@ namespace mscl
 
                     return true;
                 }
-                else
-                {
-                    //got a bad status, so autocal won't be started (not expecting another packet)
-                    m_fullyMatched = true;
 
-                    //notify that the response was matched
-                    m_matchCondition.notify();
+                //got a bad status, so autocal won't be started (not expecting another packet)
+                m_fullyMatched = true;
 
-                    return true;
-                }
+                //notify that the response was matched
+                m_matchCondition.notify();
+
+                return true;
             }
         }
 
@@ -246,10 +240,9 @@ namespace mscl
         return true;
     }
 
-    AutoCal::ShmResponse::ShmResponse(NodeAddress nodeAddress, std::weak_ptr<ResponseCollector> collector):
-        AutoCal::Response(nodeAddress, collector)
-    {
-    }
+    AutoCal::ShmResponse::ShmResponse(NodeAddress nodeAddress, std::weak_ptr<ResponseCollector> collector) :
+        Response(nodeAddress, collector)
+    {}
 
     bool AutoCal::ShmResponse::matchSuccessResponse(const WirelessPacket& packet)
     {
@@ -282,10 +275,9 @@ namespace mscl
         return true;
     }
 
-    AutoCal::Shm201Response::Shm201Response(NodeAddress nodeAddress, std::weak_ptr<ResponseCollector> collector):
-        AutoCal::Response(nodeAddress, collector)
-    {
-    }
+    AutoCal::Shm201Response::Shm201Response(NodeAddress nodeAddress, std::weak_ptr<ResponseCollector> collector) :
+        Response(nodeAddress, collector)
+    {}
 
     bool AutoCal::Shm201Response::matchSuccessResponse(const WirelessPacket& packet)
     {
@@ -318,11 +310,10 @@ namespace mscl
         return true;
     }
 
-    AutoCal::ShuntCalResponse::ShuntCalResponse(NodeAddress nodeAddress, std::weak_ptr<ResponseCollector> collector, uint8 channelNumber):
-        AutoCal::Response(nodeAddress, collector),
+    AutoCal::ShuntCalResponse::ShuntCalResponse(NodeAddress nodeAddress, std::weak_ptr<ResponseCollector> collector, uint8 channelNumber) :
+        Response(nodeAddress, collector),
         m_channelNumber(channelNumber)
-    {
-    }
+    {}
 
     bool AutoCal::ShuntCalResponse::matchSuccessResponse(const WirelessPacket& packet)
     {
@@ -355,4 +346,4 @@ namespace mscl
 
         return true;
     }
-}
+} // namespace mscl

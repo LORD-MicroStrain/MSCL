@@ -6,11 +6,6 @@
 
 #pragma once
 
-#include "mscl/Types.h"
-#include "mscl/Version.h"
-#include "mscl/MicroStrain/ByteStream.h"
-#include "mscl/MicroStrain/ResponsePattern.h"
-#include "mscl/MicroStrain/Wireless/WirelessModels.h"
 #include "mscl/MicroStrain/Wireless/WirelessTypes.h"
 
 namespace mscl
@@ -25,7 +20,7 @@ namespace mscl
 
     public:
         AutoCalResult();
-        virtual ~AutoCalResult() {};
+        virtual ~AutoCalResult() {}
 
         //API Function: completionFlag
         //    Gets the <WirelessTypes::AutoCalCompletionFlag> of the AutoCal operation result.
@@ -48,7 +43,6 @@ namespace mscl
     //    Holds the result information from an autoCal_shmLink command.
     class AutoCalResult_shmLink : public AutoCalResult
     {
-    private:
         //Variable: m_errorFlagCh1
         //    The <WirelessTypes::AutoCalErrorFlag> for the channel 1 strain sensor.
         WirelessTypes::AutoCalErrorFlag m_errorFlagCh1;
@@ -79,7 +73,7 @@ namespace mscl
 
     public:
         AutoCalResult_shmLink();
-        virtual ~AutoCalResult_shmLink() {};
+        ~AutoCalResult_shmLink() override = default;
 
         //API Function: errorFlagCh1
         //    Gets the <WirelessTypes::AutoCalErrorFlag> for the channel 1 strain sensor.
@@ -112,14 +106,13 @@ namespace mscl
     protected:
         //Function: parse
         //    Parses the auto cal info bytes for the shm-link.
-        virtual void parse(const Bytes& autoCalInfo) final;
+        void parse(const Bytes& autoCalInfo) final;
     };
 
     //API Class: AutoCalResult_shmLink201
     //    Holds the result information from an autoCal_shmLink201 command.
-    class AutoCalResult_shmLink201: public AutoCalResult
+    class AutoCalResult_shmLink201 : public AutoCalResult
     {
-    private:
         //Variable: m_errorFlagCh1
         //    The <WirelessTypes::AutoCalErrorFlag> for the channel 1 strain sensor.
         WirelessTypes::AutoCalErrorFlag m_errorFlagCh1;
@@ -162,7 +155,7 @@ namespace mscl
 
     public:
         AutoCalResult_shmLink201();
-        virtual ~AutoCalResult_shmLink201() {};
+        ~AutoCalResult_shmLink201() override = default;
 
         //API Function: errorFlagCh1
         //    Gets the <WirelessTypes::AutoCalErrorFlag> for the channel 1 strain sensor.
@@ -207,14 +200,13 @@ namespace mscl
     protected:
         //Function: parse
         //    Parses the auto cal info bytes for the shm-link.
-        virtual void parse(const Bytes& autoCalInfo) final;
+        void parse(const Bytes& autoCalInfo) final;
     };
 
     //API Class: AutoShuntCalResult
     //    Holds the result information from an autoCal_shunt command.
-    class AutoShuntCalResult: public AutoCalResult
+    class AutoShuntCalResult : public AutoCalResult
     {
-    private:
         //Variable: m_errorFlag
         //  The <WirelessTypes::AutoCalErrorFlag> for the shunt calibration.
         WirelessTypes::AutoCalErrorFlag m_errorFlag;
@@ -253,7 +245,7 @@ namespace mscl
 
     public:
         AutoShuntCalResult();
-        virtual ~AutoShuntCalResult() {};
+        ~AutoShuntCalResult() override = default;
 
         //API Function: errorFlag
         //  Gets the <WirelessTypes::AutoCalErrorFlag> for the shunt calibration.
@@ -296,6 +288,6 @@ namespace mscl
     protected:
         //Function: parse
         //    Parses the auto cal info bytes for the shm-link.
-        virtual void parse(const Bytes& autoCalInfo) final;
+        void parse(const Bytes& autoCalInfo) final;
     };
-}
+} // namespace mscl

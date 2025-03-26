@@ -4,14 +4,12 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
+#include "mscl/MicroStrain/Wireless/Packets/RfSweepPacket.h"
 
-#include "RfSweepPacket.h"
-#include "mscl/Bin.h"
+#include "mscl/MicroStrain/Wireless/DataSweep.h"
 
 namespace mscl
 {
-
     RfSweepPacket::RfSweepPacket(const WirelessPacket& packet)
     {
         //construct the data packet from the wireless packet passed in
@@ -77,7 +75,7 @@ namespace mscl
 
     bool RfSweepPacket::integrityCheck(const WirelessPacket& packet)
     {
-        WirelessPacket::Payload payload = packet.payload();
+        Payload payload = packet.payload();
 
         //verify the minimum payload size
         if(payload.size() < 14)
@@ -102,4 +100,4 @@ namespace mscl
         //packet looks valid
         return true;
     }
-}
+} // namespace mscl

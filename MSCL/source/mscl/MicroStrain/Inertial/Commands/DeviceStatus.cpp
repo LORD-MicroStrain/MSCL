@@ -4,19 +4,14 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "DeviceStatus.h"
-#include "mscl/MicroStrain/MIP/MipDataField.h"
-#include "mscl/MicroStrain/MIP/Packets/MipPacketBuilder.h"
-#include "mscl/MicroStrain/MIP/MipTypes.h"
-#include "mscl/MicroStrain/MIP/Commands/MIP_Commands.h"
+#include "mscl/MicroStrain/Inertial/Commands/DeviceStatus.h"
 
 namespace mscl
 {
     DeviceStatus::DeviceStatus(MipModels::NodeModel model, DeviceStatusData::StatusSelector status_selector) :
         m_model(model),
         m_statusSelector(status_selector)
-    { }
+    {}
 
     DeviceStatus DeviceStatus::MakeGetCommand(MipModels::NodeModel model, DeviceStatusData::StatusSelector statusSelector)
     {
@@ -46,7 +41,7 @@ namespace mscl
         returnData.modelNumber = dataBuffer.read_uint16();
         MipModels::NodeModel model = static_cast<MipModels::NodeModel>(returnData.modelNumber);
         returnData.statusStructure = static_cast<DeviceStatusData::StatusSelector>(dataBuffer.read_uint8());
-        dataBuffer.read_uint32();   // Status flags are unused as of this writing, so just drop this on the floor.
+        dataBuffer.read_uint32();   // Status flags are unused as of this writing, so drop this on the floor.
 
         switch (model)
         {
@@ -60,7 +55,7 @@ namespace mscl
                 return returnData;
             }
 
-            returnData.gnssPowerStateOn((dataBuffer.read_uint8() == MipTypes::ENABLED));
+            returnData.gnssPowerStateOn(dataBuffer.read_uint8() == MipTypes::ENABLED);
 
             PpsPulseInfo gnss;
             gnss.count = dataBuffer.read_uint32();
@@ -71,9 +66,9 @@ namespace mscl
             StreamInfo gnssStream;
             StreamInfo efStream;
 
-            imuStream.enabled = (dataBuffer.read_uint8() == MipTypes::ENABLED);
-            gnssStream.enabled = (dataBuffer.read_uint8() == MipTypes::ENABLED);
-            efStream.enabled = (dataBuffer.read_uint8() == MipTypes::ENABLED);
+            imuStream.enabled  = dataBuffer.read_uint8() == MipTypes::ENABLED;
+            gnssStream.enabled = dataBuffer.read_uint8() == MipTypes::ENABLED;
+            efStream.enabled   = dataBuffer.read_uint8() == MipTypes::ENABLED;
 
             imuStream.outgoingPacketsDropped = dataBuffer.read_uint32();
             gnssStream.outgoingPacketsDropped = dataBuffer.read_uint32();
@@ -102,9 +97,9 @@ namespace mscl
             gnssMessages.lastMessageReadinMS = dataBuffer.read_uint32();
             returnData.gnssMessageInfo(gnssMessages);
 
-            returnData.magnetometerInitializationFailed((dataBuffer.read_uint8() == 0x01));
-            returnData.pressureInitializationFailed((dataBuffer.read_uint8() == 0x01));
-            returnData.gnssReceiverInitializationFailed((dataBuffer.read_uint8() == 0x01));
+            returnData.magnetometerInitializationFailed(dataBuffer.read_uint8() == 0x01);
+            returnData.pressureInitializationFailed(dataBuffer.read_uint8() == 0x01);
+            returnData.gnssReceiverInitializationFailed(dataBuffer.read_uint8() == 0x01);
         }
         break;
 
@@ -119,8 +114,8 @@ namespace mscl
                 return returnData;
             }
 
-            returnData.gnssPowerStateOn((dataBuffer.read_uint8() == MipTypes::ENABLED));
-            returnData.coldStartOnPowerOn((dataBuffer.read_uint8() == MipTypes::ENABLED));
+            returnData.gnssPowerStateOn(dataBuffer.read_uint8() == MipTypes::ENABLED);
+            returnData.coldStartOnPowerOn(dataBuffer.read_uint8() == MipTypes::ENABLED);
 
             TemperatureInfo temp;
             temp.onBoardTemp = dataBuffer.read_float();
@@ -136,9 +131,9 @@ namespace mscl
             StreamInfo gnssStream;
             StreamInfo efStream;
 
-            imuStream.enabled = (dataBuffer.read_uint8() == MipTypes::ENABLED);
-            gnssStream.enabled = (dataBuffer.read_uint8() == MipTypes::ENABLED);
-            efStream.enabled = (dataBuffer.read_uint8() == MipTypes::ENABLED);
+            imuStream.enabled  = dataBuffer.read_uint8() == MipTypes::ENABLED;
+            gnssStream.enabled = dataBuffer.read_uint8() == MipTypes::ENABLED;
+            efStream.enabled   = dataBuffer.read_uint8() == MipTypes::ENABLED;
 
             imuStream.outgoingPacketsDropped = dataBuffer.read_uint32();
             gnssStream.outgoingPacketsDropped = dataBuffer.read_uint32();
@@ -201,7 +196,7 @@ namespace mscl
             returnData.gnss1PpsPulseInfo(gnss);
 
             StreamInfo imu;
-            imu.enabled = (dataBuffer.read_uint8() == MipTypes::ENABLED);
+            imu.enabled = dataBuffer.read_uint8() == MipTypes::ENABLED;
             imu.outgoingPacketsDropped = dataBuffer.read_uint32();
             returnData.imuStreamInfo(imu);
 
@@ -234,8 +229,8 @@ namespace mscl
             StreamInfo imuStream;
             StreamInfo efStream;
 
-            imuStream.enabled = (dataBuffer.read_uint8() == MipTypes::ENABLED);
-            efStream.enabled = (dataBuffer.read_uint8() == MipTypes::ENABLED);
+            imuStream.enabled = dataBuffer.read_uint8() == MipTypes::ENABLED;
+            efStream.enabled  = dataBuffer.read_uint8() == MipTypes::ENABLED;
 
             imuStream.outgoingPacketsDropped = dataBuffer.read_uint32();
             efStream.outgoingPacketsDropped = dataBuffer.read_uint32();
@@ -276,8 +271,8 @@ namespace mscl
             StreamInfo imuStream;
             StreamInfo efStream;
 
-            imuStream.enabled = (dataBuffer.read_uint8() == MipTypes::ENABLED);
-            efStream.enabled = (dataBuffer.read_uint8() == MipTypes::ENABLED);
+            imuStream.enabled = dataBuffer.read_uint8() == MipTypes::ENABLED;
+            efStream.enabled  = dataBuffer.read_uint8() == MipTypes::ENABLED;
 
             imuStream.outgoingPacketsDropped = dataBuffer.read_uint32();
             efStream.outgoingPacketsDropped = dataBuffer.read_uint32();
@@ -321,7 +316,7 @@ namespace mscl
                 return returnData;
             }
 
-            returnData.gnssPowerStateOn((dataBuffer.read_uint8() == MipTypes::ENABLED));
+            returnData.gnssPowerStateOn(dataBuffer.read_uint8() == MipTypes::ENABLED);
 
             PpsPulseInfo gnss;
             gnss.count = dataBuffer.read_uint32();
@@ -332,9 +327,9 @@ namespace mscl
             StreamInfo gnssStream;
             StreamInfo efStream;
 
-            imuStream.enabled = (dataBuffer.read_uint8() == MipTypes::ENABLED);
-            gnssStream.enabled = (dataBuffer.read_uint8() == MipTypes::ENABLED);
-            efStream.enabled = (dataBuffer.read_uint8() == MipTypes::ENABLED);
+            imuStream.enabled  = dataBuffer.read_uint8() == MipTypes::ENABLED;
+            gnssStream.enabled = dataBuffer.read_uint8() == MipTypes::ENABLED;
+            efStream.enabled   = dataBuffer.read_uint8() == MipTypes::ENABLED;
 
             imuStream.outgoingPacketsDropped = dataBuffer.read_uint32();
             gnssStream.outgoingPacketsDropped = dataBuffer.read_uint32();
@@ -366,7 +361,7 @@ namespace mscl
         break;
 
         default:
-            throw mscl::Error_NotSupported("MSCL support for Device Status (0x0C, 0x64) is not currently implemented for this device. Model number: " + std::to_string(returnData.modelNumber));
+            throw Error_NotSupported("MSCL support for Device Status (0x0C, 0x64) is not currently implemented for this device. Model number: " + std::to_string(returnData.modelNumber));
         }
 
         return returnData;
@@ -379,5 +374,4 @@ namespace mscl
         byteCommand.append_uint8(static_cast<uint8>(m_statusSelector));
         return GenericMipCommand::buildCommand(commandType(), byteCommand.data());
     }
-
-}
+} // namespace mscl

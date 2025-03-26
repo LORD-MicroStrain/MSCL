@@ -4,9 +4,7 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "MipCmdResponse.h"
-#include "mscl/Exceptions.h"
+#include "mscl/MicroStrain/MIP/Commands/MipCmdResponse.h"
 
 namespace mscl
 {
@@ -15,16 +13,14 @@ namespace mscl
         m_success(false),
         m_ackNack(MipPacket::MIP_ACK_NACK_ERROR_NONE),
         m_commandName("MIP")
-    {
-    }
+    {}
 
-    MipCmdResponse::MipCmdResponse(ResponsePattern::State state, bool success, MipPacket::MipAckNack errorCode, std::string cmdName):
+    MipCmdResponse::MipCmdResponse(ResponsePattern::State state, bool success, MipPacket::MipAckNack errorCode, std::string cmdName) :
         m_responseState(state),
         m_success(success),
         m_ackNack(errorCode),
         m_commandName(cmdName)
-    {
-    }
+    {}
 
     void MipCmdResponse::throwIfFailed()
     {
@@ -58,4 +54,4 @@ namespace mscl
     {
         return m_ackNack;
     }
-}
+} // namespace mscl

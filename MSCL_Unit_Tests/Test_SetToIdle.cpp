@@ -4,15 +4,15 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
+#include "mscl/MicroStrain/MIP/Commands/Mip_SetToIdle.h"
 #include "mscl/MicroStrain/MIP/MipDataField.h"
 #include "mscl/MicroStrain/ResponseCollector.h"
-#include "mscl/MicroStrain/MIP/Commands/Mip_SetToIdle.h"
-#include "mscl/Exceptions.h"
 
-#include <boost/test/unit_test.hpp>
-
-using namespace std;
 using namespace mscl;
+
+DISABLE_WARNING_BOOST_START
+#include <boost/test/unit_test.hpp>
+DISABLE_WARNING_BOOST_END
 
 BOOST_AUTO_TEST_SUITE(Inertial_SetToIdle_Test)
 

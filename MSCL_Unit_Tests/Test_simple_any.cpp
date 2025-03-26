@@ -5,9 +5,10 @@
 *****************************************************************************************/
 
 #include "mscl/simple_any.h"
-#include <cstdint>
 
+DISABLE_WARNING_BOOST_START
 #include <boost/test/unit_test.hpp>
+DISABLE_WARNING_BOOST_END
 
 struct dynamic_type
 {

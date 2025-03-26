@@ -4,11 +4,7 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "BaseStationEepromMap.h"
-#include "mscl/MicroStrain/Wireless/BaseStationButton.h"
-
-#include "mscl/Types.h"
+#include "mscl/MicroStrain/Wireless/Configuration/BaseStationEepromMap.h"
 
 namespace mscl
 {
@@ -120,22 +116,19 @@ namespace mscl
             {
                 return BUTTON1_LONG_FUNC;
             }
-            else
-            {
-                return BUTTON1_SHORT_FUNC;
-            }
+
+            return BUTTON1_SHORT_FUNC;
         }
+
         //button 2
-        else if(buttonNumber == 2)
+        if(buttonNumber == 2)
         {
             if(action == BaseStationButton::action_longPress)
             {
                 return BUTTON2_LONG_FUNC;
             }
-            else
-            {
-                return BUTTON2_SHORT_FUNC;
-            }
+
+            return BUTTON2_SHORT_FUNC;
         }
 
         throw Error_NotSupported("Unsupported Button Number");
@@ -148,24 +141,21 @@ namespace mscl
         {
             if(action == BaseStationButton::action_longPress)
             {
-                return BaseStationEepromMap::BUTTON1_LONG_NODE;
+                return BUTTON1_LONG_NODE;
             }
-            else
-            {
-                return BaseStationEepromMap::BUTTON1_SHORT_NODE;
-            }
+
+            return BUTTON1_SHORT_NODE;
         }
+
         //button 2
-        else if(buttonNumber == 2)
+        if(buttonNumber == 2)
         {
             if(action == BaseStationButton::action_longPress)
             {
-                return BaseStationEepromMap::BUTTON2_LONG_NODE;
+                return BUTTON2_LONG_NODE;
             }
-            else
-            {
-                return BaseStationEepromMap::BUTTON2_SHORT_NODE;
-            }
+
+            return BUTTON2_SHORT_NODE;
         }
 
         throw Error("Unsupported Button Number");
@@ -174,13 +164,13 @@ namespace mscl
     EepromLocation BaseStationEepromMap::findAnalogEeprom(const EepromLocation& port1Location, uint8 portNum)
     {
         //each analog eeprom group location is spaced 12 eeproms apart
-        static const uint16 diffBetweenEeproms = (ANALOG_2_NODE_ADDRESS.location() - ANALOG_1_NODE_ADDRESS.location());
+        static const uint16 diffBetweenEeproms = ANALOG_2_NODE_ADDRESS.location() - ANALOG_1_NODE_ADDRESS.location();
 
         //the number of eeproms before the next id
-        static const uint16 diffBetweenIds = (ANALOG_2_NODE_ADDRESS.id() - ANALOG_1_NODE_ADDRESS.id());
+        static const uint16 diffBetweenIds = ANALOG_2_NODE_ADDRESS.id() - ANALOG_1_NODE_ADDRESS.id();
 
-        uint16 id = (port1Location.id() + ((portNum - 1) * diffBetweenIds));
-        uint16 location = (port1Location.location() + ((portNum - 1) * diffBetweenEeproms));
+        uint16 id = port1Location.id() + (portNum - 1) * diffBetweenIds;
+        uint16 location = port1Location.location() + (portNum - 1) * diffBetweenEeproms;
 
         return EepromLocation(id, location, port1Location.valueType(), port1Location.description());
     }
@@ -204,4 +194,4 @@ namespace mscl
     {
         return findAnalogEeprom(ANALOG_1_FLOAT_MIN, portNum);
     }
-}
+} // namespace mscl

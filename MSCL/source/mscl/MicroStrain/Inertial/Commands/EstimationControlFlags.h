@@ -6,16 +6,12 @@
 
 #pragma once
 
-#include "mscl/MicroStrain/MIP/Commands/GenericMipCommand.h"
-#include "mscl/MicroStrain/ResponseCollector.h"
 #include "mscl/MicroStrain/Inertial/ExposedInertialTypes.h"
 #include "mscl/MicroStrain/MIP/Commands/MipCommand.h"
 
 namespace mscl
 {
-
 #ifndef SWIG
-
     //Class: EstimationControlFlags
     //    Contains the logic for the Inertial EstimationControlFlags command.
     class EstimationControlFlags : public MipCommand
@@ -25,7 +21,7 @@ namespace mscl
         //
         //Returns:
         //    std::string - the string name for this class.
-        virtual std::string commandName() const { return "EstimationControlFlags"; }
+        std::string commandName() const override { return "EstimationControlFlags"; }
 
         //Function: MakeSetCommand
         //
@@ -53,7 +49,7 @@ namespace mscl
 
         //Function: operator ByteStream
         //  Converts this class to a ByteStream.
-        operator ByteStream() const;
+        operator ByteStream() const override;
 
     private:
         // Function: Constructor EstimationControlFlags
@@ -65,19 +61,19 @@ namespace mscl
         //
         //Returns:
         //    MipTypes::Command - the command ID.
-        virtual MipTypes::Command commandType() const { return MipTypes::CMD_EF_BIAS_EST_CTRL; }
+        MipTypes::Command commandType() const override { return MipTypes::CMD_EF_BIAS_EST_CTRL; }
 
         //Function: fieldDataByte
         //
         //Returns:
         //    uint8 - the byte ID for field data in the reply.
-        virtual uint8 fieldDataByte() const { return 0x84; }
+        uint8 fieldDataByte() const override { return 0x84; }
 
         //Function: responseExpected
         //
         //Returns:
         //    bool - True indicates that a response should return from the device.
-        virtual bool responseExpected() const;
+        bool responseExpected() const override;
 
         //Variable: m_functionSelector
         //    The FunctionSelector type of command to send, get/set, reset to factory defaults, et al.
@@ -89,8 +85,7 @@ namespace mscl
 
     public:
         // Destructor
-        ~EstimationControlFlags() { }
+        ~EstimationControlFlags() {}
     };
-
-#endif
-}
+#endif // !SWIG
+} // namespace mscl

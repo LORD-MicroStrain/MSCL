@@ -18,7 +18,7 @@ The structure for how the libraries should be placed inside the **dependencies**
 ```
 
 Note: The C++ MSCL library depends on the following libraries:
-- Boost 1.68
+- Boost 1.68.0 - 1.79.0
 - OpenSSL
 
 You will need to perform the following steps:

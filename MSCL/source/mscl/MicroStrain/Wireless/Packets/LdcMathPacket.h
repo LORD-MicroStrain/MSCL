@@ -6,11 +6,10 @@
 
 #pragma once
 
-#include "WirelessDataPacket.h"
+#include "mscl/MicroStrain/Wireless/Packets/WirelessDataPacket.h"
 
 namespace mscl
 {
-
     //Class: LdcMathPacket
     //    A <WirelessDataPacket> derived class representing a Low Duty Cycle packet
     class LdcMathPacket : public WirelessDataPacket
@@ -35,17 +34,17 @@ namespace mscl
 
     public:
         //Function: integrityCheck
-        //    Verifies that the packet is a well formed Low Duty Cycle packet
+        //    Verifies that the packet is a well-formed Low-Duty Cycle packet
         //
         //Parameters:
         //    packet - The fully formed Wireless Packet to check the integrity of
         //
         //Returns:
-        //    true if the packet is a well formed LDC packet, false otherwise
+        //    true if the packet is a well-formed LDC packet, false otherwise
         static bool integrityCheck(const WirelessPacket& packet);
 
         //Function: getUniqueId
-        //    Gets the unique Id of the <WirelessPacket> passed in
+        //    Gets the unique ID of the <WirelessPacket> passed in
         //
         //Parameters:
         //    packet - The <WirelessPacket> to get the unique id of
@@ -54,5 +53,4 @@ namespace mscl
         //    The <UniqueWirelessPacketId> of the passed in packet
         static UniqueWirelessPacketId getUniqueId(const WirelessPacket& packet);
     };
-
-}
+} // namespace mscl

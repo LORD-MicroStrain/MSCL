@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "WirelessPacket.h"
+#include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
 
 namespace mscl
 {
@@ -46,13 +46,13 @@ namespace mscl
         static const DeliveryStopFlags stopFlags_nodeDiscovery;
 
         //Function: integrityCheck
-        //    Verifies that the packet is a well formed Node Discovery (v4) packet.
+        //    Verifies that the packet is a well-formed Node Discovery (v4) packet.
         //
         //Parameters:
         //    packet - The fully formed Wireless Packet to check the integrity of.
         //
         //Returns:
-        //    true is the packet is a well-formed Node Discovery (v4) Packet, false otherwise.
+        //    true if the packet is a well-formed Node Discovery (v4) Packet, false otherwise.
         static bool integrityCheck(const WirelessPacket& packet);
     };
-}
+} // namespace mscl

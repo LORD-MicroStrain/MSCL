@@ -8,8 +8,11 @@
 #include "mscl/MicroStrain/MIP/MipDataField.h"
 #include "mscl/MicroStrain/ResponseCollector.h"
 
-#include <boost/test/unit_test.hpp>
 using namespace mscl;
+
+DISABLE_WARNING_BOOST_START
+#include <boost/test/unit_test.hpp>
+DISABLE_WARNING_BOOST_END
 
 BOOST_AUTO_TEST_SUITE(SensorCommands_Test)
 
@@ -66,7 +69,6 @@ BOOST_AUTO_TEST_CASE(GetSensorDataRateBase_Match_Success)
 }
 
 BOOST_AUTO_TEST_SUITE_END()    //End GetSensorDataRateBase
-
 
 BOOST_AUTO_TEST_SUITE(SensorCommands_SensorMessageFormat)
 
@@ -139,6 +141,5 @@ BOOST_AUTO_TEST_CASE(SensorMessageFormat_parseData)
 }
 
 BOOST_AUTO_TEST_SUITE_END()    //End SensorMessageFormat
-
 
 BOOST_AUTO_TEST_SUITE_END()

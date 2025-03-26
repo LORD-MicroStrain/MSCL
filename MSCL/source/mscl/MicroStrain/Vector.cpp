@@ -4,11 +4,7 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-
-#include "Vector.h"
-#include "Matrix.h"
-#include "mscl/Utils.h"
+#include "mscl/MicroStrain/Vector.h"
 
 namespace mscl
 {
@@ -16,7 +12,7 @@ namespace mscl
         Matrix()
     {}
 
-    Vector::Vector(ValueType storedAs, const ByteStream& data):
+    Vector::Vector(ValueType storedAs, const ByteStream& data) :
         //size (columns) = (# of bytes in ByteStream / # of bytes in the values' type)
         Matrix(1, static_cast<uint16>(data.size() / Utils::valueTypeSize(storedAs)), storedAs, data)
     {}
@@ -49,4 +45,4 @@ namespace mscl
     {
         return columns();
     }
-}
+} // namespace mscl

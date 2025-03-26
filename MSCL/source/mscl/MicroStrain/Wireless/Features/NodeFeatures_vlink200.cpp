@@ -4,15 +4,14 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "NodeFeatures_vlink200.h"
-#include "AvailableSampleRates.h"
-#include "mscl/MicroStrain/Wireless/ChannelMask.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures_vlink200.h"
+
 #include "mscl/MicroStrain/Wireless/Configuration/NodeEepromMap.h"
+#include "mscl/MicroStrain/Wireless/Features/AvailableSampleRates.h"
 
 namespace mscl
 {
-    NodeFeatures_vlink200::NodeFeatures_vlink200(const NodeInfo& info):
+    NodeFeatures_vlink200::NodeFeatures_vlink200(const NodeInfo& info) :
         NodeFeatures_200series(info)
     {
         //Channels
@@ -24,7 +23,6 @@ namespace mscl
         m_channels.emplace_back(6, WirelessChannel::channel_6, WirelessTypes::chType_singleEnded, "Single-ended", 18);
         m_channels.emplace_back(7, WirelessChannel::channel_7, WirelessTypes::chType_singleEnded, "Single-ended", 18);
         m_channels.emplace_back(8, WirelessChannel::channel_8, WirelessTypes::chType_singleEnded, "Single-ended", 18);
-
 
         //Channel Groups
         static const ChannelMask DIFFERENTIAL_CH1(BOOST_BINARY(00000001));    //ch1
@@ -111,7 +109,7 @@ namespace mscl
     {
         static const Version MIN_POLL_FW(12, 45139);
 
-        return (m_nodeInfo.firmwareVersion() >= MIN_POLL_FW);
+        return m_nodeInfo.firmwareVersion() >= MIN_POLL_FW;
     }
 
     const WirelessTypes::WirelessSampleRates NodeFeatures_vlink200::sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const
@@ -124,20 +122,16 @@ namespace mscl
             {
                 return AvailableSampleRates::continuous_log_vlink200;
             }
-            else
-            {
-                return AvailableSampleRates::continuous_nonSync_vlink200;
-            }
+
+            return AvailableSampleRates::continuous_nonSync_vlink200;
 
         case WirelessTypes::samplingMode_sync:
             if(dataCollectionMethod == WirelessTypes::collectionMethod_logOnly)
             {
                 return AvailableSampleRates::continuous_log_vlink200;
             }
-            else
-            {
-                return AvailableSampleRates::continuous_sync_vlink200;
-            }
+
+            return AvailableSampleRates::continuous_sync_vlink200;
 
         case WirelessTypes::samplingMode_syncBurst:
         case WirelessTypes::samplingMode_syncEvent:
@@ -180,4 +174,4 @@ namespace mscl
 
         return static_cast<uint32>(TimeSpan::MilliSeconds(5).getMicroseconds());    //5 milliseconds
     }
-}
+} // namespace mscl

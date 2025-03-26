@@ -4,18 +4,15 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-
-#include "HistogramOptions.h"
+#include "mscl/MicroStrain/Wireless/Configuration/HistogramOptions.h"
 
 namespace mscl
 {
-    HistogramOptions::HistogramOptions():
+    HistogramOptions::HistogramOptions() :
         m_transmitRate(WirelessTypes::sampleRate_30Sec),
         m_binStart(0),
         m_binSize(5)
-    {
-    }
+    {}
 
     WirelessTypes::WirelessSampleRate HistogramOptions::transmitRate() const
     {
@@ -46,4 +43,4 @@ namespace mscl
     {
         m_binSize = size;
     }
-}
+} // namespace mscl

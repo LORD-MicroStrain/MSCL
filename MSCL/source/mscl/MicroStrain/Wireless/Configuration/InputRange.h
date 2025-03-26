@@ -35,7 +35,7 @@ namespace mscl
             inputRange(WirelessTypes::range_invalid),
             hasGain(false),
             gain(0)
-        { }
+        {}
 
         //API Constructor: InputRangeEntry
         //  creates an InputRangeEntry with inputRange = ir, hasGain = false and gain = 0
@@ -43,7 +43,7 @@ namespace mscl
             inputRange(ir),
             hasGain(false),
             gain(0)
-        { }
+        {}
 
         //API Constructor: InputRangeEntry
         //  creates an InputRangeEntry with inputRange = ir, hasGain = true and gain = g
@@ -51,7 +51,7 @@ namespace mscl
             inputRange(ir),
             hasGain(true),
             gain(g)
-        { }
+        {}
     };
 
     //API Typedef: InputRanges
@@ -63,7 +63,6 @@ namespace mscl
     //    Contains functions specific to input range for Wireless Nodes.
     class InputRangeHelper
     {
-    private:
         //Typedef: InputRangeMap
         //  typedef for a map of uint16 eeprom values to <WirelessTypes::InputRange> values.
         typedef std::map<uint16, InputRangeEntry> InputRangeMap;
@@ -158,5 +157,5 @@ namespace mscl
         //  Gets a <WirelessTypes::InputRanges> container for the provided node type, channel type, and excitation voltage.
         static void getRangeVector(WirelessModels::NodeModel nodeType, WirelessTypes::ChannelType channelType, WirelessTypes::Voltage excitationVoltage, InputRanges& result);
     };
-#endif
-}
+#endif // !SWIG
+} // namespace mscl

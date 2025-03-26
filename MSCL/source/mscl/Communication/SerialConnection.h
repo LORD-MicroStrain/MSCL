@@ -6,11 +6,7 @@
 
 #pragma once
 
-#include <boost/asio.hpp>
-#include "Connection.h"
-#include "Connection_Impl.h"
-#include "BoostCommunication.h"
-#include "mscl/Types.h"
+#include "mscl/Communication/Connection_Impl.h"
 
 namespace mscl
 {
@@ -20,12 +16,10 @@ namespace mscl
     {
         friend Connection Connection::Serial(const std::string& port, uint32 baudRate);
 
-    private:
         SerialConnection();                                        //default constructor disabled
         SerialConnection(const SerialConnection&);                //copy constructor disabled
         SerialConnection& operator=(const SerialConnection&);    //assignment operator disabled
 
-    private:
         //Constructor: SerialConnection
         //    Initializes the SerialConnection object.
         //
@@ -41,7 +35,7 @@ namespace mscl
     public:
         //Destructor: ~SerialConnection
         //    Destroys the SerialConnection object
-        virtual ~SerialConnection() {};
+        ~SerialConnection() override = default;
 
     private:
         //Variable: m_port
@@ -58,7 +52,7 @@ namespace mscl
         //
         //Returns:
         //    A description of the connection
-        virtual std::string description();
+        std::string description() override;
 
         //Function: port
         //    Gets a name of the connection port
@@ -85,7 +79,6 @@ namespace mscl
         //Exceptions:
         //    - <Error_InvalidSerialPort>: the specified com port is invalid
         //    - <Error_Connection>: failed to get or set com port parameters
-        virtual void establishConnection();
+        void establishConnection() override;
     };
-
-}
+} // namespace mscl

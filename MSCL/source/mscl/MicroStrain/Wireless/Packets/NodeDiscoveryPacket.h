@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "WirelessPacket.h"
+#include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
 
 namespace mscl
 {
@@ -17,11 +17,11 @@ namespace mscl
     public:
         //=====================================================================================================
         //Constants: Node Discovery Packet Information
-        //    PAYLOAD_OFFSET_RADIO_CHANNEL - 0        - The offset into the payload to get the radio channel
-        //    PAYLOAD_OFFSET_MODEL_NUMBER     - 1        - The offset into the payload to get the model number (2 bytes)
+        //    PAYLOAD_OFFSET_RADIO_CHANNEL - 0 - The offset into the payload to get the radio channel
+        //    PAYLOAD_OFFSET_MODEL_NUMBER  - 1 - The offset into the payload to get the model number (2 bytes)
         //=====================================================================================================
-        static const int PAYLOAD_OFFSET_RADIO_CHANNEL    = 0;
-        static const int PAYLOAD_OFFSET_MODEL_NUMBER    = 1;
+        static const int PAYLOAD_OFFSET_RADIO_CHANNEL = 0;
+        static const int PAYLOAD_OFFSET_MODEL_NUMBER  = 1;
 
     private:
         NodeDiscoveryPacket();    //default constructor disabled
@@ -32,13 +32,13 @@ namespace mscl
         static const DeliveryStopFlags stopFlags_nodeDiscovery;
 
         //Function: integrityCheck
-        //    Verifies that the packet is a well formed Node Discovery packet
+        //    Verifies that the packet is a well-formed Node Discovery packet
         //
         //Parameters:
         //    packet - The fully formed Wireless Packet to check the integrity of
         //
         //Returns:
-        //    true is the packet is a well-formed Node Discovery Packet, false otherwise
+        //    true if the packet is a well-formed Node Discovery Packet, false otherwise
         static bool integrityCheck(const WirelessPacket& packet);
     };
-}
+} // namespace mscl

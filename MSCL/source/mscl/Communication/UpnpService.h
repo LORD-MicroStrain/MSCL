@@ -6,13 +6,9 @@
 
 #pragma once
 
+// Windows-only file
 #ifdef _WIN32
-#include <UPnP.h>   //Windows only file
-#include <Windows.h>
-
-#include <map>
-#include <string>
-#include <thread>
+#include <UPnP.h>
 
 namespace mscl
 {
@@ -26,7 +22,6 @@ namespace mscl
         UpnpService(const UpnpService&);              //copy constructor disabled
         UpnpService& operator=(const UpnpService&);   //assignment operator disabled
 
-    private:
         IUPnPDeviceFinderCallback* m_deviceFinderCallback;
         IUPnPDeviceFinder* m_deviceFinder;
         BSTR m_description;
@@ -38,7 +33,6 @@ namespace mscl
         std::recursive_mutex m_upnpMutex;
         std::unique_ptr<std::thread> m_searchThread;
 
-    private:
         bool startSearch();
         void findDevices();
         void cancelFindDevices();
@@ -47,6 +41,5 @@ namespace mscl
         void setSearchComplete();
         void restartSearch();
     };
-}
-
-#endif
+} // namespace mscl
+#endif // _WIN32

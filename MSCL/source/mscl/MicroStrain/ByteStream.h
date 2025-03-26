@@ -6,9 +6,7 @@
 
 #pragma once
 
-#include "mscl/Types.h"
 #include "mscl/Utils.h"
-#include <string>
 
 namespace mscl
 {
@@ -34,7 +32,7 @@ namespace mscl
 
         //Destructor: ~ByteStream
         //    Default destructor for the ByteStream object
-        virtual ~ByteStream(){};
+        virtual ~ByteStream() = default;
 
     private:
         //Variable: m_bytes
@@ -66,7 +64,6 @@ namespace mscl
         //    true if the two ByteStreams are identical, false otherwise
         friend bool operator== (ByteStream& stream1, ByteStream& stream2);
 
-    public:
         //Function: append_uint8
         //    Appends a 1-byte unsigned integer to the byte stream
         //
@@ -88,7 +85,7 @@ namespace mscl
         //Parameters:
         //    value - The 2-byte int16 to be added to the byte stream
         //    endian - The <Utils::Endianness> to append the bytes in.
-        void append_int16(int16 value, Utils::Endianness endian=Utils::bigEndian);
+        void append_int16(int16 value, Utils::Endianness endian = Utils::bigEndian);
 
         //Function: append_uint16
         //    Appends a 2-byte unsigned integer to the byte stream
@@ -435,5 +432,4 @@ namespace mscl
         //    - std::out_of_range: The index requested is out of range
         void verifyBytesInStream(std::size_t position, std::size_t length) const;
     };
-
-}
+} // namespace mscl

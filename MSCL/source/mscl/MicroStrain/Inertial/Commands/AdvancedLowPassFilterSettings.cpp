@@ -4,11 +4,7 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "AdvancedLowPassFilterSettings.h"
-#include "mscl/MicroStrain/MIP/MipDataField.h"
-#include "mscl/MicroStrain/MIP/Packets/MipPacketBuilder.h"
-#include "mscl/MicroStrain/MIP/MipTypes.h"
+#include "mscl/MicroStrain/Inertial/Commands/AdvancedLowPassFilterSettings.h"
 
 namespace mscl
 {
@@ -16,7 +12,7 @@ namespace mscl
                                                                  const LowPassFilterData&        dataToUse) :
         m_functionSelector(function_selector),
         m_data(dataToUse)
-    { }
+    {}
 
     AdvancedLowPassFilterSettings::AdvancedLowPassFilterSettings(const MipTypes::FunctionSelector& function_selector,
                                                                  const MipTypes::ChannelField& descriptor) :
@@ -39,7 +35,7 @@ namespace mscl
 
     bool AdvancedLowPassFilterSettings::responseExpected() const
     {
-        return (m_functionSelector == MipTypes::READ_BACK_CURRENT_SETTINGS) ? true : false;
+        return m_functionSelector == MipTypes::READ_BACK_CURRENT_SETTINGS;
     }
 
     LowPassFilterData AdvancedLowPassFilterSettings::getResponseData(const GenericMipCmdResponse& response)
@@ -47,7 +43,7 @@ namespace mscl
         DataBuffer dataBuffer(response.data());
         LowPassFilterData returnData;
         returnData.dataDescriptor = LowPassFilterData::getDataDescriptorFromUint8(dataBuffer.read_uint8());
-        returnData.applyLowPassFilter = (dataBuffer.read_uint8() == 0x01)? true : false;
+        returnData.applyLowPassFilter = dataBuffer.read_uint8() == 0x01;
         returnData.manualFilterBandwidthConfig = static_cast<LowPassFilterData::ManualFilterBandwidthConfig>(dataBuffer.read_uint8());
         returnData.cutoffFrequency = dataBuffer.read_uint16();
         return returnData;
@@ -70,7 +66,6 @@ namespace mscl
             byteCommand.append_uint16(static_cast<uint16>(freq));
             byteCommand.append_uint8(0x00);
         }
-        return GenericMipCommand::buildCommand(commandType(), byteCommand.data()); ;
+        return GenericMipCommand::buildCommand(commandType(), byteCommand.data());
     }
-
-}
+} // namespace mscl

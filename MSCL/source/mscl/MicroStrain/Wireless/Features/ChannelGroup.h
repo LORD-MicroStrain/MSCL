@@ -6,12 +6,8 @@
 
 #pragma once
 
-#include <map>
-#include <vector>
-
-#include "mscl/MicroStrain/Wireless/ChannelMask.h"
-#include "mscl/MicroStrain/Wireless/WirelessTypes.h"
 #include "mscl/MicroStrain/Wireless/Configuration/EepromLocation.h"
+#include "mscl/MicroStrain/Wireless/WirelessTypes.h"
 
 namespace mscl
 {
@@ -27,7 +23,6 @@ namespace mscl
         ChannelGroup();
 
 #ifndef SWIG
-
         typedef std::map<WirelessTypes::ChannelGroupSetting, EepromLocation> SettingsMap;
 
         //Constructor: ChannelGroup
@@ -38,7 +33,7 @@ namespace mscl
         //    groupName - The name of the group.
         //    settings - A map of <WirelessTypes::ChannelGroupSettings> to <EepromLocation>s.
         ChannelGroup(const ChannelMask& channelMask, const std::string& groupName, const SettingsMap& settings);
-#endif
+#endif // !SWIG
 
     private:
         //Variable: m_channels
@@ -119,4 +114,4 @@ namespace mscl
     //API Typedef: ChannelGroups
     //    A typedef for a vector of <ChannelGroup>s.
     typedef std::vector<ChannelGroup> ChannelGroups;
-}
+} // namespace mscl

@@ -6,11 +6,13 @@
 
 #pragma once
 
+#include "mscl/MicroStrain/Wireless/WirelessModels.h"
 #include "mscl/MicroStrain/Wireless/WirelessTypes.h"
-#include "NodeInfo.h"
 
 namespace mscl
 {
+    struct NodeInfo;
+
     //Class: AvailableTransmitPowers
     //  contains functions for getting the available transmit powers for devices
     class AvailableTransmitPowers
@@ -30,4 +32,4 @@ namespace mscl
         //  Gets a list of transmit powers for the given information.
         static const WirelessTypes::TransmitPowers get(WirelessTypes::RegionCode region, WirelessModels::BaseModel model, const Version& fwVersion, WirelessTypes::CommProtocol commProtocol);
     };
-}
+} // namespace mscl

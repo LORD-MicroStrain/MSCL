@@ -4,15 +4,17 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
+#include "mscl/MicroStrain/ChecksumBuilder.h"
+#include "mscl/MicroStrain/DataBuffer.h"
+#include "mscl/MicroStrain/ResponseCollector.h"
 #include "mscl/MicroStrain/Wireless/Commands/BaseStation_SetBeacon.h"
 #include "mscl/Utils.h"
-#include "mscl/MicroStrain/ChecksumBuilder.h"
-#include "mscl/MicroStrain/ResponseCollector.h"
-#include "mscl/MicroStrain/DataBuffer.h"
-
-#include <boost/test/unit_test.hpp>
 
 using namespace mscl;
+
+DISABLE_WARNING_BOOST_START
+#include <boost/test/unit_test.hpp>
+DISABLE_WARNING_BOOST_END
 
 Bytes buildBaseSetBeaconResponse()
 {
@@ -23,7 +25,6 @@ Bytes buildBaseSetBeaconResponse()
 
     return bytes;
 }
-
 
 BOOST_AUTO_TEST_SUITE(BaseStationSetBeacon_Test)
 

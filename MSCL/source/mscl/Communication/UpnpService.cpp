@@ -4,12 +4,11 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "UpnpService.h"
+#include "mscl/Communication/UpnpService.h"
 
 namespace mscl
 {
-    UpnpService::UpnpService(IUPnPDeviceFinderCallback& callback, BSTR description):
+    UpnpService::UpnpService(IUPnPDeviceFinderCallback& callback, BSTR description) :
         m_deviceFinderCallback(&callback),
         m_deviceFinder(nullptr),
         m_description(description),
@@ -130,9 +129,7 @@ namespace mscl
             CoUninitialize();
         }
         catch(...)
-        {
-            return;
-        }
+        {}
     }
 
     void UpnpService::setSearchComplete()
@@ -163,4 +160,4 @@ namespace mscl
     {
         setSearchComplete();
     }
-}
+} // namespace mscl

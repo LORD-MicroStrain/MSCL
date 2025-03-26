@@ -6,7 +6,6 @@
 
 #pragma once
 
-#include "mscl/BitMask.h"
 #include "mscl/MicroStrain/Wireless/WirelessTypes.h"
 
 namespace mscl
@@ -18,7 +17,6 @@ namespace mscl
         friend class NodeEepromHelper;
         friend class WirelessNodeConfig;
 
-    private:
         //Enum: DataModeBitPos
         //  The bit position for the Data Mode bitmask.
         enum DataModeBitPos
@@ -56,7 +54,6 @@ namespace mscl
         //  A <WirelessTypes::DataMode> representing the DataModeMask object.
         WirelessTypes::DataMode toDataModeEnum() const;
 
-    public:
         //Variable: rawModeEnabled
         //  Whether raw data mode is enabled or disabled.
         bool rawModeEnabled;
@@ -65,4 +62,4 @@ namespace mscl
         //  Whether derived data mode is enabled or disabled.
         bool derivedModeEnabled;
     };
-}
+} // namespace mscl

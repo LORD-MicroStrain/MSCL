@@ -6,27 +6,17 @@
 
 #pragma once
 
-#include <memory>
-
-#include "mscl/MicroStrain/MIP/MipChannel.h"
-#include "mscl/MicroStrain/MIP/MipTypes.h"
-#include "mscl/MicroStrain/MIP/Commands/Ping.h"
-#include "mscl/MicroStrain/MIP/Commands/GenericMipCommand.h"
-#include "mscl/MicroStrain/MIP/Commands/GetDeviceInfo.h"
-#include "mscl/MicroStrain/MIP/Packets/MipPacketCollector.h"
-#include "mscl/Communication/Connection.h"
-#include "mscl/MicroStrain/ResponseCollector.h"
-#include "mscl/MicroStrain/Inertial/EulerAngles.h"
-#include "mscl/MicroStrain/Inertial/PositionVelocity.h"
-#include "mscl/Timestamp.h"
+#include "mscl/Communication/RawBytePacketCollector.h"
 #include "mscl/MicroStrain/Inertial/ExposedInertialTypes.h"
 #include "mscl/MicroStrain/LinearEquation.h"
+#include "mscl/MicroStrain/MIP/MipChannel.h"
+#include "mscl/MicroStrain/MIP/MipNodeInfo.h"
+#include "mscl/MicroStrain/MIP/Packets/MipPacketCollector.h"
 
 namespace mscl
 {
     //forward declarations
     class MipParser;
-    class MipNodeInfo;
     class MipNodeFeatures;
     class MipCommand;
 
@@ -34,7 +24,6 @@ namespace mscl
     //     Contains the implementation for an <InertialNode>.
     class MipNode_Impl
     {
-    private:
         //Constant: COMMANDS_DEFAULT_TIMEOUT
         //    The default timeout for Inertial commands (250 milliseconds)
         static const uint64 COMMANDS_DEFAULT_TIMEOUT = 250;
@@ -56,7 +45,6 @@ namespace mscl
         MipNode_Impl(const MipNode_Impl&);            //copy constructor disabled
         MipNode_Impl& operator=(const MipNode_Impl&);    //assignment operator disabled
 
-    private:
         //Variable: m_connection
         //    The Connection object used for communication
         Connection m_connection;
@@ -105,7 +93,6 @@ namespace mscl
         //  The last known <DeviceState> of the Node.
         DeviceState m_lastDeviceState;
 
-    private:
         //Function: parseData
         //    Callback function that parses any bytes that are in the read buffer to find packets or command responses
         //
@@ -425,7 +412,6 @@ namespace mscl
         //    cmd - The <MipCommandBytes> to send to the device. The sendCmdFailed value will be set to true if the sent command errors.
         void sendCommandBytes(MipCommandBytes& cmd);
 
-    public:
         //Function: ping
         //    Pings the node to check for communication.
         //    Sends the "Ping" command to the device.
@@ -1213,7 +1199,6 @@ namespace mscl
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         Matrix_3x3 getMagnetometerSoftIronMatrix() const;
-
 
         //Function: setMagnetometerHardIronOffset
         //    Sets the magnetometer hard iron offset vector.
@@ -2157,4 +2142,4 @@ private:
        //    Important: if the UART Baud Rate is changed the connection to the port will be automatically closed and re-opened at the new baud rate.
        void processMipCommandBytes(MipCommandBytes& cmd);
     };
-}
+} // namespace mscl

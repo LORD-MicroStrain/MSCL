@@ -5,11 +5,12 @@
 *****************************************************************************************/
 
 #include "mscl/MicroStrain/MIP/Packets/MipDataPacket.h"
-#include "mscl/Exceptions.h"
-
-#include <boost/test/unit_test.hpp>
 
 using namespace mscl;
+
+DISABLE_WARNING_BOOST_START
+#include <boost/test/unit_test.hpp>
+DISABLE_WARNING_BOOST_END
 
 BOOST_AUTO_TEST_SUITE(InertialDataPoint_Test)
 
@@ -106,7 +107,6 @@ BOOST_AUTO_TEST_CASE(InertialDataPoint_asTimestamp)
     MipDataPoint p1((MipTypes::ChannelField)0, MipTypes::CH_TIMESTAMP, valueType_float, anyType(3.14f), true);
     BOOST_CHECK_THROW(p1.as_Timestamp(), Error_BadDataType);
 }
-
 
 BOOST_AUTO_TEST_SUITE(InertialDataPoint_asString)
 
@@ -236,6 +236,5 @@ BOOST_AUTO_TEST_CASE(InertialDataPoint_asString_Bytes)
 }
 
 BOOST_AUTO_TEST_SUITE_END()
-
 
 BOOST_AUTO_TEST_SUITE_END()

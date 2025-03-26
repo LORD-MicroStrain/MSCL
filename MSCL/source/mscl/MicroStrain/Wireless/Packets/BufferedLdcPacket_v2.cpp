@@ -4,20 +4,14 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
+#include "mscl/MicroStrain/Wireless/Packets/BufferedLdcPacket_v2.h"
 
-#include "mscl/Exceptions.h"
-#include "BufferedLdcPacket_v2.h"
 #include "mscl/MicroStrain/SampleUtils.h"
-#include "mscl/MicroStrain/Wireless/ChannelMask.h"
+#include "mscl/MicroStrain/Wireless/DataSweep.h"
 #include "mscl/TimestampCounter.h"
-#include "mscl/Types.h"
-#include "mscl/Utils.h"
-
 
 namespace mscl
 {
-
     BufferedLdcPacket_v2::BufferedLdcPacket_v2(const WirelessPacket& packet)
     {
         //construct the data packet from the wireless packet passed in
@@ -113,7 +107,7 @@ namespace mscl
                 if(channels.enabled(chItr))
                 {
                     //insert the data point into the ChannelData object for the wireless channel
-                    addDataPoint(chData, (chItr), chDataIndex, sweepItr, wirelessChannelFromChNum(chItr));
+                    addDataPoint(chData, chItr, chDataIndex, sweepItr, wirelessChannelFromChNum(chItr));
 
                     chDataIndex++;
                 }
@@ -129,12 +123,12 @@ namespace mscl
 
     bool BufferedLdcPacket_v2::integrityCheck(const WirelessPacket& packet)
     {
-        WirelessPacket::Payload payload = packet.payload();
+        Payload payload = packet.payload();
 
         //verify the payload size
         if(payload.size() < PAYLOAD_OFFSET_CHANNEL_DATA)
         {
-            //payload must be at least a certain length
+            //the payload must be at least a certain length
             return false;
         }
 
@@ -178,7 +172,7 @@ namespace mscl
 
         uint32 recordSize = channels * dataSize;
 
-        //if record size is zero, something is wrong. Bail now before divide by zero
+        //If record size is zero, something is wrong. Bail now before divide by zero
         if(recordSize <= 0)
         {
             return false;
@@ -208,4 +202,4 @@ namespace mscl
         //return the tick value
         return packet.payload().read_uint16(PAYLOAD_OFFSET_TICK);
     }
-}
+} // namespace mscl

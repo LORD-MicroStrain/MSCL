@@ -6,21 +6,15 @@
 
 #pragma once
 
-#include "mscl/MicroStrain/ByteStream.h"
-#include "mscl/Types.h"
-
 namespace mscl
 {
-
 #ifndef SWIG
-
     //Class: StartNonSyncSampling
     //    Contains logic for the StartNonSyncSampling Node command
     class StartNonSyncSampling
     {
-    private:
-        StartNonSyncSampling();                                            //default constructor disabled
-        StartNonSyncSampling(const StartNonSyncSampling&);                //copy constructor disabled
+        StartNonSyncSampling();                                          //default constructor disabled
+        StartNonSyncSampling(const StartNonSyncSampling&);               //copy constructor disabled
         StartNonSyncSampling& operator=(const StartNonSyncSampling&);    //assignment operator disabled
 
     public:
@@ -34,6 +28,5 @@ namespace mscl
         //    A <ByteStream> containing the command packet
         static ByteStream buildCommand(NodeAddress nodeAddress);
     };
-
-#endif
-}
+#endif // !SWIG
+} // namespace mscl

@@ -4,18 +4,13 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "ExternalGNSSUpdate.h"
-#include "mscl/MicroStrain/MIP/MipDataField.h"
-#include "mscl/MicroStrain/MIP/Packets/MipPacketBuilder.h"
-#include "mscl/MicroStrain/MIP/MipTypes.h"
-#include "mscl/MicroStrain/MIP/Commands/MIP_Commands.h"
+#include "mscl/MicroStrain/Inertial/Commands/ExternalGNSSUpdate.h"
 
 namespace mscl
 {
     ExternalGNSSUpdate::ExternalGNSSUpdate(const ExternalGNSSUpdateData& dataToUse) :
         m_data(dataToUse)
-    { }
+    {}
 
     ExternalGNSSUpdate ExternalGNSSUpdate::MakeCommand(const ExternalGNSSUpdateData& dataToUse)
     {
@@ -47,5 +42,4 @@ namespace mscl
 
         return GenericMipCommand::buildCommand(commandType(), byteCommand.data());
     }
-
-}
+} // namespace mscl

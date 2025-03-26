@@ -6,9 +6,8 @@
 
 #pragma once
 
-#include "DatalogSessionInfoResult.h"
-#include "mscl/MicroStrain/ByteStream.h"
-#include "WirelessResponsePattern.h"
+#include "mscl/MicroStrain/Wireless/Commands/DatalogSessionInfoResult.h"
+#include "mscl/MicroStrain/Wireless/Commands/WirelessResponsePattern.h"
 #include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
 
 namespace mscl
@@ -19,7 +18,6 @@ namespace mscl
     //  Contains logic for the Get Datalog Session Info Node command.
     class GetDatalogSessionInfo
     {
-    private:
         GetDatalogSessionInfo() = delete;                                          //default constructor disabled
         GetDatalogSessionInfo(const GetDatalogSessionInfo&) = delete;              //copy constructor disabled
         GetDatalogSessionInfo& operator=(const GetDatalogSessionInfo&) = delete;   //assignment operator disabled
@@ -84,4 +82,4 @@ namespace mscl
             const DatalogSessionInfoResult& result() const;
         };
     };
-}
+} // namespace mscl

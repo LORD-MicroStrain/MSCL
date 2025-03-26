@@ -4,18 +4,9 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "RTKNode.h"
+#include "mscl/MicroStrain/RTK/RTKNode.h"
 
-#include "mscl/Types.h"
-#include "mscl/MicroStrain/MIP/Commands/MipCommand.h"
-#include "mscl/MicroStrain/MIP/Commands/MIP_Commands.h"
-#include "mscl/MicroStrain/MIP/MipNodeFeatures.h"
-#include "mscl/MicroStrain/MIP/Packets/MipPacket.h"
 #include "mscl/MicroStrain/MIP/MipNode_Impl.h"
-
-#include <algorithm>
-
 
 namespace mscl
 {
@@ -43,4 +34,4 @@ namespace mscl
     {
         return getDeviceStatusFlags().version();
     }
-}
+} // namespace mscl

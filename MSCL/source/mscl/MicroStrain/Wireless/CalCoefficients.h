@@ -6,11 +6,9 @@
 
 #pragma once
 
-#include <map>
-
 #include "mscl/MicroStrain/LinearEquation.h"
-#include "WirelessChannel.h"
-#include "WirelessTypes.h"
+#include "mscl/MicroStrain/Wireless/WirelessChannel.h"
+#include "mscl/MicroStrain/Wireless/WirelessTypes.h"
 
 namespace mscl
 {
@@ -60,7 +58,7 @@ namespace mscl
         //Returns:
         //    true if the two CalCoefficients are different, false if they are identical
         bool operator!=(const CalCoefficients& src) const;
-#endif
+#endif // !SWIG
 
         //API Function: equationType
         //  Gets the <WirelessTypes::CalCoef_EquationType> of the Cal Coefficients.
@@ -77,5 +75,5 @@ namespace mscl
 
     //API Typedef: ChannelCalMap
     //  A typedef for a map of <WirelessChannel::ChannelId>s to <CalCoefficients>.
-    typedef std::map<mscl::WirelessChannel::ChannelId, CalCoefficients> ChannelCalMap;
-}
+    typedef std::map<WirelessChannel::ChannelId, CalCoefficients> ChannelCalMap;
+} // namespace mscl

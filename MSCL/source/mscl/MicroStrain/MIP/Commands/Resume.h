@@ -10,9 +10,7 @@
 
 namespace mscl
 {
-
 #ifndef SWIG
-
     //Class: Resume
     //    Contains the logic for the Inertial "Resume" command.
     class Resume
@@ -48,7 +46,5 @@ namespace mscl
             Response(std::weak_ptr<ResponseCollector> collector);
         };
     };
-
-#endif
-
-}
+#endif // !SWIG
+} // namespace mscl

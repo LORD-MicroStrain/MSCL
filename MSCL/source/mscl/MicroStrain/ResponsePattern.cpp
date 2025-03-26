@@ -4,24 +4,16 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "ResponsePattern.h"
+#include "mscl/MicroStrain/ResponsePattern.h"
 
-#include "mscl/Exceptions.h"
-#include "mscl/Types.h"
-#include "Wireless/Commands/WirelessProtocol.h"
-#include "Wireless/Packets/WirelessPacket.h"
-#include "MIP/MipDataField.h"
-#include "DataBuffer.h"
-#include "ResponseCollector.h"
+#include "mscl/MicroStrain/ResponseCollector.h"
 
 namespace mscl
 {
-    ResponsePattern::ResponsePattern():
+    ResponsePattern::ResponsePattern() :
         m_fullyMatched(false),
         m_success(false)
-    {
-    }
+    {}
 
     ResponsePattern::ResponsePattern(std::weak_ptr<ResponseCollector> collector) :
         m_collector(collector),
@@ -130,8 +122,9 @@ namespace mscl
             m_matchCondition.notify();
             return true;
         }
+
         //if the bytes match the fail response
-        else if(matchFailResponse(data))
+        if(matchFailResponse(data))
         {
             //we have fully matched the response
             m_fullyMatched = true;
@@ -173,8 +166,9 @@ namespace mscl
             m_matchCondition.notify();
             return true;
         }
+
         //if the bytes match the fail response
-        else if(matchFailResponse(packet))
+        if(matchFailResponse(packet))
         {
             //we have fully matched the response
             m_fullyMatched = true;
@@ -210,4 +204,4 @@ namespace mscl
 
         return m_success;
     }
-}
+} // namespace mscl

@@ -4,9 +4,9 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "Eeprom.h"
-#include "mscl/Utils.h"
+#include "mscl/MicroStrain/Wireless/Configuration/Eeprom.h"
+
+#include "mscl/MicroStrain/Wireless/Configuration/EepromLocation.h"
 
 namespace mscl
 {
@@ -14,7 +14,7 @@ namespace mscl
         m_useCache(useCache),
         m_numRetries(numRetries),
         m_hasWritten(false)
-    { }
+    {}
 
     void Eeprom::useCache(bool enable)
     {
@@ -196,7 +196,7 @@ namespace mscl
         Utils::split_uint16(lsw, b3, b4);
 
         //convert the values into a float and return
-        return Utils::make_float(b1, b2, b3, b4, Utils::littleEndian);    //note that this just swapped endianness by passing the msb as the lsb
+        return make_float(b1, b2, b3, b4, Utils::littleEndian);    //note that this just swapped endianness by passing the msb as the lsb
     }
 
     uint32 Eeprom::readEeprom_uint32(uint16 location)
@@ -223,7 +223,7 @@ namespace mscl
         uint8 b1, b2, b3, b4;
 
         //split the float into its 4 bytes (in little endian)
-        Utils::split_float(value, b1, b2, b3, b4, Utils::littleEndian);
+        split_float(value, b1, b2, b3, b4, Utils::littleEndian);
 
         //write the first eeprom location
         writeEeprom(location, Utils::make_uint16(b1, b2));
@@ -253,4 +253,4 @@ namespace mscl
     {
         writeEeprom(location, static_cast<uint16>(value));
     }
-}
+} // namespace mscl

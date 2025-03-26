@@ -4,9 +4,7 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-
-#include "NodeDiscoveryPacket_v3.h"
+#include "mscl/MicroStrain/Wireless/Packets/NodeDiscoveryPacket_v3.h"
 
 namespace mscl
 {
@@ -49,4 +47,4 @@ namespace mscl
         //packet looks valid
         return true;
     }
-}
+} // namespace mscl

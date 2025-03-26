@@ -4,13 +4,9 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
+#include "mscl/MicroStrain/Wireless/Packets/LdcMathPacket.h"
 
-#include "LdcMathPacket.h"
-#include "mscl/MicroStrain/SampleUtils.h"
-#include "mscl/MicroStrain/Wireless/ChannelMask.h"
-#include "mscl/Utils.h"
-
+#include "mscl/MicroStrain/Wireless/DataSweep.h"
 
 namespace mscl
 {
@@ -54,8 +50,8 @@ namespace mscl
             rate = SampleRate::Seconds(calculationRate);
         }
 
-        //build up the Algorithm Meta Data
-        std::vector<WirelessDataPacket::AlgorithmMetaData> metaData;
+        //build up the Algorithm Metadata
+        std::vector<AlgorithmMetaData> metaData;
         metaData.reserve(numAlgorithms);
         for(uint8 i = 0; i < numAlgorithms; ++i)
         {
@@ -95,7 +91,7 @@ namespace mscl
                 if(!alg.channelMask.enabled(chItr)) { continue; }
 
                 //add channel data
-                WirelessChannel::ChannelId channelId = WirelessDataPacket::getMathChannelId(alg.algorithmId, chItr);
+                WirelessChannel::ChannelId channelId = getMathChannelId(alg.algorithmId, chItr);
 
                 //create the ChannelMask property indicating which channel it was derived from
                 ChannelMask propertyChMask;
@@ -118,7 +114,7 @@ namespace mscl
 
     bool LdcMathPacket::integrityCheck(const WirelessPacket& packet)
     {
-        const WirelessPacket::Payload& payload = packet.payload();
+        const Payload& payload = packet.payload();
 
         //verify the payload size
         if(payload.size() < 15)
@@ -159,7 +155,7 @@ namespace mscl
 
         //verify we have the expected number of channel bytes
         //  payload length - (# algorithms * 3 bytes per algorithm) - 8 standard payload bytes
-        if(expectedChannelBytes != (payload.size() - (numAlgorithms * 3) - 8))
+        if(expectedChannelBytes != payload.size() - numAlgorithms * 3 - 8)
         {
             return false;
         }
@@ -175,4 +171,4 @@ namespace mscl
         //return the tick value
         return packet.payload().read_uint16(PAYLOAD_OFFSET_TICK);
     }
-}
+} // namespace mscl

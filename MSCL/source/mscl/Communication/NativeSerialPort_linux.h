@@ -6,8 +6,6 @@
 
 #pragma once
 
-#include "mscl/Exceptions.h"
-
 namespace mscl
 {
     //Title: NativeSerialPort_linux
@@ -20,8 +18,8 @@ namespace mscl
     //
     //Returns:
     //    The port name string passed in
-    std::string getNativeSerialPort(const std::string& portName)
+    inline std::string getNativeSerialPort(const std::string& portName)
     {
         return portName;
     }
-}
+} // namespace mscl

@@ -4,12 +4,10 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "NodeFeatures_rtdlink.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures_rtdlink.h"
 
-#include "mscl/Exceptions.h"
 #include "mscl/MicroStrain/Wireless/Configuration/NodeEepromMap.h"
-#include "AvailableSampleRates.h"
+#include "mscl/MicroStrain/Wireless/Features/AvailableSampleRates.h"
 
 namespace mscl
 {
@@ -85,4 +83,4 @@ namespace mscl
     {
         return maxSampleRateForSettlingTime_B(filterSettlingTime, sampleRates(samplingMode, dataCollectionMethod, dataMode));
     }
-}
+} // namespace mscl

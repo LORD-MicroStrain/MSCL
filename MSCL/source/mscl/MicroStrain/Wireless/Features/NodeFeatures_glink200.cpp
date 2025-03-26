@@ -4,26 +4,23 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "NodeFeatures_glink200.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures_glink200.h"
 
-#include "mscl/Exceptions.h"
-#include "AvailableSampleRates.h"
 #include "mscl/MicroStrain/Wireless/Configuration/NodeEepromMap.h"
-#include "mscl/MicroStrain/Wireless/ChannelMask.h"
+#include "mscl/MicroStrain/Wireless/Features/AvailableSampleRates.h"
 
 namespace mscl
 {
     const Version NodeFeatures_glink200::VER_TILT_SUPPORTED(12, 41495);
 
-    NodeFeatures_glink200::NodeFeatures_glink200(const NodeInfo& info):
+    NodeFeatures_glink200::NodeFeatures_glink200(const NodeInfo& info) :
         NodeFeatures_200series(info)
     {
         addCalCoeffChannelGroup(1, "Acceleration X", NodeEepromMap::CH_ACTION_SLOPE_1, NodeEepromMap::CH_ACTION_ID_1);
         addCalCoeffChannelGroup(2, "Acceleration Y", NodeEepromMap::CH_ACTION_SLOPE_2, NodeEepromMap::CH_ACTION_ID_2);
         addCalCoeffChannelGroup(3, "Acceleration Z", NodeEepromMap::CH_ACTION_SLOPE_3, NodeEepromMap::CH_ACTION_ID_3);
 
-        bool supportsTilt = (m_nodeInfo.firmwareVersion() >= VER_TILT_SUPPORTED);
+        bool supportsTilt = m_nodeInfo.firmwareVersion() >= VER_TILT_SUPPORTED;
         if(supportsTilt)
         {
             //add the tilt channels
@@ -67,20 +64,16 @@ namespace mscl
             {
                 return AvailableSampleRates::continuous_log_glink200;
             }
-            else
-            {
-                return AvailableSampleRates::continuous_nonSync_glink200;
-            }
+
+            return AvailableSampleRates::continuous_nonSync_glink200;
 
         case WirelessTypes::samplingMode_sync:
             if(dataCollectionMethod == WirelessTypes::collectionMethod_logOnly)
             {
                 return AvailableSampleRates::continuous_log_glink200;
             }
-            else
-            {
-                return AvailableSampleRates::continuous_sync_glink200;
-            }
+
+            return AvailableSampleRates::continuous_sync_glink200;
 
         case WirelessTypes::samplingMode_syncBurst:
         case WirelessTypes::samplingMode_syncEvent:
@@ -149,4 +142,4 @@ namespace mscl
 
         return modes;
     }
-}
+} // namespace mscl

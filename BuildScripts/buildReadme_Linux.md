@@ -20,7 +20,7 @@ For more information on how to configure the build to use, or not use the option
 
 - \>= gcc 4.9.1-5
 - \>= [cmake 3.16](https://cmake.org/download/)
-- &nbsp;&nbsp;\= [Boost 1.68](https://www.boost.org/users/download/)
+- \>= [Boost 1.68](https://www.boost.org/users/download/)
 
 ##### Optional
 

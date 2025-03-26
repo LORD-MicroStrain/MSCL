@@ -4,9 +4,9 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "Sleep_v2.h"
-#include "WirelessProtocol.h"
+#include "mscl/MicroStrain/Wireless/Commands/Sleep_v2.h"
+
+#include "mscl/MicroStrain/Wireless/Commands/WirelessProtocol.h"
 
 namespace mscl
 {
@@ -40,11 +40,10 @@ namespace mscl
         return cmd;
     }
 
-    Sleep_v2::Response::Response(NodeAddress nodeAddress, std::weak_ptr<ResponseCollector> collector):
+    Sleep_v2::Response::Response(NodeAddress nodeAddress, std::weak_ptr<ResponseCollector> collector) :
         WirelessResponsePattern(collector, WirelessProtocol::cmdId_sleep, nodeAddress),
         m_nodeAddress(nodeAddress)
-    {
-    }
+    {}
 
     bool Sleep_v2::Response::matchSuccessResponse(const WirelessPacket& packet)
     {
@@ -65,4 +64,4 @@ namespace mscl
         //if we made it here, the packet matches the response pattern
         return true;
     }
-}
+} // namespace mscl

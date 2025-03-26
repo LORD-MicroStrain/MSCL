@@ -6,16 +6,12 @@
 
 #pragma once
 
-#include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
-#include "mscl/MicroStrain/ByteStream.h"
 #include "mscl/MicroStrain/Wireless/Commands/WirelessResponsePattern.h"
-#include "mscl/Types.h"
+#include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
 
 namespace mscl
 {
-
 #ifndef SWIG
-
     //Class: ReadEeprom_v2
     //    Contains logic for the ReadEeprom (version 2) Node command
     class ReadEeprom_v2
@@ -25,7 +21,6 @@ namespace mscl
         ReadEeprom_v2(const ReadEeprom_v2&) = delete;               //copy constructor disabled
         ReadEeprom_v2& operator=(const ReadEeprom_v2&) = delete;    //assignment operator disabled
 
-    public:
         //Function: buildCommand
         //    Builds the ReadEeprom command packet
         //
@@ -105,6 +100,5 @@ namespace mscl
             bool matchFailResponse(const WirelessPacket& packet) override;
         };
     };
-
-#endif
-}
+#endif // !SWIG
+} // namespace mscl

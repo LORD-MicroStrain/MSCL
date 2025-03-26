@@ -6,11 +6,10 @@
 
 #pragma once
 
-#include "WirelessDataPacket.h"
+#include "mscl/MicroStrain/Wireless/Packets/WirelessDataPacket.h"
 
 namespace mscl
 {
-
     //Class: RawAngleStrainPacket
     //    A <WirelessDataPacket> derived class representing a Raw Angle Strain packet.
     class RawAngleStrainPacket : public WirelessDataPacket
@@ -20,7 +19,7 @@ namespace mscl
         //    Creates an RawAngleStrainPacket from the passed in <WirelessPacket>.
         //
         //Parameters:
-        //    packet - A <WirelessPacket> determined to be an RawAngleStrainPacket.
+        //    packet - A <WirelessPacket> determined to be a RawAngleStrainPacket.
         explicit RawAngleStrainPacket(const WirelessPacket& packet);
 
     private:
@@ -42,17 +41,17 @@ namespace mscl
 
     public:
         //Function: integrityCheck
-        //    Verifies that the packet is a well formed RawAngleStrainPacket
+        //    Verifies that the packet is a well-formed RawAngleStrainPacket
         //
         //Parameters:
         //    packet - The fully formed Wireless Packet to check the integrity of
         //
         //Returns:
-        //    true if the packet is a well formed RawAngleStrainPacket, false otherwise
+        //    true if the packet is a well-formed RawAngleStrainPacket, false otherwise
         static bool integrityCheck(const WirelessPacket& packet);
 
         //Function: getUniqueId
-        //    Gets the unique Id of the <WirelessPacket> passed in
+        //    Gets the unique ID of the <WirelessPacket> passed in
         //
         //Parameters:
         //    packet - The <WirelessPacket> to get the unique id of
@@ -65,8 +64,8 @@ namespace mscl
         //    Gets a list of angles based on a low, high, and number of angles.
         //
         //Parameters:
-        //    low - The lower bound angle (inclusive).
-        //    high - The higher bound angle (inclusive).
+        //    low   - The lower-bound angle (inclusive).
+        //    high  - The higher-bound angle (inclusive).
         //    count - The total number of angles.
         //
         //Returns:
@@ -80,5 +79,4 @@ namespace mscl
         //  angle - The angle of the data.
         static std::string buildChannelName(float angle);
     };
-
-}
+} // namespace mscl

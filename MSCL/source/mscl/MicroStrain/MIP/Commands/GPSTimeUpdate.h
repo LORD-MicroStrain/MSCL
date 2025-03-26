@@ -7,17 +7,13 @@
 #pragma once
 
 #include "mscl/MicroStrain/MIP/Commands/GenericMipCommand.h"
-#include "mscl/MicroStrain/ResponseCollector.h"
-#include "mscl/MicroStrain/Inertial/ExposedInertialTypes.h"
 
 namespace mscl
 {
-
 #ifndef SWIG
-
     //Class: GPSTimeUpdate
     //    Contains the logic for the Inertial GPSTimeUpdate command.
-    class GPSTimeUpdate : private GenericMipCommand
+    class GPSTimeUpdate : GenericMipCommand
     {
     public:
         static const uint8 FIELD_DATA_BYTE_WEEKS = 0x84;
@@ -28,7 +24,7 @@ namespace mscl
         //
         //Returns:
         //    MipTypes::Command - the command ID.
-        virtual MipTypes::Command commandId() const override { return MipTypes::CMD_GPS_TIME_UPDATE; }
+        MipTypes::Command commandId() const override { return MipTypes::CMD_GPS_TIME_UPDATE; }
 
         //API Enums: TimeFieldSelector
         //    The enums to represnt type of time being sent/received.
@@ -45,9 +41,8 @@ namespace mscl
         //      Creates a GPSTimeUpdate object.
         GPSTimeUpdate();
 
-    public:
         //  Destructor: ~GPSTimeUpdate
-        virtual ~GPSTimeUpdate() {};
+        ~GPSTimeUpdate() override = default;
 
         //Function: GetWeekValue
         //    Builds the bytes to get the GPS week value.
@@ -96,7 +91,7 @@ namespace mscl
         {
             //Function: fieldDataByte
             //    Gets the data field descriptor byte
-            virtual uint8 fieldDataByte() const  override { return m_fieldDataByte; }
+            uint8 fieldDataByte() const  override { return m_fieldDataByte; }
 
         public:
             //Constructor: Response
@@ -122,6 +117,5 @@ namespace mscl
             const uint8 m_fieldDataByte;
         };
     };
-
-#endif
-}
+#endif // !SWIG
+} // namespace mscl

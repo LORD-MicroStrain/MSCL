@@ -4,17 +4,13 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "MipNodeInfo.h"
+#include "mscl/MicroStrain/MIP/MipNodeInfo.h"
 
-#include "MipNode_Impl.h"
-#include "mscl/Utils.h"
-
-#include <string>
+#include "mscl/MicroStrain/MIP/MipNode_Impl.h"
 
 namespace mscl
 {
-    MipNodeInfo::MipNodeInfo(const MipNode_Impl* node):
+    MipNodeInfo::MipNodeInfo(const MipNode_Impl* node) :
         m_node(node),
         m_deviceInfo(std::bind(&MipNode_Impl::getDeviceInfo, m_node)),
         m_descriptors(std::bind(&MipNode_Impl::getDescriptorSets, m_node)),
@@ -46,8 +42,7 @@ namespace mscl
         m_eventActionInfo(std::bind(&MipNode_Impl::getEventInfo, m_node, EventSupportInfo::ACTIONS)),
         m_eventTriggerInfo(std::bind(&MipNode_Impl::getEventInfo, m_node, EventSupportInfo::TRIGGERS)),
         m_sensorRanges(std::bind(&MipNode_Impl::getSupportedSensorRanges, m_node))
-    {
-    }
+    {}
 
     MipNodeInfo::MipNodeInfo(const MipDeviceInfo& info,
                                 const std::vector<uint16>& supportedDescriptors,
@@ -120,4 +115,4 @@ namespace mscl
     {
         return *m_sensorRanges;
     }
-}
+} // namespace mscl

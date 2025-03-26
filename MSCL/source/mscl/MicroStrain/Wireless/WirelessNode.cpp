@@ -4,30 +4,19 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
+#include "mscl/MicroStrain/Wireless/WirelessNode.h"
 
-#include "WirelessNode.h"
-#include "MockWirelessNode_Impl.h"
-#include "WirelessNode_Impl.h"
-#include "BaseStation.h"
-#include "mscl/Utils.h"
-#include "Features/NodeInfo.h"
-#include "Features/NodeFeatures.h"
-#include "Configuration/NodeEepromHelper.h"
-#include "Configuration/WirelessNodeConfig.h"
-#include "Commands/AutoCalInfo.h"
+#include "mscl/MicroStrain/Wireless/MockWirelessNode_Impl.h"
 
 namespace mscl
 {
-    WirelessNode::WirelessNode(NodeAddress nodeAddress, const BaseStation& basestation):
+    WirelessNode::WirelessNode(NodeAddress nodeAddress, const BaseStation& basestation) :
         m_impl(std::make_shared<WirelessNode_Impl>(nodeAddress, basestation))
-    {
-    }
+    {}
 
-    WirelessNode::WirelessNode(std::shared_ptr<WirelessNode_Impl> impl):
+    WirelessNode::WirelessNode(std::shared_ptr<WirelessNode_Impl> impl) :
         m_impl(impl)
-    {
-    }
+    {}
 
     WirelessNode WirelessNode::Mock(NodeAddress nodeAddress, const BaseStation& basestation, const NodeInfo& info)
     {
@@ -122,9 +111,9 @@ namespace mscl
         m_impl->clearEepromCache();
     }
 
-    void WirelessNode::updateEepromCacheFromNodeDiscovery(const NodeDiscovery& nodeDisovery)
+    void WirelessNode::updateEepromCacheFromNodeDiscovery(const NodeDiscovery& nodeDiscovery)
     {
-        m_impl->updateEepromCacheFromNodeDiscovery(nodeDisovery);
+        m_impl->updateEepromCacheFromNodeDiscovery(nodeDiscovery);
     }
 
     WirelessTypes::EepromMap WirelessNode::getEepromCache() const
@@ -548,4 +537,4 @@ namespace mscl
     {
         return m_impl->getDerivedVelocityUnit();
     }
-}
+} // namespace mscl

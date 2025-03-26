@@ -4,16 +4,14 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-
-#include "RawBytePacket.h"
+#include "mscl/Communication/RawBytePacket.h"
 
 namespace mscl
 {
     //default constructor for RawBytePacket
     RawBytePacket::RawBytePacket() :
-        m_packetType(PacketType::NO_PACKET_FOUND),
-        m_source(PacketSource::FROM_READ)
+        m_packetType(NO_PACKET_FOUND),
+        m_source(FROM_READ)
     {}
 
     //type getter
@@ -23,7 +21,7 @@ namespace mscl
     }
 
     //type setter
-    void RawBytePacket::type(RawBytePacket::PacketType type)
+    void RawBytePacket::type(PacketType type)
     {
         m_packetType = type;
     }
@@ -35,7 +33,7 @@ namespace mscl
     }
 
     //source setter
-    void RawBytePacket::source(RawBytePacket::PacketSource source)
+    void RawBytePacket::source(PacketSource source)
     {
         m_source = source;
     }
@@ -51,4 +49,4 @@ namespace mscl
 
         m_payload.appendBytes(bytes);
     }
-}
+} // namespace mscl

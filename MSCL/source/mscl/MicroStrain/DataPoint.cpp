@@ -4,21 +4,14 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "DataPoint.h"
-
-#include <iomanip>
-#include "mscl/Exceptions.h"
-#include "mscl/Types.h"
-#include "mscl/Utils.h"
+#include "mscl/MicroStrain/DataPoint.h"
 
 namespace mscl
 {
-    DataPoint::DataPoint(ValueType type, const anyType& value, const ChannelProperties& channelProperties):
+    DataPoint::DataPoint(ValueType type, const anyType& value, const ChannelProperties& channelProperties) :
         Value(type, value),
         m_channelProperties(channelProperties)
-    {
-    }
+    {}
 
     const Value& DataPoint::channelProperty(ChannelPropertyId id) const
     {
@@ -31,7 +24,6 @@ namespace mscl
 
         return iter->second;
     }
-
 
     const Vector DataPoint::as_Vector() const
     {
@@ -148,7 +140,7 @@ namespace mscl
                 result << "0x" << std::setw(2) << static_cast<uint32>(*itr);
 
                 //if this isn't the last byte
-                if(itr != (data.end() - 1))
+                if(itr != data.end() - 1)
                 {
                     //add a separator
                     result << " ";
@@ -176,4 +168,4 @@ namespace mscl
             throw Error_BadDataType();
         }
     }
-}
+} // namespace mscl

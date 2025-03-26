@@ -4,37 +4,37 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
+#include "mscl/MicroStrain/Wireless/Packets/WirelessPacketUtils.h"
 
-#include "AsyncDigitalAnalogPacket.h"
-#include "AsyncDigitalPacket.h"
-#include "BeaconEchoPacket.h"
-#include "BufferedLdcPacket.h"
-#include "BufferedLdcPacket_v2.h"
-#include "DiagnosticPacket.h"
-#include "HclSmartBearing_RawPacket.h"
-#include "HclSmartBearing_CalPacket.h"
-#include "LdcPacket.h"
-#include "LdcMathPacket.h"
-#include "LdcMathPacket_aspp3.h"
-#include "LdcPacket_v2.h"
-#include "LdcPacket_v2_aspp3.h"
-#include "NodeDiscoveryPacket.h"
-#include "NodeDiscoveryPacket_v2.h"
-#include "NodeDiscoveryPacket_v3.h"
-#include "NodeDiscoveryPacket_v4.h"
-#include "NodeDiscoveryPacket_v5.h"
-#include "RawAngleStrainPacket.h"
-#include "RfSweepPacket.h"
-#include "RollerPacket.h"
-#include "ShmPacket.h"
-#include "ShmPacket_v2_aspp3.h"
-#include "SyncSamplingPacket.h"
-#include "SyncSamplingPacket_v2.h"
-#include "SyncSamplingPacket_v2_aspp3.h"
-#include "SyncSamplingMathPacket.h"
-#include "SyncSamplingMathPacket_aspp3.h"
-#include "WirelessPacketUtils.h"
+#include "mscl/MicroStrain/Wireless/Packets/AsyncDigitalAnalogPacket.h"
+#include "mscl/MicroStrain/Wireless/Packets/AsyncDigitalPacket.h"
+#include "mscl/MicroStrain/Wireless/Packets/BeaconEchoPacket.h"
+#include "mscl/MicroStrain/Wireless/Packets/BufferedLdcPacket.h"
+#include "mscl/MicroStrain/Wireless/Packets/BufferedLdcPacket_v2.h"
+#include "mscl/MicroStrain/Wireless/Packets/DiagnosticPacket.h"
+#include "mscl/MicroStrain/Wireless/Packets/HclSmartBearing_CalPacket.h"
+#include "mscl/MicroStrain/Wireless/Packets/HclSmartBearing_RawPacket.h"
+#include "mscl/MicroStrain/Wireless/Packets/LdcMathPacket.h"
+#include "mscl/MicroStrain/Wireless/Packets/LdcMathPacket_aspp3.h"
+#include "mscl/MicroStrain/Wireless/Packets/LdcPacket.h"
+#include "mscl/MicroStrain/Wireless/Packets/LdcPacket_v2.h"
+#include "mscl/MicroStrain/Wireless/Packets/LdcPacket_v2_aspp3.h"
+#include "mscl/MicroStrain/Wireless/Packets/NodeDiscoveryPacket.h"
+#include "mscl/MicroStrain/Wireless/Packets/NodeDiscoveryPacket_v2.h"
+#include "mscl/MicroStrain/Wireless/Packets/NodeDiscoveryPacket_v3.h"
+#include "mscl/MicroStrain/Wireless/Packets/NodeDiscoveryPacket_v4.h"
+#include "mscl/MicroStrain/Wireless/Packets/NodeDiscoveryPacket_v5.h"
+#include "mscl/MicroStrain/Wireless/Packets/RawAngleStrainPacket.h"
+#include "mscl/MicroStrain/Wireless/Packets/RfSweepPacket.h"
+#include "mscl/MicroStrain/Wireless/Packets/RollerPacket.h"
+#include "mscl/MicroStrain/Wireless/Packets/ShmPacket.h"
+#include "mscl/MicroStrain/Wireless/Packets/ShmPacket_v2_aspp3.h"
+#include "mscl/MicroStrain/Wireless/Packets/SyncSamplingMathPacket.h"
+#include "mscl/MicroStrain/Wireless/Packets/SyncSamplingMathPacket_aspp3.h"
+#include "mscl/MicroStrain/Wireless/Packets/SyncSamplingPacket.h"
+#include "mscl/MicroStrain/Wireless/Packets/SyncSamplingPacket_v2.h"
+#include "mscl/MicroStrain/Wireless/Packets/SyncSamplingPacket_v2_aspp3.h"
+#include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
 
 namespace mscl
 {
@@ -111,7 +111,6 @@ namespace mscl
                     break;
             }
 
-
             if(packet.asppVersion() == WirelessPacket::aspp_v3)
             {
                 //ASPP v3 Packets
@@ -136,48 +135,46 @@ namespace mscl
                         return false;
                 }
             }
-            else
+
+            //ASPP v1 and v2 Packets
+
+            //check the packet type of the given WirelessPacket
+            switch(packet.type())
             {
-                //ASPP v1 and v2 Packets
+                //perform an integrity check based on the type of packet
+                case WirelessPacket::packetType_LDC:                        return LdcPacket::integrityCheck(packet);
+                case WirelessPacket::packetType_SyncSampling:               return SyncSamplingPacket::integrityCheck(packet);
+                case WirelessPacket::packetType_BufferedLDC:                return BufferedLdcPacket::integrityCheck(packet);
+                case WirelessPacket::packetType_LDC_16ch:                   return LdcPacket_v2::integrityCheck(packet);
+                case WirelessPacket::packetType_LDC_math:                   return LdcMathPacket::integrityCheck(packet);
+                case WirelessPacket::packetType_SyncSampling_16ch:          return SyncSamplingPacket_v2::integrityCheck(packet);
+                case WirelessPacket::packetType_SyncSampling_math:          return SyncSamplingMathPacket::integrityCheck(packet);
+                case WirelessPacket::packetType_BufferedLDC_16ch:           return BufferedLdcPacket_v2::integrityCheck(packet);
+                case WirelessPacket::packetType_AsyncDigital:               return AsyncDigitalPacket::integrityCheck(packet);
+                case WirelessPacket::packetType_AsyncDigitalAnalog:         return AsyncDigitalAnalogPacket::integrityCheck(packet);
+                case WirelessPacket::packetType_nodeDiscovery:              return NodeDiscoveryPacket::integrityCheck(packet);
+                case WirelessPacket::packetType_nodeDiscovery_v2:           return NodeDiscoveryPacket_v2::integrityCheck(packet);
+                case WirelessPacket::packetType_nodeDiscovery_v3:           return NodeDiscoveryPacket_v3::integrityCheck(packet);
+                case WirelessPacket::packetType_nodeDiscovery_v4:           return NodeDiscoveryPacket_v4::integrityCheck(packet);
+                case WirelessPacket::packetType_nodeDiscovery_v5:           return NodeDiscoveryPacket_v5::integrityCheck(packet);
+                case WirelessPacket::packetType_SHM:                        return ShmPacket::integrityCheck(packet);
+                case WirelessPacket::packetType_HclSmartBearing_Calibrated: return HclSmartBearing_CalPacket::integrityCheck(packet);
+                case WirelessPacket::packetType_HclSmartBearing_Raw:        return HclSmartBearing_RawPacket::integrityCheck(packet);
+                case WirelessPacket::packetType_rawAngleStrain:             return RawAngleStrainPacket::integrityCheck(packet);
+                case WirelessPacket::packetType_beaconEcho:                 return BeaconEchoPacket::integrityCheck(packet);
+                case WirelessPacket::packetType_rfScanSweep:                return RfSweepPacket::integrityCheck(packet);
+                case WirelessPacket::packetType_diagnostic:                 return DiagnosticPacket::integrityCheck(packet);
+                case WirelessPacket::packetType_roller:                     return RollerPacket::integrityCheck(packet);
 
-                //check the packet type of the given WirelessPacket
-                switch(packet.type())
-                {
-                    //perform an integrity check based on the type of packet
-                    case WirelessPacket::packetType_LDC:                        return LdcPacket::integrityCheck(packet);
-                    case WirelessPacket::packetType_SyncSampling:               return SyncSamplingPacket::integrityCheck(packet);
-                    case WirelessPacket::packetType_BufferedLDC:                return BufferedLdcPacket::integrityCheck(packet);
-                    case WirelessPacket::packetType_LDC_16ch:                   return LdcPacket_v2::integrityCheck(packet);
-                    case WirelessPacket::packetType_LDC_math:                   return LdcMathPacket::integrityCheck(packet);
-                    case WirelessPacket::packetType_SyncSampling_16ch:          return SyncSamplingPacket_v2::integrityCheck(packet);
-                    case WirelessPacket::packetType_SyncSampling_math:          return SyncSamplingMathPacket::integrityCheck(packet);
-                    case WirelessPacket::packetType_BufferedLDC_16ch:           return BufferedLdcPacket_v2::integrityCheck(packet);
-                    case WirelessPacket::packetType_AsyncDigital:               return AsyncDigitalPacket::integrityCheck(packet);
-                    case WirelessPacket::packetType_AsyncDigitalAnalog:         return AsyncDigitalAnalogPacket::integrityCheck(packet);
-                    case WirelessPacket::packetType_nodeDiscovery:              return NodeDiscoveryPacket::integrityCheck(packet);
-                    case WirelessPacket::packetType_nodeDiscovery_v2:           return NodeDiscoveryPacket_v2::integrityCheck(packet);
-                    case WirelessPacket::packetType_nodeDiscovery_v3:           return NodeDiscoveryPacket_v3::integrityCheck(packet);
-                    case WirelessPacket::packetType_nodeDiscovery_v4:           return NodeDiscoveryPacket_v4::integrityCheck(packet);
-                    case WirelessPacket::packetType_nodeDiscovery_v5:           return NodeDiscoveryPacket_v5::integrityCheck(packet);
-                    case WirelessPacket::packetType_SHM:                        return ShmPacket::integrityCheck(packet);
-                    case WirelessPacket::packetType_HclSmartBearing_Calibrated: return HclSmartBearing_CalPacket::integrityCheck(packet);
-                    case WirelessPacket::packetType_HclSmartBearing_Raw:        return HclSmartBearing_RawPacket::integrityCheck(packet);
-                    case WirelessPacket::packetType_rawAngleStrain:             return RawAngleStrainPacket::integrityCheck(packet);
-                    case WirelessPacket::packetType_beaconEcho:                 return BeaconEchoPacket::integrityCheck(packet);
-                    case WirelessPacket::packetType_rfScanSweep:                return RfSweepPacket::integrityCheck(packet);
-                    case WirelessPacket::packetType_diagnostic:                 return DiagnosticPacket::integrityCheck(packet);
-                    case WirelessPacket::packetType_roller:                     return RollerPacket::integrityCheck(packet);
-
-                    //This packet is not supported by MSCL
-                    default:
-                        return false;
-                }
+                //This packet is not supported by MSCL
+                default:
+                    return false;
             }
         }
-        catch(mscl::Error&)
+        catch(Error&)
         {
             assert(false);  //error parsing in integrityCheck function
             return false;
         }
     }
-}
+} // namespace mscl

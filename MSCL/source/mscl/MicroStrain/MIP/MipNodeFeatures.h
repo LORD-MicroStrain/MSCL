@@ -6,20 +6,17 @@
 
 #pragma once
 
-#include <memory>
-
-#include "mscl/MicroStrain/MIP/MipNodeInfo.h"
-#include "mscl/MicroStrain/MIP/MipTypes.h"
 #include "mscl/MicroStrain/Inertial/ExposedInertialTypes.h"
-#include "mscl/MicroStrain/SampleRate.h"
 
 namespace mscl
 {
+    class MipNodeInfo;
+    class MipNode_Impl;
+
     //API Class: MipNodeFeatures
     //    Contains information on which features are supported by an <InertialNode>.
     class MipNodeFeatures
     {
-    private:
         MipNodeFeatures();                                            //disabled default constructor
         MipNodeFeatures(const MipNodeFeatures&);                //disabled copy constructor
         MipNodeFeatures& operator=(const MipNodeFeatures&);    //disable assignment operator
@@ -29,7 +26,7 @@ namespace mscl
         mutable std::unique_ptr<MipNodeInfo> m_nodeInfo;
 
     public:
-        virtual ~MipNodeFeatures() {};
+        virtual ~MipNodeFeatures() = default;
 
     protected:
         friend class MipNode_Impl;
@@ -74,7 +71,7 @@ namespace mscl
         //Exceptions:
         //    - <Error_NotSupported>: The Node model is not supported by MSCL.
         static std::unique_ptr<MipNodeFeatures> create(const MipNode_Impl* node);
-#endif
+#endif // !SWIG
 
     public:
         //API Function: isChannelField
@@ -423,4 +420,4 @@ namespace mscl
         //    uint8 - the maximum supported reference frame ID
         uint8 maxMeasurementReferenceFrameId() const;
     };
-}
+} // namespace mscl

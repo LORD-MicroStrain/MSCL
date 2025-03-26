@@ -6,8 +6,8 @@
 
 #pragma once
 
-#include "Value.h"
-#include "Bin.h"
+#include "mscl/Bin.h"
+#include "mscl/Value.h"
 
 namespace mscl
 {
@@ -15,7 +15,6 @@ namespace mscl
     //    Represents a Histogram object.
     class Histogram
     {
-    private:
         Histogram();    //disable default constructor
 
     public:
@@ -71,4 +70,4 @@ namespace mscl
         //    bin - The <Bin> to add to the Histogram.
         void addBin(const Bin& bin);
     };
-}
+} // namespace mscl

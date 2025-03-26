@@ -6,8 +6,6 @@
 
 #pragma once
 
-#include "mscl/Types.h"
-
 namespace mscl
 {
     //API Class: PingResponse
@@ -48,7 +46,7 @@ namespace mscl
         //Returns:
         //    A <PingResponse> representing a failed response from the LongPing Node command
         static PingResponse ResponseFail();
-#endif
+#endif // !SWIG
 
     private:
         //Variable: m_success
@@ -87,4 +85,4 @@ namespace mscl
         //    The base station RSSI that was returned with the response.
         int16 baseRssi() const;
     };
-}
+} // namespace mscl

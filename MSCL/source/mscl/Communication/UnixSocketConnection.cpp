@@ -4,10 +4,7 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-
-#include "UnixSocketConnection.h"
-#include "mscl/Utils.h"
+#include "mscl/Communication/UnixSocketConnection.h"
 
 namespace mscl
 {
@@ -55,4 +52,4 @@ namespace mscl
             m_established = true;
         }
     }
-}
+} // namespace mscl

@@ -4,12 +4,10 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "ContinuousDataStream.h"
+#include "mscl/MicroStrain/Inertial/Commands/ContinuousDataStream.h"
+
 #include "mscl/MicroStrain/MIP/Commands/MIP_Commands.h"
 #include "mscl/MicroStrain/MIP/MipDataField.h"
-#include "mscl/Utils.h"
-#include "mscl/Exceptions.h"
 
 namespace mscl
 {
@@ -67,7 +65,7 @@ namespace mscl
         return GenericMipCommand::buildCommand(CMD_ID, fieldData.data());
     }
 
-    ContinuousDataStream::Response::Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse, MipTypes::DataClass type):
+    ContinuousDataStream::Response::Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse, MipTypes::DataClass type) :
         GenericMipCommand::Response(MipTypes::CMD_CONTINUOUS_DATA_STREAM, collector, true, dataResponse, "Continuous Data Stream"),
         m_deviceSelector(getDeviceSelector(type))
     {}
@@ -96,4 +94,4 @@ namespace mscl
     {
         return MIP_Commands::parseData_ContinuousDataStream(response);
     }
-}
+} // namespace mscl

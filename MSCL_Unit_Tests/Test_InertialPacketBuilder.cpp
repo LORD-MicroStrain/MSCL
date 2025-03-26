@@ -4,12 +4,15 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "mscl/MicroStrain/MIP/Packets/MipPacketBuilder.h"
-#include "mscl/MicroStrain/MIP/MipDataField.h"
 #include "mscl/MicroStrain/ByteStream.h"
-#include <boost/test/unit_test.hpp>
+#include "mscl/MicroStrain/MIP/MipDataField.h"
+#include "mscl/MicroStrain/MIP/Packets/MipPacketBuilder.h"
 
 using namespace mscl;
+
+DISABLE_WARNING_BOOST_START
+#include <boost/test/unit_test.hpp>
+DISABLE_WARNING_BOOST_END
 
 BOOST_AUTO_TEST_SUITE(InertialPacketBuilder_Test)
 
@@ -95,7 +98,6 @@ BOOST_AUTO_TEST_CASE(InertialPacketBuilder_MultipleFields)
     MipDataField field2(0x09, data2);
 
     builder.addField(field2);
-
 
     //build the packet
     ByteStream bytes = builder.buildPacket();

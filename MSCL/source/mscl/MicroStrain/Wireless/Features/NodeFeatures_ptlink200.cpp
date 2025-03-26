@@ -4,15 +4,15 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "NodeFeatures_ptlink200.h"
-#include "AvailableSampleRates.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures_ptlink200.h"
+
+#include "mscl/MicroStrain/SampleRate.h"
 #include "mscl/MicroStrain/Wireless/Configuration/NodeEepromMap.h"
-#include "mscl/Utils.h"
+#include "mscl/MicroStrain/Wireless/Features/AvailableSampleRates.h"
 
 namespace mscl
 {
-    NodeFeatures_ptlink200::NodeFeatures_ptlink200(const NodeInfo& info):
+    NodeFeatures_ptlink200::NodeFeatures_ptlink200(const NodeInfo& info) :
         NodeFeatures_200series(info)
     {
         addCalCoeffChannelGroup_withFactoryCal(1, "Differential", NodeEepromMap::CH_ACTION_SLOPE_1, NodeEepromMap::CH_ACTION_ID_1, NodeEepromMap::FACTORY_CH_ACTION_SLOPE_1, NodeEepromMap::FACTORY_CH_ACTION_ID_1);
@@ -151,4 +151,4 @@ namespace mscl
 
         return static_cast<uint32>(TimeSpan::MilliSeconds(10).getMicroseconds());    //10 milliseconds
     }
-}
+} // namespace mscl

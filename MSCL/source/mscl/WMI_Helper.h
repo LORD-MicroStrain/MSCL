@@ -7,15 +7,9 @@
 #pragma once
 
 #define _WIN32_DCOM
-#include <comdef.h>
 #include <Wbemidl.h>
 
-# pragma comment(lib, "wbemuuid.lib")
-
-#include <map>
-#include <string>
-#include <vector>
-
+#pragma comment(lib, "wbemuuid.lib")
 
 //Class: WMI_Helper
 //    WMI_Helper makes it simple to interface and request information from the WMI.
@@ -30,7 +24,6 @@ public:
     //    A vector of wmiValue maps
     typedef std::vector<wmiValue> wmiValues;
 
-public:
     //Constructor: WMI_Helper
     //    Creates a WMI_Helper object
     //
@@ -46,7 +39,6 @@ public:
     //    Destroys the WMI_Helper object
     ~WMI_Helper();
 
-public:
     //Function: request
     //    Starts a request for information received from WMI
     //
@@ -70,7 +62,6 @@ private:
     //    std::exception - Thrown if any errors occur, including if the namespace or class are incorrect
     void connect();
 
-private:
     //Variable: m_wmi_namespace
     //    The WMI namespace that this is using
     std::string m_wmi_namespace;
@@ -81,7 +72,6 @@ private:
 
     wmiValues m_values;
 
-private:
     //Variable: m_enumerator
     //    The enumerator that holds all the information internally from the request
     IEnumWbemClassObject* m_enumerator;

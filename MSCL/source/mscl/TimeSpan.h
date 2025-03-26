@@ -6,11 +6,8 @@
 
 #pragma once
 
-#include "Types.h"
-
 namespace mscl
 {
-
     //API Class: TimeSpan
     //    Represents a range of time
     class TimeSpan
@@ -20,7 +17,7 @@ namespace mscl
         friend TimeSpan operator*(uint32 factor, TimeSpan timeSpan);
         friend TimeSpan operator/(TimeSpan timeSpan, uint32 divisor);
         friend TimeSpan operator/(uint32 divisor, TimeSpan timeSpan);
-#endif
+#endif // !SWIG
 
     public:
         //===========================================================================================
@@ -34,7 +31,7 @@ namespace mscl
         static const uint64 NANOSECONDS_PER_SECOND      = 1000000000L;
 
     private:
-        TimeSpan(){};    //default constructor disabled
+        TimeSpan(){}    //default constructor disabled
 
         //Constructor: TimeSpan
         //    Creates a TimeSpan given the nanoseconds value.
@@ -57,7 +54,7 @@ namespace mscl
         bool operator <= (const TimeSpan& other) const;
         bool operator > (const TimeSpan& other) const;
         bool operator >= (const TimeSpan& other) const;
-#endif
+#endif // !SWIG
 
     private:
         //Function: compare
@@ -99,7 +96,6 @@ namespace mscl
         //    The TimeSpan in seconds resolution
         uint64 getSeconds() const;
 
-    public:
         //API Function: NanoSeconds
         //    Creates a TimeSpan object from nanoseconds
         //
@@ -176,5 +172,5 @@ namespace mscl
     TimeSpan operator*(uint32 factor, TimeSpan timeSpan);
     TimeSpan operator/(TimeSpan timeSpan, uint32 divisor);
     TimeSpan operator/(uint32 divisor, TimeSpan timeSpan);
-#endif
-}
+#endif // !SWIG
+} // namespace mscl

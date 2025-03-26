@@ -4,10 +4,9 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "GetDeviceInfo.h"
-#include "MIP_Commands.h"
-#include "mscl/Utils.h"
+#include "mscl/MicroStrain/MIP/Commands/GetDeviceInfo.h"
+
+#include "mscl/MicroStrain/MIP/Commands/MIP_Commands.h"
 #include "mscl/MicroStrain/MIP/MipDataField.h"
 #include "mscl/MicroStrain/MIP/Packets/MipPacketBuilder.h"
 
@@ -28,11 +27,9 @@ namespace mscl
         return builder.buildPacket();
     }
 
-
-    GetDeviceInfo::Response::Response(std::weak_ptr<ResponseCollector> collector):
+    GetDeviceInfo::Response::Response(std::weak_ptr<ResponseCollector> collector) :
         GenericMipCommand::Response(MipTypes::CMD_GET_DEVICE_INFO, collector, true, true, "Get Device Info")
-    {
-    }
+    {}
 
     bool GetDeviceInfo::Response::match_data(const MipDataField& field)
     {
@@ -54,4 +51,4 @@ namespace mscl
         MIP_Commands::parseData_GetDeviceInfo(response, result);
         return result;
     }
-}
+} // namespace mscl

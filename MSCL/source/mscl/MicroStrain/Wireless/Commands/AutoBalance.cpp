@@ -4,9 +4,9 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "WirelessProtocol.h"
-#include "AutoBalance.h"
+#include "mscl/MicroStrain/Wireless/Commands/AutoBalance.h"
+
+#include "mscl/MicroStrain/Wireless/Commands/WirelessProtocol.h"
 
 namespace mscl
 {
@@ -21,4 +21,4 @@ namespace mscl
 
         return cmd;
     }
-}
+} // namespace mscl

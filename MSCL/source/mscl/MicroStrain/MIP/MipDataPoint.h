@@ -89,7 +89,7 @@ namespace mscl
         //Variable: m_valid
         //    Whether the data point is valid(true) or invalid(false).
         bool m_valid;
-#endif
+#endif // !SWIG
 
     public:
         //API Function: field
@@ -159,4 +159,4 @@ namespace mscl
     //API Typedef: MipDataPoints
     //    Typedef for a vector of <MipDataPoint> objects
     typedef std::vector<MipDataPoint> MipDataPoints;
-}
+} // namespace mscl

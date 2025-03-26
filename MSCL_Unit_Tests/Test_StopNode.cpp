@@ -4,10 +4,9 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "mscl/MicroStrain/Wireless/Commands/SetToIdle.h"
 #include "mscl/MicroStrain/ResponseCollector.h"
+#include "mscl/MicroStrain/Wireless/Commands/SetToIdle.h"
 
-#include <boost/test/unit_test.hpp>
 #include "mock_BaseStation.h"
 
 using namespace mscl;

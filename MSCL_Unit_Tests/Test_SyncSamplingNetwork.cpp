@@ -4,13 +4,13 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
+#include "mscl/MicroStrain/Wireless/Configuration/WirelessNodeConfig.h"
+#include "mscl/MicroStrain/Wireless/SyncNetworkInfo.h"
 #include "mscl/MicroStrain/Wireless/SyncSamplingNetwork.h"
 #include "mscl/MicroStrain/Wireless/WirelessNode.h"
-#include "mscl/MicroStrain/Wireless/Configuration/WirelessNodeConfig.h"
 
-#include <boost/test/unit_test.hpp>
 #include "mock_WirelessNode.h"
-#include "mock_BaseStation.h"
+
 using namespace mscl;
 
 struct Sampling_Continuous
@@ -102,7 +102,6 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_burst)
 
     std::unique_ptr<NodeFeatures> features;
     expectNodeFeatures(features, impl);
-
 
     //eeprom reads performed by the SyncSamplingNetwork
     Sampling_Burst s;
@@ -474,7 +473,6 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_noChannelMask)
     std::unique_ptr<NodeFeatures> features;
     expectNodeFeatures(features, impl);
 
-
     SyncSamplingNetwork nwk(b);
 
     //eeprom reads performed by the SyncSamplingNetwork
@@ -536,7 +534,6 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_burst_noChannelMask)
 
     std::unique_ptr<NodeFeatures> features;
     expectNodeFeatures(features, impl);
-
 
     SyncSamplingNetwork nwk(b);
 
@@ -603,7 +600,6 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_logOnly)
 
     std::unique_ptr<NodeFeatures> features;
     expectNodeFeatures(features, impl);
-
 
     SyncSamplingNetwork nwk(b);
 
@@ -1615,7 +1611,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_startSampling_withBase_pcTime)
     WirelessNode node(123, baseForNode);
     node.setImpl(impl);
 
-    MOCK_EXPECT(impl->protocol).returns(*(WirelessProtocol::v1_0().get()));
+    MOCK_EXPECT(impl->protocol).returns(*WirelessProtocol::v1_0().get());
 
     std::unique_ptr<NodeFeatures> features;
     expectNodeFeatures(features, impl);
@@ -1717,7 +1713,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_startSampling_withBase_timestamp)
     std::unique_ptr<NodeFeatures> features;
     expectNodeFeatures(features, impl);
 
-    MOCK_EXPECT(impl->protocol).returns(*(WirelessProtocol::v1_0().get()));
+    MOCK_EXPECT(impl->protocol).returns(*WirelessProtocol::v1_0().get());
 
     SyncSamplingNetwork nwk(baseForNode);
 
@@ -1815,7 +1811,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_startSampling_noBase)
     std::unique_ptr<NodeFeatures> features;
     expectNodeFeatures(features, impl);
 
-    MOCK_EXPECT(impl->protocol).returns(*(WirelessProtocol::v1_0().get()));
+    MOCK_EXPECT(impl->protocol).returns(*WirelessProtocol::v1_0().get());
 
     SyncSamplingNetwork nwk(baseForNode);
 
@@ -1911,7 +1907,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_startSampling_failSendStart)
     std::unique_ptr<NodeFeatures> features;
     expectNodeFeatures(features, impl);
 
-    MOCK_EXPECT(impl->protocol).returns(*(WirelessProtocol::v1_0().get()));
+    MOCK_EXPECT(impl->protocol).returns(*WirelessProtocol::v1_0().get());
 
     SyncSamplingNetwork nwk(baseForNode);
 
@@ -1966,7 +1962,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_startSampling_retry)
     std::unique_ptr<NodeFeatures> features;
     expectNodeFeatures(features, impl);
 
-    MOCK_EXPECT(impl->protocol).returns(*(WirelessProtocol::v1_0().get()));
+    MOCK_EXPECT(impl->protocol).returns(*WirelessProtocol::v1_0().get());
 
     SyncSamplingNetwork nwk(baseForNode);
 
@@ -1999,7 +1995,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_startSampling_retry)
     std::unique_ptr<NodeFeatures> features2;
     expectNodeFeatures(features2, impl2, WirelessModels::node_vLink);
 
-    MOCK_EXPECT(impl2->protocol).returns(*(WirelessProtocol::v1_0().get()));
+    MOCK_EXPECT(impl2->protocol).returns(*WirelessProtocol::v1_0().get());
 
     //eeprom reads performed by the SyncSamplingNetwork
     Sampling_Continuous s2;

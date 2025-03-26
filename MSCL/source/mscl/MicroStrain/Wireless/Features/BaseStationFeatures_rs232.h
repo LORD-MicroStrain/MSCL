@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "BaseStationFeatures.h"
+#include "mscl/MicroStrain/Wireless/Features/BaseStationFeatures.h"
 
 namespace mscl
 {
@@ -15,7 +15,7 @@ namespace mscl
     class BaseStationFeatures_rs232 : public BaseStationFeatures
     {
     public:
-        virtual ~BaseStationFeatures_rs232() {}
+        ~BaseStationFeatures_rs232() override = default;
 
         //Constructor: BaseStationFeatures_rs232
         //    Creates a BaseStationFeatures_rs232 object.
@@ -24,4 +24,4 @@ namespace mscl
         //    info - A <BaseStationInfo> object representing standard information of the <BaseStation>.
         BaseStationFeatures_rs232(const BaseStationInfo& info);
     };
-}
+} // namespace mscl

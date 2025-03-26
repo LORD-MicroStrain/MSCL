@@ -122,4 +122,4 @@ namespace mscl
         static const WirelessTypes::WirelessSampleRates continuous_sync_impact;
         static const WirelessTypes::WirelessSampleRates burst_impact;
     };
-}
+} // namespace mscl

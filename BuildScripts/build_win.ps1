@@ -10,6 +10,12 @@ param (
     [String[]]$python2Dirs
 )
 
+# Cache the error action to reset it later
+$CacheErrorActionPreference = ${ErrorActionPreference}
+
+# Stop executing when cmdlets fail (does not stop functions from stopping execution)
+$ErrorActionPreference = 'Stop'
+
 try
 {
     # Get some directory information
@@ -22,23 +28,38 @@ try
     # Make sure the build directory exists
     New-Item "${buildDir}" -ItemType Directory -Force
 
+    if (-Not ($?))
+    {
+        throw $_
+    }
+
     # Configure MSCL to build the documentation and zip examples only on x64 release
     if ("$arch" -eq "x64")
     {
         cmake -S "${project_dir}" -B "${buildDir}" -G "${generator}" -A "${arch}" -T "${toolset}" `
-        -DCMAKE_VERBOSE_MAKEFILE="ON" `
-        -DBUILD_SHARED_LIBS="OFF" `
-        -DMSCL_BUILD_PYTHON2="OFF" `
-        -DMSCL_BUILD_PYTHON3="OFF" `
-        -DMSCL_BUILD_CSHARP="OFF" `
-        -DMSCL_BUILD_TESTS="OFF" `
-        -DMSCL_BUILD_EXAMPLES="OFF" `
-        -DMSCL_ZIP_EXAMPLES="ON" `
-        -DMSCL_BUILD_DOCUMENTATION="ON" `
-        -DMSCL_BUILD_PACKAGE="ON" `
-        -DMSCL_BRANCH="${branch}"
+            -DCMAKE_VERBOSE_MAKEFILE="ON" `
+            -DBUILD_SHARED_LIBS="OFF" `
+            -DMSCL_BUILD_PYTHON2="OFF" `
+            -DMSCL_BUILD_PYTHON3="OFF" `
+            -DMSCL_BUILD_CSHARP="OFF" `
+            -DMSCL_BUILD_TESTS="OFF" `
+            -DMSCL_BUILD_EXAMPLES="OFF" `
+            -DMSCL_ZIP_EXAMPLES="ON" `
+            -DMSCL_BUILD_DOCUMENTATION="ON" `
+            -DMSCL_BUILD_PACKAGE="ON" `
+            -DMSCL_BRANCH="${branch}"
+
+        if (-Not ($?))
+        {
+            throw $_
+        }
 
         cmake --build "${buildDir}" --config "Release" --target package
+
+        if (-Not ($?))
+        {
+            throw $_
+        }
     }
 
     # Configure MSCL to build with everything except csharp, python2, and python3
@@ -55,11 +76,27 @@ try
         -DMSCL_BUILD_PACKAGE="ON" `
         -DMSCL_BRANCH="${branch}"
 
+    if (-Not ($?))
+    {
+        throw $_
+    }
+
     # Build multiple configurations
     foreach ($config in ${configs})
     {
         cmake --build "${buildDir}" --config "${config}" --target package
+
+        if (-Not ($?))
+        {
+            throw $_
+        }
+
         cmake --build "${buildDir}" --config "${config}" --target "RUN_TESTS"
+
+        if (-Not ($?))
+        {
+            throw $_
+        }
     }
 
     # Build CSharp
@@ -76,10 +113,20 @@ try
         -DMSCL_BUILD_PACKAGE="ON" `
         -DMSCL_BRANCH="${branch}"
 
+    if (-Not ($?))
+    {
+        throw $_
+    }
+
     # Build multiple configurations for CSharp
     foreach ($config in ${configs})
     {
         cmake --build "${buildDir}" --config "${config}" --target package
+
+        if (-Not ($?))
+        {
+            throw $_
+        }
     }
 
     # Build python3
@@ -105,10 +152,20 @@ try
                 -UPython3_INCLUDE_DIR `
                 -UPython3_EXECUTABLE -DPython3_EXECUTABLE="${python3Dir}/python.exe"
 
+            if (-Not ($?))
+            {
+                throw $_
+            }
+
             # Build multiple configurations
             foreach ($config in ${configs})
             {
                 cmake --build "${buildDir}" --config "${config}" --target package
+
+                if (-Not ($?))
+                {
+                    throw $_
+                }
             }
         }
     }
@@ -136,16 +193,31 @@ try
                 -UPython2_INCLUDE_DIR `
                 -UPython2_EXECUTABLE -DPython2_EXECUTABLE="${python2Dir}/python.exe"
 
+            if (-Not ($?))
+            {
+                throw $_
+            }
+
             # Build multiple configurations
             foreach ($config in ${configs})
             {
                 cmake --build "${buildDir}" --config "${config}" --target package
+
+                if (-Not ($?))
+                {
+                    throw $_
+                }
             }
         }
     }
 }
 catch
 {
-    # Rethrow the exception to display in the console
+    # Propagate exception up to calling script
     throw $_
+}
+finally
+{
+    # Reset the ErrorActionPreference
+    $ErrorActionPreference = ${CacheErrorActionPreference}
 }

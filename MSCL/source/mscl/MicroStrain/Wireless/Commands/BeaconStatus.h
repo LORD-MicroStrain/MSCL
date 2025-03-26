@@ -6,9 +6,6 @@
 
 #pragma once
 
-#include "mscl/MicroStrain/ResponsePattern.h"
-#include "mscl/Timestamp.h"
-
 namespace mscl
 {
     //API Class: BeaconStatus
@@ -47,5 +44,4 @@ namespace mscl
         //    Gets the current <Timestamp> of the beacon.
         const Timestamp& timestamp();
     };
-
-}
+} // namespace mscl

@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 3.16.0)
 project(MSCL_Example_Displacement_CSharp LANGUAGES CSharp)
 
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 # Append to the module path so we can use the FindMSCL_Managed.cmake script
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../../../../../cmake")
 

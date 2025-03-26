@@ -6,17 +6,12 @@
 
 #pragma once
 
-#include <functional>
-#include <memory>
-
-#include "mscl/Timestamp.h"
-#include "AutoBalanceResult.h"
-#include "AutoCalResult.h"
-#include "BeaconStatus.h"
-#include "PingResponse.h"
-#include "SetToIdleStatus.h"
+#include "mscl/MicroStrain/Wireless/Commands/AutoBalanceResult.h"
+#include "mscl/MicroStrain/Wireless/Commands/AutoCalResult.h"
+#include "mscl/MicroStrain/Wireless/Commands/BeaconStatus.h"
+#include "mscl/MicroStrain/Wireless/Commands/PingResponse.h"
+#include "mscl/MicroStrain/Wireless/Commands/SetToIdleStatus.h"
 #include "mscl/MicroStrain/Wireless/WirelessDataPoint.h"
-#include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
 
 namespace mscl
 {
@@ -34,7 +29,6 @@ namespace mscl
         friend class BaseStation_Impl;
         friend class NodeEeprom;
 
-    private:
         WirelessProtocol();
 
         //Variable: m_pingBase
@@ -227,7 +221,6 @@ namespace mscl
         //  Static function to create a WirelessProtocol with version 3.1.
         static std::unique_ptr<WirelessProtocol> v3_1();
 
-    public:
         bool supportsBeaconStatus() const;
         bool supportsNodeHardReset() const;
         bool supportsNodeSoftReset() const;
@@ -236,7 +229,6 @@ namespace mscl
         bool supportsBatchEepromRead() const;
         bool supportsTestCommProtocol() const;
 
-    public:
         //Enums: CommandID
         //  The Wireless command IDs.
         //
@@ -329,4 +321,4 @@ namespace mscl
             cmdId_poll                      = 0xDA7A
         };
     };
-}
+} // namespace mscl

@@ -1,0 +1,10 @@
+set(MSCL_MICROSTRAIN_DISPLACEMENT_COMMANDS_SOURCES
+    "${CMAKE_CURRENT_LIST_DIR}/DeviceTime.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/DeviceTime.h"
+    "${CMAKE_CURRENT_LIST_DIR}/DisplacementOutputDataRate.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/DisplacementOutputDataRate.h"
+    "${CMAKE_CURRENT_LIST_DIR}/GetAnalogToDisplacementCals.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/GetAnalogToDisplacementCals.h"
+)
+
+set(MSCL_SOURCES ${MSCL_SOURCES} ${MSCL_MICROSTRAIN_DISPLACEMENT_COMMANDS_SOURCES} PARENT_SCOPE)

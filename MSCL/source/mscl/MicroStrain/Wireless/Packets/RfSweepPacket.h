@@ -6,12 +6,12 @@
 
 #pragma once
 
-#include "WirelessDataPacket.h"
+#include "mscl/MicroStrain/Wireless/Packets/WirelessDataPacket.h"
 
 namespace mscl
 {
     //Class: RfSweepPacket
-    //    A <WirelessDataPacket> derived class representing a RF Sweep packet.
+    //    A <WirelessDataPacket> derived class representing an RF Sweep packet.
     class RfSweepPacket: public WirelessDataPacket
     {
     public:
@@ -31,14 +31,13 @@ namespace mscl
 
     public:
         //Function: integrityCheck
-        //    Verifies that the packet is a well formed BeaconEchoPacket packet.
+        //    Verifies that the packet is a well-formed BeaconEchoPacket packet.
         //
         //Parameters:
         //    packet - The fully formed Wireless Packet to check the integrity of.
         //
         //Returns:
-        //    true if the packet is a well formed BeaconEchoPacket, false otherwise
+        //    true if the packet is a well-formed BeaconEchoPacket, false otherwise
         static bool integrityCheck(const WirelessPacket& packet);
     };
-
-}
+} // namespace mscl

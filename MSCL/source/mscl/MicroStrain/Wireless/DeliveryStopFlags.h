@@ -6,8 +6,6 @@
 
 #pragma once
 
-#include "mscl/Types.h"
-
 namespace mscl
 {
     //Class: DeliveryStopFlags
@@ -23,7 +21,6 @@ namespace mscl
         //    Initializes a DeliveryStopFlags object given specific values
         DeliveryStopFlags(bool pc, bool appBoard, bool linkBoard, bool baseStation);
 
-    public:
         //Variable: pc
         //    A stop flag representing the pc
         bool pc:            1;    //only occupy 1 bit
@@ -40,7 +37,6 @@ namespace mscl
         //    A stop flag representing the baseStation
         bool baseStation:    1;    //only occupy 1 bit
 
-    public:
         //Operator: ==
         //    Checks that two DeliveryStopFlags objects are equal
         //
@@ -90,4 +86,4 @@ namespace mscl
         //    The delivery stop flag byte built from the current set stop flags
         uint8 toByte() const;
     };
-}
+} // namespace mscl

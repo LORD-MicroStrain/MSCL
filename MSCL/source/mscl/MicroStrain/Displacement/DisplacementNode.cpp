@@ -4,29 +4,19 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "DisplacementNode.h"
+#include "mscl/MicroStrain/Displacement/DisplacementNode.h"
 
-#include "mscl/Types.h"
-#include "mscl/MicroStrain/MIP/Commands/MIP_Commands.h"
-#include "mscl/MicroStrain/MIP/MipNodeFeatures.h"
-#include "mscl/MicroStrain/MIP/Packets/MipPacket.h"
 #include "mscl/MicroStrain/MIP/MipNode_Impl.h"
-
-#include <algorithm>
-
 
 namespace mscl
 {
-    DisplacementNode::DisplacementNode(Connection connection):
+    DisplacementNode::DisplacementNode(Connection connection) :
         m_impl(std::make_shared<MipNode_Impl>(connection))
-    {
-    }
+    {}
 
     DisplacementNode::DisplacementNode(std::shared_ptr<MipNode_Impl> impl) :
         m_impl(impl)
-    {
-    }
+    {}
 
     const MipNodeFeatures& DisplacementNode::features()
     {
@@ -168,4 +158,4 @@ namespace mscl
     {
         return m_impl->setDeviceTime(nanoseconds);
     }
-}
+} // namespace mscl

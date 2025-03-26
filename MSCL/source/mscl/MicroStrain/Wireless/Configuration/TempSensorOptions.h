@@ -14,7 +14,6 @@ namespace mscl
     //    Options to adjust the temperature sensor for a WirelessNode.
     class TempSensorOptions
     {
-    private:
         TempSensorOptions();
 
     public:
@@ -86,4 +85,4 @@ namespace mscl
         //  Note: this is only valid if <transducerType> returns <WirelessTypes::TransducerType::transducer_thermistor>.
         WirelessTypes::ThermistorType thermistorType() const;
     };
-}
+} // namespace mscl

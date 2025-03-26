@@ -4,23 +4,21 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
+#include "mscl/MicroStrain/Wireless/Configuration/WirelessNodeConfig.h"
 
-#include "WirelessNodeConfig.h"
-#include "mscl/MicroStrain/Wireless/WirelessNode.h"
+#include "mscl/MicroStrain/LinearEquation.h"
+#include "mscl/MicroStrain/SampleRate.h"
+#include "mscl/MicroStrain/Wireless/Configuration/NodeEepromHelper.h"
 #include "mscl/MicroStrain/Wireless/Features/NodeFeatures.h"
-#include "mscl/MicroStrain/Wireless/SyncSamplingFormulas.h"
-#include "NodeEepromHelper.h"
 
 namespace mscl
 {
     WirelessNodeConfig::WirelessNodeConfig()
-    {
-    }
+    {}
 
     WirelessTypes::Voltage WirelessNodeConfig::curExcitationVoltage(const NodeEepromHelper& eeprom) const
     {
-        //if its currently set in the config, return the set value
+        //if it's currently set in the config, return the set value
         if(isSet(m_excitationVoltage)) { return *m_excitationVoltage; }
 
         //not set, so read the value from the node
@@ -29,7 +27,7 @@ namespace mscl
 
     WirelessTypes::TransmitPower WirelessNodeConfig::curTransmitPower(const NodeEepromHelper& eeprom) const
     {
-        //if its currently set in the config, return the set value
+        //if it's currently set in the config, return the set value
         if(isSet(m_transmitPower)) { return *m_transmitPower; }
 
         //not set, so read the value from the node
@@ -38,7 +36,7 @@ namespace mscl
 
     WirelessTypes::CommProtocol WirelessNodeConfig::curCommProtocol(const NodeEepromHelper& eeprom) const
     {
-        //if its currently set in the config, return the set value
+        //if it's currently set in the config, return the set value
         if(isSet(m_commProtocol)) { return *m_commProtocol; }
 
         //not set, so read the value from the node
@@ -47,7 +45,7 @@ namespace mscl
 
     WirelessTypes::SamplingMode WirelessNodeConfig::curSamplingMode(const NodeEepromHelper& eeprom) const
     {
-        //if its currently set in the config, return the set value
+        //if it's currently set in the config, return the set value
         if(isSet(m_samplingMode)) { return *m_samplingMode; }
 
         //not set, so read the value from the node
@@ -56,7 +54,7 @@ namespace mscl
 
     WirelessTypes::WirelessSampleRate WirelessNodeConfig::curSampleRate(const NodeEepromHelper& eeprom) const
     {
-        //if its currently set in the config, return the set value
+        //if it's currently set in the config, return the set value
         if(isSet(m_sampleRate)) { return *m_sampleRate; }
 
         //not set, so read the value from the node, with the sampling mode
@@ -65,7 +63,7 @@ namespace mscl
 
     ChannelMask WirelessNodeConfig::curActiveChs(const NodeEepromHelper& eeprom) const
     {
-        //if its currently set in the config, return the set value
+        //if it's currently set in the config, return the set value
         if(isSet(m_activeChannels)) { return *m_activeChannels; }
 
         //not set, so read the value from the node
@@ -74,7 +72,7 @@ namespace mscl
 
     uint32 WirelessNodeConfig::curNumSweeps(const NodeEepromHelper& eeprom) const
     {
-        //if its currently set in the config, return the set value
+        //if it's currently set in the config, return the set value
         if(isSet(m_numSweeps)) { return *m_numSweeps; }
 
         //not set, so read the value from the node
@@ -83,7 +81,7 @@ namespace mscl
 
     bool WirelessNodeConfig::curUnlimitedDuration(const NodeEepromHelper& eeprom) const
     {
-        //if its currently set in the config, return the set value
+        //if it's currently set in the config, return the set value
         if(isSet(m_unlimitedDuration)) { return *m_unlimitedDuration; }
 
         //not set, so read the value from the node
@@ -92,7 +90,7 @@ namespace mscl
 
     WirelessTypes::DataFormat WirelessNodeConfig::curDataFormat(const NodeEepromHelper& eeprom) const
     {
-        //if its currently set in the config, return the set value
+        //if it's currently set in the config, return the set value
         if(isSet(m_dataFormat)) { return *m_dataFormat; }
 
         //not set, so read the value from the node
@@ -101,14 +99,14 @@ namespace mscl
 
     WirelessTypes::FatigueMode WirelessNodeConfig::curFatigueMode(const NodeEepromHelper& eeprom) const
     {
-        if(isSet(m_fatigueOptions)) { return (*m_fatigueOptions).fatigueMode(); }
+        if(isSet(m_fatigueOptions)) { return m_fatigueOptions->fatigueMode(); }
 
         return eeprom.read_fatigueMode();
     }
 
     DataModeMask WirelessNodeConfig::curDataModeMask(const NodeEepromHelper& eeprom) const
     {
-        //if its currently set in the config, return the set value
+        //if it's currently set in the config, return the set value
         if(isSet(m_dataMode))
         {
             return DataModeMask(*m_dataMode);
@@ -120,7 +118,7 @@ namespace mscl
 
     WirelessTypes::WirelessSampleRate WirelessNodeConfig::curDerivedRate(const NodeEepromHelper& eeprom) const
     {
-        //if its currently set in the config, return the set value
+        //if it's currently set in the config, return the set value
         if(isSet(m_derivedDataRate)) { return *m_derivedDataRate; }
 
         //not set, so read the value from the node
@@ -129,7 +127,7 @@ namespace mscl
 
     WirelessTypes::DataCollectionMethod WirelessNodeConfig::curDataCollectionMethod(const NodeEepromHelper& eeprom) const
     {
-        //if its currently set in the config, return the set value
+        //if it's currently set in the config, return the set value
         if(isSet(m_dataCollectionMethod)) { return *m_dataCollectionMethod; }
 
         //not set, so read the value from the node
@@ -138,7 +136,7 @@ namespace mscl
 
     TimeSpan WirelessNodeConfig::curTimeBetweenBursts(const NodeEepromHelper& eeprom) const
     {
-        //if its currently set in the config, return the set value
+        //if it's currently set in the config, return the set value
         if(isSet(m_timeBetweenBursts)) { return *m_timeBetweenBursts; }
 
         //not set, so read the value from the node
@@ -147,7 +145,7 @@ namespace mscl
 
     WirelessTypes::SettlingTime WirelessNodeConfig::curSettlingTime(const ChannelMask& mask, const NodeEepromHelper& eeprom) const
     {
-        //if its currently set in the config, return the set value
+        //if it's currently set in the config, return the set value
         if(isSet(m_settlingTimes, mask)) { return m_settlingTimes.at(mask); }
 
         //not set, so read the value from the node
@@ -156,7 +154,7 @@ namespace mscl
 
     WirelessTypes::Filter WirelessNodeConfig::curLowPassFilter(const ChannelMask& mask, const NodeEepromHelper& eeprom) const
     {
-        //if its currently set in the config, return the set value
+        //if it's currently set in the config, return the set value
         if(isSet(m_lowPassFilters, mask)) { return m_lowPassFilters.at(mask); }
 
         //not set, so read the value from the node
@@ -165,7 +163,7 @@ namespace mscl
 
     void WirelessNodeConfig::curEventTriggerDurations(const NodeEepromHelper& eeprom, uint32& pre, uint32& post) const
     {
-        //if its currently set in the config, return the set value
+        //if it's currently set in the config, return the set value
         if(isSet(m_eventTriggerOptions))
         {
             pre = m_eventTriggerOptions->preDuration();
@@ -184,16 +182,14 @@ namespace mscl
         {
             return m_eventTriggerOptions->triggerMask();
         }
-        else
-        {
-            //read the value from eeprom
-            return eeprom.read_eventTriggerMask();
-        }
+
+        //read the value from eeprom
+        return eeprom.read_eventTriggerMask();
     }
 
     LinearEquation WirelessNodeConfig::curLinearEquation(const ChannelMask& mask, const NodeEepromHelper& eeprom) const
     {
-        //if its currently set in the config, return the set value
+        //if it's currently set in the config, return the set value
         if(isSet(m_linearEquations, mask)) { return m_linearEquations.at(mask); }
 
         //not set, so read the value from the node
@@ -207,7 +203,7 @@ namespace mscl
     {
         const auto& mask = m_derivedChannelMasks.find(category);
 
-        //if its currently set in the config, return the set value
+        //if it's currently set in the config, return the set value
         if(mask != m_derivedChannelMasks.end())
         {
             return mask->second;
@@ -236,7 +232,7 @@ namespace mscl
             return false;
         }
 
-        return (curDerivedMask(category, eeprom).count() > 0);
+        return curDerivedMask(category, eeprom).count() > 0;
     }
 
     bool WirelessNodeConfig::findGroupWithChannelAndSetting(const ChannelMask& mask, WirelessTypes::ChannelGroupSetting setting, const NodeFeatures& features, ChannelGroup& foundGroup) const
@@ -249,7 +245,7 @@ namespace mscl
                 //check each channel in the group
                 if(mask.enabled(ch))
                 {
-                    //if this group has the requested setting, and at least one of the the same channels as the mask
+                    //if this group has the requested setting, and at least one of the same channels as the mask
                     if(group.hasSettingAndChannel(setting, ch))
                     {
                         foundGroup = group;
@@ -392,7 +388,7 @@ namespace mscl
         if(isSet(m_unlimitedDuration))
         {
             //if the node only supports unlimited duration and the user turned it off
-            if(!features.supportsLimitedDuration() && (*m_unlimitedDuration == false))
+            if(!features.supportsLimitedDuration() && *m_unlimitedDuration == false)
             {
                 outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_UNLIMITED_DURATION, "Unlimited duration cannot be disabled for this Node."));
             }
@@ -497,13 +493,13 @@ namespace mscl
         //Transmit Power
         if(isSet(m_transmitPower) || isSet(m_commProtocol))
         {
-            mscl::WirelessTypes::TransmitPower txPower = curTransmitPower(eeprom);
-            mscl::WirelessTypes::CommProtocol protocol = curCommProtocol(eeprom);
+            WirelessTypes::TransmitPower txPower = curTransmitPower(eeprom);
+            WirelessTypes::CommProtocol protocol = curCommProtocol(eeprom);
 
             //verify the transmit power is supported
             if(!features.supportsTransmitPower(txPower, protocol))
             {
-                //allow the user to still set a transmit power that might not be in our list, as long as its below the max
+                //allow the user to still set a transmit power that might not be in our list, as long as it's below the max
                 if(txPower > features.maxTransmitPower(protocol))
                 {
                     outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_TRANSMIT_POWER, "The Transmit Power is not supported by this Node for the current Comm Protocol."));
@@ -613,13 +609,13 @@ namespace mscl
             {
                 outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_EVENT_TRIGGER, "Event Triggering is not supported by this Node."));
             }
-            //verify the pre duration is normalized
-            else if((*m_eventTriggerOptions).preDuration() != features.normalizeEventDuration((*m_eventTriggerOptions).preDuration()))
+            //verify the pre-duration is normalized
+            else if(m_eventTriggerOptions->preDuration() != features.normalizeEventDuration(m_eventTriggerOptions->preDuration()))
             {
                 outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_EVENT_TRIGGER, "The pre event duration needs to be normalized."));
             }
-            //verify the post duration is normalized
-            else if((*m_eventTriggerOptions).postDuration() != features.normalizeEventDuration((*m_eventTriggerOptions).postDuration()))
+            //verify the post-duration is normalized
+            else if(m_eventTriggerOptions->postDuration() != features.normalizeEventDuration(m_eventTriggerOptions->postDuration()))
             {
                 outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_EVENT_TRIGGER, "The post event duration needs to be normalized."));
             }
@@ -653,7 +649,7 @@ namespace mscl
             {
                 outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_SENSOR_DELAY, "Sensor Delay configuration is not supported by this Node."));
             }
-            else if(*m_sensorDelay == WirelessNodeConfig::SENSOR_DELAY_ALWAYS_ON && !features.supportsSensorDelayAlwaysOn())
+            else if(*m_sensorDelay == SENSOR_DELAY_ALWAYS_ON && !features.supportsSensorDelayAlwaysOn())
             {
                 outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_SENSOR_DELAY, "Sensor Delay Always On is not supported by this Node."));
             }
@@ -735,21 +731,19 @@ namespace mscl
                         outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_DERIVED_MASK, "The Derived Channel category is not supported by this Node."));
                         break;
                     }
-                    else
+
+                    ChannelMask maskChs = mask.second;
+                    ChannelMask allowedChs = features.channelsPerDerivedCategory().at(mask.first);
+
+                    uint8 lastActiveCh = mask.second.lastChEnabled();
+
+                    //check if any channels are enabled that aren't allowed by this category
+                    for(uint8 i = 1; i <= lastActiveCh; ++i)
                     {
-                        ChannelMask maskChs = mask.second;
-                        ChannelMask allowedChs = features.channelsPerDerivedCategory().at(mask.first);
-
-                        uint8 lastActiveCh = mask.second.lastChEnabled();
-
-                        //check if any channels are enable that aren't allowed by this category
-                        for(uint8 i = 1; i <= lastActiveCh; ++i)
+                        if(maskChs.enabled(i) && !allowedChs.enabled(i))
                         {
-                            if(maskChs.enabled(i) && !allowedChs.enabled(i))
-                            {
-                                outIssues.push_back(ConfigIssue(findDerivedMaskConfigIssue(mask.first), "The Channel Mask is invalid for the Derived Channel."));
-                                break;
-                            }
+                            outIssues.push_back(ConfigIssue(findDerivedMaskConfigIssue(mask.first), "The Channel Mask is invalid for the Derived Channel."));
+                            break;
                         }
                     }
                 }
@@ -788,7 +782,7 @@ namespace mscl
         //Anti-Aliasing Filter(s)
         for(const auto& filter : m_antiAliasingFilters)
         {
-            //verify anti-aliasing filter is supported for the channel mask
+            //verify antialiasing filter is supported for the channel mask
             if(!features.supportsChannelSetting(WirelessTypes::chSetting_antiAliasingFilter, filter.first))
             {
                 outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_ANTI_ALIASING_FILTER, "Anti-Aliasing Filter is not supported for the provided Channel Mask.", filter.first));
@@ -942,7 +936,7 @@ namespace mscl
                 const SampleRate derivedRate = SampleRate::FromWirelessEepromValue(curDerivedRate(eeprom));
                 const SampleRate sampleRate = SampleRate::FromWirelessEepromValue(curSampleRate(eeprom));
 
-                if(derivedRate.samplesPerSecond() > (sampleRate.samplesPerSecond() / 32.0))
+                if(derivedRate.samplesPerSecond() > sampleRate.samplesPerSecond() / 32.0)
                 {
                     //derived rate must be at least 32x slower than normal sample rate
                     outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_SAMPLE_RATE, "The Derived Data Rate must be at least 32x slower than the raw sample rate."));
@@ -970,8 +964,8 @@ namespace mscl
             //if trying to set the sampling mode to a non-event trigger mode
             else
             {
-                //verify all event trigger are disabled
-                if(features.supportsEventTrigger() && (curEventTriggerMask(eeprom).enabledCount() != 0))
+                //verify all event triggers are disabled
+                if(features.supportsEventTrigger() && curEventTriggerMask(eeprom).enabledCount() != 0)
                 {
                     outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_EVENT_TRIGGER_MASK, "Event Triggers are enabled, but the Sampling Mode does not include Event Triggering."));
                     outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_SAMPLING_MODE, "Event Triggers are enabled, but the Sampling Mode does not include Event Triggering."));
@@ -1215,7 +1209,7 @@ namespace mscl
                                                                             SampleRate::FromWirelessEepromValue(derivedRate));
 
                 //verify the pre+post duration is within range
-                if((preDuration + postDuration) > maxDuration)
+                if(preDuration + postDuration > maxDuration)
                 {
                     outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_EVENT_TRIGGER_DURATION, "The total event duration exceeds the max for this Configuration."));
                 }
@@ -2071,7 +2065,7 @@ namespace mscl
     {
         uint8 dataSize = WirelessTypes::dataFormatSize(dataFormat);
         double samplesPerSecond = SampleRate::FromWirelessEepromValue(rawSampleRate).samplesPerSecond();
-        return static_cast<float>((dataSize * numChannels * samplesPerSecond) + (derivedBytesPerSweep * SampleRate::FromWirelessEepromValue(derivedRate).samplesPerSecond()));
+        return static_cast<float>(dataSize * numChannels * samplesPerSecond + derivedBytesPerSweep * SampleRate::FromWirelessEepromValue(derivedRate).samplesPerSecond());
     }
 
     float WirelessNodeConfig::flashBandwidth_burst(WirelessTypes::WirelessSampleRate rawSampleRate,
@@ -2088,8 +2082,8 @@ namespace mscl
         if(samplesPerSecond == 0.0) { samplesPerSecond = 0.1; } //no dividing by 0
         if(secondsBetweenBursts == 0) { secondsBetweenBursts = 1; } //no dividing by 0
 
-        float dutyCycle = static_cast<float>((static_cast<float>(numSweeps) / samplesPerSecond) / timeBetweenBursts.getSeconds());
+        float dutyCycle = static_cast<float>(static_cast<float>(numSweeps) / samplesPerSecond / timeBetweenBursts.getSeconds());
 
-        return static_cast<float>((dataSize * numRawChannels * samplesPerSecond * dutyCycle) + (derivedBytesPerSweep / timeBetweenBursts.getSeconds()));
+        return static_cast<float>(dataSize * numRawChannels * samplesPerSecond * dutyCycle + derivedBytesPerSweep / timeBetweenBursts.getSeconds());
     }
-}
+} // namespace mscl

@@ -4,13 +4,11 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-
-#include "TempSensorOptions.h"
+#include "mscl/MicroStrain/Wireless/Configuration/TempSensorOptions.h"
 
 namespace mscl
 {
-    TempSensorOptions::TempSensorOptions():
+    TempSensorOptions::TempSensorOptions() :
         m_transducerType(WirelessTypes::transducer_thermocouple),
         m_thermocoupleType(WirelessTypes::tc_K),
         m_rtdType(WirelessTypes::rtd_pt10),
@@ -67,4 +65,4 @@ namespace mscl
     {
         return m_thermistorType;
     }
-}
+} // namespace mscl

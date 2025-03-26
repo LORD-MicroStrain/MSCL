@@ -6,8 +6,6 @@
 
 #pragma once
 
-#include "mscl/Types.h"
-
 namespace mscl
 {
     //API Class: WirelessModels
@@ -283,7 +281,6 @@ namespace mscl
         //Exceptions:
         //    - <Error>: Unknown model number.
         static BaseModel baseFromLegacyModel(uint16 legacyModel);
-#endif
+#endif // !SWIG
     };
-
-}
+} // namespace mscl

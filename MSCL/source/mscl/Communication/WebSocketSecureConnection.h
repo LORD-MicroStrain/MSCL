@@ -6,15 +6,7 @@
 
 #pragma once
 
-#include "Connection.h"
-#include "Connection_Impl.h"
-#include "BoostCommunication.h"
-
-#include <boost/asio.hpp>
-#include <boost/asio/ssl/stream.hpp>
-#include <boost/beast.hpp>
-
-#include <string>
+#include "mscl/Communication/Connection_Impl.h"
 
 namespace mscl
 {
@@ -30,7 +22,7 @@ namespace mscl
         //
         //Returns:
         //    A description of the connection, in the form "Secure WebSocket, serverAddress:serverPort".
-        virtual std::string description();
+        std::string description() override;
 
     private:
         WebSocketSecureConnection() = delete;                                               //default constructor disabled
@@ -50,9 +42,8 @@ namespace mscl
         //
         //Exceptions:
         //    - <Error_InvalidTcpServer>: the specified server address and/or server port is invalid.
-        virtual void establishConnection();
+        void establishConnection() override;
 
-    private:
         typedef boost::asio::ip::tcp tcp;
 
         //Variable: m_host
@@ -65,5 +56,4 @@ namespace mscl
 
         boost::asio::ssl::context m_sslContext;
     };
-
-}
+} // namespace mscl

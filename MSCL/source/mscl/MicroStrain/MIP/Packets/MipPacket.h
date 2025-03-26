@@ -6,8 +6,6 @@
 
 #pragma once
 
-#include "mscl/Types.h"
-#include "mscl/MicroStrain/ByteStream.h"
 #include "mscl/MicroStrain/MIP/MipTypes.h"
 
 namespace mscl
@@ -39,13 +37,11 @@ namespace mscl
             MIP_ACK_NACK_ERROR_UNKNOWN_DESCRIPTOR_SET   = 6
         };
 
-    public:
         //Default Constructor: MipPacket
         //    The default constructor for a MipPacket object
         MipPacket();
 
 #ifndef SWIG
-    public:
         //Typedef: Payload
         //    typedef for the bytes that make up a payload in a packet
         typedef ByteStream Payload;
@@ -73,7 +69,7 @@ namespace mscl
         //Parameters:
         //    set - The descriptor set value to set
         void descriptorSet(uint8 set);
-#endif
+#endif // !SWIG
         //API Function: isDataPacket
         //    Gets whether or not the packet is a data packet
         //
@@ -145,7 +141,6 @@ namespace mscl
     //    Contains enums representing Descriptor sets for Inertial Packets
     struct DescriptorSet
     {
-    public:
         //=====================================================================================================
         //Enums: MIP Packet Descriptor Sets
         //    DESC_SET_CMD_BASE         - 0x01    - Command Packet, Base Set
@@ -187,5 +182,5 @@ namespace mscl
             DESC_SET_DATA_SYSTEM         = MipTypes::CLASS_SYSTEM
         };
     };
-#endif
-}
+#endif // !SWIG
+} // namespace mscl

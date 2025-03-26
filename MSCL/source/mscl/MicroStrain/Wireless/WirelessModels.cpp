@@ -4,8 +4,7 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "WirelessModels.h"
+#include "mscl/MicroStrain/Wireless/WirelessModels.h"
 
 namespace mscl
 {
@@ -44,7 +43,7 @@ namespace mscl
 
         default:
             //don't know the model, just cast to a wireless model and return
-            return static_cast<WirelessModels::NodeModel>(legacyModel);
+            return static_cast<NodeModel>(legacyModel);
         }
     }
 
@@ -73,7 +72,7 @@ namespace mscl
 
         default:
             //don't know the model, just cast to a base model and return
-            return static_cast<WirelessModels::BaseModel>(legacyModel);
+            return static_cast<BaseModel>(legacyModel);
         }
     }
-}
+} // namespace mscl

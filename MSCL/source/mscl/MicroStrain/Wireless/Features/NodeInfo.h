@@ -6,11 +6,8 @@
 
 #pragma once
 
-#include "mscl/Utils.h"
-#include "mscl/Version.h"
 #include "mscl/MicroStrain/Wireless/WirelessModels.h"
 #include "mscl/MicroStrain/Wireless/WirelessTypes.h"
-#include "mscl/MicroStrain/Wireless/RadioFeatures.h"
 
 namespace mscl
 {
@@ -20,7 +17,6 @@ namespace mscl
     //    Holds information (read from eeprom) about a <WirelessNode>.
     struct NodeInfo
     {
-    public:
 #ifndef SWIG
         //Constructor: NodeInfo
         //    Creates a NodeInfo object from a <WirelessNode>.
@@ -32,7 +28,7 @@ namespace mscl
         //    - <Error_NodeCommunication>: Failed to communicate with the Node.
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         NodeInfo(const WirelessNode_Impl* node);
-#endif
+#endif // !SWIG
 
         //Constructor: NodeInfo
         //    Creates a NodeInfo object.
@@ -50,7 +46,6 @@ namespace mscl
         //  The <WirelessNode_Impl> to use for lazy loading of values.
         const WirelessNode_Impl* m_node;
 
-    private:
         //Variable: m_firmwareVersion
         //    The firmware <Version> of the node (lazy loaded).
         Utils::Lazy<Version> m_firmwareVersion;
@@ -76,6 +71,6 @@ namespace mscl
         //Function: regionCode
         //  Gets the <WirelessTypes::RegionCode> of the Node.
         WirelessTypes::RegionCode regionCode() const;
-#endif
+#endif // !SWIG
     };
-}
+} // namespace mscl

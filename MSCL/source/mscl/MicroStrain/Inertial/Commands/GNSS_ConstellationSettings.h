@@ -6,15 +6,12 @@
 
 #pragma once
 
-#include "mscl/MicroStrain/MIP/Commands/GenericMipCommand.h"
 #include "mscl/MicroStrain/Inertial/ExposedInertialTypes.h"
 #include "mscl/MicroStrain/MIP/Commands/MipCommand.h"
 
 namespace mscl
 {
-
 #ifndef SWIG
-
     //Class: GNSS_ConstellationSettings
     //    Contains the logic for the "GNSS Constellation Settings" command
     class GNSS_ConstellationSettings : public MipCommand
@@ -24,25 +21,25 @@ namespace mscl
         //
         //Returns:
         //    MipTypes::Command - the command ID.
-        virtual MipTypes::Command commandType() const { return MipTypes::CMD_GNSS_CONSTELLATION_SETTINGS; }
+        MipTypes::Command commandType() const override { return MipTypes::CMD_GNSS_CONSTELLATION_SETTINGS; }
 
         //Function: fieldDataByte
         //
         //Returns:
         //    uint8 - the byte ID for field data in the reply.
-        virtual uint8 fieldDataByte() const { return 0xA0; }
+        uint8 fieldDataByte() const override { return 0xA0; }
 
         //Function: commandName
         //
         //Returns:
         //    std::string - the string name for this class.
-        virtual std::string commandName() const { return "GNSS_ConstellationSettings"; }
+        std::string commandName() const override { return "GNSS_ConstellationSettings"; }
 
         //Function: responseExpected
         //
         //Returns:
         //    bool - True indicates that a response should return from the device.
-        virtual bool responseExpected() const;
+        bool responseExpected() const override;
 
         //Function: MakeSetCommand
         //
@@ -70,7 +67,7 @@ namespace mscl
 
         //Function: operator ByteStream
         //  Converts this class to a ByteStream.
-        operator ByteStream() const;
+        operator ByteStream() const override;
 
     private:
         // Private Constructors.  Use static accessor classes to create an object.
@@ -87,8 +84,7 @@ namespace mscl
 
     public:
         // Destructor
-        ~GNSS_ConstellationSettings() { }
+        ~GNSS_ConstellationSettings() {}
     };
-
-#endif
-}
+#endif // !SWIG
+} // namespace mscl

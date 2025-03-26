@@ -4,15 +4,17 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
+#include "mscl/MicroStrain/Wireless/DataSweep.h"
 #include "mscl/MicroStrain/Wireless/Packets/ShmPacket.h"
+#include "mscl/MicroStrain/Wireless/Packets/WirelessDataPacket.h"
 #include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
 #include "mscl/MicroStrain/Wireless/Packets/WirelessPacketCollector.h"
-#include "mscl/MicroStrain/Wireless/Packets/WirelessDataPacket.h"
-#include "mscl/Exceptions.h"
-
-#include <boost/test/unit_test.hpp>
 
 using namespace mscl;
+
+DISABLE_WARNING_BOOST_START
+#include <boost/test/unit_test.hpp>
+DISABLE_WARNING_BOOST_END
 
 BOOST_AUTO_TEST_SUITE(ShmPacket_Test)
 
@@ -70,8 +72,8 @@ BOOST_AUTO_TEST_CASE(ShmPacket_Constructor)
     BOOST_CHECK_CLOSE(sh.angle(), 35.67, 0.0001);
     BOOST_CHECK_CLOSE(sh.damage(), 20.6, 0.0001);
 
-    mscl::Bins bins = sh.histogram().bins();
-    mscl::Bin bin = bins.at(0);
+    Bins bins = sh.histogram().bins();
+    Bin bin = bins.at(0);
     BOOST_CHECK_EQUAL(sh.histogram().binsStart().as_uint32(), 10);
     BOOST_CHECK_EQUAL(sh.histogram().binsSize().as_uint32(), 5);
     BOOST_CHECK_EQUAL(bins.size(), 21);
@@ -136,8 +138,8 @@ BOOST_AUTO_TEST_CASE(ShmPacket2_Constructor)
     BOOST_CHECK_CLOSE(sh.angle(), 42.17663, 0.0001);
     BOOST_CHECK_CLOSE(sh.damage(), 20.36, 0.0001);
 
-    mscl::Bins bins = sh.histogram().bins();
-    mscl::Bin bin = bins.at(0);
+    Bins bins = sh.histogram().bins();
+    Bin bin = bins.at(0);
     BOOST_CHECK_EQUAL(sh.histogram().binsStart().as_uint32(), 10);
     BOOST_CHECK_EQUAL(sh.histogram().binsSize().as_uint32(), 5);
     BOOST_CHECK_EQUAL(bins.size(), 21);

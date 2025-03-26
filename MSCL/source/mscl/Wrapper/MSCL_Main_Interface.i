@@ -8,6 +8,9 @@
 %include "std_shared_ptr.i" // SWIG file needed for std::shared_ptr
 %include "std_array.i"      // SWIG file needed for std::array
 
+%define DISABLE_WARNING_BOOST_START %enddef
+%define DISABLE_WARNING_BOOST_END %enddef
+
 #ifdef SWIGCSHARP
 //fix operator functions for C#
 %rename(__eq__) mscl::Version::operator==;
@@ -81,6 +84,7 @@
 %module mscl
 %{
 // Put headers and other declarations here
+#include "../stdafx.h"
 #include "../Exceptions.h"
 #include "../Bin.h"
 #include "../BitMask.h"
@@ -95,9 +99,9 @@
 #include "../Communication/Devices.h"
 #include "../Communication/ConnectionDebugData.h"
 #include "../Communication/Connection.h"
-#ifndef UNIX_BUILD
+#ifdef _WIN32
 #include "../Communication/WsdaFinder.h"
-#endif
+#endif // _WIN32
 #include "../MicroStrain/SampleRate.h"
 #include "../MicroStrain/DataPoint.h"
 #include "../MicroStrain/Matrix.h"
@@ -109,6 +113,7 @@
 #include "../MicroStrain/Wireless/BaseStationAnalogPair.h"
 #include "../MicroStrain/Wireless/BaseStationButton.h"
 #include "../MicroStrain/Wireless/BaseStationInfo.h"
+#include "../MicroStrain/Wireless/Commands/SetToIdleStatus.h"
 #include "../MicroStrain/Wireless/BaseStation.h"
 #include "../MicroStrain/Wireless/Configuration/BaseStationEepromMap.h"
 #include "../MicroStrain/Wireless/Configuration/ConfigIssue.h"
@@ -120,6 +125,7 @@
 #include "../MicroStrain/Wireless/Configuration/TempSensorOptions.h"
 #include "../MicroStrain/Wireless/DataSweep.h"
 #include "../MicroStrain/LinearEquation.h"
+#include "../MicroStrain/Wireless/WirelessChannel.h"
 #include "../MicroStrain/Wireless/CalCoefficients.h"
 #include "../MicroStrain/Wireless/DatalogDownloader.h"
 #include "../MicroStrain/Wireless/LoggedDataSweep.h"
@@ -131,7 +137,6 @@
 #include "../MicroStrain/Wireless/WirelessModels.h"
 #include "../MicroStrain/Wireless/WirelessNode.h"
 #include "../MicroStrain/Wireless/WirelessDataPoint.h"
-#include "../MicroStrain/Wireless/WirelessChannel.h"
 #include "../MicroStrain/Wireless/SyncNetworkInfo.h"
 #include "../MicroStrain/Wireless/SyncSamplingNetwork.h"
 #include "../MicroStrain/Wireless/StructuralHealth.h"
@@ -140,7 +145,6 @@
 #include "../MicroStrain/Wireless/Commands/AutoCalResult.h"
 #include "../MicroStrain/Wireless/Commands/BeaconStatus.h"
 #include "../MicroStrain/Wireless/Commands/PingResponse.h"
-#include "../MicroStrain/Wireless/Commands/SetToIdleStatus.h"
 #include "../MicroStrain/Wireless/Features/ChannelGroup.h"
 #include "../MicroStrain/Wireless/Features/NodeFeatures.h"
 #include "../MicroStrain/Wireless/Features/NodeInfo.h"
@@ -186,9 +190,9 @@
 %include "../Communication/Devices.h"
 %include "../Communication/ConnectionDebugData.h"
 %include "../Communication/Connection.h"
-#ifndef UNIX_BUILD
-    %include "../Communication/WsdaFinder.h"
-#endif
+#ifdef _WIN32
+%include "../Communication/WsdaFinder.h"
+#endif // _WIN32
 %include "../MicroStrain/Wireless/WirelessTypes.h"
 %include "../MicroStrain/SampleRate.h"
 %include "../MicroStrain/Matrix.h"
@@ -206,9 +210,9 @@
 %include "../MicroStrain/Wireless/WirelessModels.h"
 %include "../MicroStrain/Wireless/NodeDiscovery.h"
 %include "../MicroStrain/LinearEquation.h"
+%include "../MicroStrain/Wireless/WirelessChannel.h"
 %include "../MicroStrain/Wireless/CalCoefficients.h"
 %include "../MicroStrain/Wireless/Features/ChannelGroup.h"
-%include "../MicroStrain/Wireless/WirelessChannel.h"
 %include "../MicroStrain/Wireless/WirelessDataPoint.h"
 %include "../MicroStrain/Wireless/DataSweep.h"
 %include "../MicroStrain/Wireless/BaseStationAnalogPair.h"
@@ -216,6 +220,7 @@
 %include "../MicroStrain/Wireless/Configuration/BaseStationConfig.h"
 %include "../MicroStrain/Wireless/Commands/BeaconStatus.h"
 %include "../MicroStrain/Wireless/BaseStationInfo.h"
+%include "../MicroStrain/Wireless/Commands/SetToIdleStatus.h"
 %include "../MicroStrain/Wireless/BaseStation.h"
 %include "../MicroStrain/Wireless/LoggedDataSweep.h"
 %include "../MicroStrain/Wireless/RadioFeatures.h"
@@ -224,7 +229,6 @@
 %include "../MicroStrain/Wireless/Commands/AutoCalInfo.h"
 %include "../MicroStrain/Wireless/Commands/AutoCalResult.h"
 %include "../MicroStrain/Wireless/Commands/PingResponse.h"
-%include "../MicroStrain/Wireless/Commands/SetToIdleStatus.h"
 %include "../MicroStrain/Wireless/Features/NodeInfo.h"
 %include "../MicroStrain/Wireless/WirelessNode.h"
 %include "../MicroStrain/Wireless/DatalogDownloader.h"
@@ -341,9 +345,9 @@ namespace std
     %template(MeasurementReferenceFrames)       map<uint8_t, mscl::MeasurementReferenceFrame>;
 
 
-#ifndef UNIX_BUILD
+#ifdef _WIN32
     %template(WsdaMap)                  map<string, mscl::WsdaInfo>;
-#endif
+#endif // _WIN32
 
     %ignore vector<mscl::Bin>::vector(size_type);   //no default constructor
     %ignore vector<mscl::Bin>::resize;              //no default constructor

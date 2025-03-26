@@ -4,20 +4,19 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "LinearEquation.h"
+#include "mscl/MicroStrain/LinearEquation.h"
 
 namespace mscl
 {
-    LinearEquation::LinearEquation():
+    LinearEquation::LinearEquation() :
         m_slope(1.0f),
         m_offset(0.0f)
-    { }
+    {}
 
-    LinearEquation::LinearEquation(float slope, float offset):
+    LinearEquation::LinearEquation(float slope, float offset) :
         m_slope(slope),
         m_offset(offset)
-    { }
+    {}
 
     void LinearEquation::slope(float slope)
     {
@@ -38,4 +37,4 @@ namespace mscl
     {
         return m_offset;
     }
-}
+} // namespace mscl

@@ -4,11 +4,11 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "mscl/Version.h"
-
-#include <boost/test/unit_test.hpp>
-
 using namespace mscl;
+
+DISABLE_WARNING_BOOST_START
+#include <boost/test/unit_test.hpp>
+DISABLE_WARNING_BOOST_END
 
 BOOST_AUTO_TEST_SUITE(Version_Test)
 
@@ -198,9 +198,7 @@ BOOST_AUTO_TEST_CASE(Version_FromString)
     BOOST_CHECK_EQUAL(v1.patchPart(), 4);
     BOOST_CHECK_EQUAL(v1.str(), "7.1.4");
 
-
     BOOST_CHECK_EQUAL(v1.fromString("HelloWorld"), false);
 }
-
 
 BOOST_AUTO_TEST_SUITE_END()

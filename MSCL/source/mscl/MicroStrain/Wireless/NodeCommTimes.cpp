@@ -4,8 +4,7 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "NodeCommTimes.h"
+#include "mscl/MicroStrain/Wireless/NodeCommTimes.h"
 
 namespace mscl
 {
@@ -42,7 +41,7 @@ namespace mscl
         }
         catch(const std::out_of_range&)
         {
-            return DeviceState::deviceState_unknown;
+            return deviceState_unknown;
         }
     }
-}
+} // namespace mscl

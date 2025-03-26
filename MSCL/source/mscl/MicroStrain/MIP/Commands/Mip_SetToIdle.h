@@ -10,9 +10,7 @@
 
 namespace mscl
 {
-
 #ifndef SWIG
-
     //Class: Mip_SetToIdle
     //    Contains the logic for the MIP "Set to Idle" command.
     class Mip_SetToIdle
@@ -48,7 +46,5 @@ namespace mscl
             Response(std::weak_ptr<ResponseCollector> collector);
         };
     };
-
-#endif
-
-}
+#endif // !SWIG
+} // namespace mscl

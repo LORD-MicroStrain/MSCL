@@ -4,19 +4,14 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "ConingAndScullingEnable.h"
-#include "mscl/MicroStrain/MIP/MipDataField.h"
-#include "mscl/MicroStrain/MIP/Packets/MipPacketBuilder.h"
-#include "mscl/MicroStrain/MIP/MipTypes.h"
-#include "mscl/MicroStrain/MIP/Commands/MIP_Commands.h"
+#include "mscl/MicroStrain/Inertial/Commands/ConingAndScullingEnable.h"
 
 namespace mscl
 {
     ConingAndScullingEnable::ConingAndScullingEnable(MipTypes::FunctionSelector function_selector, bool enable) :
         m_functionSelector(function_selector),
         m_enabled(enable)
-    { }
+    {}
 
     ConingAndScullingEnable::ConingAndScullingEnable(MipTypes::FunctionSelector function_selector) :
         m_functionSelector(function_selector)
@@ -38,14 +33,14 @@ namespace mscl
 
     bool ConingAndScullingEnable::responseExpected() const
     {
-        return (m_functionSelector == MipTypes::READ_BACK_CURRENT_SETTINGS) ? true : false;
+        return m_functionSelector == MipTypes::READ_BACK_CURRENT_SETTINGS;
     }
 
     bool ConingAndScullingEnable::getResponseData(const GenericMipCmdResponse& response)
     {
         DataBuffer dataBuffer(response.data());
         bool enabled;
-        enabled = (dataBuffer.read_uint8() == MipTypes::ENABLED)? true : false;
+        enabled = dataBuffer.read_uint8() == MipTypes::ENABLED;
 
         return enabled;
     }
@@ -63,5 +58,4 @@ namespace mscl
         }
         return GenericMipCommand::buildCommand(commandType(), byteCommand.data());
     }
-
-}
+} // namespace mscl

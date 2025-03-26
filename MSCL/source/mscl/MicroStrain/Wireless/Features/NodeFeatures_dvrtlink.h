@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "NodeFeatures.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures.h"
 
 namespace mscl
 {
@@ -15,12 +15,12 @@ namespace mscl
     class NodeFeatures_dvrtlink : public NodeFeatures
     {
     public:
-        virtual ~NodeFeatures_dvrtlink(){};
+        ~NodeFeatures_dvrtlink() override {}
 
         //Constructor: NodeFeatures_dvrtlink
         //    Creates a NodeFeatures_dvrtlink object.
         NodeFeatures_dvrtlink(const NodeInfo& info);
 
-        virtual bool supportsSensorDelayConfig() const override;
+        bool supportsSensorDelayConfig() const override;
     };
-}
+} // namespace mscl

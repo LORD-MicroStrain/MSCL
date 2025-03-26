@@ -4,38 +4,29 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
+#include "mscl/Communication/Connection.h"
 
-#include "Connection.h"
-#include "Connection_Impl.h"
-#include "Devices.h"
-
-#include "MockConnection.h"
-#include "SerialConnection.h"
-#include "TcpIpConnection.h"
+#include "mscl/Communication/Devices.h"
+#include "mscl/Communication/MockConnection.h"
+#include "mscl/Communication/SerialConnection.h"
+#include "mscl/Communication/TcpIpConnection.h"
 
 #ifndef MSCL_DISABLE_WEBSOCKETS
-#include "WebSocketConnection.h"
-
+#include "mscl/Communication/WebSocketConnection.h"
 #ifndef MSCL_DISABLE_SSL
-#include "WebSocketSecureConnection.h"
-#endif // MSCL_DISABLE_SSL
-#endif // MSCL_DISABLE_WEBSOCKETS
+#include "mscl/Communication/WebSocketSecureConnection.h"
+#endif // !MSCL_DISABLE_SSL
+#endif // !MSCL_DISABLE_WEBSOCKETS
 
-#ifdef UNIX_BUILD
-#include "UnixSocketConnection.h"
-#endif
-
-#ifndef _WIN32
-#include <boost/filesystem.hpp>
-#endif
+#ifdef __linux__
+#include "mscl/Communication/UnixSocketConnection.h"
+#endif // __linux__
 
 namespace mscl
 {
     Connection::Connection(std::shared_ptr<Connection_Impl_Base> impl) :
         m_impl(impl)
-    {
-    }
+    {}
 
     Connection Connection::Serial(const std::string& port, uint32 baudRate)
     {
@@ -50,11 +41,11 @@ namespace mscl
         std::string resolvedPort = resolvePath(port);
 
         //attempt to automatically discover the baud rate setting
-        auto ports = Devices::listPorts();
+        Devices::DeviceList ports = Devices::listPorts();
         uint32 baudRate = 921600;
         bool foundPort = false;
 
-        for(auto i : ports)
+        for(const Devices::DeviceList::value_type& i: ports)
         {
             if(i.first == resolvedPort)
             {
@@ -73,7 +64,7 @@ namespace mscl
             throw Error_InvalidSerialPort(-999);
         }
 
-        return Connection::Serial(resolvedPort, baudRate);
+        return Serial(resolvedPort, baudRate);
     }
 
     Connection Connection::TcpIp(const std::string& serverAddress, uint16 serverPort, const std::string& interfaceAddress)
@@ -105,13 +96,13 @@ namespace mscl
     }
 #endif // MSCL_DISABLE_WEBSOCKETS
 
-#ifdef UNIX_BUILD
+#ifdef __linux__
     Connection Connection::UnixSocket(const std::string& path)
     {
         std::shared_ptr<Connection_Impl_Base> socket(new UnixSocketConnection(path));
         return Connection(socket);
     }
-#endif
+#endif // __linux__
 
     Connection Connection::Mock()
     {
@@ -177,7 +168,7 @@ namespace mscl
         std::string result = path;
         //Note: do nothing on Windows
 
-#ifndef _WIN32
+#ifdef __linux__
         //Linux specific code
         boost::filesystem::path p(path);
 
@@ -186,7 +177,7 @@ namespace mscl
             p = boost::filesystem::read_symlink(p);
             result = p.string();
         }
-#endif
+#endif // __linux__
 
         return result;
     }
@@ -273,4 +264,4 @@ namespace mscl
     }
 
     //====================================================================================================================================================
-}
+} // namespace mscl

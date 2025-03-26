@@ -6,12 +6,7 @@
 
 #pragma once
 
-#include <functional>
-#include <string>
-#include <memory>
-#include "mscl/Types.h"
-#include "ConnectionDebugData.h"
-#include "RawBytePacketCollector.h"
+#include "mscl/Communication/ConnectionDebugData.h"
 
 namespace mscl
 {
@@ -51,9 +46,9 @@ namespace mscl
         //Parameters:
         //    impl - The <Connection_Impl> to use for this Connection.
         Connection(std::shared_ptr<Connection_Impl_Base> impl);
-#endif
+#endif // !SWIG
 
-        Connection(){};
+        Connection(){}
 
         //API Function: Serial
         //    A static function for creating a Connection object with a <SerialConnection> implementation.
@@ -120,9 +115,9 @@ namespace mscl
         //Exceptions:
         //    - <Error_InvalidTcpServer>: the specified server address and/or server port is invalid.
         static Connection WebSocket(const std::string& host, uint16 port);
-#endif
+#endif // !MSCL_DISABLE_WEBSOCKETS
 
-#ifdef UNIX_BUILD
+#ifdef __linux__
         //API Function: UnixSocket
         //    A generator function for <Connection> objects with a <UnixSocketConnection> implementation (Unix builds only).
         //    A connection with the specified path will be established.
@@ -136,7 +131,7 @@ namespace mscl
         //Exceptions:
         //    - <Error_InvalidUnixSocket>: failed to connect to the specified unix socket path.
         static Connection UnixSocket(const std::string& path);
-#endif
+#endif // __linux__
 
         static Connection Mock();
 
@@ -145,7 +140,6 @@ namespace mscl
         //    The <Connection_Impl_Base> that contains all the implementation logic for the Connection class.
         std::shared_ptr<Connection_Impl_Base> m_impl;
 
-    private:
         //Function: registerParser
         //    Registers a function to handle the parsing of data when it is read in.
         //
@@ -361,4 +355,4 @@ namespace mscl
         void updateBaudRate(uint32 baudRate);
     };
 
-}
+} // namespace mscl

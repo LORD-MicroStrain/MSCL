@@ -6,15 +6,8 @@
 
 #pragma once
 
-#include "mscl/Value.h"
-#include "mscl/Types.h"
-#include "Vector.h"
-#include "Matrix.h"
-#include "mscl/Histogram.h"
-#include "mscl/Timestamp.h"
+#include "mscl/MicroStrain/Vector.h"
 #include "mscl/MicroStrain/Wireless/StructuralHealth.h"
-
-#include <map>
 
 namespace mscl
 {
@@ -33,7 +26,6 @@ namespace mscl
     //    - <WirelessDataPoint>
     class DataPoint : public Value
     {
-    private:
         DataPoint();        //default constructor disabled
 
     public:
@@ -62,9 +54,9 @@ namespace mscl
         //    type - The <ValueType> of the data that is stored
         //    value - The data that is to be stored
         DataPoint(ValueType type, const anyType& value, const ChannelProperties& channelProperties = ChannelProperties());
-#endif
+#endif // !SWIG
 
-        virtual ~DataPoint(){}
+        ~DataPoint() override = default;
 
     protected:
         //Variable: m_channelProperties
@@ -159,4 +151,4 @@ namespace mscl
         //    - <Error_BadDataType>: The type in which the value was stored could not be converted to a string.
         std::string as_string() const override;
     };
-}
+} // namespace mscl

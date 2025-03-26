@@ -4,19 +4,20 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "WirelessResponsePattern.h"
+#include "mscl/MicroStrain/Wireless/Commands/WirelessResponsePattern.h"
+
+#include "mscl/MicroStrain/Wireless/Commands/WirelessProtocol.h"
+#include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
 
 namespace mscl
 {
-    WirelessResponsePattern::WirelessResponsePattern(uint16 commandId, NodeAddress nodeAddress):
+    WirelessResponsePattern::WirelessResponsePattern(uint16 commandId, NodeAddress nodeAddress) :
         ResponsePattern(),
         m_commandId(commandId),
         m_nodeAddress(nodeAddress),
         m_baseReceived(false),
         m_baseReceivedWaitTime(0)
-    {
-    }
+    {}
 
     WirelessResponsePattern::WirelessResponsePattern(std::weak_ptr<ResponseCollector> collector, uint16 commandId, NodeAddress nodeAddress) :
         ResponsePattern(collector),
@@ -24,12 +25,10 @@ namespace mscl
         m_nodeAddress(nodeAddress),
         m_baseReceived(false),
         m_baseReceivedWaitTime(0)
-    {
-    }
+    {}
 
     WirelessResponsePattern::~WirelessResponsePattern()
-    {
-    }
+    {}
 
     bool WirelessResponsePattern::matchBaseReceivedResponse(const WirelessPacket& packet)
     {
@@ -82,4 +81,4 @@ namespace mscl
     {
         return m_baseReceivedWaitTime;
     }
-}
+} // namespace mscl

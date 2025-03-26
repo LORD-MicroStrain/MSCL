@@ -6,34 +6,34 @@
 
 #pragma once
 
-#include "Commands/AutoCalResult.h"
-#include "Commands/PingResponse.h"
-#include "Configuration/ActivitySense.h"
-#include "Configuration/ConfigIssue.h"
-#include "Configuration/DataModeMask.h"
-#include "Configuration/EventTriggerOptions.h"
-#include "Configuration/FatigueOptions.h"
-#include "Configuration/HistogramOptions.h"
-#include "Configuration/TempSensorOptions.h"
-#include "mscl/Version.h"
-#include "mscl/BitMask.h"
-#include "ChannelMask.h"
-#include "BaseStation.h"
-#include "RadioFeatures.h"
-#include "WirelessModels.h"
-#include "WirelessDataPoint.h"
 #include "mscl/MicroStrain/LinearEquation.h"
+#include "mscl/MicroStrain/Wireless/Commands/AutoBalanceResult.h"
+#include "mscl/MicroStrain/Wireless/Commands/AutoCalResult.h"
+#include "mscl/MicroStrain/Wireless/Commands/PingResponse.h"
+#include "mscl/MicroStrain/Wireless/Commands/SetToIdleStatus.h"
+#include "mscl/MicroStrain/Wireless/Configuration/ActivitySense.h"
+#include "mscl/MicroStrain/Wireless/Configuration/EventTriggerOptions.h"
+#include "mscl/MicroStrain/Wireless/Configuration/FatigueOptions.h"
+#include "mscl/MicroStrain/Wireless/Configuration/HistogramOptions.h"
+#include "mscl/MicroStrain/Wireless/Configuration/TempSensorOptions.h"
+#include "mscl/MicroStrain/Wireless/RadioFeatures.h"
+#include "mscl/MicroStrain/Wireless/WirelessChannel.h"
+#include "mscl/MicroStrain/Wireless/WirelessDataPoint.h"
+#include "mscl/MicroStrain/Wireless/WirelessModels.h"
+#include "mscl/MicroStrain/Wireless/WirelessTypes.h"
 
 namespace mscl
 {
     //forward declarations
-    class WirelessNode_Impl;
-    class NodeFeatures;
+    class BaseStation;
+    class NodeDiscovery;
     class NodeEepromHelper;
+    class NodeFeatures;
+    struct NodeInfo;
     struct ShuntCalCmdInfo;
+    class WirelessNode_Impl;
     class WirelessNodeConfig;
     class WirelessProtocol;
-    struct NodeInfo;
 
     //API Class: WirelessNode
     //    A class representing a MicroStrain wireless node
@@ -42,7 +42,6 @@ namespace mscl
     //    <InertialNode>
     class WirelessNode
     {
-    private:
         WirelessNode();                                    //default constructor disabled
 
     public:
@@ -56,10 +55,10 @@ namespace mscl
 
         //Destructor: ~WirelessNode
         //    Destroys a WirelessNode object
-        virtual ~WirelessNode(){};
+        virtual ~WirelessNode(){}
 
         //API Function: Mock
-        //  Static function to create a Mock WirelessNode (won't actually talk to a physical device).
+        //  Static function to create a Mock WirelessNode (won't talk to a physical device).
         //
         //Parameters:
         //  nodeAddress - the node address of the node
@@ -71,7 +70,7 @@ namespace mscl
         static WirelessNode Mock(NodeAddress nodeAddress, const BaseStation& basestation, const NodeInfo& info);
 
         //API Function: Mock
-        //  Static function to create a Mock WirelessNode (won't actually talk to a physical device).
+        //  Static function to create a Mock WirelessNode (won't talk to a physical device).
         //
         //Parameters:
         //  nodeAddress - the node address of the node
@@ -100,7 +99,7 @@ namespace mscl
 
         //gets a reference to the WirelessProtocol for the Node for the given CommProtocol.
         const WirelessProtocol& protocol(WirelessTypes::CommProtocol commProtocol) const;
-#endif
+#endif // !SWIG
 
         //API Function: deviceName
         //    Static function for creating the universal sensor name that should be used for SensorCloud.
@@ -199,7 +198,7 @@ namespace mscl
         uint8 readWriteRetries() const;
 
         //API Function: useEepromCache
-        //    Sets whether or not to utilize the eeprom cache when configuring this Node (enabled by default). This can be enabled/disabled at any time.
+        //    Sets whether to use the eeprom cache when configuring this Node (enabled by default). This can be enabled/disabled at any time.
         //    It is highly recommended to have eeprom caching be enabled.
         //    Note:    The eeprom cache stores the last known value that was written to / read from the Node for each eeprom location. If this is enabled,
         //            any reads will get the last known value from the cache if it exists, and any writes will not write to the Node if the
@@ -221,7 +220,7 @@ namespace mscl
         //
         //Parameters:
         //  nodeDiscovery - The <NodeDiscovery> object to update the cache with.
-        void updateEepromCacheFromNodeDiscovery(const NodeDiscovery& nodeDisovery);
+        void updateEepromCacheFromNodeDiscovery(const NodeDiscovery& nodeDiscovery);
 
         //API Function: getEepromCache
         //  Gets a copy of the eeprom cache as a <WirelessTypes::EepromMap>.
@@ -373,7 +372,7 @@ namespace mscl
 
         //API Function: cyclePower
         //    Cycles the power on the Node.
-        //    Many configuration changes that are applied to the node do not take affect until the power is cycled.
+        //    Many configuration changes that are applied to the node do not take effect until the power is cycled.
         //
         //Exceptions:
         //    - <Error_NotSupported>: Attempted to write an unsupported option. The device firmware is not compatible with this version of MSCL.
@@ -407,7 +406,7 @@ namespace mscl
         //API Function: setToIdle
         //    Attempts to set the Node to the Idle state.
         //    This will stop the node from sampling or sleeping, and put it into an idle state
-        //    so that it may be communicated with (configured, started sampling, etc).
+        //    so that it may be communicated with (configured, started sampling, etc.).
         //    This operation may take several seconds to complete. The returned <SetToIdleStatus> object
         //    may be used to determine the current status of the Set to Idle operation.
         //
@@ -475,13 +474,13 @@ namespace mscl
         //
         //Parameters:
         //    mask - The <ChannelMask> to perform the auto balance command on.
-        //    targetPercent - The percentage (0.0 - 100.0) of the range to balance to (low = 25%, midscale = 50%, high = 75%).
+        //    targetPercent - The percentage (0.0 - 100.0) of the range to balance to (low = 25%, mid-scale = 50%, high = 75%).
         //
         //Returns:
         //    The <AutoBalanceResult> containing information from the auto balance command.
         //
         //Exceptions:
-        //    - <Error_NotSupported>: Autobalance is not supported by the Node or channel mask specified.
+        //    - <Error_NotSupported>: Auto balance is not supported by the Node or channel mask specified.
         //    - <Error_NodeCommunication>: Failed to communicate with the Node.
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         AutoBalanceResult autoBalance(const ChannelMask& mask, float targetPercent);
@@ -547,7 +546,7 @@ namespace mscl
         //API Function: readEeprom
         //    Reads a uint16 from the given eeprom location of the node. This may use a page download or a read eeprom command.
         //    If the value stored in the eeprom cache is still valid, this will be returned instead.
-        //    Note: This is an advanced command. In most cases you should use the built in commands for reading a Node's configuration options.
+        //    Note: This is an advanced command. In most cases, you should use the built-in commands for reading a Node's configuration options.
         //
         //Parameters:
         //    location - The specific eeprom location to read from
@@ -564,7 +563,7 @@ namespace mscl
         //API Function: writeEeprom
         //    Writes a uint16 to the given eeprom location of the node.
         //    If successful, the cache will be updated with the changed value as well.
-        //    Note: This is an advanced command. In most cases you should use the built in commands for changing a Node's configuration options.
+        //    Note: This is an advanced command. In most cases, you should use the built-in commands for changing a Node's configuration options.
         //
         //Parameters:
         //    location - The specific eeprom location to write to
@@ -684,7 +683,7 @@ namespace mscl
         //
         //Returns:
         //    The user inactivity timeout (in seconds) that is currently set on the Node.
-        //    Note: A value of 65535 (0xFFFF) disables the inactivity timeout so that the Node never goes to sleep.
+        //    Note: A value of 65,535 (0xFFFF) disables the inactivity timeout so that the Node never goes to sleep.
         //
         //Exceptions:
         //    - <Error_NotSupported>: Attempted to read an unsupported option. The device firmware is not compatible with this version of MSCL.
@@ -767,7 +766,7 @@ namespace mscl
         uint32 getNumSweeps() const;
 
         //API Function: getUnlimitedDuration
-        //    Gets whether or not unlimited sampling duration is enabled on the Node.
+        //    Gets whether unlimited sampling duration is enabled on the Node.
         //
         //Returns:
         //    true if unlimited sampling duration is enabled on the Node, false if it is disabled.
@@ -792,7 +791,7 @@ namespace mscl
 
         //API Function: getDataCollectionMethod
         //    Gets the <WirelessTypes::DataCollectionMethod> that is currently set on the Node, representing how the data will be collected.
-        //    Note: this has no affect if the sampling mode is Armed Datalogging, as this mode only operates in "log only".
+        //    Note: this has no effect if the sampling mode is Armed Datalogging, as this mode only operates in "log only".
         //
         //Returns:
         //    The <WirelessTypes::DataCollectionMethod> currently set on the Node.
@@ -871,7 +870,7 @@ namespace mscl
         //    See Also: <NodeFeatures::channelGroups>, <NodeFeatures::supportsAntiAliasingFilter>
         //
         //Parameters:
-        //    mask - The <ChannelMask> of the anti-aliasing filter to read.
+        //    mask - The <ChannelMask> of the antialiasing filter to read.
         //
         //Returns:
         //    The Anti-Aliasing <WirelessTypes::Filter> currently set on the Node for the <ChannelMask>.
@@ -944,7 +943,7 @@ namespace mscl
         uint16 getDebounceFilter(const ChannelMask& mask) const;
 
         //API Function: getPullUpResistor
-        //    Gets whether or not the pull-up resistor is enabled on the Node.
+        //    Gets whether the pull-up resistor is enabled on the Node.
         //
         //Parameters:
         //  mask - The <ChannelMask> of the pull-up resistor to read.
@@ -1343,4 +1342,4 @@ namespace mscl
         //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         WirelessTypes::DerivedVelocityUnit getDerivedVelocityUnit() const;
     };
-}
+} // namespace mscl

@@ -6,14 +6,13 @@
 
 #pragma once
 
-#include <condition_variable>
-#include <boost/circular_buffer.hpp>
-
-#include "WirelessDataPacket.h"
 #include "mscl/MicroStrain/Wireless/NodeDiscovery.h"
+#include "mscl/MicroStrain/Wireless/Packets/WirelessDataPacket.h"
 
 namespace mscl
 {
+    class DataSweep;
+
     //Class: WirelessPacketCollector
     //    Class that sets/matches expected responses, and stores all the wireless packets
     class WirelessPacketCollector
@@ -27,10 +26,10 @@ namespace mscl
 
     private:
         //Constants:
-        //    MAX_DATA_BUFFER_SIZE        - 1024 * 100    -The maximum number of data packets that can be stored in the circular buffer
-        //    MAX_DISCOVERY_BUFFER_SIZE    - 100            -The maximum number of node discovery packets that can be stored in the circular buffer
-        static const uint32 MAX_DATA_BUFFER_SIZE        = 1024 * 100;
-        static const uint32 MAX_DISCOVERY_BUFFER_SIZE    = 100;
+        //    MAX_DATA_BUFFER_SIZE      - 1024 * 100 - The maximum number of data packets that can be stored in the circular buffer
+        //    MAX_DISCOVERY_BUFFER_SIZE - 100        - The maximum number of node discovery packets that can be stored in the circular buffer
+        static const uint32 MAX_DATA_BUFFER_SIZE      = 1024 * 100;
+        static const uint32 MAX_DISCOVERY_BUFFER_SIZE = 100;
 
     public:
         //Constructor: WirelessPacketCollector
@@ -42,10 +41,9 @@ namespace mscl
         ~WirelessPacketCollector();
 
     private:
-        WirelessPacketCollector(const WirelessPacketCollector&);                //copy constructor disabled
-        WirelessPacketCollector& operator=(const WirelessPacketCollector&);        //assignement operator disabled
+        WirelessPacketCollector(const WirelessPacketCollector&);            //copy constructor disabled
+        WirelessPacketCollector& operator=(const WirelessPacketCollector&); //assignment operator disabled
 
-    private:
         //Variable: m_dataPackets
         //    A circular buffer that holds <WirelessDataPacket>s
         circular_data_buffer m_dataPackets;
@@ -87,7 +85,7 @@ namespace mscl
         void addNodeDiscoveryPacket(const WirelessPacket& packet);
 
         //Function: getDataSweeps
-        //    Gets up to the requested amount of data sweeps that have been collected.
+        //    Gets up to the requested number of data sweeps that have been collected.
         //
         //Parameters:
         //    sweeps - A vector of <DataSweep> objects to hold the result.
@@ -106,7 +104,7 @@ namespace mscl
         //    Gets a vector of <NodeDiscovery> objects that were collected
         //
         //Returns:
-        //    A <NodeDiscoveries> object contain all the NodeDiscovery objects that were collected
+        //    A <NodeDiscoveries> object containing all the NodeDiscovery objects that were collected
         NodeDiscoveries getNodeDiscoveries();
 
     private:
@@ -123,4 +121,4 @@ namespace mscl
         //    - <Error_NoData>: There are no more data packets to obtain
         WirelessDataPacket getNextDataPacket(int timeout);
     };
-}
+} // namespace mscl

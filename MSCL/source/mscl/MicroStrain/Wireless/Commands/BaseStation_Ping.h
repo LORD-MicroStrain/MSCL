@@ -6,18 +6,15 @@
 
 #pragma once
 
-#include "mscl/MicroStrain/ByteStream.h"
-#include "WirelessResponsePattern.h"
+#include "mscl/MicroStrain/Wireless/Commands/WirelessResponsePattern.h"
 
 namespace mscl
 {
 #ifndef SWIG
-
     //Class: BaseStation_Ping
     //    Contains logic for the base station Ping command
     class BaseStation_Ping
     {
-    private:
         BaseStation_Ping();                                        //default constructor disabled
         BaseStation_Ping(const BaseStation_Ping&);                //copy constuctor disabled
         BaseStation_Ping& operator=(const BaseStation_Ping&);    //assignement operator disabled
@@ -51,10 +48,8 @@ namespace mscl
             //
             //Returns:
             //    true if the response pattern was found, false otherwise
-            virtual bool matchSuccessResponse(DataBuffer& data) override;
+            bool matchSuccessResponse(DataBuffer& data) override;
         };
     };
-
-#endif
-
-}
+#endif // !SWIG
+} // namespace mscl

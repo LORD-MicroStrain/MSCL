@@ -4,10 +4,9 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "GetLoggedData.h"
-#include "WirelessProtocol.h"
-#include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
+#include "mscl/MicroStrain/Wireless/Commands/GetLoggedData.h"
+
+#include "mscl/MicroStrain/Wireless/Commands/WirelessProtocol.h"
 
 namespace mscl
 {
@@ -43,12 +42,11 @@ namespace mscl
         return cmd;
     }
 
-    GetLoggedData::Response::Response(NodeAddress nodeAddress, uint32 flashAddress, std::weak_ptr<ResponseCollector> collector):
+    GetLoggedData::Response::Response(NodeAddress nodeAddress, uint32 flashAddress, std::weak_ptr<ResponseCollector> collector) :
         WirelessResponsePattern(collector, WirelessProtocol::cmdId_getLogData_v1, nodeAddress),
         m_nodeAddress(nodeAddress),
         m_flashAddress(flashAddress)
-    {
-    }
+    {}
 
     bool GetLoggedData::Response::matchSuccessResponse(const WirelessPacket& packet)
     {
@@ -111,4 +109,4 @@ namespace mscl
 
         return m_data;
     }
-}
+} // namespace mscl

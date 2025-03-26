@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "BaseStationFeatures.h"
+#include "mscl/MicroStrain/Wireless/Features/BaseStationFeatures.h"
 
 namespace mscl
 {
@@ -15,7 +15,7 @@ namespace mscl
     class BaseStationFeatures_analog : public BaseStationFeatures
     {
     public:
-        virtual ~BaseStationFeatures_analog() {}
+        ~BaseStationFeatures_analog() override = default;
 
         //Constructor: BaseStationFeatures_analog
         //    Creates a BaseStationFeatures_analog object.
@@ -29,13 +29,13 @@ namespace mscl
         //
         //Returns:
         //    The total number of buttons that are supported.
-        virtual uint8 buttonCount() const override;
+        uint8 buttonCount() const override;
 
         //Function: analogPortCount
         //    Gets the total number of analog ports that are supported.
         //
         //Returns:
         //    The total number of analog ports that are supported.
-        virtual uint8 analogPortCount() const override;
+        uint8 analogPortCount() const override;
     };
-}
+} // namespace mscl

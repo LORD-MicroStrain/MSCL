@@ -6,19 +6,15 @@
 
 #pragma once
 
-#include "WirelessResponsePattern.h"
-#include "mscl/MicroStrain/ByteStream.h"
+#include "mscl/MicroStrain/Wireless/Commands/WirelessResponsePattern.h"
 
 namespace mscl
 {
-
 #ifndef SWIG
-
     //Class: ArmForDatalogging
     //    Contains logic for the Arm For Datalogging Node command.
     class ArmForDatalogging
     {
-    private:
         ArmForDatalogging();                                    //disabled default constructor
         ArmForDatalogging(const ArmForDatalogging&);            //disabled copy constructor
         ArmForDatalogging& operator=(const ArmForDatalogging&);    //disabled assignment operator
@@ -62,10 +58,8 @@ namespace mscl
             //
             //Returns:
             //    true if the packet matches a response pattern, false otherwise
-            virtual bool matchSuccessResponse(const WirelessPacket& packet) override;
+            bool matchSuccessResponse(const WirelessPacket& packet) override;
         };
     };
-
-#endif
-
-}
+#endif // !SWIG
+} // namespace mscl

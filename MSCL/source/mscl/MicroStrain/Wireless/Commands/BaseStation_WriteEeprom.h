@@ -6,17 +6,15 @@
 
 #pragma once
 
-#include "WirelessResponsePattern.h"
+#include "mscl/MicroStrain/Wireless/Commands/WirelessResponsePattern.h"
 
 namespace mscl
 {
 #ifndef SWIG
-
     //Class: BaseStation_WriteEeprom
     //    Contains logic for the base station write eeprom command
     class BaseStation_WriteEeprom
     {
-    private:
         BaseStation_WriteEeprom();                                            //default constructor disabled
         BaseStation_WriteEeprom(const BaseStation_WriteEeprom&);            //copy constructor disabled
         BaseStation_WriteEeprom& operator=(const BaseStation_WriteEeprom&);    //assignement operator disabled
@@ -73,7 +71,5 @@ namespace mscl
             bool matchFailResponse(DataBuffer& data) override;
         };
     };
-
-#endif
-
-}
+#endif // !SWIG
+} // namespace mscl

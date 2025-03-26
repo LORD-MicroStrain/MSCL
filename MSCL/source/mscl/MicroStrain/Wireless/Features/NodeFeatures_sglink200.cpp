@@ -4,15 +4,15 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "NodeFeatures_sglink200.h"
-#include "AvailableSampleRates.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures_sglink200.h"
+
+#include "mscl/MicroStrain/SampleRate.h"
 #include "mscl/MicroStrain/Wireless/Configuration/NodeEepromMap.h"
-#include "mscl/Utils.h"
+#include "mscl/MicroStrain/Wireless/Features/AvailableSampleRates.h"
 
 namespace mscl
 {
-    NodeFeatures_sglink200::NodeFeatures_sglink200(const NodeInfo& info):
+    NodeFeatures_sglink200::NodeFeatures_sglink200(const NodeInfo& info) :
         NodeFeatures_200series(info)
     {
         addCalCoeffChannelGroup(1, "Differential", NodeEepromMap::CH_ACTION_SLOPE_1, NodeEepromMap::CH_ACTION_ID_1);
@@ -160,13 +160,10 @@ namespace mscl
         {
             return WirelessTypes::sampleRate_512Hz;
         }
-        else
-        {
-            //just return the result of the parent class' function
-            return NodeFeatures::maxSampleRate(samplingMode, channels, dataCollectionMethod, dataMode);
-        }
-    }
 
+        //just return the result of the parent class' function
+        return NodeFeatures::maxSampleRate(samplingMode, channels, dataCollectionMethod, dataMode);
+    }
 
     const WirelessTypes::Voltages NodeFeatures_sglink200::excitationVoltages() const
     {
@@ -196,7 +193,7 @@ namespace mscl
     {
         static const Version MIN_POLL_FW(12, 44849);
 
-        return (m_nodeInfo.firmwareVersion() >= MIN_POLL_FW);
+        return m_nodeInfo.firmwareVersion() >= MIN_POLL_FW;
     }
 
     const WirelessTypes::WirelessSampleRates NodeFeatures_sglink200::sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const
@@ -218,4 +215,4 @@ namespace mscl
                 throw Error_NotSupported("The sampling mode is not supported by this Node");
         }
     }
-}
+} // namespace mscl

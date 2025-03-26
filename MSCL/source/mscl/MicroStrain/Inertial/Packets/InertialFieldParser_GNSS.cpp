@@ -4,15 +4,13 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
+#include "mscl/MicroStrain/Inertial/Packets/InertialFieldParser_GNSS.h"
 
-#include "InertialFieldParser_GNSS.h"
-#include "mscl/MicroStrain/MIP/Packets/MipDataPacket.h"
-#include "mscl/MicroStrain/DataBuffer.h"
+#include "mscl/MicroStrain/MIP/MipDataField.h"
 
 namespace mscl
 {
-    //the classes in this file do not get referenced anywhere, therefore the
+    //the classes in this file do not get referenced anywhere; therefore, the
     //linker will not include this compilation unit when statically
     //linking to an executable. Defining this variable, and then using it
     //elsewhere, will force this file to be included
@@ -27,7 +25,7 @@ namespace mscl
         for (MipTypes::ChannelField field : fields)
         {
             // any failures should return false
-            registered = registered && MipFieldParser::registerParser(field, parser);
+            registered = registered && registerParser(field, parser);
         }
 
         return registered;
@@ -37,7 +35,7 @@ namespace mscl
     //=====================================================================================================================================================
     //                                                        FieldParser_LLHPosition
     const MipTypes::ChannelField FieldParser_LLHPosition::FIELD_TYPE = MipTypes::CH_FIELD_GNSS_LLH_POSITION;
-    const bool FieldParser_LLHPosition::REGISTERED = FieldParser_LLHPosition::registerParser();    //register the parser immediately
+    const bool FieldParser_LLHPosition::REGISTERED = registerParser();    //register the parser immediately
 
     void FieldParser_LLHPosition::parse(const MipDataField& field, MipDataPoints& result) const
     {
@@ -75,14 +73,14 @@ namespace mscl
     bool FieldParser_LLHPosition::registerParser()
     {
         static FieldParser_LLHPosition p;
-        return MipGnssFieldParser::registerGnssParser(FIELD_TYPE, &p);
+        return registerGnssParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
 
     //=====================================================================================================================================================
     //                                                        FieldParser_ECEFPosition
     const MipTypes::ChannelField FieldParser_ECEFPosition::FIELD_TYPE = MipTypes::CH_FIELD_GNSS_ECEF_POSITION;
-    const bool FieldParser_ECEFPosition::REGISTERED = FieldParser_ECEFPosition::registerParser();    //register the parser immediately
+    const bool FieldParser_ECEFPosition::REGISTERED = registerParser();    //register the parser immediately
 
     void FieldParser_ECEFPosition::parse(const MipDataField& field, MipDataPoints& result) const
     {
@@ -113,14 +111,14 @@ namespace mscl
     bool FieldParser_ECEFPosition::registerParser()
     {
         static FieldParser_ECEFPosition p;
-        return MipGnssFieldParser::registerGnssParser(FIELD_TYPE, &p);
+        return registerGnssParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
 
     //=====================================================================================================================================================
     //                                                        FieldParser_NEDVelocity
     const MipTypes::ChannelField FieldParser_NEDVelocity::FIELD_TYPE = MipTypes::CH_FIELD_GNSS_NED_VELOCITY;
-    const bool FieldParser_NEDVelocity::REGISTERED = FieldParser_NEDVelocity::registerParser();    //register the parser immediately
+    const bool FieldParser_NEDVelocity::REGISTERED = registerParser();    //register the parser immediately
 
     void FieldParser_NEDVelocity::parse(const MipDataField& field, MipDataPoints& result) const
     {
@@ -140,12 +138,12 @@ namespace mscl
         uint16 flags = bytes.read_uint16();
 
         //get whether points are valid or invalid from the flags
-        bool nedVelocityValid    = pointIsValid(flags, NED_VELOCITY_FLAG);
-        bool speedValid            = pointIsValid(flags, SPEED_FLAG);
-        bool groundSpeedValid    = pointIsValid(flags, GROUND_SPEED_FLAG);
-        bool headingValid        = pointIsValid(flags, HEADING_FLAG);
-        bool speedAccurValid    = pointIsValid(flags, SPEED_ACCUR_FLAG);
-        bool headingAccurValid    = pointIsValid(flags, HEADING_ACCUR_FLAG);
+        bool nedVelocityValid  = pointIsValid(flags, NED_VELOCITY_FLAG);
+        bool speedValid        = pointIsValid(flags, SPEED_FLAG);
+        bool groundSpeedValid  = pointIsValid(flags, GROUND_SPEED_FLAG);
+        bool headingValid      = pointIsValid(flags, HEADING_FLAG);
+        bool speedAccurValid   = pointIsValid(flags, SPEED_ACCUR_FLAG);
+        bool headingAccurValid = pointIsValid(flags, HEADING_ACCUR_FLAG);
 
         MipTypes::ChannelField chField = static_cast<MipTypes::ChannelField>(field.fieldId());
 
@@ -163,14 +161,14 @@ namespace mscl
     bool FieldParser_NEDVelocity::registerParser()
     {
         static FieldParser_NEDVelocity p;
-        return MipGnssFieldParser::registerGnssParser(FIELD_TYPE, &p);
+        return registerGnssParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
 
     //=====================================================================================================================================================
     //                                                        FieldParser_ECEFVelocity
     const MipTypes::ChannelField FieldParser_ECEFVelocity::FIELD_TYPE = MipTypes::CH_FIELD_GNSS_ECEF_VELOCITY;
-    const bool FieldParser_ECEFVelocity::REGISTERED = FieldParser_ECEFVelocity::registerParser();    //register the parser immediately
+    const bool FieldParser_ECEFVelocity::REGISTERED = registerParser();    //register the parser immediately
 
     void FieldParser_ECEFVelocity::parse(const MipDataField& field, MipDataPoints& result) const
     {
@@ -201,14 +199,14 @@ namespace mscl
     bool FieldParser_ECEFVelocity::registerParser()
     {
         static FieldParser_ECEFVelocity p;
-        return MipGnssFieldParser::registerGnssParser(FIELD_TYPE, &p);
+        return registerGnssParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
 
     //=====================================================================================================================================================
     //                                                        FieldParser_DOP
     const MipTypes::ChannelField FieldParser_DOP::FIELD_TYPE = MipTypes::CH_FIELD_GNSS_DOP;
-    const bool FieldParser_DOP::REGISTERED = FieldParser_DOP::registerParser();    //register the parser immediately
+    const bool FieldParser_DOP::REGISTERED = registerParser();    //register the parser immediately
 
     void FieldParser_DOP::parse(const MipDataField& field, MipDataPoints& result) const
     {
@@ -250,14 +248,14 @@ namespace mscl
     bool FieldParser_DOP::registerParser()
     {
         static FieldParser_DOP p;
-        return MipGnssFieldParser::registerGnssParser(FIELD_TYPE, &p);
+        return registerGnssParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
 
     //=====================================================================================================================================================
     //                                                        FieldParser_UTCTime
     const MipTypes::ChannelField FieldParser_UTCTime::FIELD_TYPE = MipTypes::CH_FIELD_GNSS_UTC_TIME;
-    const bool FieldParser_UTCTime::REGISTERED = FieldParser_UTCTime::registerParser();    //register the parser immediately
+    const bool FieldParser_UTCTime::REGISTERED = registerParser();    //register the parser immediately
 
     void FieldParser_UTCTime::parse(const MipDataField& field, MipDataPoints& result) const
     {
@@ -280,7 +278,7 @@ namespace mscl
         bool utcTimeValid    = pointIsValid(flags, UTC_TIME_OFFSET_VALID);
 
         //full timestamp is only considered valid if all the flags are valid
-        bool fullTimestampValid = (gpsTimeValid && utcTimeValid);
+        bool fullTimestampValid = gpsTimeValid && utcTimeValid;
 
         //create a Timestamp from the values
         Timestamp time(year, month, day, hour, minute, second, millisecond);
@@ -295,14 +293,14 @@ namespace mscl
     bool FieldParser_UTCTime::registerParser()
     {
         static FieldParser_UTCTime p;
-        return MipGnssFieldParser::registerGnssParser(FIELD_TYPE, &p);
+        return registerGnssParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
 
     //=====================================================================================================================================================
     //                                                        FieldParser_GPSTime
     const MipTypes::ChannelField FieldParser_GPSTime::FIELD_TYPE = MipTypes::CH_FIELD_GNSS_GPS_TIME;
-    const bool FieldParser_GPSTime::REGISTERED = FieldParser_GPSTime::registerParser();    //register the parser immediately
+    const bool FieldParser_GPSTime::REGISTERED = registerParser();    //register the parser immediately
 
     void FieldParser_GPSTime::parse(const MipDataField& field, MipDataPoints& result) const
     {
@@ -329,14 +327,14 @@ namespace mscl
     bool FieldParser_GPSTime::registerParser()
     {
         static FieldParser_GPSTime p;
-        return MipGnssFieldParser::registerGnssParser(FIELD_TYPE, &p);
+        return registerGnssParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
 
     //=====================================================================================================================================================
     //                                                        FieldParser_ClockInfo
     const MipTypes::ChannelField FieldParser_ClockInfo::FIELD_TYPE = MipTypes::CH_FIELD_GNSS_CLOCK_INFO;
-    const bool FieldParser_ClockInfo::REGISTERED = FieldParser_ClockInfo::registerParser();    //register the parser immediately
+    const bool FieldParser_ClockInfo::REGISTERED = registerParser();    //register the parser immediately
 
     void FieldParser_ClockInfo::parse(const MipDataField& field, MipDataPoints& result) const
     {
@@ -366,14 +364,14 @@ namespace mscl
     bool FieldParser_ClockInfo::registerParser()
     {
         static FieldParser_ClockInfo p;
-        return MipGnssFieldParser::registerGnssParser(FIELD_TYPE, &p);
+        return registerGnssParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
 
     //=====================================================================================================================================================
     //                                                        FieldParser_GPSFixInfo
     const MipTypes::ChannelField FieldParser_GPSFixInfo::FIELD_TYPE = MipTypes::CH_FIELD_GNSS_FIX_INFO;
-    const bool FieldParser_GPSFixInfo::REGISTERED = FieldParser_GPSFixInfo::registerParser();    //register the parser immediately
+    const bool FieldParser_GPSFixInfo::REGISTERED = registerParser();    //register the parser immediately
 
     void FieldParser_GPSFixInfo::parse(const MipDataField& field, MipDataPoints& result) const
     {
@@ -403,14 +401,14 @@ namespace mscl
     bool FieldParser_GPSFixInfo::registerParser()
     {
         static FieldParser_GPSFixInfo p;
-        return MipGnssFieldParser::registerGnssParser(FIELD_TYPE, &p);
+        return registerGnssParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
 
     //=====================================================================================================================================================
     //                                                        FieldParser_SpaceVehicleInfo
     const MipTypes::ChannelField FieldParser_SpaceVehicleInfo::FIELD_TYPE = MipTypes::CH_FIELD_GNSS_SPACE_VEHICLE_INFO;
-    const bool FieldParser_SpaceVehicleInfo::REGISTERED = FieldParser_SpaceVehicleInfo::registerParser();    //register the parser immediately
+    const bool FieldParser_SpaceVehicleInfo::REGISTERED = registerParser();    //register the parser immediately
 
     void FieldParser_SpaceVehicleInfo::parse(const MipDataField& field, MipDataPoints& result) const
     {
@@ -450,14 +448,14 @@ namespace mscl
     bool FieldParser_SpaceVehicleInfo::registerParser()
     {
         static FieldParser_SpaceVehicleInfo p;
-        return MipGnssFieldParser::registerGnssParser(FIELD_TYPE, &p);
+        return registerGnssParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
 
     //=====================================================================================================================================================
     //                                                        FieldParser_HardwareStatus
     const MipTypes::ChannelField FieldParser_HardwareStatus::FIELD_TYPE = MipTypes::CH_FIELD_GNSS_HARDWARE_STATUS;
-    const bool FieldParser_HardwareStatus::REGISTERED = FieldParser_HardwareStatus::registerParser();    //register the parser immediately
+    const bool FieldParser_HardwareStatus::REGISTERED = registerParser();    //register the parser immediately
 
     void FieldParser_HardwareStatus::parse(const MipDataField& field, MipDataPoints& result) const
     {
@@ -487,14 +485,14 @@ namespace mscl
     bool FieldParser_HardwareStatus::registerParser()
     {
         static FieldParser_HardwareStatus p;
-        return MipGnssFieldParser::registerGnssParser(FIELD_TYPE, &p);
+        return registerGnssParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
 
     //=====================================================================================================================================================
     //                                                        FieldParser_DGNSSInfo
     const MipTypes::ChannelField FieldParser_DGNSSInfo::FIELD_TYPE = MipTypes::CH_FIELD_GNSS_DGNSS_INFO;
-    const bool FieldParser_DGNSSInfo::REGISTERED = FieldParser_DGNSSInfo::registerParser();    //register the parser immediately
+    const bool FieldParser_DGNSSInfo::REGISTERED = registerParser();    //register the parser immediately
 
     void FieldParser_DGNSSInfo::parse(const MipDataField& field, MipDataPoints& result) const
     {
@@ -529,15 +527,14 @@ namespace mscl
     bool FieldParser_DGNSSInfo::registerParser()
     {
         static FieldParser_DGNSSInfo p;
-        return MipGnssFieldParser::registerGnssParser(FIELD_TYPE, &p);
+        return registerGnssParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
-
 
     //=====================================================================================================================================================
     //                                                        FieldParser_DGNSSChannelStatus
     const MipTypes::ChannelField FieldParser_DGNSSChannelStatus::FIELD_TYPE = MipTypes::CH_FIELD_GNSS_DGNSS_CHANNEL_STATUS;
-    const bool FieldParser_DGNSSChannelStatus::REGISTERED = FieldParser_DGNSSChannelStatus::registerParser();    //register the parser immediately
+    const bool FieldParser_DGNSSChannelStatus::REGISTERED = registerParser();    //register the parser immediately
 
     void FieldParser_DGNSSChannelStatus::parse(const MipDataField& field, MipDataPoints& result) const
     {
@@ -572,15 +569,14 @@ namespace mscl
     bool FieldParser_DGNSSChannelStatus::registerParser()
     {
         static FieldParser_DGNSSChannelStatus p;
-        return MipGnssFieldParser::registerGnssParser(FIELD_TYPE, &p);
+        return registerGnssParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
-
 
     //=====================================================================================================================================================
     //                                                        FieldParser_ClockInfo2
     const MipTypes::ChannelField FieldParser_ClockInfo2::FIELD_TYPE = MipTypes::CH_FIELD_GNSS_CLOCK_INFO_2;
-    const bool FieldParser_ClockInfo2::REGISTERED = FieldParser_ClockInfo2::registerParser();    //register the parser immediately
+    const bool FieldParser_ClockInfo2::REGISTERED = registerParser();    //register the parser immediately
 
     void FieldParser_ClockInfo2::parse(const MipDataField& field, MipDataPoints& result) const
     {
@@ -613,15 +609,14 @@ namespace mscl
     bool FieldParser_ClockInfo2::registerParser()
     {
         static FieldParser_ClockInfo2 p;
-        return MipGnssFieldParser::registerGnssParser(FIELD_TYPE, &p);
+        return registerGnssParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
-
 
     //=====================================================================================================================================================
     //                                                        FieldParser_GPSLeapSeconds
     const MipTypes::ChannelField FieldParser_GPSLeapSeconds::FIELD_TYPE = MipTypes::CH_FIELD_GNSS_GPS_LEAP_SECONDS;
-    const bool FieldParser_GPSLeapSeconds::REGISTERED = FieldParser_GPSLeapSeconds::registerParser();    //register the parser immediately
+    const bool FieldParser_GPSLeapSeconds::REGISTERED = registerParser();    //register the parser immediately
 
     void FieldParser_GPSLeapSeconds::parse(const MipDataField& field, MipDataPoints& result) const
     {
@@ -632,7 +627,6 @@ namespace mscl
 
         //get the valid flags
         uint16 flags = bytes.read_uint16();
-
 
         //get whether points are valid or invalid from the flags
         bool secondsValid = pointIsValid(flags, SECONDS_VALID);
@@ -646,7 +640,7 @@ namespace mscl
     bool FieldParser_GPSLeapSeconds::registerParser()
     {
         static FieldParser_GPSLeapSeconds p;
-        return MipGnssFieldParser::registerGnssParser(FIELD_TYPE, &p);
+        return registerGnssParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
 
@@ -727,7 +721,7 @@ namespace mscl
         const bool ionosphericValid = pointIsValid(flags, IONOSPHERIC_CORRECTION_VALID);
 
         // identifiers
-        const auto chField = static_cast<MipTypes::ChannelField>(field.fieldId());
+        const MipTypes::ChannelField chField = static_cast<MipTypes::ChannelField>(field.fieldId());
         const MipChannelIdentifiers addlIds = {
             MipChannelIdentifier(MipChannelIdentifier::Type::GNSS_CONSTELLATION, gnssId),
             MipChannelIdentifier(MipChannelIdentifier::Type::GNSS_SATELLITE_ID,  satelliteId)
@@ -776,7 +770,7 @@ namespace mscl
         const bool spoofingValid = pointIsValid(flags, SPOOFING_VALID);
 
         // identifiers
-        const auto chField = static_cast<MipTypes::ChannelField>(field.fieldId());
+        const MipTypes::ChannelField chField = static_cast<MipTypes::ChannelField>(field.fieldId());
 
         MipChannelIdentifiers addlIds = {
             MipChannelIdentifier(MipChannelIdentifier::Type::GNSS_RF_BAND, rfBand)
@@ -797,7 +791,7 @@ namespace mscl
     //=====================================================================================================================================================
     //                                                        FieldParser_GnssSatelliteStatus
     const MipTypes::ChannelField FieldParser_GnssSatelliteStatus::FIELD_TYPE = MipTypes::CH_FIELD_GNSS_SATELLITE_STATUS;
-    const bool FieldParser_GnssSatelliteStatus::REGISTERED = FieldParser_GnssSatelliteStatus::registerParser();    //register the parser immediately
+    const bool FieldParser_GnssSatelliteStatus::REGISTERED = registerParser();    //register the parser immediately
 
     void FieldParser_GnssSatelliteStatus::parse(const MipDataField& field, MipDataPoints& result) const
     {
@@ -850,14 +844,14 @@ namespace mscl
     bool FieldParser_GnssSatelliteStatus::registerParser()
     {
         static FieldParser_GnssSatelliteStatus p;
-        return MipGnssFieldParser::registerGnssParser(FIELD_TYPE, &p);
+        return registerGnssParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
 
     //=====================================================================================================================================================
     //                                                        FieldParser_GnssRawObservation
     const MipTypes::ChannelField FieldParser_GnssRawObservation::FIELD_TYPE = MipTypes::CH_FIELD_GNSS_RAW_OBSERVATION;
-    const bool FieldParser_GnssRawObservation::REGISTERED = FieldParser_GnssRawObservation::registerParser();    //register the parser immediately
+    const bool FieldParser_GnssRawObservation::REGISTERED = registerParser();    //register the parser immediately
 
     void FieldParser_GnssRawObservation::parse(const MipDataField& field, MipDataPoints& result) const
     {
@@ -879,7 +873,7 @@ namespace mscl
         uint8 satelliteId = bytes.read_uint8();
         uint8 signalId = bytes.read_uint8();
 
-        float signalStrenth = bytes.read_float();
+        float signalStrength = bytes.read_float();
         uint8 signalQuality = bytes.read_uint8();
 
         double pseudorange = bytes.read_double();
@@ -892,7 +886,6 @@ namespace mscl
 
         float lockTime = bytes.read_float();
 
-
         //get the valid flags
         uint16 flags = bytes.read_uint16();
 
@@ -901,7 +894,7 @@ namespace mscl
         bool weekNumValid = pointIsValid(flags, WEEK_NUMBER_VALID);
 
         //bool chIdValid = pointIsValid(flags, CHANNEL_VALID);
-        bool signalStrenthValid = pointIsValid(flags, SIGNAL_STRENGTH_VALID);
+        bool signalStrengthValid = pointIsValid(flags, SIGNAL_STRENGTH_VALID);
         bool qualityValid = pointIsValid(flags, QUALITY_VALID);
         bool psuedorangeValid = pointIsValid(flags, PSEUDORANGE_VALID);
         bool carrierPhaseValid = pointIsValid(flags, CARRIER_PHASE_VALID);
@@ -931,7 +924,7 @@ namespace mscl
         result.push_back(MipDataPoint(chField, MipTypes::CH_TIME_OF_WEEK, addlIds, valueType_double, anyType(tow), towValid));
         result.push_back(MipDataPoint(chField, MipTypes::CH_WEEK_NUMBER, addlIds, valueType_uint16, anyType(weekNum), weekNumValid));
 
-        result.push_back(MipDataPoint(chField, MipTypes::CH_SIGNAL_STRENGTH, addlIds, valueType_float, anyType(signalStrenth), signalStrenthValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_SIGNAL_STRENGTH, addlIds, valueType_float, anyType(signalStrength), signalStrengthValid));
         result.push_back(MipDataPoint(chField, MipTypes::CH_SIGNAL_QUALITY, addlIds, valueType_uint8, anyType(signalQuality), qualityValid));
 
         result.push_back(MipDataPoint(chField, MipTypes::CH_RANGE, addlIds, valueType_double, anyType(pseudorange), psuedorangeValid));
@@ -948,14 +941,14 @@ namespace mscl
     bool FieldParser_GnssRawObservation::registerParser()
     {
         static FieldParser_GnssRawObservation p;
-        return MipGnssFieldParser::registerGnssParser(FIELD_TYPE, &p);
+        return registerGnssParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
 
     //=====================================================================================================================================================
     //                                                        FieldParser_GnssStationInfo
     const MipTypes::ChannelField FieldParser_GnssStationInfo::FIELD_TYPE = MipTypes::CH_FIELD_GNSS_STATION_INFO;
-    const bool FieldParser_GnssStationInfo::REGISTERED = FieldParser_GnssStationInfo::registerParser();    //register the parser immediately
+    const bool FieldParser_GnssStationInfo::REGISTERED = registerParser();    //register the parser immediately
 
     void FieldParser_GnssStationInfo::parse(const MipDataField& field, MipDataPoints& result) const
     {
@@ -1007,14 +1000,14 @@ namespace mscl
     bool FieldParser_GnssStationInfo::registerParser()
     {
         static FieldParser_GnssStationInfo p;
-        return MipGnssFieldParser::registerGnssParser(FIELD_TYPE, &p);
+        return registerGnssParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
 
     //=====================================================================================================================================================
     //                                                        FieldParser_RTKCorrectionsStatus
     const MipTypes::ChannelField FieldParser_RTKCorrectionsStatus::FIELD_TYPE = MipTypes::CH_FIELD_GNSS_RTK_CORRECTIONS_STATUS;
-    const bool FieldParser_RTKCorrectionsStatus::REGISTERED = FieldParser_RTKCorrectionsStatus::registerParser();    //register the parser immediately
+    const bool FieldParser_RTKCorrectionsStatus::REGISTERED = registerParser();    //register the parser immediately
 
     void FieldParser_RTKCorrectionsStatus::parse(const MipDataField& field, MipDataPoints& result) const
     {
@@ -1063,14 +1056,14 @@ namespace mscl
     bool FieldParser_RTKCorrectionsStatus::registerParser()
     {
         static FieldParser_RTKCorrectionsStatus p;
-        return MipGnssFieldParser::registerGnssParser(FIELD_TYPE, &p);
+        return registerGnssParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
 
     //=====================================================================================================================================================
     //                                                        FieldParser_GPSIonosphericCorrection
     const MipTypes::ChannelField FieldParser_GPSIonosphericCorrection::FIELD_TYPE = MipTypes::CH_FIELD_GNSS_GPS_IONOSPHERIC_CORRECTION;
-    const bool FieldParser_GPSIonosphericCorrection::REGISTERED = FieldParser_GPSIonosphericCorrection::registerParser();    //register the parser immediately
+    const bool FieldParser_GPSIonosphericCorrection::REGISTERED = registerParser();    //register the parser immediately
 
     void FieldParser_GPSIonosphericCorrection::parse(const MipDataField& field, MipDataPoints& result) const
     {
@@ -1115,15 +1108,14 @@ namespace mscl
     bool FieldParser_GPSIonosphericCorrection::registerParser()
     {
         static FieldParser_GPSIonosphericCorrection p;
-        return MipGnssFieldParser::registerGnssParser(FIELD_TYPE, &p);
+        return registerGnssParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
-
 
     //=====================================================================================================================================================
     //                                                        FieldParser_IonosphericCorrection
     const MipTypes::ChannelField FieldParser_IonosphericCorrection::FIELD_TYPE = MipTypes::CH_FIELD_GNSS_GALILEO_IONOSPHERIC_CORRECTION;
-    const bool FieldParser_IonosphericCorrection::REGISTERED = FieldParser_IonosphericCorrection::registerParser();    //register the parser immediately
+    const bool FieldParser_IonosphericCorrection::REGISTERED = registerParser();    //register the parser immediately
 
     void FieldParser_IonosphericCorrection::parse(const MipDataField& field, MipDataPoints& result) const
     {
@@ -1162,7 +1154,7 @@ namespace mscl
     bool FieldParser_IonosphericCorrection::registerParser()
     {
         static FieldParser_IonosphericCorrection p;
-        return MipGnssFieldParser::registerGnssParser(FIELD_TYPE, &p);
+        return registerGnssParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
-}
+} // namespace mscl

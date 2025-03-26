@@ -4,15 +4,13 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "AutoCalResult.h"
+#include "mscl/MicroStrain/Wireless/Commands/AutoCalResult.h"
 
 namespace mscl
 {
-    AutoCalResult::AutoCalResult():
+    AutoCalResult::AutoCalResult() :
         m_completionFlag(WirelessTypes::autocal_notComplete)
-    {
-    }
+    {}
 
     WirelessTypes::AutoCalCompletionFlag AutoCalResult::completionFlag() const
     {
@@ -22,7 +20,7 @@ namespace mscl
     //=====================================================
     //AutoCalResult_shmLink
     //=====================================================
-    AutoCalResult_shmLink::AutoCalResult_shmLink():
+    AutoCalResult_shmLink::AutoCalResult_shmLink() :
         AutoCalResult(),
         m_errorFlagCh1(WirelessTypes::autocalError_none),
         m_errorFlagCh2(WirelessTypes::autocalError_none),
@@ -31,8 +29,7 @@ namespace mscl
         m_offsetCh2(0.0f),
         m_offsetCh3(0.0f),
         m_temperature(0.0f)
-    {
-    }
+    {}
 
     WirelessTypes::AutoCalErrorFlag AutoCalResult_shmLink::errorFlagCh1() const { return m_errorFlagCh1; }
     WirelessTypes::AutoCalErrorFlag AutoCalResult_shmLink::errorFlagCh2() const { return m_errorFlagCh2; }
@@ -70,12 +67,10 @@ namespace mscl
         m_temperature = data.read_float();
     }
 
-
-
     //=====================================================
     //AutoCalResult_shmLink201
     //=====================================================
-    AutoCalResult_shmLink201::AutoCalResult_shmLink201():
+    AutoCalResult_shmLink201::AutoCalResult_shmLink201() :
         AutoCalResult(),
         m_errorFlagCh1(WirelessTypes::autocalError_none),
         m_errorFlagCh2(WirelessTypes::autocalError_none),
@@ -87,8 +82,7 @@ namespace mscl
         m_slopeCh3(0.0f),
         m_offsetCh3(0.0f),
         m_temperature(0.0f)
-    {
-    }
+    {}
 
     WirelessTypes::AutoCalErrorFlag AutoCalResult_shmLink201::errorFlagCh1() const { return m_errorFlagCh1; }
     WirelessTypes::AutoCalErrorFlag AutoCalResult_shmLink201::errorFlagCh2() const { return m_errorFlagCh2; }
@@ -132,11 +126,10 @@ namespace mscl
         m_temperature = data.read_float();
     }
 
-
     //=====================================================
     //AutoCalResult_shunt
     //=====================================================
-    AutoShuntCalResult::AutoShuntCalResult():
+    AutoShuntCalResult::AutoShuntCalResult() :
         AutoCalResult(),
         m_errorFlag(WirelessTypes::autocalError_none),
         m_slope(1.0f),
@@ -147,8 +140,7 @@ namespace mscl
         m_shuntMedian(0.0f),
         m_shuntMin(0.0f),
         m_shuntMax(0.0f)
-    {
-    }
+    {}
 
     WirelessTypes::AutoCalErrorFlag AutoShuntCalResult::errorFlag() const { return m_errorFlag; }
     float AutoShuntCalResult::slope() const { return m_slope; }
@@ -181,4 +173,4 @@ namespace mscl
         m_shuntMin = data.read_float();
         m_shuntMax = data.read_float();
     }
-}
+} // namespace mscl

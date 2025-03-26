@@ -6,10 +6,7 @@
 
 #pragma once
 
-#include "mscl/Types.h"
-#include "mscl/MicroStrain/ByteStream.h"
 #include "mscl/MicroStrain/MIP/MipDataField.h"
-#include <vector>
 
 namespace mscl
 {
@@ -33,7 +30,6 @@ namespace mscl
         MipPacketBuilder(const MipPacketBuilder&);            //copy constructor disabled
         MipPacketBuilder& operator=(const MipPacketBuilder&); //assignment operator disabled
 
-    private:
         //Variable: m_descriptorSet
         //    The MIP Descriptor Set for the packet
         uint8 m_descriptorSet;
@@ -57,4 +53,4 @@ namespace mscl
         //    A <ByteStream> containing the bytes that make up an Inertial Packet
         ByteStream buildPacket();
     };
-}
+} // namespace mscl

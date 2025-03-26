@@ -4,19 +4,14 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "SetReferencePosition.h"
-#include "mscl/MicroStrain/MIP/MipDataField.h"
-#include "mscl/MicroStrain/MIP/Packets/MipPacketBuilder.h"
-#include "mscl/MicroStrain/MIP/MipTypes.h"
-#include "mscl/MicroStrain/MIP/Commands/MIP_Commands.h"
+#include "mscl/MicroStrain/Inertial/Commands/SetReferencePosition.h"
 
 namespace mscl
 {
     SetReferencePosition::SetReferencePosition(MipTypes::FunctionSelector function_selector, FixedReferencePositionData data) :
         m_functionSelector(function_selector),
         m_data(data)
-    { }
+    {}
 
     SetReferencePosition::SetReferencePosition(MipTypes::FunctionSelector function_selector) :
         m_functionSelector(function_selector)
@@ -37,7 +32,7 @@ namespace mscl
 
     bool SetReferencePosition::responseExpected() const
     {
-        return (m_functionSelector == MipTypes::READ_BACK_CURRENT_SETTINGS) ? true : false;
+        return m_functionSelector == MipTypes::READ_BACK_CURRENT_SETTINGS;
     }
 
     FixedReferencePositionData SetReferencePosition::getResponseData(const GenericMipCmdResponse& response)
@@ -71,4 +66,4 @@ namespace mscl
         }
         return GenericMipCommand::buildCommand(commandType(), byteCommand.data());
     }
-}
+} // namespace mscl

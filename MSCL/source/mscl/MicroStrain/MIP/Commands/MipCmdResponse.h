@@ -6,8 +6,8 @@
 
 #pragma once
 
-#include "mscl/MicroStrain/ResponsePattern.h"
 #include "mscl/MicroStrain/MIP/Packets/MipPacket.h"
+#include "mscl/MicroStrain/ResponsePattern.h"
 
 namespace mscl
 {
@@ -20,7 +20,7 @@ namespace mscl
         //    Creates a MipCmdResponse with default values
         MipCmdResponse();
 
-        virtual ~MipCmdResponse(){};    //virtual destructor
+        virtual ~MipCmdResponse() = default;    //virtual destructor
 
     protected:
         //Constructor: MipCmdResponse
@@ -33,7 +33,6 @@ namespace mscl
         //    cmdName - The name of the command that this response corresponds to
         MipCmdResponse(ResponsePattern::State state, bool success, MipPacket::MipAckNack errorCode, std::string cmdName);
 
-    protected:
         //Variable: m_responseState
         //    The state of the response, which determines which exceptions are thrown, if any
         ResponsePattern::State m_responseState;
@@ -76,6 +75,4 @@ namespace mscl
         //    The MIP ack/nack error code as a <MipPacket::MipAckNack>
         virtual MipPacket::MipAckNack errorCode() const;
     };
-
-
-}
+} // namespace mscl

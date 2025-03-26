@@ -4,20 +4,13 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-
 #ifndef MSCL_DISABLE_WEBSOCKETS
 #ifndef MSCL_DISABLE_SSL
-
-#include "WebSocketSecureConnection.h"
-#include "mscl/Utils.h"
+#include "mscl/Communication/WebSocketSecureConnection.h"
 
 #ifdef _WIN32
-#include <MSTcpIP.h>
-#endif
-
-#include <boost/beast/websocket/ssl.hpp>
-#include <boost/asio/ssl.hpp>
+#include <mstcpip.h>
+#endif // _WIN32
 
 namespace mscl
 {
@@ -122,7 +115,7 @@ namespace mscl
 
 #ifdef _WIN32
                 //enable and configure the keep-alive
-                struct tcp_keepalive alive;
+                tcp_keepalive alive;
                 alive.onoff = 1;                    //enable keep-alive
                 alive.keepalivetime = 30000;        //how long before starting to send keep-alive (milliseconds)
                 alive.keepaliveinterval = 1000;     //how often after the keepalivetime to send a keep-alive packet (milliseonds)
@@ -130,7 +123,7 @@ namespace mscl
                 DWORD dwBytesRet = 0;
 
                 WSAIoctl(m_ioPort->next_layer().next_layer().native_handle(), SIO_KEEPALIVE_VALS, &alive, sizeof(alive), NULL, 0, &dwBytesRet, NULL, NULL);
-#endif
+#endif // _WIN32
 
                 //setup m_comm by creating a new BoostCommunication object using the serial_port and io_context we created
                 m_comm.reset(new BoostCommunication<websocket::stream<ssl::stream<tcp::socket>>>(std::move(m_ioContext), std::move(m_ioPort)));
@@ -150,6 +143,5 @@ namespace mscl
         }
     }
 }
-
-#endif // MSCL_DISABLE_SSL
-#endif // MSCL_DISABLE_WEBSOCKETS
+#endif // !MSCL_DISABLE_SSL
+#endif // !MSCL_DISABLE_WEBSOCKETS

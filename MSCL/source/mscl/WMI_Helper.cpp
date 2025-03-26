@@ -4,21 +4,12 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-
 #ifdef _WIN32
+#include "mscl/WMI_Helper.h"
 
-#include "WMI_Helper.h"
+#include <comdef.h>
 
-#endif
-
-#include <sstream>
-#include <thread>
-
-
-#ifdef _WIN32
-
-WMI_Helper::WMI_Helper(std::string wmi_namespace, std::string wmi_class):
+WMI_Helper::WMI_Helper(std::string wmi_namespace, std::string wmi_class) :
     m_wmi_namespace(wmi_namespace),
     m_wmi_class(wmi_class),
     m_enumerator(nullptr)
@@ -68,9 +59,8 @@ void WMI_Helper::connect()
         NULL                         // Reserved
         );
 
-
     //if we failed to initialize security
-    if (FAILED(hres) && (hres != RPC_E_TOO_LATE))
+    if (FAILED(hres) && hres != RPC_E_TOO_LATE)
     {
         CoUninitialize();
 
@@ -249,5 +239,4 @@ WMI_Helper::wmiValues WMI_Helper::request(std::vector<std::string> valuesToGet)
 
     return m_values;
 }
-
-#endif
+#endif // _WIN32

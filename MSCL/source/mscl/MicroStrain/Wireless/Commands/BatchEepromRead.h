@@ -6,16 +6,11 @@
 
 #pragma once
 
-#include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
-#include "mscl/MicroStrain/ByteStream.h"
-#include "WirelessResponsePattern.h"
-#include "mscl/Types.h"
+#include "mscl/MicroStrain/Wireless/Commands/WirelessResponsePattern.h"
 
 namespace mscl
 {
-
 #ifndef SWIG
-
     //Class: BatchEepromRead
     //    Contains logic for the Batch Eeprom Read Node command
     class BatchEepromRead
@@ -25,7 +20,6 @@ namespace mscl
         BatchEepromRead(const BatchEepromRead&) = delete;               //copy constructor disabled
         BatchEepromRead& operator=(const BatchEepromRead&) = delete;    //assignment operator disabled
 
-    public:
         //Function: buildCommand
         //    Builds the ReadEeprom command packet
         //
@@ -74,6 +68,5 @@ namespace mscl
             bool matchSuccessResponse(const WirelessPacket& packet) override;
         };
     };
-
-#endif
-}
+#endif // !SWIG
+} // namespace mscl

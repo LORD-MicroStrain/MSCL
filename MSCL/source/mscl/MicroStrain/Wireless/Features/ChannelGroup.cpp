@@ -4,16 +4,14 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "ChannelGroup.h"
+#include "mscl/MicroStrain/Wireless/Features/ChannelGroup.h"
 
 namespace mscl
 {
     ChannelGroup::ChannelGroup()
-    {
-    }
+    {}
 
-    ChannelGroup::ChannelGroup(const ChannelMask& channelMask, const std::string& groupName, const SettingsMap& settings):
+    ChannelGroup::ChannelGroup(const ChannelMask& channelMask, const std::string& groupName, const SettingsMap& settings) :
         m_channels(channelMask),
         m_name(groupName),
         m_settingsMap(settings)
@@ -84,11 +82,11 @@ namespace mscl
 
     bool ChannelGroup::hasSetting(WirelessTypes::ChannelGroupSetting setting) const
     {
-        return (m_settingsMap.find(setting) != m_settingsMap.end());
+        return m_settingsMap.find(setting) != m_settingsMap.end();
     }
 
     bool ChannelGroup::hasSettingAndChannel(WirelessTypes::ChannelGroupSetting setting, uint8 channelNumber) const
     {
         return hasSetting(setting) && m_channels.enabled(channelNumber);
     }
-}
+} // namespace mscl

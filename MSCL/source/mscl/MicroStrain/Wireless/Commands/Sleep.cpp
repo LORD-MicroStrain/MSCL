@@ -4,9 +4,9 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "Sleep.h"
-#include "WirelessProtocol.h"
+#include "mscl/MicroStrain/Wireless/Commands/Sleep.h"
+
+#include "mscl/MicroStrain/Wireless/Commands/WirelessProtocol.h"
 
 namespace mscl
 {
@@ -19,4 +19,4 @@ namespace mscl
 
         return cmd;
     }
-}
+} // namespace mscl

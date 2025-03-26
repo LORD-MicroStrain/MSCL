@@ -7,7 +7,6 @@
 #pragma once
 
 #include "mscl/BitMask.h"
-#include "mscl/Types.h"
 
 namespace mscl
 {
@@ -15,7 +14,6 @@ namespace mscl
     //    Represents the channel mask (active and inactive channels) for a WirelessNode.
     class ChannelMask
     {
-    private:
         BitMask m_bitMask;
 
     public:
@@ -23,7 +21,6 @@ namespace mscl
         //    The maximum number of channels currently available on any WirelessNode
         static const uint8 MAX_CHANNELS = 16;
 
-    public:
         //API Constructor: ChannelMask
         //    Creates an ChannelMask object given a channel mask that was stored on a WirelessNode
         //
@@ -35,7 +32,7 @@ namespace mscl
         //    The default constructor for creating an ChannelMask object, which sets all the channels to inactive
         ChannelMask();
 
-        virtual ~ChannelMask() {};
+        virtual ~ChannelMask() {}
 
         //API Operator: ==
         //  Equal operator for comparing ChannelMasks.
@@ -100,4 +97,4 @@ namespace mscl
         //    The channel number (ch1 = 1, ch16 = 16) of the last channel enabled. 0 if no channels are enabled.
         uint8 lastChEnabled() const;
     };
-}
+} // namespace mscl

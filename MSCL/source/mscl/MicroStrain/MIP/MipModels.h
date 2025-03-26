@@ -6,12 +6,8 @@
 
 #pragma once
 
-#include <string>
-
 namespace mscl
 {
-    class MipModel;
-
     //API Class: MipModels
     //    Contains the model number information of MIP devices.
     class MipModels
@@ -289,7 +285,7 @@ namespace mscl
         //
         //  Returns:
         //    string - model number string formatted as it would be read from a MIP device (ex: 62844220 -> "6284-4220")
-        static std::string stringFromModelNumber(MipModels::ModelNumber modelNumber);
+        static std::string stringFromModelNumber(ModelNumber modelNumber);
 
     private:
         // the value to multiply the node model section of a model number before adding the modifier
@@ -466,7 +462,7 @@ namespace mscl
         //  Returns:
         //    string - model string formatted as it would be read from the device (ex: 6284-4220)
         operator std::string() const;
-#endif
+#endif // !SWIG
         //API Function: equals
         //  Function to compare two MipModel objects for equality (functionally the same as overloaded == operator).
         //
@@ -540,7 +536,7 @@ namespace mscl
         //  Parameters:
         //    model - the <MipModel> to find the base model of and default return if base model entry not found.
         static const MipModel& baseModelLookup(const MipModel& model);
-#endif
+#endif // !SWIG
 
         //Function: baseModel (not documented)
         //  Get the base model for this device.
@@ -573,5 +569,5 @@ namespace mscl
     //  Returns:
     //    bool - false if both the <NodeModel> and <Modifier> sections of the full model number are equal or either <Modifier> is the placeholder value (9999)
     bool operator!=(MipModels::ModelNumber model1, const MipModel& model2);
-#endif
-}
+#endif // !SWIG
+} // namespace mscl

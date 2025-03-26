@@ -4,9 +4,9 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "WirelessProtocol.h"
-#include "Erase.h"
+#include "mscl/MicroStrain/Wireless/Commands/Erase.h"
+
+#include "mscl/MicroStrain/Wireless/Commands/WirelessProtocol.h"
 
 namespace mscl
 {
@@ -21,10 +21,9 @@ namespace mscl
         return cmd;
     }
 
-    Erase::Response::Response(std::weak_ptr<ResponseCollector> collector):
+    Erase::Response::Response(std::weak_ptr<ResponseCollector> collector) :
         WirelessResponsePattern(collector, WirelessProtocol::cmdId_erase, 0)    //note: passing 0 since this response doesn't check node address :(
-    {
-    }
+    {}
 
     bool Erase::Response::match(DataBuffer& data)
     {
@@ -78,4 +77,4 @@ namespace mscl
 
         return true;
     }
-}
+} // namespace mscl

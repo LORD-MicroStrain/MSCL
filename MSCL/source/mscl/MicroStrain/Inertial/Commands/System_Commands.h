@@ -6,7 +6,6 @@
 
 #pragma once
 
-#include "mscl/MicroStrain/MIP/MipTypes.h"
 #include "mscl/MicroStrain/MIP/Commands/GenericMipCommand.h"
 
 namespace mscl
@@ -115,4 +114,4 @@ namespace mscl
             uint8 parseResponse(const GenericMipCmdResponse& response) const;
         };
     };
-}
+} // namespace mscl

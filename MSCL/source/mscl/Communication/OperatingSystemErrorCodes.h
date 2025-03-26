@@ -8,18 +8,12 @@
 
 namespace osErrorCodes
 {
-
 #ifdef _WIN32
-//Windows specific error codes
-static const int FILE_NOT_FOUND = 2;
-static const int ACCESS_DENIED = 5;
-
-
-
+    //Windows specific error codes
+    static const int FILE_NOT_FOUND = 2;
+    static const int ACCESS_DENIED = 5;
 #else
-//Linux specific error codes
-static const int FILE_NOT_FOUND = 2;
-
-#endif
-
-}
+    //Linux specific error codes
+    static const int FILE_NOT_FOUND = 2;
+#endif // _WIN32
+} // namespace osErrorCodes

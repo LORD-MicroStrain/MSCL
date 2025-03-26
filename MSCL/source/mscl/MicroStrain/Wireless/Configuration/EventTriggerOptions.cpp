@@ -4,25 +4,21 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-
-#include "EventTriggerOptions.h"
+#include "mscl/MicroStrain/Wireless/Configuration/EventTriggerOptions.h"
 
 namespace mscl
 {
-    Trigger::Trigger():
+    Trigger::Trigger() :
         m_channelNumber(1),
         m_type(WirelessTypes::eventTrigger_floor),
         m_value(0.0f)
-    {
-    }
+    {}
 
-    Trigger::Trigger(uint8 channelNumber, WirelessTypes::EventTriggerType triggerType, float triggerValue):
+    Trigger::Trigger(uint8 channelNumber, WirelessTypes::EventTriggerType triggerType, float triggerValue) :
         m_channelNumber(channelNumber),
         m_type(triggerType),
         m_value(triggerValue)
-    {
-    }
+    {}
 
     uint8 Trigger::channelNumber() const
     {
@@ -54,14 +50,11 @@ namespace mscl
         m_value = value;
     }
 
-
-
-    EventTriggerOptions::EventTriggerOptions():
+    EventTriggerOptions::EventTriggerOptions() :
         m_triggerMask(0),
         m_preDuration(0),
         m_postDuration(0)
-    {
-    }
+    {}
 
     const BitMask& EventTriggerOptions::triggerMask() const
     {
@@ -75,7 +68,7 @@ namespace mscl
 
     bool EventTriggerOptions::anyTriggersEnabled() const
     {
-        return (m_triggerMask.enabledCount() > 0);
+        return m_triggerMask.enabledCount() > 0;
     }
 
     bool EventTriggerOptions::triggerEnabled(uint8 triggerIndex) const
@@ -129,4 +122,4 @@ namespace mscl
     {
         return m_triggers;
     }
-}
+} // namespace mscl

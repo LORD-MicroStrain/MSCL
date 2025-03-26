@@ -6,11 +6,7 @@
 
 #pragma once
 
-#include "WirelessTypes.h"
-
-#include <map>
-#include <string>
-#include <vector>
+#include "mscl/MicroStrain/Wireless/WirelessTypes.h"
 
 namespace mscl
 {
@@ -525,7 +521,7 @@ namespace mscl
         //    type - The <WirelessTypes::ChannelType> of the channel.
         //    description - The description of the channel.
         //    adcResolution will be defaulted to 0.
-        WirelessChannel(uint8 chNumber, WirelessChannel::ChannelId id, WirelessTypes::ChannelType type, const std::string& description);
+        WirelessChannel(uint8 chNumber, ChannelId id, WirelessTypes::ChannelType type, const std::string& description);
 
         //Constructor: WirelessChannel
         //    Creates a WirelessChannel object.
@@ -536,7 +532,7 @@ namespace mscl
         //    type - The <WirelessTypes::ChannelType> of the channel.
         //    description - The description of the channel.
         //    adcResolution - the ADC resolution of the channel.
-        WirelessChannel(uint8 chNumber, WirelessChannel::ChannelId id, WirelessTypes::ChannelType type, const std::string& description, uint8 adcResolution);
+        WirelessChannel(uint8 chNumber, ChannelId id, WirelessTypes::ChannelType type, const std::string& description, uint8 adcResolution);
 
     private:
         //Variable: m_chNumber
@@ -545,7 +541,7 @@ namespace mscl
 
         //Variable: m_id
         //    The <WirelessChannel::ChannelId> of the channel.
-        WirelessChannel::ChannelId m_id;
+        ChannelId m_id;
 
         //Variable: m_type
         //    The <WirelessTypes::ChannelType> of the channel.
@@ -558,7 +554,6 @@ namespace mscl
         //Variable: m_adcResolution
         //  The resolution of the A/D Converter for this channel.
         uint8 m_adcResolution;
-
 
     public:
         //API Function: channelNumber
@@ -573,7 +568,7 @@ namespace mscl
         //
         //Returns:
         //    The <WirelessChannel::ChannelId> of this channel.
-        WirelessChannel::ChannelId id() const;
+        ChannelId id() const;
 
         //API Function: type
         //    Gets the <WirelessTypes::ChannelType> of this channel.
@@ -624,8 +619,8 @@ namespace mscl
         //
         //Exceptions:
         //    - <Error>: Unknown channel.
-        static std::string channelName(WirelessChannel::ChannelId channelId);
-#endif
+        static std::string channelName(ChannelId channelId);
+#endif // !SWIG
     };
 
     //API Typedef: WirelessChannels
@@ -635,4 +630,4 @@ namespace mscl
     //API Typedef: WirelessPollData
     //  A typedef for a map of <WirelessChannel> to float values, used when polling a Wireless Node.
     typedef std::map<WirelessChannel::ChannelId, float> WirelessPollData;
-}
+} // namespace mscl

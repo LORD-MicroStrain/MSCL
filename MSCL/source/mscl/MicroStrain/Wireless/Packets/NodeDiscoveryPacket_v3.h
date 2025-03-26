@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "WirelessPacket.h"
+#include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
 
 namespace mscl
 {
@@ -50,7 +50,7 @@ namespace mscl
         //    packet - The fully formed Wireless Packet to check the integrity of.
         //
         //Returns:
-        //    true is the packet is a well-formed Node Discovery (v2) Packet, false otherwise.
+        //    true if the packet is a well-formed Node Discovery (v2) Packet, false otherwise.
         static bool integrityCheck(const WirelessPacket& packet);
     };
-}
+} // namespace mscl
