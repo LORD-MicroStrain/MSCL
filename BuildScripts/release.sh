@@ -86,12 +86,14 @@ if [ "${target}" != "master" ] && [ "${target}" != "develop" ]; then
   exit 0
 fi
 
-# Make sure the tags are pulled
-git pull --tags
-
 # Some constants and other important variables
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" &> /dev/null && pwd)"
 project_dir="${script_dir}/.."
+
+pushd "${project_dir}"
+
+# Make sure the tags are pulled
+git pull --tags
 
 if [ "${target}" == "master" ]; then
   pushd "${project_dir}/build_ubuntu_amd64"
@@ -121,8 +123,6 @@ docs_release_dir="${docs_dir}/${release_name}"
 git_askpass_file="${project_dir}/.mscl-git-askpass"
 echo 'echo ${GH_TOKEN}' > "${git_askpass_file}"
 chmod 700 "${git_askpass_file}"
-
-pushd "${project_dir}"
 
 # Find the commit that this project is built on
 mscl_commit="$(git rev-parse HEAD)"
@@ -191,15 +191,19 @@ gh release create \
 
 rm -f "${release_notes_file}"
 
-# Update the local tags after creating the release (just a precaution to prevent issues with future releases)
-git fetch --tags origin
+pushd "${project_dir}"
+  # Update the local tags after creating the release (just a precaution to prevent issues with future releases)
+  git fetch --tags origin
+popd
 
 # Commit the documentation to the github pages branch
 rm -rf "${docs_dir}"
 git clone -b "main" "https://github.com/LORD-MicroStrain/MSCL_documentation.git" "${docs_dir}"
 rm -rf "${docs_release_dir}"
 mkdir -p "${docs_release_dir}"
+
 pushd "${docs_release_dir}"
+
 unzip "${docs_zip}" -d "${docs_release_dir}"
 
 documentation_readme="${docs_dir}/README.md"
