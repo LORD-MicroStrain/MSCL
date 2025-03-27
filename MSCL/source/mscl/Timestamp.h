@@ -6,9 +6,7 @@
 
 #pragma once
 
-#include <iostream>
-#include "TimeSpan.h"
-#include "Types.h"
+#include "mscl/TimeSpan.h"
 
 namespace mscl
 {
@@ -39,14 +37,13 @@ namespace mscl
             UTC             = 0x05,
         };
 
-    public:
         //API Constructor: Timestamp
         //    Creates a Timestamp object based on the nanoseconds parameter
         //
         //Parameters:
         //    nanoseconds - The number of nanoseconds since specified epoch (default of 0)
         //    epoch - The epoch of the timestamp (default Unix)
-        explicit Timestamp(uint64 nanoseconds = 0, Epoch epoch = Epoch::UNIX);
+        explicit Timestamp(uint64 nanoseconds = 0, Epoch epoch = UNIX);
 
         //API Constructor: Timestamp
         //    Creates a Timestamp object from the given year, month, day, hour, minute, second, millisecond parameters
@@ -61,12 +58,11 @@ namespace mscl
         //    millisecond - The milliseconds of the timestamp (ex. 123)
         Timestamp(uint16 year, uint16 month, uint16 day, uint16 hour, uint16 minute, uint16 second, uint32 milli);
 
-        virtual ~Timestamp() {};
+        virtual ~Timestamp() {}
 
     private:
         static bool canConvertEpoch(Epoch epoch);
 
-    private:
         //Variable: m_nanoseconds
         //    The number of nanoseconds since the m_epoch epoch
         uint64 m_nanoseconds;
@@ -112,9 +108,8 @@ namespace mscl
         //Operator: >=
         //  Greater Than or Equal To operator for comparing Timestamps.
         virtual bool operator>=(const Timestamp& other) const;
-#endif
+#endif // !SWIG
 
-    public:
         //API Function: nanoseconds
         //    Gets the number of nanoseconds since the specified epoch
         //
@@ -142,7 +137,7 @@ namespace mscl
         //
         //Returns:
         //    The stored <Epoch>
-        Epoch storedEpoch() const { return m_epoch; };
+        Epoch storedEpoch() const { return m_epoch; }
 
         //API Function: str
         //    Gets a string representation of the Timestamp object in ISO 8601 Date/Time format.
@@ -157,13 +152,12 @@ namespace mscl
         //Parameters:
         //    nanosSinceEpoch - The number of nanoseconds since the unix epoch.
         //    epoch - the epoch for this value (default Unix)
-        void setTime(uint64 nanosSinceEpoch, Epoch epoch = Epoch::UNIX);
+        void setTime(uint64 nanosSinceEpoch, Epoch epoch = UNIX);
 
         //API Function: setTimeNow
         //    Sets the Timestamp object to the current system time in UTC
         void setTimeNow();
 
-    public:
         //API Function: timeNow
         //    Creates a timestamp using the current system time
         //
@@ -199,4 +193,4 @@ namespace mscl
         //  Note: this uses the value stored in <Utils::gpsLeapSeconds> in its conversion.
         static uint64 utcTimeToGpsTime(uint64 utcNanoseconds);
     };
-}
+} // namespace mscl

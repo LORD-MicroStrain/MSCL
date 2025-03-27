@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "NodeFeatures.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures.h"
 
 namespace mscl
 {
@@ -15,22 +15,22 @@ namespace mscl
     class NodeFeatures_envlinkPro : public NodeFeatures
     {
     public:
-        virtual ~NodeFeatures_envlinkPro() {};
+        ~NodeFeatures_envlinkPro() override = default;
 
         //Constructor: NodeFeatures_envlinkPro
         //    Creates a NodeFeatures_envlinkPro object.
         NodeFeatures_envlinkPro(const NodeInfo& info);
 
-        virtual bool supportsSensorDelayConfig() const override;
+        bool supportsSensorDelayConfig() const override;
 
-        virtual const WirelessTypes::SamplingModes samplingModes() const override;
+        const WirelessTypes::SamplingModes samplingModes() const override;
 
-        virtual const WirelessTypes::DataFormats dataFormats() const override;
+        const WirelessTypes::DataFormats dataFormats() const override;
 
-        virtual const WirelessTypes::WirelessSampleRates sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const override;
+        const WirelessTypes::WirelessSampleRates sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const override;
 
-        virtual WirelessTypes::SettlingTime maxFilterSettlingTime(const SampleRate& rate) const override;
+        WirelessTypes::SettlingTime maxFilterSettlingTime(const SampleRate& rate) const override;
 
-        virtual WirelessTypes::WirelessSampleRate maxSampleRateForSettlingTime(WirelessTypes::SettlingTime filterSettlingTime, WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const override;
+        WirelessTypes::WirelessSampleRate maxSampleRateForSettlingTime(WirelessTypes::SettlingTime filterSettlingTime, WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const override;
     };
-}
+} // namespace mscl

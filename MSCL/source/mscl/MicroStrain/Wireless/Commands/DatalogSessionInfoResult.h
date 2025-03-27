@@ -6,15 +6,12 @@
 
 #pragma once
 
-#include "mscl/Types.h"
-
 namespace mscl
 {
     //Struct: DatalogSessionInfoResult
     //  Object to represent the result of a DatalogSessionInfo request.
     struct DatalogSessionInfoResult
     {
-    public:
         //Variable: sessionCount
         //  The total number of sessions logged on the Node.
         uint16 sessionCount;
@@ -31,7 +28,6 @@ namespace mscl
             sessionCount(0),
             startAddress(0),
             maxLoggedBytes(0)
-        {
-        }
+        {}
     };
-}
+} // namespace mscl

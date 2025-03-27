@@ -6,8 +6,7 @@
 
 #pragma once
 
-#include "mscl/MicroStrain/ByteStream.h"
-#include "WirelessResponsePattern.h"
+#include "mscl/MicroStrain/Wireless/Commands/WirelessResponsePattern.h"
 #include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
 
 namespace mscl
@@ -23,7 +22,6 @@ namespace mscl
         Erase_v2(const Erase_v2&) = delete;              //copy constructor disabled
         Erase_v2& operator=(const Erase_v2&) = delete;   //assignment operator disabled
 
-    public:
         //Function: buildCommand
         //    Builds the Erase_v2 command packet
         //
@@ -74,4 +72,4 @@ namespace mscl
             bool matchFailResponse(const WirelessPacket& packet) override;
         };
     };
-}
+} // namespace mscl

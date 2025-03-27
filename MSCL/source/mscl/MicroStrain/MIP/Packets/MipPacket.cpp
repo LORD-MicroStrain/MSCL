@@ -4,9 +4,7 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-
-#include "MipPacket.h"
+#include "mscl/MicroStrain/MIP/Packets/MipPacket.h"
 
 namespace mscl
 {
@@ -61,4 +59,4 @@ namespace mscl
 
         m_payload.appendBytes(bytes);
     }
-}
+} // namespace mscl

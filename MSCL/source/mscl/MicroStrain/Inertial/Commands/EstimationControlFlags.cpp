@@ -4,19 +4,14 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "EstimationControlFlags.h"
-#include "mscl/MicroStrain/MIP/MipDataField.h"
-#include "mscl/MicroStrain/MIP/Packets/MipPacketBuilder.h"
-#include "mscl/MicroStrain/MIP/MipTypes.h"
-#include "mscl/MicroStrain/MIP/Commands/MIP_Commands.h"
+#include "mscl/MicroStrain/Inertial/Commands/EstimationControlFlags.h"
 
 namespace mscl
 {
     EstimationControlFlags::EstimationControlFlags(MipTypes::FunctionSelector function_selector, const uint16& dataToUse) :
         m_functionSelector(function_selector),
         m_ControlFlags(dataToUse)
-    { }
+    {}
 
     EstimationControlFlags::EstimationControlFlags(MipTypes::FunctionSelector function_selector) :
         m_functionSelector(function_selector)
@@ -38,7 +33,7 @@ namespace mscl
 
     bool EstimationControlFlags::responseExpected() const
     {
-        return (m_functionSelector == MipTypes::READ_BACK_CURRENT_SETTINGS) ? true : false;
+        return m_functionSelector == MipTypes::READ_BACK_CURRENT_SETTINGS;
     }
 
     EstimationControlOptions EstimationControlFlags::getResponseData(const GenericMipCmdResponse& response)
@@ -62,5 +57,4 @@ namespace mscl
         }
         return GenericMipCommand::buildCommand(commandType(), byteCommand.data());
     }
-
-}
+} // namespace mscl

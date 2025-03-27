@@ -4,12 +4,9 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "LongPing.h"
-#include "WirelessProtocol.h"
-#include "mscl/MicroStrain/ByteStream.h"
-#include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
+#include "mscl/MicroStrain/Wireless/Commands/LongPing.h"
 
+#include "mscl/MicroStrain/Wireless/Commands/WirelessProtocol.h"
 
 namespace mscl
 {
@@ -43,12 +40,11 @@ namespace mscl
         return cmd;
     }
 
-    LongPing::Response::Response(NodeAddress nodeAddress, std::weak_ptr<ResponseCollector> collector):
+    LongPing::Response::Response(NodeAddress nodeAddress, std::weak_ptr<ResponseCollector> collector) :
         WirelessResponsePattern(collector, WirelessProtocol::cmdId_longPing_v1, nodeAddress),
         m_nodeAddress(nodeAddress),
         m_result(PingResponse::ResponseFail())
-    {
-    }
+    {}
 
     bool LongPing::Response::matchSuccessResponse(const WirelessPacket& packet)
     {
@@ -99,4 +95,4 @@ namespace mscl
     {
         return m_result;
     }
-}
+} // namespace mscl

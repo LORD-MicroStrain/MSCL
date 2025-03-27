@@ -4,13 +4,14 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "mscl/MicroStrain/SampleUtils.h"
 #include "mscl/MicroStrain/SampleRate.h"
-#include "mscl/Exceptions.h"
-
-#include <boost/test/unit_test.hpp>
+#include "mscl/MicroStrain/SampleUtils.h"
 
 using namespace mscl;
+
+DISABLE_WARNING_BOOST_START
+#include <boost/test/unit_test.hpp>
+DISABLE_WARNING_BOOST_END
 
 BOOST_AUTO_TEST_SUITE(SampleUtils_Test)
 
@@ -82,7 +83,6 @@ BOOST_AUTO_TEST_CASE(SampleUtils_convertFromSampleRate)
     BOOST_CHECK_EQUAL(SampleUtils::convertFromSampleRate(SampleRate::Hertz(1)), 113);
     BOOST_CHECK_EQUAL(SampleUtils::convertFromSampleRate(SampleRate::Seconds(2)), 114);
     BOOST_CHECK_EQUAL(SampleUtils::convertFromSampleRate(SampleRate::Seconds(3600)), 123);
-
 
     //check that an invalid sample rate throws an Error_UnknownSampleRate exception
     BOOST_CHECK_THROW(SampleUtils::convertFromSampleRate(SampleRate::Hertz(784)), Error_UnknownSampleRate);

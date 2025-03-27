@@ -1,38 +1,43 @@
 #pragma once
 
-#include <thread>
-#include "mscl/mscl.h"
+// MSCL common code header (typically used as a precompiled header)
+#include <mscl/stdafx.h>
+
+#include <mscl/MicroStrain/Wireless/BaseStation.h>
+#include <mscl/MicroStrain/Wireless/Features/BaseStationFeatures.h>
 
 static void enableDisableBeacon(mscl::BaseStation& base)
 {
-    //make sure we can ping the base station
-    if(!base.ping())
+    // Make sure we can ping the base station
+    if (!base.ping())
     {
-        cout << "Failed to ping the Base Station" << endl;
+        printf("Failed to ping the Base Station\n");
     }
 
-    if(base.features().supportsBeaconStatus())
+    if (base.features().supportsBeaconStatus())
     {
         mscl::BeaconStatus status = base.beaconStatus();
-        cout << "Beacon current status: Enabled?: " << status.enabled() << " Time: " << status.timestamp().str() << endl;
+        printf("Beacon current status: Enabled?: %s", status.enabled() ? "TRUE" : "FALSE");
+        printf(" Time: %s\n", status.timestamp().str().c_str());
     }
 
-    cout << "Attempting to enable the beacon..." << endl;
+    printf("Attempting to enable the beacon...\n");
 
-    //enable the beacon on the Base Station using the PC time
+    // Enable the beacon on the Base Station using the PC time
     mscl::Timestamp beaconTime = base.enableBeacon();
 
-    //if we got here, no exception was thrown, so enableBeacon was successful
-    cout << "Successfully enabled the beacon on the Base Station" << endl;
-    cout << "Beacon's initial Timestamp: " << beaconTime.str() << endl;
+    // If we got here, no exception was thrown, so enableBeacon was successful
+    printf("Successfully enabled the beacon on the Base Station\n");
+    printf("Beacon's initial Timestamp: %s\n", beaconTime.str().c_str());
 
-    cout << "Beacon is active" << endl << "Sleeping for 3 seconds..." << endl;
+    printf("Beacon is active\n");
+    printf("Sleeping for 3 seconds...\n");
 
     std::this_thread::sleep_for(std::chrono::seconds(3));
 
-    //disable the beacon on the Base Station
+    // Disable the beacon on the Base Station
     base.disableBeacon();
 
-    //if we got here, no exception was thrown, so disableBeacon was successful
-    cout << "Successfully disabled the beacon on the Base Station" << endl;
+    // If we got here, no exception was thrown, so disableBeacon was successful
+    printf("Successfully disabled the beacon on the Base Station\n");
 }

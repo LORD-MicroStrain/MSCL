@@ -4,15 +4,14 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "NodeFeatures_vlink_legacy.h"
-#include "AvailableSampleRates.h"
-#include "mscl/MicroStrain/Wireless/ChannelMask.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures_vlink_legacy.h"
+
 #include "mscl/MicroStrain/Wireless/Configuration/NodeEepromMap.h"
+#include "mscl/MicroStrain/Wireless/Features/AvailableSampleRates.h"
 
 namespace mscl
 {
-    NodeFeatures_vlink_legacy::NodeFeatures_vlink_legacy(const NodeInfo& info):
+    NodeFeatures_vlink_legacy::NodeFeatures_vlink_legacy(const NodeInfo& info) :
         NodeFeatures(info)
     {
         //Channels
@@ -24,7 +23,6 @@ namespace mscl
         m_channels.emplace_back(6, WirelessChannel::channel_6, WirelessTypes::chType_singleEnded, "Single-ended", 12);
         m_channels.emplace_back(7, WirelessChannel::channel_7, WirelessTypes::chType_singleEnded, "Single-ended", 12);
         m_channels.emplace_back(8, WirelessChannel::channel_8, WirelessTypes::chType_temperature, "Internal Temperature");
-
 
         //Channel Groups
         static const ChannelMask DIFFERENTIAL_1(BOOST_BINARY(00000011));    //ch1 + 2
@@ -106,4 +104,4 @@ namespace mscl
             throw Error_NotSupported("The sampling mode is not supported by this Node");
         }
     }
-}
+} // namespace mscl

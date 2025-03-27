@@ -3,7 +3,7 @@
 MSCL is developed by [MicroStrain](https://microstrain.com) in Williston, VT. It was created to make it simple to interact with our
 [Wireless](https://www.microstrain.com/wireless), and [Inertial](https://www.microstrain.com/inertial) sensors.
 
-[![GitHub tag status](https://img.shields.io/github/checks-status/LORD-MicroStrain/MSCL/v67.0.1?label=v67.0.1)](https://github.com/LORD-MicroStrain/MSCL/releases/v67.0.1/) &nbsp;
+[![GitHub tag status](https://img.shields.io/github/checks-status/LORD-MicroStrain/MSCL/v67.1.0?label=v67.1.0)](https://github.com/LORD-MicroStrain/MSCL/releases/v67.1.0/) &nbsp;
 [![GitHub tag status](https://img.shields.io/github/checks-status/LORD-MicroStrain/MSCL/latest?label=latest)](https://github.com/LORD-MicroStrain/MSCL/releases/latest/)
 
 ### Support/Issues
@@ -22,11 +22,11 @@ For projects using our inertial product lines check out our new lightweight C/C+
 Release notes and all downloadable assets can be found on our [releases page](https://github.com/LORD-MicroStrain/MSCL/releases) or from the
 links below.
 
-[Offline Documentation](https://github.com/LORD-MicroStrain/MSCL/releases/download/v67.0.1/MSCL_Documentation_v67.0.1.zip)</br>
-[Offline Example Code](https://github.com/LORD-MicroStrain/MSCL/releases/download/v67.0.1/MSCL_Examples_v67.0.1.zip)
+[Offline Documentation](https://github.com/LORD-MicroStrain/MSCL/releases/download/v67.1.0/MSCL_Documentation_v67.1.0.zip)</br>
+[Offline Example Code](https://github.com/LORD-MicroStrain/MSCL/releases/download/v67.1.0/MSCL_Examples_v67.1.0.zip)
 
 Please see our [releases](https://github.com/LORD-MicroStrain/MSCL/releases) page for all of our release notes and packages.</br>
-Packages for the current release, <b>v67.0.1</b>, can be found [here](https://github.com/LORD-MicroStrain/MSCL/releases/tag/v67.0.1)</br>
+Packages for the current release, <b>v67.1.0</b>, can be found [here](https://github.com/LORD-MicroStrain/MSCL/releases/tag/v67.1.0)</br>
 Latest pre-release packages can be found [here](https://github.com/LORD-MicroStrain/MSCL/releases/tag/latest)</br>
 
 ## Supported Pre-Built Binaries/Packages

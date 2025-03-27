@@ -4,16 +4,12 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
+#include "mscl/MicroStrain/Wireless/Packets/RollerPacket.h"
 
-#include "RollerPacket.h"
-#include "mscl/MicroStrain/SampleUtils.h"
-#include "mscl/MicroStrain/Wireless/ChannelMask.h"
-
+#include "mscl/MicroStrain/Wireless/DataSweep.h"
 
 namespace mscl
 {
-
     RollerPacket::RollerPacket(const WirelessPacket& packet)
     {
         //construct the data packet from the wireless packet passed in
@@ -45,9 +41,9 @@ namespace mscl
         sweep.frequency(m_frequency);
         sweep.tick(tick);
         sweep.nodeAddress(m_nodeAddress);
-        sweep.sampleRate(mscl::SampleRate::Seconds(900));   //this packet has a hard coded sample rate of: 15 minutes (900 seconds)
+        sweep.sampleRate(SampleRate::Seconds(900));   //this packet has a hard coded sample rate of: 15 minutes (900 seconds)
 
-        //No timestamp comes with the packet, so just stamp it with the current time
+        //No timestamp comes with the packet, so stamp it with the current time
         sweep.timestamp(Timestamp::timeNow());
 
         //get this sweep's node and base rssi values
@@ -56,10 +52,10 @@ namespace mscl
 
         sweep.calApplied(true);
 
-        //this packet has hard coded channel data
+        //this packet has hard-coded channel data
         ChannelData chData;
-        chData.emplace_back(WirelessChannel::channel_1, 1, ValueType::valueType_uint16, anyType(rpmChannel));
-        chData.emplace_back(WirelessChannel::channel_2, 2, ValueType::valueType_int16, anyType(temperatureChannel));
+        chData.emplace_back(WirelessChannel::channel_1, 1, valueType_uint16, anyType(rpmChannel));
+        chData.emplace_back(WirelessChannel::channel_2, 2, valueType_int16, anyType(temperatureChannel));
 
         //add the channel data to the sweep
         sweep.data(chData);
@@ -70,7 +66,7 @@ namespace mscl
 
     bool RollerPacket::integrityCheck(const WirelessPacket& packet)
     {
-        WirelessPacket::Payload payload = packet.payload();
+        Payload payload = packet.payload();
 
         //verify the payload size
         if(payload.size() != 5)
@@ -100,4 +96,4 @@ namespace mscl
         //return the tick value
         return packet.payload().read_uint16(0);
     }
-}
+} // namespace mscl

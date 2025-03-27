@@ -6,10 +6,7 @@
 
 #pragma once
 
-#include <boost/utility/binary.hpp>
-
 #include "mscl/MicroStrain/MIP/Packets/MipFieldParser.h"
-#include "mscl/MicroStrain/MIP/Packets/MipDataPacket.h"
 
 namespace mscl
 {
@@ -21,8 +18,7 @@ namespace mscl
     //    The Field Parser for raw accelerometer data
     class FieldParser_RawAccelVector : public MipFieldParser
     {
-    private:
-        FieldParser_RawAccelVector(){};    //default constructor disabled
+        FieldParser_RawAccelVector(){}    //default constructor disabled
 
     public:
         //Function: parse
@@ -31,7 +27,7 @@ namespace mscl
         //Parameters:
         //    field - The <MipDataField> to parse for data points
         //    result - The <MipDataPoints> vector to store the data points in
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
 
         //Function: registerParser
         //    The static function that registers this parser with the list of parsers (called immediately)
@@ -40,7 +36,6 @@ namespace mscl
         //    true, just for assigning the REGISTERED constant to true
         static bool registerParser();
 
-    public:
         //Constant: FIELD_TYPE
         //    The 2-byte field type (Descriptor ID + Field ID) for this parser
         static const MipTypes::ChannelField FIELD_TYPE;
@@ -54,14 +49,12 @@ namespace mscl
     //    The field parser for raw gyro data
     class FieldParser_RawGyroVector : public MipFieldParser
     {
-    private:
-        FieldParser_RawGyroVector(){};        //default constructor disabled
+        FieldParser_RawGyroVector(){}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
@@ -70,14 +63,12 @@ namespace mscl
     //    The field parser for raw magnetometer data
     class FieldParser_RawMagVector : public MipFieldParser
     {
-    private:
-        FieldParser_RawMagVector(){};        //default constructor disabled
+        FieldParser_RawMagVector(){}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
@@ -86,14 +77,12 @@ namespace mscl
     //    The field parser for scaled accelerometer data
     class FieldParser_ScaledAccelVector : public MipFieldParser
     {
-    private:
-        FieldParser_ScaledAccelVector(){};        //default constructor disabled
+        FieldParser_ScaledAccelVector(){}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
@@ -102,14 +91,12 @@ namespace mscl
     //    The field parser for scaled gyro data
     class FieldParser_ScaledGyroVector : public MipFieldParser
     {
-    private:
-        FieldParser_ScaledGyroVector(){};        //default constructor disabled
+        FieldParser_ScaledGyroVector(){}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
@@ -118,14 +105,12 @@ namespace mscl
     //    The field parser for scaled magnetometer data
     class FieldParser_ScaledMagVector : public MipFieldParser
     {
-    private:
-        FieldParser_ScaledMagVector(){};        //default constructor disabled
+        FieldParser_ScaledMagVector(){}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
@@ -134,14 +119,12 @@ namespace mscl
     //    The field parser for delta theta data
     class FieldParser_DeltaThetaVector : public MipFieldParser
     {
-    private:
-        FieldParser_DeltaThetaVector(){};        //default constructor disabled
+        FieldParser_DeltaThetaVector(){}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
@@ -150,14 +133,12 @@ namespace mscl
     //    The field parser for delta velocity data
     class FieldParser_DeltaVelocityVector : public MipFieldParser
     {
-    private:
-        FieldParser_DeltaVelocityVector(){};        //default constructor disabled
+        FieldParser_DeltaVelocityVector(){}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
@@ -166,14 +147,13 @@ namespace mscl
     //    The field parser for orientation matrix data
     class FieldParser_OrientationMatrix : public MipFieldParser
     {
-    private:
-        FieldParser_OrientationMatrix(){};        //default constructor disabled
+
+        FieldParser_OrientationMatrix(){}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
@@ -182,14 +162,13 @@ namespace mscl
     //    The field parser for quaternion data
     class FieldParser_Quaternion : public MipFieldParser
     {
-    private:
-        FieldParser_Quaternion(){};        //default constructor disabled
+
+        FieldParser_Quaternion(){}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
@@ -198,14 +177,13 @@ namespace mscl
     //    The field parser for orientation matrix data
     class FieldParser_OrientationUpdateMatrix : public MipFieldParser
     {
-    private:
-        FieldParser_OrientationUpdateMatrix(){};        //default constructor disabled
+
+        FieldParser_OrientationUpdateMatrix(){}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
@@ -214,14 +192,13 @@ namespace mscl
     //    The field parser for Euler Angles data
     class FieldParser_EulerAngles : public MipFieldParser
     {
-    private:
-        FieldParser_EulerAngles(){};        //default constructor disabled
+
+        FieldParser_EulerAngles(){}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
@@ -230,14 +207,13 @@ namespace mscl
     //    The field parser for Internal Timestamp data
     class FieldParser_InternalTimestamp : public MipFieldParser
     {
-    private:
-        FieldParser_InternalTimestamp(){};        //default constructor disabled
+
+        FieldParser_InternalTimestamp(){}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
@@ -246,18 +222,17 @@ namespace mscl
     //    The field parser for Beaconed Timestamp data
     class FieldParser_BeaconedTimestamp : public MipFieldParser
     {
-    private:
-        FieldParser_BeaconedTimestamp(){};        //default constructor disabled
+
+        FieldParser_BeaconedTimestamp(){}        //default constructor disabled
 
         //Constants: Valid Flags
         //    TIMESTAMP_FLAG        - b0001 - The flag position for checking the Timestamp status
         static const uint8 TIMESTAMP_FLAG = BOOST_BINARY(0001);
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
@@ -266,14 +241,13 @@ namespace mscl
     //    The field parser for Stabilized Mag Vector (North)
     class FieldParser_StabilizedMagVector : public MipFieldParser
     {
-    private:
-        FieldParser_StabilizedMagVector(){};        //default constructor disabled
+
+        FieldParser_StabilizedMagVector(){}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
@@ -282,14 +256,13 @@ namespace mscl
     //    The field parser for Stabilized Accel Vector (Up)
     class FieldParser_StabilizedAccelVector : public MipFieldParser
     {
-    private:
-        FieldParser_StabilizedAccelVector(){};        //default constructor disabled
+
+        FieldParser_StabilizedAccelVector(){}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
@@ -298,18 +271,17 @@ namespace mscl
     //    The field parser for GPS Correlation Timestamp
     class FieldParser_GpsCorrelationTimestamp : public MipFieldParser
     {
-    private:
+
         //Constants: Valid Flags
         //    TS_FLAG    - b00000001    - The flag position for checking the Timestamp Valid flag
         static const uint16 TS_FLAG = BOOST_BINARY(00000100);
 
-        FieldParser_GpsCorrelationTimestamp(){};        //default constructor disabled
+        FieldParser_GpsCorrelationTimestamp(){}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
@@ -318,17 +290,16 @@ namespace mscl
     //    The field parser for GPS Correlation Timestamp
     class FieldParser_TemperatureStatistics : public MipFieldParser
     {
-    private:
+
         //Constants: Valid Flags
         //    TS_FLAG    - b00000001    - The flag position for checking the Timestamp Valid flag
 
-        FieldParser_TemperatureStatistics() {};        //default constructor disabled
+        FieldParser_TemperatureStatistics() {}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
@@ -337,14 +308,13 @@ namespace mscl
     //    The field parser for Scaled Ambient Pressure.
     class FieldParser_ScaledAmbientPressure : public MipFieldParser
     {
-    private:
-        FieldParser_ScaledAmbientPressure() {};        //default constructor disabled
+
+        FieldParser_ScaledAmbientPressure() {}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
@@ -362,7 +332,7 @@ namespace mscl
         //Parameters:
         //    field - The <MipDataField> to parse for data points
         //    result - The <MipDataPoints> vector to store the data points in
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
 
         //Function: registerParser
         //    The static function that registers this parser with the list of parsers (called immediately)
@@ -387,14 +357,13 @@ namespace mscl
     //    The field parser for Raw Ambient Pressure.
     class FieldParser_RawAmbientPressure : public MipFieldParser
     {
-    private:
-        FieldParser_RawAmbientPressure() {};        //default constructor disabled
+
+        FieldParser_RawAmbientPressure() {}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
@@ -403,15 +372,14 @@ namespace mscl
     //    The field parser for the Odometer Data field.
     class FieldParser_OdometerData : public MipFieldParser
     {
-    private:
-        FieldParser_OdometerData() {};        //default constructor disabled
+
+        FieldParser_OdometerData() {}        //default constructor disabled
 
     public:
-        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
-    public:
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
-}
+} // namespace mscl

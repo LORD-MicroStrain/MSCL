@@ -4,8 +4,7 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "WirelessTypes.h"
+#include "mscl/MicroStrain/Wireless/WirelessTypes.h"
 
 namespace mscl
 {
@@ -128,18 +127,18 @@ namespace mscl
     WirelessTypes::WirelessSampleRate WirelessTypes::dataloggingRateToSampleRate(uint16 eepromValue)
     {
         //build the map of datalogging eeprom values to sample rates
-        static const std::map<uint16, WirelessTypes::WirelessSampleRate> dataloggingMap = {
-                {0, WirelessTypes::sampleRate_4096Hz},
-                {1, WirelessTypes::sampleRate_2048Hz},
-                {2, WirelessTypes::sampleRate_1024Hz},
-                {3, WirelessTypes::sampleRate_512Hz},
-                {4, WirelessTypes::sampleRate_256Hz},
-                {5, WirelessTypes::sampleRate_128Hz},
-                {6, WirelessTypes::sampleRate_64Hz},
-                {7, WirelessTypes::sampleRate_32Hz}};
+        static const std::map<uint16, WirelessSampleRate> dataloggingMap = {
+                {0, sampleRate_4096Hz},
+                {1, sampleRate_2048Hz},
+                {2, sampleRate_1024Hz},
+                {3, sampleRate_512Hz},
+                {4, sampleRate_256Hz},
+                {5, sampleRate_128Hz},
+                {6, sampleRate_64Hz},
+                {7, sampleRate_32Hz}};
 
         //try to find the eeprom value in the map
-        std::map<uint16, WirelessTypes::WirelessSampleRate>::const_iterator itr = dataloggingMap.find(eepromValue);
+        std::map<uint16, WirelessSampleRate>::const_iterator itr = dataloggingMap.find(eepromValue);
 
         //if we found the value
         if(itr != dataloggingMap.end())
@@ -147,28 +146,26 @@ namespace mscl
             //return the rate
             return itr->second;
         }
-        else
-        {
-            //just cast and return the value
-            return static_cast<WirelessTypes::WirelessSampleRate>(eepromValue);
-        }
+
+        //cast and return the value
+        return static_cast<WirelessSampleRate>(eepromValue);
     }
 
-    uint16 WirelessTypes::sampleRateToDataloggingRate(WirelessTypes::WirelessSampleRate rate)
+    uint16 WirelessTypes::sampleRateToDataloggingRate(WirelessSampleRate rate)
     {
         //build the map of sample rates to datalogging eeprom values
-        static const std::map<WirelessTypes::WirelessSampleRate, uint16> dataloggingMap = {
-                {WirelessTypes::sampleRate_4096Hz, 0},
-                {WirelessTypes::sampleRate_2048Hz, 1},
-                {WirelessTypes::sampleRate_1024Hz, 2},
-                {WirelessTypes::sampleRate_512Hz, 3},
-                {WirelessTypes::sampleRate_256Hz, 4},
-                {WirelessTypes::sampleRate_128Hz, 5},
-                {WirelessTypes::sampleRate_64Hz, 6},
-                {WirelessTypes::sampleRate_32Hz, 7}};
+        static const std::map<WirelessSampleRate, uint16> dataloggingMap = {
+                {sampleRate_4096Hz, 0},
+                {sampleRate_2048Hz, 1},
+                {sampleRate_1024Hz, 2},
+                {sampleRate_512Hz, 3},
+                {sampleRate_256Hz, 4},
+                {sampleRate_128Hz, 5},
+                {sampleRate_64Hz, 6},
+                {sampleRate_32Hz, 7}};
 
         //try to find the sample rate in the map
-        std::map<WirelessTypes::WirelessSampleRate, uint16>::const_iterator itr = dataloggingMap.find(rate);
+        std::map<WirelessSampleRate, uint16>::const_iterator itr = dataloggingMap.find(rate);
 
         //if we found the value
         if(itr != dataloggingMap.end())
@@ -176,49 +173,47 @@ namespace mscl
             //return the rate
             return itr->second;
         }
-        else
-        {
-            //just cast and return the value
-            return static_cast<uint16>(rate);
-        }
+
+        //cast and return the value
+        return static_cast<uint16>(rate);
     }
 
-    WirelessTypes::TransmitPower WirelessTypes::legacyToTransmitPower(WirelessTypes::LegacyTransmitPower legacyVal)
+    WirelessTypes::TransmitPower WirelessTypes::legacyToTransmitPower(LegacyTransmitPower legacyVal)
     {
         switch(legacyVal)
         {
-            case WirelessTypes::legacyPower_5dBm:
-                return WirelessTypes::power_5dBm;
+            case legacyPower_5dBm:
+                return power_5dBm;
 
-            case WirelessTypes::legacyPower_0dBm:
-                return WirelessTypes::power_0dBm;
+            case legacyPower_0dBm:
+                return power_0dBm;
 
-            case WirelessTypes::legacyPower_10dBm:
-                return WirelessTypes::power_10dBm;
+            case legacyPower_10dBm:
+                return power_10dBm;
 
-            case WirelessTypes::legacyPower_16dBm:
-                return WirelessTypes::power_16dBm;
+            case legacyPower_16dBm:
+                return power_16dBm;
 
             default:
-                return static_cast<WirelessTypes::TransmitPower>(legacyVal);
+                return static_cast<TransmitPower>(legacyVal);
         }
     }
 
-    WirelessTypes::LegacyTransmitPower WirelessTypes::transmitPowerToLegacy(WirelessTypes::TransmitPower power)
+    WirelessTypes::LegacyTransmitPower WirelessTypes::transmitPowerToLegacy(TransmitPower power)
     {
         switch(power)
         {
-            case WirelessTypes::power_5dBm:
-                return WirelessTypes::legacyPower_5dBm;
+            case power_5dBm:
+                return legacyPower_5dBm;
 
-            case WirelessTypes::power_0dBm:
-                return WirelessTypes::legacyPower_0dBm;
+            case power_0dBm:
+                return legacyPower_0dBm;
 
-            case WirelessTypes::power_10dBm:
-                return WirelessTypes::legacyPower_10dBm;
+            case power_10dBm:
+                return legacyPower_10dBm;
 
-            case WirelessTypes::power_16dBm:
-                return WirelessTypes::legacyPower_16dBm;
+            case power_16dBm:
+                return legacyPower_16dBm;
 
             default:
                 throw Error("Attempting to convert a transmit power (" + Utils::toStr(power) + ") without a legacy equivalent.");
@@ -229,12 +224,12 @@ namespace mscl
     {
         switch(id)
         {
-            case WirelessTypes::derivedAlgId_rms:
-            case WirelessTypes::derivedAlgId_peakToPeak:
-            case WirelessTypes::derivedAlgId_ips:
-            case WirelessTypes::derivedAlgId_mmps:
-            case WirelessTypes::derivedAlgId_crestFactor:
-            case WirelessTypes::derivedAlgId_mean:
+            case derivedAlgId_rms:
+            case derivedAlgId_peakToPeak:
+            case derivedAlgId_ips:
+            case derivedAlgId_mmps:
+            case derivedAlgId_crestFactor:
+            case derivedAlgId_mean:
                 return 4;
 
             default:
@@ -246,11 +241,11 @@ namespace mscl
     {
         switch(category)
         {
-            case WirelessTypes::derivedCategory_rms:
-            case WirelessTypes::derivedCategory_peakToPeak:
-            case WirelessTypes::derivedCategory_velocity:
-            case WirelessTypes::derivedCategory_crestFactor:
-            case WirelessTypes::derivedCategory_mean:
+            case derivedCategory_rms:
+            case derivedCategory_peakToPeak:
+            case derivedCategory_velocity:
+            case derivedCategory_crestFactor:
+            case derivedCategory_mean:
                 return 4;
 
             default:
@@ -258,7 +253,7 @@ namespace mscl
         }
     }
 
-    uint32 WirelessTypes::derivedBytesPerSweep(const WirelessTypes::DerivedChannelMasks& derivedChannelMasks)
+    uint32 WirelessTypes::derivedBytesPerSweep(const DerivedChannelMasks& derivedChannelMasks)
     {
         uint32 sweepSize = 0;
         uint8 count = 0;
@@ -268,10 +263,10 @@ namespace mscl
 
             if(count > 0)
             {
-                sweepSize += (count * bytesPerDerivedChannelOption(ch.first));
+                sweepSize += count * bytesPerDerivedChannelOption(ch.first);
             }
         }
 
         return sweepSize;
     }
-}
+} // namespace mscl

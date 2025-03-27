@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "NodeFeatures_200series.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures_200series.h"
 
 namespace mscl
 {
@@ -14,63 +14,61 @@ namespace mscl
     //    Contains information on features for the SHM-Link 2 node.
     class NodeFeatures_shmlink201 : public NodeFeatures_200series
     {
-    private:
         NodeFeatures_shmlink201();    //disabled default constructor
 
     public:
-        virtual ~NodeFeatures_shmlink201() {};
+        ~NodeFeatures_shmlink201() override = default;
 
         //Constructor: NodeFeatures_shmlink201
         //    Creates a NodeFeatures_shmlink201 object.
         NodeFeatures_shmlink201(const NodeInfo& info);
 
-    public:
-        virtual const WirelessTypes::DataCollectionMethods dataCollectionMethods() const final;
+        const WirelessTypes::DataCollectionMethods dataCollectionMethods() const final;
 
-        virtual const WirelessTypes::DataFormats dataFormats() const final;
+        const WirelessTypes::DataFormats dataFormats() const final;
 
-        virtual const WirelessTypes::Filters lowPassFilters() const override;
+        const WirelessTypes::Filters lowPassFilters() const override;
 
-        virtual const WirelessTypes::SamplingModes samplingModes() const final;
+        const WirelessTypes::SamplingModes samplingModes() const final;
 
-        virtual const WirelessTypes::WirelessSampleRates sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const override;
+        const WirelessTypes::WirelessSampleRates sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const override;
 
-        virtual bool supportsFatigueConfig() const final;
+        bool supportsFatigueConfig() const final;
 
-        virtual bool supportsYoungsModConfig() const final;
+        bool supportsYoungsModConfig() const final;
 
-        virtual bool supportsPoissonsRatioConfig() const final;
+        bool supportsPoissonsRatioConfig() const final;
 
-        virtual bool supportsFatigueDebugModeConfig() const final;
+        bool supportsFatigueDebugModeConfig() const final;
 
-        virtual bool supportsFatigueModeConfig() const final;
+        bool supportsFatigueModeConfig() const final;
 
-        virtual bool supportsHistogramConfig() const final;
+        bool supportsHistogramConfig() const final;
 
-        virtual bool supportsHistogramRateConfig() const final;
+        bool supportsHistogramRateConfig() const final;
 
-        virtual bool supportsHistogramEnableConfig() const;
+        bool supportsHistogramEnableConfig() const override;
 
-        virtual bool supportsActivitySense() const final;
+        bool supportsActivitySense() const final;
 
-        virtual bool supportsAutoCal_shm201() const;
+        bool supportsAutoCal_shm201() const override;
 
-        virtual bool supportsSensorDelayConfig() const override;
+        bool supportsSensorDelayConfig() const override;
 
-        virtual bool supportsSensorDelayAlwaysOn() const override;
+        bool supportsSensorDelayAlwaysOn() const override;
 
-        virtual uint8 numDamageAngles() const final;
+        uint8 numDamageAngles() const final;
 
-        virtual uint8 numSnCurveSegments() const final;
+        uint8 numSnCurveSegments() const final;
 
-        virtual const WirelessTypes::VoltageType adcVoltageInputType() const override;
+        const WirelessTypes::VoltageType adcVoltageInputType() const override;
 
-        virtual const WirelessTypes::WirelessSampleRates histogramTransmitRates() const final;
+        const WirelessTypes::WirelessSampleRates histogramTransmitRates() const final;
 
-        virtual const WirelessTypes::FatigueModes fatigueModes() const final;
+        const WirelessTypes::FatigueModes fatigueModes() const final;
 
         const uint32 minSensorDelay() const override;
 
         const uint32 defaultSensorDelay() const override;
     };
-}
+} // namespace mscl

@@ -4,16 +4,11 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-
-#include "MipModels.h"
-#include "mscl/Utils.h"
-
-#include<math.h>
+#include "mscl/MicroStrain/MIP/MipModels.h"
 
 namespace mscl
 {
-    bool MipModels::modelNumbersEqual(MipModels::ModelNumber model1, MipModels::ModelNumber model2)
+    bool MipModels::modelNumbersEqual(ModelNumber model1, ModelNumber model2)
     {
         uint32 m1 = static_cast<uint32>(model1);
         uint32 m2 = static_cast<uint32>(model2);
@@ -28,12 +23,12 @@ namespace mscl
         if (m1 / MODIFIER_MULTIPLIER == m2 / MODIFIER_MULTIPLIER)
         {
             // if either second part is placeholder (9999) return true
-            if (m1 % MODIFIER_MULTIPLIER == MipModels::Modifier::placeholder_matchAll)
+            if (m1 % MODIFIER_MULTIPLIER == placeholder_matchAll)
             {
                 return true;
             }
 
-            if (m2 % MODIFIER_MULTIPLIER == MipModels::Modifier::placeholder_matchAll)
+            if (m2 % MODIFIER_MULTIPLIER == placeholder_matchAll)
             {
                 return true;
             }
@@ -47,9 +42,9 @@ namespace mscl
         return modelNumberFromParts(nodeModelFromStr(modelNumberString), static_cast<Modifier>(modifierFromStr(modelNumberString)));
     }
 
-    MipModels::ModelNumber MipModels::modelNumberFromParts(MipModels::NodeModel nodeModel, MipModels::Modifier modifier)
+    MipModels::ModelNumber MipModels::modelNumberFromParts(NodeModel nodeModel, Modifier modifier)
     {
-        return static_cast<ModelNumber>((nodeModel * MODIFIER_MULTIPLIER) + modifier);
+        return static_cast<ModelNumber>(nodeModel * MODIFIER_MULTIPLIER + modifier);
     }
 
     MipModels::NodeModel MipModels::nodeModelFromStr(const std::string& modelNumberString)
@@ -94,17 +89,17 @@ namespace mscl
         return modifier;
     }
 
-    MipModels::NodeModel MipModels::nodeModelFromModelNumber(MipModels::ModelNumber modelNumber)
+    MipModels::NodeModel MipModels::nodeModelFromModelNumber(ModelNumber modelNumber)
     {
         return static_cast<NodeModel>(modelNumber / MODIFIER_MULTIPLIER);
     }
 
-    uint32 MipModels::modifierFromModelNumber(MipModels::ModelNumber modelNumber)
+    uint32 MipModels::modifierFromModelNumber(ModelNumber modelNumber)
     {
         return static_cast<uint32>(modelNumber) % MODIFIER_MULTIPLIER;
     }
 
-    std::string MipModels::stringFromModelNumber(MipModels::ModelNumber modelNumber)
+    std::string MipModels::stringFromModelNumber(ModelNumber modelNumber)
     {
         uint32 model = nodeModelFromModelNumber(modelNumber);
         uint32 modifier = modifierFromModelNumber(modelNumber);
@@ -188,11 +183,11 @@ namespace mscl
 
 #ifndef SWIG
     MipModel::MipModel(MipModels::ModelNumber modelNumber) :
+        m_modelStr(MipModels::stringFromModelNumber(modelNumber)),
         m_first(MipModels::nodeModelFromModelNumber(modelNumber)),
-        m_second(MipModels::modifierFromModelNumber(modelNumber)),
-        m_modelStr(MipModels::stringFromModelNumber(modelNumber))
+        m_second(MipModels::modifierFromModelNumber(modelNumber))
     {}
-#endif
+#endif // !SWIG
 
     bool MipModel::operator==(const MipModel& compare) const
     {
@@ -243,4 +238,4 @@ namespace mscl
 
         return BASE_MODEL_MAP.at(modelInt);
     }
-}
+} // namespace mscl

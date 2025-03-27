@@ -4,29 +4,23 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
+#include "mscl/MicroStrain/Wireless/Packets/HclSmartBearing_RawPacket.h"
 
-#include "mscl/Exceptions.h"
-#include "HclSmartBearing_RawPacket.h"
-#include "mscl/MicroStrain/Wireless/ChannelMask.h"
 #include "mscl/MicroStrain/SampleUtils.h"
-#include "mscl/MicroStrain/Vector.h"
-#include "mscl/TimeSpan.h"
-#include "mscl/Types.h"
+#include "mscl/MicroStrain/Wireless/DataSweep.h"
 
 namespace mscl
 {
-
     HclSmartBearing_RawPacket::HclSmartBearing_RawPacket(const WirelessPacket& packet)
     {
         //construct the data packet from the wireless packet passed in
-        m_nodeAddress           = packet.nodeAddress();
-        m_deliveryStopFlags     = packet.deliveryStopFlags();
-        m_type                  = packet.type();
-        m_nodeRSSI              = packet.nodeRSSI();
-        m_baseRSSI              = packet.baseRSSI();
-        m_frequency             = packet.frequency();
-        m_payload               = packet.payload();
+        m_nodeAddress              = packet.nodeAddress();
+        m_deliveryStopFlags        = packet.deliveryStopFlags();
+        m_type                     = packet.type();
+        m_nodeRSSI                 = packet.nodeRSSI();
+        m_baseRSSI                 = packet.baseRSSI();
+        m_frequency                = packet.frequency();
+        m_payload                  = packet.payload();
         m_payloadOffsetChannelData = 0;    //not used for these packets
 
         //parse the data sweeps in the packet
@@ -71,7 +65,7 @@ namespace mscl
         m_magConversionVal        = static_cast<float>(m_payload.read_uint16(PAYLOAD_OFFSET_MAG_CONVERSION));
 
         //build the full nanosecond resolution timestamp from the seconds and nanoseconds values read above
-        uint64 realTimestamp = (timestampSeconds * TimeSpan::NANOSECONDS_PER_SECOND) + timestampNanos;
+        uint64 realTimestamp = timestampSeconds * TimeSpan::NANOSECONDS_PER_SECOND + timestampNanos;
 
         if(!timestampWithinRange(Timestamp(realTimestamp)))
         {
@@ -143,7 +137,7 @@ namespace mscl
         uint64 timestampNanos = m_payload.read_uint32(PAYLOAD_OFFSET_TS_NANOSEC);    //the timestamp (UTC) nanoseconds part
 
         //build the full nanosecond resolution timestamp from the seconds and nanoseconds values read above
-        uint64 realTimestamp = (timestampSeconds * TimeSpan::NANOSECONDS_PER_SECOND) + timestampNanos;
+        uint64 realTimestamp = timestampSeconds * TimeSpan::NANOSECONDS_PER_SECOND + timestampNanos;
 
         if(!timestampWithinRange(Timestamp(realTimestamp)))
         {
@@ -224,7 +218,7 @@ namespace mscl
         uint64 timestampNanos = m_payload.read_uint32(PAYLOAD_OFFSET_TS_NANOSEC);    //the timestamp (UTC) nanoseconds part
 
         //build the full nanosecond resolution timestamp from the seconds and nanoseconds values read above
-        uint64 realTimestamp = (timestampSeconds * TimeSpan::NANOSECONDS_PER_SECOND) + timestampNanos;
+        uint64 realTimestamp = timestampSeconds * TimeSpan::NANOSECONDS_PER_SECOND + timestampNanos;
 
         if(!timestampWithinRange(Timestamp(realTimestamp)))
         {
@@ -290,7 +284,7 @@ namespace mscl
             return false;
         }
 
-        const WirelessPacket::Payload& payload = packet.payload();
+        const Payload& payload = packet.payload();
 
         //verify the payload size
         if(payload.size() < 4)
@@ -319,7 +313,7 @@ namespace mscl
         }
     }
 
-    bool HclSmartBearing_RawPacket::integrityCheck_baseBoard(const WirelessPacket::Payload& payload)
+    bool HclSmartBearing_RawPacket::integrityCheck_baseBoard(const Payload& payload)
     {
         //check payload size is exactly correct
         if(payload.size() != 75)
@@ -331,7 +325,7 @@ namespace mscl
         return true;
     }
 
-    bool HclSmartBearing_RawPacket::integrityCheck_strainBoard(const WirelessPacket::Payload& payload)
+    bool HclSmartBearing_RawPacket::integrityCheck_strainBoard(const Payload& payload)
     {
         //check payload size is exactly correct
         if(payload.size() != 85)
@@ -343,7 +337,7 @@ namespace mscl
         return true;
     }
 
-    bool HclSmartBearing_RawPacket::integrityCheck_inertialBoard(const WirelessPacket::Payload& payload)
+    bool HclSmartBearing_RawPacket::integrityCheck_inertialBoard(const Payload& payload)
     {
         //check payload size is exactly correct
         if(payload.size() != 41)
@@ -360,4 +354,4 @@ namespace mscl
         //return the tick value
         return packet.payload().read_uint16(PAYLOAD_OFFSET_TICK);
     }
-}
+} // namespace mscl

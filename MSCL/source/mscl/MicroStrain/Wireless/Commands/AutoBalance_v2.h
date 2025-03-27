@@ -6,12 +6,9 @@
 
 #pragma once
 
-#include "mscl/MicroStrain/ByteStream.h"
-#include "WirelessResponsePattern.h"
-#include "mscl/MicroStrain/Wireless/WirelessTypes.h"
+#include "mscl/MicroStrain/Wireless/Commands/AutoBalanceResult.h"
+#include "mscl/MicroStrain/Wireless/Commands/WirelessResponsePattern.h"
 #include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
-#include "mscl/Types.h"
-#include "AutoBalanceResult.h"
 
 namespace mscl
 {
@@ -24,7 +21,6 @@ namespace mscl
         AutoBalance_v2(const AutoBalance_v2&) = delete;             //copy constructor disabled
         AutoBalance_v2& operator=(const AutoBalance_v2&) = delete;  //assignment operator disabled
 
-    public:
         //Function: buildCommand
         //    Builds the AutoBalance_v2 command packet.
         //
@@ -78,11 +74,11 @@ namespace mscl
             //
             //Returns:
             //    true if the packet matches a response pattern, false otherwise
-            virtual bool match(const WirelessPacket& packet) override;
+            bool match(const WirelessPacket& packet) override;
 
             //Function: result
             //    Gets the <AutoBalanceResult> of the command.
             const AutoBalanceResult& result() const;
         };
     };
-}
+} // namespace mscl

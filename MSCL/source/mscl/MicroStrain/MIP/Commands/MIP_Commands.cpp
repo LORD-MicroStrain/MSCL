@@ -4,10 +4,9 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "MIP_Commands.h"
+#include "mscl/MicroStrain/MIP/Commands/MIP_Commands.h"
 
-#include "mscl/Utils.h"
+#include "mscl/MicroStrain/MIP/Commands/GetDeviceInfo.h"
 
 namespace mscl
 {
@@ -33,10 +32,10 @@ namespace mscl
         uint16 fw = fieldData.read_uint16(FWVERS_POS);
 
         //firmware version is in the form: 3487 = 3.4.87
-        uint16 major = (fw / 1000);
-        uint16 minorAndPatch = (fw - (major * 1000));
-        uint16 minor = (minorAndPatch / 100);
-        uint16 patch = (minorAndPatch - (minor * 100));
+        uint16 major         = fw / 1000;
+        uint16 minorAndPatch = fw - major * 1000;
+        uint16 minor         = minorAndPatch / 100;
+        uint16 patch         = minorAndPatch - minor * 100;
 
         result.fwVersion = Version(major, minor, patch);
 
@@ -143,7 +142,7 @@ namespace mscl
     bool MIP_Commands::parseData_ContinuousDataStream(const GenericMipCmdResponse& response)
     {
         //return true if enabled, false if disabled
-        return (response.data().read_uint8(1) == 1);    //Note: position 0 is the device selector, which can be ignored here.
+        return response.data().read_uint8(1) == 1;    //Note: position 0 is the device selector, which can be ignored here.
     }
 
     EulerAngles MIP_Commands::parseData_EulerAngles(const GenericMipCmdResponse& response)
@@ -189,4 +188,4 @@ namespace mscl
 
         return ZUPTSettingsData(enabled, threshold);
     }
-}
+} // namespace mscl

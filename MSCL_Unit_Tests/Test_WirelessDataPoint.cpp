@@ -5,11 +5,12 @@
 *****************************************************************************************/
 
 #include "mscl/MicroStrain/Wireless/Packets/WirelessDataPacket.h"
-#include "mscl/Exceptions.h"
-
-#include <boost/test/unit_test.hpp>
 
 using namespace mscl;
+
+DISABLE_WARNING_BOOST_START
+#include <boost/test/unit_test.hpp>
+DISABLE_WARNING_BOOST_END
 
 BOOST_AUTO_TEST_SUITE(WirelessDataPoint_Test)
 
@@ -181,7 +182,6 @@ BOOST_AUTO_TEST_CASE(WirelessDataPoint_as_int16)
     WirelessDataPoint p5(WirelessChannel::channel_1, 1, valueType_int16, anyType((int16)-1500));
     WirelessDataPoint p6(WirelessChannel::channel_1, 1, valueType_string, anyType((std::string)"-756"));
 
-
     //check the value of each WirelessDataPoint when calling asInt32()
     BOOST_CHECK_EQUAL(p.as_int16(), 123);
     BOOST_CHECK_EQUAL(p1.as_int16(), 0);
@@ -246,6 +246,5 @@ BOOST_AUTO_TEST_CASE(WirelessDataPoint_as_string)
     BOOST_CHECK_EQUAL(p2.as_string(), "0");
     BOOST_CHECK_EQUAL(p3.as_string(), "3DM-GX3-35");
 }
-
 
 BOOST_AUTO_TEST_SUITE_END()

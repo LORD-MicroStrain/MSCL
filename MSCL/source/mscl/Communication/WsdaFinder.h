@@ -6,11 +6,8 @@
 
 #pragma once
 
-#include "UpnpService.h"
-#include "UpnpDeviceFinderCallback.h"
-
-#include <string>
-#include <map>
+#include "mscl/Communication/UpnpDeviceFinderCallback.h"
+#include "mscl/Communication/UpnpService.h"
 
 namespace mscl
 {
@@ -65,7 +62,6 @@ namespace mscl
         //  Typedef for a uuid to <WsdaInfo> map.
         typedef std::map<std::string, WsdaInfo> WsdaMap;
 
-    public:
         //API Default Constructor: WsdaFinder
         //  Creates a WsdaFinder object, starting the thread to search for WSDAs.
         //
@@ -81,7 +77,6 @@ namespace mscl
         WsdaFinder(const WsdaFinder&);              //copy constructor disabled
         WsdaFinder& operator=(const WsdaFinder&);   //assignment operator disabled
 
-    private:
         //Function: start
         //  Starts the search thread looking for upnp WSDAs.
         void start();
@@ -97,7 +92,6 @@ namespace mscl
         //  device - The <UpnpDevice> that was found.
         void onDeviceAdded(const UpnpDevice& device);
 
-    private:
         //Variable: m_upnpService
         //  The <UpnpService> that asynchronously searches for upnp devices.
         std::unique_ptr<UpnpService> m_upnpService;
@@ -127,10 +121,10 @@ namespace mscl
         //
         //Returns:
         //  A <WsdaMap> of the WSDAs that were found on the network.
-        WsdaFinder::WsdaMap found();
+        WsdaMap found();
 
         //API Function: restart
         //  Clears out the list of found WSDAs and forces a restart of the upnp search.
         void restart();
     };
-}
+} // namespace mscl

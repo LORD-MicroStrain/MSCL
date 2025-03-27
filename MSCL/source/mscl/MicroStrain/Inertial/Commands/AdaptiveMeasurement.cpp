@@ -4,12 +4,7 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "AdaptiveMeasurement.h"
-#include "mscl/MicroStrain/MIP/MipDataField.h"
-#include "mscl/MicroStrain/MIP/Packets/MipPacketBuilder.h"
-#include "mscl/MicroStrain/MIP/MipTypes.h"
-#include "mscl/MicroStrain/MIP/Commands/MIP_Commands.h"
+#include "mscl/MicroStrain/Inertial/Commands/AdaptiveMeasurement.h"
 
 namespace mscl
 {
@@ -17,7 +12,7 @@ namespace mscl
         m_cmd(cmd),
         m_functionSelector(function_selector),
         m_data(dataToUse)
-    { }
+    {}
 
     AdaptiveMeasurement::AdaptiveMeasurement(MipTypes::Command cmd, MipTypes::FunctionSelector function_selector) :
         m_cmd(cmd),
@@ -124,4 +119,4 @@ namespace mscl
 
         return GenericMipCommand::buildCommand(commandType(), byteCommand.data());
     }
-}
+} // namespace mscl

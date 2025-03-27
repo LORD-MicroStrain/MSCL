@@ -6,17 +6,9 @@
 
 #pragma once
 
-#include <bitset>
-#include <functional>
-#include <iomanip>
-#include <string>
-#include "Types.h"
-#include <regex>
-
 namespace mscl
 {
 #ifndef SWIG
-
     //Namespace: Utils
     //    Contains many commonly used utility functions.
     //    Note: Communication with our devices (wireless and inertial) is done in Big Endian.
@@ -563,8 +555,7 @@ namespace mscl
                 m_loadFn(nullptr),
                 m_value(value),
                 m_loaded(true)
-            {
-            }
+            {}
 
             const T& operator*() const
             {
@@ -581,6 +572,6 @@ namespace mscl
             mutable T m_value;
             mutable bool m_loaded;
         };
-    }
-#endif
-}
+    } // namespace Utils
+#endif // !SWIG
+} // namespace mscl

@@ -4,19 +4,14 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "ExternalHeadingUpdateWithTimestamp.h"
-#include "mscl/MicroStrain/MIP/MipDataField.h"
-#include "mscl/MicroStrain/MIP/Packets/MipPacketBuilder.h"
-#include "mscl/MicroStrain/MIP/MipTypes.h"
-#include "mscl/MicroStrain/MIP/Commands/MIP_Commands.h"
+#include "mscl/MicroStrain/Inertial/Commands/ExternalHeadingUpdateWithTimestamp.h"
 
 namespace mscl
 {
     ExternalHeadingUpdateWithTimestamp::ExternalHeadingUpdateWithTimestamp(const HeadingData& headingData, const TimeUpdate& timestamp) :
         m_headingData(headingData),
         m_Timestamp (timestamp)
-    { }
+    {}
 
     ExternalHeadingUpdateWithTimestamp ExternalHeadingUpdateWithTimestamp::MakeCommand(const HeadingData& headingData, const TimeUpdate& timestamp)
     {
@@ -46,5 +41,4 @@ namespace mscl
 
         return GenericMipCommand::buildCommand(commandType(), byteCommand.data());
     }
-
-}
+} // namespace mscl

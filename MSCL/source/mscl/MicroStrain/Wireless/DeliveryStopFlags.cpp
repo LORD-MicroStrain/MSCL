@@ -4,9 +4,7 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-
-#include "DeliveryStopFlags.h"
+#include "mscl/MicroStrain/Wireless/DeliveryStopFlags.h"
 
 namespace mscl
 {
@@ -15,16 +13,14 @@ namespace mscl
         appBoard(false),
         linkBoard(false),
         baseStation(false)
-    {
-    }
+    {}
 
     DeliveryStopFlags::DeliveryStopFlags(bool pc, bool appBoard, bool linkBoard, bool baseStation) :
         pc(pc),
         appBoard(appBoard),
         linkBoard(linkBoard),
         baseStation(baseStation)
-    {
-    }
+    {}
 
     bool DeliveryStopFlags::operator==(const DeliveryStopFlags& src) const
     {
@@ -91,4 +87,4 @@ namespace mscl
 
         return dsf;
     }
-}
+} // namespace mscl

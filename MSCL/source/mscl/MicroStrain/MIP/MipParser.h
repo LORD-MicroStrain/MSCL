@@ -6,14 +6,12 @@
 
 #pragma once
 
-#include "mscl/Types.h"
-#include "Packets/MipPacket.h"
-#include "../../Communication/RawBytePacketCollector.h"
 #include "mscl/MicroStrain/MIP/MipDataField.h"
-#include <memory>
 
 namespace mscl
 {
+    class MipPacket;
+    class RawBytePacketCollector;
     class DataBuffer;
     class MipPacketCollector;
     class ResponseCollector;
@@ -50,7 +48,6 @@ namespace mscl
         MipParser(const MipParser&);                //copy constructor disabled
         MipParser& operator=(const MipParser&);    //assignment operator disabled
 
-    private:
         //Variable: m_packetCollector
         //    The <MipPacketCollector> associated with this parser and its parent device
         MipPacketCollector* m_packetCollector;
@@ -63,7 +60,6 @@ namespace mscl
         //    The <RawBytePacketCollector> associated with this parser and its parent device
         RawBytePacketCollector* m_rawBytePacketCollector;
 
-    private:
         //Function: processPacket
         //    Takes an <MipPacket>, adds it to the data container if it is a data packet,
         //    or adds it to the appropriate handler depending on the packet type
@@ -138,4 +134,4 @@ namespace mscl
 
         void addRawBytePacket(Bytes& rawBytePacket, bool valid, bool packetFound);
     };
-}
+} // namespace mscl

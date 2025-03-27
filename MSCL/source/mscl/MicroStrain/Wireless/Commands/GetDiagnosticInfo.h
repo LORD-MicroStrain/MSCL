@@ -6,10 +6,9 @@
 
 #pragma once
 
-#include "mscl/MicroStrain/ByteStream.h"
-#include "WirelessResponsePattern.h"
-#include "mscl/MicroStrain/Wireless/WirelessDataPoint.h"
+#include "mscl/MicroStrain/Wireless/Commands/WirelessResponsePattern.h"
 #include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
+#include "mscl/MicroStrain/Wireless/WirelessDataPoint.h"
 
 namespace mscl
 {
@@ -24,7 +23,6 @@ namespace mscl
         GetDiagnosticInfo(const GetDiagnosticInfo&) = delete;                //copy constructor disabled
         GetDiagnosticInfo& operator=(const GetDiagnosticInfo&) = delete;     //assignment operator disabled
 
-    public:
         //Function: buildCommand
         //  Builds the command packet.
         //
@@ -66,7 +64,7 @@ namespace mscl
             //
             //Returns:
             //  true if the packet matches a response pattern, false otherwise
-            virtual bool matchSuccessResponse(const WirelessPacket& packet) override;
+            bool matchSuccessResponse(const WirelessPacket& packet) override;
 
         public:
             //Function: result
@@ -77,4 +75,4 @@ namespace mscl
             const ChannelData& result() const;
         };
     };
-}
+} // namespace mscl

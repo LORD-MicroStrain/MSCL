@@ -4,19 +4,15 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "WirelessProtocol.h"
-#include "AutoCalInfo.h"
-#include "mscl/Version.h"
-#include "mscl/MicroStrain/Wireless/BaseStation.h"
+#include "mscl/MicroStrain/Wireless/Commands/WirelessProtocol.h"
+
 #include "mscl/MicroStrain/Wireless/BaseStation_Impl.h"
 #include "mscl/MicroStrain/Wireless/Features/NodeFeatures.h"
 
 namespace mscl
 {
     WirelessProtocol::WirelessProtocol()
-    {
-    }
+    {}
 
     Version WirelessProtocol::asppVersionFromBaseFw(const Version& fwVersion)
     {
@@ -24,14 +20,13 @@ namespace mscl
         {
             return Version(1, 3);
         }
-        else if(fwVersion >= NodeFeatures::MIN_BASE_FW_PROTOCOL_1_1)
+
+        if(fwVersion >= NodeFeatures::MIN_BASE_FW_PROTOCOL_1_1)
         {
             return Version(1, 1);
         }
-        else
-        {
-            return Version(1, 0);
-        }
+
+        return Version(1, 0);
     }
 
     Version WirelessProtocol::asppVersionFromNodeFw(const Version& fwVersion)
@@ -40,22 +35,23 @@ namespace mscl
         {
             return Version(1, 5);
         }
-        else if(fwVersion >= NodeFeatures::MIN_NODE_FW_PROTOCOL_1_4)
+
+        if(fwVersion >= NodeFeatures::MIN_NODE_FW_PROTOCOL_1_4)
         {
             return Version(1, 4);
         }
-        else if(fwVersion >= NodeFeatures::MIN_NODE_FW_PROTOCOL_1_2)
+
+        if(fwVersion >= NodeFeatures::MIN_NODE_FW_PROTOCOL_1_2)
         {
             return Version(1, 2);
         }
-        else if(fwVersion >= NodeFeatures::MIN_NODE_FW_PROTOCOL_1_1)
+
+        if(fwVersion >= NodeFeatures::MIN_NODE_FW_PROTOCOL_1_1)
         {
             return Version(1, 1);
         }
-        else
-        {
-            return Version(1, 0);
-        }
+
+        return Version(1, 0);
     }
 
     std::unique_ptr<WirelessProtocol> WirelessProtocol::getProtocol(const Version& asppVersion)
@@ -135,7 +131,7 @@ namespace mscl
         using namespace std::placeholders;
         static const WirelessPacket::AsppVersion ASPP1 = WirelessPacket::aspp_v1;
 
-        std::unique_ptr<WirelessProtocol> result = WirelessProtocol::v1_0();
+        std::unique_ptr<WirelessProtocol> result = v1_0();
 
         //changes from v1.0
 
@@ -158,7 +154,7 @@ namespace mscl
         using namespace std::placeholders;
         static const WirelessPacket::AsppVersion ASPP1 = WirelessPacket::aspp_v1;
 
-        std::unique_ptr<WirelessProtocol> result = WirelessProtocol::v1_1();
+        std::unique_ptr<WirelessProtocol> result = v1_1();
 
         //changes from v1.1
 
@@ -176,7 +172,7 @@ namespace mscl
         using namespace std::placeholders;
         static const WirelessPacket::AsppVersion ASPP1 = WirelessPacket::aspp_v1;
 
-        std::unique_ptr<WirelessProtocol> result = WirelessProtocol::v1_2();
+        std::unique_ptr<WirelessProtocol> result = v1_2();
 
         //changes from v1.2
 
@@ -191,7 +187,7 @@ namespace mscl
         using namespace std::placeholders;
         static const WirelessPacket::AsppVersion ASPP1 = WirelessPacket::aspp_v1;
 
-        std::unique_ptr<WirelessProtocol> result = WirelessProtocol::v1_3();
+        std::unique_ptr<WirelessProtocol> result = v1_3();
 
         //changes from v1.3
 
@@ -208,7 +204,7 @@ namespace mscl
         using namespace std::placeholders;
         static const WirelessPacket::AsppVersion ASPP1 = WirelessPacket::aspp_v1;
 
-        std::unique_ptr<WirelessProtocol> result = WirelessProtocol::v1_4();
+        std::unique_ptr<WirelessProtocol> result = v1_4();
 
         //changes from v1.4
 
@@ -223,7 +219,7 @@ namespace mscl
     {
         using namespace std::placeholders;
 
-        std::unique_ptr<WirelessProtocol> result = WirelessProtocol::v1_5();
+        std::unique_ptr<WirelessProtocol> result = v1_5();
 
         //changes from v1.5
 
@@ -237,7 +233,7 @@ namespace mscl
     {
         using namespace std::placeholders;
 
-        std::unique_ptr<WirelessProtocol> result = WirelessProtocol::v1_6();
+        std::unique_ptr<WirelessProtocol> result = v1_6();
 
         //changes from v1.6
 
@@ -251,7 +247,7 @@ namespace mscl
     {
         using namespace std::placeholders;
 
-        std::unique_ptr<WirelessProtocol> result = WirelessProtocol::v1_7();
+        std::unique_ptr<WirelessProtocol> result = v1_7();
 
         //changes from v1.7
 
@@ -265,7 +261,7 @@ namespace mscl
     {
         using namespace std::placeholders;
 
-        std::unique_ptr<WirelessProtocol> result = WirelessProtocol::v1_8();
+        std::unique_ptr<WirelessProtocol> result = v1_8();
 
         //changes from v1.8
 
@@ -325,7 +321,7 @@ namespace mscl
     {
         using namespace std::placeholders;
 
-        std::unique_ptr<WirelessProtocol> result = WirelessProtocol::v3_0();
+        std::unique_ptr<WirelessProtocol> result = v3_0();
 
         //changes from v3.0
 
@@ -337,36 +333,36 @@ namespace mscl
 
     bool WirelessProtocol::supportsBeaconStatus() const
     {
-        return (m_beaconStatus != nullptr);
+        return m_beaconStatus != nullptr;
     }
 
     bool WirelessProtocol::supportsNodeHardReset() const
     {
-        return (m_hardReset != nullptr);
+        return m_hardReset != nullptr;
     }
 
     bool WirelessProtocol::supportsNodeSoftReset() const
     {
-        return (m_softReset != nullptr);
+        return m_softReset != nullptr;
     }
 
     bool WirelessProtocol::supportsBaseHardReset() const
     {
-        return (m_hardBaseReset != nullptr);
+        return m_hardBaseReset != nullptr;
     }
 
     bool WirelessProtocol::supportsBaseSoftReset() const
     {
-        return (m_softBaseReset != nullptr);
+        return m_softBaseReset != nullptr;
     }
 
     bool WirelessProtocol::supportsBatchEepromRead() const
     {
-        return (m_batchEepromRead != nullptr);
+        return m_batchEepromRead != nullptr;
     }
 
     bool WirelessProtocol::supportsTestCommProtocol() const
     {
-        return (m_testNodeCommProtocol != nullptr);
+        return m_testNodeCommProtocol != nullptr;
     }
-}
+} // namespace mscl

@@ -4,21 +4,14 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
+#include "mscl/MicroStrain/Wireless/Packets/SyncSamplingPacket_v2.h"
 
-#include "mscl/Exceptions.h"
-#include "SyncSamplingPacket_v2.h"
 #include "mscl/MicroStrain/SampleUtils.h"
-#include "mscl/MicroStrain/Wireless/ChannelMask.h"
-#include "mscl/TimeSpan.h"
+#include "mscl/MicroStrain/Wireless/DataSweep.h"
 #include "mscl/TimestampCounter.h"
-#include "mscl/Types.h"
-#include "mscl/Utils.h"
-
 
 namespace mscl
 {
-
     SyncSamplingPacket_v2::SyncSamplingPacket_v2(const WirelessPacket& packet)
     {
         //construct the data packet from the wireless packet passed in
@@ -51,7 +44,7 @@ namespace mscl
         m_dataType = static_cast<WirelessTypes::DataType>(dataType);
 
         //build the full nanosecond resolution timestamp from the seconds and nanoseconds values read above
-        uint64 realTimestamp = (timestampSeconds * TimeSpan::NANOSECONDS_PER_SECOND) + timestampNanos;
+        uint64 realTimestamp = timestampSeconds * TimeSpan::NANOSECONDS_PER_SECOND + timestampNanos;
 
         if(!timestampWithinRange(Timestamp(realTimestamp)))
         {
@@ -127,7 +120,7 @@ namespace mscl
                 if(channels.enabled(chItr))
                 {
                     //insert the data point into the ChannelData object for the wireless channel
-                    addDataPoint(chData, (chItr), chDataIndex, sweepItr, wirelessChannelFromChNum(chItr));
+                    addDataPoint(chData, chItr, chDataIndex, sweepItr, wirelessChannelFromChNum(chItr));
 
                     chDataIndex++;
                 }
@@ -143,12 +136,12 @@ namespace mscl
 
     bool SyncSamplingPacket_v2::integrityCheck(const WirelessPacket& packet)
     {
-        WirelessPacket::Payload payload = packet.payload();
+        Payload payload = packet.payload();
 
         //verify the payload size
         if(payload.size() < PAYLOAD_OFFSET_CHANNEL_DATA)
         {
-            //payload must have at least 14 bytes to be valid
+            //the payload must have at least 14 bytes to be valid
             return false;
         }
 
@@ -194,7 +187,7 @@ namespace mscl
 
         uint32 recordSize = channels * dataSize;
 
-        //if record size is zero, something is wrong. Bail now before divide by zero
+        //If record size is zero, something is wrong. Bail now before divide by zero
         if(recordSize <= 0)
         {
             return false;
@@ -224,4 +217,4 @@ namespace mscl
         //return the tick value
         return packet.payload().read_uint16(PAYLOAD_OFFSET_TICK);
     }
-}
+} // namespace mscl

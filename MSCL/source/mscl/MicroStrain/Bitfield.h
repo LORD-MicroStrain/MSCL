@@ -6,8 +6,6 @@
 
 #pragma once
 
-#include "mscl/Types.h"
-
 namespace mscl
 {
     //Class: Bitfield
@@ -16,7 +14,7 @@ namespace mscl
     public:
         //Constructor: Bitfield
         //  Constructs Bitfield object with value 0
-        Bitfield() {};
+        Bitfield() {}
 
         //Constructor: Bitfield
         //  Constructs Bitfield object with indicated value
@@ -25,11 +23,11 @@ namespace mscl
         //  val - uint64 bitfield value
         Bitfield(uint64 val) :
             m_value(val)
-        {};
+        {}
 
         //Destructor: ~Bitfield
         //  Default destructor for the Bitfield object
-        virtual ~Bitfield() {};
+        virtual ~Bitfield() = default;
 
     private:
         //Variable: m_value
@@ -100,4 +98,4 @@ namespace mscl
         //  mask - uint64 mask to calculate shift count for
         static uint8 shiftCount(uint64 mask);
     };
-}
+} // namespace mscl

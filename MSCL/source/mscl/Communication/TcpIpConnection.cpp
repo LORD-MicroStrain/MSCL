@@ -4,16 +4,11 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-
-#include <boost/lambda/lambda.hpp>
-
-#include "TcpIpConnection.h"
-#include "mscl/Utils.h"
+#include "mscl/Communication/TcpIpConnection.h"
 
 #ifdef _WIN32
-#include <MSTcpIP.h>
-#endif
+#include <mstcpip.h>
+#endif // _WIN32
 
 namespace mscl
 {
@@ -107,7 +102,7 @@ namespace mscl
 
 #ifdef _WIN32
                 //enable and configure the keep-alive
-                struct tcp_keepalive alive;
+                tcp_keepalive alive;
                 alive.onoff = 1;                    //enable keep-alive
                 alive.keepalivetime = 30000;        //how long before starting to send keep-alive (milliseconds)
                 alive.keepaliveinterval = 1000;     //how often after the keepalivetime to send a keep-alive packet (milliseonds)
@@ -115,7 +110,7 @@ namespace mscl
                 DWORD dwBytesRet = 0;
 
                 WSAIoctl(m_ioPort->native_handle(), SIO_KEEPALIVE_VALS, &alive, sizeof(alive), NULL, 0, &dwBytesRet, NULL, NULL);
-#endif
+#endif // _WIN32
 
                 //setup m_comm by creating a new BoostCommunication object using the serial_port and io_context we created
                 m_comm.reset(new BoostCommunication<tcp::socket>(std::move(m_ioContext), std::move(m_ioPort)));
@@ -176,4 +171,4 @@ namespace mscl
         // Put the actor back to sleep.
         m_deadlineTimer->async_wait(std::bind(&TcpIpConnection::checkDeadline, this, error));
     }
-}
+} // namespace mscl

@@ -4,11 +4,9 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
+#include "mscl/MicroStrain/Wireless/Commands/BaseStation_SetBeacon_v2.h"
 
-#include "BaseStation_SetBeacon_v2.h"
-#include "WirelessProtocol.h"
-#include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
+#include "mscl/MicroStrain/Wireless/Commands/WirelessProtocol.h"
 
 namespace mscl
 {
@@ -45,11 +43,10 @@ namespace mscl
         return cmd;
     }
 
-    BaseStation_SetBeacon_v2::Response::Response(uint32 utcTime, std::weak_ptr<ResponseCollector> collector):
+    BaseStation_SetBeacon_v2::Response::Response(uint32 utcTime, std::weak_ptr<ResponseCollector> collector) :
         WirelessResponsePattern(collector, WirelessProtocol::cmdId_base_setBeacon_v2, WirelessProtocol::BASE_STATION_ADDRESS),
         m_beaconStartTime(utcTime)
-    {
-    }
+    {}
 
     bool BaseStation_SetBeacon_v2::Response::matchSuccessResponse(const WirelessPacket& packet)
     {
@@ -98,4 +95,4 @@ namespace mscl
     {
         return Timestamp(static_cast<uint64>(m_beaconStartTime) * TimeSpan::NANOSECONDS_PER_SECOND);
     }
-}
+} // namespace mscl

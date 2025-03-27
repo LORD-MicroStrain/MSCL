@@ -4,12 +4,11 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "NodeFeatures_rtdlink200.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures_rtdlink200.h"
 
-#include "mscl/Exceptions.h"
+#include "mscl/MicroStrain/SampleRate.h"
 #include "mscl/MicroStrain/Wireless/Configuration/NodeEepromMap.h"
-#include "AvailableSampleRates.h"
+#include "mscl/MicroStrain/Wireless/Features/AvailableSampleRates.h"
 
 namespace mscl
 {
@@ -202,4 +201,4 @@ namespace mscl
     {
         return m_nodeInfo.firmwareVersion() >= Version(12, 42296);
     }
-}
+} // namespace mscl

@@ -6,13 +6,13 @@
 
 #pragma once
 
-#include <condition_variable>
-#include <boost/circular_buffer.hpp>
-
-#include "MipDataPacket.h"
+#include "mscl/MicroStrain/MIP/MipTypes.h"
 
 namespace mscl
 {
+    class MipPacket;
+    class MipDataPacket;
+
     //Class: MipPacketCollector
     //    Class that sets/matches expected responses, and stores all the Inertial packets
     class MipPacketCollector
@@ -38,7 +38,6 @@ namespace mscl
         //    The maximum number of data packets that can be stored in the circular buffer
         static const int MAX_DATA_BUFFER_SIZE = 1024 * 100;
 
-    private:
         //Variable: m_dataPackets
         //    A circular buffer that holds <MipDataPacket>s
         circular_data_buffer m_dataPackets;
@@ -59,7 +58,6 @@ namespace mscl
         //  A map of previous <MipDataPacket>s for each <MipTypes::DataClass>
         std::map<MipTypes::DataClass, MipDataPacket> m_previousPackets;
 
-    private:
         //Function: adjustPacketTimestamp
         //  Adjusts the collected timestamp of the <MipDataPacket> if possible,
         //  by using the GPS time field in the packet and comparing it with the previous packet.
@@ -95,4 +93,4 @@ namespace mscl
         //    The total number of data packets that are currently in the buffer.
         uint32 totalPackets();
     };
-}
+} // namespace mscl

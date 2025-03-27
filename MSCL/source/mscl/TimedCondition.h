@@ -6,11 +6,6 @@
 
 #pragma once
 
-#include "TimeSpan.h"
-#include "Types.h"
-
-#include <condition_variable>
-
 namespace mscl
 {
     //Class: TimedCondition
@@ -28,7 +23,6 @@ namespace mscl
         TimedCondition(const TimedCondition&);                //copy constructor disabled
         TimedCondition& operator=(const TimedCondition&);    //assignement operator disabled
 
-    private:
         //Variable: m_condition
         //    The condition object that this class provides a wrapper for.
         std::condition_variable m_condition;
@@ -57,4 +51,4 @@ namespace mscl
         //    Unblocks the TimedCondition if it is currently blocked from calling timedWait()
         void notify();
     };
-}
+} // namespace mscl

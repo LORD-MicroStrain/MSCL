@@ -4,13 +4,15 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
-#include "mscl/MicroStrain/Wireless/Packets/WirelessDataPacket.h"
 #include "mscl/MicroStrain/Wireless/ChannelMask.h"
-
-#include <boost/test/unit_test.hpp>
+#include "mscl/MicroStrain/Wireless/Packets/WirelessDataPacket.h"
+#include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
 
 using namespace mscl;
+
+DISABLE_WARNING_BOOST_START
+#include <boost/test/unit_test.hpp>
+DISABLE_WARNING_BOOST_END
 
 BOOST_AUTO_TEST_SUITE(WirelessPacket_Test)
 
@@ -110,7 +112,7 @@ BOOST_AUTO_TEST_SUITE_END()
 
 BOOST_AUTO_TEST_CASE(WirelessDataPacket_timestampWithinRange)
 {
-    Timestamp ts(Utils::getCurrentSystemTime() + 1800000000000);    //half hour in the future
+    Timestamp ts(Utils::getCurrentSystemTime() + 1800000000000);    //half-hour in the future
     BOOST_CHECK_EQUAL(WirelessDataPacket::timestampWithinRange(ts), true);
 
     Timestamp ts4(Utils::getCurrentSystemTime());

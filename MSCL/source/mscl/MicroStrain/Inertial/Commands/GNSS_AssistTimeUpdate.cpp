@@ -4,17 +4,12 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "GNSS_AssistTimeUpdate.h"
-#include "mscl/MicroStrain/MIP/MipDataField.h"
-#include "mscl/MicroStrain/MIP/Packets/MipPacketBuilder.h"
-#include "mscl/MicroStrain/MIP/MipTypes.h"
-#include "mscl/MicroStrain/MIP/Commands/MIP_Commands.h"
+#include "mscl/MicroStrain/Inertial/Commands/GNSS_AssistTimeUpdate.h"
 
 namespace mscl
 {
     GNSS_AssistTimeUpdate::GNSS_AssistTimeUpdate()
-    { }
+    {}
 
     ByteStream GNSS_AssistTimeUpdate::buildCommand_get()
     {
@@ -37,11 +32,11 @@ namespace mscl
 
     GNSS_AssistTimeUpdate::Response::Response(std::weak_ptr<ResponseCollector> collector, bool ackNackExpected, bool dataResponseExpected) :
         GenericMipCommand::Response(MipTypes::CMD_GNSS_ASSIST_TIME_UPDATE, collector, ackNackExpected, dataResponseExpected, "GNSS_AssistTimeUpdate")
-    { }
+    {}
 
     TimeUpdate GNSS_AssistTimeUpdate::Response::parseResponse(const GenericMipCmdResponse& response) const
     {
         TimeUpdate returnData( response.data().read_double(0), response.data().read_uint16(4), response.data().read_float(6) );
         return returnData;
     }
-}
+} // namespace mscl

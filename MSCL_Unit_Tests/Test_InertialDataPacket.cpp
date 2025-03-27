@@ -6,12 +6,13 @@
 
 #include "mscl/MicroStrain/MIP/Packets/MipDataPacket.h"
 #include "mscl/MicroStrain/MIP/Packets/MipPacket.h"
-#include "mscl/Timestamp.h"
 #include "mscl/Utils.h"
 
-#include <boost/test/unit_test.hpp>
-
 using namespace mscl;
+
+DISABLE_WARNING_BOOST_START
+#include <boost/test/unit_test.hpp>
+DISABLE_WARNING_BOOST_END
 
 BOOST_AUTO_TEST_SUITE(InertialDataPacket_Test)
 
@@ -102,12 +103,10 @@ BOOST_AUTO_TEST_CASE(InertialDataPacket_ParseValidData_multipleFields)
     BOOST_CHECK_EQUAL(packet.data()[1].valid(), true);
 }
 
-/*
-BOOST_AUTO_TEST_CASE(InertialDataPacket_ParseInvalidData)
-{
-    //TODO: parse packets with invalid data, make sure they show as invalid
-}
-*/
+// BOOST_AUTO_TEST_CASE(InertialDataPacket_ParseInvalidData)
+// {
+//     //TODO: parse packets with invalid data, make sure they show as invalid
+// }
 
 BOOST_AUTO_TEST_CASE(InertialDataPacket_CorruptedBytes)
 {
@@ -137,7 +136,5 @@ BOOST_AUTO_TEST_CASE(InertialDataPacket_CorruptedBytes)
     BOOST_CHECK_EQUAL(packet.data()[1].as_float(), 0.0);
     BOOST_CHECK_EQUAL(packet.data()[2].as_float(), 0.0);
 }
-
-
 
 BOOST_AUTO_TEST_SUITE_END()

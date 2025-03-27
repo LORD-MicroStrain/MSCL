@@ -4,19 +4,18 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "BaseStationEeprom.h"
-#include "BaseStationEepromMap.h"
-#include "mscl/MicroStrain/Wireless/Features/BaseStationFeatures.h"
+#include "mscl/MicroStrain/Wireless/Configuration/BaseStationEeprom.h"
+
 #include "mscl/MicroStrain/Wireless/BaseStation_Impl.h"
-#include "mscl/Utils.h"
+#include "mscl/MicroStrain/Wireless/Configuration/BaseStationEepromMap.h"
+#include "mscl/MicroStrain/Wireless/Features/BaseStationFeatures.h"
 
 namespace mscl
 {
-    BaseStationEeprom::BaseStationEeprom(BaseStation_Impl* base):
+    BaseStationEeprom::BaseStationEeprom(BaseStation_Impl* base) :
         Eeprom(true, 2),
         m_baseStation(base)
-    { }
+    {}
 
     bool BaseStationEeprom::updateCacheFromDevice(uint16 location)
     {
@@ -145,4 +144,4 @@ namespace mscl
 
         throw Error_Communication("Failed to write EEPROM " + Utils::toStr(location) + " to the BaseStation.");
     }
-}
+} // namespace mscl

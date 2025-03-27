@@ -4,13 +4,16 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "mscl/MicroStrain/MIP/Packets/MipPacketCollector.h"
+#include "mscl/Communication/RawBytePacketCollector.h"
+#include "mscl/MicroStrain/MIP/Packets/MipDataPacket.h"
 #include "mscl/MicroStrain/MIP/Packets/MipPacket.h"
-#include "mscl/Exceptions.h"
-
-#include <boost/test/unit_test.hpp>
+#include "mscl/MicroStrain/MIP/Packets/MipPacketCollector.h"
 
 using namespace mscl;
+
+DISABLE_WARNING_BOOST_START
+#include <boost/test/unit_test.hpp>
+DISABLE_WARNING_BOOST_END
 
 BOOST_AUTO_TEST_SUITE(InertialPacketCollector_Test)
 

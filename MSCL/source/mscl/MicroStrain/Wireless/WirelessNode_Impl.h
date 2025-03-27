@@ -6,31 +6,24 @@
 
 #pragma once
 
-#include "BaseStation.h"
-#include "WirelessModels.h"
-#include "WirelessChannel.h"
-#include "WirelessDataPoint.h"
-#include "RadioFeatures.h"
-#include "mscl/Version.h"
-#include "Commands/AutoBalanceResult.h"
-#include "Commands/AutoCalResult.h"
-#include "Commands/WirelessProtocol.h"
-#include "Configuration/ActivitySense.h"
-#include "Configuration/ConfigIssue.h"
-#include "Configuration/DataModeMask.h"
-#include "Configuration/EventTriggerOptions.h"
-#include "Configuration/FatigueOptions.h"
-#include "Configuration/HistogramOptions.h"
-#include "Configuration/NodeEeprom.h"
-#include "Configuration/NodeEepromHelper.h"
-#include "Configuration/TempSensorOptions.h"
-#include "Features/NodeFeatures.h"
+#include "mscl/MicroStrain/LinearEquation.h"
+#include "mscl/MicroStrain/Wireless/BaseStation.h"
+#include "mscl/MicroStrain/Wireless/Commands/AutoCalResult.h"
+#include "mscl/MicroStrain/Wireless/Commands/WirelessProtocol.h"
+#include "mscl/MicroStrain/Wireless/Configuration/ActivitySense.h"
+#include "mscl/MicroStrain/Wireless/Configuration/EventTriggerOptions.h"
+#include "mscl/MicroStrain/Wireless/Configuration/FatigueOptions.h"
+#include "mscl/MicroStrain/Wireless/Configuration/HistogramOptions.h"
+#include "mscl/MicroStrain/Wireless/Configuration/NodeEeprom.h"
+#include "mscl/MicroStrain/Wireless/Configuration/NodeEepromHelper.h"
+#include "mscl/MicroStrain/Wireless/Configuration/TempSensorOptions.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures.h"
+#include "mscl/MicroStrain/Wireless/RadioFeatures.h"
 
 namespace mscl
 {
     //forward declarations
     struct ShuntCalCmdInfo;
-    class WirelessNode;
     class WirelessNodeConfig;
 
     //Class: WirelessNode_Impl
@@ -45,7 +38,6 @@ namespace mscl
         WirelessNode_Impl(const WirelessNode_Impl&) = delete;               //copy constructor disabled
         WirelessNode_Impl& operator=(const WirelessNode_Impl&) = delete;    //assignment operator disabled
 
-    public:
         //Constructor: WirelessNode_Impl
         //    Creates a WirelessNode_Impl object.
         //
@@ -74,11 +66,11 @@ namespace mscl
         mutable std::recursive_mutex m_protocolMutex;
 
         //Variable: m_protocol_lxrs
-        //    The <WirelessProtocol> containing all of the protocol commands and info for this Node when the Node is in LXRS radio mode.
+        //    The <WirelessProtocol> containing all the protocol commands and info for this Node when the Node is in LXRS radio mode.
         mutable std::unique_ptr<WirelessProtocol> m_protocol_lxrs;
 
         //Variable: m_protocol_lxrsPlus
-        //    The <WirelessProtocol> containing all of the protocol commands and info for this Node when the Node is in LXRS+ radio mode.
+        //    The <WirelessProtocol> containing all the protocol commands and info for this Node when the Node is in LXRS+ radio mode.
         mutable std::unique_ptr<WirelessProtocol> m_protocol_lxrsPlus;
 
         //Variable: m_eeprom
@@ -93,7 +85,6 @@ namespace mscl
         //    The <NodeFeatures> containing the features for this Node.
         mutable std::unique_ptr<NodeFeatures> m_features;
 
-    protected:
         //Function: determineProtocols
         //    Determines the <WirelessProtocol>s to use based on the Node's ASPP version.
         //    All <WirelessProtocol> member variables will be updated.
@@ -182,7 +173,7 @@ namespace mscl
         uint8 getReadWriteRetries() const;
 
         //Function: useEepromCache
-        //    Sets whether or not to utilize the eeprom cache when configuring this Node (default of enabled).
+        //    Sets whether to use the eeprom cache when configuring this Node (default of enabled).
         //
         //Parameters:
         //    useCache - whether the eeprom cache should be used (true) or not (false).
@@ -194,7 +185,7 @@ namespace mscl
 
         void clearEepromCacheLocation(uint16 location);
 
-        void updateEepromCacheFromNodeDiscovery(const NodeDiscovery& nodeDisovery);
+        void updateEepromCacheFromNodeDiscovery(const NodeDiscovery& nodeDiscovery);
 
         //Function: getEepromCache
         //  Gets a copy of the eeprom cache as a <WirelessTypes::EepromMap>.
@@ -411,7 +402,7 @@ namespace mscl
         uint32 getNumSweeps() const;
 
         //Function: getUnlimitedDuration
-        //    Gets whether or not unlimited sampling duration is enabled on the Node.
+        //    Gets whether unlimited sampling duration is enabled on the Node.
         //
         //Exceptions:
         //    - <Error_NotSupported>: Attempted to read an unsupported option. The device firmware is not compatible with this version of MSCL.
@@ -430,7 +421,7 @@ namespace mscl
 
         //Function: getDataCollectionMethod
         //    Gets the <WirelessTypes::DataCollectionMethod> that is currently set on the Node, representing how the data will be collected.
-        //    Note: this has no affect if the sampling mode is Armed Datalogging, as this mode only operates in "log only".
+        //    Note: this has no effect if the sampling mode is Armed Datalogging, as this mode only operates in "log only".
         //
         //Exceptions:
         //    - <Error_NotSupported>: Attempted to read an unsupported option. The device firmware is not compatible with this version of MSCL.
@@ -457,7 +448,7 @@ namespace mscl
         uint16 getLostBeaconTimeout() const;
 
         //Function: getPullUpResistor
-        //    Gets whether or not the pull-up resistor is enabled on the Node.
+        //    Gets whether the pull-up resistor is enabled on the Node.
         //
         //Parameters:
         //    mask - The <ChannelMask> of the pull-up resistor to read.
@@ -838,7 +829,6 @@ namespace mscl
         //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         WirelessTypes::DerivedVelocityUnit getDerivedVelocityUnit() const;
 
-    public:
         //Function: ping
         //    Performs a Long Ping command on the Node to check the communication between the Base Station and the Node.
         //
@@ -862,7 +852,7 @@ namespace mscl
 
         //Function: cyclePower
         //    Cycles the power on the Node.
-        //    Many configuration changes that are applied to the node do not take affect until the power is cycled.
+        //    Many configuration changes that are applied to the node do not take effect until the power is cycled.
         //
         //Exceptions:
         //    - <Error_NotSupported>: Attempted to write an unsupported option. The device firmware is not compatible with this version of MSCL.
@@ -939,7 +929,7 @@ namespace mscl
         //    The <AutoBalanceResult> containing information from the auto balance command.
         //
         //Exceptions:
-        //    - <Error_NotSupported>: Autobalance is not supported by the Node or channel specified.
+        //    - <Error_NotSupported>: Auto balance is not supported by the Node or channel specified.
         //    - <Error_NodeCommunication>: Failed to communicate with the Node.
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         virtual AutoBalanceResult autoBalance(const ChannelMask& mask, float targetPercent);
@@ -1072,7 +1062,7 @@ namespace mscl
         virtual void getDiagnosticInfo(ChannelData& result);
 
         //Function: testCommProtocol
-        //  Tests if the Node will still be able to communicate after changing the Node's communication protocol.
+        //  Tests if the Node still is able to communicate after changing the Node's communication protocol.
         //  This is recommended to be used before changing communication protocol as the range can change between protocol modes.
         //  Note: Both the Node and BaseStation will return to the current protocol after this test.
         //
@@ -1088,4 +1078,4 @@ namespace mscl
         //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         virtual bool testCommProtocol(WirelessTypes::CommProtocol commProtocol);
     };
-}
+} // namespace mscl

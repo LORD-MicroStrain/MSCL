@@ -4,10 +4,9 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "TestNodeCommProtocol.h"
-#include "WirelessProtocol.h"
-#include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
+#include "mscl/MicroStrain/Wireless/Commands/TestNodeCommProtocol.h"
+
+#include "mscl/MicroStrain/Wireless/Commands/WirelessProtocol.h"
 
 namespace mscl
 {
@@ -45,12 +44,11 @@ namespace mscl
         return cmd;
     }
 
-    TestNodeCommProtocol::Response::Response(NodeAddress nodeAddress, WirelessTypes::CommProtocol protocol, std::weak_ptr<ResponseCollector> collector):
+    TestNodeCommProtocol::Response::Response(NodeAddress nodeAddress, WirelessTypes::CommProtocol protocol, std::weak_ptr<ResponseCollector> collector) :
         WirelessResponsePattern(collector, WirelessProtocol::cmdId_testNodeCommProtocol, nodeAddress),
         m_nodeAddress(nodeAddress),
         m_protocol(protocol)
-    {
-    }
+    {}
 
     bool TestNodeCommProtocol::Response::matchSuccessResponse(const WirelessPacket& packet)
     {
@@ -135,4 +133,4 @@ namespace mscl
 
         return true;
     }
-}
+} // namespace mscl

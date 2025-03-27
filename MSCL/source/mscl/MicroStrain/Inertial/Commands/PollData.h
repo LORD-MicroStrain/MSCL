@@ -6,9 +6,6 @@
 
 #pragma once
 
-#include "mscl/MicroStrain/MIP/Commands/GenericMipCommand.h"
-#include "mscl/MicroStrain/ResponseCollector.h"
-#include "mscl/MicroStrain/Inertial/ExposedInertialTypes.h"
 #include "mscl/MicroStrain/MIP/Commands/MipCommand.h"
 
 namespace mscl
@@ -26,7 +23,6 @@ namespace mscl
 
         PollImuData() = delete;    //disabled default constructor
 
-    public:
         //Function: buildCommand
         //  Builds the bytes in the command
         //
@@ -50,9 +46,6 @@ namespace mscl
             Response(std::weak_ptr<ResponseCollector> collector);
         };
     };
-
-
-
 
     //Class: PollGnssData
     //    Contains the logic for the Poll GNSS Data command
@@ -65,7 +58,6 @@ namespace mscl
 
         PollGnssData() = delete;    //disabled default constructor
 
-    public:
         //Function: buildCommand
         //  Builds the bytes in the command
         //
@@ -89,9 +81,6 @@ namespace mscl
             Response(std::weak_ptr<ResponseCollector> collector);
         };
     };
-
-
-
 
     //Class: PollEstFilterData
     //    Contains the logic for the Poll Estimation Filter Data command
@@ -104,7 +93,6 @@ namespace mscl
 
         PollEstFilterData() = delete;    //disabled default constructor
 
-    public:
         //Function: buildCommand
         //  Builds the bytes in the command
         //
@@ -128,4 +116,4 @@ namespace mscl
             Response(std::weak_ptr<ResponseCollector> collector);
         };
     };
-}
+} // namespace mscl

@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "NodeFeatures_200series.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures_200series.h"
 
 namespace mscl
 {
@@ -14,27 +14,25 @@ namespace mscl
     //    Contains information on features for the V-Link2 node. Inherits from <NodeFeatures>.
     class NodeFeatures_vlink200 : public NodeFeatures_200series
     {
-    private:
         NodeFeatures_vlink200();    //disabled default constructor
 
     public:
-        virtual ~NodeFeatures_vlink200(){};
+        ~NodeFeatures_vlink200() override = default;
 
         //Constructor: NodeFeatures_vlink200
         //    Creates a NodeFeatures_vlink200 object.
         NodeFeatures_vlink200(const NodeInfo& info);
 
-    public:
-        virtual bool supportsSensorDelayConfig() const override;
+        bool supportsSensorDelayConfig() const override;
 
-        virtual bool supportsPoll() const override;
+        bool supportsPoll() const override;
 
-        virtual const WirelessTypes::WirelessSampleRates sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const override;
+        const WirelessTypes::WirelessSampleRates sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const override;
 
-        virtual const WirelessTypes::Filters antiAliasingFilters() const override;
+        const WirelessTypes::Filters antiAliasingFilters() const override;
 
         const uint32 minSensorDelay() const override;
 
         const uint32 defaultSensorDelay() const override;
     };
-}
+} // namespace mscl

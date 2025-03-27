@@ -6,8 +6,6 @@
 
 #pragma once
 
-#include "mscl/Types.h"
-
 namespace mscl
 {
     //API Class: BaseStationButton
@@ -19,15 +17,15 @@ namespace mscl
         //API Enums: Command
         //    Represents the types of commands that a <BaseStationButton> can perform.
         //
-        //    btn_nodeSleep                - 0    - Puts a Node into sleep mode.
-        //    btn_nodeStop                - 1 - Puts a Node into idle mode by stopping/waking it.
-        //    btn_enableBeacon            - 2 - Enables the Beacon on the BaseStation
-        //    btn_disableBeacon            - 3 - Disable the Beacon on the BaseStation
-        //    btn_nodeNonSyncSampling        - 4 - Starts a Node sampling in Non-Synchronized mode.
-        //    btn_nodeSyncSampling        - 5 - Starts a Node sampling in Synchronized mode.
-        //    btn_nodeArmedDatalogging    - 6 - Starts a Node sampling in Armed Datalogging mode.
-        //    btn_cyclePower                - 7 - Cycles the power on the BaseStation.
-        //    btn_disabled                - 65535 - Disables the button functionality.
+        //    btn_nodeSleep            - 0     - Puts a Node into sleep mode.
+        //    btn_nodeStop             - 1     - Puts a Node into idle mode by stopping/waking it.
+        //    btn_enableBeacon         - 2     - Enables the Beacon on the BaseStation
+        //    btn_disableBeacon        - 3     - Disable the Beacon on the BaseStation
+        //    btn_nodeNonSyncSampling  - 4     - Starts a Node sampling in Non-Synchronized mode.
+        //    btn_nodeSyncSampling     - 5     - Starts a Node sampling in Synchronized mode.
+        //    btn_nodeArmedDatalogging - 6     - Starts a Node sampling in Armed Datalogging mode.
+        //    btn_cyclePower           - 7     - Cycles the power on the BaseStation.
+        //    btn_disabled             - 65535 - Disables the button functionality.
         //=====================================================================================================
         enum Command
         {
@@ -55,9 +53,8 @@ namespace mscl
             action_shortPress    = 0,
             action_longPress    = 1
         };
-#endif
+#endif // !SWIG
 
-    public:
         //API Class: BaseStationButton
         //    Creates a default constructed BaseStationButton object.
         BaseStationButton();
@@ -85,7 +82,7 @@ namespace mscl
         //
         //Returns:
         //    A <BaseStationButton::Command> that is currently set in this object.
-        BaseStationButton::Command command() const;
+        Command command() const;
 
         //API Function: command
         //    Sets the <Command> of this BaseStationButton object.
@@ -97,7 +94,7 @@ namespace mscl
         //API Function: nodeAddress
         //    Gets the node address that the button's command targets that is currently set in this object.
         //    This is ignored if the command doesn't pertain to a node.
-        //    Note: To target all nodes on the frequency, set the node address to 65535.
+        //    Note: To target all nodes on the frequency, set the node address to 65,535.
         //
         //Returns:
         //    The node address that the button's command targets.
@@ -106,10 +103,10 @@ namespace mscl
         //API Function: nodeAddress
         //    Sets the node address to target from the button's command.
         //    This is ignored if the command doesn't pertain to a node.
-        //    Note: To target all nodes on the frequency, set the node address to 65535.
+        //    Note: To target all nodes on the frequency, set the node address to 65,535.
         //
         //Parameters:
         //    address - The node address to target from the button's command.
         void nodeAddress(uint16 address);
     };
-}
+} // namespace mscl

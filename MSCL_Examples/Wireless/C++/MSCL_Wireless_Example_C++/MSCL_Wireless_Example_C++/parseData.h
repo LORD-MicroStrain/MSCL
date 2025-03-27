@@ -1,43 +1,43 @@
 #pragma once
 
-#include "mscl/mscl.h"
+// MSCL common code header (typically used as a precompiled header)
+#include <mscl/stdafx.h>
+
+#include <mscl/MicroStrain/Wireless/BaseStation.h>
 
 static void parseData(mscl::BaseStation& base)
 {
-    //endless loop of reading in data
-    while(true)
+    // Endless loop of reading in data
+    while (true)
     {
-        //get all the data sweeps that have been collected by the BaseStation, with a timeout of 10 milliseconds
-        mscl::DataSweeps sweeps = base.getData(10);
-
-        for(mscl::DataSweep sweep : sweeps)
+        // Loop through all the data sweeps that have been collected by the BaseStation, with a timeout of 10 milliseconds
+        for (const mscl::DataSweep& sweep : base.getData(10))
         {
-            //print out information about the sweep
-            cout << "Packet Received:  ";
-            cout << "Node " << sweep.nodeAddress() << " ";
-            cout << "Timestamp: " << sweep.timestamp().str() << " ";
-            cout << "Tick: " << sweep.tick() << " ";
-            cout << "Sample Rate: " << sweep.sampleRate().prettyStr() << " ";
-            cout << "Base RSSI: " << sweep.baseRssi() << " ";
-            cout << "Node RSSI: " << sweep.nodeRssi() << " ";
+            // Print out information about the sweep
+            printf("Packet Received: ");
+            printf("Node %d ", sweep.nodeAddress());
+            printf("Timestamp: %s ", sweep.timestamp().str().c_str());
+            printf("Tick: %d ", sweep.tick());
+            printf("Sample Rate: %s ", sweep.sampleRate().prettyStr().c_str());
+            printf("Base RSSI: %d ", sweep.baseRssi());
+            printf("Node RSSI: %d ", sweep.nodeRssi());
 
-            //get the vector of data in the sweep
-            mscl::ChannelData data = sweep.data();
+            printf("DATA: ");
 
-            cout << "DATA: ";
-            //iterate over each point in the sweep
-            for(auto dataPoint : data)
+            // Iterate over each point in the sweep
+            for (const mscl::WirelessDataPoint& dataPoint: sweep.data())
             {
-                //print out the channel name
-                cout << dataPoint.channelName() << ": ";
+                // Print out the channel name
+                printf("%s: ", dataPoint.channelName().c_str());
 
-                //print out the channel data
-                //Note: The as_string() function is being used here for simplicity. 
-                //      Other methods (ie. as_float, as_uint16, as_Vector) are also available.
+                // Print out the channel data
+                // Note: The as_string() function is being used here for simplicity.
+                //      Other methods (i.e., as_float, as_uint16, as_Vector) are also available.
                 //      To determine the format that a dataPoint is stored in, use dataPoint.storedAs().
-                cout << dataPoint.as_string() << " ";
+                printf("%s ", dataPoint.as_string().c_str());
             }
-            cout << endl;
+
+            printf("\n");
         }
     }
 }

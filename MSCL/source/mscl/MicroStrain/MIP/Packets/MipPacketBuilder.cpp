@@ -4,13 +4,13 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "MipPacketBuilder.h"
-#include "MipPacket.h"
+#include "mscl/MicroStrain/MIP/Packets/MipPacketBuilder.h"
+
+#include "mscl/MicroStrain/MIP/Packets/MipPacket.h"
 
 namespace mscl
 {
-    MipPacketBuilder::MipPacketBuilder(const uint8 descriptorSet, const MipDataField& field):
+    MipPacketBuilder::MipPacketBuilder(const uint8 descriptorSet, const MipDataField& field) :
         m_descriptorSet(descriptorSet)
     {
         //add the field to the vector of fields
@@ -32,7 +32,7 @@ namespace mscl
         for(MipDataField field : m_fields)
         {
             //field length = (1 field len byte + 1 field desc byte + n field data bytes)
-            size_t fieldLen = (1 + 1 + field.fieldData().size());
+            size_t fieldLen = 1 + 1 + field.fieldData().size();
 
             //increase the payload length
             payloadLen += static_cast<uint8>(fieldLen);
@@ -70,4 +70,4 @@ namespace mscl
         //return the result bytes that we created
         return result;
     }
-}
+} // namespace mscl

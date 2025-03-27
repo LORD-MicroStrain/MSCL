@@ -4,18 +4,20 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "mscl/MicroStrain/MIP/MipParser.h"
-#include "mscl/MicroStrain/MIP/Packets/MipPacket.h"
-#include "mscl/MicroStrain/MIP/Packets/MipDataPacket.h"
-#include "mscl/MicroStrain/MIP/Packets/MipPacketCollector.h"
-#include "mscl/MicroStrain/ResponseCollector.h"
+#include "mscl/Communication/RawBytePacketCollector.h"
 #include "mscl/MicroStrain/ChecksumBuilder.h"
 #include "mscl/MicroStrain/DataBuffer.h"
-#include "mscl/Exceptions.h"
-
-#include <boost/test/unit_test.hpp>
+#include "mscl/MicroStrain/MIP/MipParser.h"
+#include "mscl/MicroStrain/MIP/Packets/MipDataPacket.h"
+#include "mscl/MicroStrain/MIP/Packets/MipPacket.h"
+#include "mscl/MicroStrain/MIP/Packets/MipPacketCollector.h"
+#include "mscl/MicroStrain/ResponseCollector.h"
 
 using namespace mscl;
+
+DISABLE_WARNING_BOOST_START
+#include <boost/test/unit_test.hpp>
+DISABLE_WARNING_BOOST_END
 
 BOOST_AUTO_TEST_SUITE(InertialParser_Test)
 
@@ -158,8 +160,6 @@ BOOST_AUTO_TEST_CASE(InertialParser_parseAsPacket_badPayload)
 }
 
 BOOST_AUTO_TEST_SUITE_END()
-
-
 
 BOOST_AUTO_TEST_SUITE(InertialParser_ParseSuite)
 
@@ -409,7 +409,5 @@ BOOST_AUTO_TEST_CASE(InertialParser_parse_validDataPacket_AfterNotEnoughData)
 }
 
 BOOST_AUTO_TEST_SUITE_END()
-
-
 
 BOOST_AUTO_TEST_SUITE_END()

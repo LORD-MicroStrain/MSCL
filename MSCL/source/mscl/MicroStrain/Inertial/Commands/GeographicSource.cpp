@@ -4,19 +4,14 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "GeographicSource.h"
-#include "mscl/MicroStrain/MIP/MipDataField.h"
-#include "mscl/MicroStrain/MIP/Packets/MipPacketBuilder.h"
-#include "mscl/MicroStrain/MIP/MipTypes.h"
-#include "mscl/MicroStrain/MIP/Commands/MIP_Commands.h"
+#include "mscl/MicroStrain/Inertial/Commands/GeographicSource.h"
 
 namespace mscl
 {
     GeographicSource::GeographicSource(MipTypes::FunctionSelector function_selector, const GeographicSourceOptions& dataToUse) :
         m_functionSelector(function_selector),
         m_sourceOptions(dataToUse)
-    { }
+    {}
 
     GeographicSource::GeographicSource(MipTypes::FunctionSelector function_selector) :
         m_functionSelector(function_selector)
@@ -38,7 +33,7 @@ namespace mscl
 
     bool GeographicSource::responseExpected() const
     {
-        return (m_functionSelector == MipTypes::READ_BACK_CURRENT_SETTINGS) ? true : false;
+        return m_functionSelector == MipTypes::READ_BACK_CURRENT_SETTINGS;
     }
 
     GeographicSourceOptions GeographicSource::getResponseData(const GenericMipCmdResponse& response)
@@ -65,7 +60,6 @@ namespace mscl
         }
         return GenericMipCommand::buildCommand(commandType(), byteCommand.data());
     }
-
 
     // InclinationSource
     InclinationSource::InclinationSource(MipTypes::FunctionSelector function_selector, const GeographicSourceOptions& dataToUse) :
@@ -95,7 +89,6 @@ namespace mscl
         return InclinationSource(MipTypes::READ_BACK_CURRENT_SETTINGS, dataToUse);
     }
 
-
     // DeclinationSource
     DeclinationSource::DeclinationSource(MipTypes::FunctionSelector function_selector, const GeographicSourceOptions& dataToUse) :
         GeographicSource(function_selector, dataToUse)
@@ -124,7 +117,6 @@ namespace mscl
         return DeclinationSource(MipTypes::READ_BACK_CURRENT_SETTINGS, dataToUse);
     }
 
-
     // MagneticFieldMagnitudeSource
     MagneticFieldMagnitudeSource::MagneticFieldMagnitudeSource(MipTypes::FunctionSelector function_selector, const GeographicSourceOptions& dataToUse) :
         GeographicSource(function_selector, dataToUse)
@@ -152,5 +144,4 @@ namespace mscl
         GeographicSourceOptions dataToUse;  // The data won't get used for a get command.
         return MagneticFieldMagnitudeSource(MipTypes::READ_BACK_CURRENT_SETTINGS, dataToUse);
     }
-
-}
+} // namespace mscl

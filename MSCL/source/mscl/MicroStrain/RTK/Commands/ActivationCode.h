@@ -7,33 +7,28 @@
 #pragma once
 
 #include "mscl/MicroStrain/MIP/Commands/GenericMipCommand.h"
-#include "mscl/MicroStrain/Inertial/ExposedInertialTypes.h"
-#include "mscl/MicroStrain/ResponseCollector.h"
-#include "mscl/MicroStrain/SampleRate.h"
-
 
 namespace mscl
 {
     //Class: ActivationCode
     //    Contains the logic for the ActivationCode command.
-    class ActivationCode : private GenericMipCommand
+    class ActivationCode : GenericMipCommand
     {
-    private:
-        ActivationCode() {};                //default constructor disabled
+        ActivationCode() {}                //default constructor disabled
 
         //Constants: Packet Bytes
         // FIELD_DATA_BYTE - Descriptor byte for the Field data.
         static const uint8 FIELD_DATA_BYTE = 0x87;
 
     public:
-        virtual ~ActivationCode() {};
+        ~ActivationCode() override = default;
 
         static ByteStream buildCommand_get();
 
         class Response : public GenericMipCommand::Response
         {
         protected:
-            virtual uint8 fieldDataByte() const override { return FIELD_DATA_BYTE; }
+            uint8 fieldDataByte() const override { return FIELD_DATA_BYTE; }
 
         public:
             Response(std::weak_ptr<ResponseCollector> collector);
@@ -41,4 +36,4 @@ namespace mscl
             std::string parseResponse(const GenericMipCmdResponse& response) const;
         };
     };
-}
+} // namespace mscl

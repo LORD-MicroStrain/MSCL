@@ -4,19 +4,21 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
+#include "mscl/MicroStrain/Wireless/DataSweep.h"
 #include "mscl/MicroStrain/Wireless/Packets/LdcPacket_v2.h"
+#include "mscl/MicroStrain/Wireless/Packets/WirelessDataPacket.h"
 #include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
 #include "mscl/MicroStrain/Wireless/Packets/WirelessPacketCollector.h"
-#include "mscl/MicroStrain/Wireless/Packets/WirelessDataPacket.h"
-#include "mscl/Exceptions.h"
-
-#include <boost/test/unit_test.hpp>
 
 using namespace mscl;
 
+DISABLE_WARNING_BOOST_START
+#include <boost/test/unit_test.hpp>
+DISABLE_WARNING_BOOST_END
+
 BOOST_AUTO_TEST_SUITE(Ldc16chPacket_Test)
 
-BOOST_AUTO_TEST_CASE(LdcPacket_Constructor_4ByteFloat)
+BOOST_AUTO_TEST_CASE(Ldc16chPacket_Constructor_4ByteFloat)
 {
     Bytes payloadBytes;
     payloadBytes.push_back(0);        //channel mask

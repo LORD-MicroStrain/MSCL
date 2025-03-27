@@ -6,15 +6,12 @@
 
 #pragma once
 
-#include "mscl/MicroStrain/ByteStream.h"
-#include "WirelessResponsePattern.h"
+#include "mscl/MicroStrain/Wireless/Commands/WirelessResponsePattern.h"
 #include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
 
 namespace mscl
 {
-
 #ifndef SWIG
-
     //Class: StartSyncSampling
     //    Contains logic for the Start Sync Sampling Node command
     class StartSyncSampling
@@ -24,7 +21,6 @@ namespace mscl
         StartSyncSampling(const StartSyncSampling&) = delete;               //disabled copy constructor
         StartSyncSampling& operator=(const StartSyncSampling&) = delete;    //disabled assignment operator
 
-    public:
         //Function: buildCommand
         //    Builds the Start Sync Sampling command packet
         //
@@ -62,10 +58,8 @@ namespace mscl
             //
             //Returns:
             //    true if the packet matches a response pattern, false otherwise
-            virtual bool matchSuccessResponse(const WirelessPacket& packet) override;
+            bool matchSuccessResponse(const WirelessPacket& packet) override;
         };
     };
-
-#endif
-
-}
+#endif // !SWIG
+} // namespace mscl

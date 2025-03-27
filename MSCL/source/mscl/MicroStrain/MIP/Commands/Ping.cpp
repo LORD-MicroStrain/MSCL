@@ -4,12 +4,9 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "Ping.h"
+#include "mscl/MicroStrain/MIP/Commands/Ping.h"
 
-#include "mscl/Utils.h"
 #include "mscl/MicroStrain/MIP/MipDataField.h"
-#include "mscl/MicroStrain/MIP/Packets/MipPacket.h"
 #include "mscl/MicroStrain/MIP/Packets/MipPacketBuilder.h"
 
 namespace mscl
@@ -29,8 +26,7 @@ namespace mscl
         return builder.buildPacket();
     }
 
-    Ping::Response::Response(std::weak_ptr<ResponseCollector> collector):
+    Ping::Response::Response(std::weak_ptr<ResponseCollector> collector) :
         GenericMipCommand::Response(MipTypes::CMD_PING, collector, true, false, "Ping")
-    {
-    }
-}
+    {}
+} // namespace mscl

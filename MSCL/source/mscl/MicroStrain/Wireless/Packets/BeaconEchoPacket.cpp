@@ -4,13 +4,12 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
+#include "mscl/MicroStrain/Wireless/Packets/BeaconEchoPacket.h"
 
-#include "BeaconEchoPacket.h"
+#include "mscl/MicroStrain/Wireless/DataSweep.h"
 
 namespace mscl
 {
-
     BeaconEchoPacket::BeaconEchoPacket(const WirelessPacket& packet)
     {
         //construct the data packet from the wireless packet passed in
@@ -70,7 +69,7 @@ namespace mscl
 
         //build the current beacon timestamp
         uint64 timestampSec = m_payload.read_uint32(2);
-        Timestamp time((timestampSec * TimeSpan::NANOSECONDS_PER_SECOND)); //no nanoseconds provided in this packet
+        Timestamp time(timestampSec * TimeSpan::NANOSECONDS_PER_SECOND); //no nanoseconds provided in this packet
 
         static const auto chName = std::bind(WirelessChannel::channelName, chId);
 
@@ -85,7 +84,7 @@ namespace mscl
 
     bool BeaconEchoPacket::integrityCheck(const WirelessPacket& packet)
     {
-        WirelessPacket::Payload payload = packet.payload();
+        Payload payload = packet.payload();
 
         //verify the payload size
         if(payload.size() != 6)
@@ -110,4 +109,4 @@ namespace mscl
         //packet looks valid
         return true;
     }
-}
+} // namespace mscl

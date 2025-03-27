@@ -4,12 +4,9 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "MipFieldParser.h"
+#include "mscl/MicroStrain/MIP/Packets/MipFieldParser.h"
 
-#include <vector>
-#include "MipDataPacket.h"
-
+#include "mscl/MicroStrain/MIP/MipDataField.h"
 
 namespace mscl
 {
@@ -93,6 +90,6 @@ namespace mscl
     bool MipFieldParser::pointIsValid(uint16 allFlags, uint16 flagPos)
     {
         //check the flag position against the allFlags value
-        return ((allFlags & flagPos) > 0);
+        return (allFlags & flagPos) > 0;
     }
-}
+} // namespace mscl

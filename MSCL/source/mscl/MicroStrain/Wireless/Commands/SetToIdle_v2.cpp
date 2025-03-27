@@ -4,12 +4,11 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "SetToIdle_v2.h"
-#include "WirelessProtocol.h"
-#include "mscl/MicroStrain/ByteStream.h"
-#include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
+#include "mscl/MicroStrain/Wireless/Commands/SetToIdle_v2.h"
+
+#include "mscl/MicroStrain/Wireless/Commands/WirelessProtocol.h"
 #include "mscl/MicroStrain/Wireless/NodeCommTimes.h"
+#include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
 
 namespace mscl
 {
@@ -50,11 +49,10 @@ namespace mscl
         return cmd;
     }
 
-    SetToIdle_v2::Response::Response(NodeAddress nodeAddress, std::weak_ptr<ResponseCollector> collector, const BaseStation& baseStation):
+    SetToIdle_v2::Response::Response(NodeAddress nodeAddress, std::weak_ptr<ResponseCollector> collector, const BaseStation& baseStation) :
         SetToIdle::Response(nodeAddress, collector, baseStation),
         m_started(false)
-    {
-    }
+    {}
 
     SetToIdle_v2::Response::~Response()
     {
@@ -107,7 +105,7 @@ namespace mscl
             return false;
         }
 
-        if(packet.asppVersion() == mscl::WirelessPacket::aspp_v3)
+        if(packet.asppVersion() == WirelessPacket::aspp_v3)
         {
             if(payload.size() != 11 ||
                payload.read_uint16(0) != WirelessProtocol::cmdId_stopNode_v2 ||     //command ID
@@ -149,7 +147,7 @@ namespace mscl
             return false;
         }
 
-        if(packet.asppVersion() == mscl::WirelessPacket::aspp_v3)
+        if(packet.asppVersion() == WirelessPacket::aspp_v3)
         {
             if(payload.size() != 7 ||                                               //payload length
                payload.read_uint16(0) != WirelessProtocol::cmdId_stopNode_v2 ||     //command ID
@@ -183,7 +181,7 @@ namespace mscl
 
         if(status == SUCCESS)
         {
-            NodeCommTimes::updateDeviceState(m_nodeAddress, DeviceState::deviceState_idle);
+            NodeCommTimes::updateDeviceState(m_nodeAddress, deviceState_idle);
             m_result = SetToIdleStatus::setToIdleResult_success;
             m_success = true;
         }
@@ -211,4 +209,4 @@ namespace mscl
     {
         return m_started;
     }
-}
+} // namespace mscl

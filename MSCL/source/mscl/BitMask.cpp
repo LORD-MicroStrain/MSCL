@@ -4,19 +4,17 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-
-#include "BitMask.h"
+#include "mscl/BitMask.h"
 
 namespace mscl
 {
-    BitMask::BitMask(uint16 val):
+    BitMask::BitMask(uint16 val) :
         m_numBits(16)   //for now, this class always uses 16 bits
     {
         fromMask(val);
     }
 
-    BitMask::BitMask():
+    BitMask::BitMask() :
         m_numBits(16)   //for now, this class always uses 16 bits
     {
         //initialize all the bits to inactive
@@ -71,7 +69,7 @@ namespace mscl
         for(uint8 i = 0; i < m_numBits; i++)
         {
             //check each bit in the value to see if it is active (1)
-            m_mask.push_back((val & (1 << i)) != 0);
+            m_mask.push_back((val & 1 << i) != 0);
         }
     }
 
@@ -85,7 +83,7 @@ namespace mscl
             //if the bit is active
             if(m_mask.at(i))
             {
-                mask |= (1 << i);
+                mask |= 1 << i;
             }
         }
 
@@ -148,4 +146,4 @@ namespace mscl
         //no bits were found to be enabled
         return -1;
     }
-}
+} // namespace mscl

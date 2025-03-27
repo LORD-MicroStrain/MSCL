@@ -6,13 +6,12 @@
 
 #pragma once
 
-#include "WirelessResponsePattern.h"
+#include "mscl/MicroStrain/Wireless/Commands/WirelessProtocol.h"
+#include "mscl/MicroStrain/Wireless/Commands/WirelessResponsePattern.h"
 #include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
-#include "mscl/Timestamp.h"
 
 namespace mscl
 {
-
     //Class: BaseStation_RfSweepStart
     //    Contains logic for the base station Start RF Sweep command.
     class BaseStation_RfSweepStart
@@ -22,7 +21,6 @@ namespace mscl
         BaseStation_RfSweepStart(const BaseStation_RfSweepStart&) = delete;              //copy constructor disabled
         BaseStation_RfSweepStart& operator=(const BaseStation_RfSweepStart&) = delete;   //assignement operator disabled
 
-    public:
         //Function: buildCommand
         //    Builds the beacon status command.
         //
@@ -40,7 +38,6 @@ namespace mscl
         //    Handles the response to the command
         class Response : public WirelessResponsePattern
         {
-        private:
             //Variable: m_min;
             //  The min frequency to match in the response.
             uint32 m_min;
@@ -81,5 +78,4 @@ namespace mscl
             bool matchSuccessResponse(const WirelessPacket& packet) override;
         };
     };
-
-}
+} // namespace mscl

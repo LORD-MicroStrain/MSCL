@@ -4,18 +4,13 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "DisplacementOutputDataRate.h"
-#include "mscl/MicroStrain/MIP/MipDataField.h"
-#include "mscl/MicroStrain/MIP/Packets/MipPacketBuilder.h"
-#include "mscl/MicroStrain/MIP/MipTypes.h"
-#include "mscl/MicroStrain/MIP/Commands/MIP_Commands.h"
+#include "mscl/MicroStrain/Displacement/Commands/DisplacementOutputDataRate.h"
 
 namespace mscl
 {
     ByteStream DisplacementOutputDataRate::buildCommand_get()
     {
-        mscl::Bytes fieldData;
+        Bytes fieldData;
         fieldData.push_back(MipTypes::READ_BACK_CURRENT_SETTINGS);
 
         return buildCommand(MipTypes::CMD_DISPLACEMENT_OUTPUT_RATE, fieldData);
@@ -23,8 +18,7 @@ namespace mscl
 
     DisplacementOutputDataRate::Response::Response(std::weak_ptr<ResponseCollector> collector, bool dataResponseExpected) :
         GenericMipCommand::Response(MipTypes::CMD_DISPLACEMENT_OUTPUT_RATE, collector, true, dataResponseExpected, "Displacement Output Data Rate")
-    {
-    }
+    {}
 
     SampleRate DisplacementOutputDataRate::Response::parseResponse(const GenericMipCmdResponse& response) const
     {
@@ -32,4 +26,4 @@ namespace mscl
 
         return SampleRate::Hertz(hertzRate);
     }
-}
+} // namespace mscl

@@ -16,6 +16,19 @@ ___
 
 ## Forthcoming
 
+## 67.1.0 - 2025-03-27
+- Wireless
+    - Added G-Link-200-P support
+- Fixed .NET library packaging
+- Fixed project files syntax
+- Fixed CMake configurations
+- Improved descriptions and syntax in examples
+- Added support for newer versions of Boost (1.68.0 - 1.79.0)
+- Updated C++ minimum standard to 14
+
+## 67.0.1 - 2025-02-18
+- Fixed device scanning for Linux
+
 ## 67.0.1 - 2025-01-30
 - Fixed Python install directory for Linux
 - Fixed Windows Python builds

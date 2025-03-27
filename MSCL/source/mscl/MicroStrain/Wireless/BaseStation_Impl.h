@@ -6,36 +6,42 @@
 
 #pragma once
 
-#include <map>
-#include <boost/optional.hpp>
+#include "mscl/Communication/RawBytePacketCollector.h"
+#include "mscl/MicroStrain/Wireless/BaseStationAnalogPair.h"
+#include "mscl/MicroStrain/Wireless/BaseStationButton.h"
+#include "mscl/MicroStrain/Wireless/Commands/AutoCal.h"
+#include "mscl/MicroStrain/Wireless/Commands/BeaconStatus.h"
+#include "mscl/MicroStrain/Wireless/Commands/PingResponse.h"
+#include "mscl/MicroStrain/Wireless/Commands/SetToIdleStatus.h"
+#include "mscl/MicroStrain/Wireless/Packets/WirelessPacketCollector.h"
 
-#include "WirelessParser.h"
-#include "WirelessModels.h"
-#include "Commands/AutoBalance_v2.h"
-#include "Commands/AutoCal.h"
-#include "Commands/BeaconStatus.h"
-#include "Commands/LongPing.h"
-#include "Commands/SetToIdleStatus.h"
-#include "Configuration/BaseStationEeprom.h"
-#include "Configuration/BaseStationEepromHelper.h"
-#include "Packets/WirelessPacketCollector.h"
-#include "mscl/Version.h"
-#include "mscl/Communication/Connection.h"
-#include "mscl/MicroStrain/ResponseCollector.h"
-#include "mscl/Timestamp.h"
-#include "mscl/Types.h"
+// #include "mscl/Communication/RawBytePacketCollector.h"
+// #include "mscl/MicroStrain/ResponseCollector.h"
+// #include "mscl/MicroStrain/Wireless/BaseStationAnalogPair.h"
+// #include "mscl/MicroStrain/Wireless/BaseStationButton.h"
+// #include "mscl/MicroStrain/Wireless/Commands/AutoCal.h"
+// #include "mscl/MicroStrain/Wireless/Commands/BeaconStatus.h"
+// #include "mscl/MicroStrain/Wireless/Commands/PingResponse.h"
+// #include "mscl/MicroStrain/Wireless/Commands/SetToIdleStatus.h"
+// #include "mscl/MicroStrain/Wireless/Packets/WirelessPacketCollector.h"
+// #include "mscl/MicroStrain/Wireless/WirelessParser.h"
 
 namespace mscl
 {
+    struct AutoCalCmdDetails;
+    class WirelessResponsePattern;
+    class WirelessParser;
+    class ResponseCollector;
     //forward declarations
     class AutoBalanceResult;
     class AutoCalResult;
     class BaseStation;
-    class BaseStationFeatures;
     class BaseStationConfig;
+    class BaseStationEeprom;
+    class BaseStationEepromHelper;
+    class BaseStationFeatures;
     struct DatalogSessionInfoResult;
-    class WirelessResponsePattern;
-    struct AutoCalCmdDetails;
+    class EepromLocation;
     class WirelessProtocol;
 
     //Class: BaseStation_Impl
@@ -1227,4 +1233,4 @@ namespace mscl
         //  - <Error_Connection>: A connection error has occurred with the BaseStation.
         bool node_autocal(NodeAddress nodeAddress, const ByteStream& command, AutoCal::Response& response, AutoCalResult& result);
     };
-}
+} // namespace mscl

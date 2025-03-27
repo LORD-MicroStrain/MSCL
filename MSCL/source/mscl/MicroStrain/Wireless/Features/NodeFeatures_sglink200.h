@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "NodeFeatures_200series.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures_200series.h"
 
 namespace mscl
 {
@@ -14,36 +14,35 @@ namespace mscl
     //    Contains information on features for the SG-Link-200 nodes. Inherits from <NodeFeatures>.
     class NodeFeatures_sglink200: public NodeFeatures_200series
     {
-    private:
         NodeFeatures_sglink200();    //disabled default constructor
 
     public:
-        virtual ~NodeFeatures_sglink200(){};
+        ~NodeFeatures_sglink200() override = default;
 
         //Constructor: NodeFeatures_sglink200
         //    Creates a NodeFeatures_sglink200 object.
         NodeFeatures_sglink200(const NodeInfo& info);
 
-        virtual bool supportsSensorDelayConfig() const override;
+        bool supportsSensorDelayConfig() const override;
 
-        virtual const WirelessTypes::DerivedChannelMasks channelsPerDerivedCategory() const override;
+        const WirelessTypes::DerivedChannelMasks channelsPerDerivedCategory() const override;
 
-        virtual const WirelessTypes::Filters lowPassFilters() const override;
+        const WirelessTypes::Filters lowPassFilters() const override;
 
-        virtual WirelessTypes::WirelessSampleRate maxSampleRateForLowPassFilter(WirelessTypes::Filter lowPassFilter, WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode, const ChannelMask& channels) const override;
+        WirelessTypes::WirelessSampleRate maxSampleRateForLowPassFilter(WirelessTypes::Filter lowPassFilter, WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode, const ChannelMask& channels) const override;
 
-        virtual WirelessTypes::WirelessSampleRate maxSampleRate(WirelessTypes::SamplingMode samplingMode, const ChannelMask& channels, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const override;
+        WirelessTypes::WirelessSampleRate maxSampleRate(WirelessTypes::SamplingMode samplingMode, const ChannelMask& channels, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const override;
 
-        virtual const WirelessTypes::Voltages excitationVoltages() const override;
+        const WirelessTypes::Voltages excitationVoltages() const override;
 
-        virtual const WirelessTypes::VoltageType adcVoltageInputType() const override;
+        const WirelessTypes::VoltageType adcVoltageInputType() const override;
 
-        virtual bool supportsPullUpResistor() const override;
+        bool supportsPullUpResistor() const override;
 
-        virtual bool supportsExcitationVoltageConfig() const override;
+        bool supportsExcitationVoltageConfig() const override;
 
-        virtual bool supportsPoll() const override;
+        bool supportsPoll() const override;
 
-        virtual const WirelessTypes::WirelessSampleRates sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const override;
+        const WirelessTypes::WirelessSampleRates sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const override;
     };
-}
+} // namespace mscl

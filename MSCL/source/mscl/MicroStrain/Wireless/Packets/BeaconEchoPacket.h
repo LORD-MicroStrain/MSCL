@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "WirelessDataPacket.h"
+#include "mscl/MicroStrain/Wireless/Packets/WirelessDataPacket.h"
 
 namespace mscl
 {
@@ -19,7 +19,7 @@ namespace mscl
         //    Creates a BeaconEchoPacket from the passed in <WirelessPacket>.
         //
         //Parameters:
-        //    packet - A <WirelessPacket> determined to be an BeaconEchoPacket.
+        //    packet - A <WirelessPacket> determined to be a BeaconEchoPacket.
         explicit BeaconEchoPacket(const WirelessPacket& packet);
 
     private:
@@ -31,14 +31,13 @@ namespace mscl
 
     public:
         //Function: integrityCheck
-        //    Verifies that the packet is a well formed BeaconEchoPacket packet.
+        //    Verifies that the packet is a well-formed BeaconEchoPacket packet.
         //
         //Parameters:
         //    packet - The fully formed Wireless Packet to check the integrity of.
         //
         //Returns:
-        //    true if the packet is a well formed BeaconEchoPacket, false otherwise
+        //    true if the packet is a well-formed BeaconEchoPacket, false otherwise
         static bool integrityCheck(const WirelessPacket& packet);
     };
-
-}
+} // namespace mscl

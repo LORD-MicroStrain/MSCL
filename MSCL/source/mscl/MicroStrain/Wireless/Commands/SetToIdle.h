@@ -6,14 +6,14 @@
 
 #pragma once
 
-#include "WirelessResponsePattern.h"
 #include "mscl/MicroStrain/Wireless/BaseStation.h"
+#include "mscl/MicroStrain/Wireless/Commands/WirelessResponsePattern.h"
 
 namespace mscl
 {
+#ifndef SWIG
     //Title: SetToIdle
 
-#ifndef SWIG
     //Class: SetToIdle
     //    Contains logic for the Set to Idle command.
     namespace SetToIdle
@@ -27,7 +27,6 @@ namespace mscl
         //Returns:
         //    A <ByteStream> containing the SetToIdle command packet
         ByteStream buildCommand(NodeAddress nodeAddress);
-
 
     //public:
         //Class: Response
@@ -46,7 +45,7 @@ namespace mscl
 
             //Destructor: Response
             //    Destroys the SetToIdle Response object. This also cancels the SetToIdle operation on the BaseStation, if not already complete or canceled.
-            virtual ~Response();
+            ~Response() override;
 
         protected:
             //Variable: m_nodeAddress
@@ -74,7 +73,7 @@ namespace mscl
             //
             //Returns:
             //    true if the response pattern was found, false otherwise.
-            virtual bool match(DataBuffer& data) override;
+            bool match(DataBuffer& data) override;
 
             //Function: cancel
             //    Attempts to cancel the Stop Node operation.
@@ -90,6 +89,6 @@ namespace mscl
             //    The <SetToIdleResult> containing the result of the Stop Node command.
             SetToIdleStatus::SetToIdleResult result();
         };
-    };
-#endif
-}
+    } // namespace SetToIdle
+#endif // !SWIG
+} // namespace mscl

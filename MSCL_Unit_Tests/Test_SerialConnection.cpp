@@ -4,16 +4,14 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "mscl/Communication/Connection.h"
 #include "mscl/Communication/SerialConnection.h"
-#include "mscl/Communication/BoostCommunication.h"
 #include "mscl/Utils.h"
-#include "mscl/Exceptions.h"
-
-#include <boost/test/unit_test.hpp>
-#include <turtle/mock.hpp>
 
 using namespace mscl;
+
+DISABLE_WARNING_BOOST_START
+#include <boost/test/unit_test.hpp>
+DISABLE_WARNING_BOOST_END
 
 void parseResponse(DataBuffer& data)
 {

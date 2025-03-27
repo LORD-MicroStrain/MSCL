@@ -4,20 +4,13 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
+#include "mscl/MicroStrain/Wireless/Packets/SyncSamplingMathPacket.h"
 
-#include "mscl/Exceptions.h"
-#include "SyncSamplingMathPacket.h"
-#include "mscl/MicroStrain/Wireless/ChannelMask.h"
-#include "mscl/MicroStrain/SampleUtils.h"
-#include "mscl/TimeSpan.h"
+#include "mscl/MicroStrain/Wireless/DataSweep.h"
 #include "mscl/TimestampCounter.h"
-#include "mscl/Types.h"
-
 
 namespace mscl
 {
-
     SyncSamplingMathPacket::SyncSamplingMathPacket(const WirelessPacket& packet)
     {
         //construct the data packet from the wireless packet passed in
@@ -39,7 +32,7 @@ namespace mscl
 
         //read the values from the payload
         payload.skipBytes(1);       //Rate at which raw data was sampled (throwing away for now)
-        uint32 calculationRate      = payload.read_uint32();    //Rate at which processed data was sampled
+        uint32 calculationRate      = payload.read_uint32();    //The rate at which processed data was sampled
         uint16 tick                 = payload.read_uint16();
         uint64 timestamp            = payload.read_uint64();
         const uint8 numAlgorithms   = payload.read_uint8();     //The number of algorithms being used
@@ -66,8 +59,8 @@ namespace mscl
 
         TimestampCounter tsCounter(rate, timestamp);
 
-        //build up the Algorithm Meta Data
-        std::vector<WirelessDataPacket::AlgorithmMetaData> metaData;
+        //build up the Algorithm Metadata
+        std::vector<AlgorithmMetaData> metaData;
         metaData.reserve(numAlgorithms);
         for(uint8 i = 0; i < numAlgorithms; ++i)
         {
@@ -109,7 +102,7 @@ namespace mscl
                     if(!alg.channelMask.enabled(chItr)) { continue; }
 
                     //add channel data
-                    WirelessChannel::ChannelId channelId = WirelessDataPacket::getMathChannelId(alg.algorithmId, chItr);
+                    WirelessChannel::ChannelId channelId = getMathChannelId(alg.algorithmId, chItr);
 
                     //create the ChannelMask property indicating which channel it was derived from
                     ChannelMask propertyChMask;
@@ -136,7 +129,7 @@ namespace mscl
 
     bool SyncSamplingMathPacket::integrityCheck(const WirelessPacket& packet)
     {
-        const WirelessPacket::Payload& payload = packet.payload();
+        const Payload& payload = packet.payload();
 
         //verify the payload size
         if(payload.size() < 23)
@@ -177,7 +170,7 @@ namespace mscl
 
         //verify we have the expected number of channel bytes (could be more than 1 sweep, so checking mod operator)
         //  payload length - (# algorithms * 3 bytes per algorithm) - 16 standard payload bytes
-        if((payload.size() - (numAlgorithms * 3) - 16) % expectedChannelBytes != 0)
+        if((payload.size() - numAlgorithms * 3 - 16) % expectedChannelBytes != 0)
         {
             return false;
         }
@@ -193,4 +186,4 @@ namespace mscl
         //return the tick value
         return packet.payload().read_uint16(PAYLOAD_OFFSET_TICK);
     }
-}
+} // namespace mscl

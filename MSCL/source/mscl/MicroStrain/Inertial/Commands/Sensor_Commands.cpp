@@ -4,11 +4,8 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "Sensor_Commands.h"
+#include "mscl/MicroStrain/Inertial/Commands/Sensor_Commands.h"
 
-#include "mscl/Exceptions.h"
-#include "mscl/Utils.h"
 #include "mscl/MicroStrain/MIP/Commands/MIP_Commands.h"
 
 namespace mscl
@@ -21,7 +18,7 @@ namespace mscl
         return GenericMipCommand::buildCommand(CMD_ID);
     }
 
-    GetSensorDataRateBase::Response::Response(std::weak_ptr<ResponseCollector> collector):
+    GetSensorDataRateBase::Response::Response(std::weak_ptr<ResponseCollector> collector) :
         GenericMipCommand::Response(MipTypes::CMD_GET_SENSOR_RATE_BASE, collector, true, true, "Get Sensor Data Rate Base")
     {}
 
@@ -92,7 +89,7 @@ namespace mscl
         return GenericMipCommand::buildCommand(CMD_ID, fieldData.data());
     }
 
-    SensorMessageFormat::Response::Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse):
+    SensorMessageFormat::Response::Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse) :
         GenericMipCommand::Response(MipTypes::CMD_SENSOR_MESSAGE_FORMAT, collector, true, dataResponse, "Sensor Message Format")
     {}
 
@@ -101,5 +98,4 @@ namespace mscl
         return MIP_Commands::parseData_MessageFormat(response, fieldDataByte(), sampleRateBase);
     }
     //==========================================================================================
-
-}
+} // namespace mscl

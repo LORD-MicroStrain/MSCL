@@ -4,22 +4,19 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "mscl/MicroStrain/MIP/Commands/GenericMipCommand.h"
-#include "ExposedInertialTypes.h"
-#include <boost/math/constants/constants.hpp>
+#include "mscl/MicroStrain/Inertial/ExposedInertialTypes.h"
 
 namespace mscl
 {
     //////////  NmeaMessageFormat  //////////
     const SampleRate NmeaMessageFormat::MAX_FREQUENCY = SampleRate::Hertz(10);
 
-    void NmeaMessageFormat::sentenceType(const NmeaMessageFormat::SentenceType type)
+    void NmeaMessageFormat::sentenceType(const SentenceType type)
     {
         m_sentenceType = type;
     }
 
-    void NmeaMessageFormat::talkerId(const NmeaMessageFormat::Talker id)
+    void NmeaMessageFormat::talkerId(const Talker id)
     {
         m_talkerId = id;
     }
@@ -76,9 +73,9 @@ namespace mscl
     {
         switch (sentenceType)
         {
-        case SentenceType::GSV:
-        case SentenceType::MSRA:
-        case SentenceType::MSRR:
+        case GSV:
+        case MSRA:
+        case MSRR:
             return false;
 
         default:
@@ -86,40 +83,40 @@ namespace mscl
         }
     }
 
-    bool NmeaMessageFormat::dataClassSupported(const MipTypes::DataClass dataClass, const NmeaMessageFormat::SentenceType sentenceType)
+    bool NmeaMessageFormat::dataClassSupported(const MipTypes::DataClass dataClass, const SentenceType sentenceType)
     {
-        std::vector<MipTypes::DataClass> supported = NmeaMessageFormat::supportedDataClasses(sentenceType);
+        std::vector<MipTypes::DataClass> supported = supportedDataClasses(sentenceType);
         return std::find(supported.begin(), supported.end(), dataClass) != supported.end();
     }
 
-    MipTypes::MipDataClasses NmeaMessageFormat::supportedDataClasses(const NmeaMessageFormat::SentenceType sentenceType)
+    MipTypes::MipDataClasses NmeaMessageFormat::supportedDataClasses(const SentenceType sentenceType)
     {
         switch (sentenceType)
         {
-        case SentenceType::GGA:
-        case SentenceType::GLL:
-        case SentenceType::RMC:
-        case SentenceType::VTG:
-        case SentenceType::HDT:
+        case GGA:
+        case GLL:
+        case RMC:
+        case VTG:
+        case HDT:
             return{
                 MipTypes::DataClass::CLASS_ESTFILTER,
                 MipTypes::DataClass::CLASS_GNSS1,
                 MipTypes::DataClass::CLASS_GNSS2
             };
 
-        case SentenceType::GSV:
-        case SentenceType::ZDA:
+        case GSV:
+        case ZDA:
             return{
                 MipTypes::DataClass::CLASS_GNSS1,
                 MipTypes::DataClass::CLASS_GNSS2
             };
 
-        case SentenceType::MSRA:
+        case MSRA:
             return{
                 MipTypes::DataClass::CLASS_ESTFILTER
             };
 
-        case SentenceType::MSRR:
+        case MSRR:
             return{
                 MipTypes::DataClass::CLASS_AHRS_IMU
             };
@@ -143,7 +140,7 @@ namespace mscl
         for (uint8 i = 0; i < count; i++)
         {
             // skip count element and find beginning of target format element
-            const uint8 index = 1 + (i * ELEMENTS_PER_FORMAT);
+            const uint8 index = 1 + i * ELEMENTS_PER_FORMAT;
 
             NmeaMessageFormat format;
             format.sentenceType(static_cast<SentenceType>(responseValues[index].as_uint8()));
@@ -196,14 +193,14 @@ namespace mscl
         {
             for (int j = 0; j < 3; j++)
             {
-                int index = (i * 3) + j;
+                int index = i * 3 + j;
                 m_array[i][j] = data[index].as_float();
             }
         }
     }
 
     Matrix_3x3::~Matrix_3x3()
-    { }
+    {}
 
     void Matrix_3x3::set(uint8 row, uint8 col, float value)
     {
@@ -269,24 +266,18 @@ namespace mscl
         return m;
     }
 
-
     //////////  TimeUpdate  //////////
 
-    TimeUpdate::TimeUpdate(double timeOfWeek, uint16 weekNumber, float timeAccuracy):
+    TimeUpdate::TimeUpdate(double timeOfWeek, uint16 weekNumber, float timeAccuracy) :
         m_timeOfWeek(timeOfWeek),
         m_weekNumber(weekNumber),
         m_timeAccuracy(timeAccuracy)
-    {
-    }
+    {}
 
     TimeUpdate::~TimeUpdate()
-    {
-    }
-
-
+    {}
 
     //////////  HeadingUpdateOptions  //////////
-
 
     InertialTypes::HeadingUpdateEnableOption HeadingUpdateOptions::AsOptionId() const
     {
@@ -295,35 +286,37 @@ namespace mscl
             if (useInternalGNSSVelocityVector)
             {
                 if (useExternalHeadingMessages)
+                {
                     return InertialTypes::HeadingUpdateEnableOption::ENABLE_ALL;
-                else
-                    return InertialTypes::HeadingUpdateEnableOption::ENABLE_MAGNETOMETER_AND_GNSS;
+                }
+
+                return InertialTypes::HeadingUpdateEnableOption::ENABLE_MAGNETOMETER_AND_GNSS;
             }
-            else
+
+            if (useExternalHeadingMessages)
             {
-                if (useExternalHeadingMessages)
-                    return InertialTypes::HeadingUpdateEnableOption::ENABLE_MAGNETOMETER_AND_EXTERNAL;
-                else
-                    return InertialTypes::HeadingUpdateEnableOption::ENABLE_INTERNAL_MAGNETOMETER;
+                return InertialTypes::HeadingUpdateEnableOption::ENABLE_MAGNETOMETER_AND_EXTERNAL;
             }
+
+            return InertialTypes::HeadingUpdateEnableOption::ENABLE_INTERNAL_MAGNETOMETER;
         }
-        else
+
+        if (useInternalGNSSVelocityVector)
         {
-            if (useInternalGNSSVelocityVector)
+            if (useExternalHeadingMessages)
             {
-                if (useExternalHeadingMessages)
-                    return InertialTypes::HeadingUpdateEnableOption::ENABLE_GNSS_AND_EXTERNAL;
-                else
-                    return InertialTypes::HeadingUpdateEnableOption::ENABLE_INTERNAL_GNSS;
+                return InertialTypes::HeadingUpdateEnableOption::ENABLE_GNSS_AND_EXTERNAL;
             }
-            else
-            {
-                if (useExternalHeadingMessages)
-                    return InertialTypes::HeadingUpdateEnableOption::ENABLE_EXTERNAL_MESSAGES;
-                else
-                    return InertialTypes::HeadingUpdateEnableOption::ENABLE_NONE;
-            }
+
+            return InertialTypes::HeadingUpdateEnableOption::ENABLE_INTERNAL_GNSS;
         }
+
+        if (useExternalHeadingMessages)
+        {
+            return InertialTypes::HeadingUpdateEnableOption::ENABLE_EXTERNAL_MESSAGES;
+        }
+
+        return InertialTypes::HeadingUpdateEnableOption::ENABLE_NONE;
     }
 
     //  This constructor converts a uint8 to a HeadingUpdateOptions object according to the Communications Protocol.
@@ -376,10 +369,7 @@ namespace mscl
         }
     }
 
-
-
     //////////  EstimationControlOptions  //////////
-
 
     uint16 EstimationControlOptions::AsUint16() const {
         uint16 intValue = 0;
@@ -416,7 +406,7 @@ namespace mscl
     }
 
     //  This constructor converts a uint16 to a EstimationControlOptions object according to the Communications Protocol.
-    EstimationControlOptions::EstimationControlOptions(const mscl::uint16& estimationControlData) {
+    EstimationControlOptions::EstimationControlOptions(const uint16& estimationControlData) {
         enableGyroBiasEstimation = (estimationControlData & InertialTypes::EstimationControlOption::ENABLE_GYRO_BIAS_ESTIMATION) != 0;
         enableAccelBiasEstimation = (estimationControlData & InertialTypes::EstimationControlOption::ENABLE_ACCEL_BIAS_ESTIMATION) != 0;
         enableGyroScaleFactorEstimation = (estimationControlData & InertialTypes::EstimationControlOption::ENABLE_GYRO_SCALE_FACTOR_ESTIMATION) != 0;
@@ -653,12 +643,12 @@ namespace mscl
             | tareYawAxis * InertialTypes::TARE_YAW_AXIS;
     }
 
-    mscl::DeviceStatusMap DeviceStatusData::asMap() const
+    DeviceStatusMap DeviceStatusData::asMap() const
     {
-        mscl::DeviceStatusMap statusMap;
-        mscl::DeviceStatusValueMap m = asValueMap();
+        DeviceStatusMap statusMap;
+        DeviceStatusValueMap m = asValueMap();
 
-        for (auto kv : m)
+        for (const DeviceStatusValueMap::value_type& kv : m)
         {
             statusMap[kv.first] = kv.second.as_string();
         }
@@ -666,97 +656,97 @@ namespace mscl
         return statusMap;
     }
 
-    mscl::DeviceStatusValueMap DeviceStatusData::asValueMap() const
+    DeviceStatusValueMap DeviceStatusData::asValueMap() const
     {
-        mscl::DeviceStatusValueMap statusMap;
-        statusMap[ModelNumber] = mscl::Value::UINT16(modelNumber);
-        statusMap[StatusStructure_Value] = mscl::Value::UINT8(static_cast<uint8>(statusStructure));
+        DeviceStatusValueMap statusMap;
+        statusMap[ModelNumber] = Value::UINT16(modelNumber);
+        statusMap[StatusStructure_Value] = Value::UINT8(static_cast<uint8>(statusStructure));
 
         if (isSet(m_systemState))
         {
-            statusMap[SystemState_Value] = mscl::Value::UINT16(static_cast<uint16>(m_systemState.get()));
+            statusMap[SystemState_Value] = Value::UINT16(static_cast<uint16>(m_systemState.get()));
         }
 
         if (isSet(m_gnss1PpsPulseInfo))
         {
-            statusMap[gnss1PpsPulseInfo_Count] = mscl::Value::UINT32(m_gnss1PpsPulseInfo.get().count);
-            statusMap[gnss1PpsPulseInfo_LastTimeinMS] = mscl::Value::UINT32(m_gnss1PpsPulseInfo.get().lastTimeinMS);
+            statusMap[gnss1PpsPulseInfo_Count] = Value::UINT32(m_gnss1PpsPulseInfo.get().count);
+            statusMap[gnss1PpsPulseInfo_LastTimeinMS] = Value::UINT32(m_gnss1PpsPulseInfo.get().lastTimeinMS);
         }
 
         if (isSet(m_gnssPowerStateOn)) {
-            statusMap[GnssPowerStateOn] = mscl::Value::BOOL(m_gnssPowerStateOn.get());
+            statusMap[GnssPowerStateOn] = Value::BOOL(m_gnssPowerStateOn.get());
         }
 
         if (isSet(m_imuStreamInfo))
         {
-            statusMap[ImuStreamInfo_Enabled] = mscl::Value::BOOL(m_imuStreamInfo.get().enabled);
-            statusMap[ImuStreamInfo_PacketsDropped] = mscl::Value::UINT32(m_imuStreamInfo.get().outgoingPacketsDropped);
+            statusMap[ImuStreamInfo_Enabled] = Value::BOOL(m_imuStreamInfo.get().enabled);
+            statusMap[ImuStreamInfo_PacketsDropped] = Value::UINT32(m_imuStreamInfo.get().outgoingPacketsDropped);
         }
 
         if (isSet(m_gnssStreamInfo))
         {
-            statusMap[GnssStreamInfo_Enabled] = mscl::Value::BOOL(m_gnssStreamInfo.get().enabled);
-            statusMap[GnssStreamInfo_PacketsDropped] = mscl::Value::UINT32(m_gnssStreamInfo.get().outgoingPacketsDropped);
+            statusMap[GnssStreamInfo_Enabled] = Value::BOOL(m_gnssStreamInfo.get().enabled);
+            statusMap[GnssStreamInfo_PacketsDropped] = Value::UINT32(m_gnssStreamInfo.get().outgoingPacketsDropped);
         }
 
         if (isSet(m_estimationFilterStreamInfo))
         {
-            statusMap[EstimationFilterStreamInfo_Enabled] = mscl::Value::BOOL(m_estimationFilterStreamInfo.get().enabled);
-            statusMap[EstimationFilterStreamInfo_PacketsDropped] = mscl::Value::UINT32(m_estimationFilterStreamInfo.get().outgoingPacketsDropped);
+            statusMap[EstimationFilterStreamInfo_Enabled] = Value::BOOL(m_estimationFilterStreamInfo.get().enabled);
+            statusMap[EstimationFilterStreamInfo_PacketsDropped] = Value::UINT32(m_estimationFilterStreamInfo.get().outgoingPacketsDropped);
         }
 
         if (isSet(m_comPortInfo))
         {
-            statusMap[ComPortInfo_BytesRead] = mscl::Value::UINT32(m_comPortInfo.get().bytesRead);
-            statusMap[ComPortInfo_BytesWritten] = mscl::Value::UINT32(m_comPortInfo.get().bytesWritten);
-            statusMap[ComPortInfo_OverrunsOnRead] = mscl::Value::UINT32(m_comPortInfo.get().overrunsOnRead);
-            statusMap[ComPortInfo_OverrunsOnWrite] = mscl::Value::UINT32(m_comPortInfo.get().overrunsOnWrite); // supported to features
+            statusMap[ComPortInfo_BytesRead] = Value::UINT32(m_comPortInfo.get().bytesRead);
+            statusMap[ComPortInfo_BytesWritten] = Value::UINT32(m_comPortInfo.get().bytesWritten);
+            statusMap[ComPortInfo_OverrunsOnRead] = Value::UINT32(m_comPortInfo.get().overrunsOnRead);
+            statusMap[ComPortInfo_OverrunsOnWrite] = Value::UINT32(m_comPortInfo.get().overrunsOnWrite); // supported to features
         }
 
         if (isSet(m_imuMessageInfo))
         {
-            statusMap[ImuMessageInfo_LastMessageReadinMS] = mscl::Value::UINT32(m_imuMessageInfo.get().lastMessageReadinMS);
-            statusMap[ImuMessageInfo_MessageParsingErrors] = mscl::Value::UINT32(m_imuMessageInfo.get().messageParsingErrors);
-            statusMap[ImuMessageInfo_MessagesRead] = mscl::Value::UINT32(m_imuMessageInfo.get().messagesRead);
+            statusMap[ImuMessageInfo_LastMessageReadinMS] = Value::UINT32(m_imuMessageInfo.get().lastMessageReadinMS);
+            statusMap[ImuMessageInfo_MessageParsingErrors] = Value::UINT32(m_imuMessageInfo.get().messageParsingErrors);
+            statusMap[ImuMessageInfo_MessagesRead] = Value::UINT32(m_imuMessageInfo.get().messagesRead);
         }
 
         if (isSet(m_gnssMessageInfo))
         {
-            statusMap[GnssMessageInfo_LastMessageReadinMS] = mscl::Value::UINT32(m_gnssMessageInfo.get().lastMessageReadinMS);
-            statusMap[GnssMessageInfo_MessageParsingErrors] = mscl::Value::UINT32(m_gnssMessageInfo.get().messageParsingErrors);
-            statusMap[GnssMessageInfo_MessagesRead] = mscl::Value::UINT32(m_gnssMessageInfo.get().messagesRead);
+            statusMap[GnssMessageInfo_LastMessageReadinMS] = Value::UINT32(m_gnssMessageInfo.get().lastMessageReadinMS);
+            statusMap[GnssMessageInfo_MessageParsingErrors] = Value::UINT32(m_gnssMessageInfo.get().messageParsingErrors);
+            statusMap[GnssMessageInfo_MessagesRead] = Value::UINT32(m_gnssMessageInfo.get().messagesRead);
         }
 
         if (isSet(m_temperatureInfo))
         {
-            statusMap[TemperatureInfo_Error] = mscl::Value::UINT8(m_temperatureInfo.get().error);
-            statusMap[TemperatureInfo_LastReadInMS] = mscl::Value::UINT32(m_temperatureInfo.get().lastReadInMS);
-            statusMap[TemperatureInfo_OnBoardTemp] = mscl::Value::FLOAT(m_temperatureInfo.get().onBoardTemp);
+            statusMap[TemperatureInfo_Error] = Value::UINT8(m_temperatureInfo.get().error);
+            statusMap[TemperatureInfo_LastReadInMS] = Value::UINT32(m_temperatureInfo.get().lastReadInMS);
+            statusMap[TemperatureInfo_OnBoardTemp] = Value::FLOAT(m_temperatureInfo.get().onBoardTemp);
         }
 
         if (isSet(m_powerState))
         {
-            statusMap[PowerState] = mscl::Value::UINT8(static_cast<uint8>(m_powerState.get()));
+            statusMap[PowerState] = Value::UINT8(static_cast<uint8>(m_powerState.get()));
         }
 
         if (isSet(m_gyroRange))
         {
-            statusMap[GyroRange] = mscl::Value::UINT16(m_gyroRange.get());
+            statusMap[GyroRange] = Value::UINT16(m_gyroRange.get());
         }
 
         if (isSet(m_accelRange))
         {
-            statusMap[AccelRange] = mscl::Value::UINT16(m_accelRange.get());
+            statusMap[AccelRange] = Value::UINT16(m_accelRange.get());
         }
 
         if (isSet(m_hasMagnetometer))
         {
-            statusMap[HasMagnetometer] = mscl::Value::BOOL(m_hasMagnetometer.get());
+            statusMap[HasMagnetometer] = Value::BOOL(m_hasMagnetometer.get());
         }
 
         if (isSet(m_hasPressure))
         {
-            statusMap[HasPressure] = mscl::Value::BOOL(m_hasPressure.get());
+            statusMap[HasPressure] = Value::BOOL(m_hasPressure.get());
         }
 
         return statusMap;
@@ -891,7 +881,7 @@ namespace mscl
         return static_cast<ControllerState>(get(CONTROLLER_STATE));
     }
 
-    void RTKDeviceStatusFlags_v1::controllerState(RTKDeviceStatusFlags_v1::ControllerState state)
+    void RTKDeviceStatusFlags_v1::controllerState(ControllerState state)
     {
         set(CONTROLLER_STATE, state);
     }
@@ -901,7 +891,7 @@ namespace mscl
         return static_cast<PlatformState>(get(PLATFORM_STATE));
     }
 
-    void RTKDeviceStatusFlags_v1::platformState(RTKDeviceStatusFlags_v1::PlatformState state)
+    void RTKDeviceStatusFlags_v1::platformState(PlatformState state)
     {
         set(PLATFORM_STATE, state);
     }
@@ -911,7 +901,7 @@ namespace mscl
         return static_cast<ControllerStatusCode>(get(CONTROLLER_STATUS_CODE));
     }
 
-    void RTKDeviceStatusFlags_v1::controllerStatusCode(RTKDeviceStatusFlags_v1::ControllerStatusCode status)
+    void RTKDeviceStatusFlags_v1::controllerStatusCode(ControllerStatusCode status)
     {
         set(CONTROLLER_STATUS_CODE, status);
     }
@@ -921,7 +911,7 @@ namespace mscl
         return static_cast<PlatformStatusCode>(get(PLATFORM_STATUS_CODE));
     }
 
-    void RTKDeviceStatusFlags_v1::platformStatusCode(RTKDeviceStatusFlags_v1::PlatformStatusCode status)
+    void RTKDeviceStatusFlags_v1::platformStatusCode(PlatformStatusCode status)
     {
         set(PLATFORM_STATUS_CODE, status);
     }
@@ -931,7 +921,7 @@ namespace mscl
         return static_cast<ResetReason>(get(RESET_REASON));
     }
 
-    void RTKDeviceStatusFlags_v1::resetReason(RTKDeviceStatusFlags_v1::ResetReason reason)
+    void RTKDeviceStatusFlags_v1::resetReason(ResetReason reason)
     {
         set(RESET_REASON, static_cast<uint32>(reason));
     }
@@ -954,42 +944,42 @@ namespace mscl
         m_beidouSignals = Bitfield(0);
     }
 
-    void GnssSignalConfiguration::enableGpsSignal(GnssSignalConfiguration::GpsSignal signal, bool enable)
+    void GnssSignalConfiguration::enableGpsSignal(GpsSignal signal, bool enable)
     {
-        m_gpsSignals.set(signal, (enable ? 1 : 0));
+        m_gpsSignals.set(signal, enable ? 1 : 0);
     }
 
-    bool GnssSignalConfiguration::gpsSignalEnabled(GnssSignalConfiguration::GpsSignal signal)
+    bool GnssSignalConfiguration::gpsSignalEnabled(GpsSignal signal)
     {
         return m_gpsSignals.get(signal) > 0;
     }
 
-    void GnssSignalConfiguration::enableGlonassSignal(GnssSignalConfiguration::GlonassSignal signal, bool enable)
+    void GnssSignalConfiguration::enableGlonassSignal(GlonassSignal signal, bool enable)
     {
-        m_glonassSignals.set(signal, (enable ? 1 : 0));
+        m_glonassSignals.set(signal, enable ? 1 : 0);
     }
 
-    bool GnssSignalConfiguration::glonassSignalEnabled(GnssSignalConfiguration::GlonassSignal signal)
+    bool GnssSignalConfiguration::glonassSignalEnabled(GlonassSignal signal)
     {
         return m_glonassSignals.get(signal) > 0;
     }
 
-    void GnssSignalConfiguration::enableGalileoSignal(GnssSignalConfiguration::GalileoSignal signal, bool enable)
+    void GnssSignalConfiguration::enableGalileoSignal(GalileoSignal signal, bool enable)
     {
-        m_galileoSignals.set(signal, (enable ? 1 : 0));
+        m_galileoSignals.set(signal, enable ? 1 : 0);
     }
 
-    bool GnssSignalConfiguration::galileoSignalEnabled(GnssSignalConfiguration::GalileoSignal signal)
+    bool GnssSignalConfiguration::galileoSignalEnabled(GalileoSignal signal)
     {
         return m_galileoSignals.get(signal) > 0;
     }
 
-    void GnssSignalConfiguration::enableBeiDouSignal(GnssSignalConfiguration::BeiDouSignal signal, bool enable)
+    void GnssSignalConfiguration::enableBeiDouSignal(BeiDouSignal signal, bool enable)
     {
-        m_beidouSignals.set(signal, (enable ? 1 : 0));
+        m_beidouSignals.set(signal, enable ? 1 : 0);
     }
 
-    bool GnssSignalConfiguration::beidouSignalEnabled(GnssSignalConfiguration::BeiDouSignal signal)
+    bool GnssSignalConfiguration::beidouSignalEnabled(BeiDouSignal signal)
     {
         return m_beidouSignals.get(signal) > 0;
     }
@@ -1087,7 +1077,7 @@ namespace mscl
         return m_mode;
     }
 
-    void OdometerConfiguration::mode(OdometerConfiguration::Mode m)
+    void OdometerConfiguration::mode(Mode m)
     {
         m_mode = m;
     }
@@ -1123,7 +1113,7 @@ namespace mscl
     {
         GpioConfiguration config;
         config.pin = responseValues[startIndex].as_uint8();
-        config.feature = static_cast<GpioConfiguration::Feature>(responseValues[startIndex + 1].as_uint8());
+        config.feature = static_cast<Feature>(responseValues[startIndex + 1].as_uint8());
         config.behavior = responseValues[startIndex + 2].as_uint8();
         config.pinModeValue(responseValues[startIndex + 3].as_uint8());
 
@@ -1146,7 +1136,7 @@ namespace mscl
     {
         m_channelField = channelField;
         m_channelQualifier = channelQualifier;
-        m_channelIndex = static_cast<uint8>(MipTypes::channelFieldQualifierIndex(m_channelField, m_channelQualifier));
+        m_channelIndex = MipTypes::channelFieldQualifierIndex(m_channelField, m_channelQualifier);
     }
 
     void EventTriggerThresholdParameter::channel(const MipTypes::ChannelField channelField, const uint8 index)

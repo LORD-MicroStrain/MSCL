@@ -4,19 +4,16 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "ArmedDataloggingNetwork.h"
+#include "mscl/MicroStrain/Wireless/ArmedDataloggingNetwork.h"
 
-#include "WirelessNode.h"
-#include "WirelessTypes.h"
-#include "Configuration/NodeEepromHelper.h"
+#include "mscl/MicroStrain/Wireless/Configuration/NodeEepromHelper.h"
+#include "mscl/MicroStrain/Wireless/WirelessNode.h"
 
 namespace mscl
 {
     ArmedDataloggingNetwork::ArmedDataloggingNetwork(const BaseStation& networkBaseStation) :
         m_networkBase(networkBaseStation)
-    {
-    }
+    {}
 
     void ArmedDataloggingNetwork::addNode(const WirelessNode& node, const std::string& message)
     {
@@ -37,7 +34,7 @@ namespace mscl
                 throw Error_InvalidNodeConfig(issues, node.nodeAddress());
             }
 
-            //attempt to insert the node into the map. If it already exists, just silently fail.
+            //Attempt to insert the node into the map. If it already exists, just silently fail.
             m_nodes.insert(std::pair<NodeAddress, std::string>(node.nodeAddress(), message));
         }
         catch(...)
@@ -58,7 +55,7 @@ namespace mscl
         //attempt to arm all the nodes in the network
         armNodes();
 
-        //trigger all of the armed nodes at the same time
+        //trigger all the armed nodes at the same time
         triggerArmedNodes();
     }
 
@@ -78,7 +75,7 @@ namespace mscl
 
     void ArmedDataloggingNetwork::triggerArmedNodes()
     {
-        //send a broadcast start command. All armed nodes in the network will start datalogging.
+        //Send a broadcast start command. All armed nodes in the network will start datalogging.
         m_networkBase.node_triggerArmedDatalogging(BaseStation::BROADCAST_NODE_ADDRESS);
     }
-}
+} // namespace mscl

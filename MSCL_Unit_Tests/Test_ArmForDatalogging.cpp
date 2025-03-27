@@ -4,13 +4,15 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
+#include "mscl/MicroStrain/ResponseCollector.h"
 #include "mscl/MicroStrain/Wireless/Commands/ArmForDatalogging.h"
 #include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
-#include "mscl/MicroStrain/ResponseCollector.h"
-
-#include <boost/test/unit_test.hpp>
 
 using namespace mscl;
+
+DISABLE_WARNING_BOOST_START
+#include <boost/test/unit_test.hpp>
+DISABLE_WARNING_BOOST_END
 
 WirelessPacket buildArmForDataloggingResponse(uint16 nodeAddress)
 {
@@ -92,7 +94,7 @@ BOOST_AUTO_TEST_CASE(ArmForDatalogging_Response_constructor)
     BOOST_CHECK_EQUAL(response.success(), false);
 }
 
-BOOST_AUTO_TEST_CASE(StartSyncSampling_Response_match_success)
+BOOST_AUTO_TEST_CASE(ArmForDatalogging_Response_match_success)
 {
     std::shared_ptr<ResponseCollector> rc(new ResponseCollector);
     ArmForDatalogging::Response response(123, rc);

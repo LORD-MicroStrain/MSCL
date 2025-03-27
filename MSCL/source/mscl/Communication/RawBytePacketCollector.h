@@ -6,11 +6,7 @@
 
 #pragma once
 
-#include <condition_variable>
-#include <boost/circular_buffer.hpp>
-
-#include "RawBytePacket.h"
-
+#include "mscl/Communication/RawBytePacket.h"
 
 namespace mscl
 {
@@ -39,7 +35,6 @@ namespace mscl
         //    The maximum number of raw byte packets that can be stored in the circular buffer
         static const int MAX_DATA_BUFFER_SIZE = 1024 * 100;
 
-    private:
         //Variable: m_rawBytePackets
         //    A circular buffer that holds <RawBytePacket>s
         circular_data_buffer m_rawBytePackets;
@@ -83,4 +78,4 @@ namespace mscl
         //    The total number of raw byte packets that are currently in the buffer.
         uint32 totalPackets();
     };
-}
+} // namespace mscl

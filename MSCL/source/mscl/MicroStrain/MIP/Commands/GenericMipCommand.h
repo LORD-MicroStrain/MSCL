@@ -6,9 +6,7 @@
 
 #pragma once
 
-#include "mscl/MicroStrain/ResponsePattern.h"
-#include "mscl/MicroStrain/MIP/MipTypes.h"
-#include "MipCmdResponse.h"
+#include "mscl/MicroStrain/MIP/Commands/MipCmdResponse.h"
 
 namespace mscl
 {
@@ -62,7 +60,7 @@ namespace mscl
         //Returns:
         //    A <GenericMipCmdResponse> representing a failed response from the command.
         static GenericMipCmdResponse ResponseFail(ResponsePattern::State errorState, MipPacket::MipAckNack errorCode, const std::string& cmdName);
-#endif
+#endif // !SWIG
 
     private:
         //Variable: m_data
@@ -77,8 +75,6 @@ namespace mscl
         //    A <ByteStream> that contains the data received from the response, if any.
         ByteStream data() const;
     };
-
-
 
     //Class: GenericMipCommand
     //    Represents a base class for MIP commands
@@ -100,7 +96,6 @@ namespace mscl
     protected:
         static const uint8 FIELD_ACK_NACK_BYTE = 0xF1;
 
-    protected:
         GenericMipCommand() {}  //disabled default constructor
 
     private:
@@ -108,9 +103,8 @@ namespace mscl
         GenericMipCommand& operator=(const GenericMipCommand&);    //disabled assignment operator
 
     public:
-        virtual ~GenericMipCommand(){};
+        virtual ~GenericMipCommand() = default;
 
-    public:
         //Function: buildCommand
         //    Builds the command for a MIP command, and returns a ByteStream containing the bytes to send
         //
@@ -205,7 +199,6 @@ namespace mscl
             //    The <GenericMipCmdResponse> that holds the result of the GenericMipCommand
             GenericMipCmdResponse m_result;
 
-        protected:
             //Function: commandId
             //    Gets the <MipTypes::Command> for the MIP command
             virtual MipTypes::Command commandId() const { return m_command; }
@@ -275,9 +268,8 @@ namespace mscl
             Response(const MipTypes::Command&, std::weak_ptr<ResponseCollector> collector, bool ackNackResponse,
                 bool dataResponse, const std::string& cmdName, MipResponseMatchValues matchData, uint8 fieldDataByte = 0);
 
-            virtual ~Response(){};
+            ~Response() override = default;
 
-        public:
             //Function: match
             //    Checks if the <MipDataField> passed in matches the expected response pattern's bytes
             //
@@ -286,7 +278,7 @@ namespace mscl
             //
             //Returns:
             //    true if the packet matches a response pattern, false otherwise
-            virtual bool match(const MipDataField& field) override;
+            bool match(const MipDataField& field) override;
 
             //Function: match_ackNack
             //    Checks if the <MipDataField> matches the ACK/NACK field for this command (if one is even expected)
@@ -316,7 +308,7 @@ namespace mscl
             //
             //Returns:
             //    true if the response pattern was matched, false otherwise
-            bool wait(uint64 timeout);
+            bool wait(uint64 timeout) override;
 
             //Function: result
             //    Gets the <GenericMipCmdResponse> that holds the result of the response
@@ -326,4 +318,4 @@ namespace mscl
             GenericMipCmdResponse result();
         };
     };
-}
+} // namespace mscl

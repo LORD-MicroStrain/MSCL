@@ -4,15 +4,17 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
+#include "mscl/MicroStrain/Wireless/DataSweep.h"
 #include "mscl/MicroStrain/Wireless/Packets/AsyncDigitalAnalogPacket.h"
+#include "mscl/MicroStrain/Wireless/Packets/WirelessDataPacket.h"
 #include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
 #include "mscl/MicroStrain/Wireless/Packets/WirelessPacketCollector.h"
-#include "mscl/MicroStrain/Wireless/Packets/WirelessDataPacket.h"
-#include "mscl/Exceptions.h"
-
-#include <boost/test/unit_test.hpp>
 
 using namespace mscl;
+
+DISABLE_WARNING_BOOST_START
+#include <boost/test/unit_test.hpp>
+DISABLE_WARNING_BOOST_END
 
 BOOST_AUTO_TEST_SUITE(AsyncDigitalAnalog_Test)
 
@@ -246,7 +248,7 @@ BOOST_AUTO_TEST_CASE(AsyncDigitalAnalogPacket_IntegrityCheck_BadStopFlags)
     BOOST_CHECK_EQUAL(AsyncDigitalAnalogPacket::integrityCheck(packet), false);
 }
 
-BOOST_AUTO_TEST_CASE(AsyncDigitalPacket_IntegrityCheck_BadPacketType)
+BOOST_AUTO_TEST_CASE(AsyncDigitalAnalogPacket_IntegrityCheck_BadPacketType)
 {
     Bytes payloadBytes;
     payloadBytes.push_back(1);        //channel mask - channel 1 and 9 active

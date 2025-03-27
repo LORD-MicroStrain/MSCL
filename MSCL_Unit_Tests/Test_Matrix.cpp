@@ -4,12 +4,14 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "mscl/MicroStrain/Matrix.h"
 #include "mscl/MicroStrain/ByteStream.h"
-
-#include <boost/test/unit_test.hpp>
+#include "mscl/MicroStrain/Matrix.h"
 
 using namespace mscl;
+
+DISABLE_WARNING_BOOST_START
+#include <boost/test/unit_test.hpp>
+DISABLE_WARNING_BOOST_END
 
 BOOST_AUTO_TEST_SUITE(Matrix_Test)
 
@@ -29,7 +31,6 @@ BOOST_AUTO_TEST_CASE(Matrix_valuesType)
 
     //check that the value type is correct
     BOOST_CHECK_EQUAL(m.valuesType(), valueType_float);
-
 
     Matrix m2(0, 0, valueType_int32, b);
 

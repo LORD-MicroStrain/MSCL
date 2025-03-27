@@ -7,12 +7,12 @@
 #include "mscl/MicroStrain/MIP/Commands/GetDeviceDescriptorSets.h"
 #include "mscl/MicroStrain/MIP/MipDataField.h"
 #include "mscl/MicroStrain/ResponseCollector.h"
-#include "mscl/Exceptions.h"
 
-#include <boost/test/unit_test.hpp>
-
-using namespace std;
 using namespace mscl;
+
+DISABLE_WARNING_BOOST_START
+#include <boost/test/unit_test.hpp>
+DISABLE_WARNING_BOOST_END
 
 BOOST_AUTO_TEST_SUITE(GetDeviceDescriptorSets_Test)
 
@@ -38,7 +38,7 @@ BOOST_AUTO_TEST_CASE(GetDeviceDescriptorSets_GetResponseResult)
 
     GenericMipCmdResponse r = response.result();
 
-    //check that the the response result is what it should be
+    //check that the response result is what it should be
     BOOST_CHECK_EQUAL(r.success(), false);
     BOOST_CHECK_EQUAL(r.errorCode(), MipPacket::MIP_ACK_NACK_ERROR_NONE);
 }
@@ -105,7 +105,7 @@ BOOST_AUTO_TEST_CASE(GetDeviceDescriptorSets_Match_FailWithErrorCode)
 
     Bytes fieldData;
     fieldData.push_back(0x04);
-    fieldData.push_back(mscl::MipPacket::MIP_ACK_NACK_ERROR_UNKNOWN_COMMAND);
+    fieldData.push_back(MipPacket::MIP_ACK_NACK_ERROR_UNKNOWN_COMMAND);
     MipDataField field(0x01F1, fieldData); //good field, but with error code
 
     //check that the match fails
@@ -143,7 +143,7 @@ BOOST_AUTO_TEST_CASE(GetDeviceDescriptorSets_Match_Success_OnlyDeviceInfo)
 
     //check that the match succeeds
     BOOST_CHECK_EQUAL(response.match(field2), true);
-    BOOST_CHECK_EQUAL(response.fullyMatched(), true);    //even though we didnt get an ACK/NACK, we still fully matched because the descritors info is enough to match
+    BOOST_CHECK_EQUAL(response.fullyMatched(), true);    //even though we didn't get an ACK/NACK, we still fully matched because the descriptors info is enough to match
     BOOST_CHECK_EQUAL(response.result().success(), true);
     BOOST_CHECK_EQUAL(response.result().errorCode(), mscl::MipPacket::MIP_ACK_NACK_ERROR_NONE);
 }
@@ -172,7 +172,7 @@ BOOST_AUTO_TEST_CASE(GetDeviceDescriptorSets_Match_Success)
 
     //check that the match succeeds
     BOOST_CHECK_EQUAL(response.match(field2), true);
-    BOOST_CHECK_EQUAL(response.fullyMatched(), true);    //we  fully matched because the device info is enough to match
+    BOOST_CHECK_EQUAL(response.fullyMatched(), true);    //we fully matched because the device info is enough to match
     BOOST_CHECK_EQUAL(response.result().success(), true);
     BOOST_CHECK_EQUAL(response.result().errorCode(), mscl::MipPacket::MIP_ACK_NACK_ERROR_NONE);
 }

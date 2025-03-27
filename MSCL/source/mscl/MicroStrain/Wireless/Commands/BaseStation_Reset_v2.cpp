@@ -4,12 +4,10 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "BaseStation_Reset_v2.h"
-#include "WirelessProtocol.h"
-#include "mscl/MicroStrain/ByteStream.h"
-#include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
+#include "mscl/MicroStrain/Wireless/Commands/BaseStation_Reset_v2.h"
 
+#include "mscl/MicroStrain/Wireless/Commands/WirelessProtocol.h"
+#include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
 
 namespace mscl
 {
@@ -30,11 +28,10 @@ namespace mscl
         return cmd;
     }
 
-    BaseStation_Reset_v2::Response::Response(ResetType resetType, std::weak_ptr<ResponseCollector> collector):
+    BaseStation_Reset_v2::Response::Response(ResetType resetType, std::weak_ptr<ResponseCollector> collector) :
         WirelessResponsePattern(collector, WirelessProtocol::cmdId_baseReset_v2, WirelessProtocol::BASE_STATION_ADDRESS),
         m_resetType(resetType)
-    {
-    }
+    {}
 
     bool BaseStation_Reset_v2::Response::matchSuccessResponse(const WirelessPacket& packet)
     {
@@ -56,4 +53,4 @@ namespace mscl
         //if we made it here, the packet matches the response pattern
         return true;
     }
-}
+} // namespace mscl

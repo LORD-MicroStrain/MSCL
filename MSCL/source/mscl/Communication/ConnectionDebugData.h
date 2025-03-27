@@ -6,10 +6,7 @@
 
 #pragma once
 
-#include "mscl/Types.h"
 #include "mscl/Timestamp.h"
-
-#include <vector>
 
 namespace mscl
 {
@@ -66,4 +63,4 @@ namespace mscl
     //API Typedef: ConnectionDebugDataVec
     //  typedef for a vector of <ConnectionDebugData> objects.
     typedef std::vector<ConnectionDebugData> ConnectionDebugDataVec;
-}
+} // namespace mscl

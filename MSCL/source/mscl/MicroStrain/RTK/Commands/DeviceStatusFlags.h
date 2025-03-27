@@ -6,34 +6,30 @@
 
 #pragma once
 
-#include "mscl/MicroStrain/MIP/Commands/GenericMipCommand.h"
 #include "mscl/MicroStrain/Inertial/ExposedInertialTypes.h"
-#include "mscl/MicroStrain/ResponseCollector.h"
-#include "mscl/MicroStrain/SampleRate.h"
-
+#include "mscl/MicroStrain/MIP/Commands/GenericMipCommand.h"
 
 namespace mscl
 {
     //Class: DeviceStatusFlags
     //    Contains the logic for the DeviceStatusFlags command.
-    class DeviceStatusFlags : private GenericMipCommand
+    class DeviceStatusFlags : GenericMipCommand
     {
-    private:
-        DeviceStatusFlags() {};                //default constructor disabled
+        DeviceStatusFlags() {}                //default constructor disabled
 
          //Constants: Packet Bytes
          // FIELD_DATA_BYTE - Descriptor byte for the Field data.
         static const uint8 FIELD_DATA_BYTE = 0x81;
 
     public:
-        virtual ~DeviceStatusFlags() {};
+        ~DeviceStatusFlags() override = default;
 
         static ByteStream buildCommand_get();
 
         class Response : public GenericMipCommand::Response
         {
         protected:
-            virtual uint8 fieldDataByte() const override { return FIELD_DATA_BYTE; }
+            uint8 fieldDataByte() const override { return FIELD_DATA_BYTE; }
 
         public:
             Response(std::weak_ptr<ResponseCollector> collector);
@@ -41,4 +37,4 @@ namespace mscl
             RTKDeviceStatusFlags parseResponse(const GenericMipCmdResponse& response) const;
         };
     };
-}
+} // namespace mscl

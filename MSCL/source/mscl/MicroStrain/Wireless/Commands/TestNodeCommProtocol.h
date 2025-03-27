@@ -6,8 +6,7 @@
 
 #pragma once
 
-#include "mscl/MicroStrain/ByteStream.h"
-#include "WirelessResponsePattern.h"
+#include "mscl/MicroStrain/Wireless/Commands/WirelessResponsePattern.h"
 #include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
 
 namespace mscl
@@ -23,7 +22,6 @@ namespace mscl
         TestNodeCommProtocol(const TestNodeCommProtocol&) = delete;             //copy constructor disabled
         TestNodeCommProtocol& operator=(const TestNodeCommProtocol&) = delete;  //assignment operator disabled
 
-    public:
         //Function: buildCommand
         //    Builds the TestNodeCommProtocol command packet
         //
@@ -80,4 +78,4 @@ namespace mscl
             bool matchFailResponse(const WirelessPacket& packet) override;
         };
     };
-}
+} // namespace mscl

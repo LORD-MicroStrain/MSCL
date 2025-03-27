@@ -6,9 +6,8 @@
 
 #pragma once
 
-#include "WirelessChannel.h"
 #include "mscl/MicroStrain/DataPoint.h"
-#include "mscl/Utils.h"
+#include "mscl/MicroStrain/Wireless/WirelessChannel.h"
 
 namespace mscl
 {
@@ -30,7 +29,7 @@ namespace mscl
         //    The channel name will be automatically generated from the given channel id.
         //
         //Parameters:
-        //    channelId - The <WirelessChannel::ChannelId> of the the data point
+        //    channelId - The <WirelessChannel::ChannelId> of the data point
         //    channelNumber - The channel number associated with the data point (ch1 = 1, ch8 = 8).
         //    type - The <ValueType> of the value to be stored
         //    value - The value to store
@@ -46,7 +45,7 @@ namespace mscl
         //    Builds a WirelessDataPoint object.
         //
         //Parameters:
-        //    channelId - The <WirelessChannel::ChannelId> of the the data point
+        //    channelId - The <WirelessChannel::ChannelId> of the data point
         //    channelNumber - The channel number associated with the data point (ch1 = 1, ch8 = 8).
         //    channelName - The channel name associated with the data point.
         //    type - The <ValueType> of the value to be stored
@@ -59,7 +58,7 @@ namespace mscl
             ValueType type,
             const anyType& value,
             const ChannelProperties& channelProperties = ChannelProperties());
-#endif
+#endif // !SWIG
 
     private:
         //Variable: m_channelId
@@ -84,7 +83,7 @@ namespace mscl
 
         //API Function: channelNumber
         //    Gets the channel number associated with the data point (ch1 = 1, ch8 = 8), when applicable.
-        //    Otherwise, this will return a 0 (for example, a Structural Health data point doesn't relate
+        //    Otherwise, this will return a 0 (for example, a Structural Health data point doesn't relate to
         //    an actual channel on the Wireless Node, so this will be a 0).
         //    This number can be used to relate to the Node's <WirelessChannel> in the
         //    map returned from calling <WirelessNode::channels>().
@@ -105,4 +104,4 @@ namespace mscl
     //API Typedef: ChannelData
     //    A typedef for a collection (vector) of <WirelessDataPoint>s
     typedef std::vector<WirelessDataPoint> ChannelData;
-}
+} // namespace mscl

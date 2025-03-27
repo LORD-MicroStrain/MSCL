@@ -6,12 +6,11 @@
 
 #pragma once
 
-#include "simple_any.h"
+#include "mscl/simple_any.h"
 
-#include <cstdint>
 #include <mutex>
-#include <vector>
 #include <sstream>
+#include <vector>
 
 namespace mscl
 {
@@ -55,7 +54,6 @@ namespace mscl
     typedef std::uint32_t NodeAddress;
 
 #ifndef SWIG
-
     //verify some standard information at compile time
     static_assert(sizeof(int) >= 4, "int is less than 4 bytes");
     static_assert(sizeof(std::int8_t) == sizeof(signed char), "int8_t != signed char");
@@ -83,7 +81,6 @@ namespace mscl
     //    Typedef for a simple_any type
     typedef simple_any anyType;
 
-
     //Function: checked_cast
     //    Safely casts one type to another type using static_cast
     //    by checking the limit of the cast first
@@ -110,8 +107,7 @@ namespace mscl
 
         return static_cast<Tout>(value);
     }
-
-#endif
+#endif // !SWIG
 
     //API Typedef: Bytes
     //    typedef for a vector of bytes.
@@ -182,4 +178,4 @@ namespace mscl
         deviceState_sampling_inactive   = 4,
         deviceState_unknown             = 255
     };
-}
+} // namespace mscl

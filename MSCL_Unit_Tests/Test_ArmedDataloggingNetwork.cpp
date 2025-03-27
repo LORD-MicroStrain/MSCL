@@ -8,9 +8,8 @@
 #include "mscl/MicroStrain/Wireless/WirelessNode.h"
 #include "mscl/MicroStrain/Wireless/WirelessNode_Impl.h"
 
-#include <boost/test/unit_test.hpp>
-#include "mock_BaseStation.h"
 #include "mock_WirelessNode.h"
+
 using namespace mscl;
 
 BOOST_AUTO_TEST_SUITE(ArmedDataloggingNetwork_Test)
@@ -43,7 +42,6 @@ BOOST_AUTO_TEST_CASE(ArmedDataloggingNetwork_addNode_success)
     BOOST_CHECK_NO_THROW(nwk.addNode(node2, "This is a test"));
 }
 
-
 BOOST_AUTO_TEST_CASE(ArmedDataloggingNetwork_addNode_fail_differentBase)
 {
     std::shared_ptr<mock_baseStationImpl> baseImpl1(new mock_baseStationImpl());
@@ -72,7 +70,6 @@ BOOST_AUTO_TEST_CASE(ArmedDataloggingNetwork_addNode_fail_differentBase)
     BOOST_CHECK_THROW(nwk.addNode(node2, "Test"), Error);
 }
 
-
 BOOST_AUTO_TEST_CASE(ArmedDataloggingNetwork_addNode_fail_invalidConfig)
 {
     std::shared_ptr<mock_baseStationImpl> baseImpl1(new mock_baseStationImpl());
@@ -91,7 +88,6 @@ BOOST_AUTO_TEST_CASE(ArmedDataloggingNetwork_addNode_fail_invalidConfig)
 
     BOOST_CHECK_THROW(nwk.addNode(node, "Hello World!"), Error_InvalidNodeConfig);
 }
-
 
 BOOST_AUTO_TEST_CASE(ArmedDataloggingNetwork_removeNode)
 {
@@ -125,7 +121,6 @@ BOOST_AUTO_TEST_CASE(ArmedDataloggingNetwork_removeNode)
     BOOST_CHECK_NO_THROW(nwk.removeNode(2));
 }
 
-
 BOOST_AUTO_TEST_CASE(ArmedDataloggingNetwork_startSampling_success)
 {
     std::shared_ptr<mock_baseStationImpl> baseImpl(new mock_baseStationImpl());
@@ -138,7 +133,6 @@ BOOST_AUTO_TEST_CASE(ArmedDataloggingNetwork_startSampling_success)
     std::shared_ptr<mock_WirelessNodeImpl> impl2(new mock_WirelessNodeImpl(b, 2));
     WirelessNode node2(2, b);
     node2.setImpl(impl2);
-
 
     ArmedDataloggingNetwork nwk(b);
 
@@ -160,7 +154,6 @@ BOOST_AUTO_TEST_CASE(ArmedDataloggingNetwork_startSampling_success)
 
     BOOST_CHECK_NO_THROW(nwk.startSampling());
 }
-
 
 BOOST_AUTO_TEST_CASE(ArmedDataloggingNetwork_startSampling_failArm)
 {
@@ -192,6 +185,5 @@ BOOST_AUTO_TEST_CASE(ArmedDataloggingNetwork_startSampling_failArm)
 
     BOOST_CHECK_THROW(nwk.startSampling(), Error_NodeCommunication);
 }
-
 
 BOOST_AUTO_TEST_SUITE_END()

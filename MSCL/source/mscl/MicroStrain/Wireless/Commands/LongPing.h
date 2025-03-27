@@ -6,10 +6,9 @@
 
 #pragma once
 
-#include "mscl/MicroStrain/ByteStream.h"
-#include "WirelessResponsePattern.h"
+#include "mscl/MicroStrain/Wireless/Commands/PingResponse.h"
+#include "mscl/MicroStrain/Wireless/Commands/WirelessResponsePattern.h"
 #include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
-#include "PingResponse.h"
 
 namespace mscl
 {
@@ -24,7 +23,6 @@ namespace mscl
         LongPing(const LongPing&) = delete;             //copy constructor disabled
         LongPing& operator=(const LongPing&) = delete;  //assignment operator disabled
 
-    public:
         //Function: buildCommand
         //    Builds the LongPing command packet
         //
@@ -67,7 +65,7 @@ namespace mscl
             //
             //Returns:
             //    true if the packet matches a response pattern, false otherwise
-            virtual bool matchSuccessResponse(const WirelessPacket& packet) override;
+            bool matchSuccessResponse(const WirelessPacket& packet) override;
 
         public:
             //Function: result
@@ -78,4 +76,4 @@ namespace mscl
             PingResponse result();
         };
     };
-}
+} // namespace mscl

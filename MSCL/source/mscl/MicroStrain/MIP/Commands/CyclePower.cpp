@@ -4,8 +4,7 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "CyclePower.h"
+#include "mscl/MicroStrain/MIP/Commands/CyclePower.h"
 
 namespace mscl
 {
@@ -15,8 +14,7 @@ namespace mscl
         return GenericMipCommand::buildCommand(CMD_ID);
     }
 
-    CyclePower::Response::Response(std::weak_ptr<ResponseCollector> collector):
+    CyclePower::Response::Response(std::weak_ptr<ResponseCollector> collector) :
         GenericMipCommand::Response(MipTypes::CMD_RESET, collector, true, false, "CyclePower")
-    {
-    }
-}
+    {}
+} // namespace mscl

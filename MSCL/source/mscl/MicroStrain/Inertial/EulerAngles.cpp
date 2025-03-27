@@ -4,19 +4,16 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-
-#include "EulerAngles.h"
+#include "mscl/MicroStrain/Inertial/EulerAngles.h"
 
 namespace mscl
 {
-    EulerAngles::EulerAngles():
+    EulerAngles::EulerAngles() :
         EulerAngles(0.0f, 0.0f, 0.0f)
-    {
-    }
+    {}
 
     EulerAngles::EulerAngles(float roll, float pitch, float yaw) :
-        Vector(ValueType::valueType_float, ByteStream())
+        Vector(valueType_float, ByteStream())
     {
         m_numColumns = 3;
         m_data.append_float(roll);
@@ -25,7 +22,7 @@ namespace mscl
     }
 
     EulerAngles::EulerAngles(const MipFieldValues& data, uint8 offset) :
-        Vector(ValueType::valueType_float, ByteStream())
+        Vector(valueType_float, ByteStream())
     {
         m_numColumns = 3;
         for (int i = offset; i < m_numColumns + offset; i++)
@@ -39,7 +36,7 @@ namespace mscl
     {
         return Rotation::FromEulerAngles(*this);
     }
-#endif
+#endif // !SWIG
 
     MipFieldValues EulerAngles::asMipFieldValues() const
     {
@@ -79,11 +76,10 @@ namespace mscl
 
     Quaternion::Quaternion() :
         Quaternion(0.0f, 0.0f, 0.0f, 0.0f)
-    {
-    }
+    {}
 
     Quaternion::Quaternion(float q0, float q1, float q2, float q3) :
-        Vector(ValueType::valueType_float, ByteStream())
+        Vector(valueType_float, ByteStream())
     {
         m_numColumns = 4;
         m_data.append_float(q0);
@@ -93,7 +89,7 @@ namespace mscl
     }
 
     Quaternion::Quaternion(const MipFieldValues& data, uint8 offset) :
-        Vector(ValueType::valueType_float, ByteStream())
+        Vector(valueType_float, ByteStream())
     {
         m_numColumns = 4;
         for (int i = offset; i < m_numColumns + offset; i++)
@@ -107,7 +103,7 @@ namespace mscl
     {
         return Rotation::FromQuaternion(*this);
     }
-#endif
+#endif // !SWIG
 
     MipFieldValues Quaternion::asMipFieldValues() const
     {
@@ -185,8 +181,8 @@ namespace mscl
     }
 
     Rotation::Rotation(const EulerAngles& angles) :
-        Vector(ValueType::valueType_float, ByteStream()),
-        m_format(Rotation::Format::EULER_ANGLES)
+        Vector(valueType_float, ByteStream()),
+        m_format(EULER_ANGLES)
     {
         m_numColumns = 3;
         m_data.append_float(angles.roll());
@@ -195,8 +191,8 @@ namespace mscl
     }
 
     Rotation::Rotation(const Quaternion& quat) :
-        Vector(ValueType::valueType_float, ByteStream()),
-        m_format(Rotation::Format::QUATERNION)
+        Vector(valueType_float, ByteStream()),
+        m_format(QUATERNION)
     {
         m_numColumns = 4;
         m_data.append_float(quat.q0());
@@ -206,7 +202,7 @@ namespace mscl
     }
 
     Rotation::Rotation(const MipFieldValues& data, uint8 offset) :
-        Vector(ValueType::valueType_float, ByteStream())
+        Vector(valueType_float, ByteStream())
     {
         m_format = static_cast<Format>(data[offset].as_uint8());
 
@@ -218,16 +214,16 @@ namespace mscl
     }
 
 #ifndef SWIG
-    Rotation::operator mscl::EulerAngles() const
+    Rotation::operator EulerAngles() const
     {
         return asEulerAngles();
     }
 
-    Rotation::operator mscl::Quaternion() const
+    Rotation::operator Quaternion() const
     {
         return asQuaternion();
     }
-#endif
+#endif // !SWIG
 
     EulerAngles Rotation::asEulerAngles() const
     {
@@ -274,4 +270,4 @@ namespace mscl
             appendTo.push_back(Value::FLOAT(0.0f));
         }
     }
-}
+} // namespace mscl

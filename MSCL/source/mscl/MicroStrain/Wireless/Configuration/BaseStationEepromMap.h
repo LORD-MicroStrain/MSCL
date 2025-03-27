@@ -6,8 +6,8 @@
 
 #pragma once
 
-#include "EepromLocation.h"
 #include "mscl/MicroStrain/Wireless/BaseStationButton.h"
+#include "mscl/MicroStrain/Wireless/Configuration/EepromLocation.h"
 
 namespace mscl
 {
@@ -15,12 +15,10 @@ namespace mscl
     //    Contains information on every EEPROM available on BaseStations
     class BaseStationEepromMap
     {
-    private:
-        BaseStationEepromMap();                                            //disabled default constructor
-        BaseStationEepromMap(const BaseStationEepromMap&);                //disabled copy constructor
+        BaseStationEepromMap();                                          //disabled default constructor
+        BaseStationEepromMap(const BaseStationEepromMap&);               //disabled copy constructor
         BaseStationEepromMap& operator=(const BaseStationEepromMap&);    //disabled assignement operator
 
-    private:
         static EepromLocation findAnalogEeprom(const EepromLocation& port1Location, uint8 portNum);
 
     public:
@@ -194,4 +192,4 @@ namespace mscl
         static const EepromLocation MIN_SOFT_VER_MINOR;        // The minimum software version for support of this device (minor).
         static const EepromLocation COMM_PROTOCOL;             // The communication protocol of the device.
     };
-}
+} // namespace mscl

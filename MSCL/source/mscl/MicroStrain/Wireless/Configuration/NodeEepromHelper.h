@@ -6,18 +6,11 @@
 
 #pragma once
 
-#include <memory>
-#include "EepromLocation.h"
-#include "mscl/MicroStrain/Wireless/Configuration/DataModeMask.h"
+#include "mscl/MicroStrain/Wireless/Configuration/EepromLocation.h"
 #include "mscl/MicroStrain/Wireless/Configuration/TempSensorOptions.h"
 #include "mscl/MicroStrain/Wireless/Features/FlashInfo.h"
-#include "mscl/MicroStrain/Wireless/ChannelMask.h"
-#include "mscl/MicroStrain/Wireless/WirelessTypes.h"
-#include "mscl/MicroStrain/Wireless/WirelessModels.h"
 #include "mscl/MicroStrain/Wireless/RadioFeatures.h"
-#include "mscl/MicroStrain/LinearEquation.h"
-#include "mscl/TimeSpan.h"
-#include "mscl/Version.h"
+#include "mscl/MicroStrain/Wireless/WirelessModels.h"
 #include "mscl/Value.h"
 
 namespace mscl
@@ -27,6 +20,7 @@ namespace mscl
     class EventTriggerOptions;
     class FatigueOptions;
     class HistogramOptions;
+    class LinearEquation;
     class WirelessNode_Impl;
 
     //Class: NodeEepromHelper
@@ -58,7 +52,6 @@ namespace mscl
         static const uint16 DEFAULT_SENSOR_DELAY_SEC = 5;
         static const uint16 MAX_SENSOR_DELAY_SEC = 500;
 
-    public:
         //Constructor: NodeEepromHelper
         //    Creates a NodeEepromHelper object with a <WirelessNode_Impl>.
         //
@@ -69,12 +62,10 @@ namespace mscl
     private:
         NodeEepromHelper();                                        //default constructor disabled
 
-    private:
         //Variable: m_node
         //    The <WirelessNode_Impl> used by this eeprom helper.
         WirelessNode_Impl* m_node;
 
-    private:
         //Function: read
         //    Reads an <EepromLocation> from the Node and returns a <Value> with the result.
         //
@@ -1645,4 +1636,4 @@ namespace mscl
         //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         void write_derivedVelocityUnit(WirelessTypes::DerivedVelocityUnit unit);
     };
-}
+} // namespace mscl

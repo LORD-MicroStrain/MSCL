@@ -6,10 +6,6 @@
 
 #pragma once
 
-#include <memory>
-#include <mutex>
-#include <vector>
-
 namespace mscl
 {
     class Connection;
@@ -26,7 +22,7 @@ namespace mscl
         ResponseInfo(ResponsePattern* responsePattern, std::size_t minBytePos):
           pattern(responsePattern),
           minBytePosition(minBytePos)
-        { }
+        {}
     };
 
     //Class: ResponseCollector
@@ -43,7 +39,6 @@ namespace mscl
         ResponseCollector& operator=(const ResponseCollector&);                     //disable assignment operator
         //std::shared_ptr<ResponseCollector> operator=(const ResponseCollector&);     //assignement operator disabled
 
-    private:
         //Variable: m_expectedResponses
         //    Holds the response patterns that, if matched, belong to this collector
         std::vector<ResponseInfo> m_expectedResponses;
@@ -119,4 +114,4 @@ namespace mscl
         //    true if the packet matched an expected response, false otherwise
         bool matchExpected(MipDataField& field);
     };
-}
+} // namespace mscl

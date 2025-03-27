@@ -10,9 +10,7 @@
 
 namespace mscl
 {
-
 #ifndef SWIG
-
     //Class: CyclePower
     //  Contains the logic for the MIP "Device Reset" command.
     class CyclePower
@@ -48,7 +46,5 @@ namespace mscl
             Response(std::weak_ptr<ResponseCollector> collector);
         };
     };
-
-#endif
-
-}
+#endif // !SWIG
+} // namespace mscl

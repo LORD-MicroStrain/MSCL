@@ -6,20 +6,16 @@
 
 #pragma once
 
-#include "mscl/Communication/Connection.h"
+#include "mscl/Communication/RawBytePacket.h"
+#include "mscl/MicroStrain/Wireless/BaseStationAnalogPair.h"
+#include "mscl/MicroStrain/Wireless/BaseStationButton.h"
+#include "mscl/MicroStrain/Wireless/Commands/BeaconStatus.h"
+#include "mscl/MicroStrain/Wireless/Commands/PingResponse.h"
+#include "mscl/MicroStrain/Wireless/Commands/SetToIdleStatus.h"
 #include "mscl/MicroStrain/Wireless/DataSweep.h"
 #include "mscl/MicroStrain/Wireless/NodeDiscovery.h"
-#include "Commands/BeaconStatus.h"
-#include "Commands/PingResponse.h"
-#include "Commands/SetToIdleStatus.h"
-#include "Configuration/ConfigIssue.h"
-#include "BaseStationButton.h"
-#include "BaseStationAnalogPair.h"
-#include "WirelessTypes.h"
-#include "WirelessModels.h"
-#include "mscl/Version.h"
-
-#include <memory>
+#include "mscl/MicroStrain/Wireless/WirelessModels.h"
+#include "mscl/MicroStrain/Wireless/WirelessTypes.h"
 
 namespace mscl
 {
@@ -44,17 +40,16 @@ namespace mscl
     public:
         //=====================================================================================================
         //API Constants: Default Timeouts
-        //    BASE_COMMANDS_DEFAULT_TIMEOUT     - 20 ms     - The default timeout for a base station command (in milliseconds) used by USB Bases
-        //    EXT_BASE_COMMANDS_DEFAULT_TIMEOUT - 500 ms    - The extended default timeout for a base station command (in milliseconds)
+        //    BASE_COMMANDS_DEFAULT_TIMEOUT     - 20 ms      - The default timeout for a base station command (in milliseconds) used by USB Bases
+        //    EXT_BASE_COMMANDS_DEFAULT_TIMEOUT - 500 ms     - The extended default timeout for a base station command (in milliseconds)
         //    BROADCAST_NODE_ADDRESS            - 65535      - The address to use for performing Broadcast commands that will be heard by all <WirelessNode>s on the frequency.
         //    BROADCAST_NODE_ADDRESS_ASPP3      - 0xFFFFFFFF - The address to use for performing Broadcast commands that will be heard by all <WirelessNode>s on the frequency (ASPP 3.X).
         //=====================================================================================================
-        static const uint64 BASE_COMMANDS_DEFAULT_TIMEOUT = 20;
+        static const uint64 BASE_COMMANDS_DEFAULT_TIMEOUT          = 20;
         static const uint64 ETHERNET_BASE_COMMANDS_DEFAULT_TIMEOUT = 500;
-        static const NodeAddress BROADCAST_NODE_ADDRESS = 0xFFFF;
-        static const NodeAddress BROADCAST_NODE_ADDRESS_ASPP3 = 0xFFFFFFFF;
+        static const NodeAddress BROADCAST_NODE_ADDRESS            = 0xFFFF;
+        static const NodeAddress BROADCAST_NODE_ADDRESS_ASPP3      = 0xFFFFFFFF;
 
-    public:
         //API Constructor: BaseStation
         //  Creates a BaseStation object.
         //  Note: this will use a default timeout of <BASE_COMMANDS_DEFAULT_TIMEOUT> for serial connections
@@ -64,7 +59,7 @@ namespace mscl
         //    connection - The <Connection> object used for communication
         //
         //Exceptions:
-        //    - <Error_Connection>: A problem occured with the Connection.
+        //    - <Error_Connection>: A problem occurred with the Connection.
         explicit BaseStation(Connection& connection);
 
         //API Constructor: BaseStation
@@ -75,12 +70,12 @@ namespace mscl
         //    baseTimeout - The timeout to use for base station commands
         //
         //Exceptions:
-        //    - <Error_Connection>: A problem occured with the Connection.
+        //    - <Error_Connection>: A problem occurred with the Connection.
         explicit BaseStation(Connection& connection, uint64 baseTimeout);
 
         //Destructor: ~BaseStation
         //    Destroys a BaseStation object
-        virtual ~BaseStation() {};
+        virtual ~BaseStation() {}
 
         //API Function: Mock
         //  Static function to create a Mock BaseStation (won't actually talk to a physical device).
@@ -138,12 +133,11 @@ namespace mscl
         //Returns:
         //    true if the two BaseStation are not identical, false otherwise.
         bool operator!=(const BaseStation& src) const;
-#endif
+#endif // !SWIG
 
     private:
         BaseStation();        //default constructor disabled
 
-    private:
         //Variable: m_impl
         //    The <BaseStation_Impl> class that contains all the implementation logic for the BaseStation class.
         std::shared_ptr<BaseStation_Impl> m_impl;
@@ -211,7 +205,7 @@ namespace mscl
         uint8 readWriteRetries() const;
 
         //API Function: useEepromCache
-        //    Sets whether or not to utilize the eeprom cache when configuring this BaseStation (enabled by default). This can be enabled/disabled at any time.
+        //    Sets whether to use the eeprom cache when configuring this BaseStation (enabled by default). This can be enabled/disabled at any time.
         //    It is highly recommended to have eeprom caching be enabled.
         //    Note:    The eeprom cache stores the last known value that was written to / read from the BaseStation for each eeprom location. If this is enabled,
         //            any reads will get the last known value from the cache if it exists, and any writes will not write to the BaseStation if the
@@ -495,7 +489,7 @@ namespace mscl
         //Parameters:
         //  minFreq - The minimum frequency to use in the scan in kHz (2400000 = 2.4GHz).
         //  maxFreq - The maximum frequency to use in the scan in kHz (2400000 = 2.4GHz).
-        //  interval - The interval between frequencies.
+        //  Interval - The interval between frequencies.
         //  options - This is currently an Advanced setting, used internally.
         //
         //Exceptions:
@@ -546,7 +540,7 @@ namespace mscl
         //
         //Exceptions:
         //  - <Error_Connection>: A connection error has occurred with the BaseStation.
-        mscl::SetToIdleStatus broadcastSetToIdle();
+        SetToIdleStatus broadcastSetToIdle();
 
         //API Function: verifyConfig
         //    Checks whether the settings in the given <BaseStationConfig> are ok to be written to the BaseStation.
@@ -558,7 +552,7 @@ namespace mscl
         //    outIssues - The <ConfigIssues> that will hold any resulting issues that are found with the configuration.
         //
         //Returns:
-        //    true if the configuration is valid. false if the configuration is invalid and outIssues should be checked for more information.
+        //    true if the configuration is valid. False if the configuration is invalid and outIssues should be checked for more information.
         //
         //Exceptions:
         //    - <Error_NotSupported>: The BaseStation model, or firmware version, is not supported by MSCL.
@@ -690,7 +684,6 @@ namespace mscl
 
 //all the node functions in the base station class should not be exposed to SWIG
 #ifndef SWIG
-    public:
         //Function: node_ping
         //    Pings the specified Node.
         //
@@ -735,7 +728,7 @@ namespace mscl
         //
         //Parameters:
         //    nodeProtocol - the <WirelessProtocol> for the Node.
-        //    nodeAddress - The node adderss of the Node to put to sleep.
+        //    nodeAddress - The node address of the Node to put to sleep.
         //
         //Returns:
         //    true if the sleep command was successful, false otherwise.
@@ -830,10 +823,10 @@ namespace mscl
         //Parameters:
         //  nodeProtocol - The <WirelessProtocol> for the Node.
         //  nodeAddress - The node address of the Node to download data from.
-        //  result - The <DatalogSessionInfoResult> containing the result info on success.
+        //  Result - The <DatalogSessionInfoResult> containing the result info on success.
         //
         //Returns:
-        //  true if the command succeded, false otherwise
+        //  true if the command succeeded, false otherwise
         //
         //Exceptions:
         //  - <Error_Connection>: A connection error has occurred with the BaseStation.
@@ -850,7 +843,7 @@ namespace mscl
         //  numBytesRead - The number of bytes that were read from the command and appended to the result <ByteStream>.
         //
         //Returns:
-        //  true if the command succeded, false otherwise
+        //  true if the command succeeded, false otherwise
         //
         //Exceptions:
         //  - <Error_Connection>: A connection error has occurred with the BaseStation.
@@ -889,7 +882,7 @@ namespace mscl
         //    nodeAddress - The node address of the Node to send the command to.
         //
         //Returns:
-        //  true if the Start Non Sync Sampling command succeeded, false otherwise.
+        //  true if the Start Non-Sync Sampling command succeeded, false otherwise.
         //
         //Exceptions:
         //    - <Error_Connection>: A connection error has occurred with the BaseStation.
@@ -900,7 +893,7 @@ namespace mscl
         //
         //Parameters:
         //    nodeAddress - The node address of the Node to send the command to.
-        //    message - A message, up to 50 characters, to send with the arm command. This message can be downloaded with the data. Will be trimmed to 50 chars if longer. (Default of "")
+        //    message - A message, up to 50 characters, to send with the arm command. This message can be downloaded with the data. It will be trimmed to 50 chars if longer. (Default of "")
         //
         //Exceptions:
         //    - <Error_Connection>: A connection error has occurred with the BaseStation.
@@ -1041,7 +1034,7 @@ namespace mscl
         bool node_poll(const WirelessProtocol& nodeProtocol, NodeAddress nodeAddress, const ChannelMask& chs, WirelessPollData& result);
 
         //API Function: getRawBytePackets
-        //    Gets up to the requested amount of raw byte packets that have been collected.
+        //    Gets up to the requested number of raw byte packets that have been collected.
         //
         //Parameters:
         //    packets - A vector of <RawBytePacket> to hold the result.
@@ -1051,7 +1044,6 @@ namespace mscl
         //Exceptions:
         //    - <Error_Connection>: A connection error has occurred with the Node.
         RawBytePackets getRawBytePackets(uint32 timeout = 0, uint32 maxPackets = 0);
-#endif
-
+#endif // !SWIG
     };
-}
+} // namespace mscl

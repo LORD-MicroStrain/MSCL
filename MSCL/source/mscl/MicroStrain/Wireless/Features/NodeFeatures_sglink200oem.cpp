@@ -4,15 +4,15 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "NodeFeatures_sglink200oem.h"
-#include "AvailableSampleRates.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures_sglink200oem.h"
+
+#include "mscl/MicroStrain/SampleRate.h"
 #include "mscl/MicroStrain/Wireless/Configuration/NodeEepromMap.h"
-#include "mscl/Utils.h"
+#include "mscl/MicroStrain/Wireless/Features/AvailableSampleRates.h"
 
 namespace mscl
 {
-    NodeFeatures_sglink200oem::NodeFeatures_sglink200oem(const NodeInfo& info):
+    NodeFeatures_sglink200oem::NodeFeatures_sglink200oem(const NodeInfo& info) :
         NodeFeatures_200series(info)
     {
         addCalCoeffChannelGroup(1, "Differential", NodeEepromMap::CH_ACTION_SLOPE_1, NodeEepromMap::CH_ACTION_ID_1);
@@ -23,7 +23,6 @@ namespace mscl
         const ChannelMask DIFFERENTIAL_CHS(BOOST_BINARY(00000001));  //ch1
         const ChannelMask SINGLE_ENDED_CHS(BOOST_BINARY(00000010));  //ch2
         const ChannelMask PULSE_CHS(BOOST_BINARY(00110000));         //ch5 and ch6
-
 
         if(info.firmwareVersion() >= Version(12, 42801))
         {
@@ -59,7 +58,6 @@ namespace mscl
                                              {WirelessTypes::chSetting_lowPassFilter, NodeEepromMap::LOW_PASS_FILTER_2}}
             );
         }
-
 
         m_channelGroups.emplace_back(PULSE_CHS, "Pulse Input",
                                      ChannelGroup::SettingsMap{
@@ -175,7 +173,7 @@ namespace mscl
     {
         static const Version MIN_POLL_FW(12, 44849);
 
-        return (m_nodeInfo.firmwareVersion() >= MIN_POLL_FW);
+        return m_nodeInfo.firmwareVersion() >= MIN_POLL_FW;
     }
 
     const WirelessTypes::WirelessSampleRates NodeFeatures_sglink200oem::sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const
@@ -197,4 +195,4 @@ namespace mscl
                 throw Error_NotSupported("The sampling mode is not supported by this Node");
         }
     }
-}
+} // namespace mscl

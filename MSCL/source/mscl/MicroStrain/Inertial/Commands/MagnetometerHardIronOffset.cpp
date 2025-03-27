@@ -4,19 +4,14 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "MagnetometerHardIronOffset.h"
-#include "mscl/MicroStrain/MIP/MipDataField.h"
-#include "mscl/MicroStrain/MIP/Packets/MipPacketBuilder.h"
-#include "mscl/MicroStrain/MIP/MipTypes.h"
-#include "mscl/MicroStrain/MIP/Commands/MIP_Commands.h"
+#include "mscl/MicroStrain/Inertial/Commands/MagnetometerHardIronOffset.h"
 
 namespace mscl
 {
     MagnetometerHardIronOffset::MagnetometerHardIronOffset(MipTypes::FunctionSelector function_selector, GeometricVector dataToUse) :
         m_functionSelector(function_selector),
         m_offsetVector(dataToUse)
-    { }
+    {}
 
     MagnetometerHardIronOffset::MagnetometerHardIronOffset(MipTypes::FunctionSelector function_selector) :
         m_functionSelector(function_selector)
@@ -38,7 +33,7 @@ namespace mscl
 
     bool MagnetometerHardIronOffset::responseExpected() const
     {
-        return (m_functionSelector == MipTypes::READ_BACK_CURRENT_SETTINGS) ? true : false;
+        return m_functionSelector == MipTypes::READ_BACK_CURRENT_SETTINGS;
     }
 
     GeometricVector MagnetometerHardIronOffset::getResponseData(const GenericMipCmdResponse& response)
@@ -63,7 +58,6 @@ namespace mscl
             byteCommand.append_float(m_offsetVector.y());
             byteCommand.append_float(m_offsetVector.z());
         }
-        return GenericMipCommand::buildCommand(commandType(), byteCommand.data()); ;
+        return GenericMipCommand::buildCommand(commandType(), byteCommand.data());
     }
-
-}
+} // namespace mscl

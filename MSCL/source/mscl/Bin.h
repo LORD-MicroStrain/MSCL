@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "Value.h"
+#include "mscl/Value.h"
 
 namespace mscl
 {
@@ -27,7 +27,6 @@ namespace mscl
     private:
         Bin() = delete; //default constructor disabled
 
-    private:
         //Variable: m_start
         //    The start of the range of the bin.
         Value m_start;
@@ -66,4 +65,4 @@ namespace mscl
     //API Typedef: Bins
     //    Typedef for a vector of <Bin> objects.
     typedef std::vector<Bin> Bins;
-}
+} // namespace mscl

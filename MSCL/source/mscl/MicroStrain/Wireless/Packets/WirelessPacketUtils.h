@@ -6,10 +6,10 @@
 
 #pragma once
 
-#include "WirelessPacket.h"
-
 namespace mscl
 {
+    class WirelessPacket;
+
     //Class: WirelessPacketUtils
     //    Contains useful utility functions for interfacing with MicroStrain's Wireless packets
     class WirelessPacketUtils
@@ -33,5 +33,4 @@ namespace mscl
         //    true if the packet's bytes are what they should be for its current type, false otherwise
         static bool packetIntegrityCheck(const WirelessPacket& packet);
     };
-
-}
+} // namespace mscl

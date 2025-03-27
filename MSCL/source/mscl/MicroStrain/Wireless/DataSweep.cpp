@@ -4,13 +4,11 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-
-#include "DataSweep.h"
+#include "mscl/MicroStrain/Wireless/DataSweep.h"
 
 namespace mscl
 {
-    DataSweep::DataSweep():
+    DataSweep::DataSweep() :
         m_timestamp(0),
         m_tick(0),
         m_sampleRate(SampleRate::rateType_hertz, 1),
@@ -20,8 +18,7 @@ namespace mscl
         m_baseRssi(0),
         m_frequency(WirelessTypes::freq_unknown),
         m_calsApplied(true)
-    {
-    }
+    {}
 
     const Timestamp& DataSweep::timestamp() const
     {
@@ -78,7 +75,7 @@ namespace mscl
         return m_samplingMode;
     }
 
-    void DataSweep::samplingType(DataSweep::SamplingType type)
+    void DataSweep::samplingType(SamplingType type)
     {
         m_samplingMode = type;
     }
@@ -122,4 +119,4 @@ namespace mscl
     {
         m_calsApplied = applied;
     }
-}
+} // namespace mscl

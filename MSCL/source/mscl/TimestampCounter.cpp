@@ -4,26 +4,21 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-
-#include "TimestampCounter.h"
-#include "TimeSpan.h"
+#include "mscl/TimestampCounter.h"
 
 namespace mscl
 {
-    TimestampCounter::TimestampCounter():
+    TimestampCounter::TimestampCounter() :
         m_sampleRate(SampleRate::Hertz(1)),
         m_time(0),
         m_sampleCount(0)
-    {
-    }
+    {}
 
-    TimestampCounter::TimestampCounter(const SampleRate& sampleRate, uint64 startTime):
+    TimestampCounter::TimestampCounter(const SampleRate& sampleRate, uint64 startTime) :
         m_sampleRate(sampleRate),
         m_time(startTime),
         m_sampleCount(0)
-    {
-    }
+    {}
 
     void TimestampCounter::reset(const SampleRate& sampleRate, uint64 time)
     {
@@ -54,7 +49,7 @@ namespace mscl
 
             default:
                 m_time += static_cast<uint64>(m_sampleRate.samples()) * n * TimeSpan::NANOSECONDS_PER_SECOND;
-        };
+        }
     }
 
     void TimestampCounter::advance()
@@ -74,8 +69,8 @@ namespace mscl
                 //if we are going to roll back over 0
                 if(n > m_sampleCount)
                 {
-                    m_time -= TimeSpan::NANOSECONDS_PER_SECOND * ( ( (n - m_sampleCount) / m_sampleRate.samples() ) + 1);
-                    m_sampleCount = m_sampleRate.samples() - ( (n - m_sampleCount) % m_sampleRate.samples() );
+                    m_time -= TimeSpan::NANOSECONDS_PER_SECOND * ( (n - m_sampleCount) / m_sampleRate.samples() + 1);
+                    m_sampleCount = m_sampleRate.samples() - (n - m_sampleCount) % m_sampleRate.samples();
                 }
                 else
                 {
@@ -85,7 +80,7 @@ namespace mscl
 
             default:
                 m_time -= static_cast<uint64>(m_sampleRate.samples()) * n * TimeSpan::NANOSECONDS_PER_SECOND;
-        };
+        }
 
         if(m_time > origTime)
         {
@@ -105,11 +100,10 @@ namespace mscl
         switch(m_sampleRate.rateType())
         {
             case SampleRate::rateType_hertz:
-                return m_time + ((static_cast<uint64>(m_sampleCount) * TimeSpan::NANOSECONDS_PER_SECOND) / m_sampleRate.samples());
+                return m_time + static_cast<uint64>(m_sampleCount) * TimeSpan::NANOSECONDS_PER_SECOND / m_sampleRate.samples();
 
             default:
                 return m_time;
-        };
+        }
     }
-
-}
+} // namespace mscl

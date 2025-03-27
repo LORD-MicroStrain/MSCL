@@ -4,14 +4,12 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "StartSyncSampling.h"
-#include "WirelessProtocol.h"
-#include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
+#include "mscl/MicroStrain/Wireless/Commands/StartSyncSampling.h"
+
+#include "mscl/MicroStrain/Wireless/Commands/WirelessProtocol.h"
 
 namespace mscl
 {
-
     ByteStream StartSyncSampling::buildCommand(WirelessPacket::AsppVersion asppVer, NodeAddress nodeAddress)
     {
         //build the command ByteStream
@@ -42,11 +40,10 @@ namespace mscl
         return cmd;
     }
 
-    StartSyncSampling::Response::Response(NodeAddress nodeAddress, std::weak_ptr<ResponseCollector> collector):
+    StartSyncSampling::Response::Response(NodeAddress nodeAddress, std::weak_ptr<ResponseCollector> collector) :
         WirelessResponsePattern(collector, WirelessProtocol::cmdId_startSync_v1, nodeAddress),
         m_nodeAddress(nodeAddress)
-    {
-    }
+    {}
 
     bool StartSyncSampling::Response::matchSuccessResponse(const WirelessPacket& packet)
     {
@@ -74,4 +71,4 @@ namespace mscl
         //if we made it here, the packet matches the response pattern
         return true;
     }
-}
+} // namespace mscl

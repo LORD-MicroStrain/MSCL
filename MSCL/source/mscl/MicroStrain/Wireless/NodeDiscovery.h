@@ -6,10 +6,8 @@
 
 #pragma once
 
-#include "mscl/Timestamp.h"
-#include "WirelessTypes.h"
-#include "WirelessModels.h"
-#include "mscl/Version.h"
+#include "mscl/MicroStrain/Wireless/WirelessModels.h"
+#include "mscl/MicroStrain/Wireless/WirelessTypes.h"
 
 namespace mscl
 {
@@ -34,7 +32,7 @@ namespace mscl
         //Parameters:
         //    packet - The <WirelessPacket> to create the NodeDiscovery object from
         explicit NodeDiscovery(const WirelessPacket& packet);
-#endif
+#endif // !SWIG
 
     private:
         //Variable: m_eepromMap
@@ -82,7 +80,7 @@ namespace mscl
         Version m_asppVersionLxrsPlus;
 
         //Variable: m_bitResult
-        //    The Built In Test result that was sent in the packet.
+        //    The Built-In-Test result that was sent in the packet.
         uint32 m_bitResult;
 
         //Variable: m_baseRssi
@@ -148,11 +146,11 @@ namespace mscl
         WirelessTypes::Frequency frequency() const;
 
         //API Function: panId
-        //    Gets the PAN Id of the discovered Node.
+        //    Gets the PAN ID of the discovered Node.
         //    Note: Returns 0 if not present in the packet.
         //
         //Returns:
-        //    The PAN Id of the discovered Node.
+        //    The PAN ID of the discovered Node.
         uint16 panId() const;
 
         //API Function: model
@@ -187,10 +185,10 @@ namespace mscl
         WirelessTypes::DefaultMode defaultMode() const;
 
         //API Function: builtInTestResult
-        //    Gets the result bitmask of the built in test.
+        //    Gets the result bitmask of the built-in-test.
         //
         //Returns:
-        //  A uint32 bitmask representing the result of the built in test.
+        //  A uint32 bitmask representing the result of the built-in-test.
         uint32 builtInTestResult() const;
 
         //API Function: communicationProtocol
@@ -226,4 +224,4 @@ namespace mscl
     //API Typedef: NodeDiscoveries
     //    typedef for a vector of <NodeDiscovery> objects
     typedef std::vector<NodeDiscovery> NodeDiscoveries;
-}
+} // namespace mscl

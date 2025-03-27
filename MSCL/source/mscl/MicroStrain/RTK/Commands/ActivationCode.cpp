@@ -4,26 +4,20 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "ActivationCode.h"
-#include "mscl/MicroStrain/MIP/MipDataField.h"
-#include "mscl/MicroStrain/MIP/Packets/MipPacketBuilder.h"
-#include "mscl/MicroStrain/MIP/MipTypes.h"
-#include "mscl/MicroStrain/MIP/Commands/MIP_Commands.h"
+#include "mscl/MicroStrain/RTK/Commands/ActivationCode.h"
 
 namespace mscl
 {
     ByteStream ActivationCode::buildCommand_get()
     {
-        mscl::Bytes fieldData;
+        Bytes fieldData;
 
         return buildCommand(MipTypes::CMD_RTK_ACTIVATION_CODE, fieldData);
     }
 
     ActivationCode::Response::Response(std::weak_ptr<ResponseCollector> collector) :
         GenericMipCommand::Response(MipTypes::CMD_RTK_ACTIVATION_CODE, collector, true, true, "Get RTK Activation Code")
-    {
-    }
+    {}
 
     std::string ActivationCode::Response::parseResponse(const GenericMipCmdResponse& response) const
     {
@@ -41,4 +35,4 @@ namespace mscl
         }
         return str;
     }
-}
+} // namespace mscl

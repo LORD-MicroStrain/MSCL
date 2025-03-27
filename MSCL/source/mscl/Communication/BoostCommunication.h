@@ -5,25 +5,8 @@
 *****************************************************************************************/
 
 #pragma once
-#include <boost/asio.hpp>
-
-#ifndef MSCL_DISABLE_SSL
-#include <boost/asio/ssl/stream.hpp>
-#include <boost/beast/websocket/ssl.hpp>
-#endif
-
-#ifndef MSCL_DISABLE_WEBSOCKETS
-#include <boost/beast.hpp>
-#endif
-
-#include <memory>
-#include <mutex>
-#include <functional>
 
 #include "mscl/Exceptions.h"
-#include "mscl/Types.h"
-#include "mscl/Utils.h"
-#include "mscl/MicroStrain/ByteStream.h"
 #include "mscl/MicroStrain/DataBuffer.h"
 
 namespace mscl
@@ -32,7 +15,7 @@ namespace mscl
     {
         //generalized template function for writing to a IO_Object
         template <typename IO_Object>
-        inline void writeAll(IO_Object& obj, const std::vector<uint8>& data)
+        void writeAll(IO_Object& obj, const std::vector<uint8>& data)
         {
             boost::asio::write(
                 obj,                                        //the ioObject (serial port, tcp socket, websocket)
@@ -54,16 +37,15 @@ namespace mscl
         {
             obj.write(boost::asio::buffer(data, data.size()));
         }
-#endif // MSCL_DISABLE_SSL
-#endif // MSCL_DISABLE_WEBSOCKETS
-    }
+#endif // !MSCL_DISABLE_SSL
+#endif // !MSCL_DISABLE_WEBSOCKETS
+    } // namespace details
 
     //Class: BoostCommunication
     //    The BoostCommunication object that is used for actual read/write communication for all Connection objects
     template <typename IO_Object>
     class BoostCommunication
     {
-    private:
         static const int ERROR_CODE_CONNECTION_RESET = 10054;
         static const int ERROR_CODE_IO_ABORTED = 995;
         static const int ERROR_CODE_DEVICE_NOT_RECOGNIZED = 22;
@@ -86,7 +68,6 @@ namespace mscl
         BoostCommunication(const BoostCommunication&) = delete;               //copy constructor disabled
         BoostCommunication& operator=(const BoostCommunication&) = delete;    //assignment operator disabled
 
-    private:
         //Variable: m_ioObject
         //    Boost io_object used to communicate (serial_port, ip::tcp::socket, etc.)
         std::unique_ptr<IO_Object> m_ioObject;
@@ -184,7 +165,6 @@ namespace mscl
         void disableDebugMode();
     };
 
-
     //Constructor
     template <typename IO_Object>
     BoostCommunication<IO_Object>::BoostCommunication(std::unique_ptr<boost::asio::io_context> ioContext, std::unique_ptr<IO_Object> ioObj):
@@ -194,8 +174,7 @@ namespace mscl
         m_bufferWriter(m_readBuffer.getBufferWriter()),
         m_parseDataFunction(nullptr),
         m_debugDataFunction(nullptr)
-    {
-    }
+    {}
 
     template <typename IO_Object>
     BoostCommunication<IO_Object>::~BoostCommunication()
@@ -318,13 +297,13 @@ namespace mscl
     template <typename IO_Object>
     void BoostCommunication<IO_Object>::stopIoService()
     {
-        m_ioContext->post([]() { throw Error_Connection("Stopping Data Thread."); });
+        m_ioContext->post([]()->void { throw Error_Connection("Stopping Data Thread."); });
     }
 
     template <typename IO_Object>
     void BoostCommunication<IO_Object>::stopIoServiceError(int errorCode)
     {
-        m_ioContext->post([&errorCode]() { throw Error_Connection(errorCode); });
+        m_ioContext->post([&errorCode]()->void { throw Error_Connection(errorCode); });
     }
 
     //read handler for the read loop, called when data has come in or the read operation has been canceled
@@ -381,4 +360,4 @@ namespace mscl
         //perform the actual port read again
         readSome();
     }
-}
+} // namespace mscl

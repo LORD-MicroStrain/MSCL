@@ -4,25 +4,19 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-
-#include "BeaconStatus.h"
-#include "WirelessProtocol.h"
-#include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
+#include "mscl/MicroStrain/Wireless/Commands/BeaconStatus.h"
 
 namespace mscl
 {
-    BeaconStatus::BeaconStatus():
+    BeaconStatus::BeaconStatus() :
         m_enabled(false),
         m_timestamp(0)
-    {
-    }
+    {}
 
-    BeaconStatus::BeaconStatus(bool beaconEnabled, const Timestamp& currentTimestamp):
+    BeaconStatus::BeaconStatus(bool beaconEnabled, const Timestamp& currentTimestamp) :
         m_enabled(beaconEnabled),
         m_timestamp(currentTimestamp)
-    {
-    }
+    {}
 
     bool BeaconStatus::enabled()
     {
@@ -33,4 +27,4 @@ namespace mscl
     {
         return m_timestamp;
     }
-}
+} // namespace mscl

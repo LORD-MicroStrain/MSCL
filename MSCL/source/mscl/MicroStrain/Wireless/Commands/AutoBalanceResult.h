@@ -6,10 +6,7 @@
 
 #pragma once
 
-#include "mscl/MicroStrain/ByteStream.h"
-#include "mscl/MicroStrain/ResponsePattern.h"
 #include "mscl/MicroStrain/Wireless/WirelessTypes.h"
-#include "mscl/Types.h"
 
 namespace mscl
 {
@@ -61,4 +58,4 @@ namespace mscl
         //    The new hardware offset value after the autobalance.
         uint16 hardwareOffset() const;
     };
-}
+} // namespace mscl

@@ -4,11 +4,9 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
+#include "mscl/MicroStrain/Wireless/Commands/BaseStation_BeaconStatus.h"
 
-#include "BaseStation_BeaconStatus.h"
-#include "WirelessProtocol.h"
-#include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
+#include "mscl/MicroStrain/Wireless/Commands/WirelessProtocol.h"
 
 namespace mscl
 {
@@ -43,10 +41,9 @@ namespace mscl
         return cmd;
     }
 
-    BaseStation_BeaconStatus::Response::Response(std::weak_ptr<ResponseCollector> collector):
+    BaseStation_BeaconStatus::Response::Response(std::weak_ptr<ResponseCollector> collector) :
         WirelessResponsePattern(collector, WirelessProtocol::cmdId_base_getBeaconStatus_v1, WirelessProtocol::BASE_STATION_ADDRESS)
-    {
-    }
+    {}
 
     bool BaseStation_BeaconStatus::Response::matchSuccessResponse(const WirelessPacket& packet)
     {
@@ -70,7 +67,7 @@ namespace mscl
         //build the current beacon timestamp
         uint64 timestampSec = payload.read_uint32(3);
         uint64 timestampNano = payload.read_uint32(7);
-        Timestamp time((timestampSec * TimeSpan::NANOSECONDS_PER_SECOND) + timestampNano);
+        Timestamp time(timestampSec * TimeSpan::NANOSECONDS_PER_SECOND + timestampNano);
 
         //build the BeaconStatus result object
         m_result = BeaconStatus(enabled, time);
@@ -104,4 +101,4 @@ namespace mscl
     {
         return m_result;
     }
-}
+} // namespace mscl

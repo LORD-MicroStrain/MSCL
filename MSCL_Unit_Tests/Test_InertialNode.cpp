@@ -5,19 +5,15 @@
 *****************************************************************************************/
 
 #include "mscl/Communication/SerialConnection.h"
-#include "mscl/MicroStrain/Inertial/InertialNode.h"
-#include "mscl/MicroStrain/Displacement/DisplacementModels.h"
-#include "mscl/MicroStrain/MIP/MipNodeFeatures.h"
-#include "mscl/MicroStrain/MIP/Packets/MipDataPacket.h"
 #include "mscl/MicroStrain/ByteStream.h"
 #include "mscl/MicroStrain/ChecksumBuilder.h"
+#include "mscl/MicroStrain/Displacement/DisplacementModels.h"
+#include "mscl/MicroStrain/Inertial/InertialNode.h"
+#include "mscl/MicroStrain/MIP/MipNodeFeatures.h"
+#include "mscl/MicroStrain/MIP/Packets/MipDataPacket.h"
 #include "mscl/Utils.h"
 
-#include <boost/test/unit_test.hpp>
 #include "mock_InertialNode.h"
-#include "mock_Connection.h"
-
-#include <string>
 
 using namespace mscl;
 
@@ -275,7 +271,6 @@ BOOST_AUTO_TEST_CASE(InertialNode_getMessageFormat_Sensor)
 
     //expect the getMessageFormat command
     MOCK_EXPECT(impl->doCommand).once().returns(GenericMipCmdResponse::ResponseSuccess("", data));
-
 
     MipChannels chs = node.getActiveChannelFields(MipTypes::CLASS_AHRS_IMU);
 
@@ -607,12 +602,10 @@ BOOST_AUTO_TEST_CASE(InertialNode_deviceName)
     BOOST_CHECK_EQUAL(InertialNode::deviceName(serial), "inertial-6225.01466");
 }
 
-
 //TODO: move this to displacement test area
 BOOST_AUTO_TEST_CASE(DisplacementNode_nodeFromModelString)
 {
     BOOST_CHECK_EQUAL(DisplacementModels::nodeFromModelString("6130-2000"), DisplacementModels::node_digitalDemod);
 }
-
 
 BOOST_AUTO_TEST_SUITE_END()

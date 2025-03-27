@@ -6,8 +6,6 @@
 
 #pragma once
 
-#include "mscl/Types.h"
-
 namespace mscl
 {
     //Struct: FlashInfo
@@ -59,4 +57,4 @@ namespace mscl
         //  A <FlashInfo> for the given flash ID.
         static FlashInfo FROM_FLASH_ID(uint16 flashId);
     };
-}
+} // namespace mscl

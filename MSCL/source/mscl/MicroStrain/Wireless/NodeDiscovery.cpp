@@ -4,19 +4,19 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "NodeDiscovery.h"
-#include "Configuration/NodeEepromMap.h"
-#include "Packets/WirelessPacket.h"
-#include "Packets/NodeDiscoveryPacket.h"
-#include "Packets/NodeDiscoveryPacket_v2.h"
-#include "Packets/NodeDiscoveryPacket_v3.h"
-#include "Packets/NodeDiscoveryPacket_v4.h"
-#include "Packets/NodeDiscoveryPacket_v5.h"
+#include "mscl/MicroStrain/Wireless/NodeDiscovery.h"
+
+#include "mscl/MicroStrain/Wireless/Configuration/NodeEepromMap.h"
+#include "mscl/MicroStrain/Wireless/Packets/NodeDiscoveryPacket.h"
+#include "mscl/MicroStrain/Wireless/Packets/NodeDiscoveryPacket_v2.h"
+#include "mscl/MicroStrain/Wireless/Packets/NodeDiscoveryPacket_v3.h"
+#include "mscl/MicroStrain/Wireless/Packets/NodeDiscoveryPacket_v4.h"
+#include "mscl/MicroStrain/Wireless/Packets/NodeDiscoveryPacket_v5.h"
+#include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
 
 namespace mscl
 {
-    NodeDiscovery::NodeDiscovery():
+    NodeDiscovery::NodeDiscovery() :
         m_nodeAddress(0),
         m_radioChannel(WirelessTypes::freq_unknown),
         m_panId(0),
@@ -30,10 +30,9 @@ namespace mscl
         m_bitResult(0),
         m_baseRssi(WirelessTypes::UNKNOWN_RSSI),
         m_timestamp(0)
-    {
-    }
+    {}
 
-    NodeDiscovery::NodeDiscovery(const WirelessPacket& packet):
+    NodeDiscovery::NodeDiscovery(const WirelessPacket& packet) :
         m_nodeAddress(packet.nodeAddress()),
         m_radioChannel(WirelessTypes::freq_unknown),
         m_panId(0),
@@ -96,7 +95,6 @@ namespace mscl
         uint16 legacyModel = payload.read_uint16(Info::PAYLOAD_OFFSET_MODEL_NUMBER);
         m_model = WirelessModels::nodeFromLegacyModel(legacyModel);
 
-
         //build the eeprom map for importing to cache
         m_eepromMap[NodeEepromMap::FREQUENCY.location()] = static_cast<uint16>(m_radioChannel);
         m_eepromMap[NodeEepromMap::LEGACY_MODEL_NUMBER.location()] = legacyModel;
@@ -117,7 +115,7 @@ namespace mscl
         //Model
         uint16 model = payload.read_uint16(Info::PAYLOAD_OFFSET_MODEL_NUMBER);
         uint16 modelOption = payload.read_uint16(Info::PAYLOAD_OFFSET_MODEL_OPTION);
-        m_model = static_cast<WirelessModels::NodeModel>((model * 10000) + modelOption);
+        m_model = static_cast<WirelessModels::NodeModel>(model * 10000 + modelOption);
 
         //Serial
         m_serialNumber = payload.read_uint32(Info::PAYLOAD_OFFSET_SERIAL_NUMBER);
@@ -125,7 +123,6 @@ namespace mscl
         //Firmware Version
         uint16 fwVersion = payload.read_uint16(Info::PAYLOAD_OFFSET_FIRMWARE_VER);
         m_firmwareVersion = Version(Utils::msb(fwVersion), Utils::lsb(fwVersion));
-
 
         //build the eeprom map for importing to cache
         m_eepromMap[NodeEepromMap::FREQUENCY.location()] = static_cast<uint16>(m_radioChannel);
@@ -151,7 +148,7 @@ namespace mscl
         //Model
         uint16 model = payload.read_uint16(Info::PAYLOAD_OFFSET_MODEL_NUMBER);
         uint16 modelOption = payload.read_uint16(Info::PAYLOAD_OFFSET_MODEL_OPTION);
-        m_model = static_cast<WirelessModels::NodeModel>((model * 10000) + modelOption);
+        m_model = static_cast<WirelessModels::NodeModel>(model * 10000 + modelOption);
 
         //Serial
         m_serialNumber = payload.read_uint32(Info::PAYLOAD_OFFSET_SERIAL_NUMBER);
@@ -167,7 +164,6 @@ namespace mscl
 
         //Default Mode
         m_defaultMode = static_cast<WirelessTypes::DefaultMode>(payload.read_uint16(Info::PAYLOAD_OFFSET_DEFAULT_MODE));
-
 
         //build the eeprom map for importing to cache
         m_eepromMap[NodeEepromMap::FREQUENCY.location()] = static_cast<uint16>(m_radioChannel);
@@ -206,7 +202,7 @@ namespace mscl
         //Model
         uint16 model = payload.read_uint16(Info::PAYLOAD_OFFSET_MODEL_NUMBER);
         uint16 modelOption = payload.read_uint16(Info::PAYLOAD_OFFSET_MODEL_OPTION);
-        m_model = static_cast<WirelessModels::NodeModel>((model * 10000) + modelOption);
+        m_model = static_cast<WirelessModels::NodeModel>(model * 10000 + modelOption);
 
         //Serial
         m_serialNumber = payload.read_uint32(Info::PAYLOAD_OFFSET_SERIAL_NUMBER);
@@ -229,7 +225,6 @@ namespace mscl
 
         //Default Mode
         m_defaultMode = static_cast<WirelessTypes::DefaultMode>(payload.read_uint16(Info::PAYLOAD_OFFSET_DEFAULT_MODE));
-
 
         //build the eeprom map for importing to cache
         m_eepromMap[NodeEepromMap::FREQUENCY.location()] = static_cast<uint16>(m_radioChannel);
@@ -314,4 +309,4 @@ namespace mscl
     {
         return m_timestamp;
     }
-}
+} // namespace mscl

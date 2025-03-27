@@ -4,28 +4,25 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "BaseStationAnalogPair.h"
+#include "mscl/MicroStrain/Wireless/BaseStationAnalogPair.h"
 
 namespace mscl
 {
-    const float BaseStationAnalogPair::CHANNEL_NOT_FLOAT = Utils::make_float(0xFF, 0xFF, 0xFF, 0x7F, Utils::bigEndian);
+    const float BaseStationAnalogPair::CHANNEL_NOT_FLOAT = make_float(0xFF, 0xFF, 0xFF, 0x7F, Utils::bigEndian);
 
-    BaseStationAnalogPair::BaseStationAnalogPair():
+    BaseStationAnalogPair::BaseStationAnalogPair() :
         m_nodeAddress(0),
         m_nodeChannel(1),
         m_outputVal_0V(0),
         m_outputVal_3V(65535)
-    {
-    }
+    {}
 
-    BaseStationAnalogPair::BaseStationAnalogPair(uint16 nodeAddress, uint8 nodeChannel, float output_0V, float output_3V):
+    BaseStationAnalogPair::BaseStationAnalogPair(uint16 nodeAddress, uint8 nodeChannel, float output_0V, float output_3V) :
         m_nodeAddress(nodeAddress),
         m_nodeChannel(nodeChannel),
         m_outputVal_0V(output_0V),
         m_outputVal_3V(output_3V)
-    {
-    }
+    {}
 
     BaseStationAnalogPair BaseStationAnalogPair::Float(uint16 nodeAddress, uint8 nodeChannel, float output_0V, float output_3V)
     {
@@ -139,4 +136,4 @@ namespace mscl
             }
         }
     }
-}
+} // namespace mscl

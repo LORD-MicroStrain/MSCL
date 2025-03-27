@@ -4,10 +4,9 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "ReadEeprom_v2.h"
-#include "WirelessProtocol.h"
-#include "mscl/MicroStrain/ByteStream.h"
+#include "mscl/MicroStrain/Wireless/Commands/ReadEeprom_v2.h"
+
+#include "mscl/MicroStrain/Wireless/Commands/WirelessProtocol.h"
 
 namespace mscl
 {
@@ -43,14 +42,13 @@ namespace mscl
         return cmd;
     }
 
-    ReadEeprom_v2::Response::Response(NodeAddress nodeAddress, uint16 eepromAddress, std::weak_ptr<ResponseCollector> collector):
+    ReadEeprom_v2::Response::Response(NodeAddress nodeAddress, uint16 eepromAddress, std::weak_ptr<ResponseCollector> collector) :
         WirelessResponsePattern(collector, WirelessProtocol::cmdId_readEeprom_v2, nodeAddress),
         m_nodeAddress(nodeAddress),
         m_eepromAddress(eepromAddress),
         m_eepromValue(0),
         m_errorCode(WirelessPacket::error_none)
-    {
-    }
+    {}
 
     bool ReadEeprom_v2::Response::matchSuccessResponse(const WirelessPacket& packet)
     {
@@ -155,4 +153,4 @@ namespace mscl
     {
         return m_errorCode;
     }
-}
+} // namespace mscl

@@ -93,22 +93,25 @@ cmake -S "${project_dir}" -B "${build_dir}" \
 
 # Only continue the prerelease if the project version changed on develop
 pushd "${build_dir}"
-# Make sure the target branch is checked out
-git checkout ${target}
-# Make sure the tags are pulled
-git pull --tags
+
+# Make sure the tags are fetched
+git fetch --tags
+
 github_release_version=$(git describe --tags --match "v*" --abbrev=0 HEAD)
 project_release_version="v$(cmake --system-information | awk -F= '$1~/CMAKE_PROJECT_VERSION:STATIC/{print$2}')"
+
 popd
 
 # No need for the build directory after getting the project version
 rm -rf "${build_dir}"
 
-if [ "${github_release_version}" == "${project_release_version}" ]; then
+# Check for a new release version
+if [[ $(version_compare "${project_release_version:1}" "${github_release_version:1}") -eq 0 ]]; then
   echo "No new version to update for pre-release from ${target} since the current version matches the latest version"
   exit 0
 fi
 
+# Make sure the release version didn't go down
 if [[ $(version_compare "${project_release_version:1}" "${github_release_version:1}") -lt 0 ]]; then
   echo "The project version is lower than the last release. Fix the new release number before proceeding."
   exit 1
@@ -120,6 +123,7 @@ echo 'echo ${GH_TOKEN}' > "${git_askpass_file}"
 chmod 700 "${git_askpass_file}"
 
 pushd "${project_dir}"
+
 # Find the commit that this project is built on
 mscl_commit="$(git rev-parse HEAD)"
 
@@ -162,6 +166,7 @@ if ! git diff-index --quiet HEAD --; then
 else
   echo "No changes to commit for pre-release"
 fi
+
 popd
 
 rm "${git_askpass_file}"

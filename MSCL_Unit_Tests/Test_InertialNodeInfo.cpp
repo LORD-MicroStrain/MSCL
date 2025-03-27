@@ -4,13 +4,12 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "mscl/MicroStrain/MIP/MipNodeFeatures.h"
 #include "mscl/MicroStrain/Inertial/InertialNode.h"
+#include "mscl/MicroStrain/MIP/MipNodeFeatures.h"
 
-#include <boost/test/unit_test.hpp>
 #include "mock_InertialNode.h"
-using namespace mscl;
 
+using namespace mscl;
 
 BOOST_AUTO_TEST_SUITE(InertialNodeInfo_Test)
 
@@ -29,7 +28,6 @@ BOOST_AUTO_TEST_CASE(InertialNodeInfo_loadNodeInfo)
 
     //make the getDeviceInfo command return the response we created
     MOCK_EXPECT(impl->getDeviceInfo).once().returns(info);
-
 
     std::vector<uint16> fields;
     fields.push_back(MipTypes::CMD_SENSOR_MESSAGE_FORMAT);

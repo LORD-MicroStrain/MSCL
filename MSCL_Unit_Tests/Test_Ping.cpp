@@ -7,11 +7,12 @@
 #include "mscl/MicroStrain/MIP/Commands/Ping.h"
 #include "mscl/MicroStrain/MIP/MipDataField.h"
 #include "mscl/MicroStrain/ResponseCollector.h"
-#include "mscl/Exceptions.h"
-
-#include <boost/test/unit_test.hpp>
 
 using namespace mscl;
+
+DISABLE_WARNING_BOOST_START
+#include <boost/test/unit_test.hpp>
+DISABLE_WARNING_BOOST_END
 
 BOOST_AUTO_TEST_SUITE(InertialPing_Test)
 
@@ -105,7 +106,7 @@ BOOST_AUTO_TEST_CASE(InertialPing_Match_FailWithErrorCode)
 
     Bytes fieldData;
     fieldData.push_back(0x01);
-    fieldData.push_back(mscl::MipPacket::MIP_ACK_NACK_ERROR_CHECKSUM_INVALID);
+    fieldData.push_back(MipPacket::MIP_ACK_NACK_ERROR_CHECKSUM_INVALID);
     MipDataField field(0x01F1, fieldData); //good field, but with error code
 
     //check that the match fails

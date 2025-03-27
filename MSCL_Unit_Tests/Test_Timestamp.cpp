@@ -4,12 +4,13 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "mscl/Timestamp.h"
 #include "mscl/Utils.h"
 
-#include <boost/test/unit_test.hpp>
-
 using namespace mscl;
+
+DISABLE_WARNING_BOOST_START
+#include <boost/test/unit_test.hpp>
+DISABLE_WARNING_BOOST_END
 
 BOOST_AUTO_TEST_SUITE(Timestamp_Test)
 
@@ -85,8 +86,8 @@ BOOST_AUTO_TEST_CASE(Timestamp_gpsTime)
 
     //fractions of a second (there's going to be some rounding error here, so being flexible with our test)
     uint64 fractionalGpsTime = Timestamp::gpsTimeToUtcTime(221592.75, 2055);
-    BOOST_CHECK_LT(fractionalGpsTime, (static_cast<uint64>(1559050392 - Timestamp::getLeapSeconds()) * 1000000000u) + 1000000000);
-    BOOST_CHECK_GT(fractionalGpsTime, (static_cast<uint64>(1559050392 - Timestamp::getLeapSeconds()) * 1000000000u) - 1000000000);
+    BOOST_CHECK_LT(fractionalGpsTime, static_cast<uint64>(1559050392 - Timestamp::getLeapSeconds()) * 1000000000u + 1000000000);
+    BOOST_CHECK_GT(fractionalGpsTime, static_cast<uint64>(1559050392 - Timestamp::getLeapSeconds()) * 1000000000u - 1000000000);
 
     Timestamp::setLeapSeconds(15); //change the leap seconds value
 

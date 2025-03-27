@@ -6,7 +6,6 @@
 
 #pragma once
 
-#include "mscl/Value.h"
 #include "mscl/MicroStrain/MIP/Commands/GenericMipCommand.h"
 
 namespace mscl
@@ -87,7 +86,7 @@ namespace mscl
 
     protected:
         // Constructor
-        MipCommand() {};
+        MipCommand() {}
 
         //Function: commandType
         //

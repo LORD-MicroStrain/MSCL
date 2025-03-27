@@ -4,20 +4,19 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
+#include "mscl/MicroStrain/Inertial/Commands/EstFilter_Commands.h"
+#include "mscl/MicroStrain/Inertial/Commands/GNSS_Commands.h"
+#include "mscl/MicroStrain/Inertial/Commands/Sensor_Commands.h"
 #include "mscl/MicroStrain/MIP/MipDataField.h"
 #include "mscl/MicroStrain/ResponseCollector.h"
-#include "mscl/MicroStrain/Inertial/Commands/Sensor_Commands.h"
-#include "mscl/MicroStrain/Inertial/Commands/GNSS_Commands.h"
-#include "mscl/MicroStrain/Inertial/Commands/EstFilter_Commands.h"
-#include "mscl/Exceptions.h"
 
-#include <boost/test/unit_test.hpp>
-
-using namespace std;
 using namespace mscl;
 
-BOOST_AUTO_TEST_SUITE(GetDataRateBase_Test)
+DISABLE_WARNING_BOOST_START
+#include <boost/test/unit_test.hpp>
+DISABLE_WARNING_BOOST_END
 
+BOOST_AUTO_TEST_SUITE(GetDataRateBase_Test)
 
 //Sensor TESTS
 BOOST_AUTO_TEST_SUITE(GetDataRateBase_Test_Sensor)
@@ -99,7 +98,7 @@ BOOST_AUTO_TEST_CASE(GetDataRateBase_Sensor_Match_FailWithErrorCode)
 
     Bytes fieldData;
     fieldData.push_back(0x06);
-    fieldData.push_back(mscl::MipPacket::MIP_ACK_NACK_ERROR_UNKNOWN_COMMAND);
+    fieldData.push_back(MipPacket::MIP_ACK_NACK_ERROR_UNKNOWN_COMMAND);
     MipDataField field(0x0CF1, fieldData); //good field, but with error code
 
     //check that the match fails
@@ -136,7 +135,7 @@ BOOST_AUTO_TEST_CASE(GetDataRateBase_Sensor_Match_Success_OnlyData)
 
     //check that the match succeeds
     BOOST_CHECK_EQUAL(response.match(field2), true);
-    BOOST_CHECK_EQUAL(response.fullyMatched(), true);    //even though we didnt get an ACK/NACK, we still fully matched because the descritors info is enough to match
+    BOOST_CHECK_EQUAL(response.fullyMatched(), true);    //even though we didn't get an ACK/NACK, we still fully matched because the descriptors info is enough to match
     BOOST_CHECK_EQUAL(response.result().success(), true);
     BOOST_CHECK_EQUAL(response.result().errorCode(), mscl::MipPacket::MIP_ACK_NACK_ERROR_NONE);
     BOOST_CHECK_EQUAL(response.result().data().read_uint16(0), 1000);
@@ -163,14 +162,13 @@ BOOST_AUTO_TEST_CASE(GetDataRateBase_Sensor_Match_Success)
 
     //check that the match succeeds
     BOOST_CHECK_EQUAL(response.match(field2), true);
-    BOOST_CHECK_EQUAL(response.fullyMatched(), true);    //we  fully matched because the device info is enough to match
+    BOOST_CHECK_EQUAL(response.fullyMatched(), true);    //we fully matched because the device info is enough to match
     BOOST_CHECK_EQUAL(response.result().success(), true);
     BOOST_CHECK_EQUAL(response.result().errorCode(), mscl::MipPacket::MIP_ACK_NACK_ERROR_NONE);
     BOOST_CHECK_EQUAL(response.result().data().read_uint16(0), 4);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
-
 
 //GPS TESTS
 BOOST_AUTO_TEST_SUITE(GetDataRateBase_Test_GPS)
@@ -252,7 +250,7 @@ BOOST_AUTO_TEST_CASE(GetDataRateBase_GPS_Match_FailWithErrorCode)
 
     Bytes fieldData;
     fieldData.push_back(0x07);
-    fieldData.push_back(mscl::MipPacket::MIP_ACK_NACK_ERROR_UNKNOWN_COMMAND);
+    fieldData.push_back(MipPacket::MIP_ACK_NACK_ERROR_UNKNOWN_COMMAND);
     MipDataField field(0x0CF1, fieldData); //good field, but with error code
 
     //check that the match fails
@@ -289,7 +287,7 @@ BOOST_AUTO_TEST_CASE(GetDataRateBase_GPS_Match_Success_OnlyData)
 
     //check that the match succeeds
     BOOST_CHECK_EQUAL(response.match(field2), true);
-    BOOST_CHECK_EQUAL(response.fullyMatched(), true);    //even though we didnt get an ACK/NACK, we still fully matched because the descritors info is enough to match
+    BOOST_CHECK_EQUAL(response.fullyMatched(), true);    //even though we didn't get an ACK/NACK, we still fully matched because the descriptors info is enough to match
     BOOST_CHECK_EQUAL(response.result().success(), true);
     BOOST_CHECK_EQUAL(response.result().errorCode(), mscl::MipPacket::MIP_ACK_NACK_ERROR_NONE);
     BOOST_CHECK_EQUAL(response.result().data().read_uint16(0), 2000);
@@ -316,15 +314,13 @@ BOOST_AUTO_TEST_CASE(GetDataRateBase_GPS_Match_Success)
 
     //check that the match succeeds
     BOOST_CHECK_EQUAL(response.match(field2), true);
-    BOOST_CHECK_EQUAL(response.fullyMatched(), true);    //we  fully matched because the device info is enough to match
+    BOOST_CHECK_EQUAL(response.fullyMatched(), true);    //we fully matched because the device info is enough to match
     BOOST_CHECK_EQUAL(response.result().success(), true);
     BOOST_CHECK_EQUAL(response.result().errorCode(), mscl::MipPacket::MIP_ACK_NACK_ERROR_NONE);
     BOOST_CHECK_EQUAL(response.result().data().read_uint16(0), 40);
 }
 
-
 BOOST_AUTO_TEST_SUITE_END()
-
 
 //EstFilter TESTS
 BOOST_AUTO_TEST_SUITE(GetDataRateBase_Test_EstFilter)
@@ -406,7 +402,7 @@ BOOST_AUTO_TEST_CASE(GetDataRateBase_EstFilter_Match_FailWithErrorCode)
 
     Bytes fieldData;
     fieldData.push_back(0x0B);
-    fieldData.push_back(mscl::MipPacket::MIP_ACK_NACK_ERROR_UNKNOWN_COMMAND);
+    fieldData.push_back(MipPacket::MIP_ACK_NACK_ERROR_UNKNOWN_COMMAND);
     MipDataField field(0x0CF1, fieldData); //good field, but with error code
 
     //check that the match fails
@@ -457,7 +453,7 @@ BOOST_AUTO_TEST_CASE(GetDataRateBase_EstFilter_Match_Success_OnlyData)
 
     //check that the match succeeds
     BOOST_CHECK_EQUAL(response.match(field2), true);
-    BOOST_CHECK_EQUAL(response.fullyMatched(), true);    //even though we didnt get an ACK/NACK, we still fully matched because the descritors info is enough to match
+    BOOST_CHECK_EQUAL(response.fullyMatched(), true);    //even though we didn't get an ACK/NACK, we still fully matched because the descriptors info is enough to match
     BOOST_CHECK_EQUAL(response.result().success(), true);
     BOOST_CHECK_EQUAL(response.result().errorCode(), mscl::MipPacket::MIP_ACK_NACK_ERROR_NONE);
     BOOST_CHECK_EQUAL(response.result().data().read_uint16(0), 2000);
@@ -484,7 +480,7 @@ BOOST_AUTO_TEST_CASE(GetDataRateBase_EstFilter_Match_Success)
 
     //check that the match succeeds
     BOOST_CHECK_EQUAL(response.match(field2), true);
-    BOOST_CHECK_EQUAL(response.fullyMatched(), true);    //we  fully matched because the device info is enough to match
+    BOOST_CHECK_EQUAL(response.fullyMatched(), true);    //we fully matched because the device info is enough to match
     BOOST_CHECK_EQUAL(response.result().success(), true);
     BOOST_CHECK_EQUAL(response.result().errorCode(), mscl::MipPacket::MIP_ACK_NACK_ERROR_NONE);
     BOOST_CHECK_EQUAL(response.result().data().read_uint16(0), 40);

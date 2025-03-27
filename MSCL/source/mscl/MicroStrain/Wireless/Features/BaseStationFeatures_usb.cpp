@@ -4,13 +4,11 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "BaseStationFeatures_usb.h"
+#include "mscl/MicroStrain/Wireless/Features/BaseStationFeatures_usb.h"
 
 namespace mscl
 {
-    BaseStationFeatures_usb::BaseStationFeatures_usb(const BaseStationInfo& info):
+    BaseStationFeatures_usb::BaseStationFeatures_usb(const BaseStationInfo& info) :
         BaseStationFeatures(info)
-    {
-    }
-}
+    {}
+} // namespace mscl

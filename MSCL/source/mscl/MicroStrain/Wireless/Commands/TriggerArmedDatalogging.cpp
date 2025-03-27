@@ -4,15 +4,13 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "mscl/Utils.h"
-#include "TriggerArmedDatalogging.h"
-#include "WirelessProtocol.h"
+#include "mscl/MicroStrain/Wireless/Commands/TriggerArmedDatalogging.h"
+
+#include "mscl/MicroStrain/Wireless/Commands/WirelessProtocol.h"
 #include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
 
 namespace mscl
 {
-
     ByteStream TriggerArmedDatalogging::buildCommand(NodeAddress nodeAddress)
     {
         //get the current system time
@@ -38,4 +36,4 @@ namespace mscl
 
         return cmd;
     }
-}
+} // namespace mscl

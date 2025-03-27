@@ -4,9 +4,7 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-
-#include "PositionVelocity.h"
+#include "mscl/MicroStrain/Inertial/PositionVelocity.h"
 
 namespace mscl
 {
@@ -14,7 +12,7 @@ namespace mscl
         vec_0(x),
         vec_1(y),
         vec_2(z)
-    { }
+    {}
 
     void Vec3f::fromMipFieldValues(const MipFieldValues& data, uint8 offset)
     {
@@ -43,15 +41,15 @@ namespace mscl
     GeometricVector::GeometricVector(float x_init, float y_init, float z_init, PositionVelocityReferenceFrame ref) :
         Vec3f(x_init, y_init, z_init),
         referenceFrame(ref)
-    { }
+    {}
 
     GeometricVector::GeometricVector() :
         Vec3f(),
-        referenceFrame(PositionVelocityReferenceFrame::ECEF)
-    { }
+        referenceFrame(ECEF)
+    {}
 
     GeometricVector::~GeometricVector()
-    { }
+    {}
 
     void GeometricVector::fromMipFieldValues_includesFrame(const MipFieldValues& data, uint8 offset)
     {
@@ -59,7 +57,7 @@ namespace mscl
         referenceFrame = static_cast<PositionVelocityReferenceFrame>(data[index].as_uint8());
         index++;
 
-        Vec3f::fromMipFieldValues(data, index);
+        fromMipFieldValues(data, index);
     }
 
     MipFieldValues GeometricVector::asMipFieldValues_includeFrame() const
@@ -73,6 +71,6 @@ namespace mscl
     void GeometricVector::appendMipFieldValues_includeFrame(MipFieldValues& appendTo) const
     {
         appendTo.push_back(Value::UINT8(static_cast<uint8>(referenceFrame)));
-        Vec3f::appendMipFieldValues(appendTo);
+        appendMipFieldValues(appendTo);
     }
-}
+} // namespace mscl

@@ -4,19 +4,14 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "GyroBias.h"
-#include "mscl/MicroStrain/MIP/MipDataField.h"
-#include "mscl/MicroStrain/MIP/Packets/MipPacketBuilder.h"
-#include "mscl/MicroStrain/MIP/MipTypes.h"
-#include "mscl/MicroStrain/MIP/Commands/MIP_Commands.h"
+#include "mscl/MicroStrain/Inertial/Commands/GyroBias.h"
 
 namespace mscl
 {
     GyroBias::GyroBias(MipTypes::FunctionSelector function_selector, GeometricVector gyroBiasVector) :
         m_functionSelector(function_selector),
         m_gyroBiasVector(gyroBiasVector)
-    { }
+    {}
 
     GyroBias::GyroBias(MipTypes::FunctionSelector function_selector) :
         m_functionSelector(function_selector)
@@ -38,7 +33,7 @@ namespace mscl
 
     bool GyroBias::responseExpected() const
     {
-        return (m_functionSelector == MipTypes::READ_BACK_CURRENT_SETTINGS) ? true : false;
+        return m_functionSelector == MipTypes::READ_BACK_CURRENT_SETTINGS;
     }
 
     GeometricVector GyroBias::getResponseData(const GenericMipCmdResponse& response)
@@ -63,7 +58,6 @@ namespace mscl
             byteCommand.append_float(m_gyroBiasVector.y());
             byteCommand.append_float(m_gyroBiasVector.z());
         }
-        return GenericMipCommand::buildCommand(commandType(), byteCommand.data()); ;
+        return GenericMipCommand::buildCommand(commandType(), byteCommand.data());
     }
-
-}
+} // namespace mscl

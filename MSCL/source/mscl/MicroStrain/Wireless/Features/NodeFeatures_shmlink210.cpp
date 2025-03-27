@@ -4,15 +4,14 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "NodeFeatures_shmlink210.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures_shmlink210.h"
+
 #include "mscl/MicroStrain/Wireless/Configuration/NodeEepromMap.h"
-#include "AvailableSampleRates.h"
-#include "mscl/Utils.h"
+#include "mscl/MicroStrain/Wireless/Features/AvailableSampleRates.h"
 
 namespace mscl
 {
-    NodeFeatures_shmlink210::NodeFeatures_shmlink210(const NodeInfo& info):
+    NodeFeatures_shmlink210::NodeFeatures_shmlink210(const NodeInfo& info) :
         NodeFeatures_200series(info)
     {
         static const ChannelMask DIFF_CH1(BOOST_BINARY(00000001));  //ch1
@@ -265,4 +264,4 @@ namespace mscl
                 throw Error_NotSupported("Unknown Sensor Delay Version");
         }
     }
-}
+} // namespace mscl

@@ -6,24 +6,19 @@
 
 #pragma once
 
-#include "mscl/Version.h"
-#include "WirelessModels.h"
-#include "WirelessTypes.h"
-#include "RadioFeatures.h"
-#include "Commands/WirelessProtocol.h"
-
-#include <boost/optional.hpp>
+#include "mscl/MicroStrain/Wireless/Commands/WirelessProtocol.h"
+#include "mscl/MicroStrain/Wireless/WirelessModels.h"
+#include "mscl/MicroStrain/Wireless/WirelessTypes.h"
 
 namespace mscl
 {
-    class BaseStation_Impl;    //forward declarations
+    //forward declarations
+    class BaseStation_Impl;
 
     //API Struct: BaseStationInfo
     //    Holds information about a <BaseStation>.
     struct BaseStationInfo
     {
-    public:
-
 #ifndef SWIG
         //Constructor: BaseStationInfo
         //    Creates a BaseStationInfo object from a <BaseStation>.
@@ -35,7 +30,7 @@ namespace mscl
         //    - <Error_Communication>: Failed to read the value from the BaseStation.
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         BaseStationInfo(const BaseStation_Impl* base);
-#endif
+#endif // !SWIG
 
         //API Constructor: BaseStationInfo
         //    Creates a BaseStationInfo object.
@@ -53,7 +48,6 @@ namespace mscl
         //  The <BaseStation_Impl> to use for lazy loading information for if its not already populated.
         const BaseStation_Impl* m_basestation;
 
-    private:
         //Variable: m_firmwareVersion
         //    The firmware <Version> of the BaseStation.
         mutable boost::optional<Version> m_firmwareVersion;
@@ -80,6 +74,6 @@ namespace mscl
         WirelessModels::BaseModel model() const;
         WirelessTypes::RegionCode regionCode() const;
         const WirelessProtocol& protocol(WirelessTypes::CommProtocol commProtocol) const;
-#endif
+#endif // !SWIG
     };
-}
+} // namespace mscl

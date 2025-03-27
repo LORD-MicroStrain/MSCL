@@ -6,13 +6,8 @@
 
 #pragma once
 
-#include <string>
-#include "mscl/MicroStrain/SampleRate.h"
-#include "mscl/Types.h"
-#include "mscl/Utils.h"
-#include "mscl/Version.h"
 #include "mscl/MicroStrain/MIP/Commands/GetDeviceInfo.h"
-#include "mscl/MicroStrain/MIP/MipTypes.h"
+#include "mscl/MicroStrain/SampleRate.h"
 
 namespace mscl
 {
@@ -47,7 +42,6 @@ namespace mscl
         //  The <MipNode_Impl> to use for lazy loading of values.
         const MipNode_Impl* m_node;
 
-    private:
         //Variable: m_deviceInfo
         //  The <MipDeviceInfo> of the Node (lazy loaded).
         Utils::Lazy<MipDeviceInfo> m_deviceInfo;
@@ -113,5 +107,4 @@ namespace mscl
         // Gets the <SupportedSensorRanges> for this device
         const SupportedSensorRanges& supportedSensorRanges() const;
     };
-
-}
+} // namespace mscl

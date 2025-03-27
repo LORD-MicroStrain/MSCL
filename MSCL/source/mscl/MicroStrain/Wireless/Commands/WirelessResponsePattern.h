@@ -6,9 +6,7 @@
 
 #pragma once
 
-#include "mscl/Types.h"
 #include "mscl/MicroStrain/ResponsePattern.h"
-#include "WirelessProtocol.h"
 
 namespace mscl
 {
@@ -31,7 +29,7 @@ namespace mscl
 
         //Destructor: ResponsePattern
         //    Destroys the ResponsePattern and unregisters this response from its <ResponseCollector>
-        virtual ~WirelessResponsePattern();
+        ~WirelessResponsePattern() override;
 
         WirelessResponsePattern() = delete;                                             //default constructor disabled
         WirelessResponsePattern(const WirelessResponsePattern&) = delete;               //copy constructor disabled
@@ -54,8 +52,7 @@ namespace mscl
         //  The wait time (in milliseconds) that was sent in the Base Station received response.
         uint64 m_baseReceivedWaitTime;
 
-    protected:
-        virtual bool matchBaseReceivedResponse(const WirelessPacket& packet) override;
+        bool matchBaseReceivedResponse(const WirelessPacket& packet) override;
 
     public:
         //Function: baseReceived
@@ -67,4 +64,4 @@ namespace mscl
         //  This is only valid if <baseReceived> returns true.
         uint64 baseReceivedWaitTime() const;
     };
-}
+} // namespace mscl

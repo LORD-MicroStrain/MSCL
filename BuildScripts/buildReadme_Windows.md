@@ -22,7 +22,7 @@ For more information on how to configure the build to use, or not use the option
 
 - \>= [Visual Studio 2015](https://visualstudio.microsoft.com/downloads/) (msvc-14.0) or MSBuild equivalent
 - \>= [cmake 3.16](https://cmake.org/download/)
-- &nbsp;&nbsp;\= [Boost 1.68](https://www.boost.org/users/download/)
+- \>= [Boost 1.68](https://www.boost.org/users/download/)
 
 ##### Optional
 
@@ -44,11 +44,11 @@ this is what a common `LIB_PATH` directory will look like:
 
 #### Installing Boost
 
-SourceForge hosts some [Pre-Built Boost binaries for Windows](https://sourceforge.net/projects/boost/files/boost-binaries/1.68.0/).
+SourceForge hosts some [Pre-Built Boost binaries for Windows](https://sourceforge.net/projects/boost/files/boost-binaries/).
 Simply installing these for your specific compiler will make it so you do not need to build Boost yourself, which can be time-consuming.
 
 If you want to install Boost yourself, you can follow the instructions on
-[Boost's Getting Started page](https://www.boost.org/doc/libs/1_68_0/more/getting_started/windows.html).
+[Boost's Getting Started page](https://www.boost.org/doc/libs/1_79_0/more/getting_started/windows.html).
 
 ## Building MSCL for C++
 

@@ -6,14 +6,7 @@
 
 #pragma once
 
-#include "Connection.h"
-#include "Connection_Impl.h"
-#include "BoostCommunication.h"
-
-#include <boost/asio.hpp>
-#include <boost/asio/deadline_timer.hpp>
-
-#include <string>
+#include "mscl/Communication/Connection_Impl.h"
 
 namespace mscl
 {
@@ -29,7 +22,7 @@ namespace mscl
         //
         //Returns:
         //    A description of the connection, in the form "TCP/IP, serverAddress:serverPort".
-        virtual std::string description();
+        std::string description() override;
 
         //Function: port
         //    Gets a name of the connection port.
@@ -43,7 +36,6 @@ namespace mscl
         TcpIpConnection& operator=(const TcpIpConnection&) = delete; //assignment operator disabled
 
     private:
-
         //Constructor: TcpIpConnection
         //    Creates a TcpIpConnection object.
         //
@@ -58,11 +50,10 @@ namespace mscl
         //
         //Exceptions:
         //    - <Error_InvalidTcpServer>: the specified server address and/or server port is invalid.
-        virtual void establishConnection();
+        void establishConnection() override;
 
         void checkDeadline(const boost::system::error_code& error);
 
-    private:
         typedef boost::asio::ip::tcp tcp;
 
         //Variable: m_path
@@ -81,5 +72,4 @@ namespace mscl
 
         std::unique_ptr<boost::asio::deadline_timer> m_deadlineTimer;
     };
-
-}
+} // namespace mscl

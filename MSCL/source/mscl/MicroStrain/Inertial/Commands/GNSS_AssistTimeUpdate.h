@@ -6,25 +6,22 @@
 
 #pragma once
 
-#include "mscl/MicroStrain/MIP/Commands/GenericMipCommand.h"
-#include "mscl/MicroStrain/ResponseCollector.h"
 #include "mscl/MicroStrain/Inertial/ExposedInertialTypes.h"
+#include "mscl/MicroStrain/MIP/Commands/GenericMipCommand.h"
 
 namespace mscl
 {
-
 #ifndef SWIG
-
     //Class: GNSS_AssistTimeUpdate
     //    Contains the logic for the Inertial GNSS Assist TimeUpdate command.
     //    It is important to note that this command will get a Nack back every time after the first from power up.
-    class GNSS_AssistTimeUpdate : private GenericMipCommand
+    class GNSS_AssistTimeUpdate : GenericMipCommand
     {
     protected:
         //Function: CommandId
         //Returns:
         //    MipTypes::Command - the command ID.
-        virtual MipTypes::Command commandId() const override { return MipTypes::CMD_GNSS_ASSIST_TIME_UPDATE; }
+        MipTypes::Command commandId() const override { return MipTypes::CMD_GNSS_ASSIST_TIME_UPDATE; }
 
     public:
         GNSS_AssistTimeUpdate();
@@ -33,8 +30,7 @@ namespace mscl
         //     FIELD_DATA_BYTE - Descriptor byte for the Field data.
         static const uint8 FIELD_DATA_BYTE = 0xA3;
 
-    public:
-        virtual ~GNSS_AssistTimeUpdate() {};
+        ~GNSS_AssistTimeUpdate() override = default;
 
         //Function: buildCommand_get
         //    Builds the bytes for the "get" command.
@@ -57,7 +53,7 @@ namespace mscl
         {
             //Function: fieldDataByte
             //    Gets the data field descriptor byte
-            virtual uint8 fieldDataByte() const    override { return FIELD_DATA_BYTE; }
+            uint8 fieldDataByte() const    override { return FIELD_DATA_BYTE; }
 
         public:
             //Constructor: Response
@@ -78,6 +74,5 @@ namespace mscl
             TimeUpdate parseResponse(const GenericMipCmdResponse& response) const;
         };
     };
-
-#endif
-}
+#endif // !SWIG
+} // namespace mscl

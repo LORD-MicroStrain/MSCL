@@ -4,14 +4,9 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "MipFieldParser_Displacement.h"
+#include "mscl/MicroStrain/MIP/Packets/MipFieldParser_Displacement.h"
 
-#include <boost/date_time/posix_time/ptime.hpp>
-
-#include "mscl/MicroStrain/MIP/Packets/MipDataPacket.h"
-#include "mscl/MicroStrain/DataBuffer.h"
-#include "mscl/Types.h"
+#include "mscl/MicroStrain/MIP/MipDataField.h"
 
 namespace mscl
 {
@@ -24,7 +19,7 @@ namespace mscl
     //=====================================================================================================================================================
     //                                                        FieldParser_RawPosition
     const MipTypes::ChannelField FieldParser_RawPosition::FIELD_TYPE = MipTypes::CH_FIELD_DISP_DISPLACEMENT_RAW;
-    const bool FieldParser_RawPosition::REGISTERED = FieldParser_RawPosition::registerParser();    //register the parser immediately
+    const bool FieldParser_RawPosition::REGISTERED = registerParser();    //register the parser immediately
 
     void FieldParser_RawPosition::parse(const MipDataField& field, MipDataPoints& result) const
     {
@@ -45,7 +40,7 @@ namespace mscl
     //=====================================================================================================================================================
     //                                                        FieldParser_Position
     const MipTypes::ChannelField FieldParser_Position::FIELD_TYPE = MipTypes::CH_FIELD_DISP_DISPLACEMENT_MM;
-    const bool FieldParser_Position::REGISTERED = FieldParser_Position::registerParser();    //register the parser immediately
+    const bool FieldParser_Position::REGISTERED = registerParser();    //register the parser immediately
 
     void FieldParser_Position::parse(const MipDataField& field, MipDataPoints& result) const
     {
@@ -62,4 +57,4 @@ namespace mscl
         return MipFieldParser::registerParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
-}
+} // namespace mscl

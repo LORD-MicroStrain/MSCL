@@ -4,26 +4,23 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
+#include "mscl/MicroStrain/Wireless/Packets/LdcPacket.h"
 
-#include "LdcPacket.h"
 #include "mscl/MicroStrain/SampleUtils.h"
-#include "mscl/MicroStrain/Wireless/ChannelMask.h"
-
+#include "mscl/MicroStrain/Wireless/DataSweep.h"
 
 namespace mscl
 {
-
     LdcPacket::LdcPacket(const WirelessPacket& packet)
     {
         //construct the data packet from the wireless packet passed in
-        m_nodeAddress        = packet.nodeAddress();
-        m_deliveryStopFlags = packet.deliveryStopFlags();
-        m_type                = packet.type();
-        m_nodeRSSI            = WirelessTypes::UNKNOWN_RSSI;
-        m_baseRSSI            = packet.baseRSSI();
-        m_frequency            = packet.frequency();
-        m_payload            = packet.payload();
+        m_nodeAddress              = packet.nodeAddress();
+        m_deliveryStopFlags        = packet.deliveryStopFlags();
+        m_type                     = packet.type();
+        m_nodeRSSI                 = WirelessTypes::UNKNOWN_RSSI;
+        m_baseRSSI                 = packet.baseRSSI();
+        m_frequency                = packet.frequency();
+        m_payload                  = packet.payload();
         m_payloadOffsetChannelData = PAYLOAD_OFFSET_CHANNEL_DATA;
 
         //parse the data sweeps in the packet
@@ -33,10 +30,10 @@ namespace mscl
     void LdcPacket::parseSweeps()
     {
         //read the values from the payload
-        uint8 channelMask    = m_payload.read_uint8(PAYLOAD_OFFSET_CHANNEL_MASK);
-        uint8 sampleRate    = m_payload.read_uint8(PAYLOAD_OFFSET_SAMPLE_RATE);
-        uint8 dataType        = m_payload.read_uint8(PAYLOAD_OFFSET_DATA_TYPE);
-        uint16 tick            = m_payload.read_uint16(PAYLOAD_OFFSET_TICK);
+        uint8 channelMask = m_payload.read_uint8(PAYLOAD_OFFSET_CHANNEL_MASK);
+        uint8 sampleRate  = m_payload.read_uint8(PAYLOAD_OFFSET_SAMPLE_RATE);
+        uint8 dataType    = m_payload.read_uint8(PAYLOAD_OFFSET_DATA_TYPE);
+        uint16 tick       = m_payload.read_uint16(PAYLOAD_OFFSET_TICK);
 
         //set the data type of the packet
         m_dataType = static_cast<WirelessTypes::DataType>(dataType);
@@ -58,7 +55,7 @@ namespace mscl
         sweep.nodeAddress(m_nodeAddress);
         sweep.sampleRate(SampleUtils::convertToSampleRate(sampleRate));
 
-        //No timestamp comes with the LDC packet, so just stamp it with the current time
+        //No timestamp comes with the LDC packet, so stamp it with the current time
         sweep.timestamp(Timestamp::timeNow());
 
         //get this sweep's node and base rssi values
@@ -82,7 +79,7 @@ namespace mscl
             if(channels.enabled(chItr))
             {
                 //insert the data point into the ChannelData object for the wireless channel
-                addDataPoint(chData, (chItr), chDataIndex, 0, wirelessChannelFromChNum(chItr));
+                addDataPoint(chData, chItr, chDataIndex, 0, wirelessChannelFromChNum(chItr));
 
                 chDataIndex++;
             }
@@ -97,7 +94,7 @@ namespace mscl
 
     bool LdcPacket::integrityCheck(const WirelessPacket& packet)
     {
-        WirelessPacket::Payload payload = packet.payload();
+        Payload payload = packet.payload();
 
         //verify the payload size
         if(payload.size() < PAYLOAD_OFFSET_CHANNEL_DATA)
@@ -150,7 +147,7 @@ namespace mscl
         }
 
         //the payload should contain the exact number of bytes for the data specified in the packet
-        if((channels * dataSize) != (payload.size() - PAYLOAD_OFFSET_CHANNEL_DATA))
+        if(channels * dataSize != payload.size() - PAYLOAD_OFFSET_CHANNEL_DATA)
         {
             return false;
         }
@@ -164,4 +161,4 @@ namespace mscl
         //return the tick value
         return packet.payload().read_uint16(PAYLOAD_OFFSET_TICK);
     }
-}
+} // namespace mscl

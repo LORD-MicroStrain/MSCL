@@ -4,9 +4,7 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-
-#include "AvailableSampleRates.h"
+#include "mscl/MicroStrain/Wireless/Features/AvailableSampleRates.h"
 
 namespace mscl
 {
@@ -46,7 +44,7 @@ namespace mscl
             {WirelessTypes::sampleRate_64Hz},
             {WirelessTypes::sampleRate_32Hz}};
 
-    const WirelessTypes::WirelessSampleRates AvailableSampleRates::armedDatalog = AvailableSampleRates::burst;    //same as burst
+    const WirelessTypes::WirelessSampleRates AvailableSampleRates::armedDatalog = burst;    //same as burst
 
     const WirelessTypes::WirelessSampleRates AvailableSampleRates::derivedOnly = {
             {WirelessTypes::sampleRate_4096Hz},
@@ -62,7 +60,6 @@ namespace mscl
             {WirelessTypes::sampleRate_4Hz},
             {WirelessTypes::sampleRate_2Hz},
             {WirelessTypes::sampleRate_1Hz}};
-
 
     const WirelessTypes::WirelessSampleRates AvailableSampleRates::continuous_nonSync_vlink200 = {
         {WirelessTypes::sampleRate_512Hz},
@@ -296,9 +293,7 @@ namespace mscl
             {WirelessTypes::sampleRate_64Hz},
             {WirelessTypes::sampleRate_32Hz}};
 
-    const WirelessTypes::WirelessSampleRates AvailableSampleRates::armedDatalog_glink2 = AvailableSampleRates::burst_glink2; //same as burst
-
-
+    const WirelessTypes::WirelessSampleRates AvailableSampleRates::armedDatalog_glink2 = burst_glink2; //same as burst
 
     const WirelessTypes::WirelessSampleRates AvailableSampleRates::burst_vlink = {
             {WirelessTypes::sampleRate_10kHz},
@@ -317,7 +312,7 @@ namespace mscl
             {WirelessTypes::sampleRate_64Hz},
             {WirelessTypes::sampleRate_32Hz}};
 
-    const WirelessTypes::WirelessSampleRates AvailableSampleRates::armedDatalog_vlink = AvailableSampleRates::burst_vlink;    //same as burst
+    const WirelessTypes::WirelessSampleRates AvailableSampleRates::armedDatalog_vlink = burst_vlink;    //same as burst
 
     const WirelessTypes::WirelessSampleRates AvailableSampleRates::burst_iepeLink = {
             {WirelessTypes::sampleRate_104170Hz},
@@ -328,7 +323,6 @@ namespace mscl
             {WirelessTypes::sampleRate_12500Hz},
             {WirelessTypes::sampleRate_10kHz},
             {WirelessTypes::sampleRate_1kHz}};
-
 
     const WirelessTypes::WirelessSampleRates AvailableSampleRates::continuous_tclink = {
             {WirelessTypes::sampleRate_8Hz},
@@ -345,8 +339,6 @@ namespace mscl
             {WirelessTypes::sampleRate_10Min},
             {WirelessTypes::sampleRate_30Min},
             {WirelessTypes::sampleRate_60Min}};
-
-
 
     const WirelessTypes::WirelessSampleRates AvailableSampleRates::continuous_tclink1ch = {
             {WirelessTypes::sampleRate_64Hz},
@@ -405,7 +397,6 @@ namespace mscl
         {WirelessTypes::sampleRate_10Min},
         {WirelessTypes::sampleRate_30Min},
         {WirelessTypes::sampleRate_60Min}};
-
 
     const WirelessTypes::WirelessSampleRates AvailableSampleRates::continuous_envlink = {
             {WirelessTypes::sampleRate_2Hz},
@@ -523,4 +514,4 @@ namespace mscl
         {WirelessTypes::sampleRate_128Hz},
         {WirelessTypes::sampleRate_64Hz},
         {WirelessTypes::sampleRate_32Hz}};
-}
+} // namespace mscl

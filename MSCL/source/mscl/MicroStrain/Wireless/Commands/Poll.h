@@ -6,13 +6,9 @@
 
 #pragma once
 
-#include "mscl/Types.h"
-#include "mscl/MicroStrain/ByteStream.h"
-#include "WirelessResponsePattern.h"
-#include "mscl/MicroStrain/Wireless/WirelessChannel.h"
-#include "mscl/MicroStrain/Wireless/WirelessModels.h"
-#include "mscl/MicroStrain/Wireless/WirelessTypes.h"
+#include "mscl/MicroStrain/Wireless/Commands/WirelessResponsePattern.h"
 #include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
+#include "mscl/MicroStrain/Wireless/WirelessChannel.h"
 
 namespace mscl
 {
@@ -25,7 +21,6 @@ namespace mscl
         Poll(const Poll&) = delete;             //copy constructor disabled
         Poll& operator=(const Poll&) = delete;  //assignment operator disabled
 
-    public:
         //Function: buildCommand
         //    Builds the Poll command packet.
         //
@@ -99,20 +94,20 @@ namespace mscl
             //
             //Returns:
             //    true if the packet matches a response pattern, false otherwise
-            virtual bool match(const WirelessPacket& packet) override;
+            bool match(const WirelessPacket& packet) override;
 
         protected:
             //Function: match_nodeReceived
             //    Checks if the <WirelessPacket> passed in matches the "Node Received" packet.
             //
-            //Parmeters:
+            //Parameters:
             //    packet - The <WirelessPacket> to try to match.
             //
             //Returns:
             //    true if the packet matches the Node Received packet, false otherwise.
             bool match_nodeReceived(const WirelessPacket& packet);
 
-            bool matchSuccessResponse(const WirelessPacket& packet);
+            bool matchSuccessResponse(const WirelessPacket& packet) override;
         };
     };
-}
+} // namespace mscl

@@ -4,12 +4,7 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "GNSS_SBASSettings.h"
-#include "mscl/MicroStrain/MIP/MipDataField.h"
-#include "mscl/MicroStrain/MIP/Packets/MipPacketBuilder.h"
-#include "mscl/MicroStrain/MIP/MipTypes.h"
-#include "mscl/MicroStrain/MIP/Commands/MIP_Commands.h"
+#include "mscl/MicroStrain/Inertial/Commands/GNSS_SBASSettings.h"
 
 namespace mscl
 {
@@ -26,18 +21,18 @@ namespace mscl
 
     bool SBASSettings::responseExpected() const
     {
-        return (m_functionSelector == MipTypes::READ_BACK_CURRENT_SETTINGS) ? true : false;
+        return m_functionSelector == MipTypes::READ_BACK_CURRENT_SETTINGS;
     }
 
     SBASSettingsData SBASSettings::getResponseData(const GenericMipCmdResponse& response)
     {
         DataBuffer dataBuffer(response.data());
         SBASSettingsData returnData;
-        returnData.enableSBAS = (dataBuffer.read_uint8() == MipTypes::ENABLED)? true : false;
+        returnData.enableSBAS = dataBuffer.read_uint8() == MipTypes::ENABLED;
         uint16 optionFlags = dataBuffer.read_uint16();
-        returnData.enableRanging = Utils::bitIsSet(optionFlags, 0) ? true : false;
-        returnData.enableCorrectionData = Utils::bitIsSet(optionFlags, 1) ? true : false;
-        returnData.applyIntegrityInfo = Utils::bitIsSet(optionFlags, 2) ? true : false;
+        returnData.enableRanging = Utils::bitIsSet(optionFlags, 0);
+        returnData.enableCorrectionData = Utils::bitIsSet(optionFlags, 1);
+        returnData.applyIntegrityInfo = Utils::bitIsSet(optionFlags, 2);
 
         uint8 numberOfSatellites = dataBuffer.read_uint8();
         for (uint8 satelliteNum = 0; satelliteNum < numberOfSatellites; ++satelliteNum)
@@ -72,7 +67,6 @@ namespace mscl
                 byteCommand.append_uint16(*i);
             }
         }
-        return GenericMipCommand::buildCommand(commandType(), byteCommand.data()); ;
+        return GenericMipCommand::buildCommand(commandType(), byteCommand.data());
     }
-
-}
+} // namespace mscl

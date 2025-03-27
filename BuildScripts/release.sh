@@ -3,6 +3,40 @@
 # Exit on error
 set -ex
 
+# Compare versions
+function version_compare() {
+  local IFS=.
+  local i ver1=($1) ver2=($2)
+
+  # fill empty fields in ver1 with zeros
+  for ((i=${#ver1[@]}; i<${#ver2[@]}; i++)); do
+    ver1[i]=0
+  done
+
+  # fill empty fields in ver2 with zeros
+  for ((i=${#ver2[@]}; i<${#ver1[@]}; i++)); do
+    ver2[i]=0
+  done
+
+  for ((i=0; i<${#ver1[@]}; i++)); do
+    if [[ -z ${ver1[i]} ]]; then
+      ver1[i]=0
+    fi
+    if [[ -z ${ver2[i]} ]]; then
+      ver2[i]=0
+    fi
+    if ((10#${ver1[i]} > 10#${ver2[i]})); then
+      echo 1
+      return
+    elif ((10#${ver1[i]} < 10#${ver2[i]})); then
+      echo -1
+      return
+    fi
+  done
+
+  echo 0
+}
+
 # On Jenkins, log all commands
 if [ "${ISHUDSONBUILD}" == "True" ]; then
   set -x
@@ -46,25 +80,38 @@ if [ -z "${artifacts}" ] || [ -z "${docs_zip}" ] || [ -z "${release_name}" ] || 
   exit 1
 fi
 
+# Only need to perform a release for master or develop
+if [ "${target}" != "master" ] && [ "${target}" != "develop" ]; then
+  echo "No release required for ${target}"
+  exit 0
+fi
+
 # Some constants and other important variables
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" &> /dev/null && pwd)"
 project_dir="${script_dir}/.."
-build_dir="${project_dir}/build_ubuntu_amd64"
 
-# Only continue releasing for master if the version changed in the project
-pushd "${build_dir}"
-github_release_version=$(git describe --tag --abbrev=0 HEAD)
-project_release_version="v$(cmake --system-information | awk -F= '$1~/CMAKE_PROJECT_VERSION:STATIC/{print$2}')"
+pushd "${project_dir}"
+
+# Make sure the tags are fetched
+git fetch --tags
+
 if [ "${target}" == "master" ]; then
-  if [ "${github_release_version}" == "${project_release_version}" ]; then
-    echo "Not releasing from ${target} since the current version matches the latest version"
-    exit 0
+  pushd "${project_dir}/build_ubuntu_amd64"
+
+  github_release_version=$(git describe --tags --match "v*" --abbrev=0 HEAD)
+  project_release_version="v$(cmake --system-information | awk -F= '$1~/CMAKE_PROJECT_VERSION:STATIC/{print$2}')"
+
+  popd
+
+  # Make sure the release version changed
+  if [[ $(version_compare "${project_release_version:1}" "${github_release_version:1}") -le 0 ]]; then
+    echo "The project version needs to be greater than the last release. Fix the new release number before proceeding."
+    exit 1
   fi
 
   # Use the release name from the project
   release_name=${project_release_version}
 fi
-popd
 
 # Some more constants and other important variables
 repo="LORD-MicroStrain/MSCL"
@@ -77,17 +124,20 @@ git_askpass_file="${project_dir}/.mscl-git-askpass"
 echo 'echo ${GH_TOKEN}' > "${git_askpass_file}"
 chmod 700 "${git_askpass_file}"
 
-# Delete the release before the tag. Deleting the tag before the release may cause issues
-gh release delete \
-  -y \
-  -R "${repo}" "${release_name}" || echo "No existing release named ${release_name}."
-
-pushd "${project_dir}"
 # Find the commit that this project is built on
 mscl_commit="$(git rev-parse HEAD)"
 
-# Delete the tag if it exists
-GIT_ASKPASS="${git_askpass_file}" git push --delete origin "${release_name}" || echo "No existing tag named ${release_name}."
+# Only delete the last 'latest' release which is for develop
+if [ "${target}" == "develop" ]; then
+  # Delete the release before the tag. Deleting the tag before the release may cause issues
+  gh release delete \
+    -y \
+    -R "${repo}" "${release_name}" || echo "No existing release named ${release_name}."
+
+  # Delete the tag if it exists
+  GIT_ASKPASS="${git_askpass_file}" git push --delete origin "${release_name}" || echo "No existing tag named ${release_name}."
+fi
+
 popd
 
 # Generate a release notes file
@@ -132,12 +182,13 @@ fi
 
 # Deploy the artifacts to Github
 gh release create \
-  -R "${repo}" \
+  "${release_name}" ${artifacts} \
+  --repo "${repo}" \
   --title "${release_name}" \
   --target "${target}" \
   ${generate_notes_flag} \
-  --notes-file "${release_notes_file}" \
-  "${release_name}" ${artifacts}
+  --notes-file "${release_notes_file}"
+
 rm -f "${release_notes_file}"
 
 # Commit the documentation to the github pages branch
@@ -145,7 +196,9 @@ rm -rf "${docs_dir}"
 git clone -b "main" "https://github.com/LORD-MicroStrain/MSCL_documentation.git" "${docs_dir}"
 rm -rf "${docs_release_dir}"
 mkdir -p "${docs_release_dir}"
+
 pushd "${docs_release_dir}"
+
 unzip "${docs_zip}" -d "${docs_release_dir}"
 
 documentation_readme="${docs_dir}/README.md"

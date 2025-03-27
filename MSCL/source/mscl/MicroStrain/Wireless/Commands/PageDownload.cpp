@@ -4,13 +4,9 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "PageDownload.h"
-#include "WirelessProtocol.h"
-#include "mscl/MicroStrain/ByteStream.h"
-#include "mscl/MicroStrain/DataBuffer.h"
+#include "mscl/MicroStrain/Wireless/Commands/PageDownload.h"
 
-#include <algorithm>
+#include "mscl/MicroStrain/Wireless/Commands/WirelessProtocol.h"
 
 namespace mscl
 {
@@ -25,11 +21,10 @@ namespace mscl
         return cmd;
     }
 
-    PageDownload::Response::Response(std::weak_ptr<ResponseCollector> collector):
+    PageDownload::Response::Response(std::weak_ptr<ResponseCollector> collector) :
         WirelessResponsePattern(collector, WirelessProtocol::cmdId_pageDownload, 0),    //note: passing 0 since this response doesn't check node address :(
         m_matchedPart1(false)
-    {
-    }
+    {}
 
     bool PageDownload::Response::match(DataBuffer& data)
     {
@@ -127,7 +122,7 @@ namespace mscl
         ReadBufferSavePoint savePoint(&data);
 
         //calc the number of bytes to read (all the bytes in the buffer, up to 266 total including what is in the buffer already)
-        size_t bytesToRead = std::min(data.bytesRemaining(), (TOTAL_SUCCESS_BYTES - m_dataPoints.size()));
+        size_t bytesToRead = std::min(data.bytesRemaining(), TOTAL_SUCCESS_BYTES - m_dataPoints.size());
 
         //go through the chunk of data bytes
         for(size_t byteItr = 0; byteItr < bytesToRead; ++byteItr)
@@ -149,7 +144,7 @@ namespace mscl
             m_dataPoints.resize(TOTAL_DATA_BYTES);
 
             //calculate our own checksum from the data points
-            uint16 calculatedChecksum = m_dataPoints.calculateSimpleChecksum(0, (TOTAL_DATA_BYTES-1));
+            uint16 calculatedChecksum = m_dataPoints.calculateSimpleChecksum(0, TOTAL_DATA_BYTES-1);
 
             //verify that the checksums are equal
             if(txChecksum != calculatedChecksum)
@@ -200,4 +195,4 @@ namespace mscl
 
         return true;
     }
-}
+} // namespace mscl

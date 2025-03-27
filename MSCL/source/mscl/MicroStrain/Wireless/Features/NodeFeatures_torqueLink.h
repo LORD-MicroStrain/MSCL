@@ -6,26 +6,25 @@
 
 #pragma once
 
-#include "NodeFeatures.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures.h"
 
 namespace mscl
 {
     //Class: NodeFeatures_torqueLink
     //    Contains information on features for the SG-Link-Micro node. Inherits from <NodeFeatures>.
-    class NodeFeatures_torqueLink: public NodeFeatures
+    class NodeFeatures_torqueLink : public NodeFeatures
     {
-    private:
         NodeFeatures_torqueLink();    //disabled default constructor
 
     public:
-        virtual ~NodeFeatures_torqueLink() {};
+        ~NodeFeatures_torqueLink() override = default;
 
         //Constructor: NodeFeatures_torqueLink
         //    Creates a NodeFeatures_torqueLink object.
         NodeFeatures_torqueLink(const NodeInfo& info);
 
-        virtual bool supportsSensorDelayConfig() const override;
+        bool supportsSensorDelayConfig() const override;
 
-        virtual const WirelessTypes::SamplingModes samplingModes() const override;
+        const WirelessTypes::SamplingModes samplingModes() const override;
     };
-}
+} // namespace mscl

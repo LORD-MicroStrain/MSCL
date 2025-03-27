@@ -1,14 +1,17 @@
 #pragma once
 
-#include "mscl/mscl.h"
+// MSCL common code header (used as precompiled header)
+#include <mscl/stdafx.h>
 
-//Example: Get Current Configuration
+#include <mscl/MicroStrain/Displacement/DisplacementNode.h>
+#include <mscl/MicroStrain/LinearEquation.h>
+
+// Example: Get Current Configuration
 //  Shows how to read current configuration settings a Displacement Device.
 static void getCurrentConfig(mscl::DisplacementNode& node)
 {
     mscl::LinearEquation cals = node.getAnalogToDisplacementCal();
 
-    cout << "Analog to Displacement Cal: " << "Slope: " << cals.slope() << " Offset: " << cals.offset() << endl;
-
-    cout << "Output Data Rate: " << node.getDisplacementOutputDataRate().prettyStr() << endl;
+    printf("Analog to Displacement Cal: Slope: %000.03f Offset: %000.03f\n", cals.slope(), cals.offset());
+    printf("Output Data Rate: %s\n", node.getDisplacementOutputDataRate().prettyStr().c_str());
 }

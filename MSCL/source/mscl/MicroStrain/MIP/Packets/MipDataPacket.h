@@ -6,16 +6,10 @@
 
 #pragma once
 
-#include "MipPacket.h"
-#include "mscl/Timestamp.h"
-#include "mscl/Types.h"
-#include "mscl/MicroStrain/MIP/MipDataPoint.h"
 #include "mscl/MicroStrain/MIP/MipDataField.h"
-#include "MipPacket.h"
-#include "MipSharedDataFields.h"
-
-#include <memory>
-#include <vector>
+#include "mscl/MicroStrain/MIP/MipDataPoint.h"
+#include "mscl/MicroStrain/MIP/Packets/MipPacket.h"
+#include "mscl/MicroStrain/MIP/Packets/MipSharedDataFields.h"
 
 namespace mscl
 {
@@ -75,7 +69,6 @@ namespace mscl
         //  The flags value that the device timestamp was transmitted with.
         uint16 m_deviceTimeFlags;
 
-    private:
         //Function: parseDataFields
         //    Parses the passed in MipPacket for all the field information and adds a data field to the <MipDataFields> container
         //    Also parses out all the <MipDataPoints> in the fields that were created and adds them to m_points
@@ -112,7 +105,6 @@ namespace mscl
         //Returns:
         //    The <MipDataPoints> that are contained within this packet.
         const MipDataPoints& data() const;
-
 
         //API Function: shared
         //    Gets the <MipSharedDataFields> object that makes the shared field information within this packet more easily accessible.
@@ -162,4 +154,4 @@ namespace mscl
     //API Typedef: MipDataPackets
     //    Typedef for a vector of <MipDataPacket> objects.
     typedef std::vector<MipDataPacket> MipDataPackets;
-}
+} // namespace mscl

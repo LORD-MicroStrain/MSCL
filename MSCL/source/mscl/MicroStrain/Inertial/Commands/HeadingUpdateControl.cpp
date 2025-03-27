@@ -4,19 +4,14 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "HeadingUpdateControl.h"
-#include "mscl/MicroStrain/MIP/MipDataField.h"
-#include "mscl/MicroStrain/MIP/Packets/MipPacketBuilder.h"
-#include "mscl/MicroStrain/MIP/MipTypes.h"
-#include "mscl/MicroStrain/MIP/Commands/MIP_Commands.h"
+#include "mscl/MicroStrain/Inertial/Commands/HeadingUpdateControl.h"
 
 namespace mscl
 {
     HeadingUpdateControl::HeadingUpdateControl(MipTypes::FunctionSelector function_selector, const HeadingUpdateOptions& headingUpdateOptions) :
         m_functionSelector(function_selector),
         m_HeadingUpdateOptions(headingUpdateOptions)
-    { }
+    {}
 
     HeadingUpdateControl::HeadingUpdateControl(MipTypes::FunctionSelector function_selector) :
         m_functionSelector(function_selector)
@@ -38,7 +33,7 @@ namespace mscl
 
     bool HeadingUpdateControl::responseExpected() const
     {
-        return (m_functionSelector == MipTypes::READ_BACK_CURRENT_SETTINGS) ? true : false;
+        return m_functionSelector == MipTypes::READ_BACK_CURRENT_SETTINGS;
     }
 
     HeadingUpdateOptions HeadingUpdateControl::getResponseData(const GenericMipCmdResponse& response)
@@ -61,5 +56,4 @@ namespace mscl
         }
         return GenericMipCommand::buildCommand(commandType(), byteCommand.data());
     }
-
-}
+} // namespace mscl

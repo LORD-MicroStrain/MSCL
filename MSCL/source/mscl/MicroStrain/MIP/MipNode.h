@@ -6,19 +6,14 @@
 
 #pragma once
 
-#include "mscl/MicroStrain/MIP/MipNodeInfo.h"
-#include "mscl/MicroStrain/MIP/MipChannel.h"
-#include "mscl/MicroStrain/MIP/MipTypes.h"
-#include "mscl/MicroStrain/Inertial/ExposedInertialTypes.h"
-#include "mscl/MicroStrain/MIP/Commands/MipCmdResponse.h"
-#include "mscl/MicroStrain/MIP/Packets/MipDataPacket.h"
+#include "mscl/Communication/RawBytePacket.h"
+#include "mscl/MicroStrain/MIP/Commands/GenericMipCommand.h"
 #include "mscl/MicroStrain/MIP/MipModels.h"
-#include "mscl/Communication/Connection.h"
+#include "mscl/MicroStrain/MIP/MipNode_Impl.h"
 
 namespace mscl
 {
     //forward declarations
-    class MipNode_Impl;
     class MipNodeFeatures;
 
     //API Class: MipNode
@@ -26,22 +21,20 @@ namespace mscl
     class MipNode
     {
     protected:
-        MipNode() {};  //default constructor disabled
-        virtual ~MipNode() {}
+        MipNode() {}  //default constructor disabled
+        virtual ~MipNode() = default;
 
         MipNode(Connection connection);
 
 #ifndef SWIG
         MipNode(std::shared_ptr<MipNode_Impl> impl);
-#endif
+#endif // !SWIG
 
-    protected:
         //Variable: m_impl
         //    The <MipNode_Impl> class that contains all the implementation logic for the MipNode class.
         std::shared_ptr<MipNode_Impl> m_impl;
 
     public:
-
 #ifndef SWIG
         //Function: doCommand
         //  Note: This is an ADVANCED COMMAND. Most users will not need to use this.
@@ -59,7 +52,7 @@ namespace mscl
         //    - <Error_NotSupported>: The command is not supported by this Node.
         //    - <Error_MipCmdFailed>: The command has failed.
         virtual GenericMipCmdResponse doCommand(GenericMipCommand::Response& response, const ByteStream& command, bool verifySupported = true) const;
-#endif
+#endif // !SWIG
 
         //API Function: doCommand
         //  Note: This is an ADVANCED COMMAND. Most users will not need to use this.
@@ -514,4 +507,4 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the Node.
         RawBytePackets getRawBytePackets(uint32 timeout = 0, uint32 maxPackets = 0);
     };
-}
+} // namespace mscl

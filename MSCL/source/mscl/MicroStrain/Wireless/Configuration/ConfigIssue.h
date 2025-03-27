@@ -6,8 +6,6 @@
 
 #pragma once
 
-#include <string>
-#include <vector>
 #include "mscl/MicroStrain/Wireless/ChannelMask.h"
 
 namespace mscl
@@ -147,7 +145,7 @@ namespace mscl
         //Parameters:
         //    optionId - The <ConfigOption> identifying the configuration option for which the issue occurred.
         //    description - A description of the issue.
-        ConfigIssue(ConfigIssue::ConfigOption optionId, const std::string& description);
+        ConfigIssue(ConfigOption optionId, const std::string& description);
 
         //API Constructor: ConfigIssue
         //    Creates a ConfigIssue object.
@@ -156,7 +154,7 @@ namespace mscl
         //    optionId - The <ConfigOption> identifying the configuration option for which the issue occurred.
         //    description - A description of the issue.
         //    mask - The <ChannelMask> that this issue applies to, if this is a channel group issue.
-        ConfigIssue(ConfigIssue::ConfigOption optionId, const std::string& description, const ChannelMask& mask);
+        ConfigIssue(ConfigOption optionId, const std::string& description, const ChannelMask& mask);
 
     private:
         //Variable: m_optionId
@@ -181,7 +179,7 @@ namespace mscl
         //
         //Returns:
         //    A <ConfigOption> identifying the configuration option for which the issue occurred.
-        ConfigIssue::ConfigOption id() const;
+        ConfigOption id() const;
 
         //API Function: description
         //    Gets a description of the issue.
@@ -208,4 +206,4 @@ namespace mscl
     //API Typedef: ConfigIssues
     //    typedef for a vector of <ConfigIssue> objects.
     typedef std::vector<ConfigIssue> ConfigIssues;
-}
+} // namespace mscl

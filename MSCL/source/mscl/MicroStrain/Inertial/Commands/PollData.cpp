@@ -4,11 +4,7 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "PollData.h"
-#include "mscl/MicroStrain/MIP/MipDataField.h"
-#include "mscl/MicroStrain/MIP/Packets/MipPacketBuilder.h"
-#include "mscl/MicroStrain/MIP/MipTypes.h"
+#include "mscl/MicroStrain/Inertial/Commands/PollData.h"
 
 namespace mscl
 {
@@ -36,13 +32,9 @@ namespace mscl
         return GenericMipCommand::buildCommand(CMD_ID, fieldData.data());
     }
 
-    PollImuData::Response::Response(std::weak_ptr<ResponseCollector> collector):
+    PollImuData::Response::Response(std::weak_ptr<ResponseCollector> collector) :
         GenericMipCommand::Response(MipTypes::CMD_POLL_SENSOR_DATA, collector, true, false, "Poll IMU Data")
-    {
-    }
-
-
-
+    {}
 
     ByteStream PollGnssData::buildCommand(const MipTypes::MipChannelFields& fields)
     {
@@ -68,13 +60,9 @@ namespace mscl
         return GenericMipCommand::buildCommand(CMD_ID, fieldData.data());
     }
 
-    PollGnssData::Response::Response(std::weak_ptr<ResponseCollector> collector):
+    PollGnssData::Response::Response(std::weak_ptr<ResponseCollector> collector) :
         GenericMipCommand::Response(MipTypes::CMD_POLL_GNSS_DATA, collector, true, false, "Poll GNSS Data")
-    {
-    }
-
-
-
+    {}
 
     ByteStream PollEstFilterData::buildCommand(const MipTypes::MipChannelFields& fields)
     {
@@ -100,8 +88,7 @@ namespace mscl
         return GenericMipCommand::buildCommand(CMD_ID, fieldData.data());
     }
 
-    PollEstFilterData::Response::Response(std::weak_ptr<ResponseCollector> collector):
+    PollEstFilterData::Response::Response(std::weak_ptr<ResponseCollector> collector) :
         GenericMipCommand::Response(MipTypes::CMD_POLL_EF_DATA, collector, true, false, "Poll Estimation Filter Data")
-    {
-    }
-}
+    {}
+} // namespace mscl

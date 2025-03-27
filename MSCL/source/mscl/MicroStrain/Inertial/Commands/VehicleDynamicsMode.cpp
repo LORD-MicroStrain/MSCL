@@ -4,18 +4,14 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "VehicleDynamicsMode.h"
-#include "mscl/MicroStrain/MIP/MipDataField.h"
-#include "mscl/MicroStrain/MIP/Packets/MipPacketBuilder.h"
-#include "mscl/MicroStrain/MIP/MipTypes.h"
+#include "mscl/MicroStrain/Inertial/Commands/VehicleDynamicsMode.h"
 
 namespace mscl
 {
     VehicleDynamicsMode::VehicleDynamicsMode(MipTypes::FunctionSelector function_selector, const InertialTypes::VehicleModeType& dataToUse) :
         m_functionSelector(function_selector),
         m_VehicleType(dataToUse)
-    { }
+    {}
 
     VehicleDynamicsMode::VehicleDynamicsMode(MipTypes::FunctionSelector function_selector) :
         m_functionSelector(function_selector)
@@ -37,7 +33,7 @@ namespace mscl
 
     bool VehicleDynamicsMode::responseExpected() const
     {
-        return (m_functionSelector == MipTypes::READ_BACK_CURRENT_SETTINGS) ? true : false;
+        return m_functionSelector == MipTypes::READ_BACK_CURRENT_SETTINGS;
     }
 
     InertialTypes::VehicleModeType VehicleDynamicsMode::getResponseData(const GenericMipCmdResponse& response)
@@ -61,5 +57,4 @@ namespace mscl
         }
         return GenericMipCommand::buildCommand(commandType(), byteCommand.data());
     }
-
-}
+} // namespace mscl

@@ -4,21 +4,23 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "mscl/MicroStrain/Wireless/WirelessParser.h"
+#include "mscl/Communication/RawBytePacketCollector.h"
+#include "mscl/MicroStrain/DataBuffer.h"
+#include "mscl/MicroStrain/ResponseCollector.h"
+#include "mscl/MicroStrain/ResponsePattern.h"
+#include "mscl/MicroStrain/Wireless/Commands/LongPing.h"
+#include "mscl/MicroStrain/Wireless/Commands/PageDownload.h"
+#include "mscl/MicroStrain/Wireless/Commands/StartSyncSampling.h"
+#include "mscl/MicroStrain/Wireless/DataSweep.h"
 #include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
 #include "mscl/MicroStrain/Wireless/Packets/WirelessPacketCollector.h"
-#include "mscl/MicroStrain/ResponsePattern.h"
-#include "mscl/MicroStrain/ResponseCollector.h"
-#include "mscl/MicroStrain/Wireless/Commands/LongPing.h"
-#include "mscl/MicroStrain/DataBuffer.h"
-#include "mscl/Exceptions.h"
-
-#include "mscl/MicroStrain/Wireless/Commands/StartSyncSampling.h"
-#include "mscl/MicroStrain/Wireless/Commands/PageDownload.h"
-
-#include <boost/test/unit_test.hpp>
+#include "mscl/MicroStrain/Wireless/WirelessParser.h"
 
 using namespace mscl;
+
+DISABLE_WARNING_BOOST_START
+#include <boost/test/unit_test.hpp>
+DISABLE_WARNING_BOOST_END
 
 BOOST_AUTO_TEST_SUITE(WirelessParser_Test)
 
@@ -54,7 +56,6 @@ BOOST_AUTO_TEST_CASE(WirelessParser_parseAsPacket_NotEnoughData)
 
     BOOST_CHECK_EQUAL(parser.parseAsPacket(b2, packet, WirelessTypes::freq_14), WirelessParser::parsePacketResult_notEnoughData);
 }
-
 
 BOOST_AUTO_TEST_CASE(WirelessParser_parseAsPacket_InvalidPacket)
 {
@@ -331,7 +332,6 @@ BOOST_AUTO_TEST_CASE(WirelessParser_Parse_Duplicate)
 
     DataSweep sweep2 = sweeps.at(0);
 
-
     BOOST_CHECK_EQUAL(sweep2.tick(), 1);
     BOOST_CHECK_EQUAL(sweep2.frequency(), WirelessTypes::freq_15);
 }
@@ -508,7 +508,6 @@ BOOST_AUTO_TEST_CASE(WirelessParser_Parse_Bad_Followed_By_Good)
     //check that the sweep is what we stored there
     BOOST_CHECK_EQUAL(sweep.nodeAddress(), 456);
 }
-
 
 BOOST_AUTO_TEST_CASE(WirelessParser_Parse_Bad)
 {

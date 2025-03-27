@@ -6,9 +6,10 @@
 
 #pragma once
 
+#include "mscl/MicroStrain/Inertial/ExposedInertialTypes.h"
+#include "mscl/MicroStrain/MIP/MipChannel.h"
 #include "mscl/MicroStrain/MIP/MipNode.h"
-#include "mscl/MicroStrain/Inertial/PositionVelocity.h"
-#include "mscl/MicroStrain/Inertial/EulerAngles.h"
+#include "mscl/MicroStrain/MIP/Packets/MipDataPacket.h"
 
 namespace mscl
 {
@@ -19,7 +20,6 @@ namespace mscl
     //    <WirelessNode>
     class InertialNode : public MipNode
     {
-    private:
         InertialNode();        //default constructor disabled
 
     public:
@@ -31,13 +31,13 @@ namespace mscl
         //
         //Exceptions:
         //    - <Error_Connection>: A problem occurred with the Connection.
-        explicit InertialNode(Connection connection) : MipNode(connection) {};
+        explicit InertialNode(Connection connection) : MipNode(connection) {}
 
-        virtual ~InertialNode() {}
+        ~InertialNode() override = default;
 
 #ifndef SWIG
-        InertialNode(std::shared_ptr<MipNode_Impl> impl) : MipNode(impl) {}; //constructor with direct underlying implementation for this class.
-#endif
+        InertialNode(std::shared_ptr<MipNode_Impl> impl) : MipNode(impl) {} //constructor with direct underlying implementation for this class.
+#endif // !SWIG
 
         //API Function: getDataPackets
         //    Gets up to the requested amount of data packets that have been collected.
@@ -823,7 +823,7 @@ namespace mscl
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        mscl::uint32 getGPSTimeUpdate(MipTypes::TimeFrame timeFrame);
+        uint32 getGPSTimeUpdate(MipTypes::TimeFrame timeFrame);
 
         //API Function: setGPSTimeUpdate
         //    Sets the GPS Time Update.
@@ -837,7 +837,7 @@ namespace mscl
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        void setGPSTimeUpdate(MipTypes::TimeFrame, mscl::uint32 timeData);
+        void setGPSTimeUpdate(MipTypes::TimeFrame, uint32 timeData);
 
         //API Function: setConstellationSettings
         //    Sets the GNSS Constellation Settings.
@@ -2554,4 +2554,4 @@ namespace mscl
         AidingMeasurementMagneticField sendAidingMeasurement_readEcho(AidingMeasurementMagneticField measurement) const;
         AidingMeasurementPressure sendAidingMeasurement_readEcho(AidingMeasurementPressure measurement) const;
     };
-}
+} // namespace mscl

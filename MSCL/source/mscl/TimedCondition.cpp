@@ -4,17 +4,13 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "TimedCondition.h"
-#include "Types.h"
-#include "Utils.h"
+#include "mscl/TimedCondition.h"
 
 namespace mscl
 {
-    TimedCondition::TimedCondition():
+    TimedCondition::TimedCondition() :
         m_isNotified(false)
-    {
-    }
+    {}
 
     bool TimedCondition::timedWait(uint64 timeout)
     {
@@ -62,4 +58,4 @@ namespace mscl
         //notify the condition
         m_condition.notify_one();
     }
-}
+} // namespace mscl

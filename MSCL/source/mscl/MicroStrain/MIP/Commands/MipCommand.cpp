@@ -6,9 +6,6 @@
 
 #include "mscl/MicroStrain/MIP/Commands/MipCommand.h"
 
-#include "mscl/MicroStrain/ResponseCollector.h"
-#include "mscl/MicroStrain/MIP/Commands/GenericMipCommand.h"
-
 namespace mscl
 {
     /////  MipCommand  /////
@@ -24,7 +21,7 @@ namespace mscl
     {
         ByteStream command;
 
-        if (MipCommand::supportsFunctionSelector(m_commandId, m_functionSelector)
+        if (supportsFunctionSelector(m_commandId, m_functionSelector)
             || (!isKnownCommand() && m_functionSelector != MipTypes::FunctionSelector(0))) // allows undefined commands to be manually sent with fn selectors (ex: for save as startup)
         {
             command.append_uint8(static_cast<uint8>(m_functionSelector));
@@ -37,7 +34,7 @@ namespace mscl
             {
                 case valueType_bool:
                 {
-                    command.append_uint8((val.as_bool() ? 1 : 0));
+                    command.append_uint8(val.as_bool() ? 1 : 0);
                     break;
                 }
                 case valueType_uint8:
@@ -93,7 +90,7 @@ namespace mscl
 
     MipFieldValues MipCommand::getGenericResponseData(const GenericMipCmdResponse& response)
     {
-        MipFieldFormat responseFormat = MipCommand::getResponseFieldFormat(m_commandId);
+        MipFieldFormat responseFormat = getResponseFieldFormat(m_commandId);
         DataBuffer buffer(response.data());
         MipFieldValues data;
 
@@ -104,12 +101,12 @@ namespace mscl
 
     std::string MipCommand::commandName() const
     {
-        return MipCommand::getCommandName(m_commandId);
+        return getCommandName(m_commandId);
     }
 
     bool MipCommand::isKnownCommand() const
     {
-        return MipCommand::getCommandName(m_commandId) != "";
+        return getCommandName(m_commandId) != "";
     }
 
     MipFunctionSelectors MipCommand::supportedFunctionSelectors(MipTypes::Command cmd)
@@ -205,13 +202,13 @@ namespace mscl
 
     bool MipCommand::supportsFunctionSelector(MipTypes::Command cmd, MipTypes::FunctionSelector fn)
     {
-        MipFunctionSelectors fns = MipCommand::supportedFunctionSelectors(cmd);
+        MipFunctionSelectors fns = supportedFunctionSelectors(cmd);
         return std::find(fns.begin(), fns.end(), fn) != fns.end();
     }
 
     uint8 MipCommand::fieldDataByte() const
     {
-        return MipCommand::getFieldDataByte(m_commandId);
+        return getFieldDataByte(m_commandId);
     }
 
     bool MipCommand::responseExpected() const
@@ -600,8 +597,8 @@ namespace mscl
             case MipTypes::CMD_COMM_PORT_SPEED:
             {
                 return {
-                    ValueType::valueType_uint8,
-                    ValueType::valueType_uint32
+                    valueType_uint8,
+                    valueType_uint32
                 };
             }
 
@@ -609,112 +606,112 @@ namespace mscl
             case MipTypes::CMD_NMEA_MESSAGE_FORMAT:
             {
                 return {
-                    ValueType::valueType_uint8,
-                    ValueType::valueType_Vector
+                    valueType_uint8,
+                    valueType_Vector
                 };
             }
             case MipTypes::CMD_GET_BASE_RATE:
             {
                 return {
-                    ValueType::valueType_uint8,
-                    ValueType::valueType_uint16
+                    valueType_uint8,
+                    valueType_uint16
                 };
             }
             case MipTypes::CMD_MESSAGE_FORMAT:
             {
                 return {
-                    ValueType::valueType_uint8,
-                    ValueType::valueType_uint8,
-                    ValueType::valueType_Vector
+                    valueType_uint8,
+                    valueType_uint8,
+                    valueType_Vector
                 };
             }
             case MipTypes::CMD_CONTINUOUS_DATA_STREAM:
             {
                 return {
-                    ValueType::valueType_uint8,
-                    ValueType::valueType_bool
+                    valueType_uint8,
+                    valueType_bool
                 };
             }
             case MipTypes::CMD_PPS_SOURCE:
             {
-                return { ValueType::valueType_uint8 };
+                return { valueType_uint8 };
             }
             case MipTypes::CMD_EVENT_SUPPORT:
             {
                 return {
-                    ValueType::valueType_uint8,
-                    ValueType::valueType_uint8,
-                    ValueType::valueType_uint8,
-                    ValueType::valueType_Vector,
+                    valueType_uint8,
+                    valueType_uint8,
+                    valueType_uint8,
+                    valueType_Vector,
                 };
             }
             case MipTypes::CMD_EVENT_CONTROL:
             {
                 return {
-                    ValueType::valueType_uint8,
-                    ValueType::valueType_uint8
+                    valueType_uint8,
+                    valueType_uint8
                 };
             }
             case MipTypes::CMD_EVENT_TRIGGER_STATUS:
             {
                 return {
-                    ValueType::valueType_uint8, // count
-                    ValueType::valueType_Vector // status info
+                    valueType_uint8, // count
+                    valueType_Vector // status info
                 };
             }
             case MipTypes::CMD_EVENT_ACTION_STATUS:
             {
                 return {
-                    ValueType::valueType_uint8, // count
-                    ValueType::valueType_Vector // status info
+                    valueType_uint8, // count
+                    valueType_Vector // status info
                 };
             }
             case MipTypes::CMD_ODOMETER_SETTINGS:
             {
                 return {
-                    ValueType::valueType_uint8, // mode
-                    ValueType::valueType_float, // scaling
-                    ValueType::valueType_float  // uncertainty
+                    valueType_uint8, // mode
+                    valueType_float, // scaling
+                    valueType_float  // uncertainty
                 };
             }
             case MipTypes::CMD_SENSOR_RANGE:
             {
                 return {
-                    ValueType::valueType_uint8, // sensor
-                    ValueType::valueType_uint8  // range
+                    valueType_uint8, // sensor
+                    valueType_uint8  // range
                 };
             }
             case MipTypes::CMD_SUPPORTED_SENSOR_RANGES:
             {
                 return {
-                    ValueType::valueType_uint8,
-                    ValueType::valueType_uint8,
-                    ValueType::valueType_Vector
+                    valueType_uint8,
+                    valueType_uint8,
+                    valueType_Vector
                 };
             }
             case MipTypes::CMD_LOWPASS_ANTIALIASING_FILTER:
             {
                 return {
-                    ValueType::valueType_uint16,
-                    ValueType::valueType_bool,
-                    ValueType::valueType_bool,
-                    ValueType::valueType_float,
+                    valueType_uint16,
+                    valueType_bool,
+                    valueType_bool,
+                    valueType_float,
                 };
             }
             case MipTypes::CMD_GPIO_CONFIGURATION:
             {
                 return {
-                    ValueType::valueType_uint8,
-                    ValueType::valueType_int8,
-                    ValueType::valueType_int8,
-                    ValueType::valueType_int8
+                    valueType_uint8,
+                    valueType_int8,
+                    valueType_int8,
+                    valueType_int8
                 };
             }
             case MipTypes::CMD_GPIO_STATE:
             {
                 return {
-                    ValueType::valueType_uint8,
-                    ValueType::valueType_bool
+                    valueType_uint8,
+                    valueType_bool
                 };
             }
 
@@ -722,60 +719,60 @@ namespace mscl
             case MipTypes::CMD_EF_AIDING_MEASUREMENT_ENABLE:
             {
                 return {
-                    ValueType::valueType_uint16,
-                    ValueType::valueType_bool
+                    valueType_uint16,
+                    valueType_bool
                 };
             }
             case MipTypes::CMD_EF_ADAPTIVE_FILTER_OPTIONS:
             {
                 return {
-                    ValueType::valueType_uint8,
-                    ValueType::valueType_uint16
+                    valueType_uint8,
+                    valueType_uint16
                 };
             }
             case MipTypes::CMD_EF_MULTI_ANTENNA_OFFSET:
             {
                 return {
-                    ValueType::valueType_uint8,
-                    ValueType::valueType_float,
-                    ValueType::valueType_float,
-                    ValueType::valueType_float
+                    valueType_uint8,
+                    valueType_float,
+                    valueType_float,
+                    valueType_float
                 };
             }
             case MipTypes::CMD_EF_RELATIVE_POSITION_REF:
             {
                 return {
-                    ValueType::valueType_uint8,
-                    ValueType::valueType_uint8,
-                    ValueType::valueType_double,
-                    ValueType::valueType_double,
-                    ValueType::valueType_double
+                    valueType_uint8,
+                    valueType_uint8,
+                    valueType_double,
+                    valueType_double,
+                    valueType_double
                 };
             }
             case MipTypes::CMD_EF_LEVER_ARM_OFFSET_REF:
             {
                 return {
-                    ValueType::valueType_uint8,
-                    ValueType::valueType_float,
-                    ValueType::valueType_float,
-                    ValueType::valueType_float,
+                    valueType_uint8,
+                    valueType_float,
+                    valueType_float,
+                    valueType_float,
                 };
             }
             case MipTypes::CMD_EF_SPEED_MEASUREMENT_OFFSET:
             {
                 return {
-                    ValueType::valueType_uint8,
-                    ValueType::valueType_float,
-                    ValueType::valueType_float,
-                    ValueType::valueType_float,
+                    valueType_uint8,
+                    valueType_float,
+                    valueType_float,
+                    valueType_float,
                 };
             }
 
             case MipTypes::CMD_EF_GNSS_ANTENNA_LEVER_ARM_CAL:
             {
                 return {
-                    ValueType::valueType_bool,
-                    ValueType::valueType_float
+                    valueType_bool,
+                    valueType_float
                 };
             }
 
@@ -783,30 +780,30 @@ namespace mscl
             case MipTypes::CMD_GNSS_RECEIVER_INFO:
             {
                 return {
-                    ValueType::valueType_uint8, // num receivers
-                    ValueType::valueType_Vector // receiver info
+                    valueType_uint8, // num receivers
+                    valueType_Vector // receiver info
                 };
             }
             case MipTypes::CMD_GNSS_SIGNAL_CONFIG:
             {
                 return {
-                    ValueType::valueType_uint8,
-                    ValueType::valueType_uint8,
-                    ValueType::valueType_uint8,
-                    ValueType::valueType_uint8
+                    valueType_uint8,
+                    valueType_uint8,
+                    valueType_uint8,
+                    valueType_uint8
                 };
             }
             case MipTypes::CMD_GNSS_SPARTN_CONFIG:
             {
                 return {
-                    ValueType::valueType_uint8,  // enable
-                    ValueType::valueType_uint8,  // type
-                    ValueType::valueType_uint32, // current key TOW
-                    ValueType::valueType_uint16, // current key week
-                    ValueType::valueType_string, // ascii description of current key in HEX
-                    ValueType::valueType_uint32, // next key TOW
-                    ValueType::valueType_uint16, // next key week
-                    ValueType::valueType_string  // ascii description of next key in HEX
+                    valueType_uint8,  // enable
+                    valueType_uint8,  // type
+                    valueType_uint32, // current key TOW
+                    valueType_uint16, // current key week
+                    valueType_string, // ascii description of current key in HEX
+                    valueType_uint32, // next key TOW
+                    valueType_uint16, // next key week
+                    valueType_string  // ascii description of next key in HEX
                 };
             }
 
@@ -814,19 +811,19 @@ namespace mscl
             case MipTypes::CMD_AIDING_FRAME_CONFIG:
             {
                 return {
-                    ValueType::valueType_uint8, // frame id
-                    ValueType::valueType_uint8, // format
-                    ValueType::valueType_bool,  // error tracking enabled
-                    ValueType::valueType_float, // translation
-                    ValueType::valueType_float,
-                    ValueType::valueType_float,
-                    ValueType::valueType_Vector, // rotation (ve3 for euler, vec4 for quat)
+                    valueType_uint8, // frame id
+                    valueType_uint8, // format
+                    valueType_bool,  // error tracking enabled
+                    valueType_float, // translation
+                    valueType_float,
+                    valueType_float,
+                    valueType_Vector, // rotation (ve3 for euler, vec4 for quat)
                 };
             }
             case MipTypes::CMD_AIDING_ECHO_CONTROL:
             {
                 return {
-                    ValueType::valueType_uint8
+                    valueType_uint8
                 };
             }
             // case MipTypes::CMD_AIDING_POS_LOCAL:
@@ -837,35 +834,35 @@ namespace mscl
             case MipTypes::CMD_AIDING_POS_LLH:
             {
                 return {
-                    ValueType::valueType_uint8,  // timebase
-                    ValueType::valueType_uint8,  // reserved
-                    ValueType::valueType_uint64, // nanoseconds since timebase epoch
+                    valueType_uint8,  // timebase
+                    valueType_uint8,  // reserved
+                    valueType_uint64, // nanoseconds since timebase epoch
 
-                    ValueType::valueType_uint8, // frame id
+                    valueType_uint8, // frame id
 
-                    ValueType::valueType_double, // pos
-                    ValueType::valueType_double,
-                    ValueType::valueType_double,
-                    ValueType::valueType_float, // unc
-                    ValueType::valueType_float,
-                    ValueType::valueType_float,
+                    valueType_double, // pos
+                    valueType_double,
+                    valueType_double,
+                    valueType_float, // unc
+                    valueType_float,
+                    valueType_float,
 
-                    ValueType::valueType_uint16, // valid flags
+                    valueType_uint16, // valid flags
                 };
             }
             case MipTypes::CMD_AIDING_HEIGHT_ABOVE_ELLIPSOID:
             {
                 return {
-                    ValueType::valueType_uint8,  // timebase
-                    ValueType::valueType_uint8,  // reserved
-                    ValueType::valueType_uint64, // nanoseconds since timebase epoch
+                    valueType_uint8,  // timebase
+                    valueType_uint8,  // reserved
+                    valueType_uint64, // nanoseconds since timebase epoch
 
-                    ValueType::valueType_uint8, // frame id
+                    valueType_uint8, // frame id
 
-                    ValueType::valueType_float, // height
-                    ValueType::valueType_float, // unc
+                    valueType_float, // height
+                    valueType_float, // unc
 
-                    ValueType::valueType_uint16, // valid flags
+                    valueType_uint16, // valid flags
                 };
             }
             // case MipTypes::CMD_AIDING_HEIGHT_REL:
@@ -877,20 +874,20 @@ namespace mscl
             case MipTypes::CMD_AIDING_VEL_BODY_FRAME:
             {
                 return {
-                    ValueType::valueType_uint8,  // timebase
-                    ValueType::valueType_uint8,  // reserved
-                    ValueType::valueType_uint64, // nanoseconds since timebase epoch
+                    valueType_uint8,  // timebase
+                    valueType_uint8,  // reserved
+                    valueType_uint64, // nanoseconds since timebase epoch
 
-                    ValueType::valueType_uint8, // frame id
+                    valueType_uint8, // frame id
 
-                    ValueType::valueType_float, // vel
-                    ValueType::valueType_float,
-                    ValueType::valueType_float,
-                    ValueType::valueType_float, // unc
-                    ValueType::valueType_float,
-                    ValueType::valueType_float,
+                    valueType_float, // vel
+                    valueType_float,
+                    valueType_float,
+                    valueType_float, // unc
+                    valueType_float,
+                    valueType_float,
 
-                    ValueType::valueType_uint16, // valid flags
+                    valueType_uint16, // valid flags
                 };
             }
             // case MipTypes::CMD_AIDING_WHEELSPEED:
@@ -900,50 +897,50 @@ namespace mscl
             case MipTypes::CMD_AIDING_HEADING_TRUE:
             {
                 return {
-                    ValueType::valueType_uint8,  // timebase
-                    ValueType::valueType_uint8,  // reserved
-                    ValueType::valueType_uint64, // nanoseconds since timebase epoch
+                    valueType_uint8,  // timebase
+                    valueType_uint8,  // reserved
+                    valueType_uint64, // nanoseconds since timebase epoch
 
-                    ValueType::valueType_uint8, // frame id
+                    valueType_uint8, // frame id
 
-                    ValueType::valueType_float, // heading
-                    ValueType::valueType_float, // unc
+                    valueType_float, // heading
+                    valueType_float, // unc
 
-                    ValueType::valueType_uint16, // valid flags
+                    valueType_uint16, // valid flags
                 };
             }
             case MipTypes::CMD_AIDING_MAGNETIC_FIELD:
             {
                 return {
-                    ValueType::valueType_uint8,  // timebase
-                    ValueType::valueType_uint8,  // reserved
-                    ValueType::valueType_uint64, // nanoseconds since timebase epoch
+                    valueType_uint8,  // timebase
+                    valueType_uint8,  // reserved
+                    valueType_uint64, // nanoseconds since timebase epoch
 
-                    ValueType::valueType_uint8, // frame id
+                    valueType_uint8, // frame id
 
-                    ValueType::valueType_float, // mag field
-                    ValueType::valueType_float,
-                    ValueType::valueType_float,
-                    ValueType::valueType_float, // unc
-                    ValueType::valueType_float,
-                    ValueType::valueType_float,
+                    valueType_float, // mag field
+                    valueType_float,
+                    valueType_float,
+                    valueType_float, // unc
+                    valueType_float,
+                    valueType_float,
 
-                    ValueType::valueType_uint16, // valid flags
+                    valueType_uint16, // valid flags
                 };
             }
             case MipTypes::CMD_AIDING_PRESSURE:
             {
                 return {
-                    ValueType::valueType_uint8,  // timebase
-                    ValueType::valueType_uint8,  // reserved
-                    ValueType::valueType_uint64, // nanoseconds since timebase epoch
+                    valueType_uint8,  // timebase
+                    valueType_uint8,  // reserved
+                    valueType_uint64, // nanoseconds since timebase epoch
 
-                    ValueType::valueType_uint8, // frame id
+                    valueType_uint8, // frame id
 
-                    ValueType::valueType_float, // pressure
-                    ValueType::valueType_float, // unc
+                    valueType_float, // pressure
+                    valueType_float, // unc
 
-                    ValueType::valueType_uint16, // valid flags
+                    valueType_uint16, // valid flags
                 };
             }
             // case MipTypes::CMD_AIDING_DELTA_POSITION:
@@ -963,49 +960,49 @@ namespace mscl
             case MipTypes::CMD_GNSS_RTK_CONFIG:
             {
                 return {
-                    ValueType::valueType_bool
+                    valueType_bool
                 };
             }
             case MipTypes::CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_EULER:
             {
                 return {
-                    ValueType::valueType_float,
-                    ValueType::valueType_float,
-                    ValueType::valueType_float
+                    valueType_float,
+                    valueType_float,
+                    valueType_float
                 };
             }
             case MipTypes::CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_DCM:
             case MipTypes::CMD_EF_SENS_VEHIC_FRAME_ROTATION_DCM:
             {
                 return {
-                    ValueType::valueType_float,
-                    ValueType::valueType_float,
-                    ValueType::valueType_float,
+                    valueType_float,
+                    valueType_float,
+                    valueType_float,
 
-                    ValueType::valueType_float,
-                    ValueType::valueType_float,
-                    ValueType::valueType_float,
+                    valueType_float,
+                    valueType_float,
+                    valueType_float,
 
-                    ValueType::valueType_float,
-                    ValueType::valueType_float,
-                    ValueType::valueType_float
+                    valueType_float,
+                    valueType_float,
+                    valueType_float
                 };
             }
             case MipTypes::CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_QUAT:
             case MipTypes::CMD_EF_SENS_VEHIC_FRAME_ROTATION_QUAT:
             {
                 return {
-                    ValueType::valueType_float,
-                    ValueType::valueType_float,
-                    ValueType::valueType_float,
-                    ValueType::valueType_float
+                    valueType_float,
+                    valueType_float,
+                    valueType_float,
+                    valueType_float
                 };
             }
             default:
             {
                 // no defined format, read out vector of uint8
                 return {
-                    ValueType::valueType_Vector
+                    valueType_Vector
                 };
             }
         }
@@ -1018,66 +1015,66 @@ namespace mscl
             case MipTypes::CMD_NMEA_MESSAGE_FORMAT:
             {
                 return {
-                    ValueType::valueType_uint8,
-                    ValueType::valueType_uint8,
-                    ValueType::valueType_uint8,
-                    ValueType::valueType_uint16
+                    valueType_uint8,
+                    valueType_uint8,
+                    valueType_uint8,
+                    valueType_uint16
                 };
             }
             case MipTypes::CMD_MESSAGE_FORMAT:
             {
                 return {
-                    ValueType::valueType_uint8,
-                    ValueType::valueType_uint16
+                    valueType_uint8,
+                    valueType_uint16
                 };
             }
             case MipTypes::CMD_EVENT_SUPPORT:
             {
                 return {
-                    ValueType::valueType_uint8,
-                    ValueType::valueType_uint8
+                    valueType_uint8,
+                    valueType_uint8
                 };
             }
             case MipTypes::CMD_GNSS_RECEIVER_INFO:
             {
                 return {
-                    ValueType::valueType_uint8, // receiver id
-                    ValueType::valueType_uint8, // associated data set
-                    ValueType::valueType_string // ascii description of receiver
+                    valueType_uint8, // receiver id
+                    valueType_uint8, // associated data set
+                    valueType_string // ascii description of receiver
                 };
             }
             case MipTypes::CMD_EVENT_TRIGGER_STATUS:
             {
                 return {
-                    ValueType::valueType_uint8, // type
-                    ValueType::valueType_uint8  // status
+                    valueType_uint8, // type
+                    valueType_uint8  // status
                 };
             }
             case MipTypes::CMD_EVENT_ACTION_STATUS:
             {
                 return {
-                    ValueType::valueType_uint8, // type
-                    ValueType::valueType_uint8  // status
+                    valueType_uint8, // type
+                    valueType_uint8  // status
                 };
             }
             case MipTypes::CMD_SUPPORTED_SENSOR_RANGES:
             {
                 return {
-                    ValueType::valueType_uint8,
-                    ValueType::valueType_float
+                    valueType_uint8,
+                    valueType_float
                 };
             }
             case MipTypes::CMD_AIDING_FRAME_CONFIG:
             {
                 return {
-                    ValueType::valueType_float
+                    valueType_float
                 };
             }
             default:
             {
                 // no defined format, read out vector of uint8
                 return {
-                    ValueType::valueType_uint8
+                    valueType_uint8
                 };
             }
         }
@@ -1107,7 +1104,7 @@ namespace mscl
             {
                 case valueType_bool:
                 {
-                    outData.push_back(Value::BOOL((buffer.read_uint8() > 0)));
+                    outData.push_back(Value::BOOL(buffer.read_uint8() > 0));
                     break;
                 }
                 case valueType_uint8:
@@ -1150,7 +1147,7 @@ namespace mscl
                     size_t count = stringLength(id);
                     if (count <= 0)
                     {
-                        // no count - read until end of buffer
+                        // no count - read until the end of the buffer
                         count = buffer.size();
                     }
 
@@ -1160,13 +1157,13 @@ namespace mscl
                         str += static_cast<char>(buffer.read_uint8());
                     }
 
-                    outData.push_back(Value(ValueType::valueType_string, str));
+                    outData.push_back(Value(valueType_string, str));
 
                     break;
                 }
                 case valueType_Vector:
                 {
-                    MipFieldFormat vectorFormat = MipCommand::getResponseVectorPartFormat(id, vectorNestedLevel, vectorSequenceCount);
+                    MipFieldFormat vectorFormat = getResponseVectorPartFormat(id, vectorNestedLevel, vectorSequenceCount);
                     size_t count = 0;
                     bool hasCount = false;
                     if (outData.size() > 0)
@@ -1182,7 +1179,7 @@ namespace mscl
 
                     if (count == 0 && !hasCount)
                     {
-                        // no count - read element format until end of buffer
+                        // no count - read element format until the end of the buffer
                         size_t elementSize = 0;
                         for (ValueType t : vectorFormat)
                         {
@@ -1195,7 +1192,7 @@ namespace mscl
 
                     for (size_t i = 0; i < count; i++)
                     {
-                        MipCommand::populateGenericResponseData(id, buffer, vectorFormat, outData);
+                        populateGenericResponseData(id, buffer, vectorFormat, outData);
                     }
 
                     break;

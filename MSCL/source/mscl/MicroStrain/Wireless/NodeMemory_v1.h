@@ -6,14 +6,10 @@
 
 #pragma once
 
-#include "NodeMemory.h"
-#include "mscl/Types.h"
-#include "mscl/MicroStrain/ByteStream.h"
+#include "mscl/MicroStrain/Wireless/NodeMemory.h"
 
 namespace mscl
 {
-    class WirelessNode;
-
     //Class: NodeMemory_v1
     //    Provides easy access to the datalogging memory on a WirelessNode.
     class NodeMemory_v1 : public NodeMemory
@@ -34,14 +30,13 @@ namespace mscl
 
         //Destructor: ~NodeMemory_v1
         //  Destroys a NodeMemory_v1 object.
-        virtual ~NodeMemory_v1() {};
+        ~NodeMemory_v1() override = default;
 
     private:
         NodeMemory_v1();                                //disabled default constructor
         NodeMemory_v1(const NodeMemory_v1&);                //disabled copy constructor
         NodeMemory_v1& operator=(const NodeMemory_v1&);    //disabled assignment operator
 
-    private:
         //Constants: Node Memory Constants
         //    DPAGE_SIZE    - 264   - The size of a single datalogging page (in bytes).
         //    START_PAGE    - 2     - The first page on the Node that has actual datalogging data.
@@ -72,7 +67,6 @@ namespace mscl
         //   Holds the previously downloaded page data for easily returning to it
         ByteStream m_previousData;
 
-    private:
         //Function: findPageAndOffset
         //    Gets the page and offset from the memory position.
         //
@@ -122,7 +116,7 @@ namespace mscl
         //    - <Error_NodeCommunication>: Failed to download data from the Node.
         //    - <Error_NoData>: The requested bytePosition is outside the range of the datalogged data.
         //    - <Error_Connection>: A connection error has occurred.
-        virtual uint8 nextByte() override;
+        uint8 nextByte() override;
 
     public:
         //Function: calcTotalBytes
@@ -142,18 +136,18 @@ namespace mscl
         //
         //Returns:
         //  true if the next byte starts a new header, false if it does not.
-        virtual bool isNextByteNewHeader() override;
+        bool isNextByteNewHeader() override;
 
         //Function: readIndex
         //  Returns the current read index for the data.
-        virtual uint32 readIndex() const override;
+        uint32 readIndex() const override;
 
         //Function: setAddress
         //  Sets the read address to the specified value.
         //
         //Parameters:
         //  newAddress - The address to set the read address to.
-        virtual void setAddress(uint32 newAddress) override;
+        void setAddress(uint32 newAddress) override;
 
         //Function: bytesRemaining
         //    Calculates how many bytes are remaining in the Node's datalogging memory, based on the given byte position.
@@ -163,8 +157,8 @@ namespace mscl
         //
         //Returns:
         //    The number of bytes remaining before the end of the Node's datalogging memory.
-        //virtual uint32 bytesRemaining(uint32 address) const override;
-        virtual uint32 bytesRemaining() override;
+        //uint32 bytesRemaining(uint32 address) const override;
+        uint32 bytesRemaining() override;
 
         //Function: percentComplete
         //    Calculates the percentage complete based on the given byte position.
@@ -174,7 +168,7 @@ namespace mscl
         //
         //Returns:
         //  The percentage complete (0 - 100).
-        //virtual float percentComplete(uint32 address) const override;
-        virtual float percentComplete() override;
+        //float percentComplete(uint32 address) const override;
+        float percentComplete() override;
     };
-}
+} // namespace mscl

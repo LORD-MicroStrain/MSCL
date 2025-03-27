@@ -6,20 +6,15 @@
 
 #pragma once
 
-#include "mscl/MicroStrain/ByteStream.h"
-#include "WirelessResponsePattern.h"
-#include "mscl/Types.h"
+#include "mscl/MicroStrain/Wireless/Commands/WirelessResponsePattern.h"
 
 namespace mscl
 {
-
 #ifndef SWIG
-
     //Class: BaseStation_ReadEeprom
     //    Contains logic for the base station read eeprom command
     class BaseStation_ReadEeprom
     {
-    private:
         BaseStation_ReadEeprom();                                            //default constructor disabled
         BaseStation_ReadEeprom(const BaseStation_ReadEeprom&);                //copy constructor disabled
         BaseStation_ReadEeprom& operator=(const BaseStation_ReadEeprom&);    //assignement operator disabled
@@ -85,7 +80,5 @@ namespace mscl
             bool matchFailResponse(DataBuffer& data) override;
         };
     };
-
-#endif
-
-}
+#endif // !SWIG
+} // namespace mscl

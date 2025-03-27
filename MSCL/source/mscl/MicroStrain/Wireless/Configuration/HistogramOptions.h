@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "mscl/MicroStrain/SampleRate.h"
+#include "mscl/MicroStrain/Wireless/WirelessTypes.h"
 
 namespace mscl
 {
@@ -66,4 +66,4 @@ namespace mscl
         //    size - The size of each bin in the Histogram.
         void binsSize(uint16 size);
     };
-}
+} // namespace mscl

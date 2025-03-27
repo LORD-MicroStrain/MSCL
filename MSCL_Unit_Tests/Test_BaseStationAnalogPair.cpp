@@ -7,9 +7,11 @@
 #include "mscl/MicroStrain/Wireless/BaseStationAnalogPair.h"
 #include "mscl/Utils.h"
 
-#include <boost/test/unit_test.hpp>
 using namespace mscl;
 
+DISABLE_WARNING_BOOST_START
+#include <boost/test/unit_test.hpp>
+DISABLE_WARNING_BOOST_END
 
 BOOST_AUTO_TEST_SUITE(BaseStationAnalogPair_Test)
 

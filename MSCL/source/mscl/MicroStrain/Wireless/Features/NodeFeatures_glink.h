@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "NodeFeatures.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures.h"
 
 namespace mscl
 {
@@ -15,10 +15,10 @@ namespace mscl
     class NodeFeatures_glink : public NodeFeatures
     {
     public:
-        virtual ~NodeFeatures_glink(){};
+        ~NodeFeatures_glink() override = default;
 
         //Constructor: NodeFeatures_glink
         //    Creates a NodeFeatures_glink object.
         NodeFeatures_glink(const NodeInfo& info);
     };
-}
+} // namespace mscl

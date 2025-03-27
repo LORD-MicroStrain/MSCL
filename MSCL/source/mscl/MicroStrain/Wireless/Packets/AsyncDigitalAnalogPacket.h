@@ -6,16 +6,14 @@
 
 #pragma once
 
-#include "WirelessDataPacket.h"
+#include "mscl/MicroStrain/Wireless/Packets/WirelessDataPacket.h"
 
 namespace mscl
 {
-
     //Class: AsyncDigitalAnalogPacket
     //    A <WirelessDataPacket> derived class representing an Asynchronouse Digital packet
     class AsyncDigitalAnalogPacket : public WirelessDataPacket
     {
-    private:
         //=====================================================================================================
         //Constants: Synchronized Sampling Packet Information
         //    PAYLOAD_OFFSET_CHANNEL_MASK        - 0        - The offset into the payload to get the digital channel mask (2 bytes)
@@ -92,5 +90,4 @@ namespace mscl
         //    The <UniqueWirelessPacketId> of the passed in packet
         static UniqueWirelessPacketId getUniqueId(const WirelessPacket& packet);
     };
-
-}
+} // namespace mscl

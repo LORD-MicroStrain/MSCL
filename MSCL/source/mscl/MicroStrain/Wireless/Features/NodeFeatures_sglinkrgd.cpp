@@ -4,14 +4,13 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "NodeFeatures_sglinkrgd.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures_sglinkrgd.h"
+
 #include "mscl/MicroStrain/Wireless/Configuration/NodeEepromMap.h"
-#include "mscl/Utils.h"
 
 namespace mscl
 {
-    NodeFeatures_sglinkrgd::NodeFeatures_sglinkrgd(const NodeInfo& info):
+    NodeFeatures_sglinkrgd::NodeFeatures_sglinkrgd(const NodeInfo& info) :
         NodeFeatures(info)
     {
         static const ChannelMask DIFFERENTIAL_CHS(BOOST_BINARY(00001111));    //ch1-ch4
@@ -82,4 +81,4 @@ namespace mscl
     {
         return false;
     }
-}
+} // namespace mscl

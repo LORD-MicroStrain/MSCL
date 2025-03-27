@@ -4,21 +4,17 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "SyncNodeConfig.h"
+#include "mscl/MicroStrain/Wireless/Configuration/SyncNodeConfig.h"
 
-#include "mscl/MicroStrain/Wireless/WirelessModels.h"
-#include "mscl/MicroStrain/Wireless/SyncNetworkInfo.h"
 #include "mscl/MicroStrain/SampleUtils.h"
-#include "WirelessNodeConfig.h"
+#include "mscl/MicroStrain/Wireless/SyncNetworkInfo.h"
 
 namespace mscl
 {
-    SyncNodeConfig::SyncNodeConfig(const SyncNetworkInfo* networkInfo):
+    SyncNodeConfig::SyncNodeConfig(const SyncNetworkInfo* networkInfo) :
         m_networkInfo(networkInfo),
         m_eepromHelper(networkInfo->m_node.eepromHelper())
-    {
-    }
+    {}
 
     SampleRate SyncNodeConfig::sampleRate()
     {
@@ -177,7 +173,7 @@ namespace mscl
         auto groups = m_networkInfo->channelGroups();
         for(auto i : groups)
         {
-            if(i.hasSetting(mscl::WirelessTypes::chSetting_filterSettlingTime))
+            if(i.hasSetting(WirelessTypes::chSetting_filterSettlingTime))
             {
                 if(i.channels().enabled(channelNumber))
                 {
@@ -287,4 +283,4 @@ namespace mscl
     {
         m_eepromHelper.applyEepromChanges();
     }
-}
+} // namespace mscl

@@ -4,17 +4,14 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "NodeFeatures_wirelessImpactSensor.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures_wirelessImpactSensor.h"
 
-#include "mscl/Exceptions.h"
-#include "AvailableSampleRates.h"
 #include "mscl/MicroStrain/Wireless/Configuration/NodeEepromMap.h"
-#include "mscl/MicroStrain/Wireless/ChannelMask.h"
+#include "mscl/MicroStrain/Wireless/Features/AvailableSampleRates.h"
 
 namespace mscl
 {
-    NodeFeatures_wirelessImpactSensor::NodeFeatures_wirelessImpactSensor(const NodeInfo& info):
+    NodeFeatures_wirelessImpactSensor::NodeFeatures_wirelessImpactSensor(const NodeInfo& info) :
         NodeFeatures(info)
     {
         addCalCoeffChannelGroup(1, "Acceleration X", NodeEepromMap::CH_ACTION_SLOPE_1, NodeEepromMap::CH_ACTION_ID_1);
@@ -94,4 +91,4 @@ namespace mscl
         modes.push_back(WirelessTypes::storageLimit_overwrite);
         return modes;
     }
-}
+} // namespace mscl

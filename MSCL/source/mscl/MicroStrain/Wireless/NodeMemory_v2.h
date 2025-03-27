@@ -6,15 +6,11 @@
 
 #pragma once
 
-#include "NodeMemory.h"
-#include "Features/FlashInfo.h"
-#include "mscl/Types.h"
-#include "mscl/MicroStrain/ByteStream.h"
+#include "mscl/MicroStrain/Wireless/Features/FlashInfo.h"
+#include "mscl/MicroStrain/Wireless/NodeMemory.h"
 
 namespace mscl
 {
-    class WirelessNode;
-
     //Class: NodeMemory_v2
     //  Provides easy access to the datalogging memory (v2) on a WirelessNode.
     class NodeMemory_v2 : public NodeMemory
@@ -57,9 +53,8 @@ namespace mscl
 
         //Destructor: ~NodeMemory_v2
         //  Destroys a NodeMemory_v2 object.
-        virtual ~NodeMemory_v2() {};
+        ~NodeMemory_v2() override = default;
 
-    private:
         //Variable: m_flashInfo
         //  The <FlashInfo> of the Node.
         FlashInfo m_flashInfo;
@@ -120,7 +115,6 @@ namespace mscl
         //  <ByteStream> to hold extra bytes before being pushed into m_nextData.
         ByteStream m_extraData;
 
-    private:
         //Function: nextBlockAddress
         //  Gets the address of the next block from the given address.
         //
@@ -144,7 +138,7 @@ namespace mscl
         //  buffer - The <ByteStream> buffer to check for a full block.
         //  checksumPos - Will be set to the read index of the checksum when it is known where the checksum will be located.
         //                Note: this may be set even if all the data hasn't been found in the buffer, indicating we need to read more data.
-        //  needMoreData - Whether or not more data is needed to verify the block.
+        //  needMoreData - Whether more data is needed to verify the block.
         //
         //Returns:
         //  true if the buffer contains a full, valid block from its start position. False if it hasn't been verified.
@@ -154,7 +148,7 @@ namespace mscl
         //  Fills the given buffer with the next valid block, if found.
         //
         //Parameters:
-        //  buffer - The <ByteStream> buffer to hold the data, if any is found.
+        //  buffer - The <ByteStream> buffer to hold the data if any is found.
         void fillBuffer(ByteStream& buffer);
 
     protected:
@@ -168,40 +162,40 @@ namespace mscl
         //    - <Error_NodeCommunication>: Failed to download data from the Node.
         //    - <Error_NoData>: The requested bytePosition is outside the range of the datalogged data.
         //    - <Error_Connection>: A connection error has occurred.
-        virtual uint8 nextByte() override;
+        uint8 nextByte() override;
 
     public:
         //Function: isNextByteNewHeader
-        //  Checks if the next byte will be the start of a new header.
+        //  Checks if the next byte is the start of a new header.
         //  Note: upon returning from this function, the read position will not have changed.
         //
         //Returns:
         //  true if the next byte starts a new header, false if it does not.
-        virtual bool isNextByteNewHeader() override;
+        bool isNextByteNewHeader() override;
 
         //Function: readIndex
         //  Returns the current read index for the data.
-        virtual uint32 readIndex() const override;
+        uint32 readIndex() const override;
 
         //Function: setAddress
         //  Sets the read address to the specified value.
         //
         //Parameters:
         //  newAddress - The address to set the read address to.
-        virtual void setAddress(uint32 newAddress) override;
+        void setAddress(uint32 newAddress) override;
 
         //Function: bytesRemaining
         //    Calculates how many bytes are remaining in the Node's datalogging memory, based on the current byte position.
         //
         //Returns:
         //    The number of bytes remaining before the end of the Node's datalogging memory.
-        virtual uint32 bytesRemaining() override;
+        uint32 bytesRemaining() override;
 
         //Function: percentComplete
         //    Calculates the percentage complete based on the current byte position.
         //
         //Returns:
         //  The percentage complete (0 - 100).
-        virtual float percentComplete() override;
+        float percentComplete() override;
     };
-}
+} // namespace mscl

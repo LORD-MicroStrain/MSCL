@@ -6,16 +6,12 @@
 
 #pragma once
 
-#include "mscl/MicroStrain/MIP/Commands/GenericMipCommand.h"
-#include "mscl/MicroStrain/ResponseCollector.h"
 #include "mscl/MicroStrain/Inertial/ExposedInertialTypes.h"
 #include "mscl/MicroStrain/MIP/Commands/MipCommand.h"
 
 namespace mscl
 {
-
 #ifndef SWIG
-
     //Class: SetReferencePosition
     //    Contains the logic for the Inertial Set Reference Position command.
     class SetReferencePosition : public MipCommand
@@ -25,7 +21,7 @@ namespace mscl
         //
         //Returns:
         //    std::string - the string name for this class.
-        virtual std::string commandName() const { return "SetReferencePosition"; }
+        std::string commandName() const override { return "SetReferencePosition"; }
 
         //Function: MakeSetCommand
         //
@@ -53,7 +49,7 @@ namespace mscl
 
         //Function: operator ByteStream
         //  Converts this class to a ByteStream.
-        operator ByteStream() const;
+        operator ByteStream() const override;
 
     private:
         // Function: Constructor SetReferencePosition
@@ -65,19 +61,19 @@ namespace mscl
         //
         //Returns:
         //    MipTypes::Command - the command ID.
-        virtual MipTypes::Command commandType() const { return MipTypes::CMD_EF_SET_REF_POSITION; }
+        MipTypes::Command commandType() const override { return MipTypes::CMD_EF_SET_REF_POSITION; }
 
         //Function: fieldDataByte
         //
         //Returns:
         //    uint8 - the byte ID for field data in the reply.
-        virtual uint8 fieldDataByte() const { return 0x90; }
+        uint8 fieldDataByte() const override { return 0x90; }
 
         //Function: responseExpected
         //
         //Returns:
         //    bool - True indicates that a response should return from the device.
-        virtual bool responseExpected() const;
+        bool responseExpected() const override;
 
         //Variable: m_functionSelector
         //    The FunctionSelector type of command to send, get/set, reset to factory defaults, et al.
@@ -89,8 +85,7 @@ namespace mscl
 
     public:
         // Destructor
-        ~SetReferencePosition() { }
+        ~SetReferencePosition() {}
     };
-
-#endif
-}
+#endif // !SWIG
+} // namespace mscl

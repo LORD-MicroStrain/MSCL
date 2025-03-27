@@ -6,8 +6,7 @@
 
 #pragma once
 
-#include "mscl/MicroStrain/ByteStream.h"
-#include "WirelessResponsePattern.h"
+#include "mscl/MicroStrain/Wireless/Commands/WirelessResponsePattern.h"
 
 namespace mscl
 {
@@ -28,7 +27,6 @@ namespace mscl
             resetType_soft = 2
         };
 
-    public:
         //Function: buildCommand
         //    Builds the BaseStation_Reset_v2 command packet
         //
@@ -66,7 +64,7 @@ namespace mscl
             //
             //Returns:
             //    true if the packet matches a response pattern, false otherwise
-            virtual bool matchSuccessResponse(const WirelessPacket& packet) override;
+            bool matchSuccessResponse(const WirelessPacket& packet) override;
         };
     };
-}
+} // namespace mscl

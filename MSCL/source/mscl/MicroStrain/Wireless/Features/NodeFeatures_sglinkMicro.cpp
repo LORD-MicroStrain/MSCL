@@ -4,14 +4,13 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "NodeFeatures_sglinkMicro.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures_sglinkMicro.h"
+
 #include "mscl/MicroStrain/Wireless/Configuration/NodeEepromMap.h"
-#include "mscl/Utils.h"
 
 namespace mscl
 {
-    NodeFeatures_sglinkMicro::NodeFeatures_sglinkMicro(const NodeInfo& info):
+    NodeFeatures_sglinkMicro::NodeFeatures_sglinkMicro(const NodeInfo& info) :
         NodeFeatures(info)
     {
         addCalCoeffChannelGroup(1, "Differential", NodeEepromMap::CH_ACTION_SLOPE_1, NodeEepromMap::CH_ACTION_ID_1);
@@ -74,4 +73,4 @@ namespace mscl
 
         return result;
     }
-}
+} // namespace mscl

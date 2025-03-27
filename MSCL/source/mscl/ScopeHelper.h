@@ -6,17 +6,12 @@
 
 #pragma once
 
-#include <functional>
-#include <string>
-#include "Types.h"
-
 namespace mscl
 {
     //Class: ScopeHelper
     //    Class that allows a function to be run when this object goes out of scope.
     class ScopeHelper
     {
-    private:
         //Variable: m_outOfScopeFunction
         //    The function to run when the ScopeHelper goes out of scope.
         std::function<void()> m_outOfScopeFunction;
@@ -46,4 +41,4 @@ namespace mscl
         //    the ScopeHelper is destroyed.
         void cancel();
     };
-}
+} // namespace mscl

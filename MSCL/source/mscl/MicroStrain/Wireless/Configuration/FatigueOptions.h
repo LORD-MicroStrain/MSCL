@@ -6,9 +6,7 @@
 
 #pragma once
 
-#include <map>
 #include "mscl/MicroStrain/Wireless/WirelessTypes.h"
-#include "mscl/Types.h"
 
 namespace mscl
 {
@@ -283,4 +281,4 @@ namespace mscl
         //    enable - Whehter to enable or disable sending Histograms.
         void histogramEnable(bool enable);
     };
-}
+} // namespace mscl

@@ -6,8 +6,6 @@
 
 #pragma once
 
-#include "mscl/Types.h"
-
 namespace mscl
 {
     //API Class: ActivitySense
@@ -122,4 +120,4 @@ namespace mscl
         //    timeout - The inactivity timeout value to set in this options object.
         void inactivityTimeout(float timeout);
     };
-}
+} // namespace mscl

@@ -4,24 +4,19 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-
-#include "FatigueOptions.h"
-#include <math.h>
+#include "mscl/MicroStrain/Wireless/Configuration/FatigueOptions.h"
 
 namespace mscl
 {
-    SnCurveSegment::SnCurveSegment():
+    SnCurveSegment::SnCurveSegment() :
         m_m(1.0),
         m_loga(0.0)
-    {
-    }
+    {}
 
-    SnCurveSegment::SnCurveSegment(float m, float loga):
+    SnCurveSegment::SnCurveSegment(float m, float loga) :
         m_m(m),
         m_loga(loga)
-    {
-    }
+    {}
 
     float SnCurveSegment::m() const
     {
@@ -43,8 +38,7 @@ namespace mscl
         m_loga = val;
     }
 
-
-    FatigueOptions::FatigueOptions():
+    FatigueOptions::FatigueOptions() :
         m_youngsModulus(0.2025f),
         m_poissonsRatio(0.3f),
         m_peakValleyThreshold(0),
@@ -54,8 +48,7 @@ namespace mscl
         m_distMode_lowerBound(0.0f),
         m_distMode_upperBound(1.0f),
         m_histogramEnable(true)
-    {
-    }
+    {}
 
     float FatigueOptions::youngsModulus() const
     {
@@ -197,4 +190,4 @@ namespace mscl
     {
         m_histogramEnable = enable;
     }
-}
+} // namespace mscl

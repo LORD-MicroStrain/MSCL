@@ -4,19 +4,15 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "DataBuffer.h"
-#include "ResponseCollector.h"
-#include "ResponsePattern.h"
-#include "mscl/Communication/Connection.h"
-#include "Wireless/Packets/WirelessPacket.h"
-#include "MIP/MipDataField.h"
+#include "mscl/MicroStrain/ResponseCollector.h"
+
+#include "mscl/MicroStrain/ResponsePattern.h"
 
 namespace mscl
 {
-    ResponseCollector::ResponseCollector():
+    ResponseCollector::ResponseCollector() :
       m_connection(nullptr)
-    { }
+    {}
 
     void ResponseCollector::setConnection(Connection* connection)
     {
@@ -196,4 +192,4 @@ namespace mscl
 
         return false;
     }
-}
+} // namespace mscl

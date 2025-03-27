@@ -4,18 +4,13 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "MagnetometerCaptureAutoCalibration.h"
-#include "mscl/MicroStrain/MIP/MipDataField.h"
-#include "mscl/MicroStrain/MIP/Packets/MipPacketBuilder.h"
-#include "mscl/MicroStrain/MIP/MipTypes.h"
-#include "mscl/MicroStrain/MIP/Commands/MIP_Commands.h"
+#include "mscl/MicroStrain/Inertial/Commands/MagnetometerCaptureAutoCalibration.h"
 
 namespace mscl
 {
     MagnetometerCaptureAutoCalibration::MagnetometerCaptureAutoCalibration(MipTypes::FunctionSelector functionSelector) :
         m_functionSelector(functionSelector)
-    { }
+    {}
 
     bool MagnetometerCaptureAutoCalibration::responseExpected() const
     {
@@ -45,5 +40,4 @@ namespace mscl
         byteCommand.append_uint8(static_cast<uint8>(m_functionSelector));
         return GenericMipCommand::buildCommand(commandType(), byteCommand.data());
     }
-
-}
+} // namespace mscl

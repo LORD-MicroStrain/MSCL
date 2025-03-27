@@ -6,16 +6,12 @@
 
 #pragma once
 
-#include "mscl/MicroStrain/MIP/Commands/GenericMipCommand.h"
-#include "mscl/MicroStrain/ResponseCollector.h"
 #include "mscl/MicroStrain/Inertial/ExposedInertialTypes.h"
 #include "mscl/MicroStrain/MIP/Commands/MipCommand.h"
 
 namespace mscl
 {
-
 #ifndef SWIG
-
     class SBASSettings : public MipCommand
     {
     public:
@@ -23,25 +19,25 @@ namespace mscl
         //
         //Returns:
         //    MipTypes::Command - the command ID.
-        virtual MipTypes::Command commandType() const { return MipTypes::CMD_GNSS_SBAS_SETTINGS; }
+        MipTypes::Command commandType() const override { return MipTypes::CMD_GNSS_SBAS_SETTINGS; }
 
         //Function: fieldDataByte
         //
         //Returns:
         //    uint8 - the byte ID for field data in the reply.
-        virtual uint8 fieldDataByte() const { return 0xA1; }
+        uint8 fieldDataByte() const override { return 0xA1; }
 
         //Function: commandName
         //
         //Returns:
         //    std::string - the string name for this class.
-        virtual std::string commandName() const { return "SBASSettings"; }
+        std::string commandName() const override { return "SBASSettings"; }
 
         //Function: responseExpected
         //
         //Returns:
         //    bool - True indicates that a response should return from the device.
-        virtual bool responseExpected() const;
+        bool responseExpected() const override;
 
         //Function: MakeSetCommand
         //
@@ -63,14 +59,14 @@ namespace mscl
 
         //Function: operator ByteStream
         //  Converts this class to a ByteStream.
-        operator ByteStream() const;
+        operator ByteStream() const override;
 
     private:
         //Constructor: SBASSettings
         SBASSettings(MipTypes::FunctionSelector function_selector, SBASSettingsData dataToUse) :
             m_functionSelector(function_selector),
             m_data(dataToUse)
-        { }
+        {}
 
         //Variable: m_functionSelector
         //  The MipTypes::FunctionSelector type of command to send, get/set, reset to factory defaults, et al.
@@ -82,8 +78,7 @@ namespace mscl
 
     public:
         //  Destructor
-        ~SBASSettings() { }
+        ~SBASSettings() {}
     };
-
-#endif
-}
+#endif // !SWIG
+} // namespace mscl

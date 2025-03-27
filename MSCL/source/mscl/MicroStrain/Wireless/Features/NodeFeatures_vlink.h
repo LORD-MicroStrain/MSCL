@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "NodeFeatures.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures.h"
 
 namespace mscl
 {
@@ -14,22 +14,20 @@ namespace mscl
     //    Contains information on features for the V-Link node. Inherits from <NodeFeatures>.
     class NodeFeatures_vlink : public NodeFeatures
     {
-    private:
         NodeFeatures_vlink();    //disabled default constructor
 
     public:
-        virtual ~NodeFeatures_vlink(){};
+        ~NodeFeatures_vlink() override = default;
 
         //Constructor: NodeFeatures_vlink
         //    Creates a NodeFeatures_vlink object.
         NodeFeatures_vlink(const NodeInfo& info);
 
-    public:
-        virtual bool supportsSensorDelayConfig() const override;
+        bool supportsSensorDelayConfig() const override;
 
-        virtual const WirelessTypes::WirelessSampleRates sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const override;
+        const WirelessTypes::WirelessSampleRates sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const override;
 
-        virtual WirelessTypes::WirelessSampleRate maxSampleRate(WirelessTypes::SamplingMode samplingMode, const ChannelMask& channels, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const override;
+        WirelessTypes::WirelessSampleRate maxSampleRate(WirelessTypes::SamplingMode samplingMode, const ChannelMask& channels, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const override;
 
         const uint32 minSensorDelay() const override;
 
@@ -37,4 +35,4 @@ namespace mscl
 
         const uint32 defaultSensorDelay() const override;
     };
-}
+} // namespace mscl

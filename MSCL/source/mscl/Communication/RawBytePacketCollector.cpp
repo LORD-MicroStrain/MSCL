@@ -4,23 +4,17 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "RawBytePacketCollector.h"
-
-#include <chrono>
-#include "mscl/Exceptions.h"
+#include "mscl/Communication/RawBytePacketCollector.h"
 
 namespace mscl
 {
     RawBytePacketCollector::RawBytePacketCollector() :
         m_rawBytePackets(MAX_DATA_BUFFER_SIZE)
-    {
-    }
+    {}
 
     //required (if taken out, causes runtime error on destruction of WirelessPacketCollector)
     RawBytePacketCollector::~RawBytePacketCollector()
-    {
-    }
+    {}
 
     void RawBytePacketCollector::requestRawBytePacketAddedNotification(std::function<void()> fnToCall)
     {
@@ -53,7 +47,7 @@ namespace mscl
         std::unique_lock<std::mutex> lock(m_packetMutex);
 
         //while we still need to get more packets (or we want to get all the packets)
-        while ((packetCount < maxPackets) || (maxPackets == 0))
+        while (packetCount < maxPackets || maxPackets == 0)
         {
             //if there are no more packets
             if (m_rawBytePackets.size() <= 0)
@@ -93,4 +87,4 @@ namespace mscl
         //return the number of packets in the buffer
         return static_cast<uint32>(m_rawBytePackets.size());
     }
-}
+} // namespace mscl

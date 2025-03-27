@@ -4,19 +4,17 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "WsdaFinder.h"
-#include <tchar.h>
+#include "mscl/Communication/WsdaFinder.h"
 
 namespace mscl
 {
     WsdaInfo::WsdaInfo()
-    { }
+    {}
 
     WsdaInfo::WsdaInfo(std::string url, std::string serial) :
         m_url(url),
         m_serial(serial)
-    { }
+    {}
 
     std::string WsdaInfo::ipAddress() const
     {
@@ -45,7 +43,6 @@ namespace mscl
     {
         return m_serial;
     }
-
 
     WsdaFinder::WsdaFinder()
     {
@@ -116,4 +113,4 @@ namespace mscl
 
         m_upnpService->restartSearch();
     }
-}
+} // namespace mscl

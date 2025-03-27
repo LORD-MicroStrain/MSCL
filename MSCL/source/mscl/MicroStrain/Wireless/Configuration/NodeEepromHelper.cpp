@@ -4,27 +4,18 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "NodeEepromHelper.h"
+#include "mscl/MicroStrain/Wireless/Configuration/NodeEepromHelper.h"
 
-#include "ActivitySense.h"
-#include "EventTriggerOptions.h"
-#include "FatigueOptions.h"
-#include "HistogramOptions.h"
-#include "InputRange.h"
-#include "NodeEepromMap.h"
-#include "WirelessNodeConfig.h"
+#include "mscl/MicroStrain/LinearEquation.h"
+#include "mscl/MicroStrain/Wireless/Configuration/NodeEepromMap.h"
+#include "mscl/MicroStrain/Wireless/Configuration/WirelessNodeConfig.h"
 #include "mscl/MicroStrain/Wireless/WirelessNode_Impl.h"
-#include "mscl/MicroStrain/Wireless/Features/NodeFeatures.h"
-#include "mscl/MicroStrain/Wireless/Features/FlashInfo.h"
-#include "mscl/Utils.h"
 
 namespace mscl
 {
-    NodeEepromHelper::NodeEepromHelper(WirelessNode_Impl* node):
+    NodeEepromHelper::NodeEepromHelper(WirelessNode_Impl* node) :
         m_node(node)
-    {
-    }
+    {}
 
     Value NodeEepromHelper::read(const EepromLocation& location) const
     {
@@ -108,16 +99,16 @@ namespace mscl
 
             return Version(major, minor);
         }
+
         //firmware versions >= 10 use the scheme [Major].[svnRevision]
-        else
-        {
-            uint16 fwValue2 = read(NodeEepromMap::FIRMWARE_VER2).as_uint16();
 
-            //make the svn revision from the lsb of the first fw value, and the entire second fw value
-            uint32 svnRevision = Utils::make_uint32(0, Utils::lsb(fwValue1), Utils::msb(fwValue2), Utils::lsb(fwValue2));
+        uint16 fwValue2 = read(NodeEepromMap::FIRMWARE_VER2).as_uint16();
 
-            return Version(major, svnRevision);
-        }
+        //make the svn revision from the lsb of the first fw value, and the entire second fw value
+        uint32 svnRevision = Utils::make_uint32(0, Utils::lsb(fwValue1), Utils::msb(fwValue2), Utils::lsb(fwValue2));
+
+        return Version(major, svnRevision);
+
     }
 
     Version NodeEepromHelper::read_asppVersion(WirelessTypes::CommProtocol commProtocol) const
@@ -162,17 +153,13 @@ namespace mscl
             {
                 return Version(3, 0);
             }
-            else
-            {
-                assert(false);  //need to add support for a new radio mode
-                return Version(1, 0);
-            }
+
+            assert(false);  //need to add support for a new radio mode
+            return Version(1, 0);
         }
-        else
-        {
-            //ASPP version is good in eeprom, just return that version number
-            return Version(Utils::msb(asppValue), Utils::lsb(asppValue));
-        }
+
+        //ASPP version is good in eeprom, just return that version number
+        return Version(Utils::msb(asppValue), Utils::lsb(asppValue));
     }
 
     WirelessTypes::CommProtocol NodeEepromHelper::read_commProtocol() const
@@ -241,14 +228,12 @@ namespace mscl
             //convert the legacy model to the new model number and return it
             return WirelessModels::nodeFromLegacyModel(model);
         }
-        else
-        {
-            //read the model option from eeprom
-            uint16 modelOption = read(NodeEepromMap::MODEL_OPTION).as_uint16();
 
-            //build the model and model class together to form the model number
-            return static_cast<WirelessModels::NodeModel>((model * 10000) + modelOption);
-        }
+        //read the model option from eeprom
+        uint16 modelOption = read(NodeEepromMap::MODEL_OPTION).as_uint16();
+
+        //build the model and model class together to form the model number
+        return static_cast<WirelessModels::NodeModel>(model * 10000 + modelOption);
     }
 
     std::string NodeEepromHelper::read_serial() const
@@ -306,10 +291,8 @@ namespace mscl
         {
             return read_flashInfo().storageSize;
         }
-        else
-        {
-            return read(NodeEepromMap::MAX_MEMORY).as_uint16() * BYTES_PER_DATALOG_PAGE;
-        }
+
+        return read(NodeEepromMap::MAX_MEMORY).as_uint16() * BYTES_PER_DATALOG_PAGE;
     }
 
     FlashInfo NodeEepromHelper::read_flashInfo() const
@@ -385,7 +368,7 @@ namespace mscl
         }
 
         //read the value from the correct eeprom location
-        return (read(unlimitedSamplingLocation).as_uint16() == 1);
+        return read(unlimitedSamplingLocation).as_uint16() == 1;
     }
 
     void NodeEepromHelper::write_sampleRate(WirelessTypes::WirelessSampleRate rate, WirelessTypes::SamplingMode samplingMode)
@@ -416,11 +399,9 @@ namespace mscl
             //read the value from the datalogging eeprom location
             return WirelessTypes::dataloggingRateToSampleRate(read(NodeEepromMap::DATALOG_SAMPLE_RATE).as_uint16());
         }
-        else
-        {
-            //read the value from the eeprom location
-            return static_cast<WirelessTypes::WirelessSampleRate>(read(NodeEepromMap::SAMPLE_RATE).as_uint16());
-        }
+
+        //read the value from the eeprom location
+        return static_cast<WirelessTypes::WirelessSampleRate>(read(NodeEepromMap::SAMPLE_RATE).as_uint16());
     }
 
     void NodeEepromHelper::write_dataFormat(WirelessTypes::DataFormat dataFormat)
@@ -748,7 +729,7 @@ namespace mscl
         uint8 timeResolution = eepromVal >> 15;
 
         //pull off the actual time value
-        uint16 time = eepromVal & (TIME_BETWEEN_BURSTS_MAX_SECS);
+        uint16 time = eepromVal & TIME_BETWEEN_BURSTS_MAX_SECS;
 
         //if the time resolution is in minutes
         if(timeResolution == 1)
@@ -756,11 +737,9 @@ namespace mscl
             //return the minutes timespan
             return TimeSpan::Minutes(time);
         }
-        else
-        {
-            //return the seconds timespan
-            return TimeSpan::Seconds(time);
-        }
+
+        //return the seconds timespan
+        return TimeSpan::Seconds(time);
     }
 
     void NodeEepromHelper::write_samplingMode(WirelessTypes::SamplingMode samplingMode)
@@ -804,7 +783,7 @@ namespace mscl
                 }
 
                 //if any event triggers are enabled
-                if(m_node->features().supportsEventTrigger() && (read_eventTriggerMask().enabledCount() != 0))
+                if(m_node->features().supportsEventTrigger() && read_eventTriggerMask().enabledCount() != 0)
                 {
                     //default to sync + event
                     return WirelessTypes::samplingMode_syncEvent;
@@ -813,10 +792,11 @@ namespace mscl
                 //default to the sync
                 return WirelessTypes::samplingMode_sync;
             }
-            else if(m_node->features().supportsSamplingMode(WirelessTypes::samplingMode_nonSync))
+
+            if(m_node->features().supportsSamplingMode(WirelessTypes::samplingMode_nonSync))
             {
                 //if any event triggers are enabled
-                if(m_node->features().supportsEventTrigger() && (read_eventTriggerMask().enabledCount() != 0))
+                if(m_node->features().supportsEventTrigger() && read_eventTriggerMask().enabledCount() != 0)
                 {
                     //default to non-sync + event
                     return WirelessTypes::samplingMode_nonSyncEvent;
@@ -825,11 +805,9 @@ namespace mscl
                 //default to non-sync
                 return WirelessTypes::samplingMode_nonSync;
             }
-            else
-            {
-                //default to armed datalogging
-                return WirelessTypes::samplingMode_armedDatalog;
-            }
+
+            //default to armed datalogging
+            return WirelessTypes::samplingMode_armedDatalog;
         }
 
         //cast to a sampling mode and return
@@ -980,13 +958,11 @@ namespace mscl
         {
             return static_cast<WirelessTypes::TransmitPower>(val);
         }
-        else
-        {
-            //legacy value, convert to current value before returning
 
-            //read and return the transmit power level
-            return WirelessTypes::legacyToTransmitPower(static_cast<WirelessTypes::LegacyTransmitPower>(val));
-        }
+        //legacy value, convert to current value before returning
+
+        //read and return the transmit power level
+        return WirelessTypes::legacyToTransmitPower(static_cast<WirelessTypes::LegacyTransmitPower>(val));
     }
 
     void NodeEepromHelper::write_transmitPower(WirelessTypes::TransmitPower power)
@@ -1034,7 +1010,7 @@ namespace mscl
         {
             if(eeVal != 0)
             {
-                seconds = (MAX_SLEEP_INTERVAL_EEVAL / eeVal);
+                seconds = MAX_SLEEP_INTERVAL_EEVAL / eeVal;
             }
         }
 
@@ -1060,7 +1036,7 @@ namespace mscl
         else
         {
             //calculate the eeprom value to write
-            valToWrite = (MAX_SLEEP_INTERVAL_EEVAL / interval);
+            valToWrite = MAX_SLEEP_INTERVAL_EEVAL / interval;
         }
 
         //write the value to the node
@@ -1317,7 +1293,7 @@ namespace mscl
 
         //the transducer is bits 12 - 15
         //  Note: this value is different than WirelessTypes::TransducerType, as it also indicates RTD Wire Type
-        uint16 transducerVal = val & (0b1111000000000000);
+        uint16 transducerVal = val & 0b1111000000000000;
 
         switch(transducerVal)
         {
@@ -1334,7 +1310,7 @@ namespace mscl
                 //the RTD curve is bits 8 - 11, but we only support European Curve for now, ignoring
 
                 //the RTD type is bits 0 - 7
-                WirelessTypes::RtdType type = static_cast<WirelessTypes::RtdType>(val & (0b0000000011111111));
+                WirelessTypes::RtdType type = static_cast<WirelessTypes::RtdType>(val & 0b0000000011111111);
 
                 return TempSensorOptions::RTD(wireType, type);
             }
@@ -1342,7 +1318,7 @@ namespace mscl
             case THERMISTOR:
             {
                 //the thermistor type is bits 0 - 11
-                WirelessTypes::ThermistorType type = static_cast<WirelessTypes::ThermistorType>(val & (0b0000111111111111));
+                WirelessTypes::ThermistorType type = static_cast<WirelessTypes::ThermistorType>(val & 0b0000111111111111);
                 return TempSensorOptions::Thermistor(type);
             }
 
@@ -1350,7 +1326,7 @@ namespace mscl
             default:
             {
                 //the thermocouple type is bits 0 - 11
-                WirelessTypes::ThermocoupleType type = static_cast<WirelessTypes::ThermocoupleType>(val & (0b0000111111111111));
+                WirelessTypes::ThermocoupleType type = static_cast<WirelessTypes::ThermocoupleType>(val & 0b0000111111111111);
                 return TempSensorOptions::Thermocouple(type);
             }
         }
@@ -1509,7 +1485,7 @@ namespace mscl
         uint8 numSnCurveSegments = features.numSnCurveSegments();
 
         //the legacy SHM-Link has different eeproms for damage angles
-        bool hasLegacyAngles = (features.m_nodeInfo.model() == WirelessModels::node_shmLink);
+        bool hasLegacyAngles = features.m_nodeInfo.model() == WirelessModels::node_shmLink;
 
         //Young's Modulus
         if(features.supportsYoungsModConfig())
@@ -1529,7 +1505,7 @@ namespace mscl
         //Raw Mode
         if(features.supportsFatigueDebugModeConfig())
         {
-            bool debugModeEnabled = (read(NodeEepromMap::HISTOGRAM_RAW_FLAG).as_uint16() == 1);
+            bool debugModeEnabled = read(NodeEepromMap::HISTOGRAM_RAW_FLAG).as_uint16() == 1;
             result.debugMode(debugModeEnabled);
         }
 
@@ -1633,7 +1609,7 @@ namespace mscl
         uint8 numSnCurveSegments = features.numSnCurveSegments();
 
         //the legacy SHM-Link has different eeproms for damage angles
-        bool hasLegacyAngles = (features.m_nodeInfo.model() == WirelessModels::node_shmLink);
+        bool hasLegacyAngles = features.m_nodeInfo.model() == WirelessModels::node_shmLink;
 
         //Young's Modulus
         if(features.supportsYoungsModConfig())
@@ -1774,7 +1750,7 @@ namespace mscl
         //Transmit Rate
         if(m_node->features().supportsHistogramRateConfig())
         {
-            auto rate = static_cast<mscl::WirelessTypes::WirelessSampleRate>(read(NodeEepromMap::HISTOGRAM_SAMPLE_RATE).as_uint16());
+            auto rate = static_cast<WirelessTypes::WirelessSampleRate>(read(NodeEepromMap::HISTOGRAM_SAMPLE_RATE).as_uint16());
 
             result.transmitRate(rate);
         }
@@ -1940,7 +1916,7 @@ namespace mscl
             else
             {
                 //convert the value to bits using the provided cal coefficients
-                uint16 valInBits = static_cast<uint16>(((trig.second.triggerValue() - calibrations.at(triggerId).offset()) / calibrations.at(triggerId).slope()) + 0.5f);
+                uint16 valInBits = static_cast<uint16>((trig.second.triggerValue() - calibrations.at(triggerId).offset()) / calibrations.at(triggerId).slope() + 0.5f);
 
                 //Trigger Value
                 write(valueEeprom, Value::UINT16(valInBits));
@@ -2122,4 +2098,4 @@ namespace mscl
     {
         write(NodeEepromMap::DERIVED_VELOCITY_UNIT, Value::UINT16(static_cast<uint16>(unit)));
     }
-}
+} // namespace mscl

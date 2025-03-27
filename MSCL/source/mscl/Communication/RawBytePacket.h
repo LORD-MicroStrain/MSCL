@@ -6,10 +6,6 @@
 
 #pragma once
 
-#include "mscl/Types.h"
-#include "mscl/MicroStrain/ByteStream.h"
-#include "mscl/MicroStrain/MIP/MipTypes.h"
-
 namespace mscl
 {
     //API Class: RawBytePacket
@@ -48,7 +44,6 @@ namespace mscl
         //    The default constructor for a RawBytePacket object
         RawBytePacket();
 
-    public:
         //Typedef: Payload
         //    typedef for the bytes that make up a payload in a packet
         typedef ByteStream Payload;
@@ -113,4 +108,4 @@ namespace mscl
     //API Typedef: RawBytePackets
     //    Typedef for a vector of <RawBytePacket> objects.
     typedef std::vector<RawBytePacket> RawBytePackets;
-}
+} // namespace mscl

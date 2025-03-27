@@ -4,11 +4,10 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
+#include "mscl/MicroStrain/Wireless/Commands/BaseStation_WriteEeprom.h"
 
-#include "BaseStation_WriteEeprom.h"
-#include "WirelessProtocol.h"
 #include "mscl/MicroStrain/ChecksumBuilder.h"
+#include "mscl/MicroStrain/Wireless/Commands/WirelessProtocol.h"
 
 namespace mscl
 {
@@ -25,12 +24,10 @@ namespace mscl
         return cmd;
     }
 
-
-    BaseStation_WriteEeprom::Response::Response(uint16 valueToWrite, std::weak_ptr<ResponseCollector> collector):
+    BaseStation_WriteEeprom::Response::Response(uint16 valueToWrite, std::weak_ptr<ResponseCollector> collector) :
         WirelessResponsePattern(collector, WirelessProtocol::cmdId_base_writeEeprom, WirelessProtocol::BASE_STATION_ADDRESS),
         m_valueWritten(valueToWrite)
-    {
-    }
+    {}
 
     bool BaseStation_WriteEeprom::Response::matchSuccessResponse(DataBuffer& data)
     {
@@ -60,7 +57,6 @@ namespace mscl
             return false;
         }
 
-
         //build the ChecksumBuilder with the necessary bytes
         ChecksumBuilder checksum;
         checksum.append_uint16(eepromVal);    //eeprom value
@@ -70,7 +66,6 @@ namespace mscl
         {
             return false;
         }
-
 
         //if we made it this far, we successfully matched everything
 
@@ -106,4 +101,4 @@ namespace mscl
 
         return true;
     }
-}
+} // namespace mscl

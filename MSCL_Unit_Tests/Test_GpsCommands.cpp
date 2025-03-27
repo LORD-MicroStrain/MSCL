@@ -8,8 +8,11 @@
 #include "mscl/MicroStrain/MIP/MipDataField.h"
 #include "mscl/MicroStrain/ResponseCollector.h"
 
-#include <boost/test/unit_test.hpp>
 using namespace mscl;
+
+DISABLE_WARNING_BOOST_START
+#include <boost/test/unit_test.hpp>
+DISABLE_WARNING_BOOST_END
 
 BOOST_AUTO_TEST_SUITE(GpsCommands_Test)
 
@@ -66,7 +69,6 @@ BOOST_AUTO_TEST_CASE(GetGpsDataRateBase_Match_Success)
 }
 
 BOOST_AUTO_TEST_SUITE_END()    //End GetGpsDataRateBase
-
 
 BOOST_AUTO_TEST_SUITE(GpsCommands_GpsMessageFormat)
 
@@ -135,6 +137,5 @@ BOOST_AUTO_TEST_CASE(GpsMessageFormat_parseData)
 }
 
 BOOST_AUTO_TEST_SUITE_END()    //End GpsMessageFormat
-
 
 BOOST_AUTO_TEST_SUITE_END()

@@ -4,14 +4,13 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "NodeFeatures_dvrtlink.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures_dvrtlink.h"
+
 #include "mscl/MicroStrain/Wireless/Configuration/NodeEepromMap.h"
-#include "mscl/Utils.h"
 
 namespace mscl
 {
-    NodeFeatures_dvrtlink::NodeFeatures_dvrtlink(const NodeInfo& info):
+    NodeFeatures_dvrtlink::NodeFeatures_dvrtlink(const NodeInfo& info) :
         NodeFeatures(info)
     {
         addCalCoeffChannelGroup(3, "Internal Temperature", NodeEepromMap::CH_ACTION_SLOPE_3, NodeEepromMap::CH_ACTION_ID_3);
@@ -26,4 +25,4 @@ namespace mscl
     {
         return true;
     }
-}
+} // namespace mscl

@@ -7,9 +7,6 @@
 #pragma once
 
 #include "mscl/MicroStrain/Wireless/WirelessTypes.h"
-#include "mscl/BitMask.h"
-#include "mscl/Types.h"
-#include <map>
 
 namespace mscl
 {
@@ -190,4 +187,4 @@ namespace mscl
         //  The <Triggers> as they are currently set.
         const Triggers& triggers() const;
     };
-}
+} // namespace mscl

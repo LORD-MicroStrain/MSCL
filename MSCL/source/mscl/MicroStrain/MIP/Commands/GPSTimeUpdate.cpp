@@ -4,17 +4,12 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#include "stdafx.h"
-#include "GPSTimeUpdate.h"
-#include "mscl/MicroStrain/MIP/MipDataField.h"
-#include "mscl/MicroStrain/MIP/Packets/MipPacketBuilder.h"
-#include "mscl/MicroStrain/MIP/MipTypes.h"
-#include "MIP_Commands.h"
+#include "mscl/MicroStrain/MIP/Commands/GPSTimeUpdate.h"
 
 namespace mscl
 {
     GPSTimeUpdate::GPSTimeUpdate()
-    { }
+    {}
 
     ByteStream GPSTimeUpdate::GetWeekValue()
     {
@@ -23,7 +18,7 @@ namespace mscl
         fieldData.append_uint8(MipTypes::READ_BACK_CURRENT_SETTINGS);
         fieldData.append_uint8(GPS_WEEK_NUMBER);
 
-        return buildCommand(fieldData.data());;
+        return buildCommand(fieldData.data());
     }
 
     ByteStream GPSTimeUpdate::GetSecondsValue()
@@ -78,7 +73,7 @@ namespace mscl
                                          dataResponseExpected,
                                          "GPSTimeUpdate"),
         m_fieldDataByte(fieldDataByte)
-    { }
+    {}
 
     unsigned long GPSTimeUpdate::Response::parseResponse(const GenericMipCmdResponse& response) const
     {
@@ -86,4 +81,4 @@ namespace mscl
         uint32 timeValue = byteStream.read_uint32(0);
         return timeValue;
     }
-}
+} // namespace mscl

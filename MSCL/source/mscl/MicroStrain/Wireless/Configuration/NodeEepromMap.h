@@ -6,8 +6,7 @@
 
 #pragma once
 
-#include "EepromLocation.h"
-#include "mscl/MicroStrain/Wireless/WirelessModels.h"
+#include "mscl/MicroStrain/Wireless/Configuration/EepromLocation.h"
 
 namespace mscl
 {
@@ -15,10 +14,9 @@ namespace mscl
     //    Contains information on every EEPROM available on Wireless Nodes
     class NodeEepromMap
     {
-    private:
         NodeEepromMap() = delete;                                   //disabled default constructor
         NodeEepromMap(const NodeEepromMap&) = delete;               //disabled copy constructor
-        NodeEepromMap& operator=(const NodeEepromMap&) = delete;    //disabled assignement operator
+        NodeEepromMap& operator=(const NodeEepromMap&) = delete;    //disabled assignment operator
 
     public:
         //Function: canUseCache_read
@@ -604,4 +602,4 @@ namespace mscl
         static const EepromLocation FACTORY_CH_ACTION_SLOPE_8;
         static const EepromLocation FACTORY_CH_ACTION_OFFSET_8;
     };
-}
+} // namespace mscl
