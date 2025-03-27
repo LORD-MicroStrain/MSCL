@@ -294,44 +294,60 @@ if(MSCL_BUILD_PYTHON2 OR MSCL_BUILD_PYTHON3 OR MSCL_BUILD_CSHARP)
 
     # Build for python3
     if(MSCL_BUILD_PYTHON3)
-        set(PYTHON3_MODULE_NAME MSCL_Python3)
-        set(MSCL_PYTHON3_VERSION ${Python3_VERSION_MAJOR}.${Python3_VERSION_MINOR})
-        mscl_python_swig(
-            MODULE_NAME ${PYTHON3_MODULE_NAME}
-            MODULE_VERSION ${MSCL_GIT_VERSION}
-            OUTPUT_NAME mscl
-            OUTPUT_DIR ${MSCL_OUTPUT_DIR}
-            PYTHON_VERSION ${MSCL_PYTHON3_VERSION}
-            ARCH ${MSCL_ARCH_NAME}
-            SOURCES ${SWIG_SOURCE_FILES}
-            COMPILE_OPTIONS ${PYTHON_COMPILE_OPTIONS}
-            COMPILE_DEFINITIONS ${LIB_DEFINES} SWIG_PYTHON_INTERPRETER_NO_DEBUG
-            INCLUDE_DIRECTORIES ${LIB_INCLUDE_DIRS} ${Python3_INCLUDE_DIRS} ${MSCL_SOURCE_FILES_DIR}/Wrapper # Temp fix for bad include paths
-            LINK_DIRECTORIES ${Python3_LIBRARY_DIRS}
-            LINK_OPTIONS ${PYTHON_LINK_OPTIONS}
-            LINK_LIBRARIES ${PYTHON_LINK_LIBRARIES} ${Python3_LIBRARIES}
-        )
+        if("${MSCL_PYTHON3_VERSIONS}" STREQUAL "")
+            set(MSCL_PYTHON3_VERSIONS "${MSCL_DEFAULT_PYTHON3_VERSION}")
+        endif()
+
+        set(Python3_USE_STATIC_LIBS OFF)
+
+        foreach(MSCL_PYTHON3_VERSION IN LISTS MSCL_PYTHON3_VERSIONS)
+            string(REGEX MATCH "[0-9]+\\.[0-9]+" MSCL_PYTHON3_MAJOR_MINOR "${MSCL_PYTHON3_VERSION}")
+            find_package(Python3 "${MSCL_PYTHON3_MAJOR_MINOR}" EXACT REQUIRED COMPONENTS Interpreter Development)
+            mscl_python_swig(
+                MODULE_NAME "MSCL_Python${Python3_VERSION_MAJOR}_${Python3_VERSION_MINOR}"
+                MODULE_VERSION ${MSCL_GIT_VERSION}
+                OUTPUT_NAME mscl
+                OUTPUT_DIR ${MSCL_OUTPUT_DIR}
+                PYTHON_VERSION "${MSCL_PYTHON3_MAJOR_MINOR}"
+                ARCH ${MSCL_ARCH_NAME}
+                SOURCES ${SWIG_SOURCE_FILES}
+                COMPILE_OPTIONS ${PYTHON_COMPILE_OPTIONS}
+                COMPILE_DEFINITIONS ${LIB_DEFINES} SWIG_PYTHON_INTERPRETER_NO_DEBUG
+                INCLUDE_DIRECTORIES ${LIB_INCLUDE_DIRS} ${Python3_INCLUDE_DIRS} ${MSCL_SOURCE_FILES_DIR}/Wrapper # Temp fix for bad include paths
+                LINK_DIRECTORIES ${Python3_LIBRARY_DIRS}
+                LINK_OPTIONS ${PYTHON_LINK_OPTIONS}
+                LINK_LIBRARIES ${PYTHON_LINK_LIBRARIES} ${Python3_LIBRARIES}
+            )
+        endforeach()
     endif()
 
     # Build for python2
     if(MSCL_BUILD_PYTHON2)
-        set(PYTHON2_MODULE_NAME MSCL_Python2)
-        set(MSCL_PYTHON2_VERSION ${Python2_VERSION_MAJOR}.${Python2_VERSION_MINOR})
-        mscl_python_swig(
-            MODULE_NAME ${PYTHON2_MODULE_NAME}
-            MODULE_VERSION ${MSCL_GIT_VERSION}
-            OUTPUT_NAME mscl
-            OUTPUT_DIR ${MSCL_OUTPUT_DIR}
-            PYTHON_VERSION ${MSCL_PYTHON2_VERSION}
-            ARCH ${MSCL_ARCH_NAME}
-            SOURCES ${SWIG_SOURCE_FILES}
-            COMPILE_OPTIONS ${PYTHON_COMPILE_OPTIONS}
-            COMPILE_DEFINITIONS ${LIB_DEFINES} SWIG_PYTHON_INTERPRETER_NO_DEBUG
-            INCLUDE_DIRECTORIES ${LIB_INCLUDE_DIRS} ${Python2_INCLUDE_DIRS} ${MSCL_SOURCE_FILES_DIR}/Wrapper # Temp fix for bad include paths
-            LINK_DIRECTORIES ${Python2_LIBRARY_DIRS}
-            LINK_OPTIONS ${PYTHON_LINK_OPTIONS}
-            LINK_LIBRARIES ${PYTHON_LINK_LIBRARIES} ${Python2_LIBRARIES}
-        )
+        if("${MSCL_PYTHON2_VERSIONS}" STREQUAL "")
+            set(MSCL_PYTHON2_VERSIONS "${MSCL_DEFAULT_PYTHON2_VERSION}")
+        endif()
+
+        set(Python2_USE_STATIC_LIBS OFF)
+
+        foreach(MSCL_PYTHON2_VERSION IN LISTS MSCL_PYTHON2_VERSIONS)
+            string(REGEX MATCH "[0-9]+\\.[0-9]+" MSCL_PYTHON2_MAJOR_MINOR "${MSCL_PYTHON2_VERSION}")
+            find_package(Python2 "${MSCL_PYTHON2_MAJOR_MINOR}" EXACT REQUIRED COMPONENTS Interpreter Development)
+            mscl_python_swig(
+                MODULE_NAME "MSCL_Python${Python2_VERSION_MAJOR}_${Python2_VERSION_MINOR}"
+                MODULE_VERSION ${MSCL_GIT_VERSION}
+                OUTPUT_NAME mscl
+                OUTPUT_DIR ${MSCL_OUTPUT_DIR}
+                PYTHON_VERSION "${MSCL_PYTHON2_MAJOR_MINOR}"
+                ARCH ${MSCL_ARCH_NAME}
+                SOURCES ${SWIG_SOURCE_FILES}
+                COMPILE_OPTIONS ${PYTHON_COMPILE_OPTIONS}
+                COMPILE_DEFINITIONS ${LIB_DEFINES} SWIG_PYTHON_INTERPRETER_NO_DEBUG
+                INCLUDE_DIRECTORIES ${LIB_INCLUDE_DIRS} ${Python2_INCLUDE_DIRS} ${MSCL_SOURCE_FILES_DIR}/Wrapper # Temp fix for bad include paths
+                LINK_DIRECTORIES ${Python2_LIBRARY_DIRS}
+                LINK_OPTIONS ${PYTHON_LINK_OPTIONS}
+                LINK_LIBRARIES ${PYTHON_LINK_LIBRARIES} ${Python2_LIBRARIES}
+            )
+        endforeach()
     endif()
 
     # Build C# on Windows

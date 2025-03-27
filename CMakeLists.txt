@@ -42,6 +42,12 @@ option(MSCL_BUILD_EXAMPLES "Whether to build the examples." OFF)
 option(MSCL_ZIP_EXAMPLES "Whether to zip the examples source code." OFF)
 option(MSCL_BUILD_PACKAGE "Whether to build a package from the resulting binaries" OFF)
 
+set(MSCL_DEFAULT_PYTHON2_VERSION "2.7" CACHE INTERNAL "Default Python 2 version to build")
+set(MSCL_DEFAULT_PYTHON3_VERSION "3.9" CACHE INTERNAL "Default Python 3 version to build")
+
+set(MSCL_PYTHON2_VERSIONS "" CACHE STRING "List of Python 2 versions to build. Denoted A.B;X.Y for multiple versions")
+set(MSCL_PYTHON3_VERSIONS "" CACHE STRING "List of Python 3 versions to build. Denoted A.B;X.Y for multiple versions")
+
 if(WIN32)
     option(MSCL_BUILD_CSHARP "Whether to build the C# bindings. Only supported on Windows" OFF)
     option(MSCL_BUILD_DOCUMENTATION "Whether to build the documentation" OFF)
@@ -208,16 +214,6 @@ if(MSCL_WITH_SSL)
 endif()
 
 # Find language libraries if building them
-if(MSCL_BUILD_PYTHON3)
-    set(Python3_USE_STATIC_LIBS OFF)
-    find_package(Python3 REQUIRED COMPONENTS Interpreter Development)
-endif()
-
-if(MSCL_BUILD_PYTHON2)
-    set(Python2_USE_STATIC_LIBS OFF)
-    find_package(Python2 REQUIRED COMPONENTS Interpreter Development)
-endif()
-
 if(MSCL_BUILD_CSHARP)
     enable_language(CSharp)
 endif()
