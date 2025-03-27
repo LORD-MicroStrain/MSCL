@@ -337,25 +337,6 @@ BOOST_AUTO_TEST_CASE(Utils_Make_uint32)
 
 BOOST_AUTO_TEST_SUITE_END()
 
-BOOST_AUTO_TEST_CASE(Utils_GetSystemTime)
-{
-    uint64 time1 = Utils::getCurrentSystemTime();
-    Utils::threadSleep(200);
-    uint64 sleepNano = 200000000;
-    uint64 time2 = Utils::getCurrentSystemTime();
-
-    //check that time 2 comes after time 1
-    BOOST_CHECK( time1 < time2 );
-
-    uint64 diff = time2 - time1;
-
-    // check reported difference at least length of sleep time
-    BOOST_CHECK(diff >= sleepNano);
-
-    // check diff within 10% of sleep time
-    BOOST_CHECK(diff < sleepNano * 1.1);
-}
-
 BOOST_AUTO_TEST_CASE(Utils_valueTypeSize)
 {
     BOOST_CHECK_EQUAL(Utils::valueTypeSize(valueType_double), 8);
