@@ -67,11 +67,6 @@ if [ "${target}" != "develop" ]; then
   exit 0
 fi
 
-# Make sure the target branch is checked out
-git checkout ${target}
-# Make sure the tags are pulled
-git pull --tags
-
 # Some constants and other important variables
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" &> /dev/null && pwd)"
 project_dir="${script_dir}/.."
@@ -98,6 +93,9 @@ cmake -S "${project_dir}" -B "${build_dir}" \
 
 # Only continue the prerelease if the project version changed on develop
 pushd "${build_dir}"
+
+# Make sure the tags are pulled
+git pull --tags
 
 github_release_version=$(git describe --tags --match "v*" --abbrev=0 HEAD)
 project_release_version="v$(cmake --system-information | awk -F= '$1~/CMAKE_PROJECT_VERSION:STATIC/{print$2}')"
