@@ -95,7 +95,7 @@ cmake -S "${project_dir}" -B "${build_dir}" \
 pushd "${build_dir}"
 
 # Make sure the tags are pulled
-git pull --tags
+git pull origin ${target} --tags
 
 github_release_version=$(git describe --tags --match "v*" --abbrev=0 HEAD)
 project_release_version="v$(cmake --system-information | awk -F= '$1~/CMAKE_PROJECT_VERSION:STATIC/{print$2}')"
