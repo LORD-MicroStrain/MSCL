@@ -194,11 +194,6 @@ gh release create \
 
 rm -f "${release_notes_file}"
 
-pushd "${project_dir}"
-  # Update the local tags after creating the release (just a precaution to prevent issues with future releases)
-  git fetch --tags origin
-popd
-
 # Commit the documentation to the github pages branch
 rm -rf "${docs_dir}"
 git clone -b "main" "https://github.com/LORD-MicroStrain/MSCL_documentation.git" "${docs_dir}"
