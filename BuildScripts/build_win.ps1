@@ -20,6 +20,10 @@ $ErrorActionPreference = 'Stop'
 
 try
 {
+    # Combine all the Python 2 and 3 versions for CMake consumption
+    $python3Versions = $python3Versions -join ";"
+    $python2Versions = $python2Versions -join ";"
+
     # Get some directory information
     $script_dir = "${PSScriptRoot}"
     $project_dir = "${script_dir}/.."

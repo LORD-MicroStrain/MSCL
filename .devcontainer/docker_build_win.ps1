@@ -56,10 +56,10 @@ $python3_build_script_flags = "-python3Dirs C:/ -python3Versions "
 
 foreach ($python3_version in ${python3_versions}.split(" "))
 {
-    $python3_build_script_flags += "${python3_version};"
+    $python3_build_script_flags += "${python3_version},"
 }
 
-$python3_build_script_flags = $python3_build_script_flags.TrimEnd(';')
+$python3_build_script_flags = $python3_build_script_flags.TrimEnd(',')
 
 # Make sure we have the most recent image (okay if this fails)
 docker pull "${windows_image}:${windows_version}"
