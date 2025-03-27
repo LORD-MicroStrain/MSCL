@@ -92,8 +92,8 @@ project_dir="${script_dir}/.."
 
 pushd "${project_dir}"
 
-# Make sure the tags are pulled
-git pull origin ${target} --tags
+# Make sure the tags are fetched
+git fetch --tags
 
 if [ "${target}" == "master" ]; then
   pushd "${project_dir}/build_ubuntu_amd64"
