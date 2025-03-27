@@ -41,6 +41,11 @@ $project_dir = "${script_dir}/.."
 $dockerfile = "${script_dir}/Dockerfile.windows"
 $image_name = "microstrain/mscl_windows_builder:${windows_version}"
 
+if ("${env:BRANCH_NAME}" -eq "master")
+{
+    $image_name += "_${env:BRANCH_NAME}"
+}
+
 if ("${arch}" -eq "x86")
 {
     $cmake_arch = "Win32"

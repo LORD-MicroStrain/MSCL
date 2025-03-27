@@ -121,6 +121,7 @@ RUN echo Installing Git `
 
 # Install Python3
 ARG PYTHON3_VERSIONS="3.9.0"
+RUN echo %PYTHON3_VERSIONS%
 RUN echo Installing Python3 `
     && for %v in (%PYTHON3_VERSIONS%) do ( `
         echo Installing Python%v `
