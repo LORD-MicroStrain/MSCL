@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 [assembly: AssemblyTitle("MSCL")]
 [assembly: AssemblyDescription("MicroStrain Communication Library")]
-[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyConfiguration("$<CONFIG>")]
 [assembly: AssemblyCompany("MicroStrain by HBK")]
 [assembly: AssemblyProduct("MSCL")]
 [assembly: AssemblyCopyright("Copyright © ${MSCL_CURRENT_YEAR} MicroStrain by HBK")]
@@ -32,5 +32,6 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 //
-[assembly: AssemblyVersion("${MSCL_GIT_VERSION_MAJOR}.${MSCL_GIT_VERSION_MINOR}.${MSCL_GIT_VERSION_PATCH}.0")]
-[assembly: AssemblyFileVersion("${MSCL_GIT_VERSION_MAJOR}.${MSCL_GIT_VERSION_MINOR}.${MSCL_GIT_VERSION_PATCH}.0")]
+[assembly: AssemblyVersion("${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}.0")]
+[assembly: AssemblyFileVersion("${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}.0")]
+[assembly: AssemblyInformationalVersion("${MSCL_GIT_COMMIT}")]

@@ -1,6 +1,3 @@
-# Get the Git version to use for the version file generation
-microstrain_extract_git_version(MSCL_GIT_VERSION_CLEAN MSCL_GIT_VERSION_MAJOR MSCL_GIT_VERSION_MINOR MSCL_GIT_VERSION_PATCH)
-
 # Get the current year to make sure the file copyright is up-to-date
 string(TIMESTAMP MSCL_CURRENT_YEAR "%Y")
 
@@ -18,8 +15,17 @@ if(MSCL_BUILD_CSHARP)
     # Generate the assembly info file for CSharp
     set(ASSEMBLY_FILE "AssemblyInfo.cs")
     set(MSCL_ASSEMBLY_CS_IN_FILE "${CMAKE_CURRENT_LIST_DIR}/../cmake/${ASSEMBLY_FILE}.in")
-    set(MSCL_ASSEMBLY_CS_OUT_FILE "${MSCL_SOURCE_FILES_DIR}/Wrapper/CSharp/Properties/${ASSEMBLY_FILE}")
-    configure_file(${MSCL_ASSEMBLY_CS_IN_FILE} ${MSCL_ASSEMBLY_CS_OUT_FILE})
+    set(MSCL_ASSEMBLY_CS_OUT_FILE "${CMAKE_CURRENT_BINARY_DIR}/$<CONFIG>/${ASSEMBLY_FILE}")
+    set(MSCL_ASSEMBLY_CS_GEN_FILE "${CMAKE_CURRENT_BINARY_DIR}/${ASSEMBLY_FILE}.out")
+
+    # Generate a file to generate the AssemblyInfo.cs files per configuration
+    configure_file("${MSCL_ASSEMBLY_CS_IN_FILE}" "${MSCL_ASSEMBLY_CS_GEN_FILE}")
+
+    # Generate the actual assembly file for the project with config info
+    file(GENERATE
+        OUTPUT ${MSCL_ASSEMBLY_CS_OUT_FILE}
+        INPUT ${MSCL_ASSEMBLY_CS_GEN_FILE}
+    )
 endif()
 
 # Add all the sources
@@ -402,7 +408,7 @@ if(MSCL_BUILD_PYTHON2 OR MSCL_BUILD_PYTHON3 OR MSCL_BUILD_CSHARP)
 
         # Add the CSharp library
         set(MSCL_CSHARP_SOURCE
-            ${MSCL_SOURCE_FILES_DIR}/Wrapper/CSharp/Properties/${ASSEMBLY_FILE}
+            ${MSCL_ASSEMBLY_CS_OUT_FILE}
             ${MSCL_SOURCE_FILES_DIR}/Wrapper/CSharp/mscl/Exceptions.cs
             ${MSCL_GENERATED_CSHARP_SOURCE}
         )
@@ -465,9 +471,12 @@ endif()
 if(MSCL_BUILD_PACKAGE)
     microstrain_get_git_branch(MSCL_GIT_BRANCH MSCL_BRANCH) # Second param is used to set a cache variable
 
-    # Use the tag for assets built on master
     if("${MSCL_GIT_BRANCH}" STREQUAL "master")
-        string(REGEX REPLACE "(^v[0-9]+\\.[0-9]+\\.[0-9]+).+" "\\1" MSCL_GIT_VERSION "${MSCL_GIT_VERSION}")
+        # Use the project version for assets built on master
+        set(MSCL_PACKAGE_VERSION_SUFFIX "v${PROJECT_VERSION}")
+    else()
+        # Use the tag for all other assets
+        set(MSCL_PACKAGE_VERSION_SUFFIX "${MSCL_GIT_VERSION}")
     endif()
 
     # Try to determine what architecture we are building for based on the compiler output
@@ -510,7 +519,7 @@ if(MSCL_BUILD_PACKAGE)
     set(CPACK_PACKAGE_VENDOR "MicroStrain by HBK")
     set(CPACK_PACKAGE_CONTACT "MicroStrain Support <microstrainsupport@hbkworld.com>")
 
-    set(CPACK_PACKAGE_VERSION ${MSCL_GIT_VERSION_CLEAN})
+    set(CPACK_PACKAGE_VERSION ${PROJECT_VERSION})
 
     if(WIN32)
         set(MSCL_FILE_NAME_PREFIX "${PROJECT_NAME}_Windows_${MSCL_ARCH}")
@@ -547,18 +556,18 @@ if(MSCL_BUILD_PACKAGE)
     string(REPLACE ";" ", " CPACK_RPM_COMMON_DEPS "${CPACK_RPM_COMMON_DEPS}")
 
     # Static package
-    microstrain_add_archive_component(${MSCL_STATIC_INSTALL_COMPONENT} ${MSCL_FILE_NAME_PREFIX} "Static_C++" ${MSCL_GIT_VERSION})
+    microstrain_add_archive_component(${MSCL_STATIC_INSTALL_COMPONENT} ${MSCL_FILE_NAME_PREFIX} "Static_C++" ${MSCL_PACKAGE_VERSION_SUFFIX})
     set(CPACK_DEBIAN_${MSCL_STATIC_INSTALL_COMPONENT}_PACKAGE_DEPENDS "${CPACK_DEBIAN_COMMON_DEPS}")
     set(CPACK_RPM_${MSCL_STATIC_INSTALL_COMPONENT}_PACKAGE_REQUIRES "${CPACK_RPM_COMMON_DEPS}")
 
     if(BUILD_SHARED_LIBS)
-        microstrain_add_archive_component(${MSCL_SHARED_INSTALL_COMPONENT} ${MSCL_FILE_NAME_PREFIX} "Shared_C++" ${MSCL_GIT_VERSION})
+        microstrain_add_archive_component(${MSCL_SHARED_INSTALL_COMPONENT} ${MSCL_FILE_NAME_PREFIX} "Shared_C++" ${MSCL_PACKAGE_VERSION_SUFFIX})
         set(CPACK_DEBIAN_${MSCL_SHARED_INSTALL_COMPONENT}_PACKAGE_DEPENDS "${CPACK_DEBIAN_COMMON_DEPS}")
         set(CPACK_RPM_${MSCL_SHARED_INSTALL_COMPONENT}_PACKAGE_REQUIRES "${CPACK_RPM_COMMON_DEPS}")
     endif()
 
     if(MSCL_BUILD_PYTHON3)
-        microstrain_add_archive_component(${MSCL_PYTHON${MSCL_PYTHON3_VERSION}_INSTALL_COMPONENT} ${MSCL_FILE_NAME_PREFIX} "Python${MSCL_PYTHON3_VERSION}" ${MSCL_GIT_VERSION})
+        microstrain_add_archive_component(${MSCL_PYTHON${MSCL_PYTHON3_VERSION}_INSTALL_COMPONENT} ${MSCL_FILE_NAME_PREFIX} "Python${MSCL_PYTHON3_VERSION}" ${MSCL_PACKAGE_VERSION_SUFFIX})
         set(CPACK_DEBIAN_${MSCL_PYTHON${MSCL_PYTHON3_VERSION}_INSTALL_COMPONENT}_PACKAGE_DEPENDS "python${MSCL_PYTHON3_VERSION}")
         set(CPACK_RPM_${MSCL_PYTHON${MSCL_PYTHON3_VERSION}_INSTALL_COMPONENT}_PACKAGE_REQUIRES "python3")
 
@@ -572,7 +581,7 @@ if(MSCL_BUILD_PACKAGE)
     endif()
 
     if(MSCL_BUILD_PYTHON2)
-        microstrain_add_archive_component(${MSCL_PYTHON${MSCL_PYTHON2_VERSION}_INSTALL_COMPONENT} ${MSCL_FILE_NAME_PREFIX} "Python${MSCL_PYTHON2_VERSION}" ${MSCL_GIT_VERSION})
+        microstrain_add_archive_component(${MSCL_PYTHON${MSCL_PYTHON2_VERSION}_INSTALL_COMPONENT} ${MSCL_FILE_NAME_PREFIX} "Python${MSCL_PYTHON2_VERSION}" ${MSCL_PACKAGE_VERSION_SUFFIX})
         set(CPACK_DEBIAN_${MSCL_PYTHON${MSCL_PYTHON2_VERSION}_INSTALL_COMPONENT}_PACKAGE_DEPENDS "python${MSCL_PYTHON2_VERSION}")
         set(CPACK_RPM_${MSCL_PYTHON${MSCL_PYTHON2_VERSION}_INSTALL_COMPONENT}_PACKAGE_REQUIRES "python2")
 
@@ -586,15 +595,15 @@ if(MSCL_BUILD_PACKAGE)
     endif()
 
     if(MSCL_BUILD_CSHARP)
-        microstrain_add_archive_component(${MSCL_CSHARP_INSTALL_COMPONENT} ${MSCL_FILE_NAME_PREFIX} "DotNet" ${MSCL_GIT_VERSION})
+        microstrain_add_archive_component(${MSCL_CSHARP_INSTALL_COMPONENT} ${MSCL_FILE_NAME_PREFIX} "DotNet" ${MSCL_PACKAGE_VERSION_SUFFIX})
     endif()
 
     if(MSCL_BUILD_DOCUMENTATION)
-        microstrain_add_archive_component(${MSCL_DOCS_INSTALL_COMPONENT} ${PROJECT_NAME} "Documentation" ${MSCL_GIT_VERSION})
+        microstrain_add_archive_component(${MSCL_DOCS_INSTALL_COMPONENT} ${PROJECT_NAME} "Documentation" ${MSCL_PACKAGE_VERSION_SUFFIX})
     endif()
 
     if(MSCL_ZIP_EXAMPLES)
-        microstrain_add_archive_component(${MSCL_EXAMPLES_INSTALL_COMPONENT} ${PROJECT_NAME} "Examples" ${MSCL_GIT_VERSION})
+        microstrain_add_archive_component(${MSCL_EXAMPLES_INSTALL_COMPONENT} ${PROJECT_NAME} "Examples" ${MSCL_PACKAGE_VERSION_SUFFIX})
     endif()
 
     # Finally include cpack which should have taken all of the previous variables into consideration

@@ -92,8 +92,9 @@ if(UNIX AND NOT APPLE)
     set(RPMBUILD_ROOT "" CACHE STRING "Location of the rpmbuild executable")
 endif()
 
-# Use Git to find the version of this repo
+# Use Git to find the version and commit of this repo
 microstrain_get_git_version(MSCL_GIT_VERSION MSCL_GIT_VERSION_CLEAN)
+microstrain_get_git_commit(MSCL_GIT_COMMIT)
 
 # Make the Output directory which is where we will copy all of the build artifacts on a successful build
 set(MSCL_OUTPUT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/Output)

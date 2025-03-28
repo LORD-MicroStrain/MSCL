@@ -66,6 +66,35 @@ macro(microstrain_extract_git_version GIT_VERSION_CLEAN GIT_VERSION_MAJOR_OUT GI
     endif()
 endmacro()
 
+macro(microstrain_get_git_commit GIT_COMMIT_OUT)
+    # Use Git to find the commit
+    find_package(Git)
+
+    set(MICROSTRAIN_DEFAULT_GIT_COMMIT "000000000")
+
+    if(NOT GIT_FOUND)
+        message(WARNING "Unable to find Git, defaulting to commit ${MICROSTRAIN_DEFAULT_GIT_COMMIT}")
+        set(${GIT_COMMIT_OUT} ${MICROSTRAIN_DEFAULT_GIT_COMMIT})
+    else()
+        execute_process(
+            COMMAND ${CMAKE_COMMAND} -E env ${GIT_EXECUTABLE} rev-parse --short HEAD
+            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+            OUTPUT_VARIABLE MICROSTRAIN_GIT_COMMIT_OUT
+            ERROR_VARIABLE MICROSTRAIN_GIT_COMMIT_ERR
+            RESULT_VARIABLE MICROSTRAIN_GIT_COMMIT_RET
+        )
+
+        if(NOT ${MICROSTRAIN_GIT_COMMIT_RET} EQUAL 0)
+            message(STATUS "Unable to determine commit from Git, defaulting to commit ${MICROSTRAIN_DEFAULT_GIT_COMMIT}")
+            set(${GIT_COMMIT_OUT} ${MICROSTRAIN_DEFAULT_GIT_COMMIT})
+        else()
+            set(${GIT_COMMIT_OUT} ${MICROSTRAIN_GIT_COMMIT_OUT})
+            string(REGEX REPLACE "\n" "" ${GIT_COMMIT_OUT} "${${GIT_COMMIT_OUT}}")
+            message(STATUS "Determined commit from Git: ${${GIT_COMMIT_OUT}}")
+        endif()
+    endif()
+endmacro()
+
 # Try to determine what architecture we are building for based on the compiler output
 # Specify the variable to set as the parameter
 macro(microstrain_get_architecture SYS_ARCH_OUT)
