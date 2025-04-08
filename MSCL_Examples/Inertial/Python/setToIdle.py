@@ -12,7 +12,7 @@ sys.path.append(os.path.abspath("{}/../../../Output/Python/{}.{}/{}/Release".for
 import mscl
 
 # TODO: change these constants to match your setup
-COM_PORT = "COM4"
+COM_PORT = "/dev/ttyACM0"
 
 try:
     #create a Serial Connection with the specified COM Port, default baud rate of 921600

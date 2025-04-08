@@ -28,6 +28,8 @@
 #include "mscl/MicroStrain/Wireless/Features/NodeFeatures_sglink.h"
 #include "mscl/MicroStrain/Wireless/Features/NodeFeatures_sglink200.h"
 #include "mscl/MicroStrain/Wireless/Features/NodeFeatures_sglink200oem.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures_sglink200oem_128hz.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures_sglink200oem_256hz.h"
 #include "mscl/MicroStrain/Wireless/Features/NodeFeatures_sglinkMicro.h"
 #include "mscl/MicroStrain/Wireless/Features/NodeFeatures_sglinkoem.h"
 #include "mscl/MicroStrain/Wireless/Features/NodeFeatures_sglinkoemHermetic.h"
@@ -166,6 +168,14 @@ namespace mscl
         case WirelessModels::node_sgLink200_oem_qbridge_350:
         case WirelessModels::node_sgLink200_oem_qbridge_350_ufl:
             return std::unique_ptr<NodeFeatures>(new NodeFeatures_sglink200oem(info));
+            
+        case WirelessModels::node_sgLink200_oem_128hz:
+        case WirelessModels::node_sgLink200_oem_qbridge_350_128hz:
+            return std::unique_ptr<NodeFeatures>(new NodeFeatures_sglink200oem_128hz(info));
+            
+        case WirelessModels::node_sgLink200_oem_256hz:
+        case WirelessModels::node_sgLink200_oem_qbridge_350_256hz:
+            return std::unique_ptr<NodeFeatures>(new NodeFeatures_sglink200oem_256hz(info));
 
         case WirelessModels::node_ptLink200:
             return std::unique_ptr<NodeFeatures>(new NodeFeatures_ptlink200(info));
