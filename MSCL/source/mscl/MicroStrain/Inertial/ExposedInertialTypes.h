@@ -2583,10 +2583,12 @@ namespace mscl
         //
         //      L1CA - 0x01 - L1CA: 00000001
         //      L2C  - 0x02 - L2C:  00000010
+        //      L5   - 0x04 - L5:   00000100
         enum GpsSignal
         {
             L1CA = 0x01,
-            L2C  = 0x02
+            L2C  = 0x02,
+            L5   = 0x04
         };
 
         //API Enum: GlonassSignal
@@ -2605,21 +2607,25 @@ namespace mscl
         //
         //      E1  - 0x01 - E1:  00000001
         //      E5B - 0x02 - E5B: 00000010
+        //      E5A - 0x04 - E5A: 00000100
         enum GalileoSignal
         {
             E1  = 0x01,
-            E5B = 0x02
+            E5B = 0x02,
+            E5A = 0x04
         };
 
         //API Enum: BeiDouSignal
         //  Available BeiDou signals.
         //
-        //      B1 - 0x01 - B1: 00000001
-        //      B2 - 0x02 - B2: 00000010
+        //      B1  - 0x01 - B1:  00000001
+        //      B2  - 0x02 - B2:  00000010
+        //      B2A - 0x04 - B2A: 00000100
         enum BeiDouSignal
         {
-            B1 = 0x01,
-            B2 = 0x02
+            B1  = 0x01,
+            B2  = 0x02,
+            B2A = 0x04
         };
 
         //API Constructor: GnssSignalConfiguration
