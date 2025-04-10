@@ -63,10 +63,10 @@ namespace mscl
         //  node_sgLink200_oem_qbridge_120_ufl    - 63084421 - SG-Link-200-OEM - Quarter Bridge, 120 OHM, U.Fl Antenna
         //  node_sgLink200_oem_qbridge_350        - 63084430 - SG-Link-200-OEM - Quarter Bridge, 350 OHM, Internal Antenna
         //  node_sgLink200_oem_qbridge_350_ufl    - 63084431 - SG-Link-200-OEM - Quarter Bridge, 120 OHM, U.Fl Antenna
-        //  node_sgLink200_oem_128hz              - 65261200 - SG-Link-200-OEM - Full Bridge, 128Hz filter, Internal Antenna
-        //  node_sgLink200_oem_256hz              - 65262200 - SG-Link-200-OEM - Full Bridge, 256Hz filter, Internal Antenna
-        //  node_sgLink200_oem_qbridge_350_128hz  - 65261430 - SG-Link-200-OEM - Quarter Bridge, 350 OHM, 128Hz filter, Internal Antenna
-        //  node_sgLink200_oem_qbridge_350_256hz  - 65262430 - SG-Link-200-OEM - Quarter Bridge, 350 OHM, 256Hz filter, Internal Antenna
+        //  node_sgLink200_oem_128hz              - 65274202 - SG-Link-200-OEM - Full Bridge, 128Hz filter, Internal Antenna
+        //  node_sgLink200_oem_256hz              - 65274203 - SG-Link-200-OEM - Full Bridge, 256Hz filter, Internal Antenna
+        //  node_sgLink200_oem_qbridge_350_128hz  - 65274432 - SG-Link-200-OEM - Quarter Bridge, 350 OHM, 128Hz filter, Internal Antenna
+        //  node_sgLink200_oem_qbridge_350_256hz  - 65274433 - SG-Link-200-OEM - Quarter Bridge, 350 OHM, 256Hz filter, Internal Antenna
         //  node_sgLink_rgd                       - 63085000 - SG-Link RGD
         //  node_shmLink                          - 63086000 - SHM-Link
         //  node_tcLink_1ch                       - 63104000 - TC-Link 1CH
@@ -172,10 +172,10 @@ namespace mscl
             node_sgLink200_oem_qbridge_120_ufl    =  63084421,     //SG-Link-200-OEM - Quarter Bridge, 120 OHM, U.Fl Antenna
             node_sgLink200_oem_qbridge_350        =  63084430,     //SG-Link-200-OEM - Quarter Bridge, 350 OHM, Internal Antenna
             node_sgLink200_oem_qbridge_350_ufl    =  63084431,     //SG-Link-200-OEM - Quarter Bridge, 120 OHM, U.Fl Antenna
-            node_sgLink200_oem_128hz              =  65261200,     //SG-Link-200-OEM - Full Bridge, 128Hz filter
-            node_sgLink200_oem_256hz              =  65262200,     //SG-Link-200-OEM - Full Bridge, 256Hz filter
-            node_sgLink200_oem_qbridge_350_128hz  =  65261430,     //SG-Link-200-OEM - Quarter Bridge, 350 OHM, 128Hz filter
-            node_sgLink200_oem_qbridge_350_256hz  =  65262430,     //SG-Link-200-OEM - Quarter Bridge, 350 OHM, 256Hz filter
+            node_sgLink200_oem_128hz              =  65274202,     //SG-Link-200-OEM - Full Bridge, 128Hz filter
+            node_sgLink200_oem_256hz              =  65274203,     //SG-Link-200-OEM - Full Bridge, 256Hz filter
+            node_sgLink200_oem_qbridge_350_128hz  =  65274432,     //SG-Link-200-OEM - Quarter Bridge, 350 OHM, 128Hz filter
+            node_sgLink200_oem_qbridge_350_256hz  =  65274433,     //SG-Link-200-OEM - Quarter Bridge, 350 OHM, 256Hz filter
             node_sgLink_rgd                       =  63085000,     //SG-Link RGD
             node_shmLink                          =  63086000,     //SHM-Link
             node_tcLink_1ch                       =  63104000,     //TC-Link 1CH
