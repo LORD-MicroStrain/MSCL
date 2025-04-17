@@ -17,6 +17,8 @@ ___
 ## Forthcoming
 - Inertial
     - Added GNSS signal config options for CV7-GNSS/INS
+    - Added DeviceCommPort::InterfaceId with current interface ID options
+    - Updated DeviceCommPort::Protocol to use correct enum values
 
 ## 67.1.0 - 2025-03-27
 - Wireless
