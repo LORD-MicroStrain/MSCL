@@ -675,7 +675,10 @@ namespace mscl
                 CommPortInfo ports = features().getCommPortInfo();
                 for (DeviceCommPort& port : ports)
                 {
-                    params.push_back({ cmd, { Value::UINT8(port.interfaceId()) } });
+                    if (port.type == DeviceCommPort::Type::SPECIAL)
+                    {
+                        params.push_back({ cmd, { Value::UINT8(port.interfaceId()) } });
+                    }
                 }
                 break;
             }
