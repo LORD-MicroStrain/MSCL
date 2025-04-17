@@ -2789,6 +2789,7 @@ namespace mscl
         struct InterfaceId {
             static constexpr uint8 ALL   = (static_cast<uint8>(Type::SPECIAL) << 4) | 0;  // All interfaces
             static constexpr uint8 MAIN  = (static_cast<uint8>(Type::SPECIAL) << 4) | 1;  // Main port
+            static constexpr uint8 AUX   = (static_cast<uint8>(Type::SPECIAL) << 4) | 2;  // Aux port
             static constexpr uint8 UART1 = (static_cast<uint8>(Type::UART) << 4)    | 1;  // UART port 1
             static constexpr uint8 UART2 = (static_cast<uint8>(Type::UART) << 4)    | 2;  // UART port 2
             static constexpr uint8 UART3 = (static_cast<uint8>(Type::UART) << 4)    | 3;  // UART port 3
