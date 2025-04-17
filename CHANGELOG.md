@@ -15,6 +15,8 @@ REMOVED - A function/class has been removed.
 ___
 
 ## Forthcoming
+- Inertial
+    - Added GNSS signal config options for CV7-GNSS/INS
 
 ## 67.1.0 - 2025-03-27
 - Wireless
