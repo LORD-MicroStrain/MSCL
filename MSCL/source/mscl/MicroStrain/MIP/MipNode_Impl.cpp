@@ -2630,6 +2630,8 @@ namespace mscl
         {
             try
             {
+                const uint64_t originalTimeout = timeout();
+
                 switch (cmd.id)
                 {
                 // detect set UART Baud Rate so that connection baud rate can be updated
@@ -2659,12 +2661,19 @@ namespace mscl
 
                     // if this is not a 'set' call, fall through and run the command normally
                 }
+                // We need a longer timeout for these commands
+                case MipTypes::Command::CMD_GNSS_CONSTELLATION_SETTINGS:
+                case MipTypes::Command::CMD_GNSS_SBAS_SETTINGS:
+                    timeout(originalTimeout + 600);  // 600 extra milliseconds for ublox response
 
                 default:
                     std::stringstream cmdId;
                     cmdId << std::hex << cmd.id;
                     GenericMipCommand::Response r(cmd.id, m_responseCollector, true, false, cmdId.str());
                     doCommand(r, ByteStream(cmd.commands[i]));
+
+                    // Reset the timeout
+                    timeout(originalTimeout);
                     break;
                 }
 
