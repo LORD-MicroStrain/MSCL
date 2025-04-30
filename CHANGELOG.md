@@ -15,6 +15,12 @@ REMOVED - A function/class has been removed.
 ___
 
 ## Forthcoming
+- Wireless
+    - Added support for the following models:
+      - SG-Link-200-OEM, full bridge 128 Hz filter, internal antenna
+      - SG-Link-200-OEM, full bridge 256 Hz filter, internal antenna
+      - SG-Link-200-OEM, QB 350, 128 Hz, internal antenna
+      - SG-Link-200-OEM, QB 350, 256 Hz, internal antenna
 - Inertial
     - Added GNSS signal config options for CV7-GNSS/INS
 
