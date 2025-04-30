@@ -246,8 +246,8 @@ namespace mscl
             case MipModels::node_3dm_gq7:
             {
                 return{
-                    DeviceCommPort(DeviceCommPort::Type::SPECIAL, 1),
-                    DeviceCommPort(DeviceCommPort::Type::SPECIAL, 2)
+                    DeviceCommPort(DeviceCommPort::InterfaceId::MAIN),
+                    DeviceCommPort(DeviceCommPort::InterfaceId::AUX)
                 };
             }
 
@@ -257,45 +257,45 @@ namespace mscl
             case MipModels::node_3dm_gv7_ahrs:
             {
                 return {
-                    DeviceCommPort(DeviceCommPort::Type::SPECIAL, 1),
-                    DeviceCommPort(DeviceCommPort::Type::UART,    1),
-                    DeviceCommPort(DeviceCommPort::Type::USB,     1)
+                    DeviceCommPort(DeviceCommPort::InterfaceId::MAIN),
+                    DeviceCommPort(DeviceCommPort::InterfaceId::UART1),
+                    DeviceCommPort(DeviceCommPort::InterfaceId::USB1)
                 };
             }
             case MipModels::node_3dm_cv7_ins:
             {
                 return {
-                    DeviceCommPort(DeviceCommPort::Type::SPECIAL, 1),
-                    DeviceCommPort(DeviceCommPort::Type::UART,    1),
-                    DeviceCommPort(DeviceCommPort::Type::UART,    2),
-                    DeviceCommPort(DeviceCommPort::Type::UART,    3),
-                    DeviceCommPort(DeviceCommPort::Type::USB,     1)
+                    DeviceCommPort(DeviceCommPort::InterfaceId::MAIN),
+                    DeviceCommPort(DeviceCommPort::InterfaceId::UART1),
+                    DeviceCommPort(DeviceCommPort::InterfaceId::UART2),
+                    DeviceCommPort(DeviceCommPort::InterfaceId::UART3),
+                    DeviceCommPort(DeviceCommPort::InterfaceId::USB1)
                 };
             }
             case MipModels::node_3dm_gv7_ins:
             {
                 return {
-                    DeviceCommPort(DeviceCommPort::Type::SPECIAL, 1),
-                    DeviceCommPort(DeviceCommPort::Type::UART,    1),
-                    DeviceCommPort(DeviceCommPort::Type::UART,    2),
-                    DeviceCommPort(DeviceCommPort::Type::USB,     1)
+                    DeviceCommPort(DeviceCommPort::InterfaceId::MAIN),
+                    DeviceCommPort(DeviceCommPort::InterfaceId::UART1),
+                    DeviceCommPort(DeviceCommPort::InterfaceId::UART2),
+                    DeviceCommPort(DeviceCommPort::InterfaceId::USB1)
                 };
             }
             case MipModels::node_3dm_cv7_gnss_ins:
             {
                 return {
-                    DeviceCommPort(DeviceCommPort::Type::SPECIAL, 1),
-                    DeviceCommPort(DeviceCommPort::Type::UART,    1),
-                    DeviceCommPort(DeviceCommPort::Type::UART,    2),
-                    DeviceCommPort(DeviceCommPort::Type::UART,    3),
-                    DeviceCommPort(DeviceCommPort::Type::USB,     1),
-                    DeviceCommPort(DeviceCommPort::Type::USB,     2)
+                    DeviceCommPort(DeviceCommPort::InterfaceId::MAIN),
+                    DeviceCommPort(DeviceCommPort::InterfaceId::UART1),
+                    DeviceCommPort(DeviceCommPort::InterfaceId::UART2),
+                    DeviceCommPort(DeviceCommPort::InterfaceId::UART3),
+                    DeviceCommPort(DeviceCommPort::InterfaceId::USB1),
+                    DeviceCommPort(DeviceCommPort::InterfaceId::USB2)
                 };
             }
             default:
             {
                 return {
-                    DeviceCommPort(DeviceCommPort::Type::SPECIAL, 1)
+                    DeviceCommPort(DeviceCommPort::InterfaceId::MAIN)
                 };
             }
         }

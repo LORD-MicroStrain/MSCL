@@ -2777,6 +2777,28 @@ namespace mscl
             USB     = 0x02  // USB related ports
         };
 
+        //API Enum: InterfaceId
+        //  Common predefined interface IDs
+        //      ALL     - 0x00 - All available interfaces (Special type 0, ID 0)
+        //      MAIN    - 0x01 - Main USB or UART (Special type 0, ID 1)
+        //      AUX     - 0x02 - Aux USB or UART (Special type 0, ID 2)
+        //      UART1   - 0x11 - First UART port (UART type 1, ID 1)
+        //      UART2   - 0x12 - Second UART port (UART type 1, ID 2)
+        //      UART3   - 0x13 - Third UART port (UART type 1, ID 3)
+        //      USB1    - 0x21 - First USB port (USB type 2, ID 1)
+        //      USB2    - 0x22 - Second USB port (USB type 2, ID 2)
+        struct InterfaceId
+        {
+            static constexpr uint8 ALL   = (static_cast<uint8>(Type::SPECIAL) << 4) | 0;  // All interfaces
+            static constexpr uint8 MAIN  = (static_cast<uint8>(Type::SPECIAL) << 4) | 1;  // Main port
+            static constexpr uint8 AUX   = (static_cast<uint8>(Type::SPECIAL) << 4) | 2;  // Aux port
+            static constexpr uint8 UART1 = (static_cast<uint8>(Type::UART) << 4)    | 1;  // UART port 1
+            static constexpr uint8 UART2 = (static_cast<uint8>(Type::UART) << 4)    | 2;  // UART port 2
+            static constexpr uint8 UART3 = (static_cast<uint8>(Type::UART) << 4)    | 3;  // UART port 3
+            static constexpr uint8 USB1  = (static_cast<uint8>(Type::USB) << 4)     | 1;  // USB port 1
+            static constexpr uint8 USB2  = (static_cast<uint8>(Type::USB) << 4)     | 2;  // USB port 2
+        };
+
         //API Enum: Protocol
         //  Available comm protocols that can be configured for UART ports
         //      NONE         - 0x00000000 - Not set
@@ -2789,12 +2811,11 @@ namespace mscl
         enum Protocol : uint32
         {
             NONE         = 0x00000000, // Not set
-            MIP_COMMANDS = 0x00000001, // MIP commands
-            MIP_DATA     = 0x00000002, // MIP data
-            NMEA         = 0x00000004, // NMEA
-            RTCM         = 0x00000008, // RTCM
-            SPARTN       = 0x00000010, // SPARTN
-            ALL          = 0x0000001F  // All protocols
+            MIP          = 0x00000001, // MIP commands and data
+            NMEA         = 0x00000100, // NMEA
+            RTCM         = 0x00000200, // RTCM
+            SPARTN       = 0x01000000, // SPARTN
+            ALL          = 0x01000301  // All protocols
         };
 
         //API Constructor: DeviceCommPort
