@@ -2781,12 +2781,14 @@ namespace mscl
         //  Common predefined interface IDs
         //      ALL     - 0x00 - All available interfaces (Special type 0, ID 0)
         //      MAIN    - 0x01 - Main USB or UART (Special type 0, ID 1)
+        //      AUX     - 0x02 - Aux USB or UART (Special type 0, ID 2)
         //      UART1   - 0x11 - First UART port (UART type 1, ID 1)
         //      UART2   - 0x12 - Second UART port (UART type 1, ID 2)
         //      UART3   - 0x13 - Third UART port (UART type 1, ID 3)
         //      USB1    - 0x21 - First USB port (USB type 2, ID 1)
         //      USB2    - 0x22 - Second USB port (USB type 2, ID 2)
-        struct InterfaceId {
+        struct InterfaceId
+        {
             static constexpr uint8 ALL   = (static_cast<uint8>(Type::SPECIAL) << 4) | 0;  // All interfaces
             static constexpr uint8 MAIN  = (static_cast<uint8>(Type::SPECIAL) << 4) | 1;  // Main port
             static constexpr uint8 AUX   = (static_cast<uint8>(Type::SPECIAL) << 4) | 2;  // Aux port
