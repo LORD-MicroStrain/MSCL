@@ -23,6 +23,8 @@ ___
       - SG-Link-200-OEM, QB 350, 256 Hz, internal antenna
 - Inertial
     - Added GNSS signal config options for CV7-GNSS/INS
+    - Added DeviceCommPort::InterfaceId with current interface ID options
+    - Updated DeviceCommPort::Protocol to use correct enum values
 
 ## 67.1.0 - 2025-03-27
 - Wireless
