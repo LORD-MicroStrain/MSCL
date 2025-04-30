@@ -1359,7 +1359,7 @@ namespace mscl
         fwVersion(Version(0, 0))
     {
         // Tokenize by comma
-        const std::vector<std::string> segments = Utils::tokenize(description);
+        std::vector<std::string> segments = Utils::tokenize(description);
 
         // Module info exists
         if (!segments.empty())
@@ -1374,6 +1374,8 @@ namespace mscl
         {
             std::string fwTrim = segments[1];
             Utils::strTrim(fwTrim);
+            segments = Utils::tokenize(fwTrim, " ");
+            fwTrim = segments.back();
 
             // Pull fw version number from second element
             if (fwVersion.fromString(fwTrim))

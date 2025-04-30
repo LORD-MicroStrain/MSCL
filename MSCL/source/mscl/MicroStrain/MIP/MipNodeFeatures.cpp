@@ -1191,6 +1191,17 @@ namespace mscl
                 };
             }
         }
+
+        case MipModels::node_3dm_cv7_gnss_ins:
+        {
+            return {
+                { MipChannelIdentifier::GPS, { 0, GnssSignalConfiguration::GpsSignal::L1CA | GnssSignalConfiguration::GpsSignal::L5 } },
+                { MipChannelIdentifier::GLONASS, { 0, GnssSignalConfiguration::GlonassSignal::L1OF } },
+                { MipChannelIdentifier::GALILEO, { 0, GnssSignalConfiguration::GalileoSignal::E1 | GnssSignalConfiguration::GalileoSignal::E5A } },
+                { MipChannelIdentifier::BEIDOU, { 0, GnssSignalConfiguration::BeiDouSignal::B1 | GnssSignalConfiguration::BeiDouSignal::B2A } }
+            };
+        }
+
         default:
             // Any configuration supported
             return {
