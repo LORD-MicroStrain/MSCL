@@ -2628,10 +2628,10 @@ namespace mscl
     {
         for (size_t i = 0; i < cmd.commands.size(); i++)
         {
+            const uint64_t originalTimeout = timeout();
+
             try
             {
-                const uint64_t originalTimeout = timeout();
-
                 switch (cmd.id)
                 {
                 // detect set UART Baud Rate so that connection baud rate can be updated
@@ -2671,9 +2671,6 @@ namespace mscl
                     cmdId << std::hex << cmd.id;
                     GenericMipCommand::Response r(cmd.id, m_responseCollector, true, false, cmdId.str());
                     doCommand(r, ByteStream(cmd.commands[i]));
-
-                    // Reset the timeout
-                    timeout(originalTimeout);
                     break;
                 }
 
@@ -2683,6 +2680,9 @@ namespace mscl
             {
                 cmd.sendCmdFailed = true;
             }
+
+            // Reset the timeout
+            timeout(originalTimeout);
         }
     }
 } // namespace mscl
