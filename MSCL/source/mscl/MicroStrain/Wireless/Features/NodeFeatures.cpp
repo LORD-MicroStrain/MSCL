@@ -165,6 +165,10 @@ namespace mscl
         case WirelessModels::node_sgLink200_oem_qbridge_120_ufl:
         case WirelessModels::node_sgLink200_oem_qbridge_350:
         case WirelessModels::node_sgLink200_oem_qbridge_350_ufl:
+        case WirelessModels::node_sgLink200_oem_128hz:
+        case WirelessModels::node_sgLink200_oem_256hz:
+        case WirelessModels::node_sgLink200_oem_qbridge_350_128hz:
+        case WirelessModels::node_sgLink200_oem_qbridge_350_256hz:
             return std::unique_ptr<NodeFeatures>(new NodeFeatures_sglink200oem(info));
 
         case WirelessModels::node_ptLink200:
