@@ -2628,6 +2628,8 @@ namespace mscl
     {
         for (size_t i = 0; i < cmd.commands.size(); i++)
         {
+            const uint64_t originalTimeout = timeout();
+
             try
             {
                 switch (cmd.id)
@@ -2659,6 +2661,10 @@ namespace mscl
 
                     // if this is not a 'set' call, fall through and run the command normally
                 }
+                // We need a longer timeout for these commands
+                case MipTypes::Command::CMD_GNSS_CONSTELLATION_SETTINGS:
+                case MipTypes::Command::CMD_GNSS_SBAS_SETTINGS:
+                    timeout(originalTimeout + 600);  // 600 extra milliseconds for ublox response
 
                 default:
                     std::stringstream cmdId;
@@ -2674,6 +2680,9 @@ namespace mscl
             {
                 cmd.sendCmdFailed = true;
             }
+
+            // Reset the timeout
+            timeout(originalTimeout);
         }
     }
 } // namespace mscl

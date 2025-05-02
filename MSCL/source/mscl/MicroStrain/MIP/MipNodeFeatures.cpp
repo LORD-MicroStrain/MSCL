@@ -745,13 +745,14 @@ namespace mscl
         case MipModels::node_3dm_gv7_ar:
         case MipModels::node_3dm_gv7_ins:
         case MipModels::node_3dm_cv7_ins:
-        case MipModels::node_3dm_cv7_gnss_ins:
             return{
                 InertialTypes::PpsSource::PPS_DISABLED,
                 InertialTypes::PpsSource::PPS_GPIO,
                 InertialTypes::PpsSource::PPS_GENERATED
             };
 
+        case MipModels::node_3dm_gq7:
+        case MipModels::node_3dm_cv7_gnss_ins:
         default:
             return{
                 InertialTypes::PpsSource::PPS_DISABLED,
