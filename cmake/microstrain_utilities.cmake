@@ -88,8 +88,23 @@ macro(microstrain_get_git_commit GIT_COMMIT_OUT)
             message(STATUS "Unable to determine commit from Git, defaulting to commit ${MICROSTRAIN_DEFAULT_GIT_COMMIT}")
             set(${GIT_COMMIT_OUT} ${MICROSTRAIN_DEFAULT_GIT_COMMIT})
         else()
-            set(${GIT_COMMIT_OUT} ${MICROSTRAIN_GIT_COMMIT_OUT})
-            string(REGEX REPLACE "\n" "" ${GIT_COMMIT_OUT} "${${GIT_COMMIT_OUT}}")
+            # Remove newline from the commit hash
+            string(REGEX REPLACE "\n" "" MICROSTRAIN_GIT_COMMIT_OUT "${MICROSTRAIN_GIT_COMMIT_OUT}")
+
+            # Check if there are any uncommitted changes
+            execute_process(
+                    COMMAND ${CMAKE_COMMAND} -E env ${GIT_EXECUTABLE} diff-index --quiet HEAD --
+                    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+                    RESULT_VARIABLE MICROSTRAIN_GIT_DIRTY_RET
+            )
+
+            set(${GIT_COMMIT_OUT} "${MICROSTRAIN_GIT_COMMIT_OUT}")
+
+            # If the diff-index command returns non-zero, there are uncommitted changes
+            if(NOT ${MICROSTRAIN_GIT_DIRTY_RET} EQUAL 0)
+                string(APPEND ${GIT_COMMIT_OUT} "-dirty")
+            endif()
+
             message(STATUS "Determined commit from Git: ${${GIT_COMMIT_OUT}}")
         endif()
     endif()
