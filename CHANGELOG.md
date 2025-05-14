@@ -27,6 +27,7 @@ ___
     - Updated DeviceCommPort::Protocol to use correct enum values
     - Increased timeout for GNSS config export
     - Moved CV7-GNSS/INS to correction source for PPS
+    - Removes reserved value when reading CMD_EF_LEVER_ARM_OFFSET_REF
 - Appends -dirty to MSCL_GIT_COMMIT if there are changes in the repository
 
 ## 67.1.0 - 2025-03-27
