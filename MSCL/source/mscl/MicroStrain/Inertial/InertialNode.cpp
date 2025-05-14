@@ -1173,9 +1173,7 @@ namespace mscl
 
     PositionOffset InertialNode::getLeverArmReferenceOffset() const
     {
-        const MipFieldValues data = m_impl->get(MipTypes::CMD_EF_LEVER_ARM_OFFSET_REF, {
-            Value::UINT8(1) // reserved, placeholder source value
-        });
+        const MipFieldValues data = m_impl->get(MipTypes::CMD_EF_LEVER_ARM_OFFSET_REF);
 
         // skip first element - reserved, placeholder source value
         return PositionOffset(data[1].as_float(), data[2].as_float(), data[3].as_float());
