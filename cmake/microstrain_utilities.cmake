@@ -98,11 +98,11 @@ macro(microstrain_get_git_commit GIT_COMMIT_OUT)
                     RESULT_VARIABLE MICROSTRAIN_GIT_DIRTY_RET
             )
 
+            set(${GIT_COMMIT_OUT} "${MICROSTRAIN_GIT_COMMIT_OUT}")
+
             # If the diff-index command returns non-zero, there are uncommitted changes
             if(NOT ${MICROSTRAIN_GIT_DIRTY_RET} EQUAL 0)
-                set(${GIT_COMMIT_OUT} "${MICROSTRAIN_GIT_COMMIT_OUT}-dirty")
-            else()
-                set(${GIT_COMMIT_OUT} "${MICROSTRAIN_GIT_COMMIT_OUT}")
+                string(APPEND ${GIT_COMMIT_OUT} "-dirty")
             endif()
 
             message(STATUS "Determined commit from Git: ${${GIT_COMMIT_OUT}}")
