@@ -768,7 +768,6 @@ namespace mscl
 
                 break;
             }
-            case MipTypes::CMD_EF_LEVER_ARM_OFFSET_REF:
             case MipTypes::CMD_EF_SPEED_MEASUREMENT_OFFSET:
             {
                 MipFieldValues reserved = { Value::UINT8(1) };
