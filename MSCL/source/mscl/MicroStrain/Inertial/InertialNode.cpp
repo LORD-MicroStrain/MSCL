@@ -353,7 +353,14 @@ namespace mscl
 
     void InertialNode::setSBASSettings(const SBASSettingsData& dataToUse)
     {
+        // Increase the timeout for this command to account for the Ublox response
+        const uint64_t originalTimeout = timeout();
+        timeout(originalTimeout + 600);
+
         m_impl->setSBASSettings(dataToUse);
+
+        // Reset the timeout
+        timeout(originalTimeout);
     }
 
     SBASSettingsData InertialNode::getSBASSettings()
@@ -1232,6 +1239,10 @@ namespace mscl
 
     void InertialNode::setGnssSignalConfig(GnssSignalConfiguration config)
     {
+        // Increase the timeout for the ublox response
+        const uint64_t originalTimeout = timeout();
+        timeout(originalTimeout + 600);
+
         m_impl->set(MipTypes::CMD_GNSS_SIGNAL_CONFIG, {
             Value::UINT8(config.gpsSignalValue()),
             Value::UINT8(config.glonassSignalValue()),
@@ -1239,6 +1250,9 @@ namespace mscl
             Value::UINT8(config.beidouSignalValue()),
             Value::UINT32(0)
         });
+
+        // Reset the timeout
+        timeout(originalTimeout);
     }
 
     GnssSpartnConfiguration InertialNode::getGnssSpartnConfig() const

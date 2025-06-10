@@ -25,7 +25,7 @@ ___
     - Added GNSS signal config options for CV7-GNSS/INS
     - Added DeviceCommPort::InterfaceId with current interface ID options
     - Updated DeviceCommPort::Protocol to use correct enum values
-    - Increased timeout for GNSS config export
+    - Increased timeout for GNSS signal config and SBAS settings
     - Moved CV7-GNSS/INS to correction source for PPS
     - Removes reserved value when reading CMD_EF_LEVER_ARM_OFFSET_REF
 - Appends -dirty to MSCL_GIT_COMMIT if there are changes in the repository
