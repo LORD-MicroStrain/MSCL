@@ -44,6 +44,8 @@ option(MSCL_BUILD_TESTS "Whether to build the unit tests." OFF)
 option(MSCL_BUILD_EXAMPLES "Whether to build the examples." OFF)
 option(MSCL_ZIP_EXAMPLES "Whether to zip the examples source code." OFF)
 option(MSCL_BUILD_PACKAGE "Whether to build a package from the resulting binaries" OFF)
+option(MSCL_LINK_BOOST_STATICALLY "Whether to link boost statically" ON)
+option(MSCL_LINK_RUNTIME_STATICALLY "Whether to link the boost runtime statically" ON)
 
 if(WIN32)
     option(MSCL_BUILD_CSHARP "Whether to build the C# bindings. Only supported on Windows" OFF)
@@ -122,6 +124,7 @@ endif()
 add_compile_definitions(BOOST_ALL_NO_LIB)
 
 # Also find the dependencies for MSCL
+set(MSCL_BOOST_VERSION "1.68.0" CACHE STRING "Version of boost to build the library with")
 
 # Setup the boost root variable
 if(NOT Boost_ROOT)
@@ -129,12 +132,12 @@ if(NOT Boost_ROOT)
 endif()
 
 # Custom variable used in this CMake file, not used by FindBoost.cmake
-set(Boost_REQUESTED_VERSION "1.68.0")
+set(Boost_REQUESTED_VERSION "${MSCL_BOOST_VERSION}")
 set(Boost_REQUESTED_COMPONENTS system filesystem)
 
 # Find the static version of boost
-set(Boost_USE_STATIC_LIBS ON)
-set(Boost_USE_STATIC_RUNTIME ON)
+set(Boost_USE_STATIC_LIBS ${MSCL_LINK_BOOST_STATICALLY})
+set(Boost_USE_STATIC_RUNTIME ${MSCL_LINK_RUNTIME_STATICALLY})
 
 # Disable CMake policy for Boost config find_package
 # CMake 3.30+ uses Boost Config for Boost 1.70+
