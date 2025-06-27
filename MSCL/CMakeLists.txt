@@ -215,9 +215,10 @@ if(MSVC)
         "/MP"
     )
 
+    # TODO: This should be configurable
     set(STATIC_COMPILE_OPTIONS
         "${COMMON_COMPILE_OPTIONS}"
-        "/MT$<$<CONFIG:Debug>:d>"
+        "/MD$<$<CONFIG:Debug>:d>"
     )
 elseif(UNIX)
     set(COMMON_COMPILE_OPTIONS
