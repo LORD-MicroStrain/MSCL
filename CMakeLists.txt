@@ -45,7 +45,7 @@ option(MSCL_BUILD_EXAMPLES "Whether to build the examples." OFF)
 option(MSCL_ZIP_EXAMPLES "Whether to zip the examples source code." OFF)
 option(MSCL_BUILD_PACKAGE "Whether to build a package from the resulting binaries" OFF)
 option(MSCL_LINK_BOOST_STATICALLY "Whether to link boost statically" ON)
-option(MSCL_LINK_RUNTIME_STATICALLY "Whether to link the boost runtime statically" ON)
+option(MSCL_LINK_RUNTIME_STATICALLY "Whether to link the boost runtime statically" OFF)
 
 if(WIN32)
     option(MSCL_BUILD_CSHARP "Whether to build the C# bindings. Only supported on Windows" OFF)

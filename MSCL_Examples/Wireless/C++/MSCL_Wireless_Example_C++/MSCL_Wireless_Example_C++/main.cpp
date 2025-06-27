@@ -18,7 +18,7 @@ int main(int argc, char** argv)
 #ifdef _WIN32
     static constexpr const char* COM_PORT = "COM1";
 #elif __linux__
-    static constexpr const char* COM_PORT = "/dev/tty/ACM0";
+    static constexpr const char* COM_PORT = "/dev/ttyUSB0";
 #endif // _WIN32
 
     // Basestations use a baudrate of 3000000

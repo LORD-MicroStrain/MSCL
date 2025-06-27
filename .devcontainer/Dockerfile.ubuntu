@@ -50,7 +50,7 @@ RUN set -ex \
     done
 
 # Install a specific version of boost
-ARG BOOST_VERSION=1.68.0
+ARG BOOST_VERSION=1.84.0
 RUN set -ex \
     && export boost_version_underscore=$(echo ${BOOST_VERSION} | tr '.' '_') \
     && curl -fsSLo /tmp/boost_${boost_version_underscore}.tar.gz https://archives.boost.io/release/${BOOST_VERSION}/source/boost_${boost_version_underscore}.tar.gz \

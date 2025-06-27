@@ -15,7 +15,7 @@ int main(int argc, char** argv)
 #ifdef _WIN32
     const char* COM_PORT = "COM1";
 #elif __linux__
-    const std::string COM_PORT = "/dev/tty/ACM0";
+    const std::string COM_PORT = "/dev/ttyACM0";
 #endif // _WIN32
 
     // We recommend at least 115200 for the baudrate on our devices

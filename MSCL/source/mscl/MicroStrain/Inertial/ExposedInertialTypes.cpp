@@ -1177,6 +1177,9 @@ namespace mscl
         m_unc = unc;
     }
 
+    // Definition of the constexpr variable to make the linker happy
+    constexpr uint8 EventActionMessageParameter::MAX_DESCRIPTORS;
+
     MipTypes::MipChannelFields EventActionMessageParameter::filterFields(const MipTypes::MipChannelFields& fields)
     {
         MipTypes::MipChannelFields filtered;
