@@ -23,6 +23,7 @@ pipeline {
     timeout(time: 3, unit: 'HOURS')
     // Only keep this number of builds for the job
     buildDiscarder(logRotator(numToKeepStr: "10"))
+    copyArtifactPermission('*')
   }
   stages {
     stage('Pre-Release') {
