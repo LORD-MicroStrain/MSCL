@@ -5,21 +5,6 @@
 #include <chrono>
 #include <thread>
 
-
-// possible rates from the enum
-std::vector<mscl::WirelessTypes::WirelessSampleRate> allRates = {
-    mscl::WirelessTypes::WirelessSampleRate::sampleRate_1Hz,
-    mscl::WirelessTypes::WirelessSampleRate::sampleRate_4Hz,
-    mscl::WirelessTypes::WirelessSampleRate::sampleRate_8Hz,
-    mscl::WirelessTypes::WirelessSampleRate::sampleRate_16Hz,
-    mscl::WirelessTypes::WirelessSampleRate::sampleRate_32Hz,
-    mscl::WirelessTypes::WirelessSampleRate::sampleRate_64Hz,
-    mscl::WirelessTypes::WirelessSampleRate::sampleRate_128Hz,
-    mscl::WirelessTypes::WirelessSampleRate::sampleRate_256Hz,
-    mscl::WirelessTypes::WirelessSampleRate::sampleRate_512Hz,
-    // etc, depending on what MSCL version/your node supports
-};
-
 static void nodeDiscovery(mscl::BaseStation& base_station)
 {
     base_station.getNodeDiscoveries(); 
@@ -36,18 +21,18 @@ static void nodeDiscovery(mscl::BaseStation& base_station)
         for (const mscl::NodeDiscovery& nodes_discovered : discoveries)// Print discovered node information
         {
             //
-            //  Channel Information 
+            //  Information we are looking to populate a OpenDaq channel object with 
             //
 
             std::cout << "\n-------------OpenDaq Channel Info--------------\n" << std::endl;
             std::cout << "Node Address: " << nodes_discovered.nodeAddress() << std::endl;
             std::cout << "Model: " << nodes_discovered.model() << std::endl;
             std::cout << "Serial: " << nodes_discovered.serialNumber() << std::endl;
-            std::cout << "RSSI: " << nodes_discovered.baseRssi() << " dBm" << std::endl;
+            std::cout << "Base Station RSSI: " << nodes_discovered.baseRssi() << " dBm" << std::endl; 
             std::cout << "Frequency: " << nodes_discovered.frequency() << std::endl;
 
             //
-            //  Signal Informaion 
+            //  Information relevent to a OpenDaq Signal  
             //
 
             mscl::WirelessNode node(nodes_discovered.nodeAddress(), base_station);  // Create Node Object 

@@ -40,8 +40,8 @@ int main(int argc, char** argv)
     mscl::WirelessNode node(NODE_ADDRESS, baseStation);
 
     // TODO: add as many other WirelessNode objects here as you want (used in the startSyncSampling example)
-    std::vector<mscl::WirelessNode> networkNodes;
-    networkNodes.push_back(node);
+    //std::vector<mscl::WirelessNode> networkNodes;
+    //networkNodes.push_back(node);
 
     // Due to the nature of wireless devices, it is possible to lose packets over the air.
     // MSCL has a built-in way of performing retries whenever an eeprom address is attempted to be read.
@@ -51,7 +51,7 @@ int main(int argc, char** argv)
 
     // TODO: Uncomment the lines below to run the examples
 
-    nodeDiscovery(baseStation); 
+    //nodeDiscovery(baseStation); 
 
     supportedSampleRates(node); 
 
@@ -139,6 +139,7 @@ int main(int argc, char** argv)
     */
 
     printf("Press enter to continue...");
+    getchar();
     getchar();
 
     return 0;
