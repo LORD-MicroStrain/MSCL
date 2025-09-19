@@ -56,7 +56,7 @@ int main(int argc, char** argv)
 
     supportedSampleRates(node); 
 
-    enableChannelsGLink200(node); 
+    //enableChannelsGLink200(node); 
 
     // Example: Ping Node
     //pingNode(node);
