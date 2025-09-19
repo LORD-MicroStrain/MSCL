@@ -27,19 +27,19 @@ std::string sampleRateEnumName(mscl::WirelessTypes::WirelessSampleRate rate)
 {
     switch (rate)
     {
-    case 113:     return "sampleRate_1Hz";
-    case 112:     return "sampleRate_2Hz";
-    case 111:     return "sampleRate_4Hz";
-    case 110:     return "sampleRate_8Hz";
-    case 109:     return "sampleRate_16Hz";
-    case 108:     return "sampleRate_32Hz";
-    case 107:     return "sampleRate_64Hz";
-    case 106:     return "sampleRate_128Hz";
-    case 105:     return "sampleRate_256Hz";
-    case 104:     return "sampleRate_512Hz";
-    case 103:     return "sampleRate_1024Hz";
-    case 102:     return "sampleRate_2048Hz";
-    case 101:     return "sampleRate_4096Hz";
+    case 113:     return "1Hz";
+    case 112:     return "2Hz";
+    case 111:     return "4Hz";
+    case 110:     return "8Hz";
+    case 109:     return "16Hz";
+    case 108:     return "32Hz";
+    case 107:     return "64Hz";
+    case 106:     return "128Hz";
+    case 105:     return "256Hz";
+    case 104:     return "512Hz";
+    case 103:     return "1024Hz";
+    case 102:     return "2048Hz";
+    case 101:     return "4096Hz";
 
     default:                 return "unknown";
     }
@@ -95,6 +95,9 @@ static void supportedSampleRates(mscl::WirelessNode& node)
     mscl::WirelessTypes::DataCollectionMethod collectionMethod; 
     mscl::WirelessTypes::DataMode dataMode; 
 
+    // Sample rate options changed based on configuration choices from the User for how data will be collected
+    // Below you can input different configurations to see what the possible sample rates are 
+
     // Input for Sample Mode Options
     std::cout << "Sampling Mode Options: " << std::endl;
     std::cout << "(1) Synchronized" << std::endl;
@@ -108,27 +111,38 @@ static void supportedSampleRates(mscl::WirelessNode& node)
     samplingMode = setSampleMode(sampleModeChoice); 
 
     // Input for Data Collection Options
-    std::cout << "Sampling Mode Options: " << std::endl;
+    std::cout << "\nData Collection Options: " << std::endl;
     std::cout << "(1) Log and Transmit" << std::endl;
     std::cout << "(2) Log Only" << std::endl;
     std::cout << "(3) Transmit Only" << std::endl;
     std::cout << "Choice: ";
     std::cin >> dataCollectionMethodChoice;
-    collectionMethod = setDataCollectionMethod((int)dataCollectionMethodChoice); 
+    collectionMethod = setDataCollectionMethod(dataCollectionMethodChoice); 
 
     // Input for Data Mode Options
-    std::cout << "Sampling Mode Options: " << std::endl;
+    std::cout << "\nData Mode Options: " << std::endl;
     std::cout << "(1) Derived" << std::endl;
     std::cout << "(2) None" << std::endl;
     std::cout << "(3) Raw" << std::endl;
     std::cout << "(4) Raw Derived" << std::endl;
     std::cout << "Choice: ";
     std::cin >> dataModeChoice;
-    dataMode = setDataMode((int)dataModeChoice); 
+    dataMode = setDataMode(dataModeChoice); 
 
+    // A Node object is passed into this example.. Which contains its node model and other important characteristics 
+    // 
     // In order to run the rest of this example, we need to read the configuration from the node.
     // To read the configuration from the node, it must first be set to idle, or it will not respond
-    node.setToIdle(); // can only read node information when nodes idled 
+    auto status = node.setToIdle(); // can only read node information when nodes idled 
+
+    std::cout << "\nIdling...";
+    while (!status.complete())
+    {
+        std::cout << "."; 
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    }
+    std::cout << "Idled" << std::endl; 
+    std::this_thread::sleep_for(std::chrono::milliseconds(500));
 
     // Read the node configuration into a NodeFeatures object so we can look up things like channel groups, channels etc
     const mscl::NodeFeatures& features = node.features();                   // Create NodeFeatures Object
@@ -136,19 +150,20 @@ static void supportedSampleRates(mscl::WirelessNode& node)
     const mscl::WirelessChannels channels = node.features().channels();     // Create WirelessChannels Object 
 
     std::cout << "\n-------------Supported Sample Rates for OpenDaq Channel--------------\n" << std::endl;
-    std::cout << "Channel Count: " << channels.size() << std::endl << std::endl;
+    std::cout << "Channel Count: " << channels.size() << std::endl;
 
-    for (uint8_t ch = 0; ch < channels.size(); ++ch)
+    for (uint8_t ch = 0; ch < channels.size(); ++ch)   // Looping through all of the available channels on our node 
     {
-        std::cout << "Channel Group " << (int)ch + 1 << ": ";
+        std::cout << "\nChannel Group " << (int)ch + 1 << ": ";
         std::cout << chGroups[ch].name() << std::endl;
 
-        std::cout << "  Supported Sample Rates:\n";
-        for (const auto& rate : sampleRates)
-        {
+        std::cout << "  Supported Sample Rates:\n    ";
+        for (const auto& rate : sampleRates)          // Looping through all possible sample rates to see which are valid 
+        { 
+            // This function requires the options the User will input above in this example
             if (features.supportsSampleRate(rate, samplingMode, collectionMethod, dataMode))
             {
-                std::cout << sampleRateEnumName(rate) << "\n";
+                std::cout << sampleRateEnumName(rate) << ", ";
             }
         }
 

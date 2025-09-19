@@ -8,6 +8,7 @@
 //
 #include "nodeDiscovery.h"
 #include "supportedSampleRates.h"
+#include "enableChannelsGLink200.h"
 
 
 // MSCL common code header (typically used as a precompiled header)
@@ -54,6 +55,8 @@ int main(int argc, char** argv)
     //nodeDiscovery(baseStation); 
 
     supportedSampleRates(node); 
+
+    enableChannelsGLink200(node); 
 
     // Example: Ping Node
     //pingNode(node);
@@ -138,7 +141,7 @@ int main(int argc, char** argv)
 
     */
 
-    printf("Press enter to continue...");
+    printf("\nPress enter to continue...");
     getchar();
     getchar();
 
