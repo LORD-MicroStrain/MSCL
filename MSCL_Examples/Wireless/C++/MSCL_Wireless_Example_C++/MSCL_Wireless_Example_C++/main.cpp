@@ -8,7 +8,9 @@
 //
 #include "nodeDiscovery.h"
 #include "supportedSampleRates.h"
-#include "enableChannelsGLink200.h"
+#include "enableChannelsGLink200_accel.h"
+#include "enableChannelsGLink200_tilt.h"
+#include "startSampling.h"
 
 
 // MSCL common code header (typically used as a precompiled header)
@@ -41,22 +43,29 @@ int main(int argc, char** argv)
     mscl::WirelessNode node(NODE_ADDRESS, baseStation);
 
     // TODO: add as many other WirelessNode objects here as you want (used in the startSyncSampling example)
-    //std::vector<mscl::WirelessNode> networkNodes;
-    //networkNodes.push_back(node);
+    std::vector<mscl::WirelessNode> networkNodes;
+    networkNodes.push_back(node);
 
     // Due to the nature of wireless devices, it is possible to lose packets over the air.
     // MSCL has a built-in way of performing retries whenever an eeprom address is attempted to be read.
     // By default, this value is set to 0. You may wish to keep it at 0 and handle retries yourself depending on your application.
-    //baseStation.readWriteRetries(3);
-   // node.readWriteRetries(3);
+    baseStation.readWriteRetries(3);
+    node.readWriteRetries(3);
 
     // TODO: Uncomment the lines below to run the examples
 
+    /////////////////////////////////////////////////////////
+
     //nodeDiscovery(baseStation); 
 
-    supportedSampleRates(node); 
+    //supportedSampleRates(node); 
 
-    //enableChannelsGLink200(node); 
+    //enableChannelsGLink200_accel(node);
+    
+    enableChannelsGLink200_tilt(node);
+
+    startSampling(node); 
+    ////////////////////////////////////////////////////////
 
     // Example: Ping Node
     //pingNode(node);
@@ -65,7 +74,7 @@ int main(int argc, char** argv)
     //getCurrentConfig(node);
 
     // Example: Set Configuration
-    //setCurrentConfig(node);       // Warning: this example changes settings on your Node!
+    setCurrentConfig(node);       // Warning: this example changes settings on your Node!
 
     // Example: Start Sampling
     //startSyncSampling(baseStation, networkNodes);
