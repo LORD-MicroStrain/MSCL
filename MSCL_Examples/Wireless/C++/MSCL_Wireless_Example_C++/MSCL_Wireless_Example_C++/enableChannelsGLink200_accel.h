@@ -31,6 +31,14 @@ static void enableChannelsGLink200_accel(mscl::WirelessNode& node)
     // Idling the node is essential for making configuration changes.
     idleAndPing_accelexample(node); 
 
+
+    // === 6. Apply Configuration ===
+    // Enable desired channels (Accel X/Y/Z)
+    mscl::ChannelMask mask;
+    mask.enable(1, true); // Accel X
+    mask.enable(2, true); // Accel Y      Channels 1-3 are accel channels 
+    mask.enable(3, true); // Accel Z    
+
     std::vector<mscl::WirelessChannel> channels = node.features().channels();
     //Create a list of WirelessChannel's to loop through available channels on GLink200 
 
@@ -49,12 +57,7 @@ static void enableChannelsGLink200_accel(mscl::WirelessNode& node)
     // Set Config to ACCEL output mode
     config.sensorOutputMode(mscl::WirelessTypes::sensorOutputMode_accel);
 
-    // === 6. Apply Configuration ===
-    // Enable desired channels (Accel X/Y/Z)
-    mscl::ChannelMask mask;
-    mask.enable(1, true); // Accel X
-    mask.enable(2, true); // Accel Y      Channels 1-3 are accel channels 
-    mask.enable(3, true); // Accel Z                                        
+                                    
 
     config.activeChannels(mask);
     node.applyConfig(config);
