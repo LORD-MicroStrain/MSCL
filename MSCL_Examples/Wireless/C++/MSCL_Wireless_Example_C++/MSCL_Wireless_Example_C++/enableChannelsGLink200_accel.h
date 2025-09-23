@@ -5,9 +5,6 @@
 #include <chrono>
 #include <thread>
 
-// lxrs or lxrs+
-// lossless enable disable
-// sync enable disable
 
 void idleAndPing_accelexample(mscl::WirelessNode& node)
 {

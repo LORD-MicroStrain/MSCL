@@ -1,9 +1,21 @@
 ﻿#include <mscl/MicroStrain/Wireless/WirelessNode.h>
 #include <mscl/MicroStrain/Wireless/Features/ChannelGroup.h>
 #include <mscl/MicroStrain/Wireless/Features/NodeFeatures.h>
+#include <mscl/MicroStrain/Wireless/SyncSamplingNetwork.h>
 #include <iostream>
 #include <chrono>
 #include <thread>
+
+// lxrs or lxrs+
+// lossless enable disable
+// sync enable disable
+// where should things like idle/sample on start up live? 
+
+void setSyncType(unsigned char choice) {}
+
+void setLxrsMode(unsigned char choice) {}
+
+void setLosslessMode(unsigned char choice) {}
 
 void idleAndPing_samplingexample(mscl::WirelessNode& node)
 {
@@ -22,50 +34,75 @@ void idleAndPing_samplingexample(mscl::WirelessNode& node)
         throw std::runtime_error("Failed to ping the node.");
 }
 
-static void startSampling(mscl::WirelessNode& node)
+static void startSampling(mscl::BaseStation& base, std::vector<mscl::WirelessNode> nodes)
 {
+    unsigned char choice; 
     printf("\nSetting up Stream configuration settings...");
 
-    // Create a WirelessNodeConfig which is used to set all node configuration options
-    mscl::WirelessNodeConfig config;
-    std::vector<mscl::WirelessNode> networkNodes;
-    networkNodes.push_back(node);
+    // SyncSamplingNetwork network is the sampling network that we need to set up 
+    mscl::SyncSamplingNetwork network(base); 
 
-    // Set the configuration options that we want to change
-    // config.defaultMode(mscl::WirelessTypes::defaultMode_idle);
-    // config.inactivityTimeout(7200);
-    
-    config.communicationProtocol(mscl::WirelessTypes::commProtocol_lxrs); 
-    config.samplingMode(mscl::WirelessTypes::samplingMode_sync);
-    config.samplingMode(mscl::WirelessTypes::samplingMode_nonSync);
-    config.sampleRate(mscl::WirelessTypes::sampleRate_256Hz);
+    //sync
+    std::cout << "Sampling Mode Options: " << std::endl;
+    std::cout << "(1) Sync" << std::endl;
+    std::cout << "(2) Non-Sync" << std::endl;
+    std::cin >> choice; 
+    setSyncType(choice); 
 
-    //  Attempt to verify the configuration with the Node we want to apply it to
-    //  Note that this step is not required before applying; however, the apply will throw an
-    //  Error_InvalidNodeConfig exception if the config fails to verify.
-    mscl::ConfigIssues issues;
+    //lxrs
+    std::cout << "LXRS Mode Options: " << std::endl;
+    std::cout << "(1) LXRS" << std::endl;
+    std::cout << "(2) LXRS+" << std::endl;
+    std::cin >> choice; 
+    setLxrsMode(choice); 
 
-    if (!node.verifyConfig(config, issues))
-    {
-        printf("Failed to verify the configuration. The following issues were found:\n");
+    //lossless
+    std::cout << "Lossless Options: " << std::endl;
+    std::cout << "(1) Sync" << std::endl;
+    std::cout << "(2) Non-Sync" << std::endl;
+    std::cin >> choice; 
+    setLosslessMode(choice); 
 
-        // Print out all the issues that were found
-        for (const mscl::ConfigIssue& issue : issues)
+    mscl::WirelessNodeConfig config;  
+
+
+    for (mscl::WirelessNode& node : nodes)
+    {   // Goes through a list of nodes and adds them to our SyncSamplingNetwork object
+
+        //create WirelessNodeConfig object to configure each node individually 
+        mscl::WirelessNodeConfig config;
+        mscl::ConfigIssues issues;
+
+        if (!node.verifyConfig(config, issues))
         {
-            printf("%s\n", issue.description().c_str());
+            printf("Failed to verify the configuration. The following issues were found:\n");
+
+            // Print out all the issues that were found
+            for (const mscl::ConfigIssue& issue : issues)
+            {
+                printf("%s\n", issue.description().c_str());
+            }
+
+            printf("Configuration will not be applied.\n");
+        }
+        else
+        {
+            node.applyConfig(config);
+            printf("Configuration applied.\n");
         }
 
-        printf("Configuration will not be applied.\n");
+        // If no issue with the node specific configuration add it to our SyncSamplingNetwork object
+        network.addNode(node);
     }
-    else
-    {
-        // Apply the configuration to the Node
-        //  Note that this writes multiple options to the Node.
-        //  If an Error_NodeCommunication exception is thrown, it is possible that
-        //  some options were successfully applied, while others failed.
-        //  It is recommended to keep calling applyConfig until no exception is thrown.
-        node.applyConfig(config);
-    }
+
+    // set the configuration options that we want to change
+    // config.defaultmode(mscl::wirelesstypes::defaultmode_idle);
+    // config.inactivitytimeout(7200);
+    
+    //config.communicationProtocol(mscl::WirelessTypes::commProtocol_lxrs); 
+    //config.samplingMode(mscl::WirelessTypes::samplingMode_sync);
+    //config.samplingMode(mscl::WirelessTypes::samplingMode_nonSync);
+    //config.sampleRate(mscl::WirelessTypes::sampleRate_256Hz);
 
     printf("Done.\n");
 }
