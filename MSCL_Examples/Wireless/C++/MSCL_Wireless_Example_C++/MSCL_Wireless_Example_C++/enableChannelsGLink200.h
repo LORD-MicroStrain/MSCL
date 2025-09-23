@@ -31,7 +31,7 @@ void idleAndPing_accel(mscl::WirelessNode& node)
 static void enableChannelsGLink200(mscl::WirelessNode& node)
 {
     idleAndPing_accel(node); // Idle and ping node to prepare it for channel configuration.  Node must be idle to alter configuration.
-    // Pining a node is good practice to confirm a reasonable connection though it's not essential int he way idling a node is 
+    // Pining a node is good practice to confirm a reasonable connection though it's not essential in the way idling a node is 
 
     std::vector<mscl::WirelessChannel> channels = node.features().channels();
     //Create a list of WirelessChannel's to loop through available channels on GLink200 
