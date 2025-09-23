@@ -11,6 +11,9 @@
 #include "enableChannelsGLink200_accel.h"
 #include "enableChannelsGLink200_tilt.h"
 #include "startSampling.h"
+#include "dataTypeSelect.h"
+#include "bandWidthAndStatus.h"
+
 
 
 // MSCL common code header (typically used as a precompiled header)
@@ -62,9 +65,13 @@ int main(int argc, char** argv)
 
     //enableChannelsGLink200_accel(node);
     
-    enableChannelsGLink200_tilt(node);
+    //enableChannelsGLink200_tilt(node);
 
-    startSampling(node); 
+    //startSampling(baseStation, networkNodes); 
+    
+    dataTypeSelect(node); 
+
+    bandWidthAndStatus(node);
     ////////////////////////////////////////////////////////
 
     // Example: Ping Node
@@ -74,7 +81,7 @@ int main(int argc, char** argv)
     //getCurrentConfig(node);
 
     // Example: Set Configuration
-    setCurrentConfig(node);       // Warning: this example changes settings on your Node!
+    //setCurrentConfig(node);       // Warning: this example changes settings on your Node!
 
     // Example: Start Sampling
     //startSyncSampling(baseStation, networkNodes);
