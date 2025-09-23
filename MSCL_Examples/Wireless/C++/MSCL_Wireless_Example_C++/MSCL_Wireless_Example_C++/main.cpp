@@ -88,68 +88,6 @@ int main(int argc, char** argv)
     // Example: Enable and Disable beacon
     // enableDisableBeacon(baseStation);
 
-    /*
-    const mscl::NodeFeatures& features = node.features();
-
-         // Get node info
-    std::cout << "Node model: " << node.model() << std::endl;
-    std::cout << "Node ID: " << node.nodeAddress() << std::endl;
-
-    std::cout << "\n--- Node Features ---\n";
-
-    // Channels
-    auto chCount = features.channelGroups().size(); 
-    std::cout << "Channel Count: " << chCount << std::endl;
-
-    for (uint8_t ch = 0; ch < chCount; ++ch)
-    {
-        std::cout << "  Channel " << (int)ch << ": ";
-        std::cout << features.channelGroups()[ch].name() << std::endl;
-    }
-
-    /*
-    // Sampling Modes
-    auto samplingModes = features.supportedSamplingModes();
-    std::cout << "\nSupported Sampling Modes:\n";
-    for (const auto& mode : samplingModes)
-    {
-        std::cout << "  - " << mscl::SamplingModes::str(mode) << std::endl;
-
-        // Sample rates for this mode
-        auto rates = features.supportedSampleRates(mode);
-        std::cout << "    Sample Rates:\n";
-        for (const auto& rate : rates)
-        {
-            std::cout << "      * " << rate.str() << std::endl;
-        }
-    }
-
-    // Data Formats
-    auto dataFormats = features.supportedDataFormats();
-    std::cout << "\nSupported Data Formats:\n";
-    for (const auto& format : dataFormats)
-    {
-        std::cout << "  - " << mscl::WirelessTypes::dataFormatToStr(format) << std::endl;
-    }
-
-    // Transmit Power
-    auto txPowers = features.supportedTransmitPowers();
-    std::cout << "\nSupported Transmit Powers:\n";
-    for (const auto& power : txPowers)
-    {
-        std::cout << "  - " << (int)power << " dBm" << std::endl;
-    }
-
-    // Data Collection Methods
-    auto methods = features.supportedDataCollectionMethods();
-    std::cout << "\nSupported Data Collection Methods:\n";
-    for (const auto& method : methods)
-    {
-        std::cout << "  - " << mscl::WirelessTypes::dataCollectionMethodToStr(method) << std::endl;
-    }
-
-    */
-
     printf("\nPress enter to continue...");
     getchar();
     getchar();
