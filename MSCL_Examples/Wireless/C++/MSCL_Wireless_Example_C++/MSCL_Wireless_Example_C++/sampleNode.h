@@ -11,32 +11,48 @@
 // sync enable disable
 // where should things like idle/sample on start up live? 
 
-void setSyncType(unsigned char choice) {}
-
-void setLxrsMode(unsigned char choice) {}
-
-void setLosslessMode(unsigned char choice) {}
-
-void idleAndPing_samplingexample(mscl::WirelessNode& node)
+mscl::WirelessTypes::SamplingMode setSyncType_(unsigned char choice) 
 {
-    auto status = node.setToIdle(); // can only read node information when nodes idled 
-    std::cout << "\nIdling...";
-    while (!status.complete())
+    switch (choice)
     {
-        std::cout << ".";
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
-    }
-    std::cout << "Idled" << std::endl;
-    std::this_thread::sleep_for(std::chrono::milliseconds(500));
+        case '1': return mscl::WirelessTypes::samplingMode_sync;  
+        case '2': return mscl::WirelessTypes::samplingMode_nonSync;  
 
-    mscl::PingResponse ping = node.ping();
-    if (!ping.success())
-        throw std::runtime_error("Failed to ping the node.");
+        default: return mscl::WirelessTypes::samplingMode_sync;
+    }
 }
 
+mscl::WirelessTypes::CommProtocol setLxrsMode_(unsigned char choice) 
+{
+    switch (choice)
+    {
+    case '1': return mscl::WirelessTypes::commProtocol_lxrs;  
+    case '2': return mscl::WirelessTypes::commProtocol_lxrsPlus;  
+
+    default: return mscl::WirelessTypes::commProtocol_lxrs;
+    }
+}
+
+bool setLosslessMode_(unsigned char choice) 
+{
+    switch (choice) 
+    {
+        case '1': return 1;  // Sync
+        case '2': return 0;  // Non Sync
+
+        default: return 1; 
+    }
+}
+
+// This example shows how you can set up a node 
+//
 static void startSampling(mscl::BaseStation& base, std::vector<mscl::WirelessNode> nodes)
 {
     unsigned char choice; 
+    mscl::WirelessTypes::SamplingMode sampleModeChoice; 
+    mscl::WirelessTypes::CommProtocol lxrsChoice; 
+    bool losslessChoice; 
+
     printf("\nSetting up Stream configuration settings...");
 
     // SyncSamplingNetwork network is the sampling network that we need to set up 
@@ -45,28 +61,27 @@ static void startSampling(mscl::BaseStation& base, std::vector<mscl::WirelessNod
     //sync
     std::cout << "Sampling Mode Options: " << std::endl;
     std::cout << "(1) Sync" << std::endl;
-    std::cout << "(2) Non-Sync" << std::endl;
+    std::cout << "(2) Non-Sync and Lossy" << std::endl; // If Non Sync is selected Lossless gets disabled 
     std::cin >> choice; 
-    setSyncType(choice); 
+    sampleModeChoice = setSyncType_(choice); 
 
     //lxrs
     std::cout << "LXRS Mode Options: " << std::endl;
     std::cout << "(1) LXRS" << std::endl;
     std::cout << "(2) LXRS+" << std::endl;
     std::cin >> choice; 
-    setLxrsMode(choice); 
+    lxrsChoice = setLxrsMode_(choice); 
 
     //lossless
     std::cout << "Lossless Options: " << std::endl;
-    std::cout << "(1) Sync" << std::endl;
-    std::cout << "(2) Non-Sync" << std::endl;
+    std::cout << "(1) Lossless" << std::endl;
+    std::cout << "(2) Lossy" << std::endl;
     std::cin >> choice; 
-    setLosslessMode(choice); 
+    losslessChoice = setLosslessMode_(choice); 
 
     mscl::WirelessNodeConfig config;  
 
-
-    for (mscl::WirelessNode& node : nodes)
+    /*for (mscl::WirelessNode& node : nodes)
     {   // Goes through a list of nodes and adds them to our SyncSamplingNetwork object
 
         //create WirelessNodeConfig object to configure each node individually 
@@ -93,7 +108,7 @@ static void startSampling(mscl::BaseStation& base, std::vector<mscl::WirelessNod
 
         // If no issue with the node specific configuration add it to our SyncSamplingNetwork object
         network.addNode(node);
-    }
+    }*/
 
     // set the configuration options that we want to change
     // config.defaultmode(mscl::wirelesstypes::defaultmode_idle);

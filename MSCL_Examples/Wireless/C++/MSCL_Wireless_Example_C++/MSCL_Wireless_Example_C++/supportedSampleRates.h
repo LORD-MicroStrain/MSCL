@@ -85,6 +85,7 @@ mscl::WirelessTypes::DataMode setDataMode(unsigned char choice)
     }
 }
 
+
 static void supportedSampleRates(mscl::WirelessNode& node)
 {
     unsigned char sampleModeChoice;

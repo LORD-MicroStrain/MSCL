@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 // MSCL common code header (typically used as a precompiled header)
 #include <mscl/stdafx.h>

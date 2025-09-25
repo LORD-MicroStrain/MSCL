@@ -10,7 +10,10 @@
 #include "supportedSampleRates.h"
 #include "enableChannelsGLink200_accel.h"
 #include "enableChannelsGLink200_tilt.h"
-#include "startSampling.h"
+#include "sampleNode.h"
+#include "syncSampling.h"
+
+
 #include "dataTypeSelect.h"
 #include "bandWidthAndStatus.h"
 
@@ -59,19 +62,20 @@ int main(int argc, char** argv)
 
     /////////////////////////////////////////////////////////
 
-    //nodeDiscovery(baseStation); 
+    //nodeDiscovery(baseStation);  // ready
 
-    //supportedSampleRates(node); 
+    //supportedSampleRates(node);  // ready
 
-    //enableChannelsGLink200_accel(node);
+    //enableChannelsGLink200_accel(node); // ready
     
-    //enableChannelsGLink200_tilt(node);
+    enableChannelsGLink200_tilt(node);  // ready
 
-    //startSampling(baseStation, networkNodes); 
+    //syncSampling(baseStation, networkNodes);  // ready but not polished  
     
-    dataTypeSelect(node); 
+    //dataTypeSelect(node);  // not ready 
 
-    bandWidthAndStatus(node);
+    //bandWidthAndStatus(node); // not ready 
+    
     ////////////////////////////////////////////////////////
 
     // Example: Ping Node
