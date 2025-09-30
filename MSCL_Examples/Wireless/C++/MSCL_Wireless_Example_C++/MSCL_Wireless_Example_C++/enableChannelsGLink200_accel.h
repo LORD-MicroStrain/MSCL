@@ -4,8 +4,7 @@
 #include <iostream>
 #include <chrono>
 #include <thread>
-#include "helperFunctions.h"
-
+#include <helperFunctions.hpp>
 
 static void enableChannelsGLink200_accel(mscl::WirelessNode& node)
 {

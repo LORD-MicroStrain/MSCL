@@ -4,9 +4,7 @@
 #include <iostream>
 #include <chrono>
 #include <thread>
-#include "helperFunctions.h"
-
-
+#include <helperFunctions.cpp>
 
 static void enableChannelsGLink200_tilt(mscl::WirelessNode& node)
 {

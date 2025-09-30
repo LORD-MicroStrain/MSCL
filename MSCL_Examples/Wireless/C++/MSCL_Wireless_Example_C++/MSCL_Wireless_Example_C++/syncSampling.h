@@ -6,6 +6,8 @@
 #include <chrono>
 #include <thread>
 
+#include "bandWidthAndStatus.h"
+
 // lxrs or lxrs+
 // lossless enable disable
 // sync enable disable
@@ -82,12 +84,12 @@ static void syncSampling(mscl::BaseStation& base, std::vector<mscl::WirelessNode
     // Goes through a list of nodes and adds them to our SyncSamplingNetwork object
     for (mscl::WirelessNode& node : nodes)
     {   
-
         //create WirelessNodeConfig object to configure each node individually
         mscl::WirelessNodeConfig config;
         mscl::ConfigIssues issues;
        
         // Setting every node to either LXRS or LXRS+ depending on User input
+        // 
         if(lxrsChoice == mscl::WirelessTypes::commProtocol_lxrs)
             config.communicationProtocol(mscl::WirelessTypes::commProtocol_lxrs);
         else
@@ -97,22 +99,13 @@ static void syncSampling(mscl::BaseStation& base, std::vector<mscl::WirelessNode
         network.addNode(node);
     }
 
-    // Can get information about the network
-    printf("\nNetwork info: \n");
-    printf("Network OK: %s\n", network.ok() ? "TRUE" : "FALSE");
-    printf("Percent of Bandwidth: %00.02f%%\n", network.percentBandwidth());
-    printf("Lossless Enabled: %s\n", network.lossless() ? "TRUE" : "FALSE");
-
-    // Apply the network configuration to every node in the network
-    printf("Applying network configuration...");
-    network.applyConfiguration();
-    printf("Done.\n");
+    bandWidthAndStatus(base);  // prints out network attributes
 
     // Start all the nodes in the network sampling. The master BaseStation's beacon will be enabled with the system time.
     //  Note: if you wish to provide your own start time (not use the system time), pass a mscl::Timestamp object as a second parameter to this function.
     //  Note: if you do not want to enable a beacon at this time, use the startSampling_noBeacon() function. (The nodes will wait until they hear a beacon to start sampling).
-    //printf("Starting the network...");
-    //network.startSampling();
+    printf("Starting the network...");
+    network.startSampling();
 
     printf("Done.\n");
 }

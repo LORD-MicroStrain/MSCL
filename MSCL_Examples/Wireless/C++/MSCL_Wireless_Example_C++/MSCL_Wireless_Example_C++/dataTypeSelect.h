@@ -18,7 +18,7 @@ mscl::WirelessTypes::WirelessSampleRate setSampleRate(unsigned char choice)
         case '7':  return mscl::WirelessTypes::sampleRate_2048Hz; break;
         case '8':  return mscl::WirelessTypes::sampleRate_4096Hz; break;
 
-        default: return mscl::WirelessTypes::sampleRate_256Hz; 
+        default: return mscl::WirelessTypes::sampleRate_1Hz; 
     }
 }
 

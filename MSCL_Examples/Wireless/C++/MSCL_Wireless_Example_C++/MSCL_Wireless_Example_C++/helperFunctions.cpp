@@ -4,10 +4,8 @@
 #include <iostream>
 #include <chrono>
 #include <thread>
-#include "helperFunctions.h"
 
-
-void idleAndPing(mscl::WirelessNode& node) 
+static void idleAndPing(mscl::WirelessNode& node) 
 {
     auto status = node.setToIdle(); // can only read node information when nodes idled 
     std::cout << "\nIdling...";
@@ -25,13 +23,13 @@ void idleAndPing(mscl::WirelessNode& node)
 
 }
 
-void printChannels(mscl::WirelessNode& node)
+static void printChannels(mscl::WirelessNode& node)
 {
     for (const mscl::WirelessChannel& channel : node.features().channels())
         std::cout << "Channel " << channel.id() << ": " << channel.channelName(channel.id()) << " - " << channel.description() << std::endl;
 }
 
-bool checkConfig(mscl::WirelessNode& node, mscl::WirelessNodeConfig& config)
+static bool checkConfig(mscl::WirelessNode& node, mscl::WirelessNodeConfig& config)
 {
     mscl::ConfigIssues issues;
 

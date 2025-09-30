@@ -5,23 +5,21 @@
 #include "setCurrentConfig.h"
 #include "setToIdle.h"
 #include "startSyncSampling.h"
-//
+/////////////////////////////////////
+
 #include "nodeDiscovery.h"
 #include "supportedSampleRates.h"
 #include "enableChannelsGLink200_accel.h"
 #include "enableChannelsGLink200_tilt.h"
-#include "sampleNode.h"
-#include "syncSampling.h"
 
+#include "syncSampling.h"
+#include "sampleNode.h"
 
 #include "dataTypeSelect.h"
 #include "bandWidthAndStatus.h"
 
-
-
 // MSCL common code header (typically used as a precompiled header)
 #include <mscl/stdafx.h>
-
 #include <mscl/MicroStrain/Wireless/BaseStation.h>
 #include <mscl/MicroStrain/Wireless/WirelessNode.h>
 
@@ -60,7 +58,7 @@ int main(int argc, char** argv)
 
     // TODO: Uncomment the lines below to run the examples
 
-    /////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////
 
     //nodeDiscovery(baseStation);  // ready
 
@@ -68,15 +66,17 @@ int main(int argc, char** argv)
 
     //enableChannelsGLink200_accel(node); // ready
     
-    enableChannelsGLink200_tilt(node);  // ready
+    //enableChannelsGLink200_tilt(node);  // ready
 
     //syncSampling(baseStation, networkNodes);  // ready but not polished  
     
-    //dataTypeSelect(node);  // not ready 
-
-    //bandWidthAndStatus(node); // not ready 
+    //nonSyncSampling(baseStation, networkNodes);  // not ready 
     
-    ////////////////////////////////////////////////////////
+    dataTypeSelect(node);  // ready 
+
+    //bandWidthAndStatus(node); // ready 
+    
+    //////////////////////////////////////////////////////////////////////////////////
 
     // Example: Ping Node
     //pingNode(node);

@@ -5,6 +5,13 @@
 #include <chrono>
 #include <thread>
 
-static void bandWidthAndStatus(mscl::WirelessNode& node)
+static void bandWidthAndStatus(mscl::BaseStation& base)
 {   
+    mscl::SyncSamplingNetwork network(base);
+
+    // Can get information about the network
+    printf("\nNetwork info: \n");
+    printf("Network OK: %s\n", network.ok() ? "TRUE" : "FALSE");
+    printf("Percent of Bandwidth: %00.02f%%\n", network.percentBandwidth());
+    printf("Lossless Enabled: %s\n", network.lossless() ? "TRUE" : "FALSE");
 }
