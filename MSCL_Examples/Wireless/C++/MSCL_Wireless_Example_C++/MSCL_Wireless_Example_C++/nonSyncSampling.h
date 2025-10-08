@@ -19,7 +19,7 @@ mscl::WirelessTypes::CommProtocol setLxrsMode_(unsigned char choice)
 
 // This example shows how you can set up a node 
 //
-static void sampleNode(mscl::BaseStation& base, std::vector<mscl::WirelessNode> nodes)
+static void nonSyncSampling(mscl::BaseStation& base, std::vector<mscl::WirelessNode> nodes)
 {
     unsigned char choice; 
     mscl::WirelessTypes::SamplingMode sampleModeChoice; 
@@ -40,6 +40,7 @@ static void sampleNode(mscl::BaseStation& base, std::vector<mscl::WirelessNode> 
 
         //create WirelessNodeConfig object to configure each node individually 
         mscl::WirelessNodeConfig config;
+        config.samplingMode(mscl::WirelessTypes::samplingMode_nonSync); 
 
         if (lxrsChoice == mscl::WirelessTypes::commProtocol_lxrs)
             config.communicationProtocol(mscl::WirelessTypes::commProtocol_lxrs);
@@ -47,6 +48,7 @@ static void sampleNode(mscl::BaseStation& base, std::vector<mscl::WirelessNode> 
             config.communicationProtocol(mscl::WirelessTypes::commProtocol_lxrsPlus);
 
         // If no issue with the node specific configuration add it to our SyncSamplingNetwork object
+        node.applyConfig(config); 
         node.startNonSyncSampling(); 
     }
 

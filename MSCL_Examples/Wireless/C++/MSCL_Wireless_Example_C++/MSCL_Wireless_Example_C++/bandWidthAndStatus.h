@@ -5,6 +5,7 @@
 #include <chrono>
 #include <thread>
 
+/*
 static void bandWidthAndStatus(mscl::BaseStation& base)
 {   
     mscl::SyncSamplingNetwork network(base);
@@ -15,3 +16,4 @@ static void bandWidthAndStatus(mscl::BaseStation& base)
     printf("Percent of Bandwidth: %00.02f%%\n", network.percentBandwidth());
     printf("Lossless Enabled: %s\n", network.lossless() ? "TRUE" : "FALSE");
 }
+*/

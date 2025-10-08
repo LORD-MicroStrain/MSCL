@@ -13,7 +13,7 @@
 #include "enableChannelsGLink200_tilt.h"
 
 #include "syncSampling.h"
-#include "sampleNode.h"
+#include "nonSyncSampling.h"
 
 #include "dataTypeSelect.h"
 #include "bandWidthAndStatus.h"
@@ -58,6 +58,9 @@ int main(int argc, char** argv)
 
     // TODO: Uncomment the lines below to run the examples
 
+    // Example: Ping Node
+    pingNode(node);
+
     ///////////////////////////////////////////////////////////////////////////////////
 
     //nodeDiscovery(baseStation);  // ready
@@ -68,18 +71,15 @@ int main(int argc, char** argv)
     
     //enableChannelsGLink200_tilt(node);  // ready
 
-    //syncSampling(baseStation, networkNodes);  // ready but not polished  
+    syncSampling(baseStation, networkNodes);  // ready but not polished need to figure out lxrs+  
     
-    //nonSyncSampling(baseStation, networkNodes);  // not ready 
+    //nonSyncSampling(baseStation, networkNodes); // ready but not polished need to figure out lxrs+
     
-    dataTypeSelect(node);  // ready 
+    //dataTypeSelect(node);  // ready 
 
     //bandWidthAndStatus(node); // ready 
     
     //////////////////////////////////////////////////////////////////////////////////
-
-    // Example: Ping Node
-    //pingNode(node);
 
     // Example: Get Configuration
     //getCurrentConfig(node);
@@ -91,7 +91,7 @@ int main(int argc, char** argv)
     //startSyncSampling(baseStation, networkNodes);
 
     // Example: Set to Idle
-    //setToIdle(node);
+
 
     // Example: Parse Data
     //parseData(baseStation);
@@ -99,9 +99,10 @@ int main(int argc, char** argv)
     // Example: Enable and Disable beacon
     // enableDisableBeacon(baseStation);
 
-    printf("\nPress enter to continue...");
+    printf("\nPress enter to idle and exit...");
     getchar();
     getchar();
+    setToIdle(node);
 
     return 0;
 }
