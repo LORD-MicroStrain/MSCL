@@ -36,6 +36,7 @@ int main(int argc, char** argv)
     static constexpr uint32_t BAUDRATE = 3000000;
 
     static constexpr int NODE_ADDRESS = 8582;
+    //static constexpr int NODE_ADDRESS = 9717;
 
     // Create a SerialConnection with the COM port and (optional) baudrate
     mscl::Connection connection = mscl::Connection::Serial(COM_PORT, BAUDRATE);
@@ -49,6 +50,7 @@ int main(int argc, char** argv)
     // TODO: add as many other WirelessNode objects here as you want (used in the startSyncSampling example)
     std::vector<mscl::WirelessNode> networkNodes;
     networkNodes.push_back(node);
+    mscl::WirelessNode secondNode(9717, baseStation); networkNodes.push_back(secondNode); 
 
     // Due to the nature of wireless devices, it is possible to lose packets over the air.
     // MSCL has a built-in way of performing retries whenever an eeprom address is attempted to be read.
@@ -71,9 +73,9 @@ int main(int argc, char** argv)
     
     //enableChannelsGLink200_tilt(node);  // ready
 
-    syncSampling(baseStation, networkNodes);  // ready but not polished need to figure out lxrs+  
+    syncSampling(baseStation, networkNodes);  // ready
     
-    //nonSyncSampling(baseStation, networkNodes); // ready but not polished need to figure out lxrs+
+    //nonSyncSampling(baseStation, networkNodes); // ready 
     
     //dataTypeSelect(node);  // ready 
 
@@ -102,7 +104,8 @@ int main(int argc, char** argv)
     printf("\nPress enter to idle and exit...");
     getchar();
     getchar();
-    setToIdle(node);
+    for (mscl::WirelessNode& node : networkNodes)
+        setToIdle(node); 
 
     return 0;
 }

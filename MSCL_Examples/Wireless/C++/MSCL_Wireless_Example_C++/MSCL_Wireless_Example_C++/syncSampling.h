@@ -9,11 +9,6 @@
 
 #include "bandWidthAndStatus.h"
 
-// lxrs or lxrs+
-// lossless enable disable
-// sync enable disable
-// where should things like idle/sample on start up live? 
-
 mscl::WirelessTypes::SamplingMode setSyncType(unsigned char choice)
 {
     switch (choice)
@@ -90,15 +85,25 @@ static void syncSampling(mscl::BaseStation& base, std::vector<mscl::WirelessNode
         //create WirelessNodeConfig object to configure each node individually
         mscl::WirelessNodeConfig config;
 
-        // set the sampling mode config for the node to sync sampling
-        config.samplingMode(mscl::WirelessTypes::samplingMode_sync); 
-
-        // Set basestation to comm protocol of the partiuclar node it is trying to communicate with 
-        b_config.communicationProtocol(node.communicationProtocol()); 
+        // set base to lxrs plus as a starting point 
+        b_config.communicationProtocol(mscl::WirelessTypes::commProtocol_lxrs); 
         base.applyConfig(b_config); 
+        mscl::PingResponse response = node.ping();
 
+        //if the ping response was a success move on if not switch comm protocol
+        if (response.success())
+            std::cout << "Node responded to ping." << std::endl;
+        else
+        {
+            b_config.communicationProtocol(mscl::WirelessTypes::commProtocol_lxrsPlus); 
+            base.applyConfig(b_config);      
+        }
+               
         // Setting every node to either LXRS or LXRS+ depending on User input
         config.communicationProtocol(lxrsChoice);
+
+        // set the sampling mode config for the node to sync sampling
+        config.samplingMode(mscl::WirelessTypes::samplingMode_sync); 
 
         // Add node to our SyncSamplingNetwork object
         node.applyConfig(config);
