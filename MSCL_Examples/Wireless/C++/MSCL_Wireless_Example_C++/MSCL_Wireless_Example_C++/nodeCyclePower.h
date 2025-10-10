@@ -7,9 +7,16 @@
 #include <chrono>
 #include <thread>
 
-// This example shows how you can configure a synchronized network of nodes 
-void cyclePower(mscl::WirelessNode& node, mscl::BaseStation& base)
+void nodeCyclePower(mscl::WirelessNode& node)
 {
-
-
+    try
+    {   // Send the reboot command
+        std::cout << "Power Cycling node" << std::endl;
+        node.cyclePower();  
+        std::cout << "Node reset command sent successfully." << std::endl;
+    }
+    catch (const mscl::Error& e)
+    {
+        std::cerr << "MSCL Error: " << e.what() << std::endl;
+    }
 }

@@ -18,7 +18,9 @@
 #include "dataTypeSelect.h"
 
 #include "changeBaseStationFrequency.h"
-#include "cyclePower.h"
+
+#include "nodeCyclePower.h"
+#include "baseCyclePower.h"
 
 // MSCL common code header (typically used as a precompiled header)
 #include <mscl/stdafx.h>
@@ -79,7 +81,11 @@ int main(int argc, char** argv)
     
     //nonSyncSampling(baseStation, networkNodes); // ready 
 
-    changeBaseStationFrequency(baseStation);
+    //changeBaseStationFrequency(baseStation);
+
+    nodeCyclePower(node); 
+    
+    baseCyclePower(baseStation); 
     
     //dataTypeSelect(node);  // ready 
     
