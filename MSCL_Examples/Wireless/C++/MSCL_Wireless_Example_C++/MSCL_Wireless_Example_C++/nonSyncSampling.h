@@ -18,7 +18,7 @@ mscl::WirelessTypes::CommProtocol setLxrsMode_(unsigned char choice)
 }
 
 // This example shows how you can set up a node 
-static void nonSyncSampling(mscl::BaseStation& base, std::vector<mscl::WirelessNode> nodes)
+static void nonSyncSampling(mscl::BaseStation& base, std::vector<mscl::WirelessNode>& nodes)
 {
     unsigned char choice; 
     mscl::WirelessTypes::SamplingMode sampleModeChoice; 
@@ -29,6 +29,7 @@ static void nonSyncSampling(mscl::BaseStation& base, std::vector<mscl::WirelessN
     std::cout << "LXRS Mode Options: " << std::endl;
     std::cout << "(1) LXRS" << std::endl;
     std::cout << "(2) LXRS+" << std::endl;
+    std::cout << "Choice: ";
     std::cin >> choice; 
     lxrsChoice = setLxrsMode_(choice); 
 
@@ -41,25 +42,11 @@ static void nonSyncSampling(mscl::BaseStation& base, std::vector<mscl::WirelessN
         //create WirelessNodeConfig object to configure each node individually 
         mscl::WirelessNodeConfig config;
 
-        // set base to lxrs plus as a starting point 
-        b_config.communicationProtocol(mscl::WirelessTypes::commProtocol_lxrs);
-        base.applyConfig(b_config);
-        mscl::PingResponse response = node.ping();
-
-        //if the ping response under lxrs was a success move on if not switch to lxrs+
-        if (response.success())
-            std::cout << "Node responded to ping." << std::endl;
-        else
-        {
-            b_config.communicationProtocol(mscl::WirelessTypes::commProtocol_lxrsPlus);
-            base.applyConfig(b_config);
-        }
-
         // set the sampling mode to sync
         config.samplingMode(mscl::WirelessTypes::samplingMode_nonSync); 
 
-        // set node to comm protocol based on User Input
-        config.communicationProtocol(lxrsChoice);
+        // switch protocol to choice based on user input
+        switchNodeProtocol(node, base, lxrsChoice); 
 
         // apply our configuration to node
         node.applyConfig(config); 
@@ -71,7 +58,10 @@ static void nonSyncSampling(mscl::BaseStation& base, std::vector<mscl::WirelessN
 
     // loop through node list and set to sample
     for (mscl::WirelessNode& node : nodes)
+    {
         node.startNonSyncSampling();
+        std::this_thread::sleep_for(std::chrono::milliseconds(50));
+    }
 
     printf("Done.\n");
 }

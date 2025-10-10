@@ -16,7 +16,9 @@
 #include "nonSyncSampling.h"
 
 #include "dataTypeSelect.h"
-#include "bandWidthAndStatus.h"
+
+#include "changeBaseStationFrequency.h"
+#include "cyclePower.h"
 
 // MSCL common code header (typically used as a precompiled header)
 #include <mscl/stdafx.h>
@@ -35,8 +37,8 @@ int main(int argc, char** argv)
     // Basestations use a baudrate of 3000000
     static constexpr uint32_t BAUDRATE = 3000000;
 
-    static constexpr int NODE_ADDRESS = 8582;
-    //static constexpr int NODE_ADDRESS = 9717;
+    //static constexpr int NODE_ADDRESS = 8582;
+    static constexpr int NODE_ADDRESS = 9717;
 
     // Create a SerialConnection with the COM port and (optional) baudrate
     mscl::Connection connection = mscl::Connection::Serial(COM_PORT, BAUDRATE);
@@ -50,7 +52,7 @@ int main(int argc, char** argv)
     // TODO: add as many other WirelessNode objects here as you want (used in the startSyncSampling example)
     std::vector<mscl::WirelessNode> networkNodes;
     networkNodes.push_back(node);
-    mscl::WirelessNode secondNode(9717, baseStation); networkNodes.push_back(secondNode); 
+    mscl::WirelessNode secondNode(8582, baseStation); networkNodes.push_back(secondNode); 
 
     // Due to the nature of wireless devices, it is possible to lose packets over the air.
     // MSCL has a built-in way of performing retries whenever an eeprom address is attempted to be read.
@@ -73,13 +75,13 @@ int main(int argc, char** argv)
     
     //enableChannelsGLink200_tilt(node);  // ready
 
-    syncSampling(baseStation, networkNodes);  // ready
+    //syncSampling(baseStation, networkNodes);  // ready
     
     //nonSyncSampling(baseStation, networkNodes); // ready 
+
+    changeBaseStationFrequency(baseStation);
     
     //dataTypeSelect(node);  // ready 
-
-    //bandWidthAndStatus(node); // ready 
     
     //////////////////////////////////////////////////////////////////////////////////
 
@@ -94,7 +96,6 @@ int main(int argc, char** argv)
 
     // Example: Set to Idle
 
-
     // Example: Parse Data
     //parseData(baseStation);
 
@@ -102,8 +103,9 @@ int main(int argc, char** argv)
     // enableDisableBeacon(baseStation);
 
     printf("\nPress enter to idle and exit...");
+
     getchar();
-    getchar();
+    
     for (mscl::WirelessNode& node : networkNodes)
         setToIdle(node); 
 

@@ -7,7 +7,8 @@
 #include <chrono>
 #include <thread>
 
-#include "bandWidthAndStatus.h"
+#include "bandWidthAndStatus.cpp"
+#include "switchNodeProtocol.cpp"
 
 mscl::WirelessTypes::SamplingMode setSyncType(unsigned char choice)
 {
@@ -44,13 +45,13 @@ bool setLosslessMode(unsigned char choice)
 
 // This example shows how you can configure a synchronized network of nodes 
 static void syncSampling(mscl::BaseStation& base, std::vector<mscl::WirelessNode> nodes)
-{ 
+{
     unsigned char choice;
     mscl::WirelessTypes::CommProtocol lxrsChoice;
     bool losslessChoice;
     printf("\nSetting up Stream configuration settings...\n");
 
-    //lxrs
+    // lxrs
     std::cout << "LXRS Mode Options: " << std::endl;
     std::cout << "(1) LXRS" << std::endl;
     std::cout << "(2) LXRS+" << std::endl;
@@ -58,7 +59,7 @@ static void syncSampling(mscl::BaseStation& base, std::vector<mscl::WirelessNode
     std::cin >> choice;
     lxrsChoice = setLxrsMode(choice);
 
-    //lossless
+    // lossless
     std::cout << "Lossless Options: " << std::endl;
     std::cout << "(1) Lossless" << std::endl;
     std::cout << "(2) Lossy" << std::endl;
@@ -73,55 +74,42 @@ static void syncSampling(mscl::BaseStation& base, std::vector<mscl::WirelessNode
     mscl::BaseStationConfig b_config;
 
     // Setting the network to lossless or lossy depending on User Input
-    network.lossless(losslessChoice); 
+    network.lossless(losslessChoice);
 
     // Setting the network to lxrs or lxrs+ depending on User Input
     network.communicationProtocol(lxrsChoice);
-    
+
     // Goes through a list of nodes and adds them to our SyncSamplingNetwork object
-    
+
     for (mscl::WirelessNode& node : nodes)
-    {   
-        //create WirelessNodeConfig object to configure each node individually
+    {
+        // create WirelessNodeConfig object to configure each node individually
         mscl::WirelessNodeConfig config;
 
-        // set base to lxrs plus as a starting point 
-        b_config.communicationProtocol(mscl::WirelessTypes::commProtocol_lxrs); 
-        base.applyConfig(b_config); 
-        mscl::PingResponse response = node.ping();
-
-        //if the ping response was a success move on if not switch comm protocol
-        if (response.success())
-            std::cout << "Node responded to ping." << std::endl;
-        else
-        {
-            b_config.communicationProtocol(mscl::WirelessTypes::commProtocol_lxrsPlus); 
-            base.applyConfig(b_config);      
-        }
-               
-        // Setting every node to either LXRS or LXRS+ depending on User input
-        config.communicationProtocol(lxrsChoice);
+        // switch protocol to choice based on user input
+        switchNodeProtocol(node, base, lxrsChoice);
 
         // set the sampling mode config for the node to sync sampling
-        config.samplingMode(mscl::WirelessTypes::samplingMode_sync); 
+        config.samplingMode(mscl::WirelessTypes::samplingMode_sync);
+
+        // apply our configuration to node
+        node.applyConfig(config);
 
         // Add node to our SyncSamplingNetwork object
-        node.applyConfig(config);
         network.addNode(node);
     }
 
     // After all nodes are set to particular comm protocol set the basestation's comm protocol 
     b_config.communicationProtocol(lxrsChoice);
 
-    // Diagnostic print outs
-    printf("Network info: \n");
-    printf("Network OK: %s\n", network.ok() ? "TRUE" : "FALSE");
-    printf("Percent of Bandwidth: %00.02f%%\n", network.percentBandwidth());
-    printf("Lossless Enabled: %s\n", network.lossless() ? "TRUE" : "FALSE");
+    // data print out of configuration validity 
+    bandWidthAndStatus(network);
+
     // Apply the network configuration to every node in the network
     printf("Applying network and base configuration...");
-    base.applyConfig(b_config); 
+    base.applyConfig(b_config);
     network.applyConfiguration();
+
     printf("Done.\n");
 
     // Start all the nodes in the network sampling. The master BaseStation's beacon will be enabled with the system time.
@@ -131,70 +119,3 @@ static void syncSampling(mscl::BaseStation& base, std::vector<mscl::WirelessNode
     network.startSampling();
     printf("Done.\n");
 }
-
-/*
-Xdr xdr(request);
-
-  request XDR format
-
-   unsigned int commProtocol;    //  mscl::WirelessTypes::CommProtocol
-   bool updateTxPower
-   unsigned int txPower          // mscl::WirelessTypes::TransmitPower
-
-mscl::WirelessTypes::CommProtocol protocol = static_cast<mscl::WirelessTypes::CommProtocol>(xdr.readUint());
-bool updateTxPower = xdr.readBool();
-mscl::WirelessTypes::TransmitPower specifiedTxPower = static_cast<mscl::WirelessTypes::TransmitPower>(xdr.readUint());
-
-mscl::BaseStationConfig config;
-config.communicationProtocol(protocol);
-
-
-// get the region and tx power currently set on the device
-const mscl::WirelessTypes::RegionCode region = m_msclBaseStationPtr->regionCode();
-mscl::WirelessTypes::TransmitPower currentTxPower = m_msclBaseStationPtr->getTransmitPower();
-
-const mscl::WirelessTypes::TransmitPower maxTxPower = m_msclBaseStationPtr->features().maxTransmitPower(region, protocol);
-const mscl::WirelessTypes::TransmitPower minTxPower = m_msclBaseStationPtr->features().minTransmitPower(region, protocol);
-const mscl::WirelessTypes::TransmitPowers& txPowers = m_msclBaseStationPtr->features().transmitPowers(protocol);
-
-//adjust the transmit power to be within range for the new comm protocol
-mscl::WirelessTypes::TransmitPower newTxPower = updateTxPower
-? Backend::getValidTxPower(txPowers, maxTxPower, minTxPower, specifiedTxPower)
-    : Backend::getValidTxPower(txPowers, maxTxPower, minTxPower, currentTxPower);
-config.transmitPower(newTxPower);
-
-bool success = false;
-uint8_t retries = 0;
-while (!success)
-{
-    try
-    {
-        m_msclBaseStationPtr->applyConfig(config);
-        success = true;
-    }
-    catch (mscl::Error_Communication& e)
-    {
-        retries++;
-        if (retries >= 2)
-        {
-            throw e;
-        }
-    }
-
-
-}
-
-
-
-  response XDR format
-
-   unsigned int commProtocol;    //  mscl::WirelessTypes::CommProtocol
-   bool  txPowerChanged;
-   unsigned int previousTxPower; // mscl::WirelessTypes::TransmitPower
-   unsigned int newTxPower;      // mscl::WirelessTypes::TransmitPower
-
-responseBody.writeUint(protocol);
-responseBody.writeBool(newTxPower != currentTxPower);
-responseBody.writeUint(currentTxPower);
-responseBody.writeUint(newTxPower);
-*/
