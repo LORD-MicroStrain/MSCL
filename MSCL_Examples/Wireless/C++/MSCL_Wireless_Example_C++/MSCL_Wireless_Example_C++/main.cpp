@@ -22,6 +22,8 @@
 #include "nodeCyclePower.h"
 #include "baseCyclePower.h"
 
+#include "nodesOnOtherFrequencies.h"
+
 // MSCL common code header (typically used as a precompiled header)
 #include <mscl/stdafx.h>
 #include <mscl/MicroStrain/Wireless/BaseStation.h>
@@ -54,7 +56,7 @@ int main(int argc, char** argv)
     // TODO: add as many other WirelessNode objects here as you want (used in the startSyncSampling example)
     std::vector<mscl::WirelessNode> networkNodes;
     networkNodes.push_back(node);
-    mscl::WirelessNode secondNode(8582, baseStation); networkNodes.push_back(secondNode); 
+    mscl::WirelessNode secondNode(8582, baseStation); networkNodes.push_back(secondNode); // uncomment if you want to test network of two nodes
 
     // Due to the nature of wireless devices, it is possible to lose packets over the air.
     // MSCL has a built-in way of performing retries whenever an eeprom address is attempted to be read.
@@ -77,17 +79,19 @@ int main(int argc, char** argv)
     
     //enableChannelsGLink200_tilt(node);  // ready
 
-    //syncSampling(baseStation, networkNodes);  // ready
+    syncSampling(baseStation, networkNodes);  // ready
     
     //nonSyncSampling(baseStation, networkNodes); // ready 
 
-    //changeBaseStationFrequency(baseStation);
+    //changeBaseStationFrequency(baseStation); // ready
 
-    nodeCyclePower(node); 
+    //nodeCyclePower(node);  // ready
     
-    baseCyclePower(baseStation); 
+    //baseCyclePower(baseStation);  // ready
     
     //dataTypeSelect(node);  // ready 
+
+    //nodesOnOtherFrequencies(baseStation);  // ready 
     
     //////////////////////////////////////////////////////////////////////////////////
 
@@ -109,7 +113,7 @@ int main(int argc, char** argv)
     // enableDisableBeacon(baseStation);
 
     printf("\nPress enter to idle and exit...");
-
+    getchar();
     getchar();
     
     for (mscl::WirelessNode& node : networkNodes)

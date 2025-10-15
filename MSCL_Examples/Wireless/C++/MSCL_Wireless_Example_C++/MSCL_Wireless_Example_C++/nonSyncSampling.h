@@ -63,5 +63,5 @@ static void nonSyncSampling(mscl::BaseStation& base, std::vector<mscl::WirelessN
         std::this_thread::sleep_for(std::chrono::milliseconds(50));
     }
 
-    printf("Done.\n");
+    printf("Done.");
 }

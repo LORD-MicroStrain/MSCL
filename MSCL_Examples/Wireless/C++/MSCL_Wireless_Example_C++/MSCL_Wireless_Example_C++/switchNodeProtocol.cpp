@@ -7,11 +7,9 @@
 #include <chrono>
 #include <thread>
 
-
-// This example shows how you can configure a synchronized network of nodes 
+// example to switch a nodes protocol  (lxrs/lxrs+)
 void switchNodeProtocol(mscl::WirelessNode& node, mscl::BaseStation& base, mscl::WirelessTypes::CommProtocol& protocol)
 {
-    //if the ping response under lxrs was a success move on if not switch to lxrs+
     mscl::WirelessNodeConfig config; 
     mscl::BaseStationConfig b_config; 
 
@@ -19,7 +17,8 @@ void switchNodeProtocol(mscl::WirelessNode& node, mscl::BaseStation& base, mscl:
     b_config.communicationProtocol(mscl::WirelessTypes::commProtocol_lxrs);
     base.applyConfig(b_config); 
 
-    // ping node to see if its operating in lxrs mode // if its not switch basestation to lxrs+ 
+    // ping node to see if its operating in lxrs mode 
+    // if its not switch basestation to lxrs+ 
     mscl::PingResponse response = node.ping();
     if (!response.success())
     {  
@@ -33,6 +32,11 @@ void switchNodeProtocol(mscl::WirelessNode& node, mscl::BaseStation& base, mscl:
         config.communicationProtocol(protocol);
         node.applyConfig(config);
     } 
+    else
+    {
+        printf("Unable to switch node protocol... \n\nPress Enter to Continue or Exit the Program to Restart...");
+        getchar();
+    }
     
     b_config.communicationProtocol(protocol); 
     base.applyConfig(b_config);
