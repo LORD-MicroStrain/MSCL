@@ -1,10 +1,13 @@
-cmake_minimum_required(VERSION 3.16.0)
+cmake_minimum_required(VERSION 3.18)
 project(MSCL_Unit_Tests)
 
 enable_testing()
 
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+set(Boost_ROOT "" CACHE PATH "Location to search for the Boost libraries")
+set(Turtle_ROOT "" CACHE PATH "Location to search for the Boost Turtle headers")
 
 # Tests should just consist of compiling all source in this directory and linking against MSCL
 file(GLOB SRC_FILES
@@ -24,29 +27,121 @@ endif()
 
 # Append to the module path so we can use the FindMSCL.cmake script
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../cmake")
+
+# Include some utilities used for MicroStrain projects
+include(microstrain_utilities)
+
+# Create the common dependencies directory in the project root (if not already created from the MSCL root project)
+if(NOT DEPS_BASE_DIR)
+    set(DEPS_BASE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/_deps")
+endif()
+
 find_package(MSCL REQUIRED)
 
 # Custom variable used in this CMake file, not used by FindBoost.cmake
-set(Boost_REQUESTED_VERSION "1.68.0")
-set(Boost_TEST_REQUESTED_COMPONENTS unit_test_framework test_exec_monitor)
+set(Boost_REQUESTED_VERSION "1.75.0" CACHE STRING "Requested version of Boost")
+set(Boost_TEST_REQUESTED_COMPONENTS unit_test_framework test_exec_monitor CACHE STRING "Requested components of Boost for unit testing")
 
 # Find the static version of boost
 set(Boost_USE_STATIC_LIBS ON)
 set(Boost_USE_STATIC_RUNTIME ON)
 
-# Disable CMake policy for Boost config find_package
-# CMake 3.30+ uses Boost Config for Boost 1.70+
-if(POLICY CMP0167)
-    cmake_policy(SET CMP0167 OLD)
+# Make sure both Boost root variables are set if only 1 of them has been set by the user
+# Different versions of CMake uses one implementation over the other, this guarantees both ways are supported
+if(NOT Boost_ROOT AND BOOST_ROOT)
+    set(Boost_ROOT "${BOOST_ROOT}" CACHE PATH "Location to search for the Boost libraries" FORCE)
 endif()
 
-# Use the old FindBoost module to find the Boost directory
-find_package(Boost ${Boost_REQUESTED_VERSION} REQUIRED COMPONENTS ${Boost_TEST_REQUESTED_COMPONENTS})
+if(NOT BOOST_ROOT AND Boost_ROOT)
+    set(BOOST_ROOT "${Boost_ROOT}")
+endif()
+
+# Attempt to find Boost before manually downloading it (this assumes Boost_ROOT was set by the user)
+find_package(Boost ${Boost_REQUESTED_VERSION} COMPONENTS ${Boost_TEST_REQUESTED_COMPONENTS} CONFIG QUIET)
+
+# Manually download and install Boost
+if(NOT Boost_FOUND)
+    # Replace the periods in the version with underscores for the URL
+    string(REGEX REPLACE "([0-9])\\.([0-9])" "\\1_\\2" Boost_PACKAGE_VERSION "${Boost_REQUESTED_VERSION}")
+    set(Boost_ARCHIVE_DIR "boost_${Boost_PACKAGE_VERSION}")
+
+    set(Boost_ARCHIVE_URL "https://archives.boost.io/release/${Boost_REQUESTED_VERSION}")
+    if(MSVC)
+        string(APPEND Boost_ARCHIVE_URL "/binaries/${Boost_ARCHIVE_DIR}-bin-msvc-all-32-64.7z")
+    else()
+        string(APPEND Boost_ARCHIVE_URL "/source/${Boost_ARCHIVE_DIR}.tar.bz2")
+    endif()
+
+    microstrain_download_and_extract_archive(
+        NAME "Boost"
+        URL "${Boost_ARCHIVE_URL}"
+        DEPS_BASE_DIR "${DEPS_BASE_DIR}"
+        EXTRACTED_DIR "${Boost_ARCHIVE_DIR}"
+    )
+
+    if(UNIX)
+        # TODO: Install Boost on Linux
+    endif()
+
+    # Boost_ROOT is required to include/find the Boost binaries
+    set(Boost_ROOT "${DEPS_BASE_DIR}/${BOOST_ARCHIVE_DIR}" CACHE PATH "Location to search for the Boost libraries" FORCE)
+    set(BOOST_ROOT "${Boost_ROOT}")
+endif()
+
+find_package(Boost ${Boost_REQUESTED_VERSION} REQUIRED COMPONENTS ${Boost_TEST_REQUESTED_COMPONENTS} CONFIG)
+
+# Common header in the Turtle library used to find the include directory
+set(Turtle_MOCK_HEADER "mock.hpp")
+set(Turtle_PATH_SUFFIXES
+    "include/turtle"
+    "turtle"
+)
+
+# Attempt to find Turtle include directory before manually downloading it (this assumes Turtle_ROOT was set by the user)
+find_path(Turtle_INCLUDE_DIR
+    NAMES "${Turtle_MOCK_HEADER}"
+    PATHS "${Turtle_ROOT}"
+    PATH_SUFFIXES ${Turtle_PATH_SUFFIXES}
+    DOC "Location to search for the turtle include files"
+)
+
+# Manually download and install Turtle
+if(NOT Turtle_INCLUDE_DIR)
+    set(Turtle_REQUESTED_VERSION "1.3.0" CACHE STRING "Requested version of Turtle")
+    set(Turtle_ARCHIVE_DIR "Turtle")
+
+    set(Turtle_ARCHIVE_URL "https://sourceforge.net/projects/turtle/files/turtle/${Turtle_REQUESTED_VERSION}/turtle-${Turtle_REQUESTED_VERSION}.zip")
+
+    microstrain_download_and_extract_archive(
+        NAME "Turtle"
+        URL "${Turtle_ARCHIVE_URL}"
+        DEPS_BASE_DIR "${DEPS_BASE_DIR}"
+        EXTRACTED_DIR "${Turtle_ARCHIVE_DIR}"
+        CREATE_EXTRACTED_DIR
+    )
+
+    set(Turtle_ROOT "${DEPS_BASE_DIR}/${Turtle_ARCHIVE_DIR}" CACHE PATH "Location to search for the Boost Turtle headers" FORCE)
+endif()
+
+find_path(Turtle_INCLUDE_DIR
+    NAMES "${Turtle_MOCK_HEADER}"
+    PATHS "${Turtle_ROOT}"
+    PATH_SUFFIXES ${Turtle_PATH_SUFFIXES}
+    DOC "Location to search for the turtle include files"
+    REQUIRED
+)
+
+if(NOT Turtle_INCLUDE_DIR)
+    message(FATAL_ERROR "Unable to find the Boost Turtle mock library")
+else()
+    get_filename_component(Turtle_INCLUDE_DIR "${Turtle_INCLUDE_DIR}" DIRECTORY)
+    message(STATUS "Found Boost Turtle: ${Turtle_INCLUDE_DIR}")
+endif()
 
 target_include_directories(${PROJECT_NAME} PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${MSCL_INCLUDE_DIRS}
-    ${TURTLE_INCLUDE_DIR}
+    ${Turtle_INCLUDE_DIR}
     ${Boost_INCLUDE_DIRS}
 )
 

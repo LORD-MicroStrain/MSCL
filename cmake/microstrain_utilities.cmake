@@ -171,3 +171,99 @@ macro(microstrain_get_git_branch GIT_BRANCH_OUT USER_CACHE_BRANCH)
         message(STATUS "Using user defined Git branch: ${${GIT_BRANCH_OUT}}")
     endif()
 endmacro()
+
+# Utility to download and extract archives (usually used for dependencies)
+function(microstrain_download_and_extract_archive)
+    set(OPTIONS CREATE_EXTRACTED_DIR)
+    set(SINGLE_VALUES NAME URL DEPS_BASE_DIR EXTRACTED_DIR)
+    set(MULTI_VALUES)
+
+    set(DOWNLOAD_EXTRACT_ARG_PREFIX "DOWNLOAD_EXTRACT_ARG")
+    cmake_parse_arguments(${DOWNLOAD_EXTRACT_ARG_PREFIX}
+        "${OPTIONS}"
+        "${SINGLE_VALUES}"
+        "${MULTI_VALUES}"
+        "${ARGN}"
+    )
+
+    # Remove the prefix from the arguments
+    foreach(ARG IN LISTS OPTIONS SINGLE_VALUES MULTI_VALUES)
+        set(${ARG} ${${DOWNLOAD_EXTRACT_ARG_PREFIX}_${ARG}})
+    endforeach()
+
+    # Make sure all the required arguments are used
+    foreach(ARG IN LISTS SINGLE_VALUES)
+        if(NOT ${ARG})
+            message(FATAL_ERROR "Download and extracting files requires the ${ARG} argument to be set")
+        endif()
+    endforeach()
+
+    # Make a lock file
+    set(LOCK_FILE "${DEPS_BASE_DIR}/${NAME}.extract.lock")
+
+    # If already extracted, skip
+    if(EXISTS "${DEPS_BASE_DIR}/${EXTRACTED_DIR}")
+        message(STATUS "${NAME} has already been downloaded and extracted")
+        return()
+    endif()
+
+    # Attempt to lock the file so we can print a status message on the lock
+    file(LOCK "${LOCK_FILE}" GUARD FUNCTION RESULT_VARIABLE IS_LOCKED TIMEOUT 1)
+
+    # The try-lock will timeout (not 0) if another config is already downloading the archive
+    if(NOT "${IS_LOCKED}" STREQUAL "0")
+        message(STATUS "${NAME} is already being downloaded. Waiting for the lock to release...")
+    endif()
+
+    # Release the try-lock to proceed to the download
+    file(LOCK "${LOCK_FILE}" RELEASE)
+
+    # Acquire lock to serialize extraction across parallel configurations
+    file(LOCK "${LOCK_FILE}" GUARD FUNCTION TIMEOUT 600)
+
+    # Double-check after acquiring lock
+    if(EXISTS "${DEPS_BASE_DIR}/${EXTRACTED_DIR}")
+        message(STATUS "${NAME} has already been downloaded and extracted")
+        return()
+    endif()
+
+    # Get the archive filename (including the extension)
+    get_filename_component(FILENAME "${URL}" NAME)
+    set(ARCHIVE_PATH "${DEPS_BASE_DIR}/${FILENAME}")
+
+    if(NOT EXISTS "${ARCHIVE_PATH}")
+        message(STATUS "Downloading ${NAME}...")
+        file(DOWNLOAD "${URL}" "${ARCHIVE_PATH}" STATUS DOWNLOAD_STATUS)
+
+        list(GET DOWNLOAD_STATUS 0 STATUS_CODE)
+        if(NOT ${STATUS_CODE} EQUAL 0)
+            # Remove the corrupt archive
+            file(REMOVE "${ARCHIVE_PATH}")
+
+            # Certificate issues
+            if(${STATUS_CODE} EQUAL 60)
+                message(WARNING "The download encountered a certificate authority issue. Set CMAKE_TLS_CAINFO to the certificate authority file needed to fix the download issue")
+            endif()
+
+            list(GET DOWNLOAD_STATUS 1 STATUS_MESSAGE)
+            message(FATAL_ERROR "Error downloading ${NAME}: ${STATUS_MESSAGE}")
+        endif()
+    endif()
+
+    message(STATUS "Extracting ${NAME}...")
+
+    # Set the extraction destination
+    set(EXTRACT_DESTINATION "${DEPS_BASE_DIR}")
+
+    # Optionally "create" the directory for archives that are not already in a directory upon extraction
+    if(CREATE_EXTRACTED_DIR)
+        string(APPEND EXTRACT_DESTINATION "/${EXTRACTED_DIR}")
+    endif()
+
+    file(ARCHIVE_EXTRACT
+        INPUT "${ARCHIVE_PATH}"
+        DESTINATION "${EXTRACT_DESTINATION}"
+    )
+
+    message(STATUS "Successfully extracted ${NAME}")
+endfunction()

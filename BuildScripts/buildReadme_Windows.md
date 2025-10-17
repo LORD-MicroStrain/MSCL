@@ -101,12 +101,12 @@ The following table lists some parameters that can be set to `ON` or `OFF` to en
 | MSCL_WITH_SSL            | Whether to build with SSL support. Note that this requires openssl to be installed                                              | ON      |
 | MSCL_WITH_WEBSOCKETS     | Whether to build with Websocket support                                                                                         | ON      |
 
-##### String Parameters
+##### Path Parameters
 
-| Parameter          | Description                                                                                                                                                        | Default                 |
-| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------- |
-| TURTLE_INCLUDE_DIR | Directory where the turtle include files are installed. Only required if include files are in a nonstandard place.                                                 | `C:/lib/turtle/include` |
-| NATURAL_DOCS_ROOT  | Directory to search for the `NaturalDocs` executable. Only required if `MSCL_BUILD_DOCUMENTATION` is true, and `NaturalDocs` is installed somewhere nonstandard         | `C:/lib/NaturalDocs`    |
+| Parameter        | Description                                                                                                                                                     | Default |
+|------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------|---------|
+| Turtle_ROOT      | Directory where the turtle include directory is located. Only required if building the test suite.                                                              | `""`    |
+| NaturalDocs_ROOT | Directory to search for the `NaturalDocs` executable. Only required if `MSCL_BUILD_DOCUMENTATION` is true, and `NaturalDocs` is installed somewhere nonstandard | `""`    |
 
 ##### Other parameters
 

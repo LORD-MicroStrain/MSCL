@@ -13,6 +13,7 @@ sample_mscl_cpp/
 /mscl_centos_*.tar.bz2
 /[Oo]utput
 .*git-askpass
+_deps
 
 ## Ignore any CMake generated project files
 LibVersion.h

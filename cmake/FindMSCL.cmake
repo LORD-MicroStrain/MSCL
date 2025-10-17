@@ -46,6 +46,8 @@ if(NOT DEFINED MSCL_ROOT_DIR)
     set(MSCL_ROOT_DIR "${CMAKE_CURRENT_SOURCE_DIR}/MSCL" CACHE STRING "Directory to search for MSCL")
 endif()
 
+set(Boost_ROOT "" CACHE PATH "Location to search for the Boost libraries")
+
 # The following directories are the common additional places to search for MSCL
 set(_MSCL_ROOT_DIRS
     ${CMAKE_CURRENT_LIST_DIR}/..
@@ -69,21 +71,24 @@ find_library(MSCL_LIBRARY
 # Also find the dependencies for MSCL
 
 # Custom variable used in this CMake file, not used by FindBoost.cmake
-set(Boost_REQUESTED_VERSION "1.68.0")
+set(Boost_REQUESTED_VERSION "1.75.0" CACHE STRING "Requested version of Boost")
 set(Boost_REQUESTED_COMPONENTS system filesystem)
 
 # Find the static version of boost
 set(Boost_USE_STATIC_LIBS ON)
 set(Boost_USE_STATIC_RUNTIME ON)
 
-# Disable CMake policy for Boost config find_package
-# CMake 3.30+ uses Boost Config for Boost 1.70+
-if(POLICY CMP0167)
-    cmake_policy(SET CMP0167 OLD)
+# Make sure both Boost root variables are set if only 1 of them has been set by the user
+# Different versions of CMake uses one implementation over the other, this guarantees both ways are supported
+if(NOT Boost_ROOT AND BOOST_ROOT)
+    set(Boost_ROOT "${BOOST_ROOT}" CACHE PATH "Location to search for the Boost libraries" FORCE)
 endif()
 
-# Use the old FindBoost module to find the Boost directory
-find_package(Boost ${Boost_REQUESTED_VERSION} REQUIRED COMPONENTS ${Boost_REQUESTED_COMPONENTS})
+if(NOT BOOST_ROOT AND Boost_ROOT)
+    set(BOOST_ROOT "${Boost_ROOT}")
+endif()
+
+find_package(Boost ${Boost_REQUESTED_VERSION} REQUIRED COMPONENTS ${Boost_REQUESTED_COMPONENTS} CONFIG)
 
 # We also need to find OpenSSL
 set(OPENSSL_USE_STATIC_LIBS TRUE)

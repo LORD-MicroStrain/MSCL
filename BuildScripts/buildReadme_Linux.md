@@ -94,11 +94,11 @@ The following table lists some parameters that can be set to `ON` or `OFF` to en
 
 ##### String Parameters
 
-| Parameter          | Description                                                                                                                                    | Default                 |
-| ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
-| TURTLE_INCLUDE_DIR | Directory where the turtle include files are installed. Only required if include files are in a nonstandard place.                             | `C:/lib/turtle/include` |
-| DPKG_ROOT          | Directory to search for the `dpkg` executable. Only required if `MSCL_BUILD_PACKAGE` is true, and `dpkg` is installed somewhere nonstandard         | `""`                    |
-| RPMBUILD_ROOT      | Directory to search for the `rpmbuild` executable. Only required if `MSCL_BUILD_PACKAGE` is true, and `rpmbuild` is installed somewhere nonstandard | `""`                    |
+| Parameter     | Description                                                                                                                                         | Default |
+|---------------|-----------------------------------------------------------------------------------------------------------------------------------------------------|---------|
+| Turtle_ROOT   | Directory where the turtle include files are installed. Only required if include files are in a nonstandard place.                                  | `""`    |
+| DPKG_ROOT     | Directory to search for the `dpkg` executable. Only required if `MSCL_BUILD_PACKAGE` is true, and `dpkg` is installed somewhere nonstandard         | `""`    |
+| RPMBUILD_ROOT | Directory to search for the `rpmbuild` executable. Only required if `MSCL_BUILD_PACKAGE` is true, and `rpmbuild` is installed somewhere nonstandard | `""`    |
 
 ##### Other parameters
 

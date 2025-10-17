@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.16.0)
+cmake_minimum_required(VERSION 3.18)
 project(MSCL
         LANGUAGES CXX
         VERSION 67.1.0
@@ -9,9 +9,6 @@ set(CMAKE_CONFIGURATION_TYPES "Release;Debug" CACHE STRING "Supported configurat
 # Export compile commands by default (helpful for clang-tidy and autocomplete for certain IDEs)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-# Append the custom CMake directory so the files can be imported
-list(APPEND CMAKE_PREFIX_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
-
 # Set some global C++ options
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -21,14 +18,23 @@ if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Debug")
 endif()
 
-# Add our custom modules path
+# Append the custom CMake directory so the files can be imported
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 
 # Include some utilities used for MicroStrain projects
 include(microstrain_utilities)
 
+# Create the common dependencies directory in the project root
+if(NOT DEPS_BASE_DIR)
+    set(DEPS_BASE_DIR "${CMAKE_CURRENT_LIST_DIR}/_deps")
+endif()
+
 # Detect if this is a x64 or x86 build
 microstrain_get_architecture(MSCL_ARCH_NAME)
+if (${MSCL_ARCH_NAME} STREQUAL "x64")
+    # This needs to be enabled to properly find OpenSSL for x64 builds
+    set_property(GLOBAL PROPERTY FIND_LIBRARY_USE_LIB64_PATHS ON)
+endif()
 
 # This will make windows create a .lib file with all the symbols of the .dll files exported
 set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
@@ -67,32 +73,16 @@ elseif(UNIX)
     endif()
 endif()
 
-# Allow the user to override the location where most dependencies are installed on Windows
-if(WIN32)
-    if(DEFINED ENV{LIB_PATH})
-        set(MICROSTRAIN_LIB_DIR "$ENV{LIB_PATH}" CACHE STRING "Directory where most dependencies are installed")
-    else()
-        set(MICROSTRAIN_LIB_DIR "C:/lib" CACHE STRING "Directory where most dependencies are installed")
-    endif()
-endif()
+# Dependencies root/include paths (these are optional and will be downloaded if not set)
 
-if(WIN32)
-    set(DEFAULT_BOOST_ROOT "${MICROSTRAIN_LIB_DIR}/boost")
-    set(DEFAULT_OPENSSL_ROOT_DIR "${MICROSTRAIN_LIB_DIR}/openssl/lib")
-
-    if(${MSCL_ARCH_NAME} STREQUAL "x64")
-        string(APPEND DEFAULT_OPENSSL_ROOT_DIR "64")
-    endif()
-
-    set(DEFAULT_SWIG_ROOT "${MICROSTRAIN_LIB_DIR}/swig/swigwin-4.0.0")
-endif()
-
-set(TURTLE_INCLUDE_DIR "${MICROSTRAIN_LIB_DIR}/turtle/include" CACHE STRING "Location to search for the turtle include files. Only used when building tests")
-set(NATURAL_DOCS_ROOT "${MICROSTRAIN_LIB_DIR}/NaturalDocs" CACHE STRING "Location of NaturalDocs used to generate the documentation")
+set(Boost_ROOT "" CACHE PATH "Location to search for the Boost libraries")
+set(OPENSSL_ROOT_DIR "" CACHE PATH "Location to search for the OpenSSL libraries")
+set(SWIG_ROOT "" CACHE PATH "Location to search for the Swig executable")
+set(NaturalDocs_ROOT "" CACHE PATH "Location of Natural Docs used to generate the documentation")
 
 if(UNIX AND NOT APPLE)
-    set(DPKG_ROOT "" CACHE STRING "Location of the dpkg executable")
-    set(RPMBUILD_ROOT "" CACHE STRING "Location of the rpmbuild executable")
+    set(DPKG_ROOT "" CACHE PATH "Location of the dpkg executable")
+    set(RPMBUILD_ROOT "" CACHE PATH "Location of the rpmbuild executable")
 endif()
 
 # Use Git to find the version and commit of this repo
@@ -123,27 +113,57 @@ add_compile_definitions(BOOST_ALL_NO_LIB)
 
 # Also find the dependencies for MSCL
 
-# Setup the boost root variable
-if(NOT Boost_ROOT)
-    set(Boost_ROOT "${DEFAULT_BOOST_ROOT}")
-endif()
-
 # Custom variable used in this CMake file, not used by FindBoost.cmake
-set(Boost_REQUESTED_VERSION "1.68.0")
-set(Boost_REQUESTED_COMPONENTS system filesystem)
+set(Boost_REQUESTED_VERSION "1.75.0" CACHE STRING "Requested version of Boost")
+set(Boost_REQUESTED_COMPONENTS system filesystem CACHE STRING "Requested components of Boost")
 
 # Find the static version of boost
 set(Boost_USE_STATIC_LIBS ON)
 set(Boost_USE_STATIC_RUNTIME ON)
 
-# Disable CMake policy for Boost config find_package
-# CMake 3.30+ uses Boost Config for Boost 1.70+
-if(POLICY CMP0167)
-    cmake_policy(SET CMP0167 OLD)
+# Make sure both Boost root variables are set if only 1 of them has been set by the user
+# Different versions of CMake uses one implementation over the other, this guarantees both ways are supported
+if(NOT Boost_ROOT AND BOOST_ROOT)
+    set(Boost_ROOT "${BOOST_ROOT}" CACHE PATH "Location to search for the Boost libraries" FORCE)
 endif()
 
-# Use the old FindBoost module to find the Boost directory
-find_package(Boost ${Boost_REQUESTED_VERSION} REQUIRED COMPONENTS ${Boost_REQUESTED_COMPONENTS})
+if(NOT BOOST_ROOT AND Boost_ROOT)
+    set(BOOST_ROOT "${Boost_ROOT}")
+endif()
+
+# Attempt to find Boost before manually downloading it (this assumes Boost_ROOT was set by the user)
+find_package(Boost ${Boost_REQUESTED_VERSION} COMPONENTS ${Boost_REQUESTED_COMPONENTS} CONFIG QUIET)
+
+# Manually download and install Boost
+if(NOT Boost_FOUND)
+    # Replace the periods in the version with underscores for the URL
+    string(REGEX REPLACE "([0-9])\\.([0-9])" "\\1_\\2" Boost_PACKAGE_VERSION "${Boost_REQUESTED_VERSION}")
+    set(Boost_ARCHIVE_DIR "boost_${Boost_PACKAGE_VERSION}")
+
+    set(Boost_ARCHIVE_URL "https://archives.boost.io/release/${Boost_REQUESTED_VERSION}")
+    if(MSVC)
+        string(APPEND Boost_ARCHIVE_URL "/binaries/${Boost_ARCHIVE_DIR}-bin-msvc-all-32-64.7z")
+    else()
+        string(APPEND Boost_ARCHIVE_URL "/source/${Boost_ARCHIVE_DIR}.tar.bz2")
+    endif()
+
+    microstrain_download_and_extract_archive(
+        NAME "Boost"
+        URL "${Boost_ARCHIVE_URL}"
+        DEPS_BASE_DIR "${DEPS_BASE_DIR}"
+        EXTRACTED_DIR "${Boost_ARCHIVE_DIR}"
+    )
+
+    if(UNIX)
+        # TODO: Install Boost on Linux
+    endif()
+
+    # Boost_ROOT is required to include/find the Boost binaries
+    set(Boost_ROOT "${DEPS_BASE_DIR}/${BOOST_ARCHIVE_DIR}" CACHE PATH "Location to search for the Boost libraries" FORCE)
+    set(BOOST_ROOT "${Boost_ROOT}")
+endif()
+
+find_package(Boost ${Boost_REQUESTED_VERSION} REQUIRED COMPONENTS ${Boost_REQUESTED_COMPONENTS} CONFIG)
 
 set(Boost_STATIC_LIBRARIES ${Boost_LIBRARIES})
 
@@ -152,7 +172,7 @@ if(BUILD_SHARED_LIBS OR (UNIX AND MSCL_BUILD_PYTHON3) OR (UNIX AND MSCL_BUILD_PY
     set(Boost_USE_STATIC_LIBS OFF)
     set(Boost_USE_STATIC_RUNTIME OFF)
 
-    find_package(Boost ${Boost_REQUESTED_VERSION} REQUIRED COMPONENTS ${Boost_REQUESTED_COMPONENTS})
+    find_package(Boost ${Boost_REQUESTED_VERSION} REQUIRED COMPONENTS ${Boost_REQUESTED_COMPONENTS} CONFIG)
 
     set(Boost_SHARED_LIBRARIES ${Boost_LIBRARIES}) # Save the shared libraries, so they will not be overridden when we find the static libraries
 endif()
@@ -162,15 +182,7 @@ find_package(Threads REQUIRED)
 
 # If we were requested to build with SSL, find OpenSSL
 if(MSCL_WITH_SSL)
-    # Ultra mega hack since we are finding the lib path of OpenSSL, we need to manually set the include path...
-    if(NOT DEFINED OPENSSL_ROOT_DIR)
-        set(OPENSSL_ROOT_DIR "${DEFAULT_OPENSSL_ROOT_DIR}")
-        if(${MSCL_ARCH_NAME} STREQUAL "x64")
-            set(OPENSSL_INCLUDE_DIR ${DEFAULT_OPENSSL_ROOT_DIR}/../include64 CACHE INTERNAL "")
-        else()
-            set(OPENSSL_INCLUDE_DIR ${DEFAULT_OPENSSL_ROOT_DIR}/../include CACHE INTERNAL "")
-        endif()
-    endif()
+    set(OPENSSL_REQUESTED_VERSION "1.1.0f" CACHE STRING "Requested version of OpenSSL")
 
     # For some reason, FindOpenSSL does not look for the libraries again, so unset the variables to force it to search again
     unset(OPENSSL_SSL_LIBRARY CACHE)
@@ -181,12 +193,39 @@ if(MSCL_WITH_SSL)
     unset(SSL_EAY_DEBUG CACHE)
     unset(SSL_EAY_RELEASE CACHE)
 
-    # Shared OpenSSL
-    if(BUILD_SHARED_LIBS)
-        set(OPENSSL_USE_STATIC_LIBS FALSE)
-        set(OPENSSL_MSVC_STATIC_RT FALSE)
-        find_package(OpenSSL REQUIRED)
-        set(OPENSSL_SHARED_LIBRARIES ${OPENSSL_LIBRARIES})
+    # Attempt to find OpenSSL before manually downloading it (this assumes OPENSSL_ROOT_DIR was set by the user)
+    find_package(OpenSSL QUIET)
+
+    # Manually download and install OpenSSL
+    if(NOT OPENSSL_FOUND)
+        if(MSVC)
+            if(MSVC_VERSION LESS 1900 OR MSVC_VERSION GREATER_EQUAL 1920)
+                message(FATAL_ERROR "${PROJECT_NAME} is only compatible with MSVC 2015 and 2017")
+            endif()
+
+            if(MSVC_VERSION EQUAL 1900)
+                set(SC_VS_VERSION 2015)
+            elseif(MSVC_VERSION GREATER_EQUAL 1910 AND MSVC_VERSION LESS 1920)
+                set(SC_VS_VERSION 2017)
+            endif()
+        endif()
+
+        set(OPENSSL_ARCHIVE_DIR "openssl-${OPENSSL_REQUESTED_VERSION}-vs${SC_VS_VERSION}")
+        microstrain_download_and_extract_archive(
+            NAME "OpenSSL"
+            URL "https://www.npcglib.org/~stathis/downloads/${OPENSSL_ARCHIVE_DIR}.7z"
+            DEPS_BASE_DIR "${DEPS_BASE_DIR}"
+            EXTRACTED_DIR "${OPENSSL_ARCHIVE_DIR}"
+        )
+
+        # OPENSSL_ROOT_DIR is required to include/find the OpenSSL binaries
+        set(OPENSSL_ROOT_DIR "${DEPS_BASE_DIR}/${OPENSSL_ARCHIVE_DIR}/lib" CACHE PATH "Location to search for the OpenSSL libraries" FORCE)
+        set(OPENSSL_INCLUDE_DIR "${DEPS_BASE_DIR}/${OPENSSL_ARCHIVE_DIR}/include")
+
+        if(${MSCL_ARCH_NAME} STREQUAL "x64")
+            string(APPEND OPENSSL_ROOT_DIR "64")
+            string(APPEND OPENSSL_INCLUDE_DIR "64")
+        endif()
     endif()
 
     # For some reason, FindOpenSSL does not look for the libraries again, so unset the variables to force it to search again
@@ -201,6 +240,7 @@ if(MSCL_WITH_SSL)
     # Static OpenSSL
     set(OPENSSL_USE_STATIC_LIBS TRUE)
     set(OPENSSL_MSVC_STATIC_RT TRUE)
+
     find_package(OpenSSL REQUIRED)
     set(OPENSSL_STATIC_LIBRARIES ${OPENSSL_LIBRARIES})
 
@@ -208,6 +248,23 @@ if(MSCL_WITH_SSL)
     if(WIN32)
         list(APPEND OPENSSL_STATIC_LIBRARIES CRYPT32.lib)
         list(APPEND OPENSSL_SHARED_LIBRARIES CRYPT32.lib)
+    endif()
+
+    # Shared OpenSSL
+    if(BUILD_SHARED_LIBS)
+        # For some reason, FindOpenSSL does not look for the libraries again, so unset the variables to force it to search again
+        unset(OPENSSL_SSL_LIBRARY CACHE)
+        unset(OPENSSL_LIBRARIES CACHE)
+        unset(OPENSSL_CRYPTO_LIBRARY CACHE)
+        unset(LIB_EAY_DEBUG CACHE)
+        unset(LIB_EAY_RELEASE CACHE)
+        unset(SSL_EAY_DEBUG CACHE)
+        unset(SSL_EAY_RELEASE CACHE)
+
+        set(OPENSSL_USE_STATIC_LIBS FALSE)
+        set(OPENSSL_MSVC_STATIC_RT FALSE)
+        find_package(OpenSSL REQUIRED)
+        set(OPENSSL_SHARED_LIBRARIES ${OPENSSL_LIBRARIES})
     endif()
 endif()
 
@@ -236,30 +293,77 @@ if(MSCL_BUILD_PYTHON2 OR MSCL_BUILD_PYTHON3 OR MSCL_BUILD_CSHARP)
 
     set(SWIG_REQUESTED_VERSION "4.0.0" CACHE STRING "")
 
-    # Attempt to find swig with a user set location
+    # Attempt to find Swig before manually downloading it (this assumes SWIG_ROOT was set by the user)
     find_package(SWIG ${SWIG_REQUESTED_VERSION} QUIET)
 
     # Set a default swig executable location and try again
     if(NOT SWIG_FOUND)
-        set(SWIG_EXECUTABLE "${DEFAULT_SWIG_ROOT}/swig.exe")
-        find_package(SWIG ${SWIG_REQUESTED_VERSION} QUIET REQUIRED)
+        set(SWIG_PACKAGE_NAME "swig")
+        if(MSVC)
+            string(APPEND SWIG_PACKAGE_NAME "win")
+        endif()
+
+        set(SWIG_ARCHIVE_DIR "${SWIG_PACKAGE_NAME}-${SWIG_REQUESTED_VERSION}")
+        set(SWIG_ARCHIVE_URL "https://sourceforge.net/projects/swig/files/${SWIG_PACKAGE_NAME}/${SWIG_ARCHIVE_DIR}/${SWIG_ARCHIVE_DIR}")
+
+        if(MSVC)
+            string(APPEND SWIG_ARCHIVE_URL ".zip")
+        else()
+            string(APPEND SWIG_ARCHIVE_URL ".tar.gz")
+        endif()
+
+        microstrain_download_and_extract_archive(
+            NAME "Swig"
+            URL "${SWIG_ARCHIVE_URL}"
+            DEPS_BASE_DIR "${DEPS_BASE_DIR}"
+            EXTRACTED_DIR "${SWIG_ARCHIVE_DIR}"
+        )
+
+        set(SWIG_ROOT "${DEPS_BASE_DIR}/${SWIG_ARCHIVE_DIR}" CACHE PATH "Location to search for the Swig executable" FORCE)
     endif()
 
-    # Display a found swig message since we set quiet above
-    message(STATUS "Found SWIG: ${SWIG_EXECUTABLE} (found suitable version \"${SWIG_VERSION}\", minimum required is \"${SWIG_REQUESTED_VERSION}\")")
+    find_package(SWIG ${SWIG_REQUESTED_VERSION} REQUIRED)
 endif()
 
 # If we were asked to build the docs, try to find NaturalDocs
 if(MSCL_BUILD_DOCUMENTATION)
+    set(NaturalDocs_NAME "NaturalDocs")
+
+    # Attempt to find Natural Docs before manually downloading it (this assumes NaturalDocs_ROOT was set by the user)
     find_program(NaturalDocs_EXECUTABLE
-        NAMES NaturalDocs
-        PATHS ${NATURAL_DOCS_ROOT}
-        DOC "NaturalDocs command line client"
+        NAMES "${NaturalDocs_NAME}"
+        PATHS "${NaturalDocs_ROOT}"
+        DOC "Natural Docs command line client"
     )
-    if(${NaturalDocs_EXECUTABLE} STREQUAL "NaturalDocs_EXECUTABLE-NOTFOUND")
-        message(FATAL_ERROR "Unable to build docs as we were unable to find NaturalDocs in ${NATURAL_DOCS_ROOT}")
+
+    # Manually download and install Natural Docs
+    if(NOT NaturalDocs_EXECUTABLE)
+        set(NaturalDocs_REQUESTED_VERSION "2.3.1" CACHE STRING "Requested version of Natural Docs")
+        set(NaturalDocs_ARCHIVE_DIR "Natural Docs")
+
+        set(NaturalDocs_ARCHIVE_URL "https://naturaldocs.org/download/natural_docs/${NaturalDocs_REQUESTED_VERSION}/Natural_Docs_${NaturalDocs_REQUESTED_VERSION}.zip")
+
+        microstrain_download_and_extract_archive(
+            NAME "${NaturalDocs_NAME}"
+            URL "${NaturalDocs_ARCHIVE_URL}"
+            DEPS_BASE_DIR "${DEPS_BASE_DIR}"
+            EXTRACTED_DIR "${NaturalDocs_ARCHIVE_DIR}"
+        )
+
+        # NaturalDocs_ROOT is required to find the Natural Docs program
+        set(NaturalDocs_ROOT "${DEPS_BASE_DIR}/${NaturalDocs_ARCHIVE_DIR}" CACHE PATH "Location of Natural Docs used to generate the documentation" FORCE)
+    endif()
+
+    find_program(NaturalDocs_EXECUTABLE
+        NAMES "${NaturalDocs_NAME}"
+        PATHS "${NaturalDocs_ROOT}"
+        DOC "Natural Docs command line client"
+    )
+
+    if(NOT NaturalDocs_EXECUTABLE)
+        message(FATAL_ERROR "Unable to build docs as we were unable to find Natural Docs in ${NaturalDocs_ROOT}")
     else()
-        message(STATUS "Found NaturalDocs: ${NaturalDocs_EXECUTABLE}")
+        message(STATUS "Found Natural Docs: ${NaturalDocs_EXECUTABLE}")
     endif()
 endif()
 
