@@ -300,6 +300,13 @@ if(MSCL_BUILD_PYTHON2 OR MSCL_BUILD_PYTHON3 OR MSCL_BUILD_CSHARP)
 
     # Build for python3
     if(MSCL_BUILD_PYTHON3)
+        # On windows, we need to link against the python.dll, but on linux this is expressly forbidden by PEP 513
+        if(WIN32)
+            set(PYTHON3_LINK_LIBRARIES ${PYTHON_LINK_LIBRARIES} ${Python3_LIBRARIES})
+        else()
+            set(PYTHON3_LINK_LIBRARIES ${PYTHON_LINK_LIBRARIES})
+        endif()
+
         set(PYTHON3_MODULE_NAME MSCL_Python3)
         set(MSCL_PYTHON3_VERSION ${Python3_VERSION_MAJOR}.${Python3_VERSION_MINOR})
         mscl_python_swig(
@@ -315,12 +322,19 @@ if(MSCL_BUILD_PYTHON2 OR MSCL_BUILD_PYTHON3 OR MSCL_BUILD_CSHARP)
             INCLUDE_DIRECTORIES ${LIB_INCLUDE_DIRS} ${Python3_INCLUDE_DIRS} ${MSCL_SOURCE_FILES_DIR}/Wrapper # Temp fix for bad include paths
             LINK_DIRECTORIES ${Python3_LIBRARY_DIRS}
             LINK_OPTIONS ${PYTHON_LINK_OPTIONS}
-            LINK_LIBRARIES ${PYTHON_LINK_LIBRARIES} ${Python3_LIBRARIES}
+            LINK_LIBRARIES ${PYTHON3_LINK_LIBRARIES}
         )
     endif()
 
     # Build for python2
     if(MSCL_BUILD_PYTHON2)
+        # On windows, we need to link against the python.dll, but on linux this is expressly forbidden by PEP 513
+        if(WIN32)
+            set(PYTHON2_LINK_LIBRARIES ${PYTHON_LINK_LIBRARIES} ${Python2_LIBRARIES})
+        else()
+            set(PYTHON2_LINK_LIBRARIES ${PYTHON_LINK_LIBRARIES})
+        endif()
+
         set(PYTHON2_MODULE_NAME MSCL_Python2)
         set(MSCL_PYTHON2_VERSION ${Python2_VERSION_MAJOR}.${Python2_VERSION_MINOR})
         mscl_python_swig(
@@ -336,7 +350,7 @@ if(MSCL_BUILD_PYTHON2 OR MSCL_BUILD_PYTHON3 OR MSCL_BUILD_CSHARP)
             INCLUDE_DIRECTORIES ${LIB_INCLUDE_DIRS} ${Python2_INCLUDE_DIRS} ${MSCL_SOURCE_FILES_DIR}/Wrapper # Temp fix for bad include paths
             LINK_DIRECTORIES ${Python2_LIBRARY_DIRS}
             LINK_OPTIONS ${PYTHON_LINK_OPTIONS}
-            LINK_LIBRARIES ${PYTHON_LINK_LIBRARIES} ${Python2_LIBRARIES}
+            LINK_LIBRARIES ${PYTHON2_LINK_LIBRARIES}
         )
     endif()
 
