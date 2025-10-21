@@ -39,8 +39,8 @@ endif()
 find_package(MSCL REQUIRED)
 
 # Custom variable used in this CMake file, not used by FindBoost.cmake
-set(Boost_REQUESTED_VERSION "1.75.0" CACHE STRING "Requested version of Boost")
-set(Boost_TEST_REQUESTED_COMPONENTS unit_test_framework test_exec_monitor CACHE STRING "Requested components of Boost for unit testing")
+set(Boost_REQUESTED_VERSION "1.89.0" CACHE STRING "Requested version of Boost")
+set(Boost_TEST_REQUESTED_COMPONENTS unit_test_framework test_exec_monitor)
 
 # Find the static version of boost
 set(Boost_USE_STATIC_LIBS ON)

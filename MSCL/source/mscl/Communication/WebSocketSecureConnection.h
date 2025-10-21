@@ -44,7 +44,9 @@ namespace mscl
         //    - <Error_InvalidTcpServer>: the specified server address and/or server port is invalid.
         void establishConnection() override;
 
-        typedef boost::asio::ip::tcp tcp;
+        typedef boost::asio::ip::tcp                         tcp;
+        typedef boost::asio::ip::basic_resolver_results<tcp> tcp_resolver_results;
+        typedef boost::asio::ip::basic_resolver_entry<tcp>   tcp_resolver_entry;
 
         //Variable: m_host
         //    The server host address

@@ -54,7 +54,9 @@ namespace mscl
 
         void checkDeadline(const boost::system::error_code& error);
 
-        typedef boost::asio::ip::tcp tcp;
+        typedef boost::asio::ip::tcp                         tcp;
+        typedef boost::asio::ip::basic_resolver_results<tcp> tcp_resolver_results;
+        typedef boost::asio::ip::basic_resolver_entry<tcp>   tcp_resolver_entry;
 
         //Variable: m_path
         //    The server address (url or ip address).
@@ -70,6 +72,6 @@ namespace mscl
 
         bool m_cancelDeadline;
 
-        std::unique_ptr<boost::asio::deadline_timer> m_deadlineTimer;
+        std::unique_ptr<boost::asio::system_timer> m_deadlineTimer;
     };
 } // namespace mscl

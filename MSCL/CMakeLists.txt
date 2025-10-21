@@ -37,6 +37,13 @@ endif()
 
 # Configure some compiler flags
 set(LIB_DEFINES "")
+# Disable deprecated Boost components. Forces updates on deprecated components sooner rather than later
+set(MSCL_BOOST_LIB_DEFINES
+    "BOOST_ASIO_NO_DEPRECATED"
+    "BOOST_FILESYSTEM_NO_DEPRECATED"
+    "BOOST_PROCESS_NO_DEPRECATED"
+    "BOOST_SYSTEM_NO_DEPRECATED"
+)
 
 if(NOT MSCL_WITH_SSL)
     list(APPEND LIB_DEFINES MSCL_DISABLE_SSL)
@@ -207,7 +214,10 @@ if(BUILD_SHARED_LIBS)
 endif()
 
 # Compiler definitions
-target_compile_definitions(${LIB_NAME_STATIC} PUBLIC ${LIB_DEFINES})
+target_compile_definitions(${LIB_NAME_STATIC}
+    PUBLIC ${LIB_DEFINES}
+    PRIVATE ${MSCL_BOOST_LIB_DEFINES}
+)
 target_include_directories(${LIB_NAME_STATIC} PUBLIC ${LIB_INCLUDE_DIRS})
 
 if(MSVC)
@@ -239,7 +249,10 @@ if(BUILD_SHARED_LIBS)
         )
     endif()
 
-    target_compile_definitions(${LIB_NAME_SHARED} PUBLIC ${LIB_DEFINES})
+    target_compile_definitions(${LIB_NAME_SHARED}
+        PUBLIC ${LIB_DEFINES}
+        PRIVATE ${MSCL_BOOST_LIB_DEFINES}
+    )
     target_include_directories(${LIB_NAME_SHARED} PUBLIC ${LIB_INCLUDE_DIRS})
 endif()
 

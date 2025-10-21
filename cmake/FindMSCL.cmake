@@ -71,8 +71,13 @@ find_library(MSCL_LIBRARY
 # Also find the dependencies for MSCL
 
 # Custom variable used in this CMake file, not used by FindBoost.cmake
-set(Boost_REQUESTED_VERSION "1.75.0" CACHE STRING "Requested version of Boost")
-set(Boost_REQUESTED_COMPONENTS system filesystem)
+set(Boost_REQUESTED_VERSION "1.89.0" CACHE STRING "Requested version of Boost")
+set(Boost_REQUESTED_COMPONENTS "filesystem")
+
+# Older versions of Boost require the system component
+if(Boost_REQUESTED_VERSION VERSION_LESS_EQUAL 1.84.0)
+    list(APPEND Boost_REQUESTED_COMPONENTS "system")
+endif()
 
 # Find the static version of boost
 set(Boost_USE_STATIC_LIBS ON)

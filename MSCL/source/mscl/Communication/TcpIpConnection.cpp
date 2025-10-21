@@ -46,32 +46,28 @@ namespace mscl
                 //create a resolver to turn the server name into a TCP endpoint
                 tcp::resolver resolver(*m_ioContext);
 
-                //create the resolver query with our address and port
-                tcp::resolver::query query(m_serverAddress, Utils::toStr(m_serverPort));
-
-                //resolve the query and get the endpoint iterator
-                tcp::resolver::iterator endpoint_iterator = resolver.resolve(query);
-                tcp::resolver::iterator end;
+                // Get the resolved results from the query
+                tcp_resolver_results results = resolver.resolve(m_serverAddress, Utils::toStr(m_serverPort));
 
                 //setup the m_ioPort
                 m_ioPort.reset(new tcp::socket(*m_ioContext));
 
-                m_deadlineTimer.reset(new boost::asio::deadline_timer(*m_ioContext));
-                m_deadlineTimer->expires_at(boost::posix_time::pos_infin);
+                m_deadlineTimer.reset(new boost::asio::system_timer(*m_ioContext));
+                m_deadlineTimer->expires_at(std::chrono::system_clock::time_point::max());
 
                 boost::system::error_code error = boost::asio::error::would_block;
                 m_deadlineTimer->async_wait(std::bind(&TcpIpConnection::checkDeadline, this, error));
 
                 //iterate over the endpoints until we find one that successfully connects
-                while(error && endpoint_iterator != end)
+                for (const tcp_resolver_entry& endpoint : results)
                 {
                     m_ioPort->close();
 
-                    m_ioPort->open(static_cast<tcp::endpoint>(*endpoint_iterator).protocol());
+                    m_ioPort->open(static_cast<tcp::endpoint>(endpoint).protocol());
 
                     if(m_interfaceAddress != "")
                     {
-                        tcp::endpoint interfaceEndpoint(tcp::endpoint(boost::asio::ip::address::from_string(m_interfaceAddress), 0));
+                        tcp::endpoint interfaceEndpoint(tcp::endpoint(boost::asio::ip::make_address(m_interfaceAddress), 0));
 
                         m_ioPort->set_option(tcp::acceptor::reuse_address(true));
                         m_ioPort->bind(interfaceEndpoint);
@@ -80,13 +76,19 @@ namespace mscl
                     m_ioPort->set_option(tcp::no_delay(true));
 
                     //attempt to connect, with a deadline timer of 5 seconds
-                    m_deadlineTimer->expires_from_now(boost::posix_time::seconds(5));
-                    m_ioPort->async_connect(*endpoint_iterator++, boost::lambda::var(error) = boost::lambda::_1);
+                    m_deadlineTimer->expires_after(std::chrono::seconds(5));
+                    m_ioPort->async_connect(endpoint, boost::lambda::var(error) = boost::lambda::_1);
                     do
                     {
                         m_ioContext->run_one();
                     }
-                    while(error == boost::asio::error::would_block);
+                    while (error == boost::asio::error::would_block);
+
+                    // Successful connection
+                    if (!error)
+                    {
+                        break;
+                    }
                 }
 
                 //if we didn't find any good endpoints
@@ -97,7 +99,7 @@ namespace mscl
                 }
 
                 m_cancelDeadline = true;
-                m_deadlineTimer->expires_at(boost::asio::deadline_timer::traits_type::now());
+                m_deadlineTimer->expires_at(std::chrono::system_clock::now());
                 m_deadlineTimer->wait();
 
 #ifdef _WIN32
@@ -140,7 +142,7 @@ namespace mscl
         // Check whether the deadline has passed. We compare the deadline against
         // the current time since a new asynchronous operation may have moved the
         // deadline before this actor had a chance to run.
-        if(m_deadlineTimer->expires_at() <= boost::asio::deadline_timer::traits_type::now())
+        if(m_deadlineTimer->expiry() <= std::chrono::system_clock::now())
         {
             if(m_cancelDeadline)
             {
@@ -158,7 +160,7 @@ namespace mscl
 
             // There is no longer an active deadline. The expiry is set to positive
             // infinity so that the actor takes no action until a new deadline is set.
-            m_deadlineTimer->expires_at(boost::posix_time::pos_infin);
+            m_deadlineTimer->expires_at(std::chrono::system_clock::time_point::max());
 
             return;
         }

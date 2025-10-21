@@ -65,12 +65,8 @@ namespace mscl
 
                 std::string mainUrl = m_host.substr(MAIN_URL_START_POS, nextSlashPosition - MAIN_URL_START_POS);
 
-                //create the resolver query with our address and port
-                tcp::resolver::query query(mainUrl, Utils::toStr(m_port));
-
-                //resolve the query and get the endpoint iterator
-                tcp::resolver::iterator endpoint_iterator = resolver.resolve(query);
-                tcp::resolver::iterator end;
+                // Get the resolved results from the query
+                tcp_resolver_results results = resolver.resolve(mainUrl, Utils::toStr(m_port));
 
                 m_ioPort.reset(new websocket::stream<tcp::socket>(*m_ioContext));
 
@@ -78,10 +74,16 @@ namespace mscl
 
                 //iterate over the endpoints until we find one that successfully connects
                 boost::system::error_code error = boost::asio::error::host_not_found;
-                while(error && endpoint_iterator != end)
+                for (const tcp_resolver_entry& endpoint : results)
                 {
                     m_ioPort->next_layer().close();
-                    m_ioPort->next_layer().connect(*endpoint_iterator++, error);
+                    m_ioPort->next_layer().connect(endpoint, error);
+
+                    // Successful connection
+                    if (!error)
+                    {
+                        break;
+                    }
                 }
 
                 //if we didn't find any good endpoints

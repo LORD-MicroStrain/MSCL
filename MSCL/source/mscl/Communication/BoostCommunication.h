@@ -259,7 +259,7 @@ namespace mscl
     template <typename IO_Object>
     void BoostCommunication<IO_Object>::startReadLoop()
     {
-        m_ioContext->reset();
+        m_ioContext->restart();
 
         //get the BufferWriter for our current read buffer
         m_bufferWriter = m_readBuffer.getBufferWriter();
@@ -297,13 +297,13 @@ namespace mscl
     template <typename IO_Object>
     void BoostCommunication<IO_Object>::stopIoService()
     {
-        m_ioContext->post([]()->void { throw Error_Connection("Stopping Data Thread."); });
+        boost::asio::post(m_ioContext->get_executor(), []()->void { throw Error_Connection("Stopping Data Thread."); });
     }
 
     template <typename IO_Object>
     void BoostCommunication<IO_Object>::stopIoServiceError(int errorCode)
     {
-        m_ioContext->post([&errorCode]()->void { throw Error_Connection(errorCode); });
+        boost::asio::post(m_ioContext->get_executor(), [&errorCode]()->void { throw Error_Connection(errorCode); });
     }
 
     //read handler for the read loop, called when data has come in or the read operation has been canceled
