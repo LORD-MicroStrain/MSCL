@@ -8,7 +8,7 @@
 #include <thread>
 
 // example to switch a nodes protocol  (lxrs/lxrs+)
-void switchNodeProtocol(mscl::WirelessNode& node, mscl::BaseStation& base, mscl::WirelessTypes::CommProtocol& protocol)
+void switchNodeProtocol(mscl::WirelessNode& node, mscl::BaseStation& base, mscl::WirelessTypes::CommProtocol protocol)
 {
     mscl::WirelessNodeConfig config; 
     mscl::BaseStationConfig b_config; 

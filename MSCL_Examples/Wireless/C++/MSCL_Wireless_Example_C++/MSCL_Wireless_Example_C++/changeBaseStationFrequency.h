@@ -36,7 +36,6 @@ mscl::WirelessTypes::Frequency selectFrequency(int choice)
 // This example shows how you can configure a synchronized network of nodes 
 void changeBaseStationFrequency(mscl::BaseStation& base) 
 {
-    // Get and print the current channel
     std::string choice; 
     mscl::WirelessTypes::Frequency selectedFrequency; 
 

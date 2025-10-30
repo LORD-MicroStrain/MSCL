@@ -19,10 +19,28 @@
 
 #include "changeBaseStationFrequency.h"
 
+//#include "bandWidthAndStatus.cpp"
+
 #include "nodeCyclePower.h"
 #include "baseCyclePower.h"
-
+#include "nodeSleep.h"
+#include "baseTransmitPower.h"
+#include "baseBeacon.h"
 #include "nodesOnOtherFrequencies.h"
+
+#include "switchBaseProtocol.h"
+
+#include "nodeFirmwareUpgrade.h"
+#include "baseFirmwareUpgrade.h"
+
+#include "rangeTest.h"
+
+#include "GLink200InputRange.h"
+#include "GLink200LPF.h"
+#include "GLink200HPF.h"
+#include "GLink200LinearCal.h"
+#include "GLink200SamplingConfigTab.h"
+#include "GLink200PowerConfigTab.h"
 
 // MSCL common code header (typically used as a precompiled header)
 #include <mscl/stdafx.h>
@@ -69,31 +87,61 @@ int main(int argc, char** argv)
     // Example: Ping Node
     pingNode(node);
 
-    ///////////////////////////////////////////////////////////////////////////////////
-
-    //nodeDiscovery(baseStation);  // ready
-
-    //supportedSampleRates(node);  // ready
-
-    //enableChannelsGLink200_accel(node); // ready
+    /////////////////////////////////GLink200 Specific examples////////////////////////
     
-    //enableChannelsGLink200_tilt(node);  // ready
-
-    syncSampling(baseStation, networkNodes);  // ready
+    ////////////////////////                              Hardware Config
     
-    //nonSyncSampling(baseStation, networkNodes); // ready 
-
-    //changeBaseStationFrequency(baseStation); // ready
-
-    //nodeCyclePower(node);  // ready
+    //enableChannelsGLink200_accel(node); 
     
-    //baseCyclePower(baseStation);  // ready
-    
-    //dataTypeSelect(node);  // ready 
+    //enableChannelsGLink200_tilt(node);  
 
-    //nodesOnOtherFrequencies(baseStation);  // ready 
+    //GLink200InputRange(node); 
+
+    //GLink200LPF(node); 
+
+    //GLink200HPF(node); 
+
+    ////////////////////////                              Calibration Config
+
+    //GLink200LinearCal(node);
+
+    ////////////////////////                              Sampling Config
+
+    //GLink200SamplingConfigTab(node); 
+
+    ////////////////////////                              Power Config
+
+    //GLink200PowerConfigTab(node); 
+
+    //////////////////////////////More General Examples////////////////////////////////
+
+    //nodeDiscovery(baseStation); 
+
+    //supportedSampleRates(node);  
+
+    syncSampling(baseStation, networkNodes); 
     
-    //////////////////////////////////////////////////////////////////////////////////
+    //nonSyncSampling(baseStation, networkNodes); 
+
+    //changeBaseStationFrequency(baseStation); 
+
+    //nodeCyclePower(node);  
+
+    //baseTransmitPower(base); 
+
+    //baseBeaconSelector(base); 
+    
+    //baseCyclePower(baseStation); 
+    
+    //dataTypeSelect(node); 
+
+    //nodesOnOtherFrequencies(baseStation);  
+
+    //switchBaseProtocol(baseStation); 
+
+    //rangeTest(baseStation, node);
+    
+    //////////////////////////////Stock/////////////////////////////////////////////////
 
     // Example: Get Configuration
     //getCurrentConfig(node);
@@ -113,6 +161,7 @@ int main(int argc, char** argv)
     // enableDisableBeacon(baseStation);
 
     printf("\nPress enter to idle and exit...");
+
     getchar();
     getchar();
     
