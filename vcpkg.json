@@ -29,7 +29,12 @@
       ]
     },
     "openssl": {
-      "description": "Download OpenSSL dependencies"
+      "description": "Download OpenSSL dependencies",
+      "dependencies": [
+        {
+          "name": "openssl"
+        }
+      ]
     },
     "testing": {
       "description": "Download unit testing dependencies",

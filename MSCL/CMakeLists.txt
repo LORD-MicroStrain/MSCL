@@ -71,10 +71,10 @@ set(Boost_REQUESTED_COMPONENTS
 set(Boost_USE_STATIC_LIBS ${MSCL_LINK_STATIC_DEPS})
 set(Boost_USE_STATIC_RUNTIME ${MSCL_LINK_STATIC_DEPS})
 
-find_package("Boost" COMPONENTS ${Boost_REQUESTED_COMPONENTS} CONFIG)
+find_package("Boost" REQUIRED COMPONENTS ${Boost_REQUESTED_COMPONENTS} CONFIG)
 
 target_link_libraries("${MSCL_LIBRARY}" PUBLIC
-    ${Boost_LIBRARIES}
+    "${Boost_LIBRARIES}"
 )
 
 # Disable deprecated Boost components
@@ -89,50 +89,14 @@ target_compile_definitions("${MSCL_LIBRARY}" PRIVATE
 
 # Find OpenSSL if requested
 if(MSCL_WITH_SSL)
-    set(OPENSSL_REQUESTED_VERSION "1.1.0f" CACHE STRING "Requested version of OpenSSL")
-
     # Find the proper linking version of OpenSSL
     set(OPENSSL_USE_STATIC_LIBS ${MSCL_LINK_STATIC_DEPS})
     set(OPENSSL_MSVC_STATIC_RT ${MSCL_LINK_STATIC_DEPS})
 
-    # Attempt to find OpenSSL before manually downloading it (this assumes OPENSSL_ROOT_DIR was set by the user)
-    find_package(OpenSSL QUIET)
-
-    # OPENSSL_FOUND is deprecated in CMake 4.2
-    if(${CMAKE_VERSION} VERSION_LESS 4.2)
-        set(OpenSSL_FOUND ${OPENSSL_FOUND})
-    endif()
-
-    # Manually download and install OpenSSL
-    if(NOT OpenSSL_FOUND)
-        if(MSVC)
-            if(MSVC_VERSION EQUAL 1900)
-                set(SC_VS_VERSION 2015)
-            elseif(MSVC_VERSION GREATER_EQUAL 1910#[[ AND MSVC_VERSION LESS 1920]])
-                set(SC_VS_VERSION 2017)
-            endif()
-        endif()
-
-        set(OPENSSL_ARCHIVE_DIR "openssl-${OPENSSL_REQUESTED_VERSION}-vs${SC_VS_VERSION}")
-        microstrain_download_and_extract_archive(
-            NAME "OpenSSL"
-            URL "https://www.npcglib.org/~stathis/downloads/${OPENSSL_ARCHIVE_DIR}.7z"
-            DEPS_BASE_DIR "${DEPS_BASE_DIR}"
-            EXTRACTED_DIR "${OPENSSL_ARCHIVE_DIR}"
-        )
-
-        # OPENSSL_ROOT_DIR is required to include/find the OpenSSL binaries
-        set(OPENSSL_ROOT_DIR "${DEPS_BASE_DIR}/${OPENSSL_ARCHIVE_DIR}" CACHE PATH "Location to search for the OpenSSL libraries" FORCE)
-    endif()
-
-    find_package(OpenSSL REQUIRED)
+    find_package("OpenSSL" REQUIRED)
 
     target_link_libraries("${MSCL_LIBRARY}" PUBLIC
-        ${OPENSSL_LIBRARIES}
-    )
-
-    target_include_directories("${MSCL_LIBRARY}" PUBLIC
-        "${OPENSSL_INCLUDE_DIR}"
+        "${OPENSSL_LIBRARIES}"
     )
 else()
     # TODO: Don't assume the user linked proper libraries for this support!!
