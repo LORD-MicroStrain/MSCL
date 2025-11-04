@@ -74,7 +74,7 @@ set(Boost_USE_STATIC_RUNTIME ${MSCL_LINK_STATIC_DEPS})
 find_package("Boost" REQUIRED COMPONENTS ${Boost_REQUESTED_COMPONENTS} CONFIG)
 
 target_link_libraries("${MSCL_LIBRARY}" PUBLIC
-    "${Boost_LIBRARIES}"
+    ${Boost_LIBRARIES}
 )
 
 # Disable deprecated Boost components
@@ -96,7 +96,7 @@ if(MSCL_WITH_SSL)
     find_package("OpenSSL" REQUIRED)
 
     target_link_libraries("${MSCL_LIBRARY}" PUBLIC
-        "${OPENSSL_LIBRARIES}"
+        ${OPENSSL_LIBRARIES}
     )
 else()
     # TODO: Don't assume the user linked proper libraries for this support!!

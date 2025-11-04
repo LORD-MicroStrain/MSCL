@@ -25,10 +25,10 @@ find_path(Turtle_INCLUDE_DIR
 
 # Manually download and install Turtle
 if(NOT Turtle_INCLUDE_DIR)
-    set(Turtle_REQUESTED_VERSION "1.3.2" CACHE STRING "Requested version of Turtle")
+    set(Turtle_REQUESTED_VERSION "2.0.0" CACHE STRING "Requested version of Turtle")
     set(Turtle_ARCHIVE_DIR "Turtle")
 
-    set(Turtle_ARCHIVE_URL "https://sourceforge.net/projects/turtle/files/turtle/${Turtle_REQUESTED_VERSION}/turtle-${Turtle_REQUESTED_VERSION}.zip")
+    set(Turtle_ARCHIVE_URL "https://github.com/mat007/turtle/releases/download/v${Turtle_REQUESTED_VERSION}/turtle-${Turtle_REQUESTED_VERSION}.zip")
 
     microstrain_download_and_extract_archive(
         NAME "Turtle"

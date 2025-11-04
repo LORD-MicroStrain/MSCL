@@ -240,13 +240,13 @@ endif()
 #if(MSCL_BUILD_EXAMPLES)
 #    add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/examples")
 #endif()
-#
-## Build the testing suite
-#if(MSCL_BUILD_TESTS)
-#    enable_testing()
-#    add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/tests")
-#endif()
-#
+
+# Build the testing suite
+if(MSCL_BUILD_TESTS)
+    enable_testing()
+    add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/tests")
+endif()
+
 ## Build one or more of the bindings
 #if(MSCL_BUILD_PYTHON2 OR MSCL_BUILD_PYTHON3 OR MSCL_BUILD_CSHARP)
 #    add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/bindings")
