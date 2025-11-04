@@ -526,6 +526,8 @@ namespace mscl
 
     void NodeMemory_v2::setAddress(uint32 newAddress)
     {
+        (void)newAddress;
+
         //setAddress is not supported by NodeMemory_v2! (TODO?)
         assert(false);
     }

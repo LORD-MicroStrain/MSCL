@@ -20,13 +20,13 @@
 }
 //============================================================
 
-//only define the ugly C# exception code below 
+//only define the ugly C# exception code below
 //when running SWIG with the C# compiler option
 #ifdef SWIGCSHARP
 
 %insert(runtime)
 %{
-#include "../MicroStrain/Wireless/Configuration/ConfigIssue.h"
+#include "mscl/MicroStrain/Wireless/Configuration/ConfigIssue.h"
 
     // Code to handle throwing of C# exception from C/C++ code.
     typedef void (SWIGSTDCALL* CSharpExceptionCallback_t)(const char *);

@@ -3,7 +3,7 @@ add_subdirectory(Configuration)
 add_subdirectory(Features)
 add_subdirectory(Packets)
 
-set(MSCL_MICROSTRAIN_WIRELESS_SOURCES
+set(MSCL_MICROSTRAIN_WIRELESS_FILES
     "${CMAKE_CURRENT_LIST_DIR}/ArmedDataloggingNetwork.cpp"
     "${CMAKE_CURRENT_LIST_DIR}/ArmedDataloggingNetwork.h"
     "${CMAKE_CURRENT_LIST_DIR}/BaseStation.cpp"
@@ -68,4 +68,15 @@ set(MSCL_MICROSTRAIN_WIRELESS_SOURCES
     "${CMAKE_CURRENT_LIST_DIR}/WirelessTypes.h"
 )
 
-set(MSCL_SOURCES ${MSCL_SOURCES} ${MSCL_MICROSTRAIN_WIRELESS_SOURCES} PARENT_SCOPE)
+# Filter and add the source files to the target
+set(MSCL_MICROSTRAIN_WIRELESS_SOURCES ${MSCL_MICROSTRAIN_WIRELESS_FILES})
+list(FILTER MSCL_MICROSTRAIN_WIRELESS_SOURCES INCLUDE REGEX "^.*\\.(c|cpp)$")
+target_sources("${MSCL_LIBRARY}" PRIVATE "${MSCL_MICROSTRAIN_WIRELESS_SOURCES}")
+
+# Filter and add the header files to the target using file sets
+set(MSCL_MICROSTRAIN_WIRELESS_HEADERS ${MSCL_MICROSTRAIN_WIRELESS_FILES})
+list(FILTER MSCL_MICROSTRAIN_WIRELESS_HEADERS INCLUDE REGEX "^.*\\.(h|hpp)$")
+target_sources("${MSCL_LIBRARY}" PUBLIC
+    FILE_SET "${MSCL_HEADER_FILE_SET}"
+    FILES "${MSCL_MICROSTRAIN_WIRELESS_HEADERS}"
+)

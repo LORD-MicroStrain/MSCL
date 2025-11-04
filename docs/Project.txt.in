@@ -1,0 +1,5 @@
+Format: @NaturalDocs_VERSION@
+Title: @MSCL_DOCS_TITLE@
+Subtitle: MicroStrain Communication Library
+Copyright: © @MSCL_CURRENT_YEAR@ MicroStrain by HBK. All Rights Reserved.
+Timestamp: Updated mm/dd/yyyy

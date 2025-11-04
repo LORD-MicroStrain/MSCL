@@ -159,7 +159,7 @@ Instructions can be found here:</br>
 
 MSCL documentation can now be found [here](https://github.com/LORD-MicroStrain/MSCL_documentation)
 
-[Example Code](MSCL_Examples)
+[Example Code](examples)
 
 * Note: LabVIEW example code is provided in the [LabVIEW-MSCL VI package](https://github.com/LORD-MicroStrain/LabVIEW-MSCL).
 

@@ -1095,6 +1095,8 @@ namespace mscl
 
     void InertialNode::setEventActionConfig(EventActionConfiguration config, const bool validateSupported/*= true*/) const
     {
+        (void)validateSupported;
+
         MipFieldValues mipValues = {
             Value::UINT8(config.instance),
             Value::UINT8(config.trigger),

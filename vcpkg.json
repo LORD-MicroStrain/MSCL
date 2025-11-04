@@ -1,0 +1,43 @@
+{
+  "name": "mscl",
+  "version": "1.0.0",
+  "features": {
+    "boost": {
+      "description": "Download Boost dependencies",
+      "dependencies": [
+        {
+          "name": "boost-asio"
+        },
+        {
+          "name": "boost-beast"
+        },
+        {
+          "name": "boost-circular-buffer"
+        },
+        {
+          "name": "boost-crc"
+        },
+        {
+          "name": "boost-filesystem"
+        },
+        {
+          "name": "boost-lambda"
+        },
+        {
+          "name": "boost-math"
+        }
+      ]
+    },
+    "openssl": {
+      "description": "Download OpenSSL dependencies"
+    },
+    "testing": {
+      "description": "Download unit testing dependencies",
+      "dependencies": [
+        {
+          "name": "boost-test"
+        }
+      ]
+    }
+  }
+}

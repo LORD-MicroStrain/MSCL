@@ -1,4 +1,4 @@
-set(MSCL_COMMUNICATION_SOURCES
+set(MSCL_COMMUNICATION_FILES
     "${CMAKE_CURRENT_LIST_DIR}/BoostCommunication.h"
     "${CMAKE_CURRENT_LIST_DIR}/Connection.cpp"
     "${CMAKE_CURRENT_LIST_DIR}/Connection.h"
@@ -27,7 +27,7 @@ set(MSCL_COMMUNICATION_SOURCES
 )
 
 if(WIN32)
-    list(APPEND MSCL_COMMUNICATION_SOURCES
+    list(APPEND MSCL_COMMUNICATION_FILES
         "${CMAKE_CURRENT_LIST_DIR}/UpnpDeviceFinderCallback.cpp"
         "${CMAKE_CURRENT_LIST_DIR}/UpnpDeviceFinderCallback.h"
         "${CMAKE_CURRENT_LIST_DIR}/UpnpService.cpp"
@@ -36,10 +36,21 @@ if(WIN32)
         "${CMAKE_CURRENT_LIST_DIR}/WsdaFinder.h"
     )
 elseif(UNIX AND NOT APPLE)
-    list(APPEND MSCL_COMMUNICATION_SOURCES
+    list(APPEND MSCL_COMMUNICATION_FILES
         "${CMAKE_CURRENT_LIST_DIR}/UnixSocketConnection.cpp"
         "${CMAKE_CURRENT_LIST_DIR}/UnixSocketConnection.h"
     )
 endif()
 
-set(MSCL_SOURCES ${MSCL_SOURCES} ${MSCL_COMMUNICATION_SOURCES} PARENT_SCOPE)
+# Filter and add the source files to the target
+set(MSCL_COMMUNICATION_SOURCES ${MSCL_COMMUNICATION_FILES})
+list(FILTER MSCL_ROOT_SOURCES INCLUDE REGEX "^.*\\.(c|cpp)$")
+target_sources("${MSCL_LIBRARY}" PRIVATE "${MSCL_COMMUNICATION_SOURCES}")
+
+# Filter and add the header files to the target using file sets
+set(MSCL_COMMUNICATION_HEADERS ${MSCL_COMMUNICATION_FILES})
+list(FILTER MSCL_COMMUNICATION_HEADERS INCLUDE REGEX "^.*\\.(h|hpp)$")
+target_sources("${MSCL_LIBRARY}" PUBLIC
+    FILE_SET "${MSCL_HEADER_FILE_SET}"
+    FILES "${MSCL_COMMUNICATION_HEADERS}"
+)

@@ -177,7 +177,7 @@ namespace mscl
         //
         //Exceptions:
         //  - <Error_Connection>: a connection error has occurred, such as the device being unplugged.
-        virtual void updateBaudRate(uint32 baudRate) {}
+        virtual void updateBaudRate(uint32 baudRate) { (void)baudRate; }
     };
 
     //Class: Connection_Impl

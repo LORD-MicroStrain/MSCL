@@ -60,6 +60,8 @@ namespace mscl
 
     STDMETHODIMP UpnpDeviceFinderCallback::DeviceAdded(LONG lFindData, IUPnPDevice* pDevice)
     {
+        (void)lFindData;
+
         if(m_deviceAddedCallback)
         {
             UpnpDevice device;
@@ -169,11 +171,15 @@ namespace mscl
 
     STDMETHODIMP UpnpDeviceFinderCallback::DeviceRemoved(LONG lFindData, BSTR bstrUDN)
     {
+        (void)lFindData;
+        (void)bstrUDN;
         return S_OK;
     }
 
     STDMETHODIMP UpnpDeviceFinderCallback::SearchComplete(LONG lFindData)
     {
+        (void)lFindData;
+
         if(m_searchCompleteCallback)
         {
             m_searchCompleteCallback();

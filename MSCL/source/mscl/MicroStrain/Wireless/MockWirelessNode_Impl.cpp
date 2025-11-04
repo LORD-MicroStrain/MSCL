@@ -64,6 +64,8 @@ namespace mscl
 
     const WirelessProtocol& MockWirelessNode_Impl::protocol(WirelessTypes::CommProtocol commProtocol) const
     {
+        (void)commProtocol;
+
         rec_mutex_lock_guard lock(m_protocolMutex);
 
         //WirelessProtocol shouldn't matter for MockWirelessNode
@@ -161,6 +163,9 @@ namespace mscl
 
     AutoBalanceResult MockWirelessNode_Impl::autoBalance(const ChannelMask& mask, float targetPercent)
     {
+        (void)mask;
+        (void)targetPercent;
+
         throw Error_NotSupported("AutoBalance is not supported with MockWirelessNode.");
     }
 
@@ -176,16 +181,23 @@ namespace mscl
 
     AutoShuntCalResult MockWirelessNode_Impl::autoShuntCal(const ChannelMask& mask, const ShuntCalCmdInfo& commandInfo)
     {
+        (void)mask;
+        (void)commandInfo;
+
         throw Error_NotSupported("Auto Shunt Cal is not supported with MockWirelessNode.");
     }
 
     void MockWirelessNode_Impl::getDiagnosticInfo(ChannelData& result)
     {
+        (void)result;
+
         throw Error_NotSupported("Get Diagnostic Info is not supported with MockWirelessNode.");
     }
 
     bool MockWirelessNode_Impl::testCommProtocol(WirelessTypes::CommProtocol commProtocol)
     {
+        (void)commProtocol;
+
         return true;
     }
 } // namespace mscl

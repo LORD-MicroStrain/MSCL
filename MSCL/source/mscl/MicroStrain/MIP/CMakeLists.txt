@@ -1,7 +1,7 @@
 add_subdirectory(Commands)
 add_subdirectory(Packets)
 
-set(MSCL_MICROSTRAIN_MIP_SOURCES
+set(MSCL_MICROSTRAIN_MIP_FILES
     "${CMAKE_CURRENT_LIST_DIR}/MipBuiltInTest.cpp"
     "${CMAKE_CURRENT_LIST_DIR}/MipBuiltInTest.h"
     "${CMAKE_CURRENT_LIST_DIR}/MipChannel.cpp"
@@ -26,4 +26,15 @@ set(MSCL_MICROSTRAIN_MIP_SOURCES
     "${CMAKE_CURRENT_LIST_DIR}/MipTypes.h"
 )
 
-set(MSCL_SOURCES ${MSCL_SOURCES} ${MSCL_MICROSTRAIN_MIP_SOURCES} PARENT_SCOPE)
+# Filter and add the source files to the target
+set(MSCL_MICROSTRAIN_MIP_SOURCES ${MSCL_MICROSTRAIN_MIP_FILES})
+list(FILTER MSCL_MICROSTRAIN_MIP_SOURCES INCLUDE REGEX "^.*\\.(c|cpp)$")
+target_sources("${MSCL_LIBRARY}" PRIVATE "${MSCL_MICROSTRAIN_MIP_SOURCES}")
+
+# Filter and add the header files to the target using file sets
+set(MSCL_MICROSTRAIN_MIP_HEADERS ${MSCL_MICROSTRAIN_MIP_FILES})
+list(FILTER MSCL_MICROSTRAIN_MIP_HEADERS INCLUDE REGEX "^.*\\.(h|hpp)$")
+target_sources("${MSCL_LIBRARY}" PUBLIC
+    FILE_SET "${MSCL_HEADER_FILE_SET}"
+    FILES "${MSCL_MICROSTRAIN_MIP_HEADERS}"
+)

@@ -12,6 +12,8 @@ namespace mscl
 {
     const WirelessTypes::TransmitPowers AvailableTransmitPowers::get(const NodeInfo& info, WirelessTypes::CommProtocol commProtocol)
     {
+        (void)commProtocol;
+
         //special cases for Japan
         if (info.regionCode() == WirelessTypes::region_japan)
         {

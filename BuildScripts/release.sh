@@ -201,13 +201,17 @@ pushd "${docs_release_dir}"
 
 unzip "${docs_zip}" -d "${docs_release_dir}"
 
+# Move all of the documentation contents into the root directory
+mv "${docs_release_dir}/Documentation/**" "${docs_release_dir}"
+rmdir "${docs_release_dir}/Documentation"
+
 documentation_readme="${docs_dir}/README.md"
 
 # If the tag is not already in the readme, add it after latest
 if ! grep -q -E "^\| ${release_name} +\|" "${documentation_readme}"; then
   # Variables to simplify the append process
-  full_documentation_link="${documentation_link}/MSCL_API_Docs"
-  public_documentation_link="${documentation_link}/MSCL_Docs"
+  full_documentation_link="${documentation_link}/MSCL_Docs"
+  public_documentation_link="${documentation_link}/MSCL_API_Docs"
   append_links="\n| $release_name | [Full Documentation]($full_documentation_link) | [Public Documentation]($public_documentation_link) |"
 
   # Append the new links after release so new releases are at the top

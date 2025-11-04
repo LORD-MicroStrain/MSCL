@@ -8,7 +8,7 @@
 
 namespace mscl
 {
-    //Class: Bitfield
+    //API Class: Bitfield
     class Bitfield
     {
     public:

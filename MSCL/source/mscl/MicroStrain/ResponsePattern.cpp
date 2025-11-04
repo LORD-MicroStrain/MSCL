@@ -82,26 +82,31 @@ namespace mscl
 
     bool ResponsePattern::matchSuccessResponse(DataBuffer& data)
     {
+        (void)data;
         return false;
     }
 
     bool ResponsePattern::matchSuccessResponse(const WirelessPacket& packet)
     {
+        (void)packet;
         return false;
     }
 
     bool ResponsePattern::matchFailResponse(DataBuffer& data)
     {
+        (void)data;
         return false;
     }
 
     bool ResponsePattern::matchFailResponse(const WirelessPacket& packet)
     {
+        (void)packet;
         return false;
     }
 
     bool ResponsePattern::matchBaseReceivedResponse(const WirelessPacket& packet)
     {
+        (void)packet;
         return false;
     }
 
@@ -186,6 +191,7 @@ namespace mscl
 
     bool ResponsePattern::match(const MipDataField& field)
     {
+        (void)field;
         return false;
     }
 

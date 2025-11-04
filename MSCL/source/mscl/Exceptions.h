@@ -14,6 +14,9 @@ namespace mscl
     //API Title: Exceptions
     //    Contains all the MicroStrain custom exceptions that can be thrown in MSCL
 
+    /* Needed for NaturalDocs */
+    //API Class: std::exception
+
     //API Class: Error
     //    The generic MicroStrain exception (base class)
     class Error : public std::exception

@@ -54,6 +54,9 @@ namespace mscl
 
     const WirelessTypes::WirelessSampleRates NodeFeatures_cfBearing::sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const
     {
+        (void)dataCollectionMethod;
+        (void)dataMode;
+
         //the list of sample rates varies for each sampling mode
         switch(samplingMode)
         {

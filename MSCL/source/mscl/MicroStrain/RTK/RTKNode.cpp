@@ -17,6 +17,8 @@ namespace mscl
 
     void RTKNode::setCommunicationMode(uint8 communicationMode)
     {
+        (void)communicationMode;
+
         throw Error_NotSupported("Set communication mode (0x7F10) not supported.");
     }
 

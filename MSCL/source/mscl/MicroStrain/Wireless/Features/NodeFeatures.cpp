@@ -1008,16 +1008,20 @@ namespace mscl
 
     WirelessTypes::WirelessSampleRate NodeFeatures::maxSampleRateForSettlingTime(WirelessTypes::SettlingTime filterSettlingTime, WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const
     {
+        (void)filterSettlingTime;
         return sampleRates(samplingMode, dataCollectionMethod, dataMode).at(0);
     }
 
     WirelessTypes::WirelessSampleRate NodeFeatures::maxSampleRateForLowPassFilter(WirelessTypes::Filter lowPassFilter, WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode, const ChannelMask& channels) const
     {
+        (void)lowPassFilter;
+        (void)channels;
         return sampleRates(samplingMode, dataCollectionMethod, dataMode).at(0);
     }
 
     WirelessTypes::SettlingTime NodeFeatures::maxFilterSettlingTime(const SampleRate& rate) const
     {
+        (void)rate;
         throw Error_NotSupported("Filter Settling Time is not supported by this Node.");
     }
 

@@ -1010,6 +1010,9 @@ namespace mscl
 
     MipFieldFormat MipCommand::getResponseVectorPartFormat(MipTypes::Command id, uint8 nestedLevel, uint8 sequenceCount)
     {
+        (void)nestedLevel;
+        (void)sequenceCount;
+
         switch (id)
         {
             case MipTypes::CMD_NMEA_MESSAGE_FORMAT:

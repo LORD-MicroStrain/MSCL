@@ -59,11 +59,15 @@ namespace mscl
 
     bool MockBaseStation_Impl::read(uint16 eepromAddress, uint16& result)
     {
+        (void)eepromAddress;
+        (void)result;
         throw Error_NotSupported("Read Eeprom is not supported with MockBaseStation.");
     }
 
     bool MockBaseStation_Impl::write(uint16 eepromAddress, uint16 value)
     {
+        (void)eepromAddress;
+        (void)value;
         throw Error_NotSupported("Write Eeprom is not supported with MockBaseStation.");
     }
 
@@ -74,6 +78,7 @@ namespace mscl
 
     Timestamp MockBaseStation_Impl::enableBeacon(uint32 utcTime)
     {
+        (void)utcTime;
         throw Error_NotSupported("Enable Beacon is not supported with MockBaseStation.");
     }
 
@@ -94,11 +99,18 @@ namespace mscl
 
     void MockBaseStation_Impl::startRfSweepMode(uint32 minFreq, uint32 maxFreq, uint32 interval, uint16 options)
     {
+        (void)minFreq;
+        (void)maxFreq;
+        (void)interval;
+        (void)options;
+
         throw Error_NotSupported("RF Mode is not supported with MockBaseStation.");
     }
 
     void MockBaseStation_Impl::cyclePower(bool checkComm)
-    {}
+    {
+        (void)checkComm;
+    }
 
     void MockBaseStation_Impl::resetRadio()
     {}

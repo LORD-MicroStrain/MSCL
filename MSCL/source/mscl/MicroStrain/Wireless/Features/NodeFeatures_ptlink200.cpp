@@ -63,6 +63,8 @@ namespace mscl
                                                                                                WirelessTypes::DataMode dataMode,
                                                                                                const ChannelMask& channels) const
     {
+        (void)channels;
+
         //find the max sample rate allowed for the settling time
         SampleRate maxRate;
 
@@ -114,6 +116,9 @@ namespace mscl
 
     const WirelessTypes::WirelessSampleRates NodeFeatures_ptlink200::sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const
     {
+        (void)dataCollectionMethod;
+        (void)dataMode;
+
         //the list of sample rates varies for each sampling mode
         switch(samplingMode)
         {

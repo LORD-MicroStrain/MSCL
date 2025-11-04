@@ -1092,8 +1092,6 @@ namespace mscl
                 return GpioBehaviorModes();
             }
         }
-
-        return GpioBehaviorModes();
     }
 
     const GpioFeatureBehaviors MipNodeFeatures::supportedGpioFeatures(uint8 pin) const

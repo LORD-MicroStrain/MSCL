@@ -68,6 +68,9 @@ namespace mscl
 
     const WirelessTypes::WirelessSampleRates NodeFeatures_shmlink2::sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const
     {
+        (void)dataCollectionMethod;
+        (void)dataMode;
+
         //the list of sample rates varies for each sampling mode
         switch(samplingMode)
         {

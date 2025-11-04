@@ -74,12 +74,23 @@
 #define DISABLE_WARNING_BOOST_END \
     DISABLE_WARNING_POP
 
-//TODO: Look into fixing typedefs to only use this for Boost
-DISABLE_WARNING_DECORATED_NAME_EXCEEDED
+#ifdef _WIN32
+#include <sdkddkver.h>
+
+// Boost requires these to be set
+#ifndef _WIN32_WIN32_WINNT
+#define _WIN32_WIN32_WINNT _WIN32_WINNT_WIN10
+#endif // !_WIN32_WIN32_WINNT
+
+#ifndef _WIN32_WINDOWS
+#define _WIN32_WINDOWS _WIN32_WINNT_WIN10
+#endif // !_WIN32_WINDOWS
+#endif // _WIN32
 
 DISABLE_WARNING_BOOST_START
 #include <boost/asio.hpp>                                          //for boost asio communication
 #include <boost/asio/deadline_timer.hpp>
+#include <boost/asio/serial_port.hpp>
 #include <boost/circular_buffer.hpp>                               //for boost circular buffer
 #include <boost/crc.hpp>
 #include <boost/date_time.hpp>                                     //for boost::posix_time::from_time_t
@@ -101,7 +112,6 @@ DISABLE_WARNING_BOOST_START
 #endif // !_WIN32
 
 #ifndef MSCL_DISABLE_SSL
-#include <boost/asio/ssl.hpp>
 #include <boost/asio/ssl/stream.hpp>
 #include <boost/beast/websocket/ssl.hpp>
 #endif // !MSCL_DISABLE_SSL
@@ -138,7 +148,7 @@ DISABLE_WARNING_BOOST_END
 #include <unordered_map>
 #include <vector>
 
-//common MSCL files that will rarely change
+// Common MSCL files that will rarely change
 #include "mscl/Types.h"
 
 #include "mscl/Communication/BoostCommunication.h"

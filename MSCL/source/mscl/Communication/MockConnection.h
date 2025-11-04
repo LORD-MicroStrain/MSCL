@@ -7,6 +7,7 @@
 #pragma once
 
 #include "mscl/Communication/Connection_Impl.h"
+#include "mscl/Communication/NativeSerialPort_linux.h"
 
 namespace mscl
 {
@@ -38,15 +39,15 @@ namespace mscl
 
         void reconnect() override {}
 
-        void registerParser(std::function<void(DataBuffer&)> parseFunction) override {}
+        void registerParser(std::function<void(DataBuffer&)> parseFunction) override {  (void)parseFunction; }
 
         void unregisterParser() override {}
 
         void throwIfError() override {}
 
-        void write(const ByteStream& data) const override {}
+        void write(const ByteStream& data) const override { (void)data; }
 
-        void write(const Bytes& bytes) const override {}
+        void write(const Bytes& bytes) const override { (void)bytes; }
 
         void clearBuffer() override {}
 
@@ -54,19 +55,31 @@ namespace mscl
 
         std::size_t byteAppendPos() const override { return 0; }
 
-        void rawByteMode(bool enable) override {}
+        void rawByteMode(bool enable) override { (void)enable; }
 
         bool rawByteMode() override { return false; }
 
-        void getRawBytes(Bytes& bytes, uint32 timeout = 0, uint32 maxBytes = 0, uint32 minBytes = 0) override {}
+        void getRawBytes(Bytes& bytes, uint32 timeout = 0, uint32 maxBytes = 0, uint32 minBytes = 0) override
+        {
+            (void)bytes;
+            (void)timeout;
+            (void)maxBytes;
+            (void)minBytes;
+        }
 
-        void getRawBytesWithPattern(Bytes& bytes, const uint8* pattern, size_t length, uint32 timeout = 0) override {}
+        void getRawBytesWithPattern(Bytes& bytes, const uint8* pattern, size_t length, uint32 timeout = 0) override
+        {
+            (void)bytes;
+            (void)pattern;
+            (void)length;
+            (void)timeout;
+        }
 
-        void debugMode(bool enable) override {}
+        void debugMode(bool enable) override { (void)enable; }
 
         bool debugMode() override { return false; }
 
-        void getDebugData(ConnectionDebugDataVec& data, uint32 timeout) override {}
+        void getDebugData(ConnectionDebugDataVec& data, uint32 timeout) override { (void)data; (void)timeout; }
 
         std::string port() const override { return ""; }
     };

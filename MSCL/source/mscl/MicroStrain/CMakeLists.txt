@@ -4,7 +4,7 @@ add_subdirectory(MIP)
 add_subdirectory(RTK)
 add_subdirectory(Wireless)
 
-set(MSCL_MICROSTRAIN_SOURCES
+set(MSCL_MICROSTRAIN_FILES
     "${CMAKE_CURRENT_LIST_DIR}/Bitfield.cpp"
     "${CMAKE_CURRENT_LIST_DIR}/Bitfield.h"
     "${CMAKE_CURRENT_LIST_DIR}/ByteStream.cpp"
@@ -31,4 +31,15 @@ set(MSCL_MICROSTRAIN_SOURCES
     "${CMAKE_CURRENT_LIST_DIR}/Vector.h"
 )
 
-set(MSCL_SOURCES ${MSCL_SOURCES} ${MSCL_MICROSTRAIN_SOURCES} PARENT_SCOPE)
+# Filter and add the source files to the target
+set(MSCL_MICROSTRAIN_SOURCES ${MSCL_MICROSTRAIN_FILES})
+list(FILTER MSCL_MICROSTRAIN_SOURCES INCLUDE REGEX "^.*\\.(c|cpp)$")
+target_sources("${MSCL_LIBRARY}" PRIVATE "${MSCL_MICROSTRAIN_SOURCES}")
+
+# Filter and add the header files to the target using file sets
+set(MSCL_MICROSTRAIN_HEADERS ${MSCL_MICROSTRAIN_FILES})
+list(FILTER MSCL_MICROSTRAIN_HEADERS INCLUDE REGEX "^.*\\.(h|hpp)$")
+target_sources("${MSCL_LIBRARY}" PUBLIC
+    FILE_SET "${MSCL_HEADER_FILE_SET}"
+    FILES "${MSCL_MICROSTRAIN_HEADERS}"
+)

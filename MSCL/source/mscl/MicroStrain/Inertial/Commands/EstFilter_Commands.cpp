@@ -395,7 +395,9 @@ namespace mscl
 
     CmdedVelZupt::Response::Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse) :
         GenericMipCommand::Response(MipTypes::CMD_EF_CMDED_ZERO_VEL_UPDATE, collector, true, false, "Commanded Zero Velocity Update")
-    {}
+    {
+        (void)dataResponse;
+    }
     //==========================================================================================
 
     //==========================================================================================
@@ -414,7 +416,9 @@ namespace mscl
 
     CmdedAngularZupt::Response::Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse) :
         GenericMipCommand::Response(MipTypes::CMD_EF_CMDED_ZERO_ANG_RATE_UPDATE, collector, true, false, "Commanded Zero Angular Rate Update")
-    {}
+    {
+        (void)dataResponse;
+    }
     //==========================================================================================
 
     //==========================================================================================

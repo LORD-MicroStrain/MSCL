@@ -1,0 +1,63 @@
+set(@PACKAGE_NAME@_VERSION @PACKAGE_VERSION@)
+
+@PACKAGE_INIT@
+
+set_and_check(@PACKAGE_NAME_UPPER@_LIBRARY_DIR "@PACKAGE_LIBRARY_INSTALL_DIR@")
+
+set(@PACKAGE_NAME_UPPER@_INCLUDE_DIRS "")
+
+# Include directories based on supported compilers
+if(CMAKE_CXX_COMPILER)
+  set_and_check(@PACKAGE_NAME_UPPER@_CPP_INCLUDE_DIR "@PACKAGE_INCLUDE_INSTALL_DIR_CPP@")
+  list(APPEND @PACKAGE_NAME_UPPER@_INCLUDE_DIRS "@PACKAGE_INCLUDE_INSTALL_DIR_CPP@")
+endif()
+
+if(CMAKE_C_COMPILER)
+  set_and_check(@PACKAGE_NAME_UPPER@_C_INCLUDE_DIR "@PACKAGE_INCLUDE_INSTALL_DIR_C@")
+  list(APPEND @PACKAGE_NAME_UPPER@_INCLUDE_DIRS "@PACKAGE_INCLUDE_INSTALL_DIR_C@")
+endif()
+
+set(@PACKAGE_NAME_UPPER@_LIBRARY @PACKAGE_NAME@)
+
+# Add the link directories so CMake can find the library
+link_directories("${@PACKAGE_NAME_UPPER@_LIBRARY_DIR}")
+
+set(@PACKAGE_NAME_UPPER@_LIBRARIES "${@PACKAGE_NAME_UPPER@_LIBRARY}")
+
+# Find components
+macro(@PACKAGE_NAME@cfg_find_component comp required)
+  set(_@PACKAGE_NAME@_REQUIRED)
+  if(${required} AND @PACKAGE_NAME@_FIND_REQUIRED)
+    set(_@PACKAGE_NAME@_REQUIRED REQUIRED)
+  endif()
+
+  set(__@PACKAGE_NAME@_comp_nv "${comp}")
+
+  find_package(${__@PACKAGE_NAME@_comp_nv} ${@PACKAGE_NAME@_VERSION} EXACT ${_@PACKAGE_NAME@_REQUIRED} CONFIG)
+
+  set(__@PACKAGE_NAME@_comp_found ${${__@PACKAGE_NAME@_comp_nv}_FOUND})
+
+  # FindPackageHandleStandardArgs expects <package>_<component>_FOUND
+  set(@PACKAGE_NAME@_${comp}_FOUND ${__@PACKAGE_NAME@_comp_found})
+
+  string(TOUPPER ${comp} _@PACKAGE_NAME_UPPER@_COMP)
+  set(@PACKAGE_NAME@_${_@PACKAGE_NAME_UPPER@_COMP}_FOUND ${__@PACKAGE_NAME@_comp_found})
+
+  # Create list of libraries including all the found components
+  if(__@PACKAGE_NAME@_comp_found)
+    list(APPEND @PACKAGE_NAME_UPPER@_LIBRARIES ${__@PACKAGE_NAME@_comp_nv})
+  endif()
+
+  unset(_@PACKAGE_NAME@_REQUIRED)
+  unset(_@PACKAGE_NAME@_QUIET)
+  unset(__@PACKAGE_NAME@_comp_nv)
+  unset(__@PACKAGE_NAME@_comp_found)
+  unset(_@PACKAGE_NAME_UPPER@_COMP)
+endmacro()
+
+# Iterate requested components to find them
+foreach(__@PACKAGE_NAME@_comp IN LISTS @PACKAGE_NAME@_FIND_COMPONENTS)
+  @PACKAGE_NAME@cfg_find_component(${__@PACKAGE_NAME@_comp} ${@PACKAGE_NAME@_FIND_REQUIRED_${__@PACKAGE_NAME@_comp}} 0)
+endforeach()
+
+check_required_components(@PACKAGE_NAME@)

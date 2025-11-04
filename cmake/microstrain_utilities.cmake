@@ -128,12 +128,105 @@ macro(microstrain_get_architecture SYS_ARCH_OUT)
     endif()
 endmacro()
 
-macro(microstrain_add_archive_component COMPONENT_NAME FILE_NAME_PREFIX FILE_NAME FILE_NAME_SUFFIX)
-    list(APPEND CPACK_COMPONENTS_ALL ${COMPONENT_NAME})
-    set(CPACK_ARCHIVE_${COMPONENT_NAME}_FILE_NAME "${FILE_NAME_PREFIX}_${FILE_NAME}_${FILE_NAME_SUFFIX}")
-    set(CPACK_DEBIAN_${COMPONENT_NAME}_FILE_NAME "${FILE_NAME_PREFIX}_${FILE_NAME}_${FILE_NAME_SUFFIX}.deb")
-    set(CPACK_RPM_${COMPONENT_NAME}_FILE_NAME "${FILE_NAME_PREFIX}_${FILE_NAME}_${FILE_NAME_SUFFIX}.rpm")
+# Try to determine what architecture we are building for based on the compiler output
+# Specify the variable to set as the parameter
+macro(microstrain_get_architecture SYS_ARCH_OUT)
+    # Detect if this is a x64 or x86 build
+    if(CMAKE_SIZEOF_VOID_P EQUAL 8)
+        set(${SYS_ARCH_OUT} "x64")
+    elseif(CMAKE_SIZEOF_VOID_P EQUAL 4)
+        set(${SYS_ARCH_OUT} "x86")
+    endif()
+
+    if(NOT DEFINED ${SYS_ARCH_OUT})
+        message(STATUS "Defaulting ${SYS_ARCH_OUT} to ${CMAKE_SYSTEM_PROCESSOR}")
+        set(${SYS_ARCH_OUT} ${CMAKE_SYSTEM_PROCESSOR})
+    else()
+        message(STATUS "Detected system architecture ${${SYS_ARCH_OUT}}")
+    endif()
 endmacro()
+
+# Try to determine what system architecture we are building for based on the compiler output
+# Specify the variable to set as the parameter
+macro(microstrain_get_package_architecture PACKAGE_ARCH_OUT)
+    unset(${PACKAGE_ARCH_OUT})
+
+    # Detect if this is a x64 or x86 build
+    if(WIN32)
+        set(${PACKAGE_ARCH_OUT} "Windows")
+        if(CMAKE_SIZEOF_VOID_P EQUAL 8)
+            string(APPEND ${PACKAGE_ARCH_OUT} "-x64")
+        elseif(CMAKE_SIZEOF_VOID_P EQUAL 4)
+            string(APPEND ${PACKAGE_ARCH_OUT} "-x86")
+        endif()
+    elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+        # The dumpmachine command from gcc should contain information on the architecture
+        execute_process(
+            COMMAND ${CMAKE_COMMAND} -E env /bin/bash -c "${CMAKE_CXX_COMPILER} -dumpmachine"
+            OUTPUT_VARIABLE GCC_ARCHITECTURE_OUT
+            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+            ERROR_VARIABLE GCC_ARCHITECTURE_ERR
+            RESULT_VARIABLE GCC_ARCHITECTURE_RET
+        )
+
+        # Convert the GCC architecture to the format that we use
+        if("${GCC_ARCHITECTURE_OUT}" MATCHES ".*x86_64.*")
+            set(${PACKAGE_ARCH_OUT} "amd64")
+        elseif("${GCC_ARCHITECTURE_OUT}" MATCHES ".*aarch64.*")
+            set(${PACKAGE_ARCH_OUT} "arm64")
+        elseif("${GCC_ARCHITECTURE_OUT}" MATCHES ".*arm.*")
+            set(${PACKAGE_ARCH_OUT} "armhf")
+        endif()
+    endif()
+
+    if(NOT DEFINED ${PACKAGE_ARCH_OUT})
+        message(STATUS "Defaulting ${PACKAGE_ARCH_OUT} to ${CMAKE_SYSTEM_PROCESSOR}")
+        set(${PACKAGE_ARCH_OUT} ${CMAKE_SYSTEM_PROCESSOR})
+    else()
+        message(STATUS "Detected package architecture ${${PACKAGE_ARCH_OUT}}")
+    endif()
+endmacro()
+
+function(microstrain_set_cpack_component_file_name)
+    set(SINGLE_VALUES PACKAGE_NAME COMPONENT_NAME COMPONENT_VERSION)
+    set(OPTIONAL_SINGLE_VALUES PACKAGE_ARCH)
+    set(MULTI_VALUES)
+
+    set(ADD_ARCHIVE_ARG_PREFIX "ADD_ARCHIVE_ARG")
+    cmake_parse_arguments(${ADD_ARCHIVE_ARG_PREFIX}
+        "${OPTIONS}"
+        "${SINGLE_VALUES};${OPTIONAL_SINGLE_VALUES}"
+        "${MULTI_VALUES}"
+        "${ARGN}"
+    )
+
+    # Remove the prefix from the arguments
+    foreach(ARG IN LISTS OPTIONS SINGLE_VALUES OPTIONAL_SINGLE_VALUES MULTI_VALUES)
+        set(${ARG} ${${ADD_ARCHIVE_ARG_PREFIX}_${ARG}})
+    endforeach()
+
+    # Make sure all the required arguments are used
+    foreach(ARG IN LISTS SINGLE_VALUES)
+        if(NOT ${ARG})
+            message(FATAL_ERROR "Adding package components requires the ${ARG} argument to be set")
+        endif()
+    endforeach()
+
+    set(FILE_NAME "${PACKAGE_NAME}-${COMPONENT_NAME}")
+
+    if(PACKAGE_ARCH)
+        string(APPEND FILE_NAME "-${PACKAGE_ARCH}")
+    endif()
+
+    string(APPEND FILE_NAME "-${COMPONENT_VERSION}")
+
+    # The component name needs to be all uppercase when creating the component variables
+    string(TOUPPER "${COMPONENT_NAME}" COMPONENT_NAME_UPPER)
+
+    set(CPACK_ARCHIVE_${COMPONENT_NAME_UPPER}_FILE_NAME "${FILE_NAME}" CACHE INTERNAL "${COMPONENT_NAME} archive file name")
+    set(CPACK_DEBIAN_${COMPONENT_NAME_UPPER}_FILE_NAME "${FILE_NAME}.deb" CACHE INTERNAL "${COMPONENT_NAME} Debian package file name")
+    set(CPACK_RPM_${COMPONENT_NAME_UPPER}_FILE_NAME "${FILE_NAME}.rpm" CACHE INTERNAL "${COMPONENT_NAME} RPM package file name")
+endfunction()
 
 macro(microstrain_get_git_branch GIT_BRANCH_OUT USER_CACHE_BRANCH)
     set(MICROSTRAIN_DEFAULT_GIT_BRANCH "unknown")

@@ -12,6 +12,7 @@ namespace mscl
 {
     typedef std::vector<Value> MipFieldValues;
 
+    //API Class: Vec3f
     class Vec3f
     {
     protected:

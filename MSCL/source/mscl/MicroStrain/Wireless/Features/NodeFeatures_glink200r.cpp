@@ -26,6 +26,8 @@ namespace mscl
 
     const WirelessTypes::WirelessSampleRates NodeFeatures_glink200r::sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const
     {
+        (void)dataMode;
+
         //the list of sample rates varies for each sampling mode
         switch(samplingMode)
         {

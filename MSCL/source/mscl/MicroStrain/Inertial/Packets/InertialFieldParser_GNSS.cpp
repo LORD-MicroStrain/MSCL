@@ -769,6 +769,9 @@ namespace mscl
         const bool jammingValid  = pointIsValid(flags, JAMMING_VALID);
         const bool spoofingValid = pointIsValid(flags, SPOOFING_VALID);
 
+        // Unused variable
+        (void)rfBandValid;
+
         // identifiers
         const MipTypes::ChannelField chField = static_cast<MipTypes::ChannelField>(field.fieldId());
 
