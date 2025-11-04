@@ -76,85 +76,11 @@ if(MSVC)
         "/MP"
         "/bigobj"
     )
-
-    # Ignore some annoying linker warnings
-#    target_link_options(${MSCL_UNIT_TESTS} PRIVATE
-#        "/ignore:4099"
-#    )
 endif()
 
-# Generate the list of test suites so each test result is output to the console
-# Not elegant but it's easier to do this programmatically
-
-set(TEST_SUITE_START_REGEX "BOOST_AUTO_TEST_SUITE\\(([^)]+)\\)")
-set(TEST_FIXTURE_START_REGEX "BOOST_FIXTURE_TEST_SUITE\\(([^,]+), [^)]+\\)")
-set(TEST_SUITE_CASE_REGEX "BOOST_AUTO_TEST_CASE\\(([^)]+)\\)*")
-set(TEST_SUITE_END_REGEX "BOOST_AUTO_TEST_SUITE_END\\(\\)")
-
-get_target_property(SRC_FILES ${MSCL_UNIT_TESTS} SOURCES)
-
-foreach(SOURCE IN LISTS SRC_FILES)
-    file(STRINGS "${SOURCE}" FILE_CONTENT REGEX "^BOOST_*")
-
-    unset(SUITE_NAMES)
-    unset(SUITE_TREE_LIST)
-    unset(SUITE_TREE_NAME)
-    unset(RUN_TEST_PREFIX)
-
-    foreach(LINE IN LISTS FILE_CONTENT)
-        if("${LINE}" MATCHES "${TEST_SUITE_START_REGEX}" OR "${LINE}" MATCHES "${TEST_FIXTURE_START_REGEX}")
-            if("${LINE}" MATCHES "${TEST_SUITE_START_REGEX}")
-                string(REGEX REPLACE "${TEST_SUITE_START_REGEX}" "\\1" SUITE_NAME "${LINE}")
-            else()
-                string(REGEX REPLACE "${TEST_FIXTURE_START_REGEX}" "\\1" SUITE_NAME "${LINE}")
-            endif()
-
-            list(APPEND SUITE_TREE_LIST ${SUITE_NAME})
-
-            if(NOT "${SUITE_TREE_NAME}" STREQUAL "")
-                string(APPEND SUITE_TREE_NAME "-")
-                string(APPEND RUN_TEST_PREFIX "/")
-            endif()
-
-            string(APPEND SUITE_TREE_NAME ${SUITE_NAME})
-            string(APPEND RUN_TEST_PREFIX ${SUITE_NAME})
-        elseif("${LINE}" MATCHES "${TEST_SUITE_CASE_REGEX}")
-            string(REGEX REPLACE "${TEST_SUITE_CASE_REGEX}" "\\1" CASE_NAME "${LINE}")
-
-            unset(TEST_NAME)
-            unset(RUN_NAME)
-
-            if(NOT "${SUITE_TREE_NAME}" STREQUAL "")
-                set(TEST_NAME "${SUITE_TREE_NAME}-")
-            endif()
-
-            string(APPEND TEST_NAME ${CASE_NAME})
-
-            if(NOT "${RUN_TEST_PREFIX}" STREQUAL "")
-                set(RUN_NAME "${RUN_TEST_PREFIX}/")
-            endif()
-
-            string(APPEND RUN_NAME ${CASE_NAME})
-
-            add_test(NAME "${TEST_NAME}" COMMAND ${MSCL_UNIT_TESTS} --log_level=test_suite --report_level=no --run_test=${RUN_NAME})
-        elseif("${LINE}" MATCHES "${TEST_SUITE_END_REGEX}")
-            list(POP_BACK SUITE_TREE_LIST)
-
-            unset(SUITE_TREE_NAME)
-            unset(RUN_TEST_PREFIX)
-
-            # Generate the new tree name
-            foreach(TREE_NAME IN LISTS SUITE_TREE_LIST)
-                if(NOT "${SUITE_TREE_NAME}" STREQUAL "")
-                    string(APPEND SUITE_TREE_NAME "-")
-                    string(APPEND RUN_TEST_PREFIX "/")
-                endif()
-
-                string(APPEND SUITE_TREE_NAME ${TREE_NAME})
-                string(APPEND RUN_TEST_PREFIX ${TREE_NAME})
-            endforeach()
-        else()
-            message(FATAL_ERROR "${LINE}")
-        endif()
-    endforeach()
-endforeach()
+# TODO: Add CI/CD plugin support for JUNIT results
+# Reporting as JUNIT isn't compatible for direct CI/CD logging, but it can be easily parsed with a plugin
+add_test(
+    NAME "${MSCL_UNIT_TESTS}"
+    COMMAND ${MSCL_UNIT_TESTS} --log_level=test_suite --log_format=JUNIT  --log_sink=mscl_test_results.xml --report_level=no
+)
