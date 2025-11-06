@@ -153,7 +153,7 @@ include(microstrain_utilities)
 # Detect if this is a x64 or x86 build
 microstrain_get_architecture(MSCL_ARCH_NAME)
 if (${MSCL_ARCH_NAME} STREQUAL "x64")
-    # This needs to be enabled to properly find OpenSSL for x64 builds
+    # This needs to be enabled to properly find any libraries that use the lib64 naming convention
     set_property(GLOBAL PROPERTY FIND_LIBRARY_USE_LIB64_PATHS ON)
 endif()
 
@@ -237,18 +237,6 @@ endif()
 if(MSVC)
     # Set the runtime library linking for all projects in MSVC
     set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>$<$<BOOL:${BUILD_SHARED_LIBS}>:DLL>")
-
-    set(MSCL_CPP_COMPILE_OPTIONS
-        "/MP" # Enable parallel builds
-        "/W4" # Turn on warnings
-        "/WX" # Set warnings as errors
-    )
-
-    set(MSCL_CPP_COMPILE_DEFINITIONS
-        "_CRT_SECURE_NO_WARNINGS" # Turn off MSVC specific CRT warnings as they're not cross platform compatible
-    )
-else()
-    # TODO: Unix compile options/definitions
 endif()
 
 # Build the library
@@ -365,15 +353,15 @@ if(MSCL_BUILD_PACKAGE)
         endif()
     endif()
 
-    if(MSCL_BUILD_CSHARP)
+#    if(MSCL_BUILD_CSHARP)
 #        microstrain_set_cpack_component_file_name(
 #            COMPONENT_NAME ${MSCL_CSHARP_INSTALL_COMPONENT}
 #            FILE_NAME_PREFIX ${MSCL_FILE_NAME_PREFIX}
 #            FILE_NAME "DotNet"
 #            FILE_NAME_SUFFIX ${MSCL_PACKAGE_VERSION_SUFFIX}
 #        )
-    endif()
-
+#    endif()
+#
 #    if(MSCL_BUILD_DOCUMENTATION)
 #        microstrain_set_cpack_component_file_name(
 #            COMPONENT_NAME ${MSCL_DOCS_INSTALL_COMPONENT}
@@ -382,15 +370,15 @@ if(MSCL_BUILD_PACKAGE)
 #            FILE_NAME_SUFFIX ${MSCL_PACKAGE_VERSION_SUFFIX}
 #        )
 #    endif()
-
-    if(MSCL_ZIP_EXAMPLES)
+#
+#    if(MSCL_ZIP_EXAMPLES)
 #        microstrain_set_cpack_component_file_name(
 #            COMPONENT_NAME ${MSCL_EXAMPLES_INSTALL_COMPONENT}
 #            FILE_NAME_PREFIX ${MSCL_LIBRARY}
 #            FILE_NAME "Examples"
 #            FILE_NAME_SUFFIX ${MSCL_PACKAGE_VERSION_SUFFIX}
 #        )
-    endif()
+#    endif()
 
     # Finally include cpack which should have taken all of the previous variables into consideration
     include(CPack)

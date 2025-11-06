@@ -57,8 +57,8 @@ set(MSCL_CSHARP_MANAGED_BUILD_DIR "${CMAKE_CURRENT_BINARY_DIR}/${MSCL_CSHARP_MAN
 add_custom_command(TARGET "${MSCL_CSHARP_MODULE_NAME}" POST_BUILD
     # Clear the Managed library build directory every time
     COMMAND "${CMAKE_COMMAND}"
-        -E remove_directory ${MSCL_CSHARP_MANAGED_BUILD_DIR}
-    # Generate the Manged library project
+        -E remove_directory "${MSCL_CSHARP_MANAGED_BUILD_DIR}"
+    # Generate the Manged library project using the same CMake configuration
     COMMAND "${CMAKE_COMMAND}"
         -G "${CMAKE_GENERATOR}"
         -A "${CMAKE_GENERATOR_PLATFORM}"
@@ -76,20 +76,27 @@ add_custom_command(TARGET "${MSCL_CSHARP_MODULE_NAME}" POST_BUILD
         --build "${MSCL_CSHARP_MANAGED_BUILD_DIR}"
         --config "$<CONFIG>"
         --target "${MSCL_CSHARP_MANAGED_NAME}"
-        --verbose
     COMMENT "Building the managed C# library"
 )
 
 # Installation
 set(MSCL_CSHARP_INSTALL_DIR "DotNet/${MSCL_ARCH_NAME}/$<CONFIG>")
 install(
-    TARGETS ${MSCL_CSHARP_MODULE_NAME}
+    TARGETS "${MSCL_CSHARP_MODULE_NAME}"
     DESTINATION "${MSCL_CSHARP_INSTALL_DIR}"
-    COMPONENT ${MSCL_CSHARP_MODULE_NAME}
+    COMPONENT "${MSCL_CSHARP_MODULE_NAME}"
 )
 
 install(
-    FILES ${MSCL_CSHARP_MANAGED_BUILD_DIR}/$<CONFIG>/${MSCL_CSHARP_MANAGED_NAME}.dll
+    FILES "${MSCL_CSHARP_MANAGED_BUILD_DIR}/$<CONFIG>/${MSCL_CSHARP_MANAGED_NAME}.dll"
     DESTINATION "${MSCL_CSHARP_INSTALL_DIR}"
-    COMPONENT ${MSCL_CSHARP_MODULE_NAME}
+    COMPONENT "${MSCL_CSHARP_MODULE_NAME}"
 )
+
+if(MSCL_BUILD_PACKAGE)
+    microstrain_set_cpack_component_file_name(
+        PACKAGE_NAME "${PROJECT_NAME}"
+        COMPONENT_NAME "${MSCL_CSHARP_MODULE_NAME}"
+        COMPONENT_VERSION "${CPACK_PACKAGE_VERSION}"
+    )
+endif()

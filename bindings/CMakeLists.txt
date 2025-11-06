@@ -47,6 +47,9 @@ set(UseSWIG_MODULE_VERSION 2)
 set(MSCL_SWIG_INTERFACE_LIB ${PROJECT_NAME}_Swig_Interface)
 add_library("${MSCL_SWIG_INTERFACE_LIB}" INTERFACE EXCLUDE_FROM_ALL)
 
+# The Swig modules cannot be built without the MSCL library
+add_dependencies("${MSCL_SWIG_INTERFACE_LIB}" "${MSCL_LIBRARY}")
+
 target_link_libraries("${MSCL_SWIG_INTERFACE_LIB}" INTERFACE
     "${MSCL_LIBRARY}"
 )

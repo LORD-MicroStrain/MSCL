@@ -5,6 +5,9 @@ set(Turtle_ROOT "" CACHE PATH "Location to search for the Turtle headers")
 # Create the test project
 add_executable(${MSCL_UNIT_TESTS})
 
+# The unit tests cannot be built without the MSCL library
+add_dependencies("${MSCL_UNIT_TESTS}" "${MSCL_LIBRARY}")
+
 # Add the test sources
 add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/src")
 
@@ -72,7 +75,6 @@ target_link_libraries(${MSCL_UNIT_TESTS} PRIVATE
 # On windows, we need to set the runtime library to the same as MSCL
 if(MSVC)
     target_compile_options(${MSCL_UNIT_TESTS} PRIVATE
-        "/MT$<$<CONFIG:Debug>:d>"
         "/MP"
         "/bigobj"
     )
