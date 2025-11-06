@@ -32,30 +32,48 @@ endif()
 
 find_package(SWIG ${SWIG_REQUESTED_VERSION} REQUIRED)
 
-# Set some CMake policies for Swig
-if(POLICY CMP0078)
-    cmake_policy(SET CMP0078 NEW)
-endif()
+# Include the Swig module after finding Swig
+include(UseSWIG)
 
-if(POLICY CMP0086)
-    cmake_policy(SET CMP0086 NEW)
+# The exceptions interface is included in the main interface like a C++ header
+# It is not needed to be included in this list
+set(SWIG_SOURCE_FILES
+    "${CMAKE_CURRENT_LIST_DIR}/MSCL_Main_Interface.i"
+)
+
+# Tell Swig to generate files in module specific directories in the current binary directory
+set(UseSWIG_MODULE_VERSION 2)
+
+set(MSCL_SWIG_INTERFACE_LIB ${PROJECT_NAME}_Swig_Interface)
+add_library("${MSCL_SWIG_INTERFACE_LIB}" INTERFACE EXCLUDE_FROM_ALL)
+
+target_link_libraries("${MSCL_SWIG_INTERFACE_LIB}" INTERFACE
+    "${MSCL_LIBRARY}"
+)
+
+if(MSVC)
+    target_compile_options("${MSCL_SWIG_INTERFACE_LIB}" INTERFACE
+        "/MP"
+        "/bigobj"
+    )
+else()
+    # Make sure Linux compiles static libraries with -fPIC
+    set_target_properties("${MSCL_SWIG_INTERFACE_LIB}" PROPERTIES
+        POSITION_INDEPENDENT_CODE TRUE
+    )
 endif()
 
 # Build the C# bindings
 if(MSCL_BUILD_CSHARP)
-    if(POLICY CMP0122)
-        cmake_policy(SET CMP0122 NEW)
-    endif()
-
-    add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/CSharp")
+    add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/csharp")
 endif()
 
 # Build the Python 2 bindings
 if(MSCL_BUILD_PYTHON2)
-    add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/Python2")
+    add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/python2")
 endif()
 
 # Build the Python 3 bindings
 if(MSCL_BUILD_PYTHON3)
-    add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/Python3")
+    add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/python3")
 endif()

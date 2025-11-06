@@ -11,10 +11,6 @@ if(MSVC)
         "/W4" # Turn on warnings
         "/WX" # Set warnings as errors
     )
-
-    set_target_properties("${MSCL_LIBRARY}" PROPERTIES
-        MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>$<$<BOOL:${BUILD_SHARED_LIBS}>:DLL>"
-    )
 elseif(UNIX AND NOT BUILD_SHARED_LIBS)
     # Make sure Linux compiles static libraries with -fPIC
     set_target_properties("${MSCL_LIBRARY}" PROPERTIES

@@ -13,7 +13,13 @@ if(MSCL_WITH_SSL)
     option(MSCL_DOWNLOAD_OPENSSL "MSCL can download OpenSSL if not already installed. Set OPENSSL_ROOT_DIR to the OpenSSL directory if this is turned off" ON)
 endif()
 
-if(NOT BUILD_SHARED_LIBS AND (UNIX AND (MSCL_BUILD_PYTHON3 OR MSCL_BUILD_PYTHON2)))
+# Helper to check if Python is requested
+set(MSCL_BUILD_PYTHON OFF)
+if(MSCL_BUILD_PYTHON3 OR MSCL_BUILD_PYTHON2)
+    set(MSCL_BUILD_PYTHON ON)
+endif()
+
+if(NOT BUILD_SHARED_LIBS AND UNIX AND MSCL_BUILD_PYTHON)
     set(BUILD_SHARED_LIBS ON)
 endif()
 
@@ -228,6 +234,23 @@ if(MSCL_BUILD_PACKAGE)
     endif()
 endif()
 
+if(MSVC)
+    # Set the runtime library linking for all projects in MSVC
+    set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>$<$<BOOL:${BUILD_SHARED_LIBS}>:DLL>")
+
+    set(MSCL_CPP_COMPILE_OPTIONS
+        "/MP" # Enable parallel builds
+        "/W4" # Turn on warnings
+        "/WX" # Set warnings as errors
+    )
+
+    set(MSCL_CPP_COMPILE_DEFINITIONS
+        "_CRT_SECURE_NO_WARNINGS" # Turn off MSVC specific CRT warnings as they're not cross platform compatible
+    )
+else()
+    # TODO: Unix compile options/definitions
+endif()
+
 # Build the library
 add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/MSCL")
 
@@ -247,10 +270,10 @@ if(MSCL_BUILD_TESTS)
     add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/tests")
 endif()
 
-## Build one or more of the bindings
-#if(MSCL_BUILD_PYTHON2 OR MSCL_BUILD_PYTHON3 OR MSCL_BUILD_CSHARP)
-#    add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/bindings")
-#endif()
+# Build one or more of the bindings
+if(MSCL_BUILD_PYTHON2 OR MSCL_BUILD_PYTHON3 OR MSCL_BUILD_CSHARP)
+    add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/bindings")
+endif()
 
 # If we were asked to build packages, include CPack and set up packaging
 if(MSCL_BUILD_PACKAGE)
