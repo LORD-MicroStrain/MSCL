@@ -66,6 +66,18 @@ else()
     )
 endif()
 
+# Common swig file properties needed to be set in the module scope (helper macro)
+macro(mscl_set_swig_file_properties MODULE_NAME)
+    # Set up the Swig interface file properties
+    set_source_files_properties(${SWIG_SOURCE_FILES} PROPERTIES
+        CPLUSPLUS ON
+        SWIG_MODULE_NAME "${MODULE_NAME}"
+        INCLUDE_DIRECTORIES "${MSCL_INCLUDE_DIR}"
+        # Add the namespace option for the Swig executable which converts to '-namespace mscl'
+        COMPILE_OPTIONS "-namespace;mscl"
+    )
+endmacro()
+
 # Build the C# bindings
 if(MSCL_BUILD_CSHARP)
     add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/csharp")

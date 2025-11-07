@@ -24,13 +24,7 @@ file(GENERATE
 set(MSCL_CSHARP_MODULE_NAME "${PROJECT_NAME}_CSharp")
 
 # Set up the Swig interface file properties
-set_source_files_properties(${SWIG_SOURCE_FILES} PROPERTIES
-    CPLUSPLUS ON
-    SWIG_MODULE_NAME "${MSCL_CSHARP_MODULE_NAME}"
-    INCLUDE_DIRECTORIES "${MSCL_INCLUDE_DIR}"
-    # Add the namespace option for the Swig executable which converts to '-namespace mscl'
-    COMPILE_OPTIONS "-namespace;mscl"
-)
+mscl_set_swig_file_properties("${MSCL_CSHARP_MODULE_NAME}")
 
 # Generate C++ wrapper and .cs files at BUILD time (not configure time)
 swig_add_library("${MSCL_CSHARP_MODULE_NAME}"
