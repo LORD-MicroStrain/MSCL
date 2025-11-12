@@ -1,6 +1,4 @@
-#pragma once
 
-// MSCL common code header (typically used as a precompiled header)
 #include <mscl/stdafx.h>
 
 #include <mscl/MicroStrain/Wireless/BaseStation.h>
@@ -27,13 +25,7 @@ static void parseData(mscl::BaseStation& base)
             // Iterate over each point in the sweep
             for (const mscl::WirelessDataPoint& dataPoint: sweep.data())
             {
-                // Print out the channel name
                 printf("%s: ", dataPoint.channelName().c_str());
-
-                // Print out the channel data
-                // Note: The as_string() function is being used here for simplicity.
-                //      Other methods (i.e., as_float, as_uint16, as_Vector) are also available.
-                //      To determine the format that a dataPoint is stored in, use dataPoint.storedAs().
                 printf("%s ", dataPoint.as_string().c_str());
             }
 

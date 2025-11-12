@@ -20,6 +20,17 @@
 #include "changeBaseStationFrequency.h"
 
 //#include "bandWidthAndStatus.cpp"
+#include "packetParser.h"
+#include "downloadDataLog.h"
+
+#include "sgLinkHardwareConfig.h"
+#include "sgLinkCalibrationConfig.h"
+
+#include "manuallyAddNode.h"
+
+#include "syncPacket.h"
+#include "ldcPacket.h"
+#include "shmPacket.h"
 
 #include "nodeCyclePower.h"
 #include "baseCyclePower.h"
@@ -61,6 +72,8 @@ int main(int argc, char** argv)
 
     //static constexpr int NODE_ADDRESS = 8582;
     static constexpr int NODE_ADDRESS = 9717;
+    //static constexpr int NODE_ADDRESS = 31291;
+    //static constexpr int NODE_ADDRESS = 1;
 
     // Create a SerialConnection with the COM port and (optional) baudrate
     mscl::Connection connection = mscl::Connection::Serial(COM_PORT, BAUDRATE);
@@ -74,7 +87,7 @@ int main(int argc, char** argv)
     // TODO: add as many other WirelessNode objects here as you want (used in the startSyncSampling example)
     std::vector<mscl::WirelessNode> networkNodes;
     networkNodes.push_back(node);
-    mscl::WirelessNode secondNode(8582, baseStation); networkNodes.push_back(secondNode); // uncomment if you want to test network of two nodes
+    //mscl::WirelessNode secondNode(8582, baseStation); networkNodes.push_back(secondNode); // uncomment if you want to test network of two nodes
 
     // Due to the nature of wireless devices, it is possible to lose packets over the air.
     // MSCL has a built-in way of performing retries whenever an eeprom address is attempted to be read.
@@ -86,6 +99,10 @@ int main(int argc, char** argv)
 
     // Example: Ping Node
     pingNode(node);
+
+    /////////////////////////////////SGLink200 Specific examples////////////////////////
+
+    //sgLinkHardwareConfig(baseStation, node); 
 
     /////////////////////////////////GLink200 Specific examples////////////////////////
     
@@ -115,11 +132,21 @@ int main(int argc, char** argv)
 
     //////////////////////////////More General Examples////////////////////////////////
 
+    manuallyAddNode(baseStation); 
+
+    //packetParser(baseStation, node); 
+    
+    //syncPacket(baseStation, node); 
+    //ldcPacket(baseStation, node); 
+    //shmPacket(baseStation, node); 
+
+    //downloadDataLog(node); 
+
     //nodeDiscovery(baseStation); 
 
     //supportedSampleRates(node);  
 
-    syncSampling(baseStation, networkNodes); 
+    //syncSampling(baseStation, networkNodes); 
     
     //nonSyncSampling(baseStation, networkNodes); 
 

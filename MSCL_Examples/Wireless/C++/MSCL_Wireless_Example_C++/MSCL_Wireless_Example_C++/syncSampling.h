@@ -8,7 +8,6 @@
 #include <chrono>
 #include <thread>
 
-
 #include "bandWidthAndStatus.cpp"
 #include "switchNodeProtocol.cpp"
 
@@ -132,15 +131,15 @@ static void syncSampling(mscl::BaseStation& base, std::vector<mscl::WirelessNode
 {
     printf("\nSetting up Stream configuration settings...\n");
 
-    // SyncSamplingNetwork is the sampling network that we need to set up to stream a synchronized network
-    mscl::SyncSamplingNetwork sync_network(base);
-
-    mscl::ArmedDataloggingNetwork armed_network(base);
 
     auto protocol = setLxrsMode(); 
 
     if (syncOrArmed())
     {
+
+        // SyncSamplingNetwork is the sampling network that we need to set up to stream a synchronized network
+        mscl::SyncSamplingNetwork sync_network(base);
+
         // Setting the network to lossless or lossy depending on User Input
         sync_network.lossless(setLosslessMode());
 
@@ -199,13 +198,15 @@ static void syncSampling(mscl::BaseStation& base, std::vector<mscl::WirelessNode
     }
     else
     {
+        mscl::ArmedDataloggingNetwork armed_network(base);
+
         for (mscl::WirelessNode& node : nodes)
         {
             // create WirelessNodeConfig object to configure each node individually
             mscl::WirelessNodeConfig config;
 
-            // set the sampling mode config for the node to sync sampling
-            config.samplingMode(mscl::WirelessTypes::samplingMode_armedDatalog);
+            // set the sampling mode config for the node to armed mode
+            //config.samplingMode(mscl::WirelessTypes::samplingMode_armedDatalog);
 
             // switch protocol to choice based on user input
             switchNodeProtocol(node, base, protocol);
