@@ -188,6 +188,7 @@ macro(microstrain_get_package_architecture PACKAGE_ARCH_OUT)
 endmacro()
 
 function(microstrain_set_cpack_component_file_name)
+    set(OPTIONS)
     set(SINGLE_VALUES PACKAGE_NAME COMPONENT_NAME COMPONENT_VERSION)
     set(OPTIONAL_SINGLE_VALUES PACKAGE_ARCH)
     set(MULTI_VALUES)

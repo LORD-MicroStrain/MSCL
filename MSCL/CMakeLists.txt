@@ -23,7 +23,7 @@ endif()
 set(MSCL_HEADER_FILE_SET "HEADERS")
 target_sources("${MSCL_LIBRARY}" PUBLIC
     FILE_SET "${MSCL_HEADER_FILE_SET}"
-    BASE_DIRS "${MSCL_INCLUDE_DIRS}"
+    BASE_DIRS "${MSCL_INCLUDE_DIR}"
 )
 
 # Add all the sources
@@ -40,10 +40,6 @@ source_group(
 target_include_directories("${MSCL_LIBRARY}" PUBLIC
     "${MSCL_INCLUDE_DIR}"
 )
-
-# For completeness and compatibility with find_package(MSCL), add the LIBRARIES and INCLUDE_DIRS variables as well
-set(MSCL_LIBRARIES "${MSCL_LIBRARY}" CACHE STRING "List of MSCL libraries" FORCE)
-set(MSCL_INCLUDE_DIRS "${MSCL_INCLUDE_DIR}" CACHE STRING "List of MSCL include directories" FORCE)
 
 # Find/configure some dependencies
 
@@ -73,6 +69,10 @@ target_link_libraries("${MSCL_LIBRARY}" PUBLIC
     ${Boost_LIBRARIES}
 )
 
+target_include_directories("${MSCL_LIBRARY}" PUBLIC
+    "${Boost_INCLUDE_DIRS}"
+)
+
 # Disable deprecated Boost components
 # Forces updates on deprecated components sooner rather than later
 # These are not required by users and are defined privately in MSCL
@@ -94,6 +94,10 @@ if(MSCL_WITH_SSL)
     target_link_libraries("${MSCL_LIBRARY}" PUBLIC
         ${OPENSSL_LIBRARIES}
     )
+
+    target_include_directories("${MSCL_LIBRARY}" PUBLIC
+        "${OPENSSL_INCLUDE_DIR}"
+    )
 else()
     # TODO: Don't assume the user linked proper libraries for this support!!
     target_compile_definitions("${MSCL_LIBRARY}" PUBLIC
@@ -108,11 +112,14 @@ if(NOT MSCL_WITH_WEBSOCKETS)
     )
 endif()
 
+# For completeness and compatibility with find_package(MSCL), add the LIBRARIES and INCLUDE_DIRS variables as well
+set(MSCL_LIBRARIES "${MSCL_LIBRARY}" CACHE STRING "List of MSCL libraries" FORCE)
+get_target_property(MSCL_INTERFACE_INCLUDE_DIRS "${MSCL_LIBRARY}" INTERFACE_INCLUDE_DIRECTORIES)
+set(MSCL_INCLUDE_DIRS ${MSCL_INTERFACE_INCLUDE_DIRS} CACHE STRING "List of MSCL include directories" FORCE)
+
 #
 # Installation setup
 #
-
-include(GNUInstallDirs)
 
 set(MSCL_INSTALL_LIBDIR "${CMAKE_INSTALL_LIBDIR}")
 set(MSCL_INSTALL_INCLUDEDIR "${CMAKE_INSTALL_INCLUDEDIR}")

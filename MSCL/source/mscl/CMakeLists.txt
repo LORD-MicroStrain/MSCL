@@ -9,7 +9,7 @@ configure_file(${MSCL_VERSION_IN_FILE} ${MSCL_VERSION_OUT_FILE})
 
 # Configure the precompiled header
 set(MSCL_PCH_FILE "${CMAKE_CURRENT_LIST_DIR}/stdafx.h")
-target_precompile_headers(${MSCL_LIBRARY} PUBLIC
+target_precompile_headers(${MSCL_LIBRARY} PRIVATE
     "${MSCL_PCH_FILE}"
 )
 

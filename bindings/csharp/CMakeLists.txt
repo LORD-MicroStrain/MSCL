@@ -3,8 +3,6 @@ if(NOT WIN32)
     return()
 endif()
 
-enable_language(CSharp)
-
 # Generate the assembly info file for CSharp (This uses the MSCL_CURRENT_YEAR variable)
 set(ASSEMBLY_FILE "AssemblyInfo.cs")
 set(MSCL_ASSEMBLY_CS_IN_FILE "${CMAKE_CURRENT_LIST_DIR}/${ASSEMBLY_FILE}.in")
@@ -21,76 +19,69 @@ file(GENERATE
 )
 
 # The generated Swig module to link the C# bindings to (C++ module)
-set(MSCL_CSHARP_MODULE_NAME "${PROJECT_NAME}_CSharp")
-
-# Set up the Swig interface file properties
-mscl_set_swig_file_properties("${MSCL_CSHARP_MODULE_NAME}")
-
-# Generate C++ wrapper and .cs files at BUILD time (not configure time)
-swig_add_library("${MSCL_CSHARP_MODULE_NAME}"
-    TYPE SHARED
-    LANGUAGE "csharp"
-    SOURCES ${SWIG_SOURCE_FILES}
+set(MSCL_CSHARP_TARGET "${PROJECT_NAME}_CSharp")
+mscl_add_swig_module_library(
+    LIB_NAME "${MSCL_CSHARP_TARGET}"
+    MODULE_LANGUAGE "csharp"
+    ADDITIONAL_SWIG_OPTIONS "-namespace;mscl"
 )
 
-target_link_libraries("${MSCL_CSHARP_MODULE_NAME}" PRIVATE
-    "${MSCL_SWIG_INTERFACE_LIB}"
-)
-
-set_target_properties("${MSCL_CSHARP_MODULE_NAME}" PROPERTIES
-    WINDOWS_EXPORT_ALL_SYMBOLS OFF # Exporting all symbols causes issues in Swig with the precompiled header
-    OUTPUT_NAME "${MSCL_LIBRARY}"
-)
+# The Swig modules cannot be built without the MSCL library
+add_dependencies("${MSCL_CSHARP_TARGET}" "${MSCL_LIBRARY}")
 
 # Get the generated .cs files output directory
-get_target_property(MSCL_GENERATED_CSHARP_SOURCE_DIR "${MSCL_CSHARP_MODULE_NAME}" SWIG_SUPPORT_FILES_DIRECTORY)
+get_target_property(MSCL_GENERATED_CSHARP_SOURCE_DIR "${MSCL_CSHARP_TARGET}" SWIG_SUPPORT_FILES_DIRECTORY)
 
-set(MSCL_CSHARP_MANAGED_NAME "${PROJECT_NAME}_Managed")
-set(MSCL_CSHARP_MANAGED_BUILD_DIR "${CMAKE_CURRENT_BINARY_DIR}/${MSCL_CSHARP_MANAGED_NAME}")
+set(MSCL_CSHARP_MANAGED_TARGET "${PROJECT_NAME}_Managed")
+set(MSCL_CSHARP_MANAGED_BUILD_DIR "${CMAKE_CURRENT_BINARY_DIR}/${MSCL_CSHARP_MANAGED_TARGET}")
+set(MSCL_CSHARP_MANAGED_SOURCE_FILES
+    "${MSCL_ASSEMBLY_CS_OUT_FILE}"
+    "${CMAKE_CURRENT_LIST_DIR}/Exceptions.cs"
+)
 
-add_custom_command(TARGET "${MSCL_CSHARP_MODULE_NAME}" POST_BUILD
+add_custom_command(TARGET "${MSCL_CSHARP_TARGET}" POST_BUILD
     # Clear the Managed library build directory every time
     COMMAND "${CMAKE_COMMAND}"
         -E remove_directory "${MSCL_CSHARP_MANAGED_BUILD_DIR}"
     # Generate the Manged library project using the same CMake configuration
-    COMMAND "${CMAKE_COMMAND}"
+    COMMAND ${CMAKE_COMMAND}
         -G "${CMAKE_GENERATOR}"
         -A "${CMAKE_GENERATOR_PLATFORM}"
         -S "${CMAKE_CURRENT_LIST_DIR}/managed"
         -B "${MSCL_CSHARP_MANAGED_BUILD_DIR}"
-        -DMSCL_CSHARP_MANAGED_NAME="${MSCL_CSHARP_MANAGED_NAME}"
-        -DMSCL_GENERATED_CSHARP_SOURCE_DIR="${MSCL_GENERATED_CSHARP_SOURCE_DIR}"
-        -DMSCL_CSHARP_ASSEMBLY_FILE="${MSCL_ASSEMBLY_CS_OUT_FILE}"
-        -DMSCL_CSHARP_EXCEPTIONS_FILE="${CMAKE_CURRENT_LIST_DIR}/Exceptions.cs"
-        -DNATIVE_DLL="$<TARGET_FILE:${MSCL_CSHARP_MODULE_NAME}>"
-        -DNATIVE_DLL_IMPLIB="$<TARGET_LINKER_FILE:${MSCL_CSHARP_MODULE_NAME}>"
-        -DMSCL_CSHARP_MODULE_NAME="${MSCL_CSHARP_MODULE_NAME}"
+        "-DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}"
+        "-DMSCL_CSHARP_MANAGED_TARGET=${MSCL_CSHARP_MANAGED_TARGET}"
+        "-DMSCL_GENERATED_CSHARP_SOURCE_DIR=${MSCL_GENERATED_CSHARP_SOURCE_DIR}"
+        "-DMSCL_CSHARP_MANAGED_SOURCE_FILES=${MSCL_CSHARP_MANAGED_SOURCE_FILES}"
+        "-DNATIVE_DLL=$<TARGET_FILE:${MSCL_CSHARP_TARGET}>"
+        "-DNATIVE_DLL_IMPLIB=$<TARGET_LINKER_FILE:${MSCL_CSHARP_TARGET}>"
+        "-DMSCL_CSHARP_TARGET=${MSCL_CSHARP_TARGET}"
     # Build the Manged library project
-    COMMAND "${CMAKE_COMMAND}"
+    COMMAND ${CMAKE_COMMAND}
         --build "${MSCL_CSHARP_MANAGED_BUILD_DIR}"
         --config "$<CONFIG>"
-        --target "${MSCL_CSHARP_MANAGED_NAME}"
-    COMMENT "Building the managed C# library"
+        --target "${MSCL_CSHARP_MANAGED_TARGET}"
+    COMMENT "Building the managed C# library for MSCL"
 )
 
 # Installation
 set(MSCL_CSHARP_INSTALL_DIR "DotNet/${MSCL_ARCH_NAME}/$<CONFIG>")
 install(
-    TARGETS "${MSCL_CSHARP_MODULE_NAME}"
+    TARGETS "${MSCL_CSHARP_TARGET}"
     DESTINATION "${MSCL_CSHARP_INSTALL_DIR}"
-    COMPONENT "${MSCL_CSHARP_MODULE_NAME}"
+    COMPONENT "${MSCL_CSHARP_TARGET}"
 )
 
 install(
-    FILES "${MSCL_CSHARP_MANAGED_BUILD_DIR}/$<CONFIG>/${MSCL_CSHARP_MANAGED_NAME}.dll"
+    FILES "${MSCL_CSHARP_MANAGED_BUILD_DIR}/$<CONFIG>/${MSCL_CSHARP_MANAGED_TARGET}.dll"
     DESTINATION "${MSCL_CSHARP_INSTALL_DIR}"
-    COMPONENT "${MSCL_CSHARP_MODULE_NAME}"
+    COMPONENT "${MSCL_CSHARP_TARGET}"
 )
 
 if(MSCL_BUILD_PACKAGE)
     microstrain_set_cpack_component_file_name(
         PACKAGE_NAME "${PROJECT_NAME}"
-        COMPONENT_NAME "${MSCL_CSHARP_MODULE_NAME}"
+        COMPONENT_NAME "${MSCL_CSHARP_TARGET}"
         COMPONENT_VERSION "${CPACK_PACKAGE_VERSION}"
     )
 endif()

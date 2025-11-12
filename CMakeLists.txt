@@ -13,6 +13,50 @@ if(MSCL_WITH_SSL)
     option(MSCL_DOWNLOAD_OPENSSL "MSCL can download OpenSSL if not already installed. Set OPENSSL_ROOT_DIR to the OpenSSL directory if this is turned off" ON)
 endif()
 
+if(MSCL_BUILD_PYTHON2)
+    # Allow the user to request a certain version of Python2
+    # If using a version not supported by the build system then the user must have the requested version installed already
+    set(MSCL_PYTHON2_REQUESTED_VERSION "2.7" CACHE STRING "The requested version of Python2 to use for bindings")
+
+    # Allow the user to use a pre-installed version of Python2
+    option(MSCL_DOWNLOAD_PYTHON2 "MSCL can download Python2 if not already installed. Set Python2_ROOT to the Python2 directory if this is turned off" ON)
+
+    # List of supported Python2 versions
+    set(MSCL_SUPPORTED_PYTHON2_VERSIONS
+        "2.7"
+    )
+
+    # Add only the requested version or all supported versions of Python2 to be built
+    if("${MSCL_PYTHON2_REQUESTED_VERSION}" STREQUAL "")
+        list(APPEND MSCL_PYTHON_REQUESTED_VERSIONS ${MSCL_SUPPORTED_PYTHON2_VERSIONS})
+    else()
+        list(APPEND MSCL_PYTHON_REQUESTED_VERSIONS "${MSCL_PYTHON2_REQUESTED_VERSION}")
+    endif()
+endif()
+
+if(MSCL_BUILD_PYTHON3)
+    # Allow the user to request a certain version of Python3
+    # If using a version not supported by the build system then the user must have the requested version installed already
+    set(MSCL_PYTHON3_REQUESTED_VERSION "3.12" CACHE STRING "The requested version of Python3 to use for bindings")
+
+    # Allow the user to use a pre-installed version of Python3
+    option(MSCL_DOWNLOAD_PYTHON3 "MSCL can download Python3 if not already installed. Set Python3_ROOT to the Python3 directory if this is turned off" ON)
+
+    # List of supported Python3 versions
+    set(MSCL_SUPPORTED_PYTHON3_VERSIONS
+        "3.10"
+        "3.11"
+        "3.12"
+    )
+
+    # Add only the requested version or all supported versions of Python3 to be built
+    if("${MSCL_PYTHON3_REQUESTED_VERSION}" STREQUAL "")
+        list(APPEND MSCL_PYTHON_REQUESTED_VERSIONS ${MSCL_SUPPORTED_PYTHON3_VERSIONS})
+    else()
+        list(APPEND MSCL_PYTHON_REQUESTED_VERSIONS "${MSCL_PYTHON3_REQUESTED_VERSION}")
+    endif()
+endif()
+
 # Helper to check if Python is requested
 set(MSCL_BUILD_PYTHON OFF)
 if(MSCL_BUILD_PYTHON3 OR MSCL_BUILD_PYTHON2)
@@ -64,9 +108,6 @@ if(MSCL_DOWNLOAD_OPENSSL)
     list(APPEND VCPKG_MANIFEST_FEATURES "openssl")
 endif()
 
-
-set(VCPKG_DIR "${CMAKE_CURRENT_SOURCE_DIR}/deps/vcpkg")
-
 # Force vcpkg to output our dependencies to the install directory. This should handle sub dependencies too
 option(X_VCPKG_APPLOCAL_DEPS_INSTALL
     "(experimental) Automatically copy dependencies into the install target directory for executables. Requires CMake 3.14."
@@ -76,44 +117,47 @@ option(X_VCPKG_APPLOCAL_DEPS_INSTALL
 if(CMAKE_GENERATOR)
     set(Z_VCPKG_CMAKE_GENERATOR "${CMAKE_GENERATOR}")
 endif()
+
 if(CMAKE_GENERATOR_TOOLSET)
     set(VCPKG_PLATFORM_TOOLSET "${CMAKE_GENERATOR_TOOLSET}")
     set(Z_VCPKG_PLATFORM_TOOLSET "${CMAKE_GENERATOR_TOOLSET}")
 endif()
 
+set(MSCL_VCPKG_DIR "${CMAKE_CURRENT_LIST_DIR}/deps/vcpkg")
+
 # Prefer vcpkg if we can find it. Fallback if CMake presets aren't used
 if(NOT DEFINED CMAKE_TOOLCHAIN_FILE)
     # Different vcpkg roots depending on OS
     if(WIN32)
-        set(MICROSTRAIN_VCPKG_ROOTS
-            "${VCPKG_DIR}"
+        set(MSCL_VCPKG_ROOTS
+            "${MSCL_VCPKG_DIR}"
             "C:/Program Files/vcpkg"
             "C:/Program Files (x86)/vcpkg"
         )
     elseif(UNIX OR OSX)
-        set(MICROSTRAIN_VCPKG_ROOTS
-            "${VCPKG_DIR}"
+        set(MSCL_VCPKG_ROOTS
+            "${MSCL_VCPKG_DIR}"
             "/opt/vcpkg"
         )
     endif()
 
     # See if we can find the vcpkg toolchain file
-    find_file(MICROSTRAIN_VCPKG_TOOLCHAIN
+    find_file(MSCL_VCPKG_TOOLCHAIN
         NAMES "scripts/buildsystems/vcpkg.cmake"
-        PATHS ${MICROSTRAIN_VCPKG_ROOTS}
+        PATHS ${MSCL_VCPKG_ROOTS}
         NO_DEFAULT_PATH
     )
-    if(MICROSTRAIN_VCPKG_TOOLCHAIN)
-        message(STATUS "Using vcpkg toolchain file ${MICROSTRAIN_VCPKG_TOOLCHAIN}")
+    if(MSCL_VCPKG_TOOLCHAIN)
+        message(STATUS "Using vcpkg toolchain file ${MSCL_VCPKG_TOOLCHAIN}")
     endif()
 
     # Tell cmake about the toolchain file
-    set(CMAKE_TOOLCHAIN_FILE ${MICROSTRAIN_VCPKG_TOOLCHAIN})
+    set(CMAKE_TOOLCHAIN_FILE ${MSCL_VCPKG_TOOLCHAIN})
 endif()
 
 
 cmake_minimum_required(VERSION 3.23)
-project(MSCL
+project("MSCL"
     LANGUAGES CXX
     VERSION 67.1.0
 )
@@ -238,6 +282,9 @@ if(MSVC)
     # Set the runtime library linking for all projects in MSVC
     set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>$<$<BOOL:${BUILD_SHARED_LIBS}>:DLL>")
 endif()
+
+# Use common installation directory naming conventions
+include(GNUInstallDirs)
 
 # Build the library
 add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/MSCL")

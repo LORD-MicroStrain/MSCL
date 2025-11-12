@@ -2777,6 +2777,8 @@ namespace mscl
             USB     = 0x02  // USB related ports
         };
 
+// Nested structs are not supported for Swig Python bindings
+#ifndef SWIGPYTHON
         //API Enum: InterfaceId
         //  Common predefined interface IDs
         //      ALL     - 0x00 - All available interfaces (Special type 0, ID 0)
@@ -2798,6 +2800,7 @@ namespace mscl
             static constexpr uint8 USB1  = (static_cast<uint8>(Type::USB) << 4)     | 1;  // USB port 1
             static constexpr uint8 USB2  = (static_cast<uint8>(Type::USB) << 4)     | 2;  // USB port 2
         };
+#endif // !SWIGPYTHON
 
         //API Enum: Protocol
         //  Available comm protocols that can be configured for UART ports

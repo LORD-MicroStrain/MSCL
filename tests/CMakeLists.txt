@@ -72,6 +72,10 @@ target_link_libraries(${MSCL_UNIT_TESTS} PRIVATE
     ${Boost_LIBRARIES}
 )
 
+target_precompile_headers(${MSCL_UNIT_TESTS} PRIVATE
+    "${MSCL_INCLUDE_DIR}/mscl/stdafx.h"
+)
+
 # On windows, we need to set the runtime library to the same as MSCL
 if(MSVC)
     target_compile_options(${MSCL_UNIT_TESTS} PRIVATE
