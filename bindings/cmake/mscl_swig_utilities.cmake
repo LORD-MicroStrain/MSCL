@@ -78,6 +78,9 @@ macro(mscl_add_swig_module_library)
         SOURCES ${SWIG_SOURCE_FILES}
     )
 
+    # The Swig modules cannot be built without the MSCL library
+    add_dependencies("${LIB_NAME}" "${MSCL_LIBRARY}")
+
     # All the bindings require linking to MSCL
     target_link_libraries("${LIB_NAME}" PRIVATE
         "${MSCL_LIBRARY}"
@@ -104,89 +107,6 @@ macro(mscl_add_swig_module_library)
     if(LINK_OPTIONS)
         target_link_options("${LIB_NAME}" PRIVATE
             ${LINK_OPTIONS}
-        )
-    endif()
-endmacro()
-
-macro(mscl_add_swig_python_module_library MSCL_PYTHON_VERSION MSCL_PYTHON_MAJOR_VERSION)
-    set(MSCL_PYTHON_TARGET_NAME "${PROJECT_NAME}_Python${MSCL_PYTHON_VERSION}")
-
-    # Set some linker options
-    if(MSVC)
-        set(MSCL_PYTHON_LINK_OPTIONS
-            "$<$<CONFIG:Release>:/LTCG>"
-        )
-    else()
-        set(MSCL_PYTHON_LINK_OPTIONS
-            "-Wl,--no-as-needed"
-        )
-    endif()
-
-    mscl_add_swig_module_library(
-        LIB_NAME "${MSCL_PYTHON_TARGET_NAME}"
-        MODULE_LANGUAGE "python"
-        LINK_OPTIONS ${MSCL_PYTHON_LINK_OPTIONS}
-    )
-
-    set(Python${MSCL_PYTHON_MAJOR_VERSION}_USE_STATIC_LIBS ${MSCL_LINK_STATIC_DEPS})
-
-    # Find the required Python package
-    find_package("Python${MSCL_PYTHON_MAJOR_VERSION}"
-        ${MSCL_PYTHON_VERSION} EXACT
-        REQUIRED
-        COMPONENTS "Development"
-    )
-
-    # Link/include the required Python package
-    target_link_libraries("${MSCL_PYTHON_TARGET_NAME}" PRIVATE
-        ${Python${MSCL_PYTHON_MAJOR_VERSION}_LIBRARIES}
-    )
-    target_include_directories("${MSCL_PYTHON_TARGET_NAME}" PRIVATE
-        "${Python${MSCL_PYTHON_MAJOR_VERSION}_INCLUDE_DIRS}"
-    )
-
-    # vcpkg doesn't provide pdb files for debug builds of Python
-    if(MSVC)
-        target_link_options("${MSCL_PYTHON_TARGET_NAME}" PRIVATE
-            "/ignore:4099"
-        )
-    endif()
-
-    # Python 3.10 doesn't seem to link ZLIB properly through vcpkg
-    # Make sure it's actually linked
-    if(WIN32 AND MSCL_PYTHON_VERSION MATCHES "^3\.10")
-        find_package("ZLIB" REQUIRED)
-        target_link_libraries("${MSCL_PYTHON_TARGET_NAME}" PRIVATE
-            ${ZLIB_LIBRARIES}
-        )
-    endif()
-
-    # Get the generated .py files
-    get_target_property(MSCL_GENERATED_PYTHON_SOURCES "${MSCL_PYTHON_TARGET_NAME}" SWIG_SUPPORT_FILES)
-
-    # Installation
-    if(MSVC)
-        set(PYTHON_DIST_PACKAGES_DIR "Python/${MSCL_PYTHON_VERSION}/${MSCL_ARCH_NAME}/$<CONFIG>")
-    else()
-        set(PYTHON_DIST_PACKAGES_DIR ${CMAKE_INSTALL_LIBDIR}/python${MSCL_PYTHON_VERSION}/dist-packages)
-    endif()
-
-    install(
-        TARGETS ${MSCL_PYTHON_TARGET_NAME}
-        DESTINATION "${PYTHON_DIST_PACKAGES_DIR}"
-        COMPONENT "${MSCL_PYTHON_TARGET_NAME}"
-    )
-    install(
-        FILES "${MSCL_GENERATED_PYTHON_SOURCES}"
-        DESTINATION "${PYTHON_DIST_PACKAGES_DIR}"
-        COMPONENT "${MSCL_PYTHON_TARGET_NAME}"
-    )
-
-    if(MSCL_BUILD_PACKAGE)
-        microstrain_set_cpack_component_file_name(
-            PACKAGE_NAME "${MSCL_PYTHON_TARGET_NAME}"
-            COMPONENT_NAME "${MSCL_PYTHON_TARGET_NAME}"
-            COMPONENT_VERSION "${CPACK_PACKAGE_VERSION}"
         )
     endif()
 endmacro()

@@ -1,19 +1,31 @@
 set(MSCL_LIBRARY "${PROJECT_NAME}" CACHE INTERNAL "Name of the MSCL library")
 set(MSCL_INCLUDE_DIR "${CMAKE_CURRENT_LIST_DIR}/source" CACHE INTERNAL "MSCL include directory")
-add_library(${MSCL_LIBRARY} ${MSCL_SOURCES})
+
+# Create the MSCL main target library
+set(MSCL_CPP_TARGET "${MSCL_LIBRARY}-Cpp")
+add_library("${MSCL_CPP_TARGET}" ${MSCL_SOURCES})
+
+# Set the correct library output name
+set_target_properties("${MSCL_CPP_TARGET}" PROPERTIES
+    OUTPUT_NAME "${MSCL_LIBRARY}"
+)
+
+# Create an alias for proper linking
+# This is the actual name of the packaged library
+add_library("${MSCL_LIBRARY}" ALIAS "${MSCL_CPP_TARGET}")
 
 if(MSVC)
-    target_compile_definitions("${MSCL_LIBRARY}" PRIVATE
+    target_compile_definitions("${MSCL_CPP_TARGET}" PRIVATE
         "_CRT_SECURE_NO_WARNINGS" # Turn off MSVC specific CRT warnings as they're not cross platform compatible
     )
-    target_compile_options("${MSCL_LIBRARY}" PRIVATE
+    target_compile_options("${MSCL_CPP_TARGET}" PRIVATE
         "/MP" # Enable parallel builds
         "/W4" # Turn on warnings
         "/WX" # Set warnings as errors
     )
 elseif(UNIX AND NOT BUILD_SHARED_LIBS)
     # Make sure Linux compiles static libraries with -fPIC
-    set_target_properties("${MSCL_LIBRARY}" PROPERTIES
+    set_target_properties("${MSCL_CPP_TARGET}" PROPERTIES
         POSITION_INDEPENDENT_CODE TRUE
     )
 endif()
@@ -21,7 +33,7 @@ endif()
 # Setup the HEADERS file set
 # This is required to be done here so any subdirectories can use it properly
 set(MSCL_HEADER_FILE_SET "HEADERS")
-target_sources("${MSCL_LIBRARY}" PUBLIC
+target_sources("${MSCL_CPP_TARGET}" PUBLIC
     FILE_SET "${MSCL_HEADER_FILE_SET}"
     BASE_DIRS "${MSCL_INCLUDE_DIR}"
 )
@@ -30,14 +42,14 @@ target_sources("${MSCL_LIBRARY}" PUBLIC
 add_subdirectory("${MSCL_INCLUDE_DIR}/mscl")
 
 # Setup IDE filters for the IDEs that support it
-get_target_property(MSCL_SOURCES ${MSCL_LIBRARY} SOURCES)
-get_target_property(MSCL_HEADERS ${MSCL_LIBRARY} HEADER_SET)
+get_target_property(MSCL_SOURCES ${MSCL_CPP_TARGET} SOURCES)
+get_target_property(MSCL_HEADERS ${MSCL_CPP_TARGET} HEADER_SET)
 source_group(
     TREE ${MSCL_INCLUDE_DIR}
     FILES ${MSCL_SOURCES} ${MSCL_HEADERS}
 )
 
-target_include_directories("${MSCL_LIBRARY}" PUBLIC
+target_include_directories("${MSCL_CPP_TARGET}" PUBLIC
     "${MSCL_INCLUDE_DIR}"
 )
 
@@ -65,18 +77,18 @@ set(Boost_USE_STATIC_RUNTIME ${MSCL_LINK_STATIC_DEPS})
 
 find_package("Boost" REQUIRED COMPONENTS ${Boost_REQUESTED_COMPONENTS} CONFIG)
 
-target_link_libraries("${MSCL_LIBRARY}" PUBLIC
+target_link_libraries("${MSCL_CPP_TARGET}" PUBLIC
     ${Boost_LIBRARIES}
 )
 
-target_include_directories("${MSCL_LIBRARY}" PUBLIC
-    "${Boost_INCLUDE_DIRS}"
-)
+#target_include_directories("${MSCL_CPP_TARGET}" PUBLIC
+#    "${Boost_INCLUDE_DIRS}"
+#)
 
 # Disable deprecated Boost components
 # Forces updates on deprecated components sooner rather than later
 # These are not required by users and are defined privately in MSCL
-target_compile_definitions("${MSCL_LIBRARY}" PRIVATE
+target_compile_definitions("${MSCL_CPP_TARGET}" PRIVATE
     "BOOST_ASIO_NO_DEPRECATED"
     "BOOST_FILESYSTEM_NO_DEPRECATED"
     "BOOST_PROCESS_NO_DEPRECATED"
@@ -91,30 +103,30 @@ if(MSCL_WITH_SSL)
 
     find_package("OpenSSL" REQUIRED)
 
-    target_link_libraries("${MSCL_LIBRARY}" PUBLIC
+    target_link_libraries("${MSCL_CPP_TARGET}" PUBLIC
         ${OPENSSL_LIBRARIES}
     )
 
-    target_include_directories("${MSCL_LIBRARY}" PUBLIC
-        "${OPENSSL_INCLUDE_DIR}"
-    )
+#    target_include_directories("${MSCL_CPP_TARGET}" PUBLIC
+#        "${OPENSSL_INCLUDE_DIR}"
+#    )
 else()
     # TODO: Don't assume the user linked proper libraries for this support!!
-    target_compile_definitions("${MSCL_LIBRARY}" PUBLIC
+    target_compile_definitions("${MSCL_CPP_TARGET}" PUBLIC
         "MSCL_DISABLE_SSL"
     )
 endif()
 
 if(NOT MSCL_WITH_WEBSOCKETS)
     # TODO: Don't assume the user linked proper libraries for this support!!
-    target_compile_definitions("${MSCL_LIBRARY}" PUBLIC
+    target_compile_definitions("${MSCL_CPP_TARGET}" PUBLIC
         "MSCL_DISABLE_WEBSOCKETS"
     )
 endif()
 
 # For completeness and compatibility with find_package(MSCL), add the LIBRARIES and INCLUDE_DIRS variables as well
 set(MSCL_LIBRARIES "${MSCL_LIBRARY}" CACHE STRING "List of MSCL libraries" FORCE)
-get_target_property(MSCL_INTERFACE_INCLUDE_DIRS "${MSCL_LIBRARY}" INTERFACE_INCLUDE_DIRECTORIES)
+get_target_property(MSCL_INTERFACE_INCLUDE_DIRS "${MSCL_CPP_TARGET}" INTERFACE_INCLUDE_DIRECTORIES)
 set(MSCL_INCLUDE_DIRS ${MSCL_INTERFACE_INCLUDE_DIRS} CACHE STRING "List of MSCL include directories" FORCE)
 
 #
@@ -139,7 +151,7 @@ else()
 endif()
 
 install(
-    TARGETS "${MSCL_LIBRARY}"
+    TARGETS "${MSCL_CPP_TARGET}"
     LIBRARY
         COMPONENT "${MSCL_CPP_COMPONENT_NAME}"
         DESTINATION "${MSCL_INSTALL_LIBDIR}"
@@ -153,7 +165,6 @@ install(
 
 if(MSCL_BUILD_PACKAGE)
     microstrain_set_cpack_component_file_name(
-        PACKAGE_NAME "${PROJECT_NAME}"
         COMPONENT_NAME "${MSCL_CPP_COMPONENT_NAME}"
         COMPONENT_VERSION "${CPACK_PACKAGE_VERSION}"
         PACKAGE_ARCH "${CPACK_SYSTEM_NAME}"

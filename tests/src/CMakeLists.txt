@@ -106,6 +106,6 @@ set(MSCL_UNIT_TEST_SOURCES
 )
 
 # Add the source files to the target
-target_sources(${MSCL_UNIT_TESTS} PRIVATE
-    "${MSCL_UNIT_TEST_SOURCES}"
+target_sources("${MSCL_TEST_TARGET}" PRIVATE
+    ${MSCL_UNIT_TEST_SOURCES}
 )

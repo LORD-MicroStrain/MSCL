@@ -1,3 +1,88 @@
+macro(mscl_add_swig_python_module_library MSCL_PYTHON_VERSION MSCL_PYTHON_MAJOR_VERSION)
+    set(MSCL_PYTHON_COMPONENT_NAME "Python${MSCL_PYTHON_VERSION}")
+    set(MSCL_PYTHON_TARGET_NAME "${PROJECT_NAME}-${MSCL_PYTHON_COMPONENT_NAME}")
+
+    # Set some linker options
+    if(MSVC)
+        set(MSCL_PYTHON_LINK_OPTIONS
+            "$<$<CONFIG:Release>:/LTCG>"
+        )
+    else()
+        set(MSCL_PYTHON_LINK_OPTIONS
+            "-Wl,--no-as-needed"
+        )
+    endif()
+
+    mscl_add_swig_module_library(
+        LIB_NAME "${MSCL_PYTHON_TARGET_NAME}"
+        MODULE_LANGUAGE "python"
+        LINK_OPTIONS ${MSCL_PYTHON_LINK_OPTIONS}
+    )
+
+    set(PYTHON_PACKAGE_NAME "Python${MSCL_PYTHON_MAJOR_VERSION}")
+    set(${PYTHON_PACKAGE_NAME}_USE_STATIC_LIBS ${MSCL_LINK_STATIC_DEPS})
+
+    # Find the required Python package
+    find_package("${PYTHON_PACKAGE_NAME}"
+        ${MSCL_PYTHON_VERSION} EXACT
+        REQUIRED
+        COMPONENTS "Development"
+    )
+
+    # Link/include the required Python package
+    target_link_libraries("${MSCL_PYTHON_TARGET_NAME}" PRIVATE
+        ${${PYTHON_PACKAGE_NAME}_LIBRARIES}
+    )
+    target_include_directories("${MSCL_PYTHON_TARGET_NAME}" PRIVATE
+        "${${PYTHON_PACKAGE_NAME}_INCLUDE_DIRS}"
+    )
+
+    # vcpkg doesn't provide pdb files for debug builds of Python
+    if(MSVC)
+        target_link_options("${MSCL_PYTHON_TARGET_NAME}" PRIVATE
+            "/ignore:4099"
+        )
+    endif()
+
+    # Python 3.10 doesn't seem to link ZLIB properly through vcpkg
+    # Make sure it's actually linked
+    if(WIN32 AND MSCL_PYTHON_VERSION MATCHES "^3\.10")
+        find_package("ZLIB" REQUIRED)
+        target_link_libraries("${MSCL_PYTHON_TARGET_NAME}" PRIVATE
+            ${ZLIB_LIBRARIES}
+        )
+    endif()
+
+    # Get the generated .py files
+    get_target_property(MSCL_GENERATED_PYTHON_SOURCES "${MSCL_PYTHON_TARGET_NAME}" SWIG_SUPPORT_FILES)
+
+    # Installation
+    if(MSVC)
+        set(MSCL_PYTHON_DIST_PACKAGES_DIR "Python/${MSCL_PYTHON_VERSION}/${MSCL_ARCH_NAME}/$<CONFIG>")
+    else()
+        set(MSCL_PYTHON_DIST_PACKAGES_DIR ${CMAKE_INSTALL_LIBDIR}/python${MSCL_PYTHON_VERSION}/dist-packages)
+    endif()
+
+    install(
+        TARGETS ${MSCL_PYTHON_TARGET_NAME}
+        DESTINATION "${MSCL_PYTHON_DIST_PACKAGES_DIR}"
+        COMPONENT "${MSCL_PYTHON_COMPONENT_NAME}"
+    )
+
+    install(
+        FILES "${MSCL_GENERATED_PYTHON_SOURCES}"
+        DESTINATION "${MSCL_PYTHON_DIST_PACKAGES_DIR}"
+        COMPONENT "${MSCL_PYTHON_COMPONENT_NAME}"
+    )
+
+    if(MSCL_BUILD_PACKAGE)
+        microstrain_set_cpack_component_file_name(
+            COMPONENT_NAME "${MSCL_PYTHON_COMPONENT_NAME}"
+            COMPONENT_VERSION "${CPACK_PACKAGE_VERSION}"
+        )
+    endif()
+endmacro()
+
 # Get the baseline version for the vcpkg manifest file
 execute_process(
     COMMAND ${GIT_EXECUTABLE} rev-parse HEAD

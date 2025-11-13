@@ -189,7 +189,7 @@ endmacro()
 
 function(microstrain_set_cpack_component_file_name)
     set(OPTIONS)
-    set(SINGLE_VALUES PACKAGE_NAME COMPONENT_NAME COMPONENT_VERSION)
+    set(SINGLE_VALUES COMPONENT_NAME COMPONENT_VERSION)
     set(OPTIONAL_SINGLE_VALUES PACKAGE_ARCH)
     set(MULTI_VALUES)
 
@@ -213,7 +213,7 @@ function(microstrain_set_cpack_component_file_name)
         endif()
     endforeach()
 
-    set(FILE_NAME "${PACKAGE_NAME}-${COMPONENT_NAME}")
+    set(FILE_NAME "${PROJECT_NAME}-${COMPONENT_NAME}")
 
     if(PACKAGE_ARCH)
         string(APPEND FILE_NAME "-${PACKAGE_ARCH}")

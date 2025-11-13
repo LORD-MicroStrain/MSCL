@@ -1,12 +1,12 @@
-set(MSCL_UNIT_TESTS "MSCL_Unit_Tests")
+set(MSCL_TEST_TARGET "${PROJECT_NAME}-Tests")
 
 set(Turtle_ROOT "" CACHE PATH "Location to search for the Turtle headers")
 
 # Create the test project
-add_executable(${MSCL_UNIT_TESTS})
+add_executable(${MSCL_TEST_TARGET})
 
 # The unit tests cannot be built without the MSCL library
-add_dependencies("${MSCL_UNIT_TESTS}" "${MSCL_LIBRARY}")
+add_dependencies("${MSCL_TEST_TARGET}" "${MSCL_LIBRARY}")
 
 # Add the test sources
 add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/src")
@@ -62,23 +62,23 @@ endif()
 # Turtle depends on the Boost testing framework
 find_package("Boost" COMPONENTS "unit_test_framework" CONFIG)
 
-target_include_directories(${MSCL_UNIT_TESTS} PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}
-    ${Turtle_INCLUDE_DIR}
+target_include_directories("${MSCL_TEST_TARGET}" PRIVATE
+    "${CMAKE_CURRENT_SOURCE_DIR}"
+    "${Turtle_INCLUDE_DIR}"
 )
 
-target_link_libraries(${MSCL_UNIT_TESTS} PRIVATE
+target_link_libraries("${MSCL_TEST_TARGET}" PRIVATE
     ${MSCL_LIBRARY}
     ${Boost_LIBRARIES}
 )
 
-target_precompile_headers(${MSCL_UNIT_TESTS} PRIVATE
+target_precompile_headers("${MSCL_TEST_TARGET}" PRIVATE
     "${MSCL_INCLUDE_DIR}/mscl/stdafx.h"
 )
 
 # On windows, we need to set the runtime library to the same as MSCL
 if(MSVC)
-    target_compile_options(${MSCL_UNIT_TESTS} PRIVATE
+    target_compile_options("${MSCL_TEST_TARGET}" PRIVATE
         "/MP"
         "/bigobj"
     )
@@ -87,6 +87,6 @@ endif()
 # TODO: Add CI/CD plugin support for JUNIT results
 # Reporting as JUNIT isn't compatible for direct CI/CD logging, but it can be easily parsed with a plugin
 add_test(
-    NAME "${MSCL_UNIT_TESTS}"
-    COMMAND ${MSCL_UNIT_TESTS} --log_level=test_suite --log_format=JUNIT  --log_sink=mscl_test_results.xml --report_level=no
+    NAME "${MSCL_TEST_TARGET}"
+    COMMAND ${MSCL_TEST_TARGET} --log_level=test_suite --log_format=JUNIT  --log_sink=mscl_test_results.xml --report_level=no
 )

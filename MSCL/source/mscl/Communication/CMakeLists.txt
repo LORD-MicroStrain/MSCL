@@ -45,12 +45,14 @@ endif()
 # Filter and add the source files to the target
 set(MSCL_COMMUNICATION_SOURCES ${MSCL_COMMUNICATION_FILES})
 list(FILTER MSCL_ROOT_SOURCES INCLUDE REGEX "^.*\\.(c|cpp)$")
-target_sources("${MSCL_LIBRARY}" PRIVATE "${MSCL_COMMUNICATION_SOURCES}")
+target_sources("${MSCL_CPP_TARGET}" PRIVATE
+    ${MSCL_COMMUNICATION_SOURCES}
+)
 
 # Filter and add the header files to the target using file sets
 set(MSCL_COMMUNICATION_HEADERS ${MSCL_COMMUNICATION_FILES})
 list(FILTER MSCL_COMMUNICATION_HEADERS INCLUDE REGEX "^.*\\.(h|hpp)$")
-target_sources("${MSCL_LIBRARY}" PUBLIC
+target_sources("${MSCL_CPP_TARGET}" PUBLIC
     FILE_SET "${MSCL_HEADER_FILE_SET}"
-    FILES "${MSCL_COMMUNICATION_HEADERS}"
+    FILES ${MSCL_COMMUNICATION_HEADERS}
 )

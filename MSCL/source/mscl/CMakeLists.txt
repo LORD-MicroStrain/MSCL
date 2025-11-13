@@ -9,7 +9,7 @@ configure_file(${MSCL_VERSION_IN_FILE} ${MSCL_VERSION_OUT_FILE})
 
 # Configure the precompiled header
 set(MSCL_PCH_FILE "${CMAKE_CURRENT_LIST_DIR}/stdafx.h")
-target_precompile_headers(${MSCL_LIBRARY} PRIVATE
+target_precompile_headers("${MSCL_CPP_TARGET}" PRIVATE
     "${MSCL_PCH_FILE}"
 )
 
@@ -53,12 +53,14 @@ set(MSCL_ROOT_FILES
 # Filter and add the source files to the target
 set(MSCL_ROOT_SOURCES ${MSCL_ROOT_FILES})
 list(FILTER MSCL_ROOT_SOURCES INCLUDE REGEX "^.*\\.(c|cpp)$")
-target_sources("${MSCL_LIBRARY}" PRIVATE "${MSCL_ROOT_SOURCES}")
+target_sources("${MSCL_CPP_TARGET}" PRIVATE
+    ${MSCL_ROOT_SOURCES}
+)
 
 # Filter and add the header files to the target using file sets
 set(MSCL_ROOT_HEADERS ${MSCL_ROOT_FILES})
 list(FILTER MSCL_ROOT_HEADERS INCLUDE REGEX "^.*\\.(h|hpp)$")
-target_sources("${MSCL_LIBRARY}" PUBLIC
+target_sources("${MSCL_CPP_TARGET}" PUBLIC
     FILE_SET "${MSCL_HEADER_FILE_SET}"
-    FILES "${MSCL_ROOT_HEADERS}"
+    FILES ${MSCL_ROOT_HEADERS}
 )
