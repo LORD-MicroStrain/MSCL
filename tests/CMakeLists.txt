@@ -63,7 +63,7 @@ endif()
 find_package("Boost" COMPONENTS "unit_test_framework" CONFIG)
 
 target_include_directories("${MSCL_TEST_TARGET}" PRIVATE
-    "${CMAKE_CURRENT_SOURCE_DIR}"
+    "${CMAKE_CURRENT_LIST_DIR}"
     "${Turtle_INCLUDE_DIR}"
 )
 

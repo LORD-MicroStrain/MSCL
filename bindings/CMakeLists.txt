@@ -6,8 +6,8 @@ set(SWIG_SOURCE_FILES
 
 # Include the Swig utilities file for easier binding configuration
 # This will initialize everything needed to use Swig as well as include helper macros
-set(MSCL_SWIG_UTILITIES_SCRIPT "${CMAKE_CURRENT_LIST_DIR}/cmake/mscl_swig_utilities.cmake")
-include("${MSCL_SWIG_UTILITIES_SCRIPT}")
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
+include(mscl_swig_utilities)
 
 # Build the C# bindings
 if(MSCL_BUILD_CSHARP)
