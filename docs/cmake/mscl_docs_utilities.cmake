@@ -115,9 +115,9 @@ function(mscl_configure_docs_target)
     )
 
     add_custom_target(${MSCL_DOCS_TARGET} ALL
-        COMMAND ${CMAKE_COMMAND} -E remove_directory "${DOCS_OUTPUT_DIR}"
+        COMMAND ${CMAKE_COMMAND} -E rm "${DOCS_OUTPUT_DIR}"
         COMMAND ${CMAKE_COMMAND} -E make_directory "${DOCS_OUTPUT_DIR}"
-        COMMAND ${CMAKE_COMMAND} -E remove_directory "${DOCS_WORKING_DATA_DIR}"
+        COMMAND ${CMAKE_COMMAND} -E rm "${DOCS_WORKING_DATA_DIR}"
         COMMAND "${NaturalDocs_EXECUTABLE}"
         --project-config "${DOCS_PROJECT_DIR}"
         --source "${MSCL_INCLUDE_DIR}"

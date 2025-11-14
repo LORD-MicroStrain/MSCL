@@ -4,7 +4,7 @@
 # It only works after the main configuration file has gone through the generation step
 #
 
-cmake_minimum_required(VERSION 3.23)
+cmake_minimum_required(VERSION ${CMAKE_MINIMUM_REQUIRED_VERSION})
 project("${MSCL_CSHARP_MANAGED_TARGET}"
     LANGUAGES "CSharp"
     VERSION "${PROJECT_VERSION}"
@@ -14,11 +14,6 @@ set(CMAKE_CONFIGURATION_TYPES "Release;Debug" CACHE STRING "Supported configurat
 
 # Export compile commands by default (helpful for clang-tidy and autocomplete for certain IDEs)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-
-# If a build type was not specified, default to debug
-if(NOT CMAKE_BUILD_TYPE)
-    set(CMAKE_BUILD_TYPE "Debug")
-endif()
 
 # This will make windows create a .lib file with all the symbols of the .dll files exported
 set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)

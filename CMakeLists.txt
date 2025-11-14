@@ -246,7 +246,7 @@ endif()
 
 if(MSVC)
     # Set the runtime library linking for all projects in MSVC
-    set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>$<$<BOOL:${BUILD_SHARED_LIBS}>:DLL>")
+    set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>$<$<NOT:$<BOOL:${MSCL_LINK_STATIC_DEPS}>>:DLL>")
 endif()
 
 # Use common installation directory naming conventions
