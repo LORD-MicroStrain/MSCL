@@ -78,11 +78,12 @@ def buildTargets(Map config) {
 
   targets.each { target ->
     def buildLabel = "Build ${target} (${buildType})"
+    def parallelCount = parallelBuildCount()
     if (isUnix()) {
       sh(label: buildLabel, script: """
         cmake \
           --build . \
-          --parallel \$PARALLEL_JOBS \
+          --parallel ${parallelCount} \
           --target ${target}
       """)
     }
@@ -91,7 +92,7 @@ def buildTargets(Map config) {
         cmake `
           --build . `
           --config ${config.config} `
-          --parallel \$env:PARALLEL_JOBS `
+          --parallel ${parallelCount} `
           --target ${target}
       """)
     }
@@ -217,7 +218,6 @@ pipeline {
   environment {
     BUILD_TYPES   = 'Debug,Release'
     LIBRARY_TYPES = 'static,shared'
-    PARALLEL_JOBS = parallelBuildCount()
   }
   options {
     // Set a timeout for the whole pipeline. The timer starts when the project is queued
