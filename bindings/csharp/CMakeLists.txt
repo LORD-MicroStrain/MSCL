@@ -21,7 +21,7 @@ set(MSCL_CSHARP_MANAGED_BUILD_DIR "${CMAKE_CURRENT_BINARY_DIR}/${MSCL_CSHARP_MAN
 add_custom_command(TARGET "${MSCL_CSHARP_TARGET}" POST_BUILD
     # Clear the Managed library build directory every time
     COMMAND "${CMAKE_COMMAND}"
-        -E rm -r "${MSCL_CSHARP_MANAGED_BUILD_DIR}"
+        -E rm -rf "${MSCL_CSHARP_MANAGED_BUILD_DIR}"
     # Generate the Manged library project using the same CMake configuration
     COMMAND ${CMAKE_COMMAND}
         -G "${CMAKE_GENERATOR}"
