@@ -1,5 +1,5 @@
 def parallelBuildCount() {
-    return isUnix() ? "$(nproc)" : "$env:NUMBER_OF_PROCESSORS"
+    return isUnix() ? '$(nproc)' : '$env:NUMBER_OF_PROCESSORS'
 }
 
 // Utility function for getting the real branch name even in a pull request
