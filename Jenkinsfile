@@ -1,5 +1,5 @@
 def parallelBuildCount() {
-    return isUnix() ? '$(nproc)' : '$env:NUMBER_OF_PROCESSORS'
+    return isUnix() ? "$(nproc)" : "$env:NUMBER_OF_PROCESSORS"
 }
 
 // Utility function for getting the real branch name even in a pull request
@@ -111,11 +111,11 @@ def configureProject(Map config) {
 
   // Architecture flag (Windows only)
   if (env.BUILD_ARCH) {
-    args.add('-A ${BUILD_ARCH}')
+    args.add("-A ${BUILD_ARCH}")
   }
   // Build type for single-config generators (Linux/Make)
   else {
-    args.add('-D CMAKE_BUILD_TYPE:STRING:${buildType}')
+    args.add("-D CMAKE_BUILD_TYPE:STRING:${buildType}")
   }
 
   // Determine boolean values for each component based on platform and build type
@@ -129,14 +129,14 @@ def configureProject(Map config) {
 
   // Add all of the configuration options
   args.addAll([
-    '-D BUILD_SHARED_LIBS:BOOL=${buildShared}',
+    "-D BUILD_SHARED_LIBS:BOOL=${buildShared}",
     '-D MSCL_BUILD_PACKAGE:BOOL=ON',
-    '-D MSCL_BUILD_CSHARP:BOOL=${buildCSharp}',
-    '-D MSCL_BUILD_DOCUMENTATION:BOOL=${buildDocs}',
-    '-D MSCL_BUILD_EXAMPLES:BOOL=${buildExamples}',
-    '-D MSCL_BUILD_PYTHON2:BOOL=${buildPython2}',
-    '-D MSCL_BUILD_PYTHON3:BOOL=${buildPython3}',
-    '-D MSCL_BUILD_TESTS:BOOL=${buildTests}',
+    "-D MSCL_BUILD_CSHARP:BOOL=${buildCSharp}",
+    "-D MSCL_BUILD_DOCUMENTATION:BOOL=${buildDocs}",
+    "-D MSCL_BUILD_EXAMPLES:BOOL=${buildExamples}",
+    "-D MSCL_BUILD_PYTHON2:BOOL=${buildPython2}",
+    "-D MSCL_BUILD_PYTHON3:BOOL=${buildPython3}",
+    "-D MSCL_BUILD_TESTS:BOOL=${buildTests}",
     '-D MSCL_WITH_SSL:BOOL=ON',
     '-D MSCL_WITH_WEBSOCKETS:BOOL=ON'
   ])
@@ -209,7 +209,7 @@ def buildAndPackageProject() {
     }
 
     def fileExtension = isUnix() ? 'deb' : 'zip'
-    archiveArtifacts artifacts: '*.${fileExtension}'
+    archiveArtifacts artifacts: "*.${fileExtension}"
   }
 }
 
