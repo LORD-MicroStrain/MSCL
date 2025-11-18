@@ -1,3 +1,7 @@
+def parallelBuildCount() {
+    return isUnix() ? '$(nproc)' : '$env:NUMBER_OF_PROCESSORS'
+}
+
 // Utility function for getting the real branch name even in a pull request
 def branchName() {
   if (env.CHANGE_BRANCH) {
@@ -213,7 +217,7 @@ pipeline {
   environment {
     BUILD_TYPES   = 'Debug,Release'
     LIBRARY_TYPES = 'static,shared'
-    PARALLEL_JOBS = isUnix() ? '$(nproc)' : '$env:NUMBER_OF_PROCESSORS'
+    PARALLEL_JOBS = parallelBuildCount()
   }
   options {
     // Set a timeout for the whole pipeline. The timer starts when the project is queued
