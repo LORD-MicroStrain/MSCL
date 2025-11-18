@@ -128,24 +128,6 @@ macro(microstrain_get_architecture SYS_ARCH_OUT)
     endif()
 endmacro()
 
-# Try to determine what architecture we are building for based on the compiler output
-# Specify the variable to set as the parameter
-macro(microstrain_get_architecture SYS_ARCH_OUT)
-    # Detect if this is a x64 or x86 build
-    if(CMAKE_SIZEOF_VOID_P EQUAL 8)
-        set(${SYS_ARCH_OUT} "x64")
-    elseif(CMAKE_SIZEOF_VOID_P EQUAL 4)
-        set(${SYS_ARCH_OUT} "x86")
-    endif()
-
-    if(NOT DEFINED ${SYS_ARCH_OUT})
-        message(STATUS "Defaulting ${SYS_ARCH_OUT} to ${CMAKE_SYSTEM_PROCESSOR}")
-        set(${SYS_ARCH_OUT} ${CMAKE_SYSTEM_PROCESSOR})
-    else()
-        message(STATUS "Detected system architecture ${${SYS_ARCH_OUT}}")
-    endif()
-endmacro()
-
 # Try to determine what system architecture we are building for based on the compiler output
 # Specify the variable to set as the parameter
 macro(microstrain_get_package_architecture PACKAGE_ARCH_OUT)
@@ -360,4 +342,88 @@ function(microstrain_download_and_extract_archive)
     )
 
     message(STATUS "Successfully extracted ${NAME}")
+endfunction()
+
+function(microstrain_generate_package_config)
+    set(OPTIONS)
+    set(SINGLE_VALUES PACKAGE_NAME LIBRARY_NAME PACKAGE_NAMESPACE)
+    set(OPTIONAL_SINGLE_VALUES LIBRARY_NAME_ALIAS)
+    set(MULTI_VALUES)
+
+    set(GENERATE_PACKAGE_CONFIG_ARG_PREFIX "GENERATE_PACKAGE_CONFIG_ARG")
+    cmake_parse_arguments(${GENERATE_PACKAGE_CONFIG_ARG_PREFIX}
+        "${OPTIONS}"
+        "${SINGLE_VALUES};${OPTIONAL_SINGLE_VALUES}"
+        "${MULTI_VALUES}"
+        "${ARGN}"
+    )
+
+    # Remove the prefix from the arguments
+    foreach(ARG IN LISTS OPTIONS SINGLE_VALUES OPTIONAL_SINGLE_VALUES MULTI_VALUES)
+        set(${ARG} ${${GENERATE_PACKAGE_CONFIG_ARG_PREFIX}_${ARG}})
+    endforeach()
+
+    # Make sure all the required arguments are used
+    foreach(ARG IN LISTS SINGLE_VALUES)
+        if(NOT ${ARG})
+            message(FATAL_ERROR "Download and extracting files requires the ${ARG} argument to be set")
+        endif()
+    endforeach()
+
+    set(PACKAGE_COMPONENT_NAME ${PACKAGE_NAME})
+    set(PACKAGE_VERSION ${PROJECT_VERSION})
+
+    string(TOLOWER "${PACKAGE_NAME}" PACKAGE_NAME_LOWER)
+
+    set(MICROSTRAIN_CONFIG_FILE_NAME "${PACKAGE_NAME_LOWER}-config")
+
+    set(MICROSTRAIN_VERSION_FILE_NAME "${MICROSTRAIN_CONFIG_FILE_NAME}-version.cmake")
+    set(MICROSTRAIN_VERSION_FILE_OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/${MICROSTRAIN_VERSION_FILE_NAME}")
+
+    string(APPEND MICROSTRAIN_CONFIG_FILE_NAME ".cmake")
+    set(MICROSTRAIN_CONFIG_FILE_IN ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/${MICROSTRAIN_CONFIG_FILE_NAME}.in)
+    set(MICROSTRAIN_CONFIG_FILE_OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/${MICROSTRAIN_CONFIG_FILE_NAME}")
+
+    if(LIBRARY_NAME_ALIAS)
+        # Set a proper alias name if the library target name isn't ideal
+        set(ADDITIONAL_LIBRARY_ALIAS "add_library(${PACKAGE_NAMESPACE}::${LIBRARY_NAME_ALIAS} ALIAS ${PACKAGE_NAMESPACE}::${LIBRARY_NAME})\n")
+    else()
+        # Keep the actual library name
+        set(LIBRARY_NAME_ALIAS ${LIBRARY_NAME})
+    endif()
+
+    # Set the package name uppercase to conform to the CMake variable naming convention
+    # This is only used in the configure_package_config_file output file
+    string(TOUPPER "${LIBRARY_NAME_ALIAS}" LIBRARY_NAME_UPPER)
+
+    include(GNUInstallDirs)
+    set(MICROSTRAIN_CMAKE_CONFIG_INSTALL_DIR "${CMAKE_INSTALL_DATADIR}/${PACKAGE_NAME_LOWER}")
+
+    include(CMakePackageConfigHelpers)
+    configure_package_config_file(
+        "${MICROSTRAIN_CONFIG_FILE_IN}"
+        "${MICROSTRAIN_CONFIG_FILE_OUTPUT}"
+        INSTALL_DESTINATION
+            "${MICROSTRAIN_CMAKE_CONFIG_INSTALL_DIR}"
+    )
+
+    # Create the package version file
+    write_basic_package_version_file(
+        "${MICROSTRAIN_VERSION_FILE_OUTPUT}"
+        VERSION "${PACKAGE_VERSION}"
+        COMPATIBILITY AnyNewerVersion
+        ARCH_INDEPENDENT
+    )
+
+    set(MICROSTRAIN_CONFIG_FILES
+        "${MICROSTRAIN_CONFIG_FILE_OUTPUT}"
+        "${MICROSTRAIN_VERSION_FILE_OUTPUT}"
+    )
+
+    # Install all of the configuration files
+    install(
+        FILES ${MICROSTRAIN_CONFIG_FILES}
+        DESTINATION "${MICROSTRAIN_CMAKE_CONFIG_INSTALL_DIR}"
+        COMPONENT "${PACKAGE_COMPONENT_NAME}"
+    )
 endfunction()

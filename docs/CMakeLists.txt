@@ -10,8 +10,11 @@ include(mscl_docs_utilities)
 
 set(MSCL_DOCS_ROOT_CONFIGURE_FILES_DIR "${CMAKE_CURRENT_LIST_DIR}")
 
+set(MSCL_DOCS_TARGET_ALL "${PROJECT_NAME}-Docs")
+add_custom_target(${MSCL_DOCS_TARGET_ALL})
+
 add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/api_docs")
-add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/docs")
+add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/full_docs")
 
 if(MSCL_BUILD_PACKAGE)
     microstrain_set_cpack_component_file_name(

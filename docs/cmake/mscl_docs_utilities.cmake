@@ -73,6 +73,8 @@ function(mscl_configure_docs_target)
     if(API_DOCS)
         string(APPEND MSCL_DOCS_TARGET "-API")
         string(APPEND DOCS_OUTPUT_DIR "_API")
+    else()
+        string(APPEND MSCL_DOCS_TARGET "-Full")
     endif()
 
     string(APPEND MSCL_DOCS_TARGET "-Docs")
@@ -125,6 +127,9 @@ function(mscl_configure_docs_target)
         --style "${DOCS_CUSTOM_STYLESHEET_FILENAME}"
         --working-data "${DOCS_WORKING_DATA_DIR}"
     )
+
+    # Add the target to the Docs All target
+    add_dependencies(${MSCL_DOCS_TARGET_ALL} ${MSCL_DOCS_TARGET})
 
     install(
         DIRECTORY "${DOCS_OUTPUT_DIR}"

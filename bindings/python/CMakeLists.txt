@@ -69,3 +69,25 @@ foreach(MSCL_PYTHON_REQUESTED_VERSION IN LISTS MSCL_PYTHON_REQUESTED_VERSIONS)
     # Create the Python binding library for the requested version of Python
     mscl_add_swig_python_module_library("${MSCL_PYTHON_VERSION}" "${MSCL_PYTHON_MAJOR_VERSION}")
 endforeach()
+
+if(MSCL_PYTHON2_ALL_TARGETS)
+    # Create the Python2 All target
+    set(MSCL_PYTHON2_ALL_TARGET "${PROJECT_NAME}-Python2")
+    add_custom_target(${MSCL_PYTHON2_ALL_TARGET})
+
+    # Add all the requested Python2 targets to the All target
+    foreach(MSCL_PYTHON2_TARGET IN LISTS MSCL_PYTHON2_ALL_TARGETS)
+        add_dependencies(${MSCL_PYTHON2_ALL_TARGET} ${MSCL_PYTHON2_TARGET})
+    endforeach()
+endif()
+
+if(MSCL_PYTHON3_ALL_TARGETS)
+    # Create the Python3 All target
+    set(MSCL_PYTHON3_ALL_TARGET "${PROJECT_NAME}-Python3")
+    add_custom_target(${MSCL_PYTHON3_ALL_TARGET})
+
+    # Add all the requested Python3 targets to the All target
+    foreach(MSCL_PYTHON3_TARGET IN LISTS MSCL_PYTHON3_ALL_TARGETS)
+        add_dependencies(${MSCL_PYTHON3_ALL_TARGET} ${MSCL_PYTHON3_TARGET})
+    endforeach()
+endif()

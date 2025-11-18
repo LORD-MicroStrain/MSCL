@@ -50,7 +50,8 @@ source_group(
 )
 
 target_include_directories("${MSCL_CPP_TARGET}" PUBLIC
-    "${MSCL_INCLUDE_DIR}"
+    "$<BUILD_INTERFACE:${MSCL_INCLUDE_DIR}>"           # Include directory for building
+    "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>" # Include directory for installations
 )
 
 # Find/configure some dependencies
@@ -97,10 +98,15 @@ if(MSCL_WITH_SSL)
     set(OPENSSL_USE_STATIC_LIBS ${MSCL_LINK_STATIC_DEPS})
     set(OPENSSL_MSVC_STATIC_RT ${MSCL_LINK_STATIC_DEPS})
 
+    # OpenSSL doesn't clear its variables properly for recurring find_package calls
+    # This variable needs to be cleared so OPENSSL_ROOT_DIR can then be used properly
+    unset(OPENSSL_INCLUDE_DIR CACHE)
+
     find_package("OpenSSL" REQUIRED)
 
     target_link_libraries("${MSCL_CPP_TARGET}" PUBLIC
-        ${OPENSSL_LIBRARIES}
+        "OpenSSL::SSL"
+        "OpenSSL::Crypto"
     )
 else()
     # TODO: Don't assume the user linked proper libraries for this support!!
@@ -125,16 +131,6 @@ set(MSCL_INCLUDE_DIRS ${MSCL_INTERFACE_INCLUDE_DIRS} CACHE STRING "List of MSCL 
 # Installation setup
 #
 
-set(MSCL_INSTALL_LIBDIR "${CMAKE_INSTALL_LIBDIR}")
-set(MSCL_INSTALL_INCLUDEDIR "${CMAKE_INSTALL_INCLUDEDIR}")
-
-if(MSVC)
-    string(PREPEND MSCL_INSTALL_LIBDIR "MSCL/")
-    string(PREPEND MSCL_INSTALL_INCLUDEDIR "MSCL/")
-
-    string(APPEND MSCL_INSTALL_LIBDIR "/${MSCL_ARCH_NAME}/$<CONFIG>")
-endif()
-
 set(MSCL_CPP_COMPONENT_NAME "Cpp")
 if(BUILD_SHARED_LIBS)
     string(APPEND MSCL_CPP_COMPONENT_NAME "-Shared")
@@ -142,8 +138,22 @@ else()
     string(APPEND MSCL_CPP_COMPONENT_NAME "-Static")
 endif()
 
+set(MSCL_INSTALL_LIBDIR "${CMAKE_INSTALL_LIBDIR}")
+set(MSCL_INSTALL_INCLUDEDIR "${CMAKE_INSTALL_INCLUDEDIR}")
+
+set(MSCL_EXPORT_TARGET_NAME "${PROJECT_NAME_LOWER}-targets")
+
+# Handle 32-bit installations
+if(MSVC AND MSCL_ARCH_NAME STREQUAL "x86")
+    string(APPEND MSCL_INSTALL_LIBDIR "32")
+endif()
+
+string(APPEND MSCL_INSTALL_LIBDIR "$<$<CONFIG:Debug>:/debug>")
+
+# Setup the installation
 install(
     TARGETS "${MSCL_CPP_TARGET}"
+    EXPORT "${MSCL_EXPORT_TARGET_NAME}"
     LIBRARY
         COMPONENT "${MSCL_CPP_COMPONENT_NAME}"
         DESTINATION "${MSCL_INSTALL_LIBDIR}"
@@ -155,7 +165,22 @@ install(
         DESTINATION "${MSCL_INSTALL_LIBDIR}"
     FILE_SET "${MSCL_HEADER_FILE_SET}"
         COMPONENT "${MSCL_CPP_COMPONENT_NAME}"
-        DESTINATION "${MSCL_INSTALL_INCLUDEDIR}"
+        DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
+)
+
+# Create export files for the library for all configurations
+install(
+    EXPORT "${MSCL_EXPORT_TARGET_NAME}"
+    DESTINATION "${CMAKE_INSTALL_DATADIR}/${PROJECT_NAME_LOWER}/${MSCL_ARCH_NAME}"
+    NAMESPACE "${PROJECT_NAME}::"
+    COMPONENT "${MSCL_CPP_COMPONENT_NAME}"
+)
+
+microstrain_generate_package_config(
+    PACKAGE_NAME ${PROJECT_NAME_LOWER}
+    LIBRARY_NAME ${MSCL_CPP_TARGET}
+    PACKAGE_NAMESPACE ${MSCL_LIBRARY}
+    LIBRARY_NAME_ALIAS ${MSCL_LIBRARY}
 )
 
 if(MSCL_BUILD_PACKAGE)

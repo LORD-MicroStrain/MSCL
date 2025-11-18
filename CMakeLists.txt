@@ -157,7 +157,7 @@ include(microstrain_utilities)
 
 # Detect if this is a x64 or x86 build
 microstrain_get_architecture(MSCL_ARCH_NAME)
-if (${MSCL_ARCH_NAME} STREQUAL "x64")
+if(${MSCL_ARCH_NAME} STREQUAL "x64")
     # This needs to be enabled to properly find any libraries that use the lib64 naming convention
     set_property(GLOBAL PROPERTY FIND_LIBRARY_USE_LIB64_PATHS ON)
 endif()
@@ -249,8 +249,26 @@ if(MSVC)
     set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>$<$<NOT:$<BOOL:${MSCL_LINK_STATIC_DEPS}>>:DLL>")
 endif()
 
+string(TOLOWER "${PROJECT_NAME}" PROJECT_NAME_LOWER)
+
 # Use common installation directory naming conventions
 include(GNUInstallDirs)
+
+# Setup the install prefix for all packages
+if(WIN32)
+    string(APPEND CMAKE_INSTALL_PREFIX "/${PROJECT_NAME_LOWER}")
+endif()
+
+# Set the proper library install directories for release and debug libraries
+set(MSCL_INSTALL_LIBDIR "${CMAKE_INSTALL_LIBDIR}$<$<CONFIG:Debug>:/debug>")
+
+# Set the library install directory for x86 builds
+if(${MSCL_ARCH_NAME} STREQUAL "x86")
+    string(APPEND MSCL_INSTALL_LIBDIR "32")
+endif()
+
+# Set the library install directory for debug builds
+string(APPEND MSCL_INSTALL_LIBDIR "$<$<CONFIG:Debug>:/debug>")
 
 # Build the library
 add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/MSCL")

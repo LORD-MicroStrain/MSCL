@@ -19,6 +19,9 @@ macro(mscl_add_swig_python_module_library MSCL_PYTHON_VERSION MSCL_PYTHON_MAJOR_
         LINK_OPTIONS ${MSCL_PYTHON_LINK_OPTIONS}
     )
 
+    # Add the target to a list to build all targets
+    list(APPEND MSCL_PYTHON${MSCL_PYTHON_MAJOR_VERSION}_ALL_TARGETS "${MSCL_PYTHON_TARGET_NAME}")
+
     set(PYTHON_PACKAGE_NAME "Python${MSCL_PYTHON_MAJOR_VERSION}")
     set(${PYTHON_PACKAGE_NAME}_USE_STATIC_LIBS ${MSCL_LINK_STATIC_DEPS})
 
