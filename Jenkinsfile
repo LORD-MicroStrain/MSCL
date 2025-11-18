@@ -31,7 +31,15 @@ def checkoutRepo() {
       credentialsId: 'Github_User_And_Token',
       url: 'https://github.com/LORD-MicroStrain/MSCL.git'
     ]],
-    extensions: []
+    extensions: [[
+      $class: 'SubmoduleOption',
+      disableSubmodules: false,
+      parentCredentials: true,
+      recursiveSubmodules: true,
+      reference: '',
+      trackingSubmodules: false
+    ]],
+    submoduleCfg: []
   ])
 
   // Set the branch name
@@ -115,7 +123,7 @@ def configureProject(Map config) {
   }
   // Build type for single-config generators (Linux/Make)
   else {
-    args.add("-D CMAKE_BUILD_TYPE:STRING:${buildType}")
+    args.add("-D CMAKE_BUILD_TYPE:STRING=${buildType}")
   }
 
   // Determine boolean values for each component based on platform and build type
@@ -154,16 +162,19 @@ def configureProject(Map config) {
   }
 
   // Configure the project
-  def configLabel = "Configure ${libraryType.capitalize()} (${buildType})"
+  def configLabel = "Configuring ${libraryType.capitalize()} library project"
+  if (!isWindows) {
+    configLabel += " (${buildType})"
+  }
   def cmakeArgs = args.join(' ')
   if (isUnix()) {
     sh(label: configLabel, script: """
-      cmake ${cmakeArgs}
+      cmake .. ${cmakeArgs}
     """)
   }
   else {
     powershell(label: configLabel, script: """
-      cmake ${cmakeArgs}
+      cmake .. ${cmakeArgs}
     """)
   }
 }
