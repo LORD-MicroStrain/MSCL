@@ -109,7 +109,7 @@ def configureProject(Map config) {
     args.add('-A ${BUILD_ARCH}')
   }
   // Build type for single-config generators (Linux/Make)
-  else () {
+  else {
     args.add('-D CMAKE_BUILD_TYPE:STRING:${buildType}')
   }
 
@@ -155,7 +155,8 @@ def configureProject(Map config) {
     sh(label: configLabel, script: """
       cmake ${cmakeArgs}
     """)
-  } else {
+  }
+  else {
     powershell(label: configLabel, script: """
       cmake ${cmakeArgs}
     """)
@@ -347,7 +348,8 @@ pipeline {
               }
             }
           }
-        } else if (BRANCH_NAME && BRANCH_NAME == 'master') {
+        }
+        else if (BRANCH_NAME && BRANCH_NAME == 'master') {
           node("linux-amd64") {
             dir("/tmp/mscl_${env.BRANCH_NAME}_${currentBuild.number}") {
               copyArtifacts(projectName: "${env.JOB_NAME}", selector: specific("${currentBuild.number}"));
