@@ -125,7 +125,7 @@ def configureProject(Map config) {
   // Add all of the configuration options
   args.addAll([
     '-D BUILD_SHARED_LIBS:BOOL=${buildShared}',
-    '-D MSCL_BUILD_PACKAGE:BOOL=ON'
+    '-D MSCL_BUILD_PACKAGE:BOOL=ON',
     '-D MSCL_BUILD_CSHARP:BOOL=${buildCSharp}',
     '-D MSCL_BUILD_DOCUMENTATION:BOOL=${buildDocs}',
     '-D MSCL_BUILD_EXAMPLES:BOOL=${buildExamples}',
