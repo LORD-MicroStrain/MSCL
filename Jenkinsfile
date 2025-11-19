@@ -1,7 +1,3 @@
-def parallelBuildCount() {
-    return env.IS_UNIX.toBoolean() ? '$(nproc)' : '$env:NUMBER_OF_PROCESSORS'
-}
-
 // Utility function for getting the real branch name even in a pull request
 def branchName() {
   if (env.CHANGE_BRANCH) {
@@ -92,12 +88,11 @@ def buildTargets(Map config) {
 
   targets.each { target ->
     def buildLabel = "Build ${target} (${buildType})"
-    def parallelCount = parallelBuildCount()
     if (isUnix) {
       sh(label: buildLabel, script: """
         cmake \
           --build ./${buildType} \
-          --parallel ${parallelCount} \
+          --parallel $(nproc) \
           --target ${target}
       """)
     }
@@ -106,7 +101,7 @@ def buildTargets(Map config) {
         cmake `
           --build . `
           --config ${buildType} `
-          --parallel ${parallelCount} `
+          --parallel $env:NUMBER_OF_PROCESSORS `
           --target ${target}
       """)
     }
@@ -192,8 +187,8 @@ def buildAndPackageProject() {
   // Checkout the project
   checkoutRepo()
 
-  def isWindows = isUnix()
-  def isUnix    = !isUnix()
+  def isUnix    = isUnix()
+  def isWindows = !isUnix()
 
   // Build and package the project in the build directory
   dir(env.BUILD_DIR) {
