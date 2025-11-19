@@ -1,5 +1,5 @@
 def parallelBuildCount() {
-    return IS_UNIX ? '$(nproc)' : '$env:NUMBER_OF_PROCESSORS'
+    return env.IS_UNIX.toBoolean() ? '$(nproc)' : '$env:NUMBER_OF_PROCESSORS'
 }
 
 // Utility function for getting the real branch name even in a pull request
@@ -51,8 +51,10 @@ def packageTargets(Map config) {
   def packageLabel   = 'Packaging'
   def cPackConfig    = 'CPackConfig.cmake'
   def packageConfigs = 'Debug;Release'
+  def isWindows      = env.IS_WINDOWS.toBoolean()
+  def isUnix         = env.IS_UNIX.toBoolean()
 
-  if (IS_UNIX) {
+  if (isUnix) {
     sh(label: packageLabel, script: """
       cpack \
         --config "${cPackConfig}" \
@@ -70,13 +72,15 @@ def packageTargets(Map config) {
 
 // Build each target depending on the configuration
 def buildTargets(Map config) {
+  def isUnix = env.IS_UNIX.toBoolean()
+
   // Always build the Cpp and test targets
   def targets = ['MSCL-Cpp', 'MSCL-Tests']
 
   if (config.libraryType == 'static') {
     targets.addAll(['MSCL-Python2', 'MSCL-Python3'])
 
-    if (IS_UNIX) {
+    if (isUnix) {
       targets.addAll(['MSCL-Examples'])
     }
     else {
@@ -87,7 +91,7 @@ def buildTargets(Map config) {
   targets.each { target ->
     def buildLabel = "Build ${target} (${config.buildType})"
     def parallelCount = parallelBuildCount()
-    if (IS_UNIX) {
+    if (isUnix) {
       sh(label: buildLabel, script: """
         cmake \
           --build . \
@@ -113,6 +117,8 @@ def configureProject(Map config) {
   def buildType      = config.buildType   // Debug or Release
   def isStatic       = libraryType == 'static'
   def buildAllPython = BRANCH_NAME && BRANCH_NAME == 'master'
+  def isWindows      = env.IS_WINDOWS.toBoolean()
+  def isUnix         = env.IS_UNIX.toBoolean()
 
   def args = []
 
@@ -126,13 +132,13 @@ def configureProject(Map config) {
   }
 
   // Determine boolean values for each component based on platform and build type
-  def buildCSharp   = isStatic && IS_WINDOWS ? 'ON' : 'OFF'
-  def buildDocs     = isStatic && IS_WINDOWS ? 'ON' : 'OFF'
-  def buildExamples = isStatic && IS_UNIX    ? 'ON' : 'OFF'
-  def buildPython2  = isStatic               ? 'ON' : 'OFF'
-  def buildPython3  = isStatic               ? 'ON' : 'OFF'
-  def buildTests    = isStatic               ? 'ON' : 'OFF'
-  def buildShared   = !isStatic              ? 'ON' : 'OFF'
+  def buildCSharp   = isStatic && isWindows ? 'ON' : 'OFF'
+  def buildDocs     = isStatic && isWindows ? 'ON' : 'OFF'
+  def buildExamples = isStatic && isUnix    ? 'ON' : 'OFF'
+  def buildPython2  = isStatic              ? 'ON' : 'OFF'
+  def buildPython3  = isStatic              ? 'ON' : 'OFF'
+  def buildTests    = isStatic              ? 'ON' : 'OFF'
+  def buildShared   = !isStatic             ? 'ON' : 'OFF'
 
   // Add all of the configuration options
   args.addAll([
@@ -162,11 +168,11 @@ def configureProject(Map config) {
 
   // Configure the project
   def configLabel = "Configuring ${libraryType.capitalize()} library project"
-  if (IS_UNIX) {
+  if (isUnix) {
     configLabel += " (${buildType})"
   }
   def cmakeArgs = args.join(' ')
-  if (IS_UNIX) {
+  if (isUnix) {
     sh(label: configLabel, script: """
       cmake .. ${cmakeArgs}
     """)
@@ -186,6 +192,10 @@ def buildAndPackageProject() {
   // Set an environment variable to prevent continuous outputs to isUnix() check
   env.setProperty('IS_UNIX', isUnix())
   env.setProperty('IS_WINDOWS', !isUnix())
+
+  // Convert the variables to booleans
+  def isWindows = env.IS_WINDOWS.toBoolean()
+  def isUnix    = env.IS_UNIX.toBoolean()
 
   // Build and package the project in the build directory
   dir(env.BUILD_DIR) {
@@ -208,7 +218,7 @@ def buildAndPackageProject() {
 
           // Always run the configuration step on Linux
           // Windows only needs it to run once
-          runConfiguration = IS_UNIX
+          runConfiguration = isUnix
         }
 
 
@@ -223,7 +233,7 @@ def buildAndPackageProject() {
       packageTargets()
     }
 
-    def fileExtension = IS_UNIX ? 'deb' : 'zip'
+    def fileExtension = isUnix ? 'deb' : 'zip'
     archiveArtifacts artifacts: "*.${fileExtension}"
   }
 }
