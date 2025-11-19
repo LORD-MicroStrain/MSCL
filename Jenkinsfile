@@ -92,7 +92,7 @@ def buildTargets(Map config) {
       sh(label: buildLabel, script: """
         cmake \
           --build ./${buildType} \
-          --parallel $(nproc) \
+          --parallel \$(nproc) \
           --target ${target}
       """)
     }
@@ -101,7 +101,7 @@ def buildTargets(Map config) {
         cmake `
           --build . `
           --config ${buildType} `
-          --parallel $env:NUMBER_OF_PROCESSORS `
+          --parallel \$env:NUMBER_OF_PROCESSORS `
           --target ${target}
       """)
     }
