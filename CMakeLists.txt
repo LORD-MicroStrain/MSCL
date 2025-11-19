@@ -203,7 +203,8 @@ if(MSCL_BUILD_PACKAGE)
             endif()
 
             set(CPACK_BINARY_DEB ON)
-            set(CPACK_BINARY_RPM ON)
+            # TODO: Determine system to turn on DEB or RPM
+            set(CPACK_BINARY_RPM OFF)
             set(CPACK_BINARY_STGZ OFF)
             set(CPACK_BINARY_TGZ OFF)
 

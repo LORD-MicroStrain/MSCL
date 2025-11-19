@@ -1,3 +1,7 @@
+def parallelBuildCount() {
+    return env.IS_UNIX.toBoolean() ? '$(nproc)' : '$env:NUMBER_OF_PROCESSORS'
+}
+
 // Utility function for getting the real branch name even in a pull request
 def branchName() {
   if (env.CHANGE_BRANCH) {
@@ -46,29 +50,31 @@ def checkoutRepo() {
 def packageTargets(Map config) {
   def packageLabel   = 'Packaging'
   def cPackConfig    = 'CPackConfig.cmake'
-  def packageConfigs = 'Debug;Release'
-  def isWindows      = env.IS_WINDOWS.toBoolean()
-  def isUnix         = env.IS_UNIX.toBoolean()
+  def buildType1      = env.BUILD_TYPES.split(';')[0].trim()
+  def buildType2      = env.BUILD_TYPES.split(';')[1].trim()
+  def installProjects = "CPACK_INSTALL_CMAKE_PROJECTS=\"${buildType1};MSCL;ALL;/;${buildType2};MSCL;ALL;/\""
 
-  if (isUnix) {
+  // Install both release and debug on single config generators
+  if (config.isUnix) {
     sh(label: packageLabel, script: """
       cpack \
-        --config "${cPackConfig}" \
-        -C "${packageConfigs}"
+        --config "${buildType1}/${cPackConfig}" \
+        -D "${installProjects}"
     """)
   }
   else {
     powershell(packageLabel: packageLabel, script: """
       cpack `
         --config "${cPackConfig}" `
-        -C "${packageConfigs}"
+        -C "${env.BUILD_TYPES}"
     """)
   }
 }
 
 // Build each target depending on the configuration
 def buildTargets(Map config) {
-  def isUnix = env.IS_UNIX.toBoolean()
+  def buildType = config.buildType
+  def isUnix    = config.isUnix
 
   // Always build the Cpp and test targets
   def targets = ['MSCL-Cpp', 'MSCL-Tests']
@@ -85,13 +91,13 @@ def buildTargets(Map config) {
   }
 
   targets.each { target ->
-    def buildLabel = "Build ${target} (${config.buildType})"
+    def buildLabel = "Build ${target} (${buildType})"
     def parallelCount = parallelBuildCount()
     if (isUnix) {
       sh(label: buildLabel, script: """
         cmake \
-          --build . \
-          --parallel $(nproc) \
+          --build ./${buildType} \
+          --parallel ${parallelCount} \
           --target ${target}
       """)
     }
@@ -99,8 +105,8 @@ def buildTargets(Map config) {
       powershell(label: buildLabel, script: """
         cmake `
           --build . `
-          --config ${config.buildType} `
-          --parallel $env:NUMBER_OF_PROCESSORS `
+          --config ${buildType} `
+          --parallel ${parallelCount} `
           --target ${target}
       """)
     }
@@ -113,8 +119,8 @@ def configureProject(Map config) {
   def buildType      = config.buildType   // Debug or Release
   def isStatic       = libraryType == 'static'
   def buildAllPython = BRANCH_NAME && BRANCH_NAME == 'master'
-  def isWindows      = env.IS_WINDOWS.toBoolean()
-  def isUnix         = env.IS_UNIX.toBoolean()
+  def isWindows      = config.isWindows
+  def isUnix         = config.isUnix
 
   def args = []
 
@@ -170,7 +176,8 @@ def configureProject(Map config) {
   def cmakeArgs = args.join(' ')
   if (isUnix) {
     sh(label: configLabel, script: """
-      cmake .. ${cmakeArgs}
+      mkdir ${buildType}
+      cmake .. -B ${buildType} ${cmakeArgs}
     """)
   }
   else {
@@ -185,13 +192,8 @@ def buildAndPackageProject() {
   // Checkout the project
   checkoutRepo()
 
-  // Set an environment variable to prevent continuous outputs to isUnix() check
-  env.setProperty('IS_UNIX', isUnix())
-  env.setProperty('IS_WINDOWS', !isUnix())
-
-  // Convert the variables to booleans
-  def isWindows = env.IS_WINDOWS.toBoolean()
-  def isUnix    = env.IS_UNIX.toBoolean()
+  def isWindows = isUnix()
+  def isUnix    = !isUnix()
 
   // Build and package the project in the build directory
   dir(env.BUILD_DIR) {
@@ -202,12 +204,14 @@ def buildAndPackageProject() {
       def runConfiguration = true
 
       // Build Release and Debug variants
-      env.BUILD_TYPES.split(',').each { buildType ->
+      env.BUILD_TYPES.split(';').each { buildType ->
         buildType = buildType.trim()
 
         if (runConfiguration) {
           // Configure the project
           configureProject(
+            isUnix: isUnix,
+            isWindows: isWindows,
             libraryType: libraryType,
             buildType: buildType
           )
@@ -217,9 +221,9 @@ def buildAndPackageProject() {
           runConfiguration = isUnix
         }
 
-
         // Build the targets
         buildTargets(
+          isUnix: isUnix,
           libraryType: libraryType,
           buildType: buildType
         )
@@ -237,7 +241,7 @@ def buildAndPackageProject() {
 pipeline {
   agent none
   environment {
-    BUILD_TYPES   = 'Debug,Release'
+    BUILD_TYPES   = 'Debug;Release'
     LIBRARY_TYPES = 'static,shared'
   }
   options {
