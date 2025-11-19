@@ -1,5 +1,5 @@
 def parallelBuildCount() {
-    return isUnix() ? '$(nproc)' : '$env:NUMBER_OF_PROCESSORS'
+    return IS_UNIX ? '$(nproc)' : '$env:NUMBER_OF_PROCESSORS'
 }
 
 // Utility function for getting the real branch name even in a pull request
@@ -52,7 +52,7 @@ def packageTargets(Map config) {
   def cPackConfig    = 'CPackConfig.cmake'
   def packageConfigs = 'Debug;Release'
 
-  if (isUnix()) {
+  if (IS_UNIX) {
     sh(label: packageLabel, script: """
       cpack \
         --config "${cPackConfig}" \
@@ -76,7 +76,7 @@ def buildTargets(Map config) {
   if (config.libraryType == 'static') {
     targets.addAll(['MSCL-Python2', 'MSCL-Python3'])
 
-    if (isUnix()) {
+    if (IS_UNIX) {
       targets.addAll(['MSCL-Examples'])
     }
     else {
@@ -87,7 +87,7 @@ def buildTargets(Map config) {
   targets.each { target ->
     def buildLabel = "Build ${target} (${config.buildType})"
     def parallelCount = parallelBuildCount()
-    if (isUnix()) {
+    if (IS_UNIX) {
       sh(label: buildLabel, script: """
         cmake \
           --build . \
@@ -112,7 +112,6 @@ def configureProject(Map config) {
   def libraryType    = config.libraryType // static or shared
   def buildType      = config.buildType   // Debug or Release
   def isStatic       = libraryType == 'static'
-  def isWindows      = !isUnix()
   def buildAllPython = BRANCH_NAME && BRANCH_NAME == 'master'
 
   def args = []
@@ -127,9 +126,9 @@ def configureProject(Map config) {
   }
 
   // Determine boolean values for each component based on platform and build type
-  def buildCSharp   = isStatic && isWindows  ? 'ON' : 'OFF'
-  def buildDocs     = isStatic && isWindows  ? 'ON' : 'OFF'
-  def buildExamples = isStatic && !isWindows ? 'ON' : 'OFF'
+  def buildCSharp   = isStatic && IS_WINDOWS ? 'ON' : 'OFF'
+  def buildDocs     = isStatic && IS_WINDOWS ? 'ON' : 'OFF'
+  def buildExamples = isStatic && IS_UNIX    ? 'ON' : 'OFF'
   def buildPython2  = isStatic               ? 'ON' : 'OFF'
   def buildPython3  = isStatic               ? 'ON' : 'OFF'
   def buildTests    = isStatic               ? 'ON' : 'OFF'
@@ -163,11 +162,11 @@ def configureProject(Map config) {
 
   // Configure the project
   def configLabel = "Configuring ${libraryType.capitalize()} library project"
-  if (!isWindows) {
+  if (IS_UNIX) {
     configLabel += " (${buildType})"
   }
   def cmakeArgs = args.join(' ')
-  if (isUnix()) {
+  if (IS_UNIX) {
     sh(label: configLabel, script: """
       cmake .. ${cmakeArgs}
     """)
@@ -183,6 +182,10 @@ def configureProject(Map config) {
 def buildAndPackageProject() {
   // Checkout the project
   checkoutRepo()
+
+  // Set an environment variable to prevent continuous outputs to isUnix() check
+  env.setProperty('IS_UNIX', isUnix())
+  env.setProperty('IS_WINDOWS', !isUnix())
 
   // Build and package the project in the build directory
   dir(env.BUILD_DIR) {
@@ -202,11 +205,12 @@ def buildAndPackageProject() {
             libraryType: libraryType,
             buildType: buildType
           )
+
+          // Always run the configuration step on Linux
+          // Windows only needs it to run once
+          runConfiguration = IS_UNIX
         }
 
-        // Always run the configuration step on Linux
-        // Windows only needs it to run once
-        runConfiguration = isUnix()
 
         // Build the targets
         buildTargets(
@@ -219,7 +223,7 @@ def buildAndPackageProject() {
       packageTargets()
     }
 
-    def fileExtension = isUnix() ? 'deb' : 'zip'
+    def fileExtension = IS_UNIX ? 'deb' : 'zip'
     archiveArtifacts artifacts: "*.${fileExtension}"
   }
 }
