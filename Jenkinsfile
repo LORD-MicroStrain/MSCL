@@ -1,7 +1,3 @@
-def parallelBuildCount() {
-    return env.IS_UNIX.toBoolean() ? '$(nproc)' : '$env:NUMBER_OF_PROCESSORS'
-}
-
 // Utility function for getting the real branch name even in a pull request
 def branchName() {
   if (env.CHANGE_BRANCH) {
@@ -95,7 +91,7 @@ def buildTargets(Map config) {
       sh(label: buildLabel, script: """
         cmake \
           --build . \
-          --parallel ${parallelCount} \
+          --parallel $(nproc) \
           --target ${target}
       """)
     }
@@ -104,7 +100,7 @@ def buildTargets(Map config) {
         cmake `
           --build . `
           --config ${config.buildType} `
-          --parallel ${parallelCount} `
+          --parallel $env:NUMBER_OF_PROCESSORS `
           --target ${target}
       """)
     }
