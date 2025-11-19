@@ -60,7 +60,7 @@ def packageTargets(Map config) {
     """)
   }
   else {
-    powershell(packageLabel: label, script: """
+    powershell(packageLabel: packageLabel, script: """
       cpack `
         --config "${cPackConfig}" `
         -C "${packageConfigs}"
@@ -85,7 +85,7 @@ def buildTargets(Map config) {
   }
 
   targets.each { target ->
-    def buildLabel = "Build ${target} (${buildType})"
+    def buildLabel = "Build ${target} (${config.buildType})"
     def parallelCount = parallelBuildCount()
     if (isUnix()) {
       sh(label: buildLabel, script: """
@@ -99,7 +99,7 @@ def buildTargets(Map config) {
       powershell(label: buildLabel, script: """
         cmake `
           --build . `
-          --config ${config.config} `
+          --config ${config.buildType} `
           --parallel ${parallelCount} `
           --target ${target}
       """)
@@ -206,7 +206,7 @@ def buildAndPackageProject() {
 
         // Always run the configuration step on Linux
         // Windows only needs it to run once
-        runConfiguration = isUnix() ? true : false
+        runConfiguration = isUnix()
 
         // Build the targets
         buildTargets(
