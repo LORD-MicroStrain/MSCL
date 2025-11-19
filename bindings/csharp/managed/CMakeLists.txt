@@ -53,15 +53,3 @@ add_library("${MSCL_CSHARP_MANAGED_TARGET}" SHARED
     "${CMAKE_CURRENT_LIST_DIR}/Exceptions.cs"
     ${MSCL_GENERATED_CSHARP_SOURCES}
 )
-
-# Add the pre-built native library as a dependency
-# Use add_library with IMPORTED to reference the pre-built DLL
-add_library("${MSCL_CSHARP_TARGET}" SHARED IMPORTED GLOBAL)
-set_target_properties("${MSCL_CSHARP_TARGET}" PROPERTIES
-    IMPORTED_LOCATION "${NATIVE_DLL}"
-    IMPORTED_IMPLIB "${NATIVE_DLL_IMPLIB}"
-)
-
-target_link_libraries("${MSCL_CSHARP_MANAGED_TARGET}" PUBLIC
-    ${MSCL_CSHARP_TARGET}
-)
