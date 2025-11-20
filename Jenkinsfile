@@ -69,20 +69,29 @@ def packageTargets(Map config) {
 
 // Build each target depending on the configuration
 def buildTargets(Map config) {
-  def buildType = config.buildType
-  def isLinux   = config.isLinux
+  def buildType        = config.buildType
+  def isLinux          = config.isLinux
+  def releaseBuildType = 'Release'
 
   // Always build the Cpp and test targets
   def targets = ['MSCL-Cpp', 'MSCL-Tests']
 
   if (config.libraryType == 'static') {
-    targets.addAll(['MSCL-Python2', 'MSCL-Python3'])
+    if (buildType == releaseBuildType) {
+      targets.addAll(['MSCL-Python2', 'MSCL-Python3'])
+    }
 
     if (isLinux) {
-      targets.addAll(['MSCL-Examples'])
+      if (buildType == releaseBuildType) {
+        targets.addAll(['MSCL-Examples'])
+      }
     }
     else {
-      targets.addAll(['MSCL-CSharp', 'MSCL-Docs'])
+      targets.addAll(['MSCL-CSharp'])
+
+      if (buildType == releaseBuildType) {
+        targets.addAll(['MSCL-Docs'])
+      }
     }
   }
 

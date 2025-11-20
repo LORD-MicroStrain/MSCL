@@ -19,6 +19,20 @@ macro(mscl_add_swig_python_module_library MSCL_PYTHON_VERSION MSCL_PYTHON_MAJOR_
         LINK_OPTIONS ${MSCL_PYTHON_LINK_OPTIONS}
     )
 
+    # Set the output directory similar to how actual libraries/projects output artifacts
+    # This allows multiple versions of Python to be build without overwriting the previous artifacts
+    set(MSCL_PYTHON_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/${MSCL_PYTHON_TARGET_NAME}")
+    if(MSVC)
+        string(APPEND MSCL_PYTHON_OUTPUT_DIRECTORY "/$<CONFIG>")
+    endif()
+
+    # Make sure all the artifacts are output in their own build directories
+    set_target_properties("${MSCL_PYTHON_TARGET_NAME}" PROPERTIES
+        ARCHIVE_OUTPUT_DIRECTORY "${MSCL_PYTHON_OUTPUT_DIRECTORY}"
+        RUNTIME_OUTPUT_DIRECTORY "${MSCL_PYTHON_OUTPUT_DIRECTORY}"
+        LIBRARY_OUTPUT_DIRECTORY "${MSCL_PYTHON_OUTPUT_DIRECTORY}"
+    )
+
     # Add the target to a list to build all targets
     list(APPEND MSCL_PYTHON${MSCL_PYTHON_MAJOR_VERSION}_ALL_TARGETS "${MSCL_PYTHON_TARGET_NAME}")
 
@@ -61,24 +75,31 @@ macro(mscl_add_swig_python_module_library MSCL_PYTHON_VERSION MSCL_PYTHON_MAJOR_
 
     # Installation
     if(MSVC)
-        set(MSCL_PYTHON_DIST_PACKAGES_DIR "Python/${MSCL_PYTHON_VERSION}/${MSCL_ARCH_NAME}/$<CONFIG>")
+        string(REPLACE "\." "" MSCL_PYTHON_INSTALL_DIR_VERSION "${MSCL_PYTHON_VERSION}")
+        set(MSCL_PYTHON_SITE_PACKAGES_DIR "Python${MSCL_PYTHON_INSTALL_DIR_VERSION}/Lib/site-packages")
     else()
-        set(MSCL_PYTHON_DIST_PACKAGES_DIR ${CMAKE_INSTALL_LIBDIR}/python${MSCL_PYTHON_VERSION}/dist-packages)
+        set(MSCL_PYTHON_SITE_PACKAGES_DIR ${CMAKE_INSTALL_LIBDIR}/python${MSCL_PYTHON_VERSION}/)
+#        if(DEBIAN)
+            # TODO: This is Debian specific
+            string(APPEND MSCL_PYTHON_SITE_PACKAGES_DIR "dist-packages")
+#        else()
+#            string(APPEND MSCL_PYTHON_SITE_PACKAGES_DIR "site-packages")
+#        endif()
     endif()
 
     install(
         TARGETS "${MSCL_PYTHON_TARGET_NAME}"
         RUNTIME
             COMPONENT "${MSCL_PYTHON_COMPONENT_NAME}"
-            DESTINATION "${MSCL_PYTHON_DIST_PACKAGES_DIR}"
+            DESTINATION "${MSCL_PYTHON_SITE_PACKAGES_DIR}"
         LIBRARY
             COMPONENT "${MSCL_PYTHON_COMPONENT_NAME}"
-            DESTINATION "${MSCL_PYTHON_DIST_PACKAGES_DIR}"
+            DESTINATION "${MSCL_PYTHON_SITE_PACKAGES_DIR}"
     )
 
     install(
         FILES "${MSCL_GENERATED_PYTHON_SOURCES}"
-        DESTINATION "${MSCL_PYTHON_DIST_PACKAGES_DIR}"
+        DESTINATION "${MSCL_PYTHON_SITE_PACKAGES_DIR}"
         COMPONENT "${MSCL_PYTHON_COMPONENT_NAME}"
     )
 

@@ -18,10 +18,12 @@ get_target_property(MSCL_GENERATED_CSHARP_SOURCE_DIR "${MSCL_CSHARP_TARGET}" SWI
 set(MSCL_CSHARP_MANAGED_TARGET "${MSCL_LIBRARY}_Managed")
 set(MSCL_CSHARP_MANAGED_BUILD_DIR "${CMAKE_CURRENT_BINARY_DIR}/${MSCL_CSHARP_MANAGED_TARGET}")
 
+if(CMAKE_VERSION VERSION_GREATER_EQUAL 3.24)
+    # Allow clearing the cache before reconfiguring the project
+    set(MSCL_CSHARP_MANAGED_FRESH_CONFIG_OPTION "--fresh")
+endif()
+
 add_custom_command(TARGET "${MSCL_CSHARP_TARGET}" POST_BUILD
-    # Clear the Managed library build directory every time
-    COMMAND "${CMAKE_COMMAND}"
-        -E rm -rf "${MSCL_CSHARP_MANAGED_BUILD_DIR}"
     # Generate the Manged library project using the same CMake configuration
     COMMAND "${CMAKE_COMMAND}"
         -G "${CMAKE_GENERATOR}"
@@ -36,6 +38,7 @@ add_custom_command(TARGET "${MSCL_CSHARP_TARGET}" POST_BUILD
         -D "PROJECT_VERSION=${PROJECT_VERSION}"
         -D "MSCL_CURRENT_YEAR=${MSCL_CURRENT_YEAR}"
         -D "MSCL_GIT_COMMIT=${MSCL_GIT_COMMIT}"
+        "${MSCL_CSHARP_MANAGED_FRESH_CONFIG_OPTION}" # Clear the cache before configuring
     # Build the Manged library project
     COMMAND ${CMAKE_COMMAND}
         --build "${MSCL_CSHARP_MANAGED_BUILD_DIR}"
