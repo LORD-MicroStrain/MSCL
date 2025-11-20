@@ -28,6 +28,23 @@ if(NOT SWIG_FOUND)
     )
 
     set(SWIG_ROOT "${DEPS_BASE_DIR}/${SWIG_ARCHIVE_DIR}" CACHE PATH "Location to search for the Swig executable" FORCE)
+
+    # On Linux, build and install Swig locally using the source
+    if(UNIX)
+        set(SWIG_INSTALL_DIR "install")
+        execute_process(
+            # Configure Swig with a local install directory
+            COMMAND ./configure "--prefix ${SWIG_ROOT}/${SWIG_INSTALL_DIR}"
+            # Build
+            COMMAND make
+            # Install
+            COMMAND make install
+            WORKING_DIRECTORY "${SWIG_ROOT}"
+        )
+
+        # Update the cache variable with the local install directory of Swig
+        set(SWIG_ROOT "${DEPS_BASE_DIR}/${SWIG_ARCHIVE_DIR}/${SWIG_INSTALL_DIR}" CACHE PATH "Location to search for the Swig executable" FORCE)
+    endif()
 endif()
 
 find_package("SWIG" "${SWIG_REQUESTED_VERSION}" REQUIRED)
