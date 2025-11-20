@@ -131,9 +131,11 @@ function(mscl_configure_docs_target)
     # Add the target to the Docs All target
     add_dependencies(${MSCL_DOCS_TARGET_ALL} ${MSCL_DOCS_TARGET})
 
+    # Only install the documentation with release builds
     install(
         DIRECTORY "${DOCS_OUTPUT_DIR}"
         DESTINATION "${MSCL_DOCS_COMPONENT_NAME}" # Use the component name as the install prefix
         COMPONENT "${MSCL_DOCS_COMPONENT_NAME}"
+        CONFIGURATIONS "Release"
     )
 endfunction()

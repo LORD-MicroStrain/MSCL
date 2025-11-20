@@ -1,3 +1,8 @@
+# Python users typically don't need the debug builds
+# This also allows for proper packaging when requesting both Debug and Release builds in the same package
+# but Python might not be included with Debug files
+option(MSCL_PACKAGE_PYTHON_DEBUG "Include the debug package of Python builds" OFF)
+
 # Add all the requested versions of Python2 to a list for project creation
 if(MSCL_BUILD_PYTHON2)
     # Allow the user to request a certain version of Python2

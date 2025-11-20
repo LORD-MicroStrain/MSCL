@@ -235,6 +235,7 @@ if(MSCL_BUILD_PACKAGE)
         # Create one package per component
         set(CPACK_DEBIAN_COMPONENT_INSTALL ON)
     else()
+        # Create one package per component
         set(CPACK_ARCHIVE_COMPONENT_INSTALL ON)
     endif()
 
@@ -306,4 +307,17 @@ endif()
 if(MSCL_BUILD_PACKAGE)
     # NOTE: CPack requires all configuration variables to be set before including this module
     include(CPack)
+
+    get_property(GENERATOR_IS_MULTI_CONFIG GLOBAL
+        PROPERTY GENERATOR_IS_MULTI_CONFIG
+    )
+
+    # Add the packaging configuration file to the build directory for single-config generators
+    # This allows easy access to the file from the build directory
+    if(NOT GENERATOR_IS_MULTI_CONFIG)
+        file(
+            COPY "${MSCL_MODULE_DIR}/microstrain_package_all.cmake"
+            DESTINATION "${CMAKE_CURRENT_BINARY_DIR}"
+        )
+    endif()
 endif()

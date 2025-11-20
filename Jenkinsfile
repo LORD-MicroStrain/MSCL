@@ -44,24 +44,24 @@ def checkoutRepo() {
 
 // Calling CPack manually allows for packaging both Debug and Release packages
 def packageTargets(Map config) {
-  def packageLabel   = 'Packaging'
-  def cPackConfig    = 'CPackConfig.cmake'
-  def buildType1      = env.BUILD_TYPES.split(';')[0].trim()
-  def buildType2      = env.BUILD_TYPES.split(';')[1].trim()
-  def installProjects = "CPACK_INSTALL_CMAKE_PROJECTS=\"${buildType1};MSCL;ALL;/;${buildType2};MSCL;ALL;/\""
+  def packageLabel = 'Packaging'
 
   // Install both release and debug on single config generators
   if (config.isLinux) {
+    def debugBuildDir   = env.BUILD_TYPES.split(';')[0].trim()
+    def releaseBuildDir = env.BUILD_TYPES.split(';')[1].trim()
+
     sh(label: packageLabel, script: """
       cpack \
-        --config "${buildType1}/${cPackConfig}" \
-        -D "${installProjects}"
+        --config "\$(pwd)/${releaseBuildDir}/microstrain_package_all.cmake" \
+        -D "MICROSTRAIN_BUILD_DIR_DEBUG:PATH=\$(pwd)/${debugBuildDir}" \
+        -D "MICROSTRAIN_BUILD_DIR_RELEASE:PATH=\$(pwd)/${releaseBuildDir}"
     """)
   }
   else {
     powershell(label: packageLabel, script: """
       cpack `
-        --config "${cPackConfig}" `
+        --config "CPackConfig.cmake" `
         -C "${env.BUILD_TYPES}"
     """)
   }

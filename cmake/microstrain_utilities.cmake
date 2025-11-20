@@ -346,7 +346,7 @@ endfunction()
 
 function(microstrain_generate_package_config)
     set(OPTIONS)
-    set(SINGLE_VALUES PACKAGE_NAME LIBRARY_NAME PACKAGE_NAMESPACE)
+    set(SINGLE_VALUES PACKAGE_NAME LIBRARY_NAME PACKAGE_NAMESPACE COMPONENT_NAME)
     set(OPTIONAL_SINGLE_VALUES LIBRARY_NAME_ALIAS)
     set(MULTI_VALUES)
 
@@ -370,7 +370,6 @@ function(microstrain_generate_package_config)
         endif()
     endforeach()
 
-    set(PACKAGE_COMPONENT_NAME ${PACKAGE_NAME})
     set(PACKAGE_VERSION ${PROJECT_VERSION})
 
     string(TOLOWER "${PACKAGE_NAME}" PACKAGE_NAME_LOWER)
@@ -424,6 +423,6 @@ function(microstrain_generate_package_config)
     install(
         FILES ${MICROSTRAIN_CONFIG_FILES}
         DESTINATION "${MICROSTRAIN_CMAKE_CONFIG_INSTALL_DIR}"
-        COMPONENT "${PACKAGE_COMPONENT_NAME}"
+        COMPONENT "${COMPONENT_NAME}"
     )
 endfunction()
