@@ -39,7 +39,7 @@ def checkoutRepo() {
   ])
 
   // Set the branch name
-  env.setProperty('BRANCH_NAME', branchName())
+  env.BRANCH_NAME = branchName()
 }
 
 // Calling CPack manually allows for packaging both Debug and Release packages
@@ -59,7 +59,7 @@ def packageTargets(Map config) {
     """)
   }
   else {
-    powershell(packageLabel: packageLabel, script: """
+    powershell(label: packageLabel, script: """
       cpack `
         --config "${cPackConfig}" `
         -C "${env.BUILD_TYPES}"
@@ -113,7 +113,7 @@ def configureProject(Map config) {
   def libraryType    = config.libraryType // static or shared
   def buildType      = config.buildType   // Debug or Release
   def isStatic       = libraryType == 'static'
-  def buildAllPython = BRANCH_NAME && BRANCH_NAME == 'master'
+  def buildAllPython = env.BRANCH_NAME && env.BRANCH_NAME == 'master'
   def isWindows      = config.isWindows
   def isLinux        = config.isLinux
 
@@ -121,7 +121,7 @@ def configureProject(Map config) {
 
   // Architecture flag (Windows only)
   if (env.BUILD_ARCH) {
-    args.add("-A ${BUILD_ARCH}")
+    args.add("-A ${env.BUILD_ARCH}")
   }
   // Build type for single-config generators (Linux/Make)
   else {
@@ -225,7 +225,9 @@ def buildAndPackageProject() {
       }
 
       // Package all the available artifacts for both build types (Debug/Release)
-      packageTargets()
+      packageTargets(
+          isLinux: isLinux
+      )
     }
 
     def fileExtension = isLinux ? 'deb' : 'zip'
@@ -248,6 +250,9 @@ pipeline {
   }
   stages {
     stage('Pre-Release') {
+      when {
+        branch pattern: "(develop|master)", comparator: "REGEXP"
+      }
       agent { label 'linux-amd64' }
       options {
         skipDefaultCheckout()
@@ -257,10 +262,10 @@ pipeline {
       steps {
         checkout scm
         withCredentials([string(credentialsId: 'Github_Token', variable: 'GH_TOKEN')]) {
-          sh '''
+          sh """
             # Pre-release check/update before building on develop
-            "${WORKSPACE}/BuildScripts/prerelease.sh" --target "${BRANCH_NAME}"
-          '''
+            "${WORKSPACE}/BuildScripts/prerelease.sh" --target "${env.BRANCH_NAME}"
+          """
         }
       }
     }
@@ -355,37 +360,37 @@ pipeline {
   post {
     success {
       script {
-        if (BRANCH_NAME && BRANCH_NAME == 'develop') {
+        if (env.BRANCH_NAME && env.BRANCH_NAME == 'develop') {
           node("linux-amd64") {
             dir("/tmp/mscl_${env.BRANCH_NAME}_${currentBuild.number}") {
               copyArtifacts(projectName: "${env.JOB_NAME}", selector: specific("${currentBuild.number}"));
               withCredentials([string(credentialsId: 'Github_Token', variable: 'GH_TOKEN')]) {
-                sh '''
+                sh """
                   # Release to github
                   "${WORKSPACE}/BuildScripts/release.sh" \
-                    --artifacts "$(find "$(pwd)" -type f)" \
-                    --target "${BRANCH_NAME}" \
+                    --artifacts "\$(find \$(pwd) -type f)" \
+                    --target "${env.BRANCH_NAME}" \
                     --release "latest" \
-                    --docs-zip "$(find "$(pwd)" -type f -name "MSCL_Documentation_*.zip" | sort | uniq)" \
+                    --docs-zip "\$(find \$(pwd) -type f -name 'MSCL_Documentation_*.zip' | sort | uniq)" \
                     --generate-notes
-                '''
+                """
               }
             }
           }
         }
-        else if (BRANCH_NAME && BRANCH_NAME == 'master') {
+        else if (env.BRANCH_NAME && env.BRANCH_NAME == 'master') {
           node("linux-amd64") {
             dir("/tmp/mscl_${env.BRANCH_NAME}_${currentBuild.number}") {
               copyArtifacts(projectName: "${env.JOB_NAME}", selector: specific("${currentBuild.number}"));
               withCredentials([string(credentialsId: 'Github_Token', variable: 'GH_TOKEN')]) {
-                sh '''
+                sh """
                   # Release to github. The release script will determine if master needs to be published
                   "${WORKSPACE}/BuildScripts/release.sh" \
-                    --artifacts "$(find "$(pwd)" -type f)" \
-                    --target "${BRANCH_NAME}" \
-                    --release "$(cd ${WORKSPACE} && git describe --match "v*" --abbrev=0 --tags HEAD)" \
-                    --docs-zip "$(find "$(pwd)" -type f -name "MSCL_Documentation_*.zip" | sort | uniq)"
-                '''
+                    --artifacts "\$(find \$(pwd) -type f)" \
+                    --target "${env.BRANCH_NAME}" \
+                    --release "\$(cd ${WORKSPACE} && git describe --match 'v*' --abbrev=0 --tags HEAD)" \
+                    --docs-zip "\$(find \$(pwd) -type f -name 'MSCL_Documentation_*.zip' | sort | uniq)"
+                """
               }
             }
           }
