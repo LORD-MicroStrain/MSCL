@@ -82,9 +82,9 @@ def buildTargets(Map config) {
     }
 
     if (isLinux) {
-      if (buildType == releaseBuildType) {
-        targets.addAll(['MSCL-Examples'])
-      }
+//       if (buildType == releaseBuildType) {
+//         targets.addAll(['MSCL-Examples'])
+//       }
     }
     else {
       targets.addAll(['MSCL-CSharp'])
@@ -140,7 +140,7 @@ def configureProject(Map config) {
   // Determine boolean values for each component based on platform and build type
   def buildCSharp   = isStatic && isWindows ? 'ON' : 'OFF'
   def buildDocs     = isStatic && isWindows ? 'ON' : 'OFF'
-  def buildExamples = isStatic && isLinux   ? 'ON' : 'OFF'
+//   def buildExamples = isStatic && isLinux   ? 'ON' : 'OFF'
   def buildPython2  = isStatic              ? 'ON' : 'OFF'
   def buildPython3  = isStatic              ? 'ON' : 'OFF'
   def buildTests    = isStatic              ? 'ON' : 'OFF'
@@ -152,7 +152,7 @@ def configureProject(Map config) {
     '-D MSCL_BUILD_PACKAGE:BOOL=ON',
     "-D MSCL_BUILD_CSHARP:BOOL=${buildCSharp}",
     "-D MSCL_BUILD_DOCUMENTATION:BOOL=${buildDocs}",
-    "-D MSCL_BUILD_EXAMPLES:BOOL=${buildExamples}",
+//     "-D MSCL_BUILD_EXAMPLES:BOOL=${buildExamples}",
     "-D MSCL_BUILD_PYTHON2:BOOL=${buildPython2}",
     "-D MSCL_BUILD_PYTHON3:BOOL=${buildPython3}",
     "-D MSCL_BUILD_TESTS:BOOL=${buildTests}",
