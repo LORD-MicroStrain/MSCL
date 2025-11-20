@@ -224,14 +224,20 @@ if(MSCL_BUILD_PACKAGE)
     set(CPACK_PACKAGE_VENDOR "MicroStrain by HBK")
     set(CPACK_PACKAGE_CONTACT "MicroStrain Support <microstrainsupport@hbkworld.com>")
 
+    # Don't group packages
+    set(CPACK_COMPONENTS_GROUPING IGNORE)
+
     # Turn on automatic dependency detection for Linux packages (RPM has this option enabled by default)
     if(UNIX AND NOT APPLE)
         # Allow dpkg to determine the package dependencies
         set(CPACK_DEBIAN_PACKAGE_SHLIBDEPS ON)
+
+        # Create one package per component
+        set(CPACK_DEBIAN_COMPONENT_INSTALL ON)
+    else()
+        set(CPACK_ARCHIVE_COMPONENT_INSTALL ON)
     endif()
 
-    # Create a package per component
-    set(CPACK_COMPONENTS_GROUPING IGNORE)
 
     microstrain_get_package_architecture(CPACK_SYSTEM_NAME)
     microstrain_get_git_branch(MSCL_GIT_BRANCH MSCL_BRANCH) # Second param is used to set a cache variable
