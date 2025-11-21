@@ -34,8 +34,9 @@ if(NOT SWIG_FOUND)
         set(SWIG_INSTALL_DIR "install")
 
         # Configure Swig with a local install directory
+        # All the '--without-*' options are to disable tests and examples from being compiled
         execute_process(
-            COMMAND ./configure --prefix ${SWIG_ROOT}/${SWIG_INSTALL_DIR}
+            COMMAND ./configure --prefix ${SWIG_ROOT}/${SWIG_INSTALL_DIR} --without-pcre --without-perl5 --without-python --without-python3
             WORKING_DIRECTORY "${SWIG_ROOT}"
             RESULT_VARIABLE SWIG_CONFIGURE_RESULT
         )

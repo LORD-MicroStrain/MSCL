@@ -142,21 +142,12 @@ macro(microstrain_get_package_architecture PACKAGE_ARCH_OUT)
             string(APPEND ${PACKAGE_ARCH_OUT} "-x86")
         endif()
     elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-        # The dumpmachine command from gcc should contain information on the architecture
-        execute_process(
-            COMMAND ${CMAKE_COMMAND} -E env /bin/bash -c "${CMAKE_CXX_COMPILER} -dumpmachine"
-            OUTPUT_VARIABLE GCC_ARCHITECTURE_OUT
-            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-            ERROR_VARIABLE GCC_ARCHITECTURE_ERR
-            RESULT_VARIABLE GCC_ARCHITECTURE_RET
-        )
-
         # Convert the GCC architecture to the format that we use
-        if("${GCC_ARCHITECTURE_OUT}" MATCHES ".*x86_64.*")
-            set(${PACKAGE_ARCH_OUT} "amd64")
-        elseif("${GCC_ARCHITECTURE_OUT}" MATCHES ".*aarch64.*")
-            set(${PACKAGE_ARCH_OUT} "arm64")
-        elseif("${GCC_ARCHITECTURE_OUT}" MATCHES ".*arm.*")
+        if(CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64|AMD64")
+            set(${PACKAGE_ARCH_OUT} "x86_64")
+        elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "aarch64|arm64")
+            set(${PACKAGE_ARCH_OUT} "aarch64")
+        elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "armv7l|armv7")
             set(${PACKAGE_ARCH_OUT} "armhf")
         endif()
     endif()
@@ -166,6 +157,62 @@ macro(microstrain_get_package_architecture PACKAGE_ARCH_OUT)
         set(${PACKAGE_ARCH_OUT} ${CMAKE_SYSTEM_PROCESSOR})
     else()
         message(STATUS "Detected package architecture ${${PACKAGE_ARCH_OUT}}")
+    endif()
+endmacro()
+
+function(microstrain_detect_debian IS_DEBIAN_OUT)
+    set(${IS_DEBIAN_OUT} OFF PARENT_SCOPE)
+
+    if(EXISTS "/etc/debian_version")
+        set(${IS_DEBIAN_OUT} ON PARENT_SCOPE)
+    endif()
+endfunction()
+
+function(microstrain_detect_redhat IS_REDHAT_OUT)
+    set(${IS_REDHAT_OUT} OFF PARENT_SCOPE)
+
+    if(EXISTS "/etc/redhat-release" OR
+       EXISTS "/etc/fedora-release" OR
+       EXISTS "/etc/os-release"
+    )
+        set(${IS_REDHAT_OUT} ON PARENT_SCOPE)
+    endif()
+endfunction()
+
+# Modify the default values of the available CMake generators only, based on the detected system
+# This is typically only for library projects that just needs to make archive packages
+macro(microstrain_set_cpack_archive_generators)
+    # Configure the generators to use
+    if(UNIX)
+        if(CYGWIN)
+            set(CPACK_BINARY_CYGWIN OFF)
+
+            set(CPACK_SOURCE_CYGWIN OFF)
+        else()
+            if(NOT APPLE)
+                set(CPACK_BINARY_TZ OFF)
+            endif()
+
+            microstrain_detect_debian(IS_DEBIAN)
+            set(CPACK_BINARY_DEB ${IS_DEBIAN})
+
+            microstrain_detect_redhat(IS_REDHAT)
+            set(CPACK_BINARY_RPM ${IS_REDHAT})
+
+            set(CPACK_BINARY_STGZ OFF)
+            set(CPACK_BINARY_TGZ OFF)
+
+            set(CPACK_SOURCE_TBZ2 OFF)
+            set(CPACK_SOURCE_TGZ OFF)
+            set(CPACK_SOURCE_TXZ OFF)
+            set(CPACK_SOURCE_TZ OFF)
+        endif()
+    else()
+        set(CPACK_BINARY_ZIP ON)
+        set(CPACK_BINARY_NSIS OFF)
+
+        set(CPACK_SOURCE_7Z OFF)
+        set(CPACK_SOURCE_ZIP OFF)
     endif()
 endmacro()
 

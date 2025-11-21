@@ -114,6 +114,7 @@ macro(mscl_add_swig_python_module_library MSCL_PYTHON_VERSION MSCL_PYTHON_MAJOR_
         microstrain_set_cpack_component_file_name(
             COMPONENT_NAME "${MSCL_PYTHON_COMPONENT_NAME}"
             COMPONENT_VERSION "${CPACK_PACKAGE_VERSION}"
+            PACKAGE_ARCH "${CPACK_SYSTEM_NAME}"
         )
     endif()
 endmacro()

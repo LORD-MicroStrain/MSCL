@@ -66,5 +66,6 @@ if(MSCL_BUILD_PACKAGE)
     microstrain_set_cpack_component_file_name(
         COMPONENT_NAME "${MSCL_CSHARP_COMPONENT_NAME}"
         COMPONENT_VERSION "${CPACK_PACKAGE_VERSION}"
+        PACKAGE_ARCH "${CPACK_SYSTEM_NAME}"
     )
 endif()

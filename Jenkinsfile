@@ -86,15 +86,11 @@ def buildTargets(Map config) {
       targets.addAll(['MSCL-Python2', 'MSCL-Python3'])
     }
 
-    if (isLinux) {
-//       if (buildType == releaseBuildType) {
-//         targets.addAll(['MSCL-Examples'])
-//       }
-    }
-    else {
+    if (!isLinux) {
       targets.addAll(['MSCL-CSharp'])
 
-      if (buildType == releaseBuildType) {
+      // Only need to build docs on one architecture
+      if (buildType == releaseBuildType && env.BUILD_ARCH && env.BUILD_ARCH == "x64") {
         targets.addAll(['MSCL-Docs'])
       }
     }
@@ -130,6 +126,7 @@ def configureProject(Map config) {
   def buildAllPython = env.BRANCH_NAME && env.BRANCH_NAME == 'master'
   def isWindows      = config.isWindows
   def isLinux        = config.isLinux
+  def buildDocs      = isStatic && isWindows ? 'ON' : 'OFF'
 
   def args = [
     '-D MSCL_BUILD_PACKAGE:BOOL=ON',
@@ -140,6 +137,11 @@ def configureProject(Map config) {
   // Architecture flag (Windows only)
   if (env.BUILD_ARCH) {
     args.add("-A ${env.BUILD_ARCH}")
+
+    // Only need to build docs on one architecture
+    if (buildDocs == 'ON') {
+      buildDocs = env.BUILD_ARCH == "x64" ? 'ON' : 'OFF'
+    }
   }
   // Build type for single-config generators (Linux/Make)
   else {
@@ -148,7 +150,6 @@ def configureProject(Map config) {
 
   // Determine boolean values for each component based on platform and build type
   def buildCSharp   = isStatic && isWindows ? 'ON' : 'OFF'
-  def buildDocs     = isStatic && isWindows ? 'ON' : 'OFF'
 //   def buildExamples = isStatic && isLinux   ? 'ON' : 'OFF'
   def buildPython2  = isStatic              ? 'ON' : 'OFF'
   def buildPython3  = isStatic              ? 'ON' : 'OFF'

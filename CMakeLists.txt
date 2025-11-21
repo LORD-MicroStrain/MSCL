@@ -19,112 +19,13 @@ if(MSCL_BUILD_PYTHON3 OR MSCL_BUILD_PYTHON2)
     set(MSCL_BUILD_PYTHON ON)
 endif()
 
-if(NOT BUILD_SHARED_LIBS AND UNIX AND MSCL_BUILD_PYTHON)
-    set(BUILD_SHARED_LIBS ON)
-endif()
-
 # Dependencies should be linked statically if MSCL is built statically
 if(NOT BUILD_SHARED_LIBS AND NOT MSCL_LINK_STATIC_DEPS)
     set(MSCL_LINK_STATIC_DEPS ON)
 endif()
 
-#
-# Setup and use vcpkg
-#
-
-if(MSCL_LINK_STATIC_DEPS)
-    # Link dependencies statically on Windows. Windows links dynamically by default in vcpkg
-    if(WIN32)
-        if("${CMAKE_GENERATOR_PLATFORM}" STREQUAL "Win32")
-            set(VCPKG_TARGET_TRIPLET "x86-windows-static" CACHE STRING "Vcpkg target triplet")
-        else()
-            set(VCPKG_TARGET_TRIPLET "x64-windows-static" CACHE STRING "Vcpkg target triplet")
-        endif()
-
-        set(VCPKG_HOST_TRIPLET "${VCPKG_TARGET_TRIPLET}" CACHE STRING "Vcpkg host triplet")
-    endif()
-elseif(UNIX AND NOT APPLE)
-    # Link dependencies dynamically on Linux. Linux links statically by default in vcpkg
-    set(VCPKG_TARGET_TRIPLET "x64-linux-dynamic" CACHE STRING "Vcpkg target triplet")
-    set(VCPKG_HOST_TRIPLET "${VCPKG_TARGET_TRIPLET}" CACHE STRING "Vcpkg host triplet")
-endif()
-
-# Include any Boost dependencies with vcpkg
-if(MSCL_DOWNLOAD_BOOST)
-    list(APPEND VCPKG_MANIFEST_FEATURES "boost")
-
-    # Include any testing dependencies with vcpkg
-    if(MSCL_BUILD_TESTS)
-        list(APPEND VCPKG_MANIFEST_FEATURES "testing")
-    endif()
-endif()
-
-# Include any OpenSSL dependencies with vcpkg
-if(MSCL_DOWNLOAD_OPENSSL)
-    list(APPEND VCPKG_MANIFEST_FEATURES "openssl")
-endif()
-
-# Force vcpkg to output our dependencies to the install directory. This should handle sub dependencies too
-option(X_VCPKG_APPLOCAL_DEPS_INSTALL
-    "(experimental) Automatically copy dependencies into the install target directory for executables. Requires CMake 3.14."
-    ON
-)
-
-# Make sure vcpkg uses the correct generator options
-if(CMAKE_GENERATOR)
-    set(Z_VCPKG_CMAKE_GENERATOR "${CMAKE_GENERATOR}")
-endif()
-
-if(CMAKE_GENERATOR_TOOLSET)
-    set(VCPKG_PLATFORM_TOOLSET "${CMAKE_GENERATOR_TOOLSET}")
-    set(Z_VCPKG_PLATFORM_TOOLSET "${CMAKE_GENERATOR_TOOLSET}")
-endif()
-
-set(MSCL_VCPKG_DIR "${CMAKE_CURRENT_LIST_DIR}/deps/vcpkg")
-
-# Prefer vcpkg if we can find it. Fallback if CMake presets aren't used
-if(NOT DEFINED CMAKE_TOOLCHAIN_FILE)
-    # Different vcpkg roots depending on OS
-    if(WIN32)
-        set(MSCL_VCPKG_ROOTS
-            "${MSCL_VCPKG_DIR}"
-            "C:/Program Files/vcpkg"
-            "C:/Program Files (x86)/vcpkg"
-        )
-    elseif(UNIX OR OSX)
-        set(MSCL_VCPKG_ROOTS
-            "${MSCL_VCPKG_DIR}"
-            "/opt/vcpkg"
-        )
-    endif()
-
-    # See if we can find the vcpkg toolchain file
-    find_file(MSCL_VCPKG_TOOLCHAIN
-        NAMES "scripts/buildsystems/vcpkg.cmake"
-        PATHS ${MSCL_VCPKG_ROOTS}
-        NO_DEFAULT_PATH
-    )
-    if(MSCL_VCPKG_TOOLCHAIN)
-        message(STATUS "Using vcpkg toolchain file ${MSCL_VCPKG_TOOLCHAIN}")
-    endif()
-
-    # Tell cmake about the toolchain file
-    set(CMAKE_TOOLCHAIN_FILE ${MSCL_VCPKG_TOOLCHAIN})
-endif()
-
-message(WARNING "
-    BUILD_SHARED_LIBS: ${BUILD_SHARED_LIBS}
-    MSCL_BUILD_PACKAGE: ${MSCL_BUILD_PACKAGE}
-    MSCL_BUILD_CSHARP: ${MSCL_BUILD_CSHARP}
-    MSCL_BUILD_DOCUMENTATION: ${MSCL_BUILD_DOCUMENTATION}
-    MSCL_BUILD_PYTHON2: ${MSCL_BUILD_PYTHON2}
-    MSCL_BUILD_PYTHON3: ${MSCL_BUILD_PYTHON3}
-    MSCL_BUILD_TESTS: ${MSCL_BUILD_TESTS}
-    MSCL_WITH_SSL: ${MSCL_WITH_SSL}
-    MSCL_WITH_WEBSOCKETS: ${MSCL_WITH_WEBSOCKETS}
-    MSCL_PYTHON2_REQUESTED_VERSION: ${MSCL_PYTHON2_REQUESTED_VERSION}
-    MSCL_PYTHON3_REQUESTED_VERSION: ${MSCL_PYTHON3_REQUESTED_VERSION}
-")
+# Configure vcpkg for use
+include("${CMAKE_CURRENT_LIST_DIR}/cmake/mscl-configure-vcpkg.cmake")
 
 cmake_minimum_required(VERSION 3.23)
 project("MSCL"
@@ -205,35 +106,8 @@ microstrain_get_git_commit(MSCL_GIT_COMMIT)
 # Configure packaging before including all the targets with add_subdirectory
 # Subdirectories depend on most of these options
 if(MSCL_BUILD_PACKAGE)
-    # Configure the generators to use
-    if(UNIX)
-        if(CYGWIN)
-            set(CPACK_BINARY_CYGWIN OFF)
-
-            set(CPACK_SOURCE_CYGWIN OFF)
-        else()
-            if(NOT APPLE)
-                set(CPACK_BINARY_TZ OFF)
-            endif()
-
-            set(CPACK_BINARY_DEB ON)
-            # TODO: Determine system to turn on DEB or RPM
-            set(CPACK_BINARY_RPM OFF)
-            set(CPACK_BINARY_STGZ OFF)
-            set(CPACK_BINARY_TGZ OFF)
-
-            set(CPACK_SOURCE_TBZ2 OFF)
-            set(CPACK_SOURCE_TGZ OFF)
-            set(CPACK_SOURCE_TXZ OFF)
-            set(CPACK_SOURCE_TZ OFF)
-        endif()
-    else()
-        set(CPACK_BINARY_ZIP ON)
-        set(CPACK_BINARY_NSIS OFF)
-
-        set(CPACK_SOURCE_7Z OFF)
-        set(CPACK_SOURCE_ZIP OFF)
-    endif()
+    # Set the CPack generators to use based on the system
+    microstrain_set_cpack_archive_generators()
 
     set(CPACK_PACKAGE_VENDOR "MicroStrain by HBK")
     set(CPACK_PACKAGE_CONTACT "MicroStrain Support <microstrainsupport@hbkworld.com>")
@@ -241,18 +115,20 @@ if(MSCL_BUILD_PACKAGE)
     # Don't group packages
     set(CPACK_COMPONENTS_GROUPING IGNORE)
 
-    # Turn on automatic dependency detection for Linux packages (RPM has this option enabled by default)
-    if(UNIX AND NOT APPLE)
+    if(CPACK_BINARY_DEB)
+        # Turn on automatic dependency detection for Linux packages (RPM has this option enabled by default)
         # Allow dpkg to determine the package dependencies
         set(CPACK_DEBIAN_PACKAGE_SHLIBDEPS ON)
 
         # Create one package per component
         set(CPACK_DEBIAN_COMPONENT_INSTALL ON)
+    elseif(CPACK_BINARY_RPM)
+        # Create one package per component
+        set(CPACK_RPM_COMPONENT_INSTALL ON)
     else()
         # Create one package per component
         set(CPACK_ARCHIVE_COMPONENT_INSTALL ON)
     endif()
-
 
     microstrain_get_package_architecture(CPACK_SYSTEM_NAME)
     microstrain_get_git_branch(MSCL_GIT_BRANCH MSCL_BRANCH) # Second param is used to set a cache variable
@@ -319,6 +195,10 @@ endif()
 # Include the CPack module for packaging
 # Package options are configured before including any subdirectories to ensure proper configurations
 if(MSCL_BUILD_PACKAGE)
+    # Make sure to always create separate packages per component
+    # When only one component is specified CPack will make a project package instead of a component package
+    get_cmake_property(CPACK_COMPONENTS_ALL COMPONENTS)
+
     # NOTE: CPack requires all configuration variables to be set before including this module
     include(CPack)
 
