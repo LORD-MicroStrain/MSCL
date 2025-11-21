@@ -1194,6 +1194,8 @@ namespace mscl
         return filtered;
     }
 
+    constexpr uint8 EventActionMessageParameter::MAX_DESCRIPTORS;
+
     void EventActionMessageParameter::setChannelFields(MipTypes::DataClass dataClass, const MipTypes::MipChannelFields& fields)
     {
         // Set data class
