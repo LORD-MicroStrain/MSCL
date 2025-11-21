@@ -56,8 +56,8 @@ def packageTargets(Map config) {
     sh(label: packageLabel, script: """
       cpack \
         --config "\$(pwd)/${releaseBuildDir}/microstrain_package_all.cmake" \
-        -D "MICROSTRAIN_BUILD_DIR_DEBUG:PATH=\$(pwd)/${debugBuildDir}" \
-        -D "MICROSTRAIN_BUILD_DIR_RELEASE:PATH=\$(pwd)/${releaseBuildDir}"
+        "-DMICROSTRAIN_BUILD_DIR_DEBUG:PATH=\$(pwd)/${debugBuildDir}" \
+        "-DMICROSTRAIN_BUILD_DIR_RELEASE:PATH=\$(pwd)/${releaseBuildDir}"
     """)
   }
   else {
@@ -129,9 +129,9 @@ def configureProject(Map config) {
   def buildDocs      = isStatic && isWindows ? 'ON' : 'OFF'
 
   def args = [
-    '-D MSCL_BUILD_PACKAGE:BOOL=ON',
-    '-D MSCL_WITH_SSL:BOOL=ON',
-    '-D MSCL_WITH_WEBSOCKETS:BOOL=ON'
+    '-DMSCL_BUILD_PACKAGE:BOOL=ON',
+    '-DMSCL_WITH_SSL:BOOL=ON',
+    '-DMSCL_WITH_WEBSOCKETS:BOOL=ON'
   ]
 
   // Architecture flag (Windows only)
@@ -145,7 +145,7 @@ def configureProject(Map config) {
   }
   // Build type for single-config generators (Linux/Make)
   else {
-    args.add("-D CMAKE_BUILD_TYPE:STRING=${buildType}")
+    args.add("-DCMAKE_BUILD_TYPE:STRING=${buildType}")
   }
 
   // Determine boolean values for each component based on platform and build type
@@ -158,25 +158,25 @@ def configureProject(Map config) {
 
   // Add all of the configuration options
   args.addAll([
-    "-D BUILD_SHARED_LIBS:BOOL=${buildShared}",
-    "-D MSCL_BUILD_CSHARP:BOOL=${buildCSharp}",
-    "-D MSCL_BUILD_DOCUMENTATION:BOOL=${buildDocs}",
-//     "-D MSCL_BUILD_EXAMPLES:BOOL=${buildExamples}",
-    "-D MSCL_BUILD_PYTHON2:BOOL=${buildPython2}",
-    "-D MSCL_BUILD_PYTHON3:BOOL=${buildPython3}",
-    "-D MSCL_BUILD_TESTS:BOOL=${buildTests}"
+    "-DBUILD_SHARED_LIBS:BOOL=${buildShared}",
+    "-DMSCL_BUILD_CSHARP:BOOL=${buildCSharp}",
+    "-DMSCL_BUILD_DOCUMENTATION:BOOL=${buildDocs}",
+//     "-DMSCL_BUILD_EXAMPLES:BOOL=${buildExamples}",
+    "-DMSCL_BUILD_PYTHON2:BOOL=${buildPython2}",
+    "-DMSCL_BUILD_PYTHON3:BOOL=${buildPython3}",
+    "-DMSCL_BUILD_TESTS:BOOL=${buildTests}"
   ])
 
   // Build all supported versions of Python2
   // The project already defaults to the latest supported version
   if (buildPython2 && buildAllPython) {
-    args.add('-D MSCL_PYTHON2_REQUESTED_VERSION:STRING=""')
+    args.add('-DMSCL_PYTHON2_REQUESTED_VERSION:STRING=""')
   }
 
   // Build all supported versions of Python3
   // The project already defaults to the latest supported version
   if (buildPython3 && buildAllPython) {
-    args.add('-D MSCL_PYTHON3_REQUESTED_VERSION:STRING=""')
+    args.add('-DMSCL_PYTHON3_REQUESTED_VERSION:STRING=""')
   }
 
   // Configure the project

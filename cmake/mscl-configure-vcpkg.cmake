@@ -51,7 +51,7 @@ if(CMAKE_GENERATOR_TOOLSET)
     set(Z_VCPKG_PLATFORM_TOOLSET "${CMAKE_GENERATOR_TOOLSET}")
 endif()
 
-set(MSCL_VCPKG_DIR "${CMAKE_CURRENT_LIST_DIR}/deps/vcpkg")
+set(MSCL_VCPKG_DIR "${CMAKE_SOURCE_DIR}/deps/vcpkg")
 
 # Prefer vcpkg if we can find it. Fallback if CMake presets aren't used
 if(NOT DEFINED CMAKE_TOOLCHAIN_FILE)
@@ -74,6 +74,7 @@ if(NOT DEFINED CMAKE_TOOLCHAIN_FILE)
         NAMES "scripts/buildsystems/vcpkg.cmake"
         PATHS ${MSCL_VCPKG_ROOTS}
         NO_DEFAULT_PATH
+        REQUIRED
     )
     if(MSCL_VCPKG_TOOLCHAIN)
         message(STATUS "Using vcpkg toolchain file ${MSCL_VCPKG_TOOLCHAIN}")

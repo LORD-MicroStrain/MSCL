@@ -12,7 +12,7 @@
 # This script will combine the install projects from those 2 files to create a
 # combined package
 #
-# Usage: cpack --config microstrain_package_all.cmake -D MICROSTRAIN_BUILD_DIR_DEBUG:PATH=<DEBUG_DIR> -D MICROSTRAIN_BUILD_DIR_RELEASE:PATH=<RELEASE_DIR>
+# Usage: cpack --config microstrain_package_all.cmake -DMICROSTRAIN_BUILD_DIR_DEBUG:PATH=<DEBUG_DIR> -DMICROSTRAIN_BUILD_DIR_RELEASE:PATH=<RELEASE_DIR>
 #
 
 # Allow overriding the CPack config file name

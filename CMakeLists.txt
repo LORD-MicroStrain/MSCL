@@ -52,6 +52,11 @@ if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Debug")
 endif()
 
+if(BUILD_SHARED_LIBS AND (MSCL_BUILD_PYTHON OR MSCL_BUILD_CSHARP))
+    message(WARNING "${PROJECT_NAME} needs to be built as a static library to build language bindings. Disabling BUILD_SHARED_LIBS")
+    set(BUILD_SHARED_LIBS OFF)
+endif()
+
 # Create the common dependencies directory in the project root
 # This is for use by downloaded dependencies during project configuration
 if(NOT DEPS_BASE_DIR)
