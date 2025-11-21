@@ -48,6 +48,8 @@ def packageTargets(Map config) {
 
   // Install both release and debug on single config generators
   if (config.isLinux) {
+    // The build directory order doesn't actually matter in this case
+    // Debug can be Release and vise versa
     def debugBuildDir   = env.BUILD_TYPES.split(';')[0].trim()
     def releaseBuildDir = env.BUILD_TYPES.split(';')[1].trim()
 
@@ -69,14 +71,17 @@ def packageTargets(Map config) {
 
 // Build each target depending on the configuration
 def buildTargets(Map config) {
-  def buildType        = config.buildType
+  def buildType        = config.buildType.capitalize()
   def isLinux          = config.isLinux
   def releaseBuildType = 'Release'
 
-  // Always build the Cpp and test targets
-  def targets = ['MSCL-Cpp', 'MSCL-Tests']
+  // Always build the Cpp
+  def targets = ['MSCL-Cpp']
 
-  if (config.libraryType == 'static') {
+  if (config.libraryType.capitalize() == 'Static') {
+    // There is no difference in building tests between static and shared so only build it once
+    targets.addAll(['MSCL-Tests'])
+
     if (buildType == releaseBuildType) {
       targets.addAll(['MSCL-Python2', 'MSCL-Python3'])
     }
@@ -119,14 +124,18 @@ def buildTargets(Map config) {
 
 // Configure the project based on the configuration
 def configureProject(Map config) {
-  def libraryType    = config.libraryType // static or shared
-  def buildType      = config.buildType   // Debug or Release
-  def isStatic       = libraryType == 'static'
+  def libraryType    = config.libraryType.capitalize() // Static or Shared
+  def buildType      = config.buildType.capitalize()   // Debug or Release
+  def isStatic       = libraryType == 'Static'
   def buildAllPython = env.BRANCH_NAME && env.BRANCH_NAME == 'master'
   def isWindows      = config.isWindows
   def isLinux        = config.isLinux
 
-  def args = []
+  def args = [
+    '-D MSCL_BUILD_PACKAGE:BOOL=ON',
+    '-D MSCL_WITH_SSL:BOOL=ON',
+    '-D MSCL_WITH_WEBSOCKETS:BOOL=ON'
+  ]
 
   // Architecture flag (Windows only)
   if (env.BUILD_ARCH) {
@@ -149,15 +158,12 @@ def configureProject(Map config) {
   // Add all of the configuration options
   args.addAll([
     "-D BUILD_SHARED_LIBS:BOOL=${buildShared}",
-    '-D MSCL_BUILD_PACKAGE:BOOL=ON',
     "-D MSCL_BUILD_CSHARP:BOOL=${buildCSharp}",
     "-D MSCL_BUILD_DOCUMENTATION:BOOL=${buildDocs}",
 //     "-D MSCL_BUILD_EXAMPLES:BOOL=${buildExamples}",
     "-D MSCL_BUILD_PYTHON2:BOOL=${buildPython2}",
     "-D MSCL_BUILD_PYTHON3:BOOL=${buildPython3}",
-    "-D MSCL_BUILD_TESTS:BOOL=${buildTests}",
-    '-D MSCL_WITH_SSL:BOOL=ON',
-    '-D MSCL_WITH_WEBSOCKETS:BOOL=ON'
+    "-D MSCL_BUILD_TESTS:BOOL=${buildTests}"
   ])
 
   // Build all supported versions of Python2
@@ -173,7 +179,7 @@ def configureProject(Map config) {
   }
 
   // Configure the project
-  def configLabel = "Configuring ${libraryType.capitalize()} library project"
+  def configLabel = "Configuring ${libraryType} library project"
   if (isLinux) {
     configLabel += " (${buildType})"
   }
@@ -248,7 +254,7 @@ pipeline {
   agent none
   environment {
     BUILD_TYPES   = 'Debug;Release'
-    LIBRARY_TYPES = 'static,shared'
+    LIBRARY_TYPES = 'Static,Shared'
   }
   options {
     // Set a timeout for the whole pipeline. The timer starts when the project is queued

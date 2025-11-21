@@ -32,15 +32,36 @@ if(NOT SWIG_FOUND)
     # On Linux, build and install Swig locally using the source
     if(UNIX)
         set(SWIG_INSTALL_DIR "install")
+
+        # Configure Swig with a local install directory
         execute_process(
-            # Configure Swig with a local install directory
-            COMMAND ./configure "--prefix ${SWIG_ROOT}/${SWIG_INSTALL_DIR}"
-            # Build
+            COMMAND ./configure --prefix ${SWIG_ROOT}/${SWIG_INSTALL_DIR}
+            WORKING_DIRECTORY "${SWIG_ROOT}"
+            RESULT_VARIABLE SWIG_CONFIGURE_RESULT
+        )
+        if(NOT SWIG_CONFIGURE_RESULT EQUAL 0)
+            message(FATAL_ERROR "Swig configuration failed with code ${SWIG_CONFIGURE_RESULT}")
+        endif()
+
+        # Build
+        execute_process(
             COMMAND make
-            # Install
+            WORKING_DIRECTORY "${SWIG_ROOT}"
+            RESULT_VARIABLE SWIG_MAKE_RESULT
+        )
+        if(NOT SWIG_MAKE_RESULT EQUAL 0)
+            message(FATAL_ERROR "Swig make failed with code ${SWIG_MAKE_RESULT}")
+        endif()
+
+        # Install
+        execute_process(
             COMMAND make install
             WORKING_DIRECTORY "${SWIG_ROOT}"
+            RESULT_VARIABLE SWIG_INSTALL_RESULT
         )
+        if(NOT SWIG_INSTALL_RESULT EQUAL 0)
+            message(FATAL_ERROR "Swig installation failed with code ${SWIG_INSTALL_RESULT}")
+        endif()
 
         # Update the cache variable with the local install directory of Swig
         set(SWIG_ROOT "${DEPS_BASE_DIR}/${SWIG_ARCHIVE_DIR}/${SWIG_INSTALL_DIR}" CACHE PATH "Location to search for the Swig executable" FORCE)
