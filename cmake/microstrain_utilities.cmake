@@ -160,22 +160,28 @@ macro(microstrain_get_package_architecture PACKAGE_ARCH_OUT)
     endif()
 endmacro()
 
-function(microstrain_detect_debian IS_DEBIAN_OUT)
-    set(${IS_DEBIAN_OUT} OFF PARENT_SCOPE)
+function(microstrain_detect_deb IS_DEB_OUT)
+    set(${IS_DEB_OUT} OFF PARENT_SCOPE)
 
     if(EXISTS "/etc/debian_version")
-        set(${IS_DEBIAN_OUT} ON PARENT_SCOPE)
+        set(${IS_DEB_OUT} ON PARENT_SCOPE)
     endif()
 endfunction()
 
-function(microstrain_detect_redhat IS_REDHAT_OUT)
-    set(${IS_REDHAT_OUT} OFF PARENT_SCOPE)
+function(microstrain_detect_rpm IS_RPM_OUT)
+    set(${IS_RPM_OUT} OFF PARENT_SCOPE)
 
     if(EXISTS "/etc/redhat-release" OR
-       EXISTS "/etc/fedora-release" OR
-       EXISTS "/etc/os-release"
+       EXISTS "/etc/fedora-release"
     )
-        set(${IS_REDHAT_OUT} ON PARENT_SCOPE)
+        set(${IS_RPM_OUT} ON PARENT_SCOPE)
+    # Both Ubuntu and RedHat may use this file
+    elseif(EXISTS "/etc/os-release")
+        # Check that the system isn't Debian to know that it's RedHat
+        microstrain_detect_deb(IS_DEBIAN)
+        if(NOT IS_DEBIAN)
+            set(${IS_RPM_OUT} ON PARENT_SCOPE)
+        endif()
     endif()
 endfunction()
 
@@ -193,11 +199,11 @@ macro(microstrain_set_cpack_archive_generators)
                 set(CPACK_BINARY_TZ OFF)
             endif()
 
-            microstrain_detect_debian(IS_DEBIAN)
-            set(CPACK_BINARY_DEB ${IS_DEBIAN})
+            # Set CPACK_BINARY_DEB to ON if the system is deb based
+            microstrain_detect_deb(CPACK_BINARY_DEB)
 
-            microstrain_detect_redhat(IS_REDHAT)
-            set(CPACK_BINARY_RPM ${IS_REDHAT})
+            # Set CPACK_BINARY_RPM to ON if the system is rpm based
+            microstrain_detect_rpm(CPACK_BINARY_RPM)
 
             set(CPACK_BINARY_STGZ OFF)
             set(CPACK_BINARY_TGZ OFF)

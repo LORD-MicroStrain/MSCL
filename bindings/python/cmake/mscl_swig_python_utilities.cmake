@@ -180,10 +180,11 @@ function(mscl_download_python MSCL_PYTHON_VERSION MSCL_PYTHON_MAJOR_VERSION)
     execute_process(
         # Generate the Python project using the same CMake configuration
         COMMAND "${CMAKE_COMMAND}"
-        -G "${CMAKE_GENERATOR}"
-        -A "${CMAKE_GENERATOR_PLATFORM}"
-        -S "${CMAKE_CURRENT_LIST_DIR}/${MSCL_PYTHON_PROJECT_DIR}"
-        -B "${CMAKE_CURRENT_BINARY_DIR}/${MSCL_PYTHON_PROJECT_DIR}"
+            -G "${CMAKE_GENERATOR}"
+            -A "${CMAKE_GENERATOR_PLATFORM}"
+            -S "${CMAKE_CURRENT_LIST_DIR}/${MSCL_PYTHON_PROJECT_DIR}"
+            -B "${CMAKE_CURRENT_BINARY_DIR}/${MSCL_PYTHON_PROJECT_DIR}"
+            "-DVCPKG_CHAINLOAD_TOOLCHAIN_FILE:FILEPATH=\"${VCPKG_CHAINLOAD_TOOLCHAIN_FILE}\""
     )
 
     set(PYTHON_VCPKG_INSTALL_DIR "${MSCL_PYTHON_BUILD_DIR}/vcpkg_installed/${VCPKG_TARGET_TRIPLET}")

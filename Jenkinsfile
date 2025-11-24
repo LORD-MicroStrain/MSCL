@@ -54,9 +54,9 @@ def packageTargets(Map config) {
     def releaseBuildDir = env.BUILD_TYPES.split(';')[1].trim()
 
     sh(label: packageLabel, script: """
+      "MICROSTRAIN_BUILD_DIR_DEBUG=\$(pwd)/${debugBuildDir}" \
+      "MICROSTRAIN_BUILD_DIR_RELEASE=\$(pwd)/${releaseBuildDir}" \
       cpack \
-        "MICROSTRAIN_BUILD_DIR_DEBUG=\$(pwd)/${debugBuildDir}" \
-        "MICROSTRAIN_BUILD_DIR_RELEASE=\$(pwd)/${releaseBuildDir}" \
         --config "\$(pwd)/${releaseBuildDir}/microstrain-package-all.cmake"
     """)
   }
@@ -133,6 +133,10 @@ def configureProject(Map config) {
     '-DMSCL_WITH_SSL:BOOL=ON',
     '-DMSCL_WITH_WEBSOCKETS:BOOL=ON'
   ]
+
+  if (env.TOOLCHAIN_FILE) {
+    args.add("-DVCPKG_CHAINLOAD_TOOLCHAIN_FILE:FILEPATH=\"${env.TOOLCHAIN_FILE}\"")
+  }
 
   // Architecture flag (Windows only)
   if (env.BUILD_ARCH) {
@@ -327,7 +331,7 @@ pipeline {
             label 'linux-amd64'
           }
           environment {
-            BUILD_DIR  = "build_linux_amd64"
+            BUILD_DIR = "build_linux_amd64"
           }
           options {
             skipDefaultCheckout()
@@ -343,7 +347,7 @@ pipeline {
             label 'linux-arm64'
           }
           environment {
-            BUILD_DIR  = "build_linux_arm64"
+            BUILD_DIR = "build_linux_arm64"
           }
           options {
             skipDefaultCheckout()
@@ -359,7 +363,8 @@ pipeline {
             label 'linux-arm64'
           }
           environment {
-            BUILD_DIR  = "build_linux_arm32"
+            BUILD_DIR      = "build_linux_arm32"
+            TOOLCHAIN_FILE = "${WORKSPACE}/cmake/arm32-toolchain.cmake"
           }
           options {
             skipDefaultCheckout()
