@@ -191,7 +191,6 @@ def configureProject(Map config) {
   def cmakeArgs = args.join(' ')
   if (isLinux) {
     sh(label: configLabel, script: """
-      mkdir ${buildType}
       cmake .. -B ${buildType} ${cmakeArgs}
     """)
   }
