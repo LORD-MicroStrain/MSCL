@@ -25,7 +25,14 @@ set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
 set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
 set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
 
-set(CMAKE_C_FLAGS "-march=armv7-a -mfpu=neon -mfloat-abi=hard")
-set(CMAKE_CXX_FLAGS "-march=armv7-a -mfpu=neon -mfloat-abi=hard")
+set(CMAKE_C_FLAGS "-march=armv7-a -mfpu=neon -mfloat-abi=hard" CACHE STRING "")
+set(CMAKE_CXX_FLAGS "-march=armv7-a -mfpu=neon -mfloat-abi=hard" CACHE STRING "")
+set(CMAKE_ASM_FLAGS "-march=armv7-a -mfpu=neon -mfloat-abi=hard" CACHE STRING "")
 
 set(CMAKE_CROSSCOMPILING_EMULATOR qemu-arm-static)
+
+if(DEFINED MSCL_LINK_STATIC_DEPS AND NOT MSCL_LINK_STATIC_DEPS)
+    message(FATAL_ERROR "Dynamic linking of dependencies is not supported by vcpkg on Linux ARM32")
+endif()
+
+set(VCPKG_TARGET_TRIPLET "arm-linux" CACHE STRING "Vcpkg target triplet" FORCE)

@@ -22,10 +22,6 @@ elseif(UNIX AND NOT APPLE)
     endif()
 endif()
 
-if(VCPKG_TARGET_TRIPLET)
-    set(VCPKG_HOST_TRIPLET "${VCPKG_TARGET_TRIPLET}" CACHE STRING "Vcpkg host triplet")
-endif()
-
 # Include any Boost dependencies with vcpkg
 if(MSCL_DOWNLOAD_BOOST)
     list(APPEND VCPKG_MANIFEST_FEATURES "boost")
