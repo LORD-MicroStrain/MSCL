@@ -126,7 +126,7 @@ if(MSCL_BUILD_PACKAGE)
         set(CPACK_DEBIAN_PACKAGE_SHLIBDEPS ON)
 
         # Create one package per component
-        set(CPACK_DEBIAN_COMPONENT_INSTALL ON)
+        set(CPACK_DEB_COMPONENT_INSTALL ON)
     elseif(CPACK_BINARY_RPM)
         # Create one package per component
         set(CPACK_RPM_COMPONENT_INSTALL ON)
