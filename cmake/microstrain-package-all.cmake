@@ -4,19 +4,34 @@
 #
 # This requires setting both MICROSTRAIN_BUILD_DIR_DEBUG and
 # MICROSTRAIN_BUILD_DIR_RELEASE to find the CPackConfig.cmake files for each
-# configuration
+# configuration.
 #
 # Optionally, if the CPackConfig.cmake file has a custom name,
 # MICROSTRAIN_CPACK_CONFIG_FILENAME can be defined with the filename
 #
+# NOTE: Those variables need to be set as environment or command line
+# variables for proper usage. CPack doesn't properly parse -D arguments
+#
 # This script will combine the install projects from those 2 files to create a
 # combined package
 #
-# Usage: cpack --config microstrain_package_all.cmake -DMICROSTRAIN_BUILD_DIR_DEBUG:PATH=<DEBUG_DIR> -DMICROSTRAIN_BUILD_DIR_RELEASE:PATH=<RELEASE_DIR>
+# Usage: cpack --config microstrain-package-all.cmake
 #
 
+if(NOT DEFINED ENV{MICROSTRAIN_BUILD_DIR_DEBUG})
+    message(FATAL_ERROR "MICROSTRAIN_BUILD_DIR_DEBUG is required to be set as an environment variable")
+endif()
+set(MICROSTRAIN_BUILD_DIR_DEBUG $ENV{MICROSTRAIN_BUILD_DIR_DEBUG})
+
+if(NOT DEFINED ENV{MICROSTRAIN_BUILD_DIR_RELEASE})
+    message(FATAL_ERROR "MICROSTRAIN_BUILD_DIR_RELEASE is required to be set as an environment variable")
+endif()
+set(MICROSTRAIN_BUILD_DIR_RELEASE $ENV{MICROSTRAIN_BUILD_DIR_RELEASE})
+
 # Allow overriding the CPack config file name
-if(NOT MICROSTRAIN_CPACK_CONFIG_FILENAME)
+if(DEFINED ENV{MICROSTRAIN_CPACK_CONFIG_FILENAME})
+    set(MICROSTRAIN_CPACK_CONFIG_FILENAME "$ENV{MICROSTRAIN_CPACK_CONFIG_FILENAME}")
+else()
     set(MICROSTRAIN_CPACK_CONFIG_FILENAME "CPackConfig.cmake")
 endif()
 

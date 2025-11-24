@@ -55,9 +55,9 @@ def packageTargets(Map config) {
 
     sh(label: packageLabel, script: """
       cpack \
-        --config "\$(pwd)/${releaseBuildDir}/microstrain_package_all.cmake" \
-        "-DMICROSTRAIN_BUILD_DIR_DEBUG:PATH=\$(pwd)/${debugBuildDir}" \
-        "-DMICROSTRAIN_BUILD_DIR_RELEASE:PATH=\$(pwd)/${releaseBuildDir}"
+        "MICROSTRAIN_BUILD_DIR_DEBUG=\$(pwd)/${debugBuildDir}" \
+        "MICROSTRAIN_BUILD_DIR_RELEASE=\$(pwd)/${releaseBuildDir}" \
+        --config "\$(pwd)/${releaseBuildDir}/microstrain-package-all.cmake"
     """)
   }
   else {

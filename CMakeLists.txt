@@ -215,7 +215,7 @@ if(MSCL_BUILD_PACKAGE)
     # This allows easy access to the file from the build directory
     if(NOT GENERATOR_IS_MULTI_CONFIG)
         file(
-            COPY "${MSCL_MODULE_DIR}/microstrain_package_all.cmake"
+            COPY "${MSCL_MODULE_DIR}/microstrain-package-all.cmake"
             DESTINATION "${CMAKE_CURRENT_BINARY_DIR}"
         )
     endif()
