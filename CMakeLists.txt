@@ -108,6 +108,8 @@ endif()
 microstrain_get_git_version(MSCL_GIT_VERSION MSCL_GIT_VERSION_CLEAN)
 microstrain_get_git_commit(MSCL_GIT_COMMIT)
 
+string(TOLOWER "${PROJECT_NAME}" PROJECT_NAME_LOWER)
+
 # Configure packaging before including all the targets with add_subdirectory
 # Subdirectories depend on most of these options
 if(MSCL_BUILD_PACKAGE)
@@ -145,6 +147,11 @@ if(MSCL_BUILD_PACKAGE)
         # Use the tag for all other assets
         set(CPACK_PACKAGE_VERSION "${MSCL_GIT_VERSION}")
     endif()
+
+    # Setup the install prefix for all packages
+    if(MSVC)
+        string(APPEND CPACK_PACKAGING_INSTALL_PREFIX "/${PROJECT_NAME_LOWER}")
+    endif()
 endif()
 
 if(MSVC)
@@ -152,18 +159,11 @@ if(MSVC)
     set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL")
 endif()
 
-string(TOLOWER "${PROJECT_NAME}" PROJECT_NAME_LOWER)
-
 # Use common installation directory naming conventions
 include(GNUInstallDirs)
 
-# Setup the install prefix for all packages
-if(WIN32)
-    string(APPEND CMAKE_INSTALL_PREFIX "/${PROJECT_NAME_LOWER}")
-endif()
-
-# Set the proper library install directories for release and debug libraries
-set(MSCL_INSTALL_LIBDIR "${CMAKE_INSTALL_LIBDIR}$<$<CONFIG:Debug>:/debug>")
+# Set the proper library install directory
+set(MSCL_INSTALL_LIBDIR "${CMAKE_INSTALL_LIBDIR}")
 
 # Set the library install directory for x86 builds
 if(${MSCL_ARCH_NAME} STREQUAL "x86")
@@ -200,12 +200,6 @@ endif()
 # Include the CPack module for packaging
 # Package options are configured before including any subdirectories to ensure proper configurations
 if(MSCL_BUILD_PACKAGE)
-    # Make sure the runtime libraries are installed in the same directory as MSCL
-    set(CMAKE_INSTALL_SYSTEM_RUNTIME_DESTINATION "${MSCL_INSTALL_LIBDIR}")
-
-    # Install runtime libraries with the packages
-    include(InstallRequiredSystemLibraries)
-
     # Make sure to always create separate packages per component
     # When only one component is specified CPack will make a project package instead of a component package
     get_cmake_property(CPACK_COMPONENTS_ALL COMPONENTS)

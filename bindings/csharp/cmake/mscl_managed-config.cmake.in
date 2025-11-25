@@ -1,0 +1,18 @@
+@PACKAGE_INIT@
+
+# Include the correct library by architecture
+if(CMAKE_SIZEOF_VOID_P EQUAL 4)
+    include("${CMAKE_CURRENT_LIST_DIR}/x86/@PACKAGE_NAME@-targets.cmake")
+else()
+    include("${CMAKE_CURRENT_LIST_DIR}/x64/@PACKAGE_NAME@-targets.cmake")
+endif()
+
+# Setup the library variable
+set(@LIBRARY_NAME_UPPER@_LIBRARY @LIBRARY_NAME@)
+
+include(FindPackageHandleStandardArgs)
+find_package_handle_standard_args(
+    @LIBRARY_NAME_UPPER@
+    REQUIRED_VARS
+        @LIBRARY_NAME_UPPER@_LIBRARY
+)
