@@ -148,8 +148,8 @@ if(MSCL_BUILD_PACKAGE)
 endif()
 
 if(MSVC)
-    # Set the runtime library linking for all projects in MSVC
-    set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>$<$<NOT:$<BOOL:${MSCL_LINK_STATIC_DEPS}>>:DLL>")
+    # Set the runtime library linking for all projects as dynamic
+    set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL")
 endif()
 
 string(TOLOWER "${PROJECT_NAME}" PROJECT_NAME_LOWER)
@@ -200,11 +200,18 @@ endif()
 # Include the CPack module for packaging
 # Package options are configured before including any subdirectories to ensure proper configurations
 if(MSCL_BUILD_PACKAGE)
+    # Make sure the runtime libraries are installed in the same directory as MSCL
+    set(CMAKE_INSTALL_SYSTEM_RUNTIME_DESTINATION "${MSCL_INSTALL_LIBDIR}")
+
+    # Install runtime libraries with the packages
+    include(InstallRequiredSystemLibraries)
+
     # Make sure to always create separate packages per component
     # When only one component is specified CPack will make a project package instead of a component package
     get_cmake_property(CPACK_COMPONENTS_ALL COMPONENTS)
 
     # NOTE: CPack requires all configuration variables to be set before including this module
+    # Always include this AFTER configuring everything for CPack
     include(CPack)
 
     get_property(GENERATOR_IS_MULTI_CONFIG GLOBAL
