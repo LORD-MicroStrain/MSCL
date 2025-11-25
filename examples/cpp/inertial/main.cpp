@@ -1,8 +1,8 @@
 #include "getCurrentConfig.h"
-#include "parseData.h"
-#include "setCurrentConfig.h"
-#include "setToIdle.h"
-#include "startSampling.h"
+#include "../../Inertial/C++/MSCL_Inertial_Example_C++/MSCL_Inertial_Example_C++/parseData.h"
+#include "../../Inertial/C++/MSCL_Inertial_Example_C++/MSCL_Inertial_Example_C++/setCurrentConfig.h"
+#include "../../Inertial/C++/MSCL_Inertial_Example_C++/MSCL_Inertial_Example_C++/setToIdle.h"
+#include "../../Inertial/C++/MSCL_Inertial_Example_C++/MSCL_Inertial_Example_C++/startSampling.h"
 
 // MSCL common code header (typically used as a precompiled header)
 #include <mscl/stdafx.h>

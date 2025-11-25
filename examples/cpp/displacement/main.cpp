@@ -1,8 +1,8 @@
 #include "getCurrentConfig.h"
-#include "parseData.h"
-#include "setCurrentConfig.h"
-#include "setToIdle.h"
-#include "startSampling.h"
+#include "../../Displacement/C++/MSCL_Displacement_Example_C++/MSCL_Displacement_Example_C++/parseData.h"
+#include "../../Displacement/C++/MSCL_Displacement_Example_C++/MSCL_Displacement_Example_C++/setCurrentConfig.h"
+#include "../../Displacement/C++/MSCL_Displacement_Example_C++/MSCL_Displacement_Example_C++/setToIdle.h"
+#include "../../Displacement/C++/MSCL_Displacement_Example_C++/MSCL_Displacement_Example_C++/startSampling.h"
 
 // MSCL common code header (typically used as a precompiled header)
 #include <mscl/stdafx.h>

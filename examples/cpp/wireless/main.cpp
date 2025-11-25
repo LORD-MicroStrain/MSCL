@@ -1,10 +1,10 @@
 #include "enableDisableBeacon.h"
 #include "getCurrentConfig.h"
-#include "parseData.h"
-#include "pingNode.h"
-#include "setCurrentConfig.h"
-#include "setToIdle.h"
-#include "startSyncSampling.h"
+#include "../../Wireless/C++/MSCL_Wireless_Example_C++/MSCL_Wireless_Example_C++/parseData.h"
+#include "../../Wireless/C++/MSCL_Wireless_Example_C++/MSCL_Wireless_Example_C++/pingNode.h"
+#include "../../Wireless/C++/MSCL_Wireless_Example_C++/MSCL_Wireless_Example_C++/setCurrentConfig.h"
+#include "../../Wireless/C++/MSCL_Wireless_Example_C++/MSCL_Wireless_Example_C++/setToIdle.h"
+#include "../../Wireless/C++/MSCL_Wireless_Example_C++/MSCL_Wireless_Example_C++/startSyncSampling.h"
 
 // MSCL common code header (typically used as a precompiled header)
 #include <mscl/stdafx.h>
