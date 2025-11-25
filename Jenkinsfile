@@ -135,10 +135,6 @@ def configureProject(Map config) {
     '-DMSCL_WITH_WEBSOCKETS:BOOL=ON'
   ]
 
-  if (env.TOOLCHAIN_FILE) {
-    args.add("-DVCPKG_CHAINLOAD_TOOLCHAIN_FILE:FILEPATH=\"${env.TOOLCHAIN_FILE}\"")
-  }
-
   // Architecture flag (Windows only)
   if (env.BUILD_ARCH) {
     args.add("-A ${env.BUILD_ARCH}")
@@ -363,8 +359,7 @@ pipeline {
             label 'linux-arm64'
           }
           environment {
-            BUILD_DIR      = "build_linux_arm32"
-            TOOLCHAIN_FILE = "${WORKSPACE}/cmake/arm32-toolchain.cmake"
+            BUILD_DIR = "build_linux_arm32"
           }
           options {
             skipDefaultCheckout()
