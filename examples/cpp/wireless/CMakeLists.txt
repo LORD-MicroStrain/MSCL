@@ -1,39 +1,77 @@
-cmake_minimum_required(VERSION 3.18)
-project(MSCL_Example_Wireless_CPP LANGUAGES CXX)
+cmake_minimum_required(VERSION 3.16)
+
+project("wireless_example_cpp"
+    VERSION "1.0.0"
+    DESCRIPTION "Simple wireless example using C++"
+    LANGUAGES CXX
+)
 
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Set up the example, and link it against MSCL.
-add_executable(${PROJECT_NAME} main.cpp)
-
-# Append to the module path so we can use the FindMSCL.cmake script
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../../../../../cmake")
-
-if(CMAKE_PROJECT_NAME STREQUAL "MSCL")
-    # NOTE: This section will only be called if this CMakeLists.txt is imported during the MSCL build.
-    #       If not building in the MSCL repo, this can be safely ignored or removed
-    set(MSCL_LIBRARY MSCL)
-    set(MSCL_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../../../../../MSCL/source")
-    target_link_directories(${PROJECT_NAME} PRIVATE ${CMAKE_BINARY_DIR}/MSCL/MSCL_Static/${CMAKE_CFG_INTDIR})
-    add_dependencies(${PROJECT_NAME} MSCL_Static)
+# TODO: Set MSCL_ROOT_DIR if building as a standalone project
+if(DEFINED MSCL_ROOT_DIR OR DEFINED CACHE{MSCL_ROOT_DIR})
+    set(_MSCL_ROOT_DIR "${MSCL_ROOT_DIR}")
+elseif(DEFINED ENV{MSCL_ROOT_DIR})
+    set(_MSCL_ROOT_DIR "$ENV{MSCL_ROOT_DIR}")
+else()
+    set(_MSCL_ROOT_DIR "${CMAKE_CURRENT_BINARY_DIR}")
 endif()
 
-find_package(MSCL REQUIRED)
+# We need to find MSCL in a standalone project
+if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_CURRENT_LIST_DIR})
+    list(APPEND CMAKE_PREFIX_PATH "${_MSCL_ROOT_DIR}")
 
-target_include_directories(${PROJECT_NAME} PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}
-    ${MSCL_INCLUDE_DIRS}
+    find_package("MSCL" REQUIRED CONFIG)
+endif()
+
+# Make sure the MSCL libraries are found
+if(NOT DEFINED CACHE{MSCL_LIBRARIES} AND NOT DEFINED MSCL_LIBRARIES)
+    message(FATAL_ERROR "Could not find the required MSCL libraries.")
+endif()
+
+# Create the example
+add_executable(${PROJECT_NAME}
+    "${CMAKE_CURRENT_LIST_DIR}/main.cpp"
 )
-target_link_libraries(${PROJECT_NAME} ${MSCL_LIBRARIES})
 
-# Don't let MSCL find it's own libraries
-target_compile_definitions(${PROJECT_NAME} PRIVATE BOOST_ALL_NO_LIB)
-
-if(MSVC)
-    # On windows, we need to set the runtime library to the same as MSCL
-    target_compile_options(${PROJECT_NAME} PRIVATE
-        /MT$<$<CONFIG:Debug>:d>
-        /MP
+# Configure the project in an examples sub-folder for IDEs that support it
+if(NOT ${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_CURRENT_LIST_DIR})
+    file(RELATIVE_PATH PROJECT_RELATIVE_PATH "${CMAKE_SOURCE_DIR}" "${CMAKE_CURRENT_LIST_DIR}/..")
+    set_target_properties(${PROJECT_NAME} PROPERTIES
+        FOLDER "${PROJECT_RELATIVE_PATH}"
     )
 endif()
+
+target_link_libraries(${PROJECT_NAME} PRIVATE
+    ${MSCL_LIBRARIES}
+)
+
+target_include_directories(${PROJECT_NAME} PRIVATE
+    ${CMAKE_CURRENT_LIST_DIR}
+    ${MSCL_INCLUDE_DIRS}
+)
+
+# Precompiled headers are needed for the MSCL source code
+# Alternatively, the 'mscl.h' header can be included instead of individual MSCL headers
+target_precompile_headers(${PROJECT_NAME} PRIVATE
+    "${MSCL_INCLUDE_DIR}/mscl/stdafx.h"
+)
+
+if(MSVC)
+    set(COMPILE_OPTIONS
+        "/W4" # Enable warnings
+        "/WX" # Warnings as errors
+        "/MP" # Multi-process compilation
+    )
+else()
+    set(COMPILE_OPTIONS
+        "-Wall"   # Enable warnings
+        "-Wextra" # Enable extra warnings
+        "-Werror" # Warnings as errors
+    )
+endif()
+
+target_compile_options(${PROJECT_NAME} PRIVATE
+    ${COMPILE_OPTIONS}
+)

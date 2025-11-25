@@ -1,8 +1,8 @@
-cmake_minimum_required(VERSION 3.18)
+cmake_minimum_required(VERSION 3.16)
 
-project("MSCL_Example_Inertial_CPP"
-    VERSION ""
-    DESCRIPTION ""
+project("inertial_example_cpp"
+    VERSION "1.0.0"
+    DESCRIPTION "Simple inertial example using C++"
     LANGUAGES CXX
 )
 
@@ -22,10 +22,10 @@ endif()
 if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_CURRENT_LIST_DIR})
     list(APPEND CMAKE_PREFIX_PATH "${_MSCL_ROOT_DIR}")
 
-    find_package(MSCL REQUIRED CONFIG)
+    find_package("MSCL" REQUIRED CONFIG)
 endif()
 
-# Make sure the MIP libraries are found
+# Make sure the MSCL libraries are found
 if(NOT DEFINED CACHE{MSCL_LIBRARIES} AND NOT DEFINED MSCL_LIBRARIES)
     message(FATAL_ERROR "Could not find the required MSCL libraries.")
 endif()
@@ -43,22 +43,35 @@ if(NOT ${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_CURRENT_LIST_DIR})
     )
 endif()
 
-# Append to the module path so we can use the FindMSCL.cmake script
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../../../../../cmake")
-
-target_include_directories(${PROJECT_NAME} PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}
-    ${MSCL_INCLUDE_DIRS}
-)
-
 target_link_libraries(${PROJECT_NAME} PRIVATE
     ${MSCL_LIBRARIES}
 )
 
+target_include_directories(${PROJECT_NAME} PRIVATE
+    ${CMAKE_CURRENT_LIST_DIR}
+    ${MSCL_INCLUDE_DIRS}
+)
+
+# Precompiled headers are needed for the MSCL source code
+# Alternatively, the 'mscl.h' header can be included instead of individual MSCL headers
+target_precompile_headers(${PROJECT_NAME} PRIVATE
+    "${MSCL_INCLUDE_DIR}/mscl/stdafx.h"
+)
+
 if(MSVC)
-    # On windows, we need to set the runtime library to the same as MSCL
-    target_compile_options(${PROJECT_NAME} PRIVATE
-        /MT$<$<CONFIG:Debug>:d>
-        /MP
+    set(COMPILE_OPTIONS
+        "/W4" # Enable warnings
+        "/WX" # Warnings as errors
+        "/MP" # Multi-process compilation
+    )
+else()
+    set(COMPILE_OPTIONS
+        "-Wall"   # Enable warnings
+        "-Wextra" # Enable extra warnings
+        "-Werror" # Warnings as errors
     )
 endif()
+
+target_compile_options(${PROJECT_NAME} PRIVATE
+    ${COMPILE_OPTIONS}
+)
