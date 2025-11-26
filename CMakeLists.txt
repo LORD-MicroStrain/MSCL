@@ -89,7 +89,6 @@ set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 # These are all ON/OFF flags. For example, -DBUILD_SHARED_LIBS="ON"
 option(MSCL_WITH_WEBSOCKETS "Whether or not to compile the library with Websocket support" ON)
 option(MSCL_BUILD_EXAMPLES "Whether to build the examples." OFF)
-option(MSCL_ZIP_EXAMPLES "Whether to zip the examples source code." OFF)
 option(MSCL_BUILD_PACKAGE "Whether to build a package from the resulting binaries" OFF)
 
 if(WIN32)
@@ -181,10 +180,10 @@ if(MSCL_BUILD_DOCUMENTATION)
     add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/docs")
 endif()
 
-## Build the examples
-#if(MSCL_BUILD_EXAMPLES)
-#    add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/examples")
-#endif()
+# Build the examples
+if(MSCL_BUILD_EXAMPLES)
+    add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/examples")
+endif()
 
 # Build the testing suite
 if(MSCL_BUILD_TESTS)

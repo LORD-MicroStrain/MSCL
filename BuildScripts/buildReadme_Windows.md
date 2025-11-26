@@ -89,14 +89,13 @@ cmake .. -DMSCL_BUILD_PYTHON3=ON
 The following table lists some parameters that can be set to `ON` or `OFF` to enable, or disable certain pieces of the build
 
 | Parameter                | Description                                                                                                                     | Default |
-|--------------------------|---------------------------------------------------------------------------------------------------------------------------------| ------- |
+|--------------------------|---------------------------------------------------------------------------------------------------------------------------------|---------|
 | BUILD_SHARED_LIBS        | Build MSCL as a shared library as well as a static library                                                                      | OFF     |
 | MSCL_BUILD_PYTHON2       | Build the Python2 bindings for MSCL. Note that this requires swig and python2 to be installed                                   | OFF     |
 | MSCL_BUILD_PYTHON3       | Build the Python3 bindings for MSCL. Note that this requires swig and python3 to be installed                                   | OFF     |
 | MSCL_BUILD_CSHARP        | Build the C# bindings for MSCL. Note that this requires swig and a csharp compiler to be installed                              | OFF     |
 | MSCL_BUILD_TESTS         | Build the unit tests for MSCL. This also enables the `test` CMake target. Note that this also requires that turtle be installed | OFF     |
-| MSCL_BUILD_EXAMPLES      | Build the examples in [`MSCL_Examples`](../examples/)                                                                      | OFF     |
-| MSCL_ZIP_EXAMPLES        | Zip the examples in [`MSCL_Examples`](../examples/)                                                                        | OFF     |
+| MSCL_BUILD_EXAMPLES      | Build the examples in [`MSCL_Examples`](../examples/)                                                                           | OFF     |
 | MSCL_BUILD_DOCUMENTATION | Builds the documentation using NaturalDocs.                                                                                     | OFF     |
 | MSCL_WITH_SSL            | Whether to build with SSL support. Note that this requires openssl to be installed                                              | ON      |
 | MSCL_WITH_WEBSOCKETS     | Whether to build with Websocket support                                                                                         | ON      |

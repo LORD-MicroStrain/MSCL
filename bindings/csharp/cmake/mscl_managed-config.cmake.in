@@ -2,17 +2,37 @@
 
 # Include the correct library by architecture
 if(CMAKE_SIZEOF_VOID_P EQUAL 4)
-    include("${CMAKE_CURRENT_LIST_DIR}/x86/@PACKAGE_NAME@-targets.cmake")
+    include("${CMAKE_CURRENT_LIST_DIR}/x86/@MSCL_CSHARP_MANAGED_EXPORT_TARGET_NAME@.cmake")
+    include("${CMAKE_CURRENT_LIST_DIR}/x86/@MSCL_CSHARP_EXPORT_TARGET_NAME@.cmake")
 else()
-    include("${CMAKE_CURRENT_LIST_DIR}/x64/@PACKAGE_NAME@-targets.cmake")
+    include("${CMAKE_CURRENT_LIST_DIR}/x64/@MSCL_CSHARP_MANAGED_EXPORT_TARGET_NAME@.cmake")
+    include("${CMAKE_CURRENT_LIST_DIR}/x64/@MSCL_CSHARP_EXPORT_TARGET_NAME@.cmake")
 endif()
 
 # Setup the library variable
-set(@LIBRARY_NAME_UPPER@_LIBRARY @LIBRARY_NAME@)
+set(@MSCL_CSHARP_MANAGED_TARGET_UPPER@_LIBRARY "@MSCL_CSHARP_MANAGED_TARGET@")
+set(@PROJECT_NAME@_LIBRARY "@MSCL_CSHARP_TARGET@")
+
+# If @MSCL_CSHARP_MANAGED_TARGET_UPPER@_COPY_DEPS_TARGET is set before find_package,
+# Use it to copy the unmanaged library into the build directory for the user otherwise,
+# this needs to be done manually
+if(@MSCL_CSHARP_MANAGED_TARGET_UPPER@_COPY_DEPS_TARGET)
+    if(NOT TARGET ${@MSCL_CSHARP_MANAGED_TARGET_UPPER@_COPY_DEPS_TARGET})
+        message(FATAL_ERROR "Using @MSCL_CSHARP_MANAGED_TARGET_UPPER@_COPY_DEPS_TARGET requires that the target is created before calling find_package")
+    endif()
+
+    add_custom_command(TARGET "${@MSCL_CSHARP_MANAGED_TARGET_UPPER@_COPY_DEPS_TARGET}" POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            "$<TARGET_FILE:${@PROJECT_NAME@_LIBRARY}>"
+            "$<TARGET_FILE_DIR:${@MSCL_CSHARP_MANAGED_TARGET_UPPER@_COPY_DEPS_TARGET}>"
+        COMMENT "Copying $<TARGET_FILE_NAME:${@PROJECT_NAME@_LIBRARY}> into the build directory"
+    )
+endif()
 
 include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(
-    @LIBRARY_NAME_UPPER@
+    "@MSCL_CSHARP_MANAGED_TARGET@"
     REQUIRED_VARS
-        @LIBRARY_NAME_UPPER@_LIBRARY
+        @MSCL_CSHARP_MANAGED_TARGET_UPPER@_LIBRARY
+        @PROJECT_NAME@_LIBRARY
 )

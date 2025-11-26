@@ -10,10 +10,11 @@ set(MSCL_CSHARP_CONFIG_FILE_OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/${MSCL_CSHARP_CON
 
 include(CMakePackageConfigHelpers)
 
-# Set the variables used in the file when configure_package_config_file is called
-set(PACKAGE_NAME "${MSCL_CSHARP_MANAGED_TARGET_LOWER}")
-set(LIBRARY_NAME "${MSCL_CSHARP_MANAGED_TARGET}")
-string(TOUPPER "${MSCL_CSHARP_MANAGED_TARGET}" LIBRARY_NAME_UPPER)
+# Set additional variables used in the file when configure_package_config_file is called
+string(TOUPPER ${MSCL_CSHARP_MANAGED_TARGET} MSCL_CSHARP_MANAGED_TARGET_UPPER)
+string(REPLACE "-" "_" MSCL_CSHARP_MANAGED_TARGET_UPPER ${MSCL_CSHARP_MANAGED_TARGET_UPPER})
+string(TOUPPER ${MSCL_CSHARP_TARGET} MSCL_CSHARP_TARGET_UPPER)
+string(REPLACE "-" "_" MSCL_CSHARP_TARGET_UPPER ${MSCL_CSHARP_TARGET_UPPER})
 
 # Create the package config file
 configure_package_config_file(

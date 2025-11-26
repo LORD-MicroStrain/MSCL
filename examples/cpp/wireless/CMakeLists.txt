@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-project("wireless_example_cpp"
+project("MSCL-Cpp-Wireless-Example"
     VERSION "1.0.0"
     DESCRIPTION "Simple wireless example using C++"
     LANGUAGES CXX
@@ -30,9 +30,13 @@ if(NOT DEFINED CACHE{MSCL_LIBRARIES} AND NOT DEFINED MSCL_LIBRARIES)
     message(FATAL_ERROR "Could not find the required MSCL libraries.")
 endif()
 
+set(EXAMPLE_SOURCES
+    "${CMAKE_CURRENT_LIST_DIR}/main.cpp"
+)
+
 # Create the example
 add_executable(${PROJECT_NAME}
-    "${CMAKE_CURRENT_LIST_DIR}/main.cpp"
+    ${EXAMPLE_SOURCES}
 )
 
 # Configure the project in an examples sub-folder for IDEs that support it
@@ -75,3 +79,19 @@ endif()
 target_compile_options(${PROJECT_NAME} PRIVATE
     ${COMPILE_OPTIONS}
 )
+
+# Package the example (this can be removed for a standalone example)
+# This is for the entire MSCL source project to package the example for distribution
+if(CMAKE_PROJECT_NAME STREQUAL "MSCL" AND MSCL_BUILD_PACKAGE)
+    # Keep the same directory structure for installation
+    file(RELATIVE_PATH EXAMPLES_INSTALL_DIR ${CMAKE_SOURCE_DIR} ${CMAKE_CURRENT_LIST_DIR})
+    install(
+        FILES
+            "${CMAKE_CURRENT_LIST_DIR}/CMakeLists.txt"
+            ${EXAMPLE_SOURCES}
+        DESTINATION "${EXAMPLES_INSTALL_DIR}"
+        # No need to package this for multiple configurations since it's a file installation
+        CONFIGURATIONS "Release"
+        COMPONENT "${MSCL_EXAMPLES_CPP_COMPONENT_NAME}"
+    )
+endif()
