@@ -14,22 +14,22 @@ namespace MSCL_Wireless_Example_CSharp
         // TODO: Modify any of these options according to your use case
 
         // Toggle certain parts of the example on/off
-        const bool PING_NODE             = true;
-        const bool SET_TO_IDLE           = true;
-        const bool GET_CURRENT_CONFIG    = true;
-        const bool SET_CURRENT_CONFIG    = true;
-        const bool START_SYNC_SAMPLING   = true;
-        const bool PARSE_DATA            = true;
-        const bool ENABLE_DISABLE_BEACON = true;
+        readonly bool PING_NODE             = true;
+        readonly bool SET_TO_IDLE           = true;
+        readonly bool GET_CURRENT_CONFIG    = true;
+        readonly bool SET_CURRENT_CONFIG    = true;
+        readonly bool START_SYNC_SAMPLING   = true;
+        readonly bool PARSE_DATA            = true;
+        readonly bool ENABLE_DISABLE_BEACON = true;
 
         // Update the communication port
-        const string COM_PORT = "COM1";
+        readonly string COM_PORT = "COM1";
 
         // Basestations use a baudrate of 3000000
-        const int BAUDRATE = 3000000;
+        readonly int BAUDRATE = 3000000;
 
         // Add more node addresses to this list as needed
-        const int[] NODE_ADDRESSES = {
+        readonly int[] NODE_ADDRESSES = {
             12345
         };
         ////////////////////////////////////////////////////////////////////////////////
@@ -123,7 +123,7 @@ namespace MSCL_Wireless_Example_CSharp
                 Console.WriteLine("Base Station RSSI: " + response.baseRssi());
                 Console.WriteLine("Node RSSI: " + response.nodeRssi());
 
-                / We can talk to the Node, so let's get some more info
+                // We can talk to the Node, so let's get some more info
                 Console.WriteLine("Node Information: ");
                 Console.WriteLine("Model Number: " + node.model());
                 Console.WriteLine("Serial: " + node.serial());
