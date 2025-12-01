@@ -95,6 +95,10 @@ def buildTargets(Map config) {
         targets.addAll(['MSCL-Docs'])
       }
     }
+
+    // There is no difference in building examples between static and shared so only build it once
+    // Make sure it is at the end of the list so that all libraries are built first
+    targets.addAll(['MSCL-Examples'])
   }
 
   targets.each { target ->
@@ -151,7 +155,7 @@ def configureProject(Map config) {
 
   // Determine boolean values for each component based on platform and build type
   def buildCSharp   = isStatic && isWindows ? 'ON' : 'OFF'
-//   def buildExamples = isStatic && isLinux   ? 'ON' : 'OFF'
+  def buildExamples = isStatic              ? 'ON' : 'OFF'
   def buildPython2  = isStatic              ? 'ON' : 'OFF'
   def buildPython3  = isStatic              ? 'ON' : 'OFF'
   def buildTests    = isStatic              ? 'ON' : 'OFF'
@@ -162,7 +166,7 @@ def configureProject(Map config) {
     "-DBUILD_SHARED_LIBS:BOOL=${buildShared}",
     "-DMSCL_BUILD_CSHARP:BOOL=${buildCSharp}",
     "-DMSCL_BUILD_DOCUMENTATION:BOOL=${buildDocs}",
-//     "-DMSCL_BUILD_EXAMPLES:BOOL=${buildExamples}",
+    "-DMSCL_BUILD_EXAMPLES:BOOL=${buildExamples}",
     "-DMSCL_BUILD_PYTHON2:BOOL=${buildPython2}",
     "-DMSCL_BUILD_PYTHON3:BOOL=${buildPython3}",
     "-DMSCL_BUILD_TESTS:BOOL=${buildTests}"

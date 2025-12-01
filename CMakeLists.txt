@@ -180,11 +180,6 @@ if(MSCL_BUILD_DOCUMENTATION)
     add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/docs")
 endif()
 
-# Build the examples
-if(MSCL_BUILD_EXAMPLES)
-    add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/examples")
-endif()
-
 # Build the testing suite
 if(MSCL_BUILD_TESTS)
     enable_testing()
@@ -194,6 +189,11 @@ endif()
 # Build one or more of the bindings
 if(MSCL_BUILD_PYTHON OR MSCL_BUILD_CSHARP)
     add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/bindings")
+endif()
+
+# Build the examples
+if(MSCL_BUILD_EXAMPLES)
+    add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/examples")
 endif()
 
 # Include the CPack module for packaging

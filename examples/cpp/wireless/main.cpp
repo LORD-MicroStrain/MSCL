@@ -14,9 +14,9 @@
 
 // Toggle certain parts of the example on/off
 #define PING_NODE             true
+#define SET_TO_IDLE           true
 #define GET_CURRENT_CONFIG    true
 #define SET_CURRENT_CONFIG    true
-#define SET_TO_IDLE           true
 #define START_SYNC_SAMPLING   true
 #define PARSE_DATA            true
 #define ENABLE_DISABLE_BEACON true
@@ -33,7 +33,7 @@ static constexpr uint32_t BAUDRATE = 3000000;
 
 // Add more node addresses to this list as needed
 static constexpr int NODE_ADDRESSES[] = {
-    65364
+    12345
 };
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -41,6 +41,10 @@ static constexpr int NODE_ADDRESSES[] = {
 #if PING_NODE
 static void pingNode(mscl::WirelessNode& node);
 #endif // PING_NODE
+
+#if SET_TO_IDLE
+static void setToIdle(mscl::WirelessNode& node);
+#endif // SET_TO_IDLE
 
 #if GET_CURRENT_CONFIG
 static void getCurrentConfig(mscl::WirelessNode& node);
@@ -50,24 +54,23 @@ static void getCurrentConfig(mscl::WirelessNode& node);
 static void setCurrentConfig(mscl::WirelessNode& node);
 #endif // SET_CURRENT_CONFIG
 
-#if SET_TO_IDLE
-static void setToIdle(mscl::WirelessNode& node);
-#endif // SET_TO_IDLE
-
 #if START_SYNC_SAMPLING
-static void startSyncSampling(mscl::BaseStation& base, std::vector<mscl::WirelessNode> nodes);
+static void startSyncSampling(mscl::BaseStation& baseStation, std::vector<mscl::WirelessNode> nodes);
 #endif // START_SYNC_SAMPLING
 
 #if PARSE_DATA
-static void parseData(mscl::BaseStation& base);
+static void parseData(mscl::BaseStation& baseStation);
 #endif // PARSE_DATA
 
 #if ENABLE_DISABLE_BEACON
-static void enableDisableBeacon(mscl::BaseStation& base);
+static void enableDisableBeacon(mscl::BaseStation& baseStation);
 #endif // ENABLE_DISABLE_BEACON
 
 int main(int, char**)
 {
+    // Mark printf operations as unbuffered to flush with every operation
+    setvbuf(stdout, NULL, _IONBF, 0);
+
     try
     {
         // Create a SerialConnection with the COM port and (optional) baudrate
@@ -103,6 +106,11 @@ int main(int, char**)
             pingNode(node);
 #endif // PING_NODE
 
+#if SET_TO_IDLE
+            // Example: Set to Idle
+            setToIdle(node);
+#endif // SET_TO_IDLE
+
 #if GET_CURRENT_CONFIG
             // Example: Get Configuration
             getCurrentConfig(node);
@@ -112,11 +120,6 @@ int main(int, char**)
             // Example: Set Configuration
             setCurrentConfig(node);       // Warning: this example changes settings on your Node!
 #endif // SET_CURRENT_CONFIG
-
-#if SET_TO_IDLE
-            // Example: Set to Idle
-            setToIdle(node);
-#endif // SET_TO_IDLE
         }
 
 #if START_SYNC_SAMPLING
@@ -165,7 +168,7 @@ static void pingNode(mscl::WirelessNode& node)
     }
     else
     {
-        // Note: In order to communicate with a Wireless Node, all the following must be true:
+        // Note: To communicate with a Wireless Node, all the following must be true:
         //  - The Node is powered on, and within range of the BaseStation
         //  - The Node is on the same frequency as the BaseStation
         //  - The Node is in Idle Mode (not sampling, and not sleeping)
@@ -174,6 +177,53 @@ static void pingNode(mscl::WirelessNode& node)
     }
 }
 #endif // PING_NODE
+
+#if SET_TO_IDLE
+static void setToIdle(mscl::WirelessNode& node)
+{
+    // Call the set to idle function and get the resulting SetToIdleStatus object
+    //  Note: This starts the set to idle node command, which is an ongoing operation. The SetToIdleStatus should be queried for progress.
+    mscl::SetToIdleStatus status = node.setToIdle();
+
+    printf("Setting Node to Idle");
+
+    // Using the SetToIdleStatus object, check if the Set to Idle operation is complete.
+    // Note: we are specifying a timeout of 300 milliseconds here, which is the maximum
+    //      amount of time that the complete function will block if the Set to Idle
+    //      operation has not finished. Leaving this blank defaults to a timeout of 10ms.
+    while (!status.complete(300))
+    {
+        // Note: the Set to Idle operation can be canceled by calling status.cancel()
+        printf(".");
+    }
+
+    // At this point, the Set to Idle operation has completed
+
+    // Check the result of the Set to Idle operation
+    switch (status.result())
+    {
+        // Completed successfully
+        case mscl::SetToIdleStatus::setToIdleResult_success:
+        {
+            printf("Successfully set to idle!\n");
+            break;
+        }
+        // Canceled by the user
+        case mscl::SetToIdleStatus::setToIdleResult_canceled:
+        {
+            printf("Set to Idle was canceled!\n");
+            break;
+        }
+        // Failed to perform the operation
+        case mscl::SetToIdleStatus::setToIdleResult_failed:
+        default:
+        {
+            printf("Set to Idle has failed!\n");
+            break;
+        }
+    }
+}
+#endif // SET_TO_IDLE
 
 #if GET_CURRENT_CONFIG
 static void getCurrentConfig(mscl::WirelessNode& node)
@@ -269,58 +319,11 @@ static void setCurrentConfig(mscl::WirelessNode& node)
 }
 #endif // SET_CURRENT_CONFIG
 
-#if SET_TO_IDLE
-static void setToIdle(mscl::WirelessNode& node)
-{
-    // Call the set to idle function and get the resulting SetToIdleStatus object
-    //  Note: This starts the set to idle node command, which is an ongoing operation. The SetToIdleStatus should be queried for progress.
-    mscl::SetToIdleStatus status = node.setToIdle();
-
-    printf("Setting Node to Idle");
-
-    // Using the SetToIdleStatus object, check if the Set to Idle operation is complete.
-    // Note: we are specifying a timeout of 300 milliseconds here which is the maximum
-    //      amount of time that the complete function will block if the Set to Idle
-    //      operation has not finished. Leaving this blank defaults to a timeout of 10ms.
-    while (!status.complete(300))
-    {
-        // Note: the Set to Idle operation can be canceled by calling status.cancel()
-        printf(".");
-    }
-
-    // At this point, the Set to Idle operation has completed
-
-    // Check the result of the Set to Idle operation
-    switch (status.result())
-    {
-        // Completed successfully
-        case mscl::SetToIdleStatus::setToIdleResult_success:
-        {
-            printf("Successfully set to idle!\n");
-            break;
-        }
-            // Canceled by the user
-        case mscl::SetToIdleStatus::setToIdleResult_canceled:
-        {
-            printf("Set to Idle was canceled!\n");
-            break;
-        }
-            // Failed to perform the operation
-        case mscl::SetToIdleStatus::setToIdleResult_failed:
-        default:
-        {
-            printf("Set to Idle has failed!\n");
-            break;
-        }
-    }
-}
-#endif // SET_TO_IDLE
-
 #if START_SYNC_SAMPLING
-static void startSyncSampling(mscl::BaseStation& base, std::vector<mscl::WirelessNode> nodes)
+static void startSyncSampling(mscl::BaseStation& baseStation, std::vector<mscl::WirelessNode> nodes)
 {
     // Create a SyncSamplingNetwork object, giving it the BaseStation that will be the master BaseStation for the network.
-    mscl::SyncSamplingNetwork network(base);
+    mscl::SyncSamplingNetwork network(baseStation);
 
     // Add the WirelessNodes to the network.
     // Note: The Nodes must already be configured for Sync Sampling before adding to the network, or else Error_InvalidNodeConfig will be thrown.
@@ -363,13 +366,13 @@ static void startSyncSampling(mscl::BaseStation& base, std::vector<mscl::Wireles
 #endif // START_SYNC_SAMPLING
 
 #if PARSE_DATA
-static void parseData(mscl::BaseStation& base)
+static void parseData(mscl::BaseStation& baseStation)
 {
     // Endless loop of reading in data
     while (true)
     {
         // Loop through all the data sweeps that have been collected by the BaseStation, with a timeout of 10 milliseconds
-        for (const mscl::DataSweep& sweep : base.getData(10))
+        for (const mscl::DataSweep& sweep : baseStation.getData(10))
         {
             // Print out information about the sweep
             printf("Packet Received: ");
@@ -402,17 +405,17 @@ static void parseData(mscl::BaseStation& base)
 #endif // PARSE_DATA
 
 #if ENABLE_DISABLE_BEACON
-static void enableDisableBeacon(mscl::BaseStation& base)
+static void enableDisableBeacon(mscl::BaseStation& baseStation)
 {
     // Make sure we can ping the base station
-    if (!base.ping())
+    if (!baseStation.ping())
     {
         printf("Failed to ping the Base Station\n");
     }
 
-    if (base.features().supportsBeaconStatus())
+    if (baseStation.features().supportsBeaconStatus())
     {
-        mscl::BeaconStatus status = base.beaconStatus();
+        mscl::BeaconStatus status = baseStation.beaconStatus();
         printf("Beacon current status: Enabled?: %s", status.enabled() ? "TRUE" : "FALSE");
         printf(" Time: %s\n", status.timestamp().str().c_str());
     }
@@ -420,7 +423,7 @@ static void enableDisableBeacon(mscl::BaseStation& base)
     printf("Attempting to enable the beacon...\n");
 
     // Enable the beacon on the Base Station using the PC time
-    mscl::Timestamp beaconTime = base.enableBeacon();
+    mscl::Timestamp beaconTime = baseStation.enableBeacon();
 
     // If we got here, no exception was thrown, so enableBeacon was successful
     printf("Successfully enabled the beacon on the Base Station\n");
@@ -432,7 +435,7 @@ static void enableDisableBeacon(mscl::BaseStation& base)
     std::this_thread::sleep_for(std::chrono::seconds(3));
 
     // Disable the beacon on the Base Station
-    base.disableBeacon();
+    baseStation.disableBeacon();
 
     // If we got here, no exception was thrown, so disableBeacon was successful
     printf("Successfully disabled the beacon on the Base Station\n");

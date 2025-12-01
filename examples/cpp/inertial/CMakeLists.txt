@@ -19,7 +19,7 @@ else()
 endif()
 
 # We need to find MSCL in a standalone project
-if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_CURRENT_LIST_DIR})
+if("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_CURRENT_LIST_DIR}")
     list(APPEND CMAKE_PREFIX_PATH "${_MSCL_ROOT_DIR}")
 
     find_package("MSCL" REQUIRED CONFIG)
@@ -30,35 +30,31 @@ if(NOT DEFINED CACHE{MSCL_LIBRARIES} AND NOT DEFINED MSCL_LIBRARIES)
     message(FATAL_ERROR "Could not find the required MSCL libraries.")
 endif()
 
-set(EXAMPLE_SOURCES
+# Create the example
+add_executable("${PROJECT_NAME}"
     "${CMAKE_CURRENT_LIST_DIR}/main.cpp"
 )
 
-# Create the example
-add_executable(${PROJECT_NAME}
-    ${EXAMPLE_SOURCES}
-)
-
 # Configure the project in an examples sub-folder for IDEs that support it
-if(NOT ${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_CURRENT_LIST_DIR})
+if(NOT "${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_CURRENT_LIST_DIR}")
     file(RELATIVE_PATH PROJECT_RELATIVE_PATH "${CMAKE_SOURCE_DIR}" "${CMAKE_CURRENT_LIST_DIR}/..")
-    set_target_properties(${PROJECT_NAME} PROPERTIES
+    set_target_properties("${PROJECT_NAME}" PROPERTIES
         FOLDER "${PROJECT_RELATIVE_PATH}"
     )
 endif()
 
-target_link_libraries(${PROJECT_NAME} PRIVATE
+target_link_libraries("${PROJECT_NAME}" PRIVATE
     ${MSCL_LIBRARIES}
 )
 
-target_include_directories(${PROJECT_NAME} PRIVATE
-    ${CMAKE_CURRENT_LIST_DIR}
+target_include_directories("${PROJECT_NAME}" PRIVATE
+    "${CMAKE_CURRENT_LIST_DIR}"
     ${MSCL_INCLUDE_DIRS}
 )
 
 # Precompiled headers are needed for the MSCL source code
 # Alternatively, the 'mscl.h' header can be included instead of individual MSCL headers
-target_precompile_headers(${PROJECT_NAME} PRIVATE
+target_precompile_headers("${PROJECT_NAME}" PRIVATE
     "${MSCL_INCLUDE_DIR}/mscl/stdafx.h"
 )
 
@@ -76,22 +72,6 @@ else()
     )
 endif()
 
-target_compile_options(${PROJECT_NAME} PRIVATE
+target_compile_options("${PROJECT_NAME}" PRIVATE
     ${COMPILE_OPTIONS}
 )
-
-# Package the example (this can be removed for a standalone example)
-# This is for the entire MSCL source project to package the example for distribution
-if(CMAKE_PROJECT_NAME STREQUAL "MSCL" AND MSCL_BUILD_PACKAGE)
-    # Keep the same directory structure for installation
-    file(RELATIVE_PATH EXAMPLES_INSTALL_DIR ${CMAKE_SOURCE_DIR} ${CMAKE_CURRENT_LIST_DIR})
-    install(
-        FILES
-            "${CMAKE_CURRENT_LIST_DIR}/CMakeLists.txt"
-            ${EXAMPLE_SOURCES}
-        DESTINATION "${EXAMPLES_INSTALL_DIR}"
-        # No need to package this for multiple configurations since it's a file installation
-        CONFIGURATIONS "Release"
-        COMPONENT "${MSCL_EXAMPLES_CPP_COMPONENT_NAME}"
-    )
-endif()

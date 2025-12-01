@@ -1,10 +1,27 @@
-set(MSCL_EXAMPLES_CPP_COMPONENT_NAME "Cpp-Examples")
+set(MSCL_CPP_EXAMPLES_SUBDIRECTORIES
+    "${CMAKE_CURRENT_LIST_DIR}/displacement"
+    "${CMAKE_CURRENT_LIST_DIR}/inertial"
+    "${CMAKE_CURRENT_LIST_DIR}/wireless"
+)
 
-add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/displacement")
-add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/inertial")
-add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/wireless")
+# Add all of the example projects
+foreach(MSCL_CPP_EXAMPLES_SUBDIRECTORY IN LISTS MSCL_CPP_EXAMPLES_SUBDIRECTORIES)
+    add_subdirectory("${MSCL_CPP_EXAMPLES_SUBDIRECTORY}")
 
-microstrain_set_cpack_component_file_name(
-    COMPONENT_NAME "${MSCL_EXAMPLES_CPP_COMPONENT_NAME}"
-    COMPONENT_VERSION "${CPACK_PACKAGE_VERSION}"
+    # Get the name of the target that was just generated
+    get_property(MSCL_CPP_EXAMPLES_TARGET_NAME DIRECTORY "${MSCL_CPP_EXAMPLES_SUBDIRECTORY}"
+        PROPERTY BUILDSYSTEM_TARGETS
+    )
+
+    if (NOT MSCL_CPP_EXAMPLES_TARGET_NAME)
+        message(FATAL_ERROR "Could not find the C++ example target")
+    endif()
+
+    # Add the example target to the all examples target
+    add_dependencies("${MSCL_EXAMPLES_ALL_TARGET}" "${MSCL_CPP_EXAMPLES_TARGET_NAME}")
+endforeach()
+
+mscl_install_examples(
+    SUBDIRECTORIES ${MSCL_CPP_EXAMPLES_SUBDIRECTORIES}
+    COMPONENT_NAME "Cpp-Examples"
 )

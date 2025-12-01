@@ -8,10 +8,10 @@
 // TODO: Modify any of these options according to your use case
 
 // Toggle certain parts of the example on/off
+#define SET_TO_IDLE        true
 #define GET_CURRENT_CONFIG true
 #define SET_CURRENT_CONFIG true
 #define START_SAMPLING     true
-#define SET_TO_IDLE        true
 #define PARSE_DATA         true
 
 // Update the communication port
@@ -26,6 +26,10 @@ static constexpr uint32_t BAUDRATE = 115200;
 ////////////////////////////////////////////////////////////////////////////////
 
 // Forward declarations
+#if SET_TO_IDLE
+static void setToIdle(mscl::DisplacementNode& node);
+#endif // SET_TO_IDLE
+
 #if GET_CURRENT_CONFIG
 static void getCurrentConfig(mscl::DisplacementNode& node);
 #endif // GET_CURRENT_CONFIG
@@ -38,16 +42,15 @@ static void setCurrentConfig(mscl::DisplacementNode& node);
 static void startSampling(mscl::DisplacementNode& node);
 #endif // START_SAMPLING
 
-#if SET_TO_IDLE
-static void setToIdle(mscl::DisplacementNode& node);
-#endif // SET_TO_IDLE
-
 #if PARSE_DATA
 static void parseData(mscl::DisplacementNode& node);
 #endif // PARSE_DATA
 
 int main(int, char**)
 {
+    // Mark printf operations as unbuffered to flush with every operation
+    setvbuf(stdout, NULL, _IONBF, 0);
+
     try
     {
         // Create a SerialConnection with the COM port and (optional) baudrate
@@ -62,7 +65,10 @@ int main(int, char**)
         printf("Serial: %s\n", node.serialNumber().c_str());
         printf("Firmware: %s\n\n", node.firmwareVersion().str().c_str());
 
-        //TODO: Uncomment the lines below to run the examples
+#if SET_TO_IDLE
+        // Example: Set to Idle
+        setToIdle(node);
+#endif // SET_TO_IDLE
 
 #if GET_CURRENT_CONFIG
         // Example: Get Configuration
@@ -79,11 +85,6 @@ int main(int, char**)
         startSampling(node);
 #endif // START_SAMPLING
 
-#if SET_TO_IDLE
-        // Example: Set to Idle
-        setToIdle(node);
-#endif // SET_TO_IDLE
-
 #if PARSE_DATA
         // Example: Parse Data
         parseData(node);
@@ -99,6 +100,13 @@ int main(int, char**)
 
     return 0;
 }
+
+#if SET_TO_IDLE
+static void setToIdle(mscl::DisplacementNode& node)
+{
+    node.setToIdle();
+}
+#endif // SET_TO_IDLE
 
 #if GET_CURRENT_CONFIG
 // Example: Get Current Configuration
@@ -128,13 +136,6 @@ static void startSampling(mscl::DisplacementNode& node)
     node.resume();
 }
 #endif // START_SAMPLING
-
-#if SET_TO_IDLE
-static void setToIdle(mscl::DisplacementNode& node)
-{
-    node.setToIdle();
-}
-#endif // SET_TO_IDLE
 
 #if PARSE_DATA
 // Example: Parse Data

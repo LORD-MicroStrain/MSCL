@@ -1,52 +1,42 @@
-cmake_minimum_required(VERSION 3.18)
-project(MSCL_Example_Wireless_CSharp LANGUAGES CSharp)
+cmake_minimum_required(VERSION 3.16)
 
-set(CMAKE_CXX_STANDARD 14)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
-# Append to the module path so we can use the FindMSCL_Managed.cmake script
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../../../../../cmake")
-
-add_executable(${PROJECT_NAME}
-    Properties/AssemblyInfo.cs
-    enableDisableBeacon.cs
-    getCurrentConfig.cs
-    parseData.cs
-    pingNode.cs
-    Program.cs
-    setCurrentConfig.cs
-    setToIdle.cs
-    startSyncSampling.cs
+project("MSCL-CSharp-Wireless-Example"
+    VERSION "1.0.0"
+    DESCRIPTION "Simple wireless example using C#"
+    LANGUAGES CSharp
 )
 
-if(CMAKE_PROJECT_NAME STREQUAL "MSCL")
-    # NOTE: This section will only be called if this CMakeLists.txt is imported during the MSCL build.
-    #       If not building in the MSCL repo, this can be safely ignored or removed
-    set(MSCL_Managed_LIBRARIES MSCL_Managed)
-    set(MSCL_Managed_LIBRARY_PATH $<TARGET_FILE:MSCL_Managed>)
-    set(MSCL_Managed_INTERFACE_LIBRARY_PATH $<TARGET_FILE:MSCL_CSharp>)
+# TODO: Set MSCL_MANAGED_ROOT_DIR if building as a standalone project
+if(DEFINED MSCL_MANAGED_ROOT_DIR OR DEFINED CACHE{MSCL_MANAGED_ROOT_DIR})
+    set(_MSCL_MANAGED_ROOT_DIR "${MSCL_MANAGED_ROOT_DIR}")
+elseif(DEFINED ENV{MSCL_MANAGED_ROOT_DIR})
+    set(_MSCL_MANAGED_ROOT_DIR "$ENV{MSCL_MANAGED_ROOT_DIR}")
 else()
-    find_package(MSCL_Managed REQUIRED)
+    set(_MSCL_MANAGED_ROOT_DIR "${CMAKE_CURRENT_BINARY_DIR}")
 endif()
 
-target_link_libraries(${PROJECT_NAME} ${MSCL_Managed_LIBRARIES})
+# We need to find MSCL_Managed in a standalone project
+if("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_CURRENT_LIST_DIR}")
+    list(APPEND CMAKE_PREFIX_PATH "${_MSCL_MANAGED_ROOT_DIR}")
 
-# This seems like the only way to properly link the CSharp file to the project, wish we could do this in the Find script
-if(NOT CMAKE_PROJECT_NAME STREQUAL "MSCL")
-    set_target_properties(${PROJECT_NAME} PROPERTIES
-        VS_DOTNET_REFERENCE_MSCL_Managed "${MSCL_Managed_LIBRARY_PATH}")
+    find_package("MSCL_Managed" REQUIRED CONFIG)
 endif()
 
-# Copy the MSCL.dll file to the build directory for this binary
-add_custom_command(
-    TARGET ${PROJECT_NAME} POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy ${MSCL_Managed_INTERFACE_LIBRARY_PATH} $<TARGET_FILE_DIR:${PROJECT_NAME}>
-    VERBATIM
+# Create the example
+add_executable("${PROJECT_NAME}"
+    "${CMAKE_CURRENT_LIST_DIR}/Program.cs"
 )
 
-# Copy the MSCL_Managed.dll file to the build directory for this binary
-add_custom_command(
-    TARGET ${PROJECT_NAME} POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy ${MSCL_Managed_LIBRARY_PATH} $<TARGET_FILE_DIR:${PROJECT_NAME}>
-    VERBATIM
-)
+# Configure the project in an examples sub-folder for IDEs that support it
+if(NOT "${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_CURRENT_LIST_DIR}")
+    file(RELATIVE_PATH PROJECT_RELATIVE_PATH "${CMAKE_SOURCE_DIR}" "${CMAKE_CURRENT_LIST_DIR}/..")
+    set_target_properties("${PROJECT_NAME}" PROPERTIES
+        FOLDER "${PROJECT_RELATIVE_PATH}"
+    )
+endif()
+
+# This function exists as part of the find_package module for MSCL_Managed
+# The parameter needs to be the target to add the MSCL references to
+# If this is not used, MSCL_Managed.dll and MSCL.dll need to be in the output
+# directory of the application at runtime
+mscl_managed_add_references("${PROJECT_NAME}")

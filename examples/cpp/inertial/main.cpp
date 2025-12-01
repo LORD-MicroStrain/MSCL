@@ -8,10 +8,10 @@
 // TODO: Modify any of these options according to your use case
 
 // Toggle certain parts of the example on/off
+#define SET_TO_IDLE        true
 #define GET_CURRENT_CONFIG true
 #define SET_CURRENT_CONFIG true
 #define START_SAMPLING     true
-#define SET_TO_IDLE        true
 #define PARSE_DATA         true
 
 // Update the communication port
@@ -26,6 +26,10 @@ static constexpr uint32_t BAUDRATE = 115200;
 ////////////////////////////////////////////////////////////////////////////////
 
 // Forward declarations
+#if SET_TO_IDLE
+static void setToIdle(mscl::InertialNode& node);
+#endif // SET_TO_IDLE
+
 #if GET_CURRENT_CONFIG
 static void getCurrentConfig(mscl::InertialNode& node);
 #endif // GET_CURRENT_CONFIG
@@ -38,16 +42,15 @@ static void setCurrentConfig(mscl::InertialNode& node);
 static void startSampling(mscl::InertialNode& node);
 #endif // START_SAMPLING
 
-#if SET_TO_IDLE
-static void setToIdle(mscl::InertialNode& node);
-#endif // SET_TO_IDLE
-
 #if PARSE_DATA
 static void parseData(mscl::InertialNode& node);
 #endif // PARSE_DATA
 
 int main(int, char**)
 {
+    // Mark printf operations as unbuffered to flush with every operation
+    setvbuf(stdout, NULL, _IONBF, 0);
+
     try
     {
         // Create a SerialConnection with the COM port and (optional) baudrate
@@ -61,6 +64,11 @@ int main(int, char**)
         printf("Model Number: %s\n", node.modelNumber().c_str());
         printf("Serial: %s\n", node.serialNumber().c_str());
         printf("Firmware: %s\n\n", node.firmwareVersion().str().c_str());
+
+#if SET_TO_IDLE
+        // Example: Set to Idle
+        setToIdle(node);
+#endif // SET_TO_IDLE
 
 #if GET_CURRENT_CONFIG
         // Example: Get Configuration
@@ -77,11 +85,6 @@ int main(int, char**)
         startSampling(node);
 #endif // START_SAMPLING
 
-#if SET_TO_IDLE
-        // Example: Set to Idle
-        setToIdle(node);
-#endif // SET_TO_IDLE
-
 #if PARSE_DATA
         // Example: Parse Data
         parseData(node);
@@ -97,6 +100,17 @@ int main(int, char**)
 
     return 0;
 }
+
+#if SET_TO_IDLE
+static void setToIdle(mscl::InertialNode& node)
+{
+    node.setToIdle();
+
+    // Note: you can also disable the datastream for each class/category
+    //      separately if desired, by using the enableDataStream command shown in
+    //      the startSampling example, but passing a second parameter of 'false'
+}
+#endif // SET_TO_IDLE
 
 #if GET_CURRENT_CONFIG
 // Example: Get Current Configuration
@@ -154,12 +168,29 @@ static void getCurrentConfig(mscl::InertialNode& node)
         }
     }
 
-    printf("Altitude Aiding enabled?: %s\n", node.getAltitudeAid() ? "TRUE" : "FALSE");
+    if (node.features().supportsCommand(mscl::MipTypes::CMD_EF_ALTITUDE_AID_CTRL))
+    {
+        printf("Altitude Aiding enabled?: %s\n", node.getAltitudeAid() ? "TRUE" : "FALSE");
+    }
 
-    const mscl::PositionOffset offset = node.getAntennaOffset();
-    printf("Antenna Offset: X = %000.03f Y = %000.03f Z = %000.03f\n", offset.x(), offset.y(), offset.z());
+    if (node.features().supportsCommand(mscl::MipTypes::CMD_EF_ANTENNA_OFFSET))
+    {
+        const mscl::PositionOffset offset = node.getAntennaOffset();
+        printf("Antenna Offset: X = %000.03f Y = %000.03f Z = %000.03f\n", offset.x(), offset.y(), offset.z());
+    }
+    else if (node.features().supportsCommand(mscl::MipTypes::CMD_EF_MULTI_ANTENNA_OFFSET))
+    {
+        for (const mscl::GnssReceiverInfo& gnssReceiverInfo : node.features().gnssReceiverInfo())
+        {
+            const mscl::PositionOffset offset = node.getMultiAntennaOffset(gnssReceiverInfo.id);
+            printf("Antenna %d Offset: X = %000.03f Y = %000.03f Z = %000.03f\n", gnssReceiverInfo.id, offset.x(), offset.y(), offset.z());
+        }
+    }
 
-    printf("Pitch/Roll Aiding enabled?: %s\n", node.getPitchRollAid() ? "TRUE" : "FALSE");
+    if (node.features().supportsCommand(mscl::MipTypes::CMD_EF_PITCH_ROLL_AID_CTRL))
+    {
+        printf("Pitch/Roll Aiding enabled?: %s\n", node.getPitchRollAid() ? "TRUE" : "FALSE");
+    }
 }
 #endif // GET_CURRENT_CONFIG
 
@@ -200,12 +231,30 @@ static void setCurrentConfig(mscl::InertialNode& node)
         node.setActiveChannelFields(mscl::MipTypes::CLASS_GNSS, gnssChs);
     }
 
-    node.setPitchRollAid(true);
+    if (node.features().supportsCommand(mscl::MipTypes::CMD_EF_ALTITUDE_AID_CTRL))
+    {
+        node.setAltitudeAid(false);
+    }
 
-    node.setAltitudeAid(false);
+    if (node.features().supportsCommand(mscl::MipTypes::CMD_EF_ANTENNA_OFFSET))
+    {
+        mscl::PositionOffset offset(0.0f, 0.0f, 0.0f);
+        node.setAntennaOffset(offset);
+    }
+    else if (node.features().supportsCommand(mscl::MipTypes::CMD_EF_MULTI_ANTENNA_OFFSET))
+    {
+        const mscl::PositionOffset offset(0.0f, 0.0f, 0.0f);
 
-    mscl::PositionOffset offset(0.0f, 0.0f, 0.0f);
-    node.setAntennaOffset(offset);
+        for (const mscl::GnssReceiverInfo& gnssReceiverInfo : node.features().gnssReceiverInfo())
+        {
+            node.setMultiAntennaOffset(gnssReceiverInfo.id, offset);
+        }
+    }
+
+    if (node.features().supportsCommand(mscl::MipTypes::CMD_EF_PITCH_ROLL_AID_CTRL))
+    {
+        node.setPitchRollAid(true);
+    }
 }
 #endif // SET_CURRENT_CONFIG
 
@@ -232,19 +281,8 @@ static void startSampling(mscl::InertialNode& node)
 }
 #endif // START_SAMPLING
 
-#if SET_TO_IDLE
-static void setToIdle(mscl::InertialNode& node)
-{
-    node.setToIdle();
-
-    // Note: you can also disable the datastream for each class/category
-    //      separately if desired, by using the enableDataStream command shown in
-    //      the startSampling example, but passing a second parameter of 'false'
-}
-#endif // SET_TO_IDLE
-
 #if PARSE_DATA
-//Example: Parse Data
+// Example: Parse Data
 //  Shows how to parse incoming data from an Inertial Device.
 //  Note that this example does not start a Node sampling (assumes it already is).
 static void parseData(mscl::InertialNode& node)

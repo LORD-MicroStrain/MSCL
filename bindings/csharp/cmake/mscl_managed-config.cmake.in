@@ -11,28 +11,16 @@ endif()
 
 # Setup the library variable
 set(@MSCL_CSHARP_MANAGED_TARGET_UPPER@_LIBRARY "@MSCL_CSHARP_MANAGED_TARGET@")
-set(@PROJECT_NAME@_LIBRARY "@MSCL_CSHARP_TARGET@")
+set(@MSCL_CSHARP_TARGET_UPPER@_LIBRARY "@MSCL_CSHARP_TARGET@")
 
-# If @MSCL_CSHARP_MANAGED_TARGET_UPPER@_COPY_DEPS_TARGET is set before find_package,
-# Use it to copy the unmanaged library into the build directory for the user otherwise,
-# this needs to be done manually
-if(@MSCL_CSHARP_MANAGED_TARGET_UPPER@_COPY_DEPS_TARGET)
-    if(NOT TARGET ${@MSCL_CSHARP_MANAGED_TARGET_UPPER@_COPY_DEPS_TARGET})
-        message(FATAL_ERROR "Using @MSCL_CSHARP_MANAGED_TARGET_UPPER@_COPY_DEPS_TARGET requires that the target is created before calling find_package")
-    endif()
-
-    add_custom_command(TARGET "${@MSCL_CSHARP_MANAGED_TARGET_UPPER@_COPY_DEPS_TARGET}" POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different
-            "$<TARGET_FILE:${@PROJECT_NAME@_LIBRARY}>"
-            "$<TARGET_FILE_DIR:${@MSCL_CSHARP_MANAGED_TARGET_UPPER@_COPY_DEPS_TARGET}>"
-        COMMENT "Copying $<TARGET_FILE_NAME:${@PROJECT_NAME@_LIBRARY}> into the build directory"
-    )
-endif()
+# Include the MSCL Managed reference utilities script
+# This allows use of the mscl_managed_add_references function
+include(${CMAKE_CURRENT_LIST_DIR}/@MSCL_CSHARP_MANAGED_REF_UTILS_FILENAME@)
 
 include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(
     "@MSCL_CSHARP_MANAGED_TARGET@"
     REQUIRED_VARS
         @MSCL_CSHARP_MANAGED_TARGET_UPPER@_LIBRARY
-        @PROJECT_NAME@_LIBRARY
+        @MSCL_CSHARP_TARGET_UPPER@_LIBRARY
 )
