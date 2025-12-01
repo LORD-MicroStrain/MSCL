@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 
 // Note: If you are having 'PINVOKE' errors, please make sure the following is true:
 //  -'MSCL_Managed' is added as a Refence for the project (add 'MSCL_Managed.dll')
@@ -14,22 +15,22 @@ namespace MSCL_Wireless_Example_CSharp
         // TODO: Modify any of these options according to your use case
 
         // Toggle certain parts of the example on/off
-        readonly bool PING_NODE             = true;
-        readonly bool SET_TO_IDLE           = true;
-        readonly bool GET_CURRENT_CONFIG    = true;
-        readonly bool SET_CURRENT_CONFIG    = true;
-        readonly bool START_SYNC_SAMPLING   = true;
-        readonly bool PARSE_DATA            = true;
-        readonly bool ENABLE_DISABLE_BEACON = true;
+        static readonly bool PING_NODE             = true;
+        static readonly bool SET_TO_IDLE           = true;
+        static readonly bool GET_CURRENT_CONFIG    = true;
+        static readonly bool SET_CURRENT_CONFIG    = true;
+        static readonly bool START_SYNC_SAMPLING   = true;
+        static readonly bool PARSE_DATA            = true;
+        static readonly bool ENABLE_DISABLE_BEACON = true;
 
         // Update the communication port
-        readonly string COM_PORT = "COM1";
+        static readonly string COM_PORT = "COM1";
 
         // Basestations use a baudrate of 3000000
-        readonly int BAUDRATE = 3000000;
+        static readonly uint BAUDRATE = 3000000;
 
         // Add more node addresses to this list as needed
-        readonly int[] NODE_ADDRESSES = {
+        static readonly uint[] NODE_ADDRESSES = {
             12345
         };
         ////////////////////////////////////////////////////////////////////////////////
@@ -51,7 +52,7 @@ namespace MSCL_Wireless_Example_CSharp
 
                 List<mscl.WirelessNode> networkNodes = new List<mscl.WirelessNode>();
 
-                foreach (int nodeAddress in NODE_ADDRESSES)
+                foreach (uint nodeAddress in NODE_ADDRESSES)
                 {
                     // Create a Wireless Node with the BaseStation
                     mscl.WirelessNode node = new mscl.WirelessNode(nodeAddress, baseStation);

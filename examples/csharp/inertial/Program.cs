@@ -13,17 +13,17 @@ namespace MSCL_CSharp_Inertial_Example
         // TODO: Modify any of these options according to your use case
 
         // Toggle certain parts of the example on/off
-        readonly bool SET_TO_IDLE        = true;
-        readonly bool GET_CURRENT_CONFIG = true;
-        readonly bool SET_CURRENT_CONFIG = true;
-        readonly bool START_SAMPLING     = true;
-        readonly bool PARSE_DATA         = true;
+        static readonly bool SET_TO_IDLE        = true;
+        static readonly bool GET_CURRENT_CONFIG = true;
+        static readonly bool SET_CURRENT_CONFIG = true;
+        static readonly bool START_SAMPLING     = true;
+        static readonly bool PARSE_DATA         = true;
 
         // Update the communication port
-        readonly string COM_PORT = "COM1";
+        static readonly string COM_PORT = "COM1";
 
         // We recommend at least 115200 for the baudrate on our devices
-        readonly int BAUDRATE = 115200;
+        static readonly uint BAUDRATE = 115200;
         ////////////////////////////////////////////////////////////////////////////////
 
         static void Main(string[] args)
