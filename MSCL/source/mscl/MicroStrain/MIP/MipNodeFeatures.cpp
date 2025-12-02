@@ -1441,7 +1441,7 @@ namespace mscl
         return nodeInfo().eventTriggerInfo();
     }
 
-    const bool MipNodeFeatures::supportsNorthCompensation() const
+    bool MipNodeFeatures::supportsNorthCompensation() const
     {
         const MipModel model(nodeInfo().deviceInfo().modelNumber);
 
