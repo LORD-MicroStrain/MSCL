@@ -115,7 +115,7 @@ static void getCurrentConfig(mscl::DisplacementNode& node)
 {
     mscl::LinearEquation cals = node.getAnalogToDisplacementCal();
 
-    printf("Analog to Displacement Cal: Slope: %000.03f Offset: %000.03f\n", cals.slope(), cals.offset());
+    printf("Analog to Displacement Cal: Slope: %06.03f Offset: %06.03f\n", cals.slope(), cals.offset());
     printf("Output Data Rate: %s\n", node.getDisplacementOutputDataRate().prettyStr().c_str());
 }
 #endif // GET_CURRENT_CONFIG

@@ -176,14 +176,14 @@ static void getCurrentConfig(mscl::InertialNode& node)
     if (node.features().supportsCommand(mscl::MipTypes::CMD_EF_ANTENNA_OFFSET))
     {
         const mscl::PositionOffset offset = node.getAntennaOffset();
-        printf("Antenna Offset: X = %000.03f Y = %000.03f Z = %000.03f\n", offset.x(), offset.y(), offset.z());
+        printf("Antenna Offset: X = %06.03f Y = %06.03f Z = %06.03f\n", offset.x(), offset.y(), offset.z());
     }
     else if (node.features().supportsCommand(mscl::MipTypes::CMD_EF_MULTI_ANTENNA_OFFSET))
     {
         for (const mscl::GnssReceiverInfo& gnssReceiverInfo : node.features().gnssReceiverInfo())
         {
             const mscl::PositionOffset offset = node.getMultiAntennaOffset(gnssReceiverInfo.id);
-            printf("Antenna %d Offset: X = %000.03f Y = %000.03f Z = %000.03f\n", gnssReceiverInfo.id, offset.x(), offset.y(), offset.z());
+            printf("Antenna %d Offset: X = %06.03f Y = %06.03f Z = %06.03f\n", gnssReceiverInfo.id, offset.x(), offset.y(), offset.z());
         }
     }
 
