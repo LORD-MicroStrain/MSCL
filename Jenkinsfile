@@ -105,6 +105,7 @@ def buildTargets(Map config) {
 
   targets.each { target ->
     def buildLabel = "Build ${target} (${buildType})"
+    if (isLinux) {
       sh(label: buildLabel, script: """
         ../.devcontainer/docker-run-container.sh --os ${BUILD_OS} --arch ${BUILD_ARCH} " \
           cmake \
