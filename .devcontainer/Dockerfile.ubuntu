@@ -9,77 +9,46 @@ RUN set -ex \
         ca-certificates \
     && update-ca-certificates
 
-# Install some general tools not installed by rosdep
 ENV DEBIAN_FRONTEND="noninteractive"
+
+# Install general tools
 RUN set -ex \
     && apt-get update && apt-get install -y \
-        gdb \
-        git \
         vim \
         curl \
-        make \
-        cmake \
-        zlib1g-dev \
-        subversion \
-        build-essential \
-        bash-completion
-
-# Install OpenSSL
-RUN set -ex \
-    && apt-get update && apt-get install -y \
-        libssl-dev
-
-# Add some python dependencies
-RUN set -ex && apt-get update && apt-get install -y python2-dev || apt-get install -y python-dev
-
-# Install additional python versions
-ARG PYTHON3_VERSIONS="3.9.21 3.10.16"
-RUN set -ex \
-    && for PYTHON3_VERSION in ${PYTHON3_VERSIONS}; do \
-        curl -fsSLo /tmp/Python-${PYTHON3_VERSION}.tgz https://www.python.org/ftp/python/${PYTHON3_VERSION}/Python-${PYTHON3_VERSION}.tgz; \
-        tar -C /tmp/ -xzf /tmp/Python-${PYTHON3_VERSION}.tgz; \
-        cd /tmp/Python-${PYTHON3_VERSION}; \
-        /tmp/Python-${PYTHON3_VERSION}/configure \
-            --prefix=/usr \
-            --with-ensurepip=no \
-            --without-static-libpython \
-            --enable-shared; \
-        make -j$(nproc); \
-        make altinstall; \
-        rm -rf /tmp/Python-${PYTHON3_VERSION}*; \
-    done
-
-# Install a specific version of boost
-ARG BOOST_VERSION=1.68.0
-RUN set -ex \
-    && export boost_version_underscore=$(echo ${BOOST_VERSION} | tr '.' '_') \
-    && curl -fsSLo /tmp/boost_${boost_version_underscore}.tar.gz https://archives.boost.io/release/${BOOST_VERSION}/source/boost_${boost_version_underscore}.tar.gz \
-    && tar -C /tmp/ -xzf /tmp/boost_${boost_version_underscore}.tar.gz \
-    && cd /tmp/boost_${boost_version_underscore} \
-    && ./bootstrap.sh \
-    && ./b2 \
-        -j $(nproc) \
-        variant=release \
-        cxxflags="$(echo ${PYTHON3_VERSIONS} | cut -d' ' -f1 | cut -d'.' -f-2 | xargs -I{} echo '-I/usr/include/python{}m' | tr '\n' ' ') -fPIC" \
-    && ./b2 install \
-        --prefix=/usr \
-    && rm -rf /tmp/boost_${boost_version_underscore}*
-
-# Install turtle so we can run unit tests
-ENV TURTLE_VERSION 1.3.2
-RUN set -ex \
-    && curl -fsSLo /tmp/turtle-${TURTLE_VERSION}.tar.gz https://master.dl.sourceforge.net/project/turtle/turtle/${TURTLE_VERSION}/turtle-${TURTLE_VERSION}.tar.gz \
-    && tar -C /usr/local -xzf /tmp/turtle-${TURTLE_VERSION}.tar.gz include
-
-# Install swig
-RUN set -ex \
-    && apt-get update && apt-get install -y \
-        swig
-
-# Dependencies required by dpkg in order to build the deb package
-RUN set -ex \
-    && apt-get update && apt-get install -y \
+        bash-completion \
         debhelper
+
+# Install general version control tools
+RUN set -ex \
+    && apt-get update && apt-get install -y \
+        git \
+        subversion
+
+# Install general C++ build tools
+RUN set -ex \
+    && apt-get update && apt-get install -y \
+        build-essential \
+        gdb \
+        cmake \
+        pkg-config \
+        zlib1g-dev
+
+# Install vcpkg build tools
+RUN set -ex \
+    && apt-get update && apt-get install -y \
+        ninja-build \
+        zip \
+        unzip \
+        tar
+
+# Install tools required to build Python from source (even through vcpkg)
+RUN set -ex \
+    && apt-get update && apt-get install -y \
+        autoconf \
+        autoconf-archive \
+        automake \
+        libtool
 
 # Add a user that will be used when shelling into this container and allow them to use devices
 ARG USER_ID=1000

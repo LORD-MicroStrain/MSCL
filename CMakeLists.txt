@@ -96,13 +96,6 @@ if(WIN32)
     option(MSCL_BUILD_DOCUMENTATION "Whether to build the documentation" OFF)
 endif()
 
-# Dependencies root/include paths (these are optional and will be downloaded if not set)
-
-if(UNIX AND NOT APPLE)
-    set(DPKG_ROOT "" CACHE PATH "Location of the dpkg executable")
-    set(RPMBUILD_ROOT "" CACHE PATH "Location of the rpmbuild executable")
-endif()
-
 # Use Git to find the version and commit of this repo
 microstrain_get_git_version(MSCL_GIT_VERSION MSCL_GIT_VERSION_CLEAN)
 microstrain_get_git_commit(MSCL_GIT_COMMIT)

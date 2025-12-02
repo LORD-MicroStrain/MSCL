@@ -54,11 +54,13 @@ def packageTargets(Map config) {
     def releaseBuildDir = env.BUILD_TYPES.split(';')[1].trim()
 
     sh(label: packageLabel, script: """
-      MICROSTRAIN_BUILD_DIR_DEBUG=\"\$(pwd)/${debugBuildDir}\" \
-      MICROSTRAIN_BUILD_DIR_RELEASE=\"\$(pwd)/${releaseBuildDir}\" \
-      cpack \
-        --config "\$(pwd)/${releaseBuildDir}/microstrain-package-all.cmake" \
-        -C "${env.BUILD_TYPES}"
+      ../.devcontainer/docker-run-container.sh --os ${BUILD_OS} --arch ${BUILD_ARCH} " \
+        MICROSTRAIN_BUILD_DIR_DEBUG=\"\$(pwd)/${debugBuildDir}\" \
+        MICROSTRAIN_BUILD_DIR_RELEASE=\"\$(pwd)/${releaseBuildDir}\" \
+        cpack \
+          --config "\$(pwd)/${releaseBuildDir}/microstrain-package-all.cmake" \
+          -C "${env.BUILD_TYPES}";
+      "
     """)
   }
   else {
@@ -103,12 +105,13 @@ def buildTargets(Map config) {
 
   targets.each { target ->
     def buildLabel = "Build ${target} (${buildType})"
-    if (isLinux) {
       sh(label: buildLabel, script: """
-        cmake \
-          --build ./${buildType} \
-          --parallel \$(nproc) \
-          --target ${target}
+        ../.devcontainer/docker-run-container.sh --os ${BUILD_OS} --arch ${BUILD_ARCH} " \
+          cmake \
+            --build ./${buildType} \
+            --parallel \$(nproc) \
+            --target ${target};
+        "
       """)
     }
     else {
@@ -192,7 +195,9 @@ def configureProject(Map config) {
   def cmakeArgs = args.join(' ')
   if (isLinux) {
     sh(label: configLabel, script: """
-      cmake .. -B ${buildType} ${cmakeArgs}
+      ../.devcontainer/docker-run-container.sh --os ${BUILD_OS} --arch ${BUILD_ARCH} " \
+        cmake .. -B ${buildType} ${cmakeArgs};
+      "
     """)
   }
   else {
@@ -209,6 +214,12 @@ def buildAndPackageProject() {
 
   def isLinux   = isUnix()
   def isWindows = !isLinux
+
+  if (isLinux) {
+    sh(label: "Prepare Docker Image", script: """
+      ./.devcontainer/docker-build-image.sh --os ${BUILD_OS} --arch ${BUILD_ARCH}
+    """)
+  }
 
   // Build and package the project in the build directory
   dir(env.BUILD_DIR) {
@@ -331,7 +342,9 @@ pipeline {
             label 'linux-amd64'
           }
           environment {
-            BUILD_DIR = "build_linux_amd64"
+            BUILD_OS   = "ubuntu"
+            BUILD_ARCH = "amd64"
+            BUILD_DIR  = "build_linux_amd64"
           }
           options {
             skipDefaultCheckout()
@@ -347,7 +360,9 @@ pipeline {
             label 'linux-arm64'
           }
           environment {
-            BUILD_DIR = "build_linux_arm64"
+            BUILD_OS   = "ubuntu"
+            BUILD_ARCH = "arm64v8"
+            BUILD_DIR  = "build_linux_arm64"
           }
           options {
             skipDefaultCheckout()
@@ -363,7 +378,9 @@ pipeline {
             label 'linux-arm64'
           }
           environment {
-            BUILD_DIR = "build_linux_arm32"
+            BUILD_OS   = "ubuntu"
+            BUILD_ARCH = "arm32v7"
+            BUILD_DIR  = "build_linux_arm32"
           }
           options {
             skipDefaultCheckout()
