@@ -96,7 +96,7 @@ namespace mscl
         }
     }
 
-    const ValueType Value::storedAs() const
+    ValueType Value::storedAs() const
     {
         return m_storedAs;
     }

@@ -132,7 +132,7 @@ namespace mscl
         //
         //Returns:
         //    A <ValueType> representing how the data is stored, and should be read.
-        const ValueType storedAs() const;
+        ValueType storedAs() const;
 
         //API Function: as_float
         //    Gets the data value as a 4-byte float
