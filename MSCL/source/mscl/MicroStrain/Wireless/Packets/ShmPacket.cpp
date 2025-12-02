@@ -145,8 +145,8 @@ namespace mscl
         static const uint16 PAYLOAD_OFFSET_BIN_DATA = 19;
 
         //read the values from the payload
-        auto txRate = static_cast<WirelessTypes::WirelessSampleRate>(m_payload.read_uint8(PAYLOAD_OFFSET_TX_RATE));
-        auto processingRate = static_cast<WirelessTypes::WirelessSampleRate>(m_payload.read_uint8(PAYLOAD_OFFSET_PROC_RATE));
+        WirelessTypes::WirelessSampleRate txRate = static_cast<WirelessTypes::WirelessSampleRate>(m_payload.read_uint8(PAYLOAD_OFFSET_TX_RATE));
+        WirelessTypes::WirelessSampleRate processingRate = static_cast<WirelessTypes::WirelessSampleRate>(m_payload.read_uint8(PAYLOAD_OFFSET_PROC_RATE));
         uint32 tick = m_payload.read_uint32(PAYLOAD_OFFSET_TICK);
         float angle = m_payload.read_float(PAYLOAD_OFFSET_ANGLE);    //already in degrees
         float damage = m_payload.read_float(PAYLOAD_OFFSET_DAMAGE);

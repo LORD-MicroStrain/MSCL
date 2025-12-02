@@ -80,7 +80,7 @@ namespace mscl
         uint8 lastChEnabled = 0;
 
         //loop over each algorithm
-        for(auto alg : metaData)
+        for(AlgorithmMetaData alg : metaData)
         {
             lastChEnabled = alg.channelMask.lastChEnabled();
 

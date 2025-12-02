@@ -45,10 +45,10 @@ namespace mscl
 
     bool MipNodeFeatures::supportsCategory(MipTypes::DataClass dataClass) const
     {
-        const auto& descriptors = nodeInfo().descriptors();
+        const std::vector<uint16>& descriptors = nodeInfo().descriptors();
 
         //loop over all the descriptors we have
-        for(auto desc : descriptors)
+        for(uint16 desc : descriptors)
         {
             //if the MSB of the descriptor matches the DataClass being requested
             if(Utils::msb(static_cast<uint16>(desc)) == static_cast<uint16>(dataClass))
@@ -99,10 +99,10 @@ namespace mscl
     {
         MipTypes::MipChannelFields result;
 
-        const auto& descriptors = nodeInfo().descriptors();
+        const std::vector<uint16>& descriptors = nodeInfo().descriptors();
 
         //loop over all the descriptors we have
-        for(auto desc : descriptors)
+        for(uint16 desc : descriptors)
         {
             //if the MSB of the descriptor matches the DataClass being requested
             if((dataClass == MipTypes::DataClass(-1) && isChannelField(desc))
@@ -123,7 +123,7 @@ namespace mscl
 
     bool MipNodeFeatures::supportsCommand(MipTypes::Command commandId) const
     {
-        const auto& descriptors = nodeInfo().descriptors();
+        const std::vector<uint16>& descriptors = nodeInfo().descriptors();
         return std::find(descriptors.begin(), descriptors.end(), static_cast<uint16>(commandId)) != descriptors.end();
     }
 
@@ -131,9 +131,9 @@ namespace mscl
     {
         MipTypes::MipCommands result;
 
-        auto& descriptors = nodeInfo().descriptors();
+        const std::vector<uint16>& descriptors = nodeInfo().descriptors();
 
-        for(const auto& desc : descriptors)
+        for(const uint16& desc : descriptors)
         {
             //anything that isn't a channel field, should be a command
             if(!isChannelField(desc))

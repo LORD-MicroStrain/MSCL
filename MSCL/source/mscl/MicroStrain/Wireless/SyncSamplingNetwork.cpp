@@ -637,7 +637,7 @@ namespace mscl
         double totalBytesPerSec = 0.0;
 
         //calculate the total Bytes per Second for all event nodes
-        for(auto nodeAddress : m_eventNodes)
+        for(NodeAddress nodeAddress : m_eventNodes)
         {
             SyncNetworkInfo& nodeInfo = getNodeNetworkInfo(nodeAddress);
 
@@ -646,7 +646,7 @@ namespace mscl
         }
 
         //calculate the slots per second for all event nodes
-        for(auto nodeAddress : m_eventNodes)
+        for(NodeAddress nodeAddress : m_eventNodes)
         {
             SyncNetworkInfo& nodeInfo = getNodeNetworkInfo(nodeAddress);
 
@@ -673,7 +673,7 @@ namespace mscl
 
             highestDutyCycle = 0.0;
 
-            for(auto nodeAddress : m_eventNodes)
+            for(NodeAddress nodeAddress : m_eventNodes)
             {
                 SyncNetworkInfo& nodeInfo = getNodeNetworkInfo(nodeAddress);
 
@@ -696,7 +696,7 @@ namespace mscl
         bool legacyMode = inLegacyMode();
 
         //update other values that were affected by txPerGroup changing
-        for(auto nodeAddress : m_eventNodes)
+        for(NodeAddress nodeAddress : m_eventNodes)
         {
             SyncNetworkInfo& nodeInfo = getNodeNetworkInfo(nodeAddress);
 
@@ -715,7 +715,7 @@ namespace mscl
     double SyncSamplingNetwork::totalEventTxPerGroup()
     {
         double result = 0.0;
-        for(auto nodeAddress : m_eventNodes)
+        for(NodeAddress nodeAddress : m_eventNodes)
         {
             SyncNetworkInfo& nodeInfo = getNodeNetworkInfo(nodeAddress);
             result += nodeInfo.m_txPerGroup;

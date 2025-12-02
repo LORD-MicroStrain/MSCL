@@ -140,7 +140,7 @@ namespace mscl
     WirelessTypes::TransmitPower BaseStationFeatures::minTransmitPower(WirelessTypes::RegionCode region, WirelessTypes::CommProtocol commProtocol) const
     {
         //transmit powers are always sorted max to min
-        auto txPowers = transmitPowers(region, commProtocol);
+        WirelessTypes::TransmitPowers txPowers = transmitPowers(region, commProtocol);
         return txPowers.at(txPowers.size() - 1);
     }
 

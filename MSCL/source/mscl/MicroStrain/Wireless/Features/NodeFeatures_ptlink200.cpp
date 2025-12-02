@@ -90,7 +90,7 @@ namespace mscl
 
         //even though we found the max rate, that sample rate might not actually be supported by the Node.
         //look through all the supported rates and find the max one supported below the given rate.
-        for(const auto& rate : rates)
+        for(const WirelessTypes::WirelessSampleRate& rate : rates)
         {
             if(SampleRate::FromWirelessEepromValue(rate) <= maxRate)
             {

@@ -25,7 +25,7 @@ namespace mscl
 
     WirelessNode WirelessNode::Mock(NodeAddress nodeAddress, const BaseStation& basestation, const NodeInfo& info, const WirelessTypes::EepromMap& initialEepromCache)
     {
-        auto nodeImpl = std::make_shared<MockWirelessNode_Impl>(nodeAddress, basestation, info);
+        std::shared_ptr<MockWirelessNode_Impl> nodeImpl = std::make_shared<MockWirelessNode_Impl>(nodeAddress, basestation, info);
         nodeImpl->importEepromCache(initialEepromCache);
 
         return WirelessNode(nodeImpl);

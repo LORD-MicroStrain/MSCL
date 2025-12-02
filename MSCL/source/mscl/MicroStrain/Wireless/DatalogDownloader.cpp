@@ -711,7 +711,7 @@ namespace mscl
 
         uint8 lastChEnabled = 0;
         uint8 chNum = 0;
-        for(auto& meta : m_mathMetaDeta)
+        for(WirelessDataPacket::AlgorithmMetaData& meta : m_mathMetaDeta)
         {
             lastChEnabled = meta.channelMask.lastChEnabled();
 

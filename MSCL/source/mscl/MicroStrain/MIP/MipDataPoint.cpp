@@ -85,7 +85,7 @@ namespace mscl
         std::string post = "";
         if (hasAddlIdentifiers() && includeAddlIds)
         {
-            for (auto id : m_addlIdentifiers)
+            for (MipChannelIdentifier id : m_addlIdentifiers)
             {
                 post += "_" + id.name(!consolidatedFormat);
             }

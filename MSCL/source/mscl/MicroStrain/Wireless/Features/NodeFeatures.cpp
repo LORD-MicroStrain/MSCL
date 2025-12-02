@@ -366,7 +366,7 @@ namespace mscl
 
         //even though we found the max rate, that sample rate might not actually be supported by the Node.
         //look through all the supported rates and find the max one supported below the given rate.
-        for(const auto& rate : rates)
+        for(const WirelessTypes::WirelessSampleRate& rate : rates)
         {
             if(SampleRate::FromWirelessEepromValue(rate) <= maxRate)
             {
@@ -408,7 +408,7 @@ namespace mscl
 
         //even though we found the max rate, that sample rate might not actually be supported by the Node.
         //look through all the supported rates and find the max one supported below the given rate.
-        for(const auto& rate : rates)
+        for(const WirelessTypes::WirelessSampleRate& rate : rates)
         {
             if(SampleRate::FromWirelessEepromValue(rate) <= maxRate)
             {
@@ -462,7 +462,7 @@ namespace mscl
     const EepromLocation& NodeFeatures::findEeprom(WirelessTypes::ChannelGroupSetting setting, const ChannelMask& mask) const
     {
         //loop over all of the channel groups
-        for(const auto& group : m_channelGroups)
+        for(const ChannelGroup& group : m_channelGroups)
         {
             //if the group has the channel mask we are looking for
             if(group.channels() == mask)
@@ -487,10 +487,10 @@ namespace mscl
     bool NodeFeatures::anyChannelGroupSupports(WirelessTypes::ChannelGroupSetting setting) const
     {
         //loop over all of the groups
-        for(const auto& group : m_channelGroups)
+        for(const ChannelGroup& group : m_channelGroups)
         {
             //loop over every setting in the group
-            for(const auto& chSetting : group.settings())
+            for(const WirelessTypes::ChannelGroupSetting& chSetting : group.settings())
             {
                 //check if the setting matches the one we are looking for
                 if(chSetting == setting)
@@ -506,10 +506,10 @@ namespace mscl
     bool NodeFeatures::anyChannelGroupSupports(WirelessTypes::ChannelGroupSetting setting, uint8 channelNumber) const
     {
         //loop over all of the groups
-        for(const auto& group : m_channelGroups)
+        for(const ChannelGroup& group : m_channelGroups)
         {
             //loop over every setting in the group
-            for(const auto& chSetting : group.settings())
+            for(const WirelessTypes::ChannelGroupSetting& chSetting : group.settings())
             {
                 //check if the setting matches the one we are looking for
                 //and that the channels in the group have the requested channel in it
@@ -546,8 +546,8 @@ namespace mscl
     WirelessTypes::ChannelType NodeFeatures::channelType(uint8 channelNumber) const
     {
         //find the channel number in the list of supported channels
-        const auto& chs = channels();
-        for(const auto& ch : chs)
+        const WirelessChannels& chs = channels();
+        for(const WirelessChannel& ch : chs)
         {
             if(ch.channelNumber() == channelNumber)
             {
