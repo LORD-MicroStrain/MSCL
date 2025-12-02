@@ -55,6 +55,7 @@ def packageTargets(Map config) {
 
     sh(label: packageLabel, script: """
       ../.devcontainer/docker-run-container.sh --os ${BUILD_OS} --arch ${BUILD_ARCH} " \
+        cd ${BUILD_DIR}; \
         MICROSTRAIN_BUILD_DIR_DEBUG=\"\$(pwd)/${debugBuildDir}\" \
         MICROSTRAIN_BUILD_DIR_RELEASE=\"\$(pwd)/${releaseBuildDir}\" \
         cpack \
@@ -108,6 +109,7 @@ def buildTargets(Map config) {
     if (isLinux) {
       sh(label: buildLabel, script: """
         ../.devcontainer/docker-run-container.sh --os ${BUILD_OS} --arch ${BUILD_ARCH} " \
+          cd ${BUILD_DIR}; \
           cmake \
             --build ./${buildType} \
             --parallel \$(nproc) \
@@ -197,6 +199,7 @@ def configureProject(Map config) {
   if (isLinux) {
     sh(label: configLabel, script: """
       ../.devcontainer/docker-run-container.sh --os ${BUILD_OS} --arch ${BUILD_ARCH} " \
+        cd ${BUILD_DIR}; \
         cmake .. -B ${buildType} ${cmakeArgs};
       "
     """)
