@@ -104,7 +104,7 @@ namespace mscl
         return rates.at(rates.size() - 1);
     }
 
-    const WirelessTypes::VoltageType NodeFeatures_ptlink200::adcVoltageInputType() const
+    WirelessTypes::VoltageType NodeFeatures_ptlink200::adcVoltageInputType() const
     {
         return WirelessTypes::VoltageType::voltageType_differential;
     }
@@ -137,7 +137,7 @@ namespace mscl
         }
     }
 
-    const uint32 NodeFeatures_ptlink200::minSensorDelay() const
+    uint32 NodeFeatures_ptlink200::minSensorDelay() const
     {
         if (!supportsSensorDelayConfig())
         {
@@ -147,7 +147,7 @@ namespace mscl
         return static_cast<uint32>(TimeSpan::MilliSeconds(5).getMicroseconds());    //5 milliseconds
     }
 
-    const uint32 NodeFeatures_ptlink200::defaultSensorDelay() const
+    uint32 NodeFeatures_ptlink200::defaultSensorDelay() const
     {
         if (!supportsSensorDelayConfig())
         {

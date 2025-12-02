@@ -154,7 +154,7 @@ namespace mscl
         return excitationVoltages;
     }
 
-    const WirelessTypes::VoltageType NodeFeatures_torqueLink200_3ch::adcVoltageInputType() const
+    WirelessTypes::VoltageType NodeFeatures_torqueLink200_3ch::adcVoltageInputType() const
     {
         return WirelessTypes::VoltageType::voltageType_differential;
     }

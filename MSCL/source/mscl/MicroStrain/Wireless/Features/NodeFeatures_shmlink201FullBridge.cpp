@@ -143,7 +143,7 @@ namespace mscl
         return false;
     }
 
-    const WirelessTypes::VoltageType NodeFeatures_shmlink201FullBridge::adcVoltageInputType() const
+    WirelessTypes::VoltageType NodeFeatures_shmlink201FullBridge::adcVoltageInputType() const
     {
         return WirelessTypes::VoltageType::voltageType_differential;
     }
@@ -176,7 +176,7 @@ namespace mscl
         return true;
     }
 
-    const uint32 NodeFeatures_shmlink201FullBridge::minSensorDelay() const
+    uint32 NodeFeatures_shmlink201FullBridge::minSensorDelay() const
     {
         if (!supportsSensorDelayConfig())
         {
@@ -186,7 +186,7 @@ namespace mscl
         return 350;     //350 microseconds
     }
 
-    const uint32 NodeFeatures_shmlink201FullBridge::defaultSensorDelay() const
+    uint32 NodeFeatures_shmlink201FullBridge::defaultSensorDelay() const
     {
         if (!supportsSensorDelayConfig())
         {

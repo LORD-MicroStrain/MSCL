@@ -1131,7 +1131,7 @@ namespace mscl
         return SyncSamplingFormulas::minTimeBetweenBursts(rawBytesPerSweep, derivedBytesPerSweep, rawSampleRate, sweepsPerBurst, commProtocol);
     }
 
-    const uint32 NodeFeatures::minSensorDelay() const
+    uint32 NodeFeatures::minSensorDelay() const
     {
         if(!supportsSensorDelayConfig())
         {
@@ -1158,7 +1158,7 @@ namespace mscl
         }
     }
 
-    const uint32 NodeFeatures::maxSensorDelay() const
+    uint32 NodeFeatures::maxSensorDelay() const
     {
         if(!supportsSensorDelayConfig())
         {
@@ -1188,7 +1188,7 @@ namespace mscl
         }
     }
 
-    const uint32 NodeFeatures::defaultSensorDelay() const
+    uint32 NodeFeatures::defaultSensorDelay() const
     {
         if (!supportsSensorDelayConfig())
         {
@@ -1624,7 +1624,7 @@ namespace mscl
         return result;
     }
 
-    const WirelessTypes::VoltageType NodeFeatures::adcVoltageInputType() const
+    WirelessTypes::VoltageType NodeFeatures::adcVoltageInputType() const
     {
         return WirelessTypes::VoltageType::voltageType_singleEnded;
     }

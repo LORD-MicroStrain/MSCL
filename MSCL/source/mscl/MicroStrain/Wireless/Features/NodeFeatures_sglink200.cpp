@@ -176,7 +176,7 @@ namespace mscl
         return excitationVoltages;
     }
 
-    const WirelessTypes::VoltageType NodeFeatures_sglink200::adcVoltageInputType() const
+    WirelessTypes::VoltageType NodeFeatures_sglink200::adcVoltageInputType() const
     {
         return WirelessTypes::VoltageType::voltageType_differential;
     }

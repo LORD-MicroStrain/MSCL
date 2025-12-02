@@ -88,7 +88,7 @@ int main(int, char**)
         std::vector<mscl::WirelessNode> networkNodes;
 #endif // START_SYNC_SAMPLING
 
-        for (int index = 0; index < sizeof(NODE_ADDRESSES) / sizeof(NODE_ADDRESSES[0]); ++index)
+        for (size_t index = 0; index < sizeof(NODE_ADDRESSES) / sizeof(NODE_ADDRESSES[0]); ++index)
         {
             const int NODE_ADDRESS = NODE_ADDRESSES[index];
 
@@ -262,8 +262,8 @@ static void getCurrentConfig(mscl::WirelessNode& node)
                 mscl::LinearEquation le = node.getLinearEquation(group.channels());
 
                 printf("Linear Equation for: %s\n", group.name().c_str());
-                printf("Slope: %000.03f\n", le.slope());
-                printf("Offset: %000.03f\n", le.offset());
+                printf("Slope: %06.03f\n", le.slope());
+                printf("Offset: %06.03f\n", le.offset());
             }
         }
     }
@@ -337,7 +337,7 @@ static void startSyncSampling(mscl::BaseStation& baseStation, std::vector<mscl::
     // Can get information about the network
     printf("Network info: \n");
     printf("Network OK: %s\n", network.ok() ? "TRUE" : "FALSE");
-    printf("Percent of Bandwidth: %00.02f%%\n", network.percentBandwidth());
+    printf("Percent of Bandwidth: %04.02f%%\n", network.percentBandwidth());
     printf("Lossless Enabled: %s\n", network.lossless() ? "TRUE" : "FALSE");
 
     // Apply the network configuration to every node in the network

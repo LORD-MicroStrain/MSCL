@@ -31,14 +31,14 @@ namespace mscl
 
         WirelessTypes::WirelessSampleRate maxSampleRateForLowPassFilter(WirelessTypes::Filter lowPassFilter, WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode, const ChannelMask& channels) const override;
 
-        const WirelessTypes::VoltageType adcVoltageInputType() const override;
+        WirelessTypes::VoltageType adcVoltageInputType() const override;
 
         bool supportsPoll() const override;
 
         const WirelessTypes::WirelessSampleRates sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const override;
 
-        const uint32 minSensorDelay() const override;
+        uint32 minSensorDelay() const override;
 
-        const uint32 defaultSensorDelay() const override;
+        uint32 defaultSensorDelay() const override;
     };
 } // namespace mscl

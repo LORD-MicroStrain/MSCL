@@ -33,7 +33,7 @@ namespace mscl
 
         const WirelessTypes::Voltages excitationVoltages() const override;
 
-        const WirelessTypes::VoltageType adcVoltageInputType() const override;
+        WirelessTypes::VoltageType adcVoltageInputType() const override;
 
         bool supportsPullUpResistor() const override;
 

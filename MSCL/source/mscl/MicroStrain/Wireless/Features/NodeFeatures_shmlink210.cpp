@@ -188,7 +188,7 @@ namespace mscl
         return excitationVoltages;
     }
 
-    const WirelessTypes::VoltageType NodeFeatures_shmlink210::adcVoltageInputType() const
+    WirelessTypes::VoltageType NodeFeatures_shmlink210::adcVoltageInputType() const
     {
         return WirelessTypes::VoltageType::voltageType_differential;
     }
@@ -222,7 +222,7 @@ namespace mscl
         return modes;
     }
 
-    const uint32 NodeFeatures_shmlink210::minSensorDelay() const
+    uint32 NodeFeatures_shmlink210::minSensorDelay() const
     {
         if (!supportsSensorDelayConfig())
         {
@@ -245,7 +245,7 @@ namespace mscl
         }
     }
 
-    const uint32 NodeFeatures_shmlink210::defaultSensorDelay() const
+    uint32 NodeFeatures_shmlink210::defaultSensorDelay() const
     {
         if (!supportsSensorDelayConfig())
         {

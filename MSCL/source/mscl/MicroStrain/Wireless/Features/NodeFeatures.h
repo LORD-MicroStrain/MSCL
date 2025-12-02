@@ -856,7 +856,7 @@ namespace mscl
         //
         //Exceptions:
         //  - <Error_NotSupported>: The sensor delay feature is not supported by this Node.
-        virtual const uint32 minSensorDelay() const;
+        virtual uint32 minSensorDelay() const;
 
         //API Function: maxSensorDelay
         //  Gets the maximum sensor delay value (in microseconds) that is supported.
@@ -866,7 +866,7 @@ namespace mscl
         //
         //Exceptions:
         //  - <Error_NotSupported>: The sensor delay feature is not supported by this Node.
-        virtual const uint32 maxSensorDelay() const;
+        virtual uint32 maxSensorDelay() const;
 
         //API Function: defaultSensorDelay
         //  Gets the default sensor delay value (in microseconds) that is supported.
@@ -876,7 +876,7 @@ namespace mscl
         //
         //Exceptions:
         //  - <Error_NotSupported>: The sensor delay feature is not supported by this Node.
-        virtual const uint32 defaultSensorDelay() const;
+        virtual uint32 defaultSensorDelay() const;
 
         //API Function: maxEventTriggerTotalDuration
         //  Gets the max event trigger duration (in milliseconds) that can be applied for both the pre and post event durations (combined).
@@ -1135,7 +1135,7 @@ namespace mscl
         //
         //Returns:
         //  The <WirelessTypes::VoltageType> that represents the structure of the node's ADC.
-        virtual const WirelessTypes::VoltageType adcVoltageInputType() const;
+        virtual WirelessTypes::VoltageType adcVoltageInputType() const;
 
         //API Function: maxTransmitPower
         //  Gets the maximum <WirelessTypes::TransmitPower> that is supported for the given parameters.

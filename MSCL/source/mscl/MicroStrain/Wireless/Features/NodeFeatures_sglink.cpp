@@ -38,7 +38,7 @@ namespace mscl
         return true;
     }
 
-    const uint32 NodeFeatures_sglink::minSensorDelay() const
+    uint32 NodeFeatures_sglink::minSensorDelay() const
     {
         if (!supportsSensorDelayConfig())
         {
@@ -48,7 +48,7 @@ namespace mscl
         return static_cast<uint32>(TimeSpan::MilliSeconds(1).getMicroseconds());     //1 millisecond
     }
 
-    const uint32 NodeFeatures_sglink::maxSensorDelay() const
+    uint32 NodeFeatures_sglink::maxSensorDelay() const
     {
         if (!supportsSensorDelayConfig())
         {
@@ -58,7 +58,7 @@ namespace mscl
         return static_cast<uint32>(TimeSpan::Seconds(1).getMicroseconds());                      //1 second
     }
 
-    const uint32 NodeFeatures_sglink::defaultSensorDelay() const
+    uint32 NodeFeatures_sglink::defaultSensorDelay() const
     {
         if (!supportsSensorDelayConfig())
         {

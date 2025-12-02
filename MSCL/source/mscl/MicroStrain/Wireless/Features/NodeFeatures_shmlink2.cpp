@@ -193,7 +193,7 @@ namespace mscl
         return modes;
     }
 
-    const uint32 NodeFeatures_shmlink2::minSensorDelay() const
+    uint32 NodeFeatures_shmlink2::minSensorDelay() const
     {
         if (!supportsSensorDelayConfig())
         {
@@ -203,7 +203,7 @@ namespace mscl
         return static_cast<uint32>(TimeSpan::MilliSeconds(1).getMicroseconds());    //1 millisecond
     }
 
-    const uint32 NodeFeatures_shmlink2::defaultSensorDelay() const
+    uint32 NodeFeatures_shmlink2::defaultSensorDelay() const
     {
         if (!supportsSensorDelayConfig())
         {

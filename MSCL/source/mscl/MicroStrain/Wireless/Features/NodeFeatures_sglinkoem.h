@@ -25,10 +25,10 @@ namespace mscl
 
         bool supportsSensorDelayConfig() const override;
 
-        const uint32 minSensorDelay() const override;
+        uint32 minSensorDelay() const override;
 
-        const uint32 maxSensorDelay() const override;
+        uint32 maxSensorDelay() const override;
 
-        const uint32 defaultSensorDelay() const override;
+        uint32 defaultSensorDelay() const override;
     };
 } // namespace mscl

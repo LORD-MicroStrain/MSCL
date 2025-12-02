@@ -65,14 +65,14 @@ namespace mscl
 
         const WirelessTypes::Voltages excitationVoltages() const override;
 
-        const WirelessTypes::VoltageType adcVoltageInputType() const override;
+        WirelessTypes::VoltageType adcVoltageInputType() const override;
 
         const WirelessTypes::WirelessSampleRates histogramTransmitRates() const final;
 
         const WirelessTypes::FatigueModes fatigueModes() const final;
 
-        const uint32 minSensorDelay() const override;
+        uint32 minSensorDelay() const override;
 
-        const uint32 defaultSensorDelay() const override;
+        uint32 defaultSensorDelay() const override;
     };
 } // namespace mscl

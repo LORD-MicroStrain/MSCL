@@ -44,7 +44,7 @@ namespace mscl
 
         bool supportsSensorDelayAlwaysOn() const override;
 
-        const WirelessTypes::VoltageType adcVoltageInputType() const override;
+        WirelessTypes::VoltageType adcVoltageInputType() const override;
 
         const WirelessTypes::WirelessSampleRates histogramTransmitRates() const final;
 
@@ -52,8 +52,8 @@ namespace mscl
 
         bool supportsNumActiveGauges() const final;
 
-        const uint32 minSensorDelay() const override;
+        uint32 minSensorDelay() const override;
 
-        const uint32 defaultSensorDelay() const override;
+        uint32 defaultSensorDelay() const override;
     };
 } // namespace mscl

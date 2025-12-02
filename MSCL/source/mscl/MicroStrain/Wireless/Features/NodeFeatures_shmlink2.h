@@ -65,8 +65,8 @@ namespace mscl
 
         const WirelessTypes::FatigueModes fatigueModes() const final;
 
-        const uint32 minSensorDelay() const override;
+        uint32 minSensorDelay() const override;
 
-        const uint32 defaultSensorDelay() const override;
+        uint32 defaultSensorDelay() const override;
     };
 } // namespace mscl

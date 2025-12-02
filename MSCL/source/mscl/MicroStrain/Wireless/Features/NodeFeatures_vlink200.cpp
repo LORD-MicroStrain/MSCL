@@ -158,7 +158,7 @@ namespace mscl
         return filters;
     }
 
-    const uint32 NodeFeatures_vlink200::minSensorDelay() const
+    uint32 NodeFeatures_vlink200::minSensorDelay() const
     {
         if (!supportsSensorDelayConfig())
         {
@@ -168,7 +168,7 @@ namespace mscl
         return static_cast<uint32>(TimeSpan::MilliSeconds(1).getMicroseconds());    //1 millisecond
     }
 
-    const uint32 NodeFeatures_vlink200::defaultSensorDelay() const
+    uint32 NodeFeatures_vlink200::defaultSensorDelay() const
     {
         if (!supportsSensorDelayConfig())
         {
