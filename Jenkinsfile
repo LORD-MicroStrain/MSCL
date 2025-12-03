@@ -146,7 +146,7 @@ def configureProject(Map config) {
   ]
 
   // Architecture flag (Windows only)
-  if (env.BUILD_ARCH) {
+  if (isWindows && env.BUILD_ARCH) {
     args.add("-A ${env.BUILD_ARCH}")
 
     // Only need to build docs on one architecture

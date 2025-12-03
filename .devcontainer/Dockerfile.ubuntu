@@ -2,15 +2,6 @@ ARG ARCH="amd64"
 ARG UBUNTU_VERSION="22.04"
 FROM ${ARCH}/ubuntu:${UBUNTU_VERSION}
 
-# Automatically detect and set CMAKE_HOST_SYSTEM_PROCESSOR
-# This is not always set correctly within Docker
-RUN sys_arch=$(uname -m) && \
-    echo ${sys_arch}
-
-RUN sys_arch=$(uname -m) && \
-    echo "export CMAKE_HOST_SYSTEM_PROCESSOR=${sys_arch}" >> /etc/environment && \
-    cat /etc/environment >> /etc/bash.bashrc
-
 # Add some CA certificates
 COPY .devcontainer/extra_cas /usr/local/share/ca-certificates
 RUN set -ex \
