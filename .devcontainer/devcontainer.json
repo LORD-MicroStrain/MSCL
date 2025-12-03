@@ -5,8 +5,7 @@
         "dockerfile": "Dockerfile.ubuntu",
         "args": {
             "ARCH": "amd64",
-            "UBUNTU_VERSION": "20.04",
-            "CENTOS_VERSION": "7",
+            "UBUNTU_VERSION": "22.04",
             "USER_ID": "1000",
             "GROUP_ID": "1000"
         }
