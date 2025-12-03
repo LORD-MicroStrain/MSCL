@@ -1,5 +1,5 @@
 ARG ARCH="amd64"
-ARG UBUNTU_VERSION="20.04"
+ARG UBUNTU_VERSION="22.04"
 FROM ${ARCH}/ubuntu:${UBUNTU_VERSION}
 
 # Add some CA certificates
@@ -30,7 +30,6 @@ RUN set -ex \
     && apt-get update && apt-get install -y \
         build-essential \
         gdb \
-        cmake \
         pkg-config \
         zlib1g-dev
 
@@ -49,6 +48,49 @@ RUN set -ex \
         autoconf-archive \
         automake \
         libtool
+
+# Install tools required for building CMake from source
+RUN set -ex \
+    && apt-get update && apt-get install -y \
+        libssl-dev
+
+# Use the minimum required CMake version for the project
+ARG CMAKE_MIN_MAJOR_VERSION="3"
+ARG CMAKE_MIN_MINOR_VERSION="30"
+
+RUN set -ex \
+    && export cmake_min_version="${CMAKE_MIN_MAJOR_VERSION}.${CMAKE_MIN_MINOR_VERSION}" \
+    && export cmake_version=$(cmake --version 2>/dev/null | head -1 | cut -d" " -f3 || echo "0.0.0") \
+    && echo "Current CMake version: ${cmake_version}" \
+    && echo "Minimum required CMake version: ${cmake_min_version}" \
+    && /bin/bash -c ' \
+        set -ex && \
+        # Get the latest CMake release version from GitHub
+        cmake_latest_version=$(curl -fsSL "https://api.github.com/repos/Kitware/CMake/releases/latest" | \
+            grep -oP "\"tag_name\":\s*\"v\K[0-9]+\.[0-9]+\.[0-9]+") && \
+        echo "Latest available CMake version: ${cmake_latest_version}" && \
+        # Check if we need to install/upgrade
+        cmake_current="${cmake_version}" && \
+        cmake_target="${cmake_latest_version}" && \
+        if [ "${cmake_current}" != "${cmake_target}" ] && [ "${cmake_current}" = "$(printf "${cmake_current}\n${cmake_target}" | sort --version-sort | head -n1)" ]; then \
+            echo "Upgrading CMake from ${cmake_current} to ${cmake_target}" && \
+            curl -fsSLo /tmp/cmake-${cmake_target}.tar.gz \
+                "https://github.com/Kitware/CMake/releases/download/v${cmake_target}/cmake-${cmake_target}.tar.gz" && \
+            tar -C /tmp/ -xzf /tmp/cmake-${cmake_target}.tar.gz && \
+            cd /tmp/cmake-${cmake_target} && \
+            ./bootstrap \
+                --prefix="/usr" \
+                --parallel=$(nproc) \
+                -- \
+                -DCMAKE_INSTALL_PREFIX="/usr" \
+                -DCMAKE_BUILD_TYPE="RELEASE" \
+                -DCMAKE_USE_OPENSSL=ON && \
+            make -j$(nproc) && \
+            make install; \
+        else \
+            echo "CMake is already at the latest version or newer"; \
+        fi \
+    '
 
 # Add a user that will be used when shelling into this container and allow them to use devices
 ARG USER_ID=1000
