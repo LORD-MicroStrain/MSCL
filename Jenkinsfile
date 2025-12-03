@@ -54,14 +54,11 @@ def packageTargets(Map config) {
     def releaseBuildDir = env.BUILD_TYPES.split(';')[1].trim()
 
     sh(label: packageLabel, script: """
-      ../.devcontainer/docker-run-container.sh --os ${BUILD_OS} --arch ${BUILD_ARCH} " \
-        cd ${BUILD_DIR}; \
-        MICROSTRAIN_BUILD_DIR_DEBUG=\"\$(pwd)/${debugBuildDir}\" \
-        MICROSTRAIN_BUILD_DIR_RELEASE=\"\$(pwd)/${releaseBuildDir}\" \
-        cpack \
-          --config "\$(pwd)/${releaseBuildDir}/microstrain-package-all.cmake" \
-          -C "${env.BUILD_TYPES}";
-      "
+      MICROSTRAIN_BUILD_DIR_DEBUG=\"\$(pwd)/${debugBuildDir}\" \
+      MICROSTRAIN_BUILD_DIR_RELEASE=\"\$(pwd)/${releaseBuildDir}\" \
+      cpack \
+        --config "\$(pwd)/${releaseBuildDir}/microstrain-package-all.cmake" \
+        -C "${env.BUILD_TYPES}"
     """)
   }
   else {
