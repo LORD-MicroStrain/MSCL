@@ -9,6 +9,7 @@ set -e
 # Get some arguments from the user
 os="ubuntu"
 arch="amd64"
+env_vars=()
 remaining_args=()
 while [[ $# -gt 0 ]]; do
   case $1 in
@@ -19,6 +20,11 @@ while [[ $# -gt 0 ]]; do
       ;;
     --arch)
       arch="$2"
+      shift # past argument
+      shift # past value
+      ;;
+    --env|-e)
+      env_vars+=("-e" "$2")
       shift # past argument
       shift # past value
       ;;
@@ -54,4 +60,5 @@ docker run \
     -v "${project_dir}:${docker_project_dir}" \
     -w "${docker_project_dir}" \
     --user="microstrain" \
-   "${image_name}" -c "${remaining_args[@]}"
+    "${env_vars[@]}" \
+    "${image_name}" -c "${remaining_args[@]}"

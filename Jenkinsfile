@@ -141,6 +141,9 @@ def configureProject(Map config) {
     '-DMSCL_WITH_SSL:BOOL=ON',
     '-DMSCL_WITH_WEBSOCKETS:BOOL=ON'
   ]
+  def dockerEnv = [
+    // Include elements in this list in the format "-e ENV=Value" to set an environment variable inside the container
+  ]
 
   // Architecture flag (Windows only)
   if (isWindows && env.BUILD_ARCH) {
@@ -175,6 +178,16 @@ def configureProject(Map config) {
     "-DMSCL_BUILD_TESTS:BOOL=${buildTests}"
   ])
 
+  // ARM32-specific vcpkg configuration
+  def isArm32 = isLinux && env.BUILD_ARCH == "arm32v7"
+  if (isArm32) {
+    dockerEnv.add("-e VCPKG_FORCE_SYSTEM_BINARIES=ON")
+    args.addAll([
+      "-DVCPKG_TARGET_TRIPLET=arm-linux-docker",
+      "-DVCPKG_OVERLAY_TRIPLETS=/home/microstrain/workspace/triplets"
+    ])
+  }
+
   // Build all supported versions of Python2
   // The project already defaults to the latest supported version
   if (buildPython2 && buildAllPython) {
@@ -192,10 +205,11 @@ def configureProject(Map config) {
   if (isLinux) {
     configLabel += " (${buildType})"
   }
+  def dockerEnvArgs = dockerEnv.join(' ')
   def cmakeArgs = args.join(' ')
   if (isLinux) {
     sh(label: configLabel, script: """
-      ../.devcontainer/docker-run-container.sh --os ${BUILD_OS} --arch ${BUILD_ARCH} " \
+      ../.devcontainer/docker-run-container.sh --os ${BUILD_OS} --arch ${BUILD_ARCH} ${dockerEnvArgs} " \
         cd ${BUILD_DIR}; \
         cmake .. -B ${buildType} ${cmakeArgs};
       "
