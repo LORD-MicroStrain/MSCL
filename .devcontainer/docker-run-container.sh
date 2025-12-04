@@ -42,7 +42,7 @@ fi
 
 # Wrap commands with linux32 for ARM32 architecture
 if [[ "${arch}" == "arm32v7" ]]; then
-  remaining_args=("linux32" "${remaining_args[@]}")
+  remaining_args=("linux32 /bin/bash -c \"${remaining_args[@]}\"")
 fi
 
 # Find the script directory
