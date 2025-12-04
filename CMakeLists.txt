@@ -24,8 +24,14 @@ if(NOT BUILD_SHARED_LIBS AND NOT MSCL_LINK_STATIC_DEPS)
     set(MSCL_LINK_STATIC_DEPS ON)
 endif()
 
+# Set the module directory for ease of use in other parts of the configuration
+set(MSCL_MODULE_DIR "${CMAKE_CURRENT_LIST_DIR}/cmake")
+
+# Append the custom CMake directory so the files can be imported
+list(APPEND CMAKE_MODULE_PATH "${MSCL_MODULE_DIR}")
+
 # Configure vcpkg for use
-include("${CMAKE_CURRENT_LIST_DIR}/cmake/mscl-configure-vcpkg.cmake")
+include(mscl-configure-vcpkg)
 
 cmake_minimum_required(VERSION 3.23)
 project("MSCL"
@@ -63,14 +69,8 @@ if(NOT DEPS_BASE_DIR)
     set(DEPS_BASE_DIR "${CMAKE_CURRENT_LIST_DIR}/_deps")
 endif()
 
-# Set the module directory for ease of use in other parts of the configuration
-set(MSCL_MODULE_DIR "${CMAKE_CURRENT_LIST_DIR}/cmake")
-
 # Get the current year to make sure the file copyright is up-to-date in any generated files that use it
 string(TIMESTAMP MSCL_CURRENT_YEAR "%Y")
-
-# Append the custom CMake directory so the files can be imported
-list(APPEND CMAKE_MODULE_PATH "${MSCL_MODULE_DIR}")
 
 # Include some utilities used for MicroStrain projects
 include(microstrain_utilities)

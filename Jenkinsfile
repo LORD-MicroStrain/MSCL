@@ -104,14 +104,18 @@ def buildTargets(Map config) {
   targets.each { target ->
     def buildLabel = "Build ${target} (${buildType})"
     if (isLinux) {
+      def crosscompile32 = ""
+
+      // Compile using 32-bit terminal operations
+      if (env.LINUX_CROSSCOMPILE_32) {
+        crosscompile32 = "linux32"
+      }
+
       sh(label: buildLabel, script: """
-        ../.devcontainer/docker-run-container.sh --os ${BUILD_OS} --arch ${BUILD_ARCH} " \
-          cd ${BUILD_DIR}; \
-          cmake \
-            --build ./${buildType} \
-            --parallel \$(nproc) \
-            --target ${target};
-        "
+        ${crosscompile32} cmake \
+          --build ./${buildType} \
+          --parallel \$(nproc) \
+          --target ${target};
       """)
     }
     else {
@@ -141,9 +145,10 @@ def configureProject(Map config) {
     '-DMSCL_WITH_SSL:BOOL=ON',
     '-DMSCL_WITH_WEBSOCKETS:BOOL=ON'
   ]
-  def dockerEnv = [
-    // Include elements in this list in the format "-e ENV=Value" to set an environment variable inside the container
-  ]
+
+  if (env.TOOLCHAIN_FILE) {
+    args.add("-DVCPKG_CHAINLOAD_TOOLCHAIN_FILE:FILEPATH=\"${env.TOOLCHAIN_FILE}\"")
+  }
 
   // Architecture flag (Windows only)
   if (isWindows && env.BUILD_ARCH) {
@@ -178,18 +183,6 @@ def configureProject(Map config) {
     "-DMSCL_BUILD_TESTS:BOOL=${buildTests}"
   ])
 
-  // ARM32-specific vcpkg configuration
-  def isArm32 = isLinux && env.BUILD_ARCH == "arm32v7"
-  if (isArm32) {
-    dockerEnv.addAll([
-      "-e VCPKG_FORCE_SYSTEM_BINARIES=ON",
-      "-e VCPKG_OVERLAY_TRIPLETS=/home/microstrain/workspace/triplets"
-    ])
-    args.addAll([
-      "-DVCPKG_TARGET_TRIPLET=arm-linux-docker"
-    ])
-  }
-
   // Build all supported versions of Python2
   // The project already defaults to the latest supported version
   if (buildPython2 && buildAllPython) {
@@ -207,14 +200,17 @@ def configureProject(Map config) {
   if (isLinux) {
     configLabel += " (${buildType})"
   }
-  def dockerEnvArgs = dockerEnv.join(' ')
   def cmakeArgs = args.join(' ')
   if (isLinux) {
+    def crosscompile32 = ""
+
+    // Compile using 32-bit terminal operations
+    if (env.LINUX_CROSSCOMPILE_32) {
+      crosscompile32 = "linux32"
+    }
+
     sh(label: configLabel, script: """
-      ../.devcontainer/docker-run-container.sh --os ${BUILD_OS} --arch ${BUILD_ARCH} ${dockerEnvArgs} " \
-        cd ${BUILD_DIR}; \
-        cmake .. -B ${buildType} ${cmakeArgs};
-      "
+        ${crosscompile32} cmake .. -B ${buildType} ${cmakeArgs}
     """)
   }
   else {
@@ -231,12 +227,6 @@ def buildAndPackageProject() {
 
   def isLinux   = isUnix()
   def isWindows = !isLinux
-
-  if (isLinux) {
-    sh(label: "Prepare Docker Image", script: """
-      ./.devcontainer/docker-build-image.sh --os ${BUILD_OS} --arch ${BUILD_ARCH}
-    """)
-  }
 
   // Build and package the project in the build directory
   dir(env.BUILD_DIR) {
@@ -359,7 +349,6 @@ pipeline {
             label 'linux-amd64'
           }
           environment {
-            BUILD_OS   = "ubuntu"
             BUILD_ARCH = "amd64"
             BUILD_DIR  = "build_linux_amd64"
           }
@@ -377,8 +366,6 @@ pipeline {
             label 'linux-arm64'
           }
           environment {
-            BUILD_OS   = "ubuntu"
-            BUILD_ARCH = "arm64v8"
             BUILD_DIR  = "build_linux_arm64"
           }
           options {
@@ -395,9 +382,9 @@ pipeline {
             label 'linux-arm64'
           }
           environment {
-            BUILD_OS   = "ubuntu"
-            BUILD_ARCH = "arm32v7"
-            BUILD_DIR  = "build_linux_arm32"
+            BUILD_DIR      = "build_linux_arm32"
+            TOOLCHAIN_FILE = "${WORKSPACE}/cmake/arm-linux-crosscompile-toolchain.cmake"
+            LINUX_CROSSCOMPILE_32 = true
           }
           options {
             skipDefaultCheckout()
