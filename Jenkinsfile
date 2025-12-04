@@ -181,10 +181,12 @@ def configureProject(Map config) {
   // ARM32-specific vcpkg configuration
   def isArm32 = isLinux && env.BUILD_ARCH == "arm32v7"
   if (isArm32) {
-    dockerEnv.add("-e VCPKG_FORCE_SYSTEM_BINARIES=ON")
+    dockerEnv.addAll([
+      "-e VCPKG_FORCE_SYSTEM_BINARIES=ON"
+      "-e VCPKG_OVERLAY_TRIPLETS=/home/microstrain/workspace/triplets"
+    ])
     args.addAll([
       "-DVCPKG_TARGET_TRIPLET=arm-linux-docker",
-      "-DVCPKG_OVERLAY_TRIPLETS=/home/microstrain/workspace/triplets"
     ])
   }
 
