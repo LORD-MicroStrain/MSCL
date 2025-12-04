@@ -383,7 +383,7 @@ pipeline {
           }
           environment {
             BUILD_DIR      = "build_linux_arm32"
-            TOOLCHAIN_FILE = "${WORKSPACE}/cmake/arm-linux-crosscompile-toolchain.cmake"
+            TOOLCHAIN_FILE = "${WORKSPACE}/cmake/toolchains/arm-linux-crosscompile-toolchain.cmake"
             LINUX_CROSSCOMPILE_32 = true
           }
           options {
