@@ -42,7 +42,19 @@ if(NOT SWIG_FOUND)
         # Swig hasn't been installed yet. Install it
         if(NOT SWIG_FOUND)
             # Make sure to build Swig natively on the system, even for cross-compilation
-            set(SWIG_NATIVE_COMPILE_OPTIONS "CC=/usr/bin/gcc CXX=/usr/bin/g++ LD=/usr/bin/ld AR=/usr/bin/ar AS=/usr/bin/as RANLIB=/usr/bin/ranlib STRIP=/usr/bin/strip --unset=CFLAGS --unset=CXXFLAGS --unset=LDFLAGS --unset=CPPFLAGS")
+            set(SWIG_NATIVE_COMPILE_OPTIONS
+                "CC=/usr/bin/gcc"
+                "CXX=/usr/bin/g++"
+                "LD=/usr/bin/ld"
+                "AR=/usr/bin/ar"
+                "AS=/usr/bin/as"
+                "RANLIB=/usr/bin/ranlib"
+                "STRIP=/usr/bin/strip"
+                "--unset=CFLAGS"
+                "--unset=CXXFLAGS"
+                "--unset=LDFLAGS"
+                "--unset=CPPFLAGS"
+            )
 
             # Configure Swig with a local install directory
             # All the '--without-*' options are to disable tests and examples from being compiled
