@@ -5,6 +5,28 @@
 # Make sure the overlay triplets can be found
 set(VCPKG_OVERLAY_TRIPLETS "${CMAKE_CURRENT_LIST_DIR}/triplets")
 
+if(VCPKG_CHAINLOAD_TOOLCHAIN_FILE AND NOT EXISTS "${VCPKG_CHAINLOAD_TOOLCHAIN_FILE}")
+    set(MSCL_TOOLCHAINS_DIR "${CMAKE_CURRENT_LIST_DIR}/toolchains")
+
+    # Get the toolchain file name
+    get_filename_component(TOOLCHAIN_FILENAME ${VCPKG_CHAINLOAD_TOOLCHAIN_FILE} NAME)
+
+    # Get all the available toolchains in the project
+    file(GLOB MSCL_TOOLCHAINS "${CMAKE_CURRENT_LIST_DIR}/*.cmake")
+
+    # Loop through the available toolchains to fix the root path
+    foreach(MSCL_TOOLCHAIN IN LISTS MSCL_TOOLCHAINS)
+        get_filename_component(MSCL_TOOLCHAIN_FILENAME ${MSCL_TOOLCHAIN} NAME)
+        if("${MSCL_TOOLCHAIN_FILENAME}" MATCHES "${TOOLCHAIN_FILENAME}")
+            # Update the path of the toolchain so it's loaded correctly (in the calling scope)
+            set(VCPKG_CHAINLOAD_TOOLCHAIN_FILE "${MSCL_TOOLCHAINS_DIR}/${MSCL_TOOLCHAIN_FILENAME}" PARENT_SCOPE)
+
+            # Done searching
+            break()
+        endif()
+    endforeach()
+endif()
+
 if(MSCL_LINK_STATIC_DEPS)
     # Link dependencies statically on Windows. Windows links dynamically by default in vcpkg
     if(WIN32)

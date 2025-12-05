@@ -384,7 +384,7 @@ pipeline {
           }
           environment {
             BUILD_OS   = "ubuntu"
-            BUILD_ARCH = "arm64"
+            BUILD_ARCH = "arm64v8"
             BUILD_DIR  = "build_linux_arm64"
           }
           options {
@@ -404,7 +404,7 @@ pipeline {
             BUILD_OS              = "ubuntu"
             BUILD_ARCH            = "arm32v7"
             BUILD_DIR             = "build_linux_arm32"
-            TOOLCHAIN_FILE        = "${WORKSPACE}/cmake/toolchains/arm-linux-crosscompile-toolchain.cmake"
+            TOOLCHAIN_FILE        = "arm-linux-crosscompile-toolchain.cmake"
             LINUX_CROSSCOMPILE_32 = true
           }
           options {
