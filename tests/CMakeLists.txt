@@ -36,12 +36,12 @@ if(NOT Turtle_INCLUDE_DIR)
     microstrain_download_and_extract_archive(
         NAME "Turtle"
         URL "${Turtle_ARCHIVE_URL}"
-        DEPS_BASE_DIR "${DEPS_BASE_DIR}"
+        DEPS_BASE_DIR "${MSCL_DEPS_BASE_DIR}"
         EXTRACTED_DIR "${Turtle_ARCHIVE_DIR}"
         CREATE_EXTRACTED_DIR
     )
 
-    set(Turtle_ROOT "${DEPS_BASE_DIR}/${Turtle_ARCHIVE_DIR}" CACHE PATH "Location to search for the Turtle headers" FORCE)
+    set(Turtle_ROOT "${MSCL_DEPS_BASE_DIR}/${Turtle_ARCHIVE_DIR}" CACHE PATH "Location to search for the Turtle headers" FORCE)
 endif()
 
 find_path(Turtle_INCLUDE_DIR

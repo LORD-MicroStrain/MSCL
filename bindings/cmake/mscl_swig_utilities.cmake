@@ -23,11 +23,11 @@ if(NOT SWIG_FOUND)
     microstrain_download_and_extract_archive(
         NAME "Swig"
         URL "${SWIG_ARCHIVE_URL}"
-        DEPS_BASE_DIR "${DEPS_BASE_DIR}"
+        DEPS_BASE_DIR "${MSCL_DEPS_BASE_DIR}"
         EXTRACTED_DIR "${SWIG_ARCHIVE_DIR}"
     )
 
-    set(SWIG_ROOT "${DEPS_BASE_DIR}/${SWIG_ARCHIVE_DIR}" CACHE PATH "Location to search for the Swig executable" FORCE)
+    set(SWIG_ROOT "${MSCL_DEPS_BASE_DIR}/${SWIG_ARCHIVE_DIR}" CACHE PATH "Location to search for the Swig executable" FORCE)
 
     # On Linux, build and install Swig locally using the source
     if(UNIX)
@@ -107,18 +107,19 @@ set(UseSWIG_MODULE_VERSION 2)
 macro(mscl_add_swig_module_library)
     set(OPTIONS)
     set(SINGLE_VALUES LIB_NAME MODULE_LANGUAGE)
+    set(OPTIONAL_SINGLE_VALUES OUTFILE_DIR)
     set(MULTI_VALUES ADDITIONAL_SWIG_OPTIONS LINK_OPTIONS)
 
     set(SWIG_MODULE_LIB_PREFIX "SWIG_MODULE_LIB_ARG")
     cmake_parse_arguments(${SWIG_MODULE_LIB_PREFIX}
         "${OPTIONS}"
-        "${SINGLE_VALUES}"
+        "${SINGLE_VALUES};${OPTIONAL_SINGLE_VALUES}"
         "${MULTI_VALUES}"
         "${ARGN}"
     )
 
     # Remove the prefix from the arguments
-    foreach(ARG IN LISTS OPTIONS SINGLE_VALUES MULTI_VALUES)
+    foreach(ARG IN LISTS OPTIONS SINGLE_VALUES MULTI_VALUES OPTIONAL_SINGLE_VALUES)
         set(${ARG} ${${SWIG_MODULE_LIB_PREFIX}_${ARG}})
     endforeach()
 
@@ -141,6 +142,7 @@ macro(mscl_add_swig_module_library)
     swig_add_library("${LIB_NAME}"
         TYPE SHARED
         LANGUAGE "${MODULE_LANGUAGE}"
+        OUTPUT_DIR "${OUTFILE_DIR}"
         SOURCES ${SWIG_SOURCE_FILES}
     )
 

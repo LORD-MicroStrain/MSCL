@@ -13,18 +13,19 @@ macro(mscl_add_swig_python_module_library MSCL_PYTHON_VERSION MSCL_PYTHON_MAJOR_
         )
     endif()
 
-    mscl_add_swig_module_library(
-        LIB_NAME "${MSCL_PYTHON_TARGET_NAME}"
-        MODULE_LANGUAGE "python"
-        LINK_OPTIONS ${MSCL_PYTHON_LINK_OPTIONS}
-    )
-
     # Set the output directory similar to how actual libraries/projects output artifacts
     # This allows multiple versions of Python to be build without overwriting the previous artifacts
     set(MSCL_PYTHON_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/${MSCL_PYTHON_TARGET_NAME}")
     if(MSVC)
         string(APPEND MSCL_PYTHON_OUTPUT_DIRECTORY "/$<CONFIG>")
     endif()
+
+    mscl_add_swig_module_library(
+        LIB_NAME "${MSCL_PYTHON_TARGET_NAME}"
+        MODULE_LANGUAGE "python"
+        LINK_OPTIONS ${MSCL_PYTHON_LINK_OPTIONS}
+        OUTFILE_DIR "${MSCL_PYTHON_OUTPUT_DIRECTORY}"
+    )
 
     # Make sure all the artifacts are output in their own build directories
     set_target_properties("${MSCL_PYTHON_TARGET_NAME}" PROPERTIES
@@ -130,7 +131,10 @@ string(STRIP "${MSCL_VCPKG_BASELINE_VERSION}" MSCL_VCPKG_BASELINE_VERSION)
 # Use vcpkg to download Python libraries for linking
 function(mscl_download_python MSCL_PYTHON_VERSION MSCL_PYTHON_MAJOR_VERSION)
     set(MSCL_PYTHON_PROJECT_DIR "python${MSCL_PYTHON_VERSION}")
-    set(MSCL_PYTHON_BUILD_DIR "${CMAKE_CURRENT_BINARY_DIR}/${MSCL_PYTHON_PROJECT_DIR}")
+
+    # Build the Python project in the common dependencies directory
+    # This allows usage across all configuration types instead of downloading/installing it for each configuration
+    set(MSCL_PYTHON_BUILD_DIR "${MSCL_DEPS_BASE_DIR}/${MSCL_PYTHON_PROJECT_DIR}")
 
     message(STATUS "Installing Python ${MSCL_PYTHON_VERSION}...")
     string(REPLACE "." "" MSCL_PYTHON_VERSION_COMBINED "${MSCL_PYTHON_VERSION}")
@@ -176,14 +180,19 @@ function(mscl_download_python MSCL_PYTHON_VERSION MSCL_PYTHON_MAJOR_VERSION)
         "${CMAKE_CURRENT_LIST_DIR}/${MSCL_PYTHON_PROJECT_DIR}/${MSCL_PYTHON_VCPKG_FILENAME}"
     )
 
+    # Only set the generator platform option for VS
+    if(MSVC)
+        set(PYTHON_GENERATOR_PLATFORM "-A ${CMAKE_GENERATOR_PLATFORM}")
+    endif()
+
     # Generate the Python installation project
     execute_process(
         # Generate the Python project using the same CMake configuration
         COMMAND "${CMAKE_COMMAND}"
             -G "${CMAKE_GENERATOR}"
-            -A "${CMAKE_GENERATOR_PLATFORM}"
+            "${PYTHON_GENERATOR_PLATFORM}"
             -S "${CMAKE_CURRENT_LIST_DIR}/${MSCL_PYTHON_PROJECT_DIR}"
-            -B "${CMAKE_CURRENT_BINARY_DIR}/${MSCL_PYTHON_PROJECT_DIR}"
+            -B "${MSCL_PYTHON_BUILD_DIR}"
         ECHO_ERROR_VARIABLE
         ECHO_OUTPUT_VARIABLE
         RESULT_VARIABLE _RESULT

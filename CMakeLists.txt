@@ -53,8 +53,10 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+get_property(GENERATOR_IS_MULTI_CONFIG GLOBAL PROPERTY GENERATOR_IS_MULTI_CONFIG)
+
 # If a build type was not specified, default to debug
-if(NOT CMAKE_BUILD_TYPE)
+if(NOT GENERATOR_IS_MULTI_CONFIG AND NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Debug")
 endif()
 
@@ -65,8 +67,8 @@ endif()
 
 # Create the common dependencies directory in the project root
 # This is for use by downloaded dependencies during project configuration
-if(NOT DEPS_BASE_DIR)
-    set(DEPS_BASE_DIR "${CMAKE_CURRENT_LIST_DIR}/_deps")
+if(NOT MSCL_DEPS_BASE_DIR)
+    set(MSCL_DEPS_BASE_DIR "${CMAKE_CURRENT_LIST_DIR}/_deps")
 endif()
 
 # Get the current year to make sure the file copyright is up-to-date in any generated files that use it

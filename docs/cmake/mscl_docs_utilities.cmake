@@ -19,12 +19,12 @@ if(NOT NaturalDocs_EXECUTABLE)
     microstrain_download_and_extract_archive(
         NAME "${NaturalDocs_NAME}"
         URL "${NaturalDocs_ARCHIVE_URL}"
-        DEPS_BASE_DIR "${DEPS_BASE_DIR}"
+        DEPS_BASE_DIR "${MSCL_DEPS_BASE_DIR}"
         EXTRACTED_DIR "${NaturalDocs_ARCHIVE_DIR}"
     )
 
     # NaturalDocs_ROOT is required to find the Natural Docs program
-    set(NaturalDocs_ROOT "${DEPS_BASE_DIR}/${NaturalDocs_ARCHIVE_DIR}" CACHE PATH "Location of Natural Docs used to generate the documentation" FORCE)
+    set(NaturalDocs_ROOT "${MSCL_DEPS_BASE_DIR}/${NaturalDocs_ARCHIVE_DIR}" CACHE PATH "Location of Natural Docs used to generate the documentation" FORCE)
 
     # Attempt to find the downloaded Natural Docs dependency
     find_program(NaturalDocs_EXECUTABLE
