@@ -12,19 +12,24 @@ if(VCPKG_CHAINLOAD_TOOLCHAIN_FILE AND NOT EXISTS "${VCPKG_CHAINLOAD_TOOLCHAIN_FI
     get_filename_component(TOOLCHAIN_FILENAME ${VCPKG_CHAINLOAD_TOOLCHAIN_FILE} NAME)
 
     # Get all the available toolchains in the project
-    file(GLOB MSCL_TOOLCHAINS "${CMAKE_CURRENT_LIST_DIR}/*.cmake")
+    file(GLOB MSCL_TOOLCHAINS "${MSCL_TOOLCHAINS_DIR}/*.cmake")
 
     # Loop through the available toolchains to fix the root path
     foreach(MSCL_TOOLCHAIN IN LISTS MSCL_TOOLCHAINS)
         get_filename_component(MSCL_TOOLCHAIN_FILENAME ${MSCL_TOOLCHAIN} NAME)
         if("${MSCL_TOOLCHAIN_FILENAME}" MATCHES "${TOOLCHAIN_FILENAME}")
-            # Update the path of the toolchain so it's loaded correctly (in the calling scope)
-            set(VCPKG_CHAINLOAD_TOOLCHAIN_FILE "${MSCL_TOOLCHAINS_DIR}/${MSCL_TOOLCHAIN_FILENAME}" PARENT_SCOPE)
+            # Update the path of the toolchain so it's loaded correctly
+            set(VCPKG_CHAINLOAD_TOOLCHAIN_FILE "${MSCL_TOOLCHAINS_DIR}/${MSCL_TOOLCHAIN_FILENAME}")
+            unset(MSCL_TOOLCHAIN_FILENAME)
 
             # Done searching
             break()
         endif()
     endforeach()
+
+    unset(MSCL_TOOLCHAINS_DIR)
+    unset(TOOLCHAIN_FILENAME)
+    unset(MSCL_TOOLCHAINS)
 endif()
 
 if(MSCL_LINK_STATIC_DEPS)
