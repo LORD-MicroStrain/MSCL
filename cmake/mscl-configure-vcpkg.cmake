@@ -2,6 +2,9 @@
 # Setup and use vcpkg
 #
 
+# Make sure the overlay triplets can be found
+set(VCPKG_OVERLAY_TRIPLETS "${CMAKE_CURRENT_LIST_DIR}/triplets")
+
 if(MSCL_LINK_STATIC_DEPS)
     # Link dependencies statically on Windows. Windows links dynamically by default in vcpkg
     if(WIN32)

@@ -31,41 +31,71 @@ if(NOT SWIG_FOUND)
 
     # On Linux, build and install Swig locally using the source
     if(UNIX)
-        set(SWIG_INSTALL_DIR "install")
-
-        # Configure Swig with a local install directory
-        # All the '--without-*' options are to disable tests and examples from being compiled
-        execute_process(
-            COMMAND ./configure --prefix ${SWIG_ROOT}/${SWIG_INSTALL_DIR} --without-pcre --without-perl5 --without-python --without-python3
-            WORKING_DIRECTORY "${SWIG_ROOT}"
-            RESULT_VARIABLE SWIG_CONFIGURE_RESULT
-        )
-        if(NOT SWIG_CONFIGURE_RESULT EQUAL 0)
-            message(FATAL_ERROR "Swig configuration failed with code ${SWIG_CONFIGURE_RESULT}")
-        endif()
-
-        # Build
-        execute_process(
-            COMMAND make
-            WORKING_DIRECTORY "${SWIG_ROOT}"
-            RESULT_VARIABLE SWIG_MAKE_RESULT
-        )
-        if(NOT SWIG_MAKE_RESULT EQUAL 0)
-            message(FATAL_ERROR "Swig make failed with code ${SWIG_MAKE_RESULT}")
-        endif()
-
-        # Install
-        execute_process(
-            COMMAND make install
-            WORKING_DIRECTORY "${SWIG_ROOT}"
-            RESULT_VARIABLE SWIG_INSTALL_RESULT
-        )
-        if(NOT SWIG_INSTALL_RESULT EQUAL 0)
-            message(FATAL_ERROR "Swig installation failed with code ${SWIG_INSTALL_RESULT}")
-        endif()
+        set(SWIG_PROJECT_DIR "${SWIG_ROOT}")
 
         # Update the cache variable with the local install directory of Swig
-        set(SWIG_ROOT "${DEPS_BASE_DIR}/${SWIG_ARCHIVE_DIR}/${SWIG_INSTALL_DIR}" CACHE PATH "Location to search for the Swig executable" FORCE)
+        set(SWIG_ROOT "${SWIG_ROOT}/install" CACHE PATH "Location to search for the Swig executable" FORCE)
+
+        # Attempt to find swig again before installing
+        find_package("SWIG" "${SWIG_REQUESTED_VERSION}" QUIET)
+
+        # Swig hasn't been installed yet. Install it
+        if(NOT SWIG_FOUND)
+            # Make sure to build Swig natively on the system, even for cross-compilation
+            set(SWIG_NATIVE_COMPILE_OPTIONS
+                "CC=/usr/bin/gcc"
+                "CXX=/usr/bin/g++"
+                "LD=/usr/bin/ld"
+                "AR=/usr/bin/ar"
+                "AS=/usr/bin/as"
+                "RANLIB=/usr/bin/ranlib"
+                "STRIP=/usr/bin/strip"
+                "--unset=CFLAGS"
+                "--unset=CXXFLAGS"
+                "--unset=LDFLAGS"
+                "--unset=CPPFLAGS"
+            )
+
+            # Replace ths CMake list delimiter with a space
+            string(REPLACE ";" " " SWIG_NATIVE_COMPILE_OPTIONS "${SWIG_NATIVE_COMPILE_OPTIONS}")
+
+            # Configure Swig with a local install directory
+            # All the '--without-*' options are to disable tests and examples from being compiled
+            execute_process(
+                COMMAND ${CMAKE_COMMAND} -E
+                    env ${SWIG_NATIVE_COMPILE_OPTIONS}
+                    ./configure --prefix ${SWIG_ROOT} --without-pcre --without-perl5 --without-python --without-python3
+                WORKING_DIRECTORY "${SWIG_PROJECT_DIR}"
+                RESULT_VARIABLE SWIG_CONFIGURE_RESULT
+            )
+            if(NOT SWIG_CONFIGURE_RESULT EQUAL 0)
+                message(FATAL_ERROR "Swig configuration failed with code ${SWIG_CONFIGURE_RESULT}")
+            endif()
+
+            # Build
+            execute_process(
+                COMMAND ${CMAKE_COMMAND} -E
+                    env ${SWIG_NATIVE_COMPILE_OPTIONS}
+                    make
+                WORKING_DIRECTORY "${SWIG_PROJECT_DIR}"
+                RESULT_VARIABLE SWIG_MAKE_RESULT
+            )
+            if(NOT SWIG_MAKE_RESULT EQUAL 0)
+                message(FATAL_ERROR "Swig make failed with code ${SWIG_MAKE_RESULT}")
+            endif()
+
+            # Install
+            execute_process(
+                COMMAND ${CMAKE_COMMAND} -E
+                    env ${SWIG_NATIVE_COMPILE_OPTIONS}
+                    make install
+                WORKING_DIRECTORY "${SWIG_PROJECT_DIR}"
+                RESULT_VARIABLE SWIG_INSTALL_RESULT
+            )
+            if(NOT SWIG_INSTALL_RESULT EQUAL 0)
+                message(FATAL_ERROR "Swig installation failed with code ${SWIG_INSTALL_RESULT}")
+            endif()
+        endif()
     endif()
 endif()
 

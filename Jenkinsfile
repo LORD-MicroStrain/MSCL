@@ -54,11 +54,14 @@ def packageTargets(Map config) {
     def releaseBuildDir = env.BUILD_TYPES.split(';')[1].trim()
 
     sh(label: packageLabel, script: """
-      MICROSTRAIN_BUILD_DIR_DEBUG=\"\$(pwd)/${debugBuildDir}\" \
-      MICROSTRAIN_BUILD_DIR_RELEASE=\"\$(pwd)/${releaseBuildDir}\" \
-      cpack \
-        --config "\$(pwd)/${releaseBuildDir}/microstrain-package-all.cmake" \
-        -C "${env.BUILD_TYPES}"
+      ../.devcontainer/docker-run-container.sh --os ${BUILD_OS} --arch ${BUILD_ARCH} " \
+        cd ${BUILD_DIR}; \
+        MICROSTRAIN_BUILD_DIR_DEBUG=\"\$(pwd)/${debugBuildDir}\" \
+        MICROSTRAIN_BUILD_DIR_RELEASE=\"\$(pwd)/${releaseBuildDir}\" \
+        cpack \
+          --config "\$(pwd)/${releaseBuildDir}/microstrain-package-all.cmake" \
+          -C "${env.BUILD_TYPES}"
+      "
     """)
   }
   else {
@@ -112,10 +115,13 @@ def buildTargets(Map config) {
       }
 
       sh(label: buildLabel, script: """
-        ${crosscompile32} cmake \
-          --build ./${buildType} \
-          --parallel \$(nproc) \
-          --target ${target};
+        ../.devcontainer/docker-run-container.sh --os ${BUILD_OS} --arch ${BUILD_ARCH} " \
+          cd ${BUILD_DIR}; \
+          ${crosscompile32} cmake \
+            --build ./${buildType} \
+            --parallel \$(nproc) \
+            --target ${target};
+        "
       """)
     }
     else {
@@ -211,7 +217,10 @@ def configureProject(Map config) {
     }
 
     sh(label: configLabel, script: """
+      ../.devcontainer/docker-run-container.sh --os ${BUILD_OS} --arch ${BUILD_ARCH} " \
+        cd ${BUILD_DIR}; \
         ${crosscompile32} cmake .. -B ${buildType} ${cmakeArgs}
+      "
     """)
   }
   else {
@@ -228,6 +237,12 @@ def buildAndPackageProject() {
 
   def isLinux   = isUnix()
   def isWindows = !isLinux
+
+  if (isLinux) {
+    sh(label: "Prepare Docker Image", script: """
+      ./.devcontainer/docker-build-image.sh --os ${BUILD_OS} --arch ${BUILD_ARCH}
+    """)
+  }
 
   // Build and package the project in the build directory
   dir(env.BUILD_DIR) {
@@ -350,6 +365,7 @@ pipeline {
             label 'linux-amd64'
           }
           environment {
+            BUILD_OS   = "ubuntu"
             BUILD_ARCH = "amd64"
             BUILD_DIR  = "build_linux_amd64"
           }
@@ -367,6 +383,8 @@ pipeline {
             label 'linux-arm64'
           }
           environment {
+            BUILD_OS   = "ubuntu"
+            BUILD_ARCH = "arm64"
             BUILD_DIR  = "build_linux_arm64"
           }
           options {
@@ -383,8 +401,10 @@ pipeline {
             label 'linux-arm64'
           }
           environment {
-            BUILD_DIR      = "build_linux_arm32"
-            TOOLCHAIN_FILE = "${WORKSPACE}/cmake/toolchains/arm-linux-crosscompile-toolchain.cmake"
+            BUILD_OS              = "ubuntu"
+            BUILD_ARCH            = "arm32v7"
+            BUILD_DIR             = "build_linux_arm32"
+            TOOLCHAIN_FILE        = "${WORKSPACE}/cmake/toolchains/arm-linux-crosscompile-toolchain.cmake"
             LINUX_CROSSCOMPILE_32 = true
           }
           options {
