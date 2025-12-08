@@ -113,6 +113,17 @@ if(MSCL_BUILD_PACKAGE)
     set(CPACK_PACKAGE_VENDOR "MicroStrain by HBK")
     set(CPACK_PACKAGE_CONTACT "MicroStrain Support <microstrainsupport@hbkworld.com>")
 
+    microstrain_get_package_architecture(CPACK_SYSTEM_NAME)
+    microstrain_get_git_branch(MSCL_GIT_BRANCH MSCL_BRANCH) # Second param is used to set a cache variable
+
+    if("${MSCL_GIT_BRANCH}" STREQUAL "master")
+        # Use the project version for assets built on master
+        set(CPACK_PACKAGE_VERSION "v${PROJECT_VERSION}")
+    else()
+        # Use the tag for all other assets
+        set(CPACK_PACKAGE_VERSION "${MSCL_GIT_VERSION}")
+    endif()
+
     # Don't group packages
     set(CPACK_COMPONENTS_GROUPING IGNORE)
 
@@ -123,23 +134,19 @@ if(MSCL_BUILD_PACKAGE)
 
         # Create one package per component
         set(CPACK_DEB_COMPONENT_INSTALL ON)
+
+        # Set the Debian package version to conform to the standard
+        if(CPACK_PACKAGE_VERSION MATCHES "^v([0-9.]+)$")
+            set(CPACK_DEBIAN_PACKAGE_VERSION "${CMAKE_MATCH_1}")
+        elseif(CPACK_PACKAGE_VERSION MATCHES "^v([0-9.]+)-([0-9]+)-g([0-9a-f]+)")
+            set(CPACK_DEBIAN_PACKAGE_VERSION "${CMAKE_MATCH_1}+git${CMAKE_MATCH_2}.${CMAKE_MATCH_3}")
+        endif()
     elseif(CPACK_BINARY_RPM)
         # Create one package per component
         set(CPACK_RPM_COMPONENT_INSTALL ON)
     else()
         # Create one package per component
         set(CPACK_ARCHIVE_COMPONENT_INSTALL ON)
-    endif()
-
-    microstrain_get_package_architecture(CPACK_SYSTEM_NAME)
-    microstrain_get_git_branch(MSCL_GIT_BRANCH MSCL_BRANCH) # Second param is used to set a cache variable
-
-    if("${MSCL_GIT_BRANCH}" STREQUAL "master")
-        # Use the project version for assets built on master
-        set(CPACK_PACKAGE_VERSION "v${PROJECT_VERSION}")
-    else()
-        # Use the tag for all other assets
-        set(CPACK_PACKAGE_VERSION "${MSCL_GIT_VERSION}")
     endif()
 
     # Setup the install prefix for all packages

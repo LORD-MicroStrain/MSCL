@@ -191,7 +191,7 @@ if(MSCL_BUILD_PACKAGE)
         PACKAGE_ARCH "${CPACK_SYSTEM_NAME}"
     )
 
-    # Configure manual Debian dependencies
+    # Configure manual Linux dependencies
     if(UNIX AND NOT APPLE)
         string(TOUPPER "${MSCL_CPP_COMPONENT_NAME}" MSCL_CPP_COMPONENT_NAME_UPPER)
 
@@ -208,26 +208,54 @@ if(MSCL_BUILD_PACKAGE)
             list(APPEND MSCL_LINUX_PACKAGE_DEPENDS  "ssl")
         endif()
 
+        microstrain_detect_deb(MSCL_IS_DEB)
+
+        if(MSCL_IS_DEB)
+            # Enable per component dependencies
+            set(CPACK_DEBIAN_ENABLE_COMPONENT_DEPENDS ON PARENT_SCOPE)
+        endif()
+
+        microstrain_detect_rpm(MSCL_IS_RPM)
+        if(MSCL_IS_RPM)
+            set(CPACK ON PARENT_SCOPE)
+        endif()
+
         foreach(MSCL_LINUX_PACKAGE_DEPEND IN LISTS MSCL_LINUX_PACKAGE_DEPENDS)
             if("${MSCL_LINUX_PACKAGE_DEPEND}" MATCHES "^boost")
-                list(APPEND MSCL_DEBIAN_PACKAGE_DEPEND "lib${MSCL_LINUX_PACKAGE_DEPEND}-dev (>= ${Boost_VERSION})")
+                if(MSCL_IS_DEB)
+                    list(APPEND MSCL_DEBIAN_PACKAGE_DEPEND "lib${MSCL_LINUX_PACKAGE_DEPEND}-dev (>= ${Boost_VERSION})")
+                endif()
 
-                if("${MSCL_LINUX_PACKAGE_DEPEND}" MATCHES "^boost$")
-                    list(APPEND MSCL_RPM_PACKAGE_REQUIRES "${MSCL_LINUX_PACKAGE_DEPEND}-devel >= ${Boost_VERSION}")
-                else()
-                    list(APPEND MSCL_RPM_PACKAGE_REQUIRES "${MSCL_LINUX_PACKAGE_DEPEND} >= ${Boost_VERSION}")
+                if(MSCL_IS_RPM)
+                    if("${MSCL_LINUX_PACKAGE_DEPEND}" MATCHES "^boost$")
+                        list(APPEND MSCL_RPM_PACKAGE_REQUIRES "${MSCL_LINUX_PACKAGE_DEPEND}-devel >= ${Boost_VERSION}")
+                    else()
+                        list(APPEND MSCL_RPM_PACKAGE_REQUIRES "${MSCL_LINUX_PACKAGE_DEPEND} >= ${Boost_VERSION}")
+                    endif()
                 endif()
             elseif("${MSCL_LINUX_PACKAGE_DEPEND}" MATCHES "^ssl")
-                list(APPEND MSCL_DEBIAN_PACKAGE_DEPEND "lib${MSCL_LINUX_PACKAGE_DEPEND}-dev (>= ${OPENSSL_VERSION})")
-                list(APPEND MSCL_RPM_PACKAGE_REQUIRES "open${MSCL_LINUX_PACKAGE_DEPEND}-devel >= ${OPENSSL_VERSION}")
+                if(MSCL_IS_DEB)
+                    list(APPEND MSCL_DEBIAN_PACKAGE_DEPEND "lib${MSCL_LINUX_PACKAGE_DEPEND}-dev (>= ${OPENSSL_VERSION})")
+                endif()
+
+                if(MSCL_IS_RPM)
+                    list(APPEND MSCL_RPM_PACKAGE_REQUIRES "open${MSCL_LINUX_PACKAGE_DEPEND}-devel >= ${OPENSSL_VERSION}")
+                endif()
             endif()
         endforeach()
 
-        string(REPLACE ";" ", " MSCL_DEBIAN_PACKAGE_DEPEND "${MSCL_DEBIAN_PACKAGE_DEPEND}")
-        string(REPLACE ";" ", " MSCL_RPM_PACKAGE_REQUIRES "${MSCL_RPM_PACKAGE_REQUIRES}")
+        if(MSCL_IS_DEB)
+            string(REPLACE ";" ", " MSCL_DEBIAN_PACKAGE_DEPEND "${MSCL_DEBIAN_PACKAGE_DEPEND}")
 
-        # Make sure the parent scope has this set for packaging
-        set(CPACK_DEBIAN_${MSCL_CPP_COMPONENT_NAME_UPPER}_PACKAGE_DEPENDS "${MSCL_DEBIAN_PACKAGE_DEPEND}" PARENT_SCOPE)
-        set(CPACK_RPM_${MSCL_CPP_COMPONENT_NAME_UPPER}_PACKAGE_REQUIRES "${MSCL_RPM_PACKAGE_REQUIRES}" PARENT_SCOPE)
+            # Make sure the parent scope has this set for packaging
+            set(CPACK_DEBIAN_${MSCL_CPP_COMPONENT_NAME_UPPER}_PACKAGE_DEPENDS "${MSCL_DEBIAN_PACKAGE_DEPEND}" PARENT_SCOPE)
+        endif()
+
+        if(MSCL_IS_RPM)
+            string(REPLACE ";" ", " MSCL_RPM_PACKAGE_REQUIRES "${MSCL_RPM_PACKAGE_REQUIRES}")
+
+            # Make sure the parent scope has this set for packaging
+            set(CPACK_RPM_${MSCL_CPP_COMPONENT_NAME_UPPER}_PACKAGE_REQUIRES "${MSCL_RPM_PACKAGE_REQUIRES}" PARENT_SCOPE)
+        endif()
     endif()
 endif()
