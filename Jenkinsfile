@@ -285,7 +285,7 @@ pipeline {
   agent none
   environment {
     BUILD_TYPES   = 'Debug;Release'
-    LIBRARY_TYPES = 'Static,Shared'
+    LIBRARY_TYPES = 'Shared,Static'
   }
   options {
     // Set a timeout for the whole pipeline. The timer starts when the project is queued

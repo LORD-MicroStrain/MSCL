@@ -1,15 +1,15 @@
 # NOTE: This is a generated file to make a wrapper to run a Python script using
 # CMake as a target
 
-cmake_minimum_required(VERSION 3.16)
-
-set(CMAKE_CONFIGURATION_TYPES "Release" CACHE STRING "Supported configuration types" FORCE)
+# Supported build configurations
+set(CMAKE_CONFIGURATION_TYPES "Release")
 
 if(CMAKE_BUILD_TYPE AND NOT "${CMAKE_BUILD_TYPE}" STREQUAL "${CMAKE_CONFIGURATION_TYPES}")
-    message(WARNING "This Python project can only run in Release mode")
     set(CMAKE_BUILD_TYPE "${CMAKE_CONFIGURATION_TYPES}")
+    message(WARNING "This Python project can only run in ${CMAKE_BUILD_TYPE} mode")
 endif()
 
+cmake_minimum_required(VERSION 3.16)
 project("MSCL-Python@MSCL_PYTHON_VERSION@-@MSCL_PYTHON_EXAMPLE_TYPE@-Example"
     VERSION "1.0.0"
     DESCRIPTION "Simple @MSCL_PYTHON_EXAMPLES_SUBDIRECTORY@ example using Python"

@@ -10,7 +10,8 @@ project("${MSCL_CSHARP_MANAGED_TARGET}"
     VERSION "${PROJECT_VERSION}"
 )
 
-set(CMAKE_CONFIGURATION_TYPES "Release;Debug" CACHE STRING "Supported configuration types" FORCE)
+# Supported build configurations
+set(CMAKE_CONFIGURATION_TYPES "Release;Debug")
 
 # Export compile commands by default (helpful for clang-tidy and autocomplete for certain IDEs)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
