@@ -42,6 +42,45 @@ def checkoutRepo() {
   env.BRANCH_NAME = branchName()
 }
 
+// Run the tests
+def runTests(Map config) {
+  def buildType = config.buildType
+  def isLinux   = config.isLinux
+
+  def testsLabel = "Running tests (${buildType})"
+
+  catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE', catchInterruptions: false) {
+    if (isLinux) {
+      def crosscompile32 = ""
+
+      // Compile using 32-bit terminal operations
+      if (env.LINUX_CROSSCOMPILE_32) {
+        crosscompile32 = "linux32"
+      }
+
+      sh(label: testsLabel, script: """
+        ../.devcontainer/docker-run-container.sh --os ${BUILD_OS} --arch ${BUILD_ARCH} ' \
+          cd ${BUILD_DIR}; \
+          ${crosscompile32} ctest \
+            --test-dir "./${buildType}" \
+            --build-config "${buildType}" \
+            --output-on-failure \
+            --parallel \$(nproc);
+        '
+      """)
+    }
+    else {
+      powershell(label: testsLabel, script: """
+        ctest `
+          --test-dir . `
+          --build-config "${config.buildType}" `
+          --output-on-failure `
+          --parallel \$env:NUMBER_OF_PROCESSORS
+      """)
+    }
+  }
+}
+
 // Calling CPack manually allows for packaging both Debug and Release packages
 def packageTargets(Map config) {
   def packageLabel = 'Packaging'
@@ -276,8 +315,22 @@ def buildAndPackageProject() {
       )
     }
 
+    // Archive the successful build artifacts
     def fileExtension = isLinux ? 'deb' : 'zip'
     archiveArtifacts artifacts: "*.${fileExtension}"
+
+    // Run all the tests
+    env.BUILD_TYPES.split(';').each { buildType ->
+      buildType = buildType.trim()
+
+      runTests(
+        isLinux: isLinux,
+        buildType: buildType
+      )
+
+      // Archive the test results
+      junit testResults: "*.xml", allowEmptyResults: false
+    }
   }
 }
 
