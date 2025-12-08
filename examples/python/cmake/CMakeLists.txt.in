@@ -49,14 +49,15 @@ set_source_files_properties(${PROJECT_SOURCE} PROPERTIES
 
 set(MSCL_PYTHON@MSCL_PYTHON_VERSION@_TARGET "@PROJECT_NAME@-Python@MSCL_PYTHON_VERSION@")
 
+# The purpose of this executable is to allow running the Python script directly through CMake or IDEs that support it
+add_executable("${PROJECT_NAME}" ${PROJECT_SOURCE})
+
 # Generate a source file to use for the dummy executable
 file(GENERATE
     OUTPUT "${PROJECT_SOURCE}"
-    CONTENT "#include <stdlib.h>\nint main() { putenv(\"PYTHONPATH=$<TARGET_FILE_DIR:${MSCL_PYTHON@MSCL_PYTHON_VERSION@_TARGET}>\"); return system(\"${Python_EXECUTABLE} ${PYTHON_SCRIPT}\"); }"
+    CONTENT "#include <stdlib.h>\nint main()\n{\n    $<$<CXX_COMPILER_ID:MSVC>:_>putenv(\"PYTHONPATH=$<TARGET_FILE_DIR:${MSCL_PYTHON@MSCL_PYTHON_VERSION@_TARGET}>\");\n    return system(\"${Python_EXECUTABLE} ${PYTHON_SCRIPT}\");\n}\n"
+    TARGET ${PROJECT_NAME}
 )
-
-# The purpose of this executable is to allow running the Python script directly through CMake or IDEs that support it
-add_executable("${PROJECT_NAME}" ${PROJECT_SOURCE})
 
 add_dependencies("${PROJECT_NAME}" "${MSCL_PYTHON@MSCL_PYTHON_VERSION@_TARGET}")
 
