@@ -56,11 +56,11 @@ def packageTargets(Map config) {
     sh(label: packageLabel, script: """
       ../.devcontainer/docker-run-container.sh --os ${BUILD_OS} --arch ${BUILD_ARCH} ' \
         cd ${BUILD_DIR}; \
-        MICROSTRAIN_BUILD_DIR_DEBUG=\\"${debugBuildDir}\\" \
-        MICROSTRAIN_BUILD_DIR_RELEASE=\\"${releaseBuildDir}\\" \
+        MICROSTRAIN_BUILD_DIR_DEBUG="${debugBuildDir}" \
+        MICROSTRAIN_BUILD_DIR_RELEASE="${releaseBuildDir}" \
         cpack \
-          --config \\"${releaseBuildDir}/microstrain-package-all.cmake\\" \
-          -C \\"${env.BUILD_TYPES}\\"
+          --config "${releaseBuildDir}/microstrain-package-all.cmake" \
+          -C "${env.BUILD_TYPES}"
       '
     """)
   }
@@ -154,7 +154,7 @@ def configureProject(Map config) {
   ]
 
   if (env.TOOLCHAIN_FILE) {
-    args.add("-DVCPKG_CHAINLOAD_TOOLCHAIN_FILE:FILEPATH=\"${env.TOOLCHAIN_FILE}\"")
+    args.add("-DVCPKG_CHAINLOAD_TOOLCHAIN_FILE:STRING=${env.TOOLCHAIN_FILE}")
   }
 
   // Architecture flag (Windows only)

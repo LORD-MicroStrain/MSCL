@@ -40,11 +40,6 @@ if [[ ${#remaining_args[@]} -eq 0 ]]; then
   remaining_args=("/bin/bash")
 fi
 
-# Wrap commands with linux32 for ARM32 architecture
-if [[ "${arch}" == "arm32v7" ]]; then
-  remaining_args=("linux32 /bin/bash -c \"${remaining_args[@]}\"")
-fi
-
 # Find the script directory
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" &> /dev/null && pwd)"
 project_dir="${script_dir}/.."
