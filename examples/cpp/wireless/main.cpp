@@ -295,7 +295,7 @@ static void setCurrentConfig(mscl::WirelessNode& node)
 
     if (!node.verifyConfig(config, issues))
     {
-        printf("Failed to verify the configuration. The following issues were found:\n");
+        printf("\nFailed to verify the configuration. The following issues were found:\n");
 
         // Print out all the issues that were found
         for (const mscl::ConfigIssue& issue : issues)
@@ -335,7 +335,7 @@ static void startSyncSampling(mscl::BaseStation& baseStation, std::vector<mscl::
     }
 
     // Can get information about the network
-    printf("Network info: \n");
+    printf("Network info:\n");
     printf("Network OK: %s\n", network.ok() ? "TRUE" : "FALSE");
     printf("Percent of Bandwidth: %04.02f%%\n", network.percentBandwidth());
     printf("Lossless Enabled: %s\n", network.lossless() ? "TRUE" : "FALSE");
@@ -355,12 +355,12 @@ static void startSyncSampling(mscl::BaseStation& baseStation, std::vector<mscl::
     //=======================================================================================
     // Many other functions are available for the SyncSamplingNetwork:
     //
-    // network.lossless()                        //enable or disable "lossless" mode for the network (default of enabled).
-    // network.ok()                              //check whether the network is "OK" meaning all nodes fit in the network and have communicated successfully.
-    // network.percentBandwidth()                //get the percentage of bandwidth for the entire network.
-    // network.refresh()                         //refreshes the entire network. Should be called any time a change is made to the node after it has been added to the network.
-    // network.removeNode()                      //remove a node from the network.
-    // network.getNodeNetworkInfo(nodeAddress)   //get network information for an individual node in the network (TDMA address, percent bandwidth, etc.)
+    // network.lossless()                        // enable or disable "lossless" mode for the network (default of enabled).
+    // network.ok()                              // check whether the network is "OK" meaning all nodes fit in the network and have communicated successfully.
+    // network.percentBandwidth()                // get the percentage of bandwidth for the entire network.
+    // network.refresh()                         // refreshes the entire network. Should be called any time a change is made to the node after it has been added to the network.
+    // network.removeNode()                      // remove a node from the network.
+    // network.getNodeNetworkInfo(nodeAddress)   // get network information for an individual node in the network (TDMA address, percent bandwidth, etc.)
     //=======================================================================================
 }
 #endif // START_SYNC_SAMPLING

@@ -254,6 +254,7 @@ namespace MSCL_Wireless_Example_CSharp
 
             if (!node.verifyConfig(config, issues))
             {
+                Console.WriteLine();
                 Console.WriteLine("Failed to verify the configuration. The following issues were found:");
 
                 // Print out all the issues that were found
@@ -292,7 +293,7 @@ namespace MSCL_Wireless_Example_CSharp
             }
 
             // Can get information about the network
-            Console.WriteLine("Network info: ");
+            Console.WriteLine("Network info:");
             Console.WriteLine("Network OK: " + (network.ok() ? "TRUE" : "FALSE"));
             Console.WriteLine("Percent of Bandwidth: " + network.percentBandwidth().ToString("F2") + "%");
             Console.WriteLine("Lossless Enabled: " + (network.lossless() ? "TRUE" : "FALSE"));
@@ -312,12 +313,12 @@ namespace MSCL_Wireless_Example_CSharp
             //=======================================================================================
             // Many other functions are available for the SyncSamplingNetwork:
             //
-            // network.lossless()                        //enable or disable "lossless" mode for the network (default of enabled).
-            // network.ok()                              //check whether the network is "OK" meaning all nodes fit in the network and have communicated successfully.
-            // network.percentBandwidth()                //get the percentage of bandwidth for the entire network.
-            // network.refresh()                         //refreshes the entire network. Should be called any time a change is made to the node after it has been added to the network.
-            // network.removeNode()                      //remove a node from the network.
-            // network.getNodeNetworkInfo(nodeAddress)   //get network information for an individual node in the network (TDMA address, percent bandwidth, etc.)
+            // network.lossless()                        // enable or disable "lossless" mode for the network (default of enabled).
+            // network.ok()                              // check whether the network is "OK" meaning all nodes fit in the network and have communicated successfully.
+            // network.percentBandwidth()                // get the percentage of bandwidth for the entire network.
+            // network.refresh()                         // refreshes the entire network. Should be called any time a change is made to the node after it has been added to the network.
+            // network.removeNode()                      // remove a node from the network.
+            // network.getNodeNetworkInfo(nodeAddress)   // get network information for an individual node in the network (TDMA address, percent bandwidth, etc.)
             //=======================================================================================
         }
 

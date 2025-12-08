@@ -217,6 +217,9 @@ function(mscl_download_python MSCL_PYTHON_VERSION MSCL_PYTHON_MAJOR_VERSION)
         "${PYTHON_VCPKG_INSTALL_DIR}"
     )
 
+    # This is used by the examples to find the interpreter
+    set(Python${MSCL_PYTHON_VERSION}_ROOT_DIR "${PYTHON_VCPKG_INSTALL_DIR}/tools/python${MSCL_PYTHON_MAJOR_VERSION}" CACHE INTERNAL "The root directory of the vcpkg installed Python${MSCL_PYTHON_VERSION} interpreter")
+
     # Allow the calling scope to find python properly
     set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} PARENT_SCOPE)
 endfunction()
