@@ -80,12 +80,13 @@ macro(mscl_add_swig_python_module_library MSCL_PYTHON_VERSION MSCL_PYTHON_MAJOR_
         set(MSCL_PYTHON_SITE_PACKAGES_DIR "Python${MSCL_PYTHON_INSTALL_DIR_VERSION}/Lib/site-packages")
     else()
         set(MSCL_PYTHON_SITE_PACKAGES_DIR ${CMAKE_INSTALL_LIBDIR}/python${MSCL_PYTHON_VERSION}/)
-#        if(DEBIAN)
-            # TODO: This is Debian specific
+
+        microstrain_detect_deb(MSCL_IS_DEB)
+        if(MSCL_IS_DEB)
             string(APPEND MSCL_PYTHON_SITE_PACKAGES_DIR "dist-packages")
-#        else()
-#            string(APPEND MSCL_PYTHON_SITE_PACKAGES_DIR "site-packages")
-#        endif()
+        else()
+            string(APPEND MSCL_PYTHON_SITE_PACKAGES_DIR "site-packages")
+        endif()
     endif()
 
     set(MSCL_PYTHON_INSTALL_CONFIGURATIONS "Release")
@@ -138,6 +139,11 @@ function(mscl_download_python MSCL_PYTHON_VERSION MSCL_PYTHON_MAJOR_VERSION)
 
     message(STATUS "Installing Python ${MSCL_PYTHON_VERSION}...")
     string(REPLACE "." "" MSCL_PYTHON_VERSION_COMBINED "${MSCL_PYTHON_VERSION}")
+
+    if(MSVC)
+        # Append the architecture when building multiple architectures on the same system
+        string(APPEND MSCL_PYTHON_BUILD_DIR "/${CMAKE_GENERATOR_PLATFORM}")
+    endif()
 
     # Get the name of the directory where vcpkg installs packages
     # This has and could change in different versions of vcpkg

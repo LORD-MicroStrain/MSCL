@@ -9,9 +9,6 @@ if(MSCL_BUILD_PYTHON2)
     # If using a version not supported by the build system then the user must have the requested version installed already
     set(MSCL_PYTHON2_REQUESTED_VERSION "2.7" CACHE STRING "The requested version of Python2 to use for bindings")
 
-    # Allow the user to use a pre-installed version of Python2
-    option(MSCL_DOWNLOAD_PYTHON2 "MSCL can download Python2 if not already installed. Set Python2_ROOT to the Python2 directory if this is turned off" ON)
-
     # List of supported Python2 versions
     set(MSCL_SUPPORTED_PYTHON2_VERSIONS
         "2.7"
@@ -19,9 +16,9 @@ if(MSCL_BUILD_PYTHON2)
 
     # Add only the requested version or all supported versions of Python2 to be built
     if("${MSCL_PYTHON2_REQUESTED_VERSION}" STREQUAL "")
-        list(APPEND MSCL_PYTHON_REQUESTED_VERSIONS ${MSCL_SUPPORTED_PYTHON2_VERSIONS})
+        list(APPEND MSCL_PYTHON_BUILD_VERSIONS ${MSCL_SUPPORTED_PYTHON2_VERSIONS})
     else()
-        list(APPEND MSCL_PYTHON_REQUESTED_VERSIONS "${MSCL_PYTHON2_REQUESTED_VERSION}")
+        list(APPEND MSCL_PYTHON_BUILD_VERSIONS "${MSCL_PYTHON2_REQUESTED_VERSION}")
     endif()
 endif()
 
@@ -43,11 +40,14 @@ if(MSCL_BUILD_PYTHON3)
 
     # Add only the requested version or all supported versions of Python3 to be built
     if("${MSCL_PYTHON3_REQUESTED_VERSION}" STREQUAL "")
-        list(APPEND MSCL_PYTHON_REQUESTED_VERSIONS ${MSCL_SUPPORTED_PYTHON3_VERSIONS})
+        list(APPEND MSCL_PYTHON_BUILD_VERSIONS ${MSCL_SUPPORTED_PYTHON3_VERSIONS})
     else()
-        list(APPEND MSCL_PYTHON_REQUESTED_VERSIONS "${MSCL_PYTHON3_REQUESTED_VERSION}")
+        list(APPEND MSCL_PYTHON_BUILD_VERSIONS "${MSCL_PYTHON3_REQUESTED_VERSION}")
     endif()
 endif()
+
+# Use the requested versions in the examples
+set(MSCL_PYTHON_REQUESTED_VERSIONS ${MSCL_PYTHON_BUILD_VERSIONS} CACHE INTERNAL "")
 
 # Include the Swig Python utilities file for easier binding configuration
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
@@ -68,7 +68,11 @@ foreach(MSCL_PYTHON_REQUESTED_VERSION IN LISTS MSCL_PYTHON_REQUESTED_VERSIONS)
 
     # The requested version is supported and should be downloaded
     if(MSCL_PYTHON_VERSION_SUPPORTED GREATER_EQUAL 0 AND MSCL_DOWNLOAD_PYTHON${MSCL_PYTHON_MAJOR_VERSION})
-        mscl_download_python("${MSCL_PYTHON_VERSION}" "${MSCL_PYTHON_MAJOR_VERSION}")
+        if("${MSCL_PYTHON_MAJOR_VERSION}" STREQUAL "2")
+            message(WARNING "Python2 is end-of-life and will need to be installed manually")
+        else()
+            mscl_download_python("${MSCL_PYTHON_VERSION}" "${MSCL_PYTHON_MAJOR_VERSION}")
+        endif()
     endif()
 
     # Create the Python binding library for the requested version of Python

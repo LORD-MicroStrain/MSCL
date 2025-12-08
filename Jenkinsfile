@@ -54,14 +54,14 @@ def packageTargets(Map config) {
     def releaseBuildDir = env.BUILD_TYPES.split(';')[1].trim()
 
     sh(label: packageLabel, script: """
-      ../.devcontainer/docker-run-container.sh --os ${BUILD_OS} --arch ${BUILD_ARCH} " \
+      ../.devcontainer/docker-run-container.sh --os ${BUILD_OS} --arch ${BUILD_ARCH} ' \
         cd ${BUILD_DIR}; \
         MICROSTRAIN_BUILD_DIR_DEBUG=\\"${debugBuildDir}\\" \
         MICROSTRAIN_BUILD_DIR_RELEASE=\\"${releaseBuildDir}\\" \
         cpack \
           --config \\"${releaseBuildDir}/microstrain-package-all.cmake\\" \
           -C \\"${env.BUILD_TYPES}\\"
-      "
+      '
     """)
   }
   else {
@@ -87,7 +87,7 @@ def buildTargets(Map config) {
     targets.addAll(['MSCL-Tests'])
 
     if (buildType == releaseBuildType) {
-      targets.addAll(['MSCL-Python2', 'MSCL-Python3'])
+      targets.addAll(['MSCL-Python3'])
     }
 
     if (!isLinux) {
@@ -115,13 +115,13 @@ def buildTargets(Map config) {
       }
 
       sh(label: buildLabel, script: """
-        ../.devcontainer/docker-run-container.sh --os ${BUILD_OS} --arch ${BUILD_ARCH} " \
+        ../.devcontainer/docker-run-container.sh --os ${BUILD_OS} --arch ${BUILD_ARCH} ' \
           cd ${BUILD_DIR}; \
           ${crosscompile32} cmake \
             --build ./${buildType} \
             --parallel \$(nproc) \
             --target ${target};
-        "
+        '
       """)
     }
     else {
@@ -141,7 +141,7 @@ def configureProject(Map config) {
   def libraryType    = config.libraryType.capitalize() // Static or Shared
   def buildType      = config.buildType.capitalize()   // Debug or Release
   def isStatic       = libraryType == 'Static'
-  def buildAllPython = env.BRANCH_NAME && env.BRANCH_NAME == 'master'
+  def buildAllPython = env.BRANCH_NAME && env.BRANCH_NAME == 'master' // Build all supported versions of Python
   def isWindows      = config.isWindows
   def isLinux        = config.isLinux
   def buildDocs      = isStatic && isWindows ? 'ON' : 'OFF'
@@ -174,7 +174,6 @@ def configureProject(Map config) {
   // Determine boolean values for each component based on platform and build type
   def buildCSharp   = isStatic && isWindows ? 'ON' : 'OFF'
   def buildExamples = isStatic              ? 'ON' : 'OFF'
-  def buildPython2  = isStatic              ? 'ON' : 'OFF'
   def buildPython3  = isStatic              ? 'ON' : 'OFF'
   def buildTests    = isStatic              ? 'ON' : 'OFF'
   def buildShared   = !isStatic             ? 'ON' : 'OFF'
@@ -185,16 +184,9 @@ def configureProject(Map config) {
     "-DMSCL_BUILD_CSHARP:BOOL=${buildCSharp}",
     "-DMSCL_BUILD_DOCUMENTATION:BOOL=${buildDocs}",
     "-DMSCL_BUILD_EXAMPLES:BOOL=${buildExamples}",
-    "-DMSCL_BUILD_PYTHON2:BOOL=${buildPython2}",
     "-DMSCL_BUILD_PYTHON3:BOOL=${buildPython3}",
     "-DMSCL_BUILD_TESTS:BOOL=${buildTests}"
   ])
-
-  // Build all supported versions of Python2
-  // The project already defaults to the latest supported version
-  if (buildPython2 && buildAllPython) {
-    args.add('-DMSCL_PYTHON2_REQUESTED_VERSION:STRING=""')
-  }
 
   // Build all supported versions of Python3
   // The project already defaults to the latest supported version
@@ -217,10 +209,10 @@ def configureProject(Map config) {
     }
 
     sh(label: configLabel, script: """
-      ../.devcontainer/docker-run-container.sh --os ${BUILD_OS} --arch ${BUILD_ARCH} " \
+      ../.devcontainer/docker-run-container.sh --os ${BUILD_OS} --arch ${BUILD_ARCH} ' \
         cd ${BUILD_DIR}; \
         ${crosscompile32} cmake .. -B ${buildType} ${cmakeArgs}
-      "
+      '
     """)
   }
   else {
