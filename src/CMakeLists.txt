@@ -1,9 +1,9 @@
 set(MSCL_LIBRARY "${PROJECT_NAME}" CACHE INTERNAL "Name of the MSCL library")
-set(MSCL_INCLUDE_DIR "${CMAKE_CURRENT_LIST_DIR}/source" CACHE INTERNAL "MSCL include directory")
+set(MSCL_INCLUDE_DIR "${CMAKE_CURRENT_LIST_DIR}" CACHE INTERNAL "MSCL include directory")
 
 # Create the MSCL main target library
 set(MSCL_CPP_TARGET "${MSCL_LIBRARY}-Cpp")
-add_library("${MSCL_CPP_TARGET}" ${MSCL_SOURCES})
+add_library("${MSCL_CPP_TARGET}")
 
 # Set the correct library output name
 set_target_properties("${MSCL_CPP_TARGET}" PROPERTIES

@@ -363,7 +363,7 @@ pipeline {
         withCredentials([string(credentialsId: 'Github_Token', variable: 'GH_TOKEN')]) {
           sh """
             # Pre-release check/update before building on develop
-            "${WORKSPACE}/BuildScripts/prerelease.sh" --target "${env.BRANCH_NAME}"
+            "${WORKSPACE}/scripts/prerelease.sh" --target "${env.BRANCH_NAME}"
           """
         }
       }
@@ -474,7 +474,7 @@ pipeline {
               withCredentials([string(credentialsId: 'Github_Token', variable: 'GH_TOKEN')]) {
                 sh """
                   # Release to github
-                  "${WORKSPACE}/BuildScripts/release.sh" \
+                  "${WORKSPACE}/scripts/release.sh" \
                     --artifacts "\$(find \$(pwd) -type f)" \
                     --target "${env.BRANCH_NAME}" \
                     --release "latest" \
@@ -492,7 +492,7 @@ pipeline {
               withCredentials([string(credentialsId: 'Github_Token', variable: 'GH_TOKEN')]) {
                 sh """
                   # Release to github. The release script will determine if master needs to be published
-                  "${WORKSPACE}/BuildScripts/release.sh" \
+                  "${WORKSPACE}/scripts/release.sh" \
                     --artifacts "\$(find \$(pwd) -type f)" \
                     --target "${env.BRANCH_NAME}" \
                     --release "\$(cd ${WORKSPACE} && git describe --match 'v*' --abbrev=0 --tags HEAD)" \

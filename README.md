@@ -150,8 +150,8 @@ from source.
 If the pre-built packages aren't available on your platform, you can build MSCL from source.
 
 Instructions can be found here:</br>
-[Building MSCL on Windows](BuildScripts/buildReadme_Windows.md)</br>
-[Building MSCL on Linux](BuildScripts/buildReadme_Linux.md)
+[Building MSCL on Windows](scripts/buildReadme_Windows.md)</br>
+[Building MSCL on Linux](scripts/buildReadme_Linux.md)
 
 ---
 

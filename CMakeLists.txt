@@ -176,7 +176,7 @@ endif()
 string(APPEND MSCL_INSTALL_LIBDIR "$<$<CONFIG:Debug>:/debug>")
 
 # Build the library
-add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/MSCL")
+add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/src")
 
 # Build the documentation
 if(MSCL_BUILD_DOCUMENTATION)
