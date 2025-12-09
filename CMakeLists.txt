@@ -76,7 +76,7 @@ endif()
 string(TIMESTAMP MSCL_CURRENT_YEAR "%Y")
 
 # Include some utilities used for MicroStrain projects
-include(microstrain_utilities)
+include(microstrain-utilities)
 
 # Detect if this is a x64 or x86 build
 microstrain_get_architecture(MSCL_ARCH_NAME)
