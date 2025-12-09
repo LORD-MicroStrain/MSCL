@@ -329,7 +329,7 @@ def buildAndPackageProject() {
       )
 
       // Archive the test results
-      junit testResults: "**/${env.BUILD_DIR}/**/*.xml", allowEmptyResults: false
+      junit testResults: "**/*.xml", allowEmptyResults: false
     }
   }
 }
