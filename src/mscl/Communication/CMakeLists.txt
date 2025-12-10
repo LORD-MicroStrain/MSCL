@@ -9,8 +9,6 @@ set(MSCL_COMMUNICATION_FILES
     "${CMAKE_CURRENT_LIST_DIR}/Devices.h"
     "${CMAKE_CURRENT_LIST_DIR}/MockConnection.h"
     "${CMAKE_CURRENT_LIST_DIR}/NativeSerialPort.h"
-    "${CMAKE_CURRENT_LIST_DIR}/NativeSerialPort_linux.h"
-    "${CMAKE_CURRENT_LIST_DIR}/NativeSerialPort_Win32.h"
     "${CMAKE_CURRENT_LIST_DIR}/OperatingSystemErrorCodes.h"
     "${CMAKE_CURRENT_LIST_DIR}/RawBytePacket.cpp"
     "${CMAKE_CURRENT_LIST_DIR}/RawBytePacket.h"
@@ -28,6 +26,7 @@ set(MSCL_COMMUNICATION_FILES
 
 if(WIN32)
     list(APPEND MSCL_COMMUNICATION_FILES
+        "${CMAKE_CURRENT_LIST_DIR}/NativeSerialPort_Win32.h"
         "${CMAKE_CURRENT_LIST_DIR}/UpnpDeviceFinderCallback.cpp"
         "${CMAKE_CURRENT_LIST_DIR}/UpnpDeviceFinderCallback.h"
         "${CMAKE_CURRENT_LIST_DIR}/UpnpService.cpp"
@@ -37,6 +36,7 @@ if(WIN32)
     )
 elseif(UNIX AND NOT APPLE)
     list(APPEND MSCL_COMMUNICATION_FILES
+        "${CMAKE_CURRENT_LIST_DIR}/NativeSerialPort_linux.h"
         "${CMAKE_CURRENT_LIST_DIR}/UnixSocketConnection.cpp"
         "${CMAKE_CURRENT_LIST_DIR}/UnixSocketConnection.h"
     )

@@ -7,7 +7,6 @@
 #pragma once
 
 #include "mscl/Communication/Connection_Impl.h"
-#include "mscl/Communication/NativeSerialPort_linux.h"
 
 namespace mscl
 {

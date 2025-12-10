@@ -36,9 +36,9 @@ if(MSCL_LINK_STATIC_DEPS)
     # Link dependencies statically on Windows. Windows links dynamically by default in vcpkg
     if(WIN32)
         if("${CMAKE_GENERATOR_PLATFORM}" STREQUAL "Win32")
-            set(VCPKG_TARGET_TRIPLET "x86-windows-static-md" CACHE STRING "Vcpkg target triplet")
+            set(VCPKG_TARGET_TRIPLET "x86-windows-static" CACHE STRING "Vcpkg target triplet")
         else()
-            set(VCPKG_TARGET_TRIPLET "x64-windows-static-md" CACHE STRING "Vcpkg target triplet")
+            set(VCPKG_TARGET_TRIPLET "x64-windows-static" CACHE STRING "Vcpkg target triplet")
         endif()
     endif()
 elseif(UNIX AND NOT APPLE)
@@ -83,7 +83,7 @@ if(CMAKE_GENERATOR_TOOLSET)
     set(Z_VCPKG_PLATFORM_TOOLSET "${CMAKE_GENERATOR_TOOLSET}")
 endif()
 
-set(MSCL_VCPKG_DIR "${CMAKE_SOURCE_DIR}/deps/vcpkg")
+set(MSCL_VCPKG_DIR "${CMAKE_CURRENT_LIST_DIR}/../deps/vcpkg")
 
 # Prefer vcpkg if we can find it. Fallback if CMake presets aren't used
 if(NOT DEFINED CMAKE_TOOLCHAIN_FILE)

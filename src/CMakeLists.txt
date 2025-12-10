@@ -74,7 +74,10 @@ set(Boost_REQUESTED_COMPONENTS
 
 # Find the proper linking version of Boost
 set(Boost_USE_STATIC_LIBS ${MSCL_LINK_STATIC_DEPS})
-set(Boost_USE_STATIC_RUNTIME ${MSCL_LINK_STATIC_DEPS})
+
+if(MSVC)
+    set(Boost_USE_STATIC_RUNTIME ${MSCL_LINK_STATIC_DEPS})
+endif()
 
 find_package("Boost" REQUIRED COMPONENTS ${Boost_REQUESTED_COMPONENTS} CONFIG)
 
@@ -95,8 +98,14 @@ target_compile_definitions("${MSCL_CPP_TARGET}" PRIVATE
 # Find OpenSSL if requested
 if(MSCL_WITH_SSL)
     # Find the proper linking version of OpenSSL
-    set(OPENSSL_USE_STATIC_LIBS ${MSCL_LINK_STATIC_DEPS})
-    set(OPENSSL_MSVC_STATIC_RT ${MSCL_LINK_STATIC_DEPS})
+    # This conflicts with vcpkg, so don't set it if OpenSSL was installed with it
+    if(NOT MSCL_DOWNLOAD_OPENSSL)
+        set(OPENSSL_USE_STATIC_LIBS ${MSCL_LINK_STATIC_DEPS})
+    endif()
+
+    if(MSVC)
+        set(OPENSSL_MSVC_STATIC_RT ${MSCL_LINK_STATIC_DEPS})
+    endif()
 
     # OpenSSL doesn't clear its variables properly for recurring find_package calls
     # This variable needs to be cleared so OPENSSL_ROOT_DIR can then be used properly

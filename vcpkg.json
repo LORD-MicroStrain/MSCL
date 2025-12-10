@@ -1,6 +1,7 @@
 {
   "name": "mscl",
   "version": "1.0.0",
+  "dependencies": [],
   "features": {
     "boost": {
       "description": "Download Boost dependencies",
