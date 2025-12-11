@@ -189,7 +189,6 @@ def configureProject(Map config) {
     '-DMSCL_BUILD_PACKAGE:BOOL=ON',
     '-DMSCL_WITH_SSL:BOOL=ON',
     '-DMSCL_WITH_WEBSOCKETS:BOOL=ON',
-    '-DVCPKG_OVERLAY_TRIPLETS:PATH=${WORKSPACE}/cmake/triplets'
   ]
 
   if (env.TOOLCHAIN_FILE) {
