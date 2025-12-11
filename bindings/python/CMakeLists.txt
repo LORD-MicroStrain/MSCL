@@ -31,6 +31,10 @@ if(MSCL_BUILD_PYTHON3)
     # Allow the user to use a pre-installed version of Python3
     option(MSCL_DOWNLOAD_PYTHON3 "MSCL can download Python3 if not already installed. Set Python3_ROOT to the Python3 directory if this is turned off" ON)
 
+    if(NOT MSCL_USE_VCPKG)
+        set(MSCL_DOWNLOAD_PYTHON3 OFF)
+    endif()
+
     # List of supported Python3 versions
     set(MSCL_SUPPORTED_PYTHON3_VERSIONS
         "3.10"
