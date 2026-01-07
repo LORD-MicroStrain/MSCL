@@ -18,10 +18,31 @@ if(MSVC)
     target_compile_definitions("${MSCL_CPP_TARGET}" PRIVATE
         "_CRT_SECURE_NO_WARNINGS" # Turn off MSVC specific CRT warnings as they're not cross platform compatible
     )
-    target_compile_options("${MSCL_CPP_TARGET}" PRIVATE
+
+    set(MSCL_COMPILE_OPTIONS
         "/MP" # Enable parallel builds
         "/W4" # Turn on warnings
         "/WX" # Set warnings as errors
+    )
+
+    # Turn off warnings on external libraries/headers if supported
+    if(MSVC_VERSION GREATER_EQUAL 1913)
+        if(MSVC_VERSION LESS 1929)
+            # Experimental support for /external (VS 2017 15.6 to VS 2019 16.9)
+            list(APPEND MSCL_COMPILE_OPTIONS
+                "/experimental:external"
+            )
+        endif()
+
+        list(APPEND MSCL_COMPILE_OPTIONS
+            "/external:W0"            # Turn off warnings on external headers
+            "/external:anglebrackets" # Treat angle bracket includes as external headers
+        )
+    endif()
+
+
+    target_compile_options("${MSCL_CPP_TARGET}" PRIVATE
+        ${MSCL_COMPILE_OPTIONS}
     )
 elseif(UNIX AND NOT BUILD_SHARED_LIBS)
     # Make sure Linux compiles static libraries with -fPIC
@@ -82,7 +103,8 @@ endif()
 find_package("Boost" REQUIRED COMPONENTS ${Boost_REQUESTED_COMPONENTS} CONFIG)
 
 target_link_libraries("${MSCL_CPP_TARGET}" PUBLIC
-    ${Boost_LIBRARIES}
+    # Prevent Boost from being exported when MSCL is a dependency of another project
+    $<BUILD_INTERFACE:${Boost_LIBRARIES}>
 )
 
 # Disable deprecated Boost components
