@@ -136,12 +136,7 @@ endif()
 
 if(MSVC)
     # Set the runtime library linking for all projects
-    set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
-
-    # Make sure to use the same runtime linkage as vcpkg
-    if(NOT MSCL_LINK_STATIC_DEPS)
-        string(APPEND CMAKE_MSVC_RUNTIME_LIBRARY "DLL")
-    endif()
+    set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL")
 endif()
 
 # Use common installation directory naming conventions

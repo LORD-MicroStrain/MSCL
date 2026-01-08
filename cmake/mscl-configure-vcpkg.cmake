@@ -2,6 +2,11 @@
 # Setup and use vcpkg
 #
 
+if(NOT MSCL_USE_VCPKG)
+    message(STATUS "MSCL_USE_VCPKG is OFF. Turn it ON to use vcpkg configurations in MSCL")
+    return()
+endif()
+
 # Make sure the overlay triplets can be found
 set(VCPKG_OVERLAY_TRIPLETS "${CMAKE_CURRENT_LIST_DIR}/triplets")
 
@@ -36,9 +41,9 @@ if(MSCL_LINK_STATIC_DEPS)
     # Link dependencies statically on Windows. Windows links dynamically by default in vcpkg
     if(WIN32)
         if("${CMAKE_GENERATOR_PLATFORM}" STREQUAL "Win32")
-            set(VCPKG_TARGET_TRIPLET "x86-windows-static" CACHE STRING "Vcpkg target triplet")
+            set(VCPKG_TARGET_TRIPLET "x86-windows-static-md" CACHE STRING "Vcpkg target triplet")
         else()
-            set(VCPKG_TARGET_TRIPLET "x64-windows-static" CACHE STRING "Vcpkg target triplet")
+            set(VCPKG_TARGET_TRIPLET "x64-windows-static-md" CACHE STRING "Vcpkg target triplet")
         endif()
     endif()
 elseif(UNIX AND NOT APPLE)

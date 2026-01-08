@@ -96,10 +96,6 @@ set(Boost_REQUESTED_COMPONENTS
 # Find the proper linking version of Boost
 set(Boost_USE_STATIC_LIBS ${MSCL_LINK_STATIC_DEPS})
 
-if(MSVC)
-    set(Boost_USE_STATIC_RUNTIME ${MSCL_LINK_STATIC_DEPS})
-endif()
-
 find_package("Boost" REQUIRED COMPONENTS ${Boost_REQUESTED_COMPONENTS} CONFIG)
 
 target_link_libraries("${MSCL_CPP_TARGET}" PUBLIC
@@ -125,10 +121,6 @@ if(MSCL_WITH_SSL)
         set(OPENSSL_USE_STATIC_LIBS ${MSCL_LINK_STATIC_DEPS})
     endif()
 
-    if(MSVC)
-        set(OPENSSL_MSVC_STATIC_RT ${MSCL_LINK_STATIC_DEPS})
-    endif()
-
     # OpenSSL doesn't clear its variables properly for recurring find_package calls
     # This variable needs to be cleared so OPENSSL_ROOT_DIR can then be used properly
     unset(OPENSSL_INCLUDE_DIR CACHE)
@@ -136,8 +128,8 @@ if(MSCL_WITH_SSL)
     find_package("OpenSSL" REQUIRED)
 
     target_link_libraries("${MSCL_CPP_TARGET}" PUBLIC
-        "OpenSSL::SSL"
-        "OpenSSL::Crypto"
+        "$<BUILD_INTERFACE:OpenSSL::SSL>"
+        "$<BUILD_INTERFACE:OpenSSL::Crypto>"
     )
 else()
     # TODO: Don't assume the user linked proper libraries for this support!!
