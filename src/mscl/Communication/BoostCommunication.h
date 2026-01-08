@@ -22,7 +22,7 @@ namespace mscl
                 boost::asio::buffer(data, data.size()));    //the buffer that contains the data to be written
         }
 
-#ifndef MSCL_DISABLE_WEBSOCKETS
+#ifdef MSCL_WITH_WEBSOCKETS
         //specialized template function of the above for using tcp websockets
         template <>
         inline void writeAll(boost::beast::websocket::stream<boost::asio::ip::tcp::socket>& obj, const std::vector<uint8>& data)
@@ -30,15 +30,15 @@ namespace mscl
             obj.write(boost::asio::buffer(data, data.size()));
         }
 
-#ifndef MSCL_DISABLE_SSL
+#ifdef MSCL_WITH_SSL
         //specialized template function of the above for using secure websockets
         template <>
         inline void writeAll(boost::beast::websocket::stream<boost::asio::ssl::stream<boost::asio::ip::tcp::socket>>& obj, const std::vector<uint8>& data)
         {
             obj.write(boost::asio::buffer(data, data.size()));
         }
-#endif // !MSCL_DISABLE_SSL
-#endif // !MSCL_DISABLE_WEBSOCKETS
+#endif // MSCL_WITH_SSL
+#endif // MSCL_WITH_WEBSOCKETS
     } // namespace details
 
     //Class: BoostCommunication

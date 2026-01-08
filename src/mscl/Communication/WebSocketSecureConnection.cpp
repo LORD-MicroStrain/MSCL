@@ -4,8 +4,8 @@
 **    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
 *****************************************************************************************/
 
-#ifndef MSCL_DISABLE_WEBSOCKETS
-#ifndef MSCL_DISABLE_SSL
+#if defined MSCL_WITH_WEBSOCKETS && defined MSCL_WITH_SSL
+
 #include "mscl/Communication/WebSocketSecureConnection.h"
 
 #ifdef _WIN32
@@ -145,5 +145,4 @@ namespace mscl
         }
     }
 }
-#endif // !MSCL_DISABLE_SSL
-#endif // !MSCL_DISABLE_WEBSOCKETS
+#endif // MSCL_WITH_WEBSOCKETS && MSCL_WITH_SSL

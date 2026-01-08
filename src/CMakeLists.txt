@@ -131,17 +131,15 @@ if(MSCL_WITH_SSL)
         "$<BUILD_INTERFACE:OpenSSL::SSL>"
         "$<BUILD_INTERFACE:OpenSSL::Crypto>"
     )
-else()
-    # TODO: Don't assume the user linked proper libraries for this support!!
+
     target_compile_definitions("${MSCL_CPP_TARGET}" PUBLIC
-        "MSCL_DISABLE_SSL"
+        "MSCL_WITH_SSL"
     )
 endif()
 
-if(NOT MSCL_WITH_WEBSOCKETS)
-    # TODO: Don't assume the user linked proper libraries for this support!!
+if(MSCL_WITH_WEBSOCKETS)
     target_compile_definitions("${MSCL_CPP_TARGET}" PUBLIC
-        "MSCL_DISABLE_WEBSOCKETS"
+        "MSCL_WITH_WEBSOCKETS"
     )
 endif()
 

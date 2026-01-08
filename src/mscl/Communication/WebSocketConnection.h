@@ -6,6 +6,8 @@
 
 #pragma once
 
+#ifdef MSCL_WITH_WEBSOCKETS
+
 #include "mscl/Communication/Connection_Impl.h"
 
 namespace mscl
@@ -57,3 +59,5 @@ namespace mscl
         uint16 m_port;
     };
 } // namespace mscl
+
+#endif // MSCL_WITH_WEBSOCKETS

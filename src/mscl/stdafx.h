@@ -115,14 +115,16 @@ DISABLE_WARNING_BOOST_START
 #include <boost/filesystem.hpp>
 #endif // !_WIN32
 
-#ifndef MSCL_DISABLE_SSL
+#ifdef MSCL_WITH_SSL
 #include <boost/asio/ssl/stream.hpp>
-#include <boost/beast/websocket/ssl.hpp>
-#endif // !MSCL_DISABLE_SSL
+#endif // MSCL_WITH_SSL
 
-#ifndef MSCL_DISABLE_WEBSOCKETS
+#ifdef MSCL_WITH_WEBSOCKETS
 #include <boost/beast.hpp>
-#endif // !MSCL_DISABLE_WEBSOCKETS
+#ifdef MSCL_WITH_SSL
+#include <boost/beast/websocket/ssl.hpp>
+#endif // MSCL_WITH_SSL
+#endif // MSCL_WITH_WEBSOCKETS
 DISABLE_WARNING_BOOST_END
 
 #include <algorithm>

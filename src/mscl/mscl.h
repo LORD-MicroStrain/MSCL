@@ -46,12 +46,12 @@
 #include "mscl/Communication/SerialConnection.h"
 #include "mscl/Communication/TcpIpConnection.h"
 
-#if !defined MSCL_DISABLE_WEBSOCKETS
+#ifdef MSCL_WITH_WEBSOCKETS
 #include "mscl/Communication/WebSocketConnection.h"
-#if !defined MSCL_DISABLE_SSL
+#ifdef MSCL_WITH_SSL
 #include "mscl/Communication/WebSocketSecureConnection.h"
-#endif // !MSCL_DISABLE_SSL
-#endif // !MSCL_DISABLE_WEBSOCKETS
+#endif // MSCL_WITH_SSL
+#endif // MSCL_WITH_WEBSOCKETS
 
 #if defined _WIN32
 #include "mscl/Communication/UpnpDeviceFinderCallback.h"

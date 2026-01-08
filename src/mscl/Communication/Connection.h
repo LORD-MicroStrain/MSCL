@@ -99,7 +99,7 @@ namespace mscl
         //    - <Error_InvalidTcpServer>: the specified server address and/or server port is invalid.
         static Connection TcpIp(const std::string& serverAddress, uint16 serverPort, const std::string& interfaceAddress = "");
 
-#ifndef MSCL_DISABLE_WEBSOCKETS
+#ifdef MSCL_WITH_WEBSOCKETS
         //API Function: WebSocket
         //    A static function for creating a Connection object with a <WebSocketConnection> or <WebSocketSecureConnection> implementation.
         //    A connection with the specified host/port will be established.
@@ -115,7 +115,7 @@ namespace mscl
         //Exceptions:
         //    - <Error_InvalidTcpServer>: the specified server address and/or server port is invalid.
         static Connection WebSocket(const std::string& host, uint16 port);
-#endif // !MSCL_DISABLE_WEBSOCKETS
+#endif // MSCL_WITH_WEBSOCKETS
 
 #ifdef __linux__
         //API Function: UnixSocket

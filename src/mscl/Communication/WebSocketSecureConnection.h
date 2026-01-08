@@ -6,6 +6,8 @@
 
 #pragma once
 
+#if defined MSCL_WITH_WEBSOCKETS && defined MSCL_WITH_SSL
+
 #include "mscl/Communication/Connection_Impl.h"
 
 namespace mscl
@@ -59,3 +61,5 @@ namespace mscl
         boost::asio::ssl::context m_sslContext;
     };
 } // namespace mscl
+
+#endif // MSCL_WITH_WEBSOCKETS && MSCL_WITH_SSL

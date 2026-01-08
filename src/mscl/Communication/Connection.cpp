@@ -11,12 +11,12 @@
 #include "mscl/Communication/SerialConnection.h"
 #include "mscl/Communication/TcpIpConnection.h"
 
-#ifndef MSCL_DISABLE_WEBSOCKETS
+#ifdef MSCL_WITH_WEBSOCKETS
 #include "mscl/Communication/WebSocketConnection.h"
-#ifndef MSCL_DISABLE_SSL
+#ifdef MSCL_WITH_SSL
 #include "mscl/Communication/WebSocketSecureConnection.h"
-#endif // !MSCL_DISABLE_SSL
-#endif // !MSCL_DISABLE_WEBSOCKETS
+#endif // MSCL_WITH_SSL
+#endif // MSCL_WITH_WEBSOCKETS
 
 #ifdef __linux__
 #include "mscl/Communication/UnixSocketConnection.h"
@@ -73,7 +73,7 @@ namespace mscl
         return Connection(tcpip);
     }
 
-#ifndef MSCL_DISABLE_WEBSOCKETS
+#ifdef MSCL_WITH_WEBSOCKETS
     Connection Connection::WebSocket(const std::string& host, uint16 port)
     {
         //if the host starts with ws:// (HTTP web socket)
@@ -83,18 +83,18 @@ namespace mscl
             return Connection(webSocket);
         }
 
-#ifndef MSCL_DISABLE_SSL
+#ifdef MSCL_WITH_SSL
         //if the host starts with wss:// (HTTPS web socket)
         if(host.find("wss://") == 0)
         {
             std::shared_ptr<Connection_Impl_Base> webSocketSecure(new WebSocketSecureConnection(host, port));
             return Connection(webSocketSecure);
         }
-#endif // MSCL_DISABLE_SSL
+#endif // MSCL_WITH_SSL
 
         throw Error_InvalidTcpServer(0, "The web socket host name is invalid.");
     }
-#endif // MSCL_DISABLE_WEBSOCKETS
+#endif // MSCL_WITH_WEBSOCKETS
 
 #ifdef __linux__
     Connection Connection::UnixSocket(const std::string& path)
