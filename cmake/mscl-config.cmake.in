@@ -25,7 +25,6 @@ include(CMakeFindDependencyMacro)
 
 # Find the proper linking version of Boost
 set(Boost_USE_STATIC_LIBS @Boost_USE_STATIC_LIBS@)
-set(Boost_USE_STATIC_RUNTIME @Boost_USE_STATIC_RUNTIME@)
 
 # Boost is required for linking the pre-built library
 find_dependency("Boost"
@@ -43,7 +42,6 @@ if(@MSCL_WITH_SSL@)
 
     # Find the proper linking version of OpenSSL
     set(OPENSSL_USE_STATIC_LIBS @OPENSSL_USE_STATIC_LIBS@)
-    set(OPENSSL_MSVC_STATIC_RT @OPENSSL_MSVC_STATIC_RT@)
 
     find_dependency("OpenSSL"
         @OPENSSL_VERSION@ EXACT
