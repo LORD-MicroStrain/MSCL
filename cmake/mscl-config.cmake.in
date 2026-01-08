@@ -20,6 +20,12 @@ get_target_property(@LIBRARY_NAME_UPPER@_INCLUDE_DIR @LIBRARY_NAME_ALIAS@ INTERF
 set_and_check(@LIBRARY_NAME_UPPER@_INCLUDE_DIR ${@LIBRARY_NAME_UPPER@_INCLUDE_DIR})
 set_and_check(@LIBRARY_NAME_UPPER@_INCLUDE_DIRS ${@LIBRARY_NAME_UPPER@_INCLUDE_DIR})
 
+# Consumers of MSCL need to use the precompiled header in their project
+# Configure that for them here
+target_precompile_headers(@PACKAGE_NAMESPACE@::@LIBRARY_NAME@ INTERFACE
+    "${@LIBRARY_NAME_UPPER@_INCLUDE_DIR}/mscl/stdafx.h"
+)
+
 # Find/configure some dependencies
 include(CMakeFindDependencyMacro)
 
