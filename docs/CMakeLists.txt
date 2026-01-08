@@ -3,6 +3,8 @@ if(NOT WIN32)
     return()
 endif()
 
+microstrain_append_cmake_folder()
+
 # Include the docs utilities file for easier configuration
 # This will initialize everything needed to use Natural Docs as well as include helper functions
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")

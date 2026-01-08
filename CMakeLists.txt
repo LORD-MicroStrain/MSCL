@@ -22,6 +22,9 @@ set_property(GLOBAL PROPERTY
     USE_FOLDERS ON
 )
 
+# Set the root folder name for IDE folders
+set(CMAKE_FOLDER "${PROJECT_NAME}")
+
 # Supported build configurations
 set(CMAKE_CONFIGURATION_TYPES "Release;Debug")
 

@@ -9,6 +9,8 @@ set(SWIG_SOURCE_FILES
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 include(mscl_swig_utilities)
 
+microstrain_append_cmake_folder()
+
 # Build the C# bindings
 if(MSCL_BUILD_CSHARP)
     add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/csharp")

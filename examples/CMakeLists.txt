@@ -38,11 +38,15 @@ function(mscl_install_examples)
         )
     endforeach()
 
-    microstrain_set_cpack_component_file_name(
-        COMPONENT_NAME "${COMPONENT_NAME}"
-        COMPONENT_VERSION "${CPACK_PACKAGE_VERSION}"
-    )
+    if(MSCL_BUILD_PACKAGE)
+        microstrain_set_cpack_component_file_name(
+            COMPONENT_NAME "${COMPONENT_NAME}"
+            COMPONENT_VERSION "${CPACK_PACKAGE_VERSION}"
+        )
+    endif()
 endfunction()
+
+microstrain_append_cmake_folder()
 
 # Create a target to allow building all the example targets
 set(MSCL_EXAMPLES_ALL_TARGET "${PROJECT_NAME}-Examples")

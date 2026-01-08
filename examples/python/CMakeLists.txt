@@ -1,3 +1,5 @@
+microstrain_append_cmake_folder()
+
 set(MSCL_PYTHON_EXAMPLES_SUBDIRECTORIES
     "displacement"
     "inertial"

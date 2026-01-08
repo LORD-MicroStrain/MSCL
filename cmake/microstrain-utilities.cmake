@@ -479,3 +479,8 @@ function(microstrain_generate_package_config)
         COMPONENT "${COMPONENT_NAME}"
     )
 endfunction()
+
+macro(microstrain_append_cmake_folder)
+    get_filename_component(CURRENT_DIR_NAME "${CMAKE_CURRENT_LIST_DIR}" NAME)
+    string(APPEND CMAKE_FOLDER "/${CURRENT_DIR_NAME}")
+endmacro()

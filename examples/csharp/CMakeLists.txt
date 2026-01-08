@@ -1,3 +1,5 @@
+microstrain_append_cmake_folder()
+
 set(MSCL_CSHARP_EXAMPLES_SUBDIRECTORIES
     "${CMAKE_CURRENT_LIST_DIR}/displacement"
     "${CMAKE_CURRENT_LIST_DIR}/inertial"

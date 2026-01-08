@@ -1,6 +1,6 @@
-set(MSCL_TEST_TARGET "${PROJECT_NAME}-Tests")
+microstrain_append_cmake_folder()
 
-set(Turtle_ROOT "" CACHE PATH "Location to search for the Turtle headers")
+set(MSCL_TEST_TARGET "${PROJECT_NAME}-Tests")
 
 # Create the test project
 add_executable(${MSCL_TEST_TARGET})
@@ -10,6 +10,8 @@ add_dependencies("${MSCL_TEST_TARGET}" "${MSCL_LIBRARY}")
 
 # Add the test sources
 add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/src")
+
+set(Turtle_ROOT "" CACHE PATH "Location to search for the Turtle headers")
 
 # Common header in the Turtle library used to find the include directory
 set(Turtle_MOCK_HEADER "mock.hpp")
