@@ -83,12 +83,20 @@ if(NOT MSVC)
 endif()
 
 # Find Boost
-set(Boost_REQUESTED_COMPONENTS
+# Boost compiled components
+set(Boost_COMPILED_COMPONENTS
+    "filesystem"
+    "headers" # Interface library encompassing all header-only libraries
+)
+
+# Header-only components available only when Boost is included from source
+# All of these are typically linked to boost_header/Boost::headers
+# These don't need to be used, but tells Boost exactly which libraries we want
+set(Boost_HEADER_COMPONENTS
     "asio"
     "beast"
     "circular_buffer"
     "crc"
-    "filesystem"
     "lambda"
     "math"
 )
@@ -96,7 +104,11 @@ set(Boost_REQUESTED_COMPONENTS
 # Find the proper linking version of Boost
 set(Boost_USE_STATIC_LIBS ${MSCL_LINK_STATIC_DEPS})
 
-find_package("Boost" REQUIRED COMPONENTS ${Boost_REQUESTED_COMPONENTS} CONFIG)
+find_package("Boost" REQUIRED
+    COMPONENTS ${Boost_COMPILED_COMPONENTS}
+    OPTIONAL_COMPONENTS ${Boost_HEADER_COMPONENTS}
+    CONFIG
+)
 
 target_link_libraries("${MSCL_CPP_TARGET}" PUBLIC
     # Prevent Boost from being exported when MSCL is a dependency of another project
