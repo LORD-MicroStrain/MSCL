@@ -1,5 +1,5 @@
 set(SWIG_ROOT "" CACHE PATH "Location to search for the Swig executable")
-set(SWIG_REQUESTED_VERSION "4.0.0" CACHE STRING "Requested version of Swig")
+set(SWIG_REQUESTED_VERSION "4.4.1" CACHE STRING "Requested version of Swig")
 
 # Attempt to find Swig before manually downloading it (this assumes SWIG_ROOT was set by the user)
 find_package("SWIG" "${SWIG_REQUESTED_VERSION}" QUIET)

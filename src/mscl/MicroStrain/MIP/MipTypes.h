@@ -2811,7 +2811,7 @@ namespace mscl
         //      RTCM         - 0x00000008 - RTCM
         //      SPARTN       - 0x00000010 - SPARTN
         //      ALL          - 0x0000001F - All protocols
-        enum Protocol : uint32
+        enum Protocol
         {
             NONE         = 0x00000000, // Not set
             MIP          = 0x00000001, // MIP commands and data
