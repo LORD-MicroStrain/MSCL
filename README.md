@@ -52,6 +52,7 @@ Latest pre-release packages can be found [here](https://github.com/LORD-MicroStr
     <td> C++ Static (.lib) x86 </td>
   </tr>
   <tr align="center">
+    <td rowspan="3"> Python </td>
     <td> Python 3.10 x64 </td>
     <td> Python 3.10 x86 </td>
   </tr>
@@ -95,6 +96,7 @@ Latest pre-release packages can be found [here](https://github.com/LORD-MicroStr
     <td> C++ Static (.a) armhf </td>
   </tr>
   <tr align="center">
+    <td rowspan="3"> Python </td>
     <td> Python 3.10 x64 </td>
     <td> Python 3.10 arm64 </td>
     <td> Python 3.10 armhf </td>
