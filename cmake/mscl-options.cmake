@@ -8,7 +8,7 @@ option(MSCL_BUILD_PYTHON2 "Whether to build the python 2 bindings." OFF)
 option(MSCL_BUILD_PYTHON3 "Whether to build the python 3 bindings." OFF)
 option(MSCL_LINK_STATIC_DEPS "Whether to link the dependencies statically. Please note that this means that OpenSSL and Boost must be built with -fPIC on Linux" ON)
 option(MSCL_BUILD_TESTS "Whether to build the unit tests." OFF)
-option(MSCL_WITH_SSL "Whether or not to compile the library with SSL support" ON)# Shared libraries are required on Linux for Python builds
+option(MSCL_WITH_SSL "Whether or not to compile the library with SSL support" ON)
 
 # Allow the user to use a pre-installed version of Boost
 option(MSCL_DOWNLOAD_BOOST "MSCL can download Boost if not already installed. Set Boost_ROOT to the Boost directory if this is turned off" ON)
