@@ -484,3 +484,46 @@ macro(microstrain_append_cmake_folder)
     get_filename_component(CURRENT_DIR_NAME "${CMAKE_CURRENT_LIST_DIR}" NAME)
     string(APPEND CMAKE_FOLDER "/${CURRENT_DIR_NAME}")
 endmacro()
+
+function(microstrain_update_copyright_in_files)
+    set(OPTIONS)
+    set(SINGLE_VALUES)
+    set(MULTI_VALUES FILES)
+
+    set(UPDATE_COPYRIGHT_ARG_PREFIX "UPDATE_COPYRIGHT_ARG")
+    cmake_parse_arguments(${UPDATE_COPYRIGHT_ARG_PREFIX}
+        "${OPTIONS}"
+        "${SINGLE_VALUES}"
+        "${MULTI_VALUES}"
+        "${ARGN}"
+    )
+
+    # Remove the prefix from the arguments
+    foreach(ARG IN LISTS MULTI_VALUES)
+        set(${ARG} ${${UPDATE_COPYRIGHT_ARG_PREFIX}_${ARG}})
+    endforeach()
+
+    # Make sure all the required arguments are used
+    foreach(ARG IN LISTS MULTI_VALUES)
+        if(NOT ${ARG})
+            message(FATAL_ERROR "Updating copyright year requires the ${ARG} argument to be set")
+        endif()
+    endforeach()
+
+    # Get the current year for the copyright
+    string(TIMESTAMP CURRENT_YEAR "%Y")
+
+    foreach(FILE IN LISTS FILES)
+        # Read the main JavaScript file to automatically update the version and copyright year
+        file(READ ${FILE} FILE_CONTENT)
+
+        # Update the copyright year if need be
+        # This handles both prefixed and suffixed years
+        set(MICROSTRAIN_COMPANY_NAME "MicroStrain by HBK")
+        string(REGEX REPLACE "(${MICROSTRAIN_COMPANY_NAME} )[0-9]+" "\\1${CURRENT_YEAR}" FILE_CONTENT "${FILE_CONTENT}")
+        string(REGEX REPLACE "[0-9]+( ${MICROSTRAIN_COMPANY_NAME})" "${CURRENT_YEAR}\\1" FILE_CONTENT "${FILE_CONTENT}")
+
+        # Update the file with any potential changes
+        file(CONFIGURE OUTPUT "${FILE}" CONTENT "${FILE_CONTENT}" @ONLY NEWLINE_STYLE LF)
+    endforeach()
+endfunction()

@@ -109,3 +109,7 @@ set(MSCL_UNIT_TEST_SOURCES
 target_sources("${MSCL_TEST_TARGET}" PRIVATE
     ${MSCL_UNIT_TEST_SOURCES}
 )
+
+microstrain_update_copyright_in_files(FILES
+    ${MSCL_UNIT_TEST_SOURCES}
+)
