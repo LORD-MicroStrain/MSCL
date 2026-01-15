@@ -75,20 +75,7 @@ build_dir="${project_dir}/build_prerelease"
 mkdir -p "${build_dir}"
 
 # Configure a basic cmake project so we can check the version
-cmake -S "${project_dir}" -B "${build_dir}" \
-  -DCMAKE_VERBOSE_MAKEFILE="OFF" \
-  -DCMAKE_BUILD_TYPE="Release" \
-  -DBUILD_SHARED_LIBS="OFF" \
-  -DMSCL_BUILD_PYTHON2="OFF" \
-  -DMSCL_BUILD_PYTHON3="OFF" \
-  -DMSCL_BUILD_TESTS="OFF" \
-  -DMSCL_BUILD_EXAMPLES="OFF" \
-  -DMSCL_ZIP_EXAMPLES="OFF" \
-  -DMSCL_BUILD_DOCUMENTATION="OFF" \
-  -DMSCL_WITH_SSL="OFF" \
-  -DMSCL_WITH_WEBSOCKETS="OFF" \
-  -DMSCL_BUILD_PACKAGE="OFF" \
-  -DMSCL_LINK_STATIC_DEPS="OFF" \
+cmake -S "${project_dir}" -B "${build_dir}" -DCMAKE_BUILD_TYPE="Release" \
   || echo "" # Failures are OK. Project version is added to the cache immediately
 
 # Only continue the prerelease if the project version changed on develop
