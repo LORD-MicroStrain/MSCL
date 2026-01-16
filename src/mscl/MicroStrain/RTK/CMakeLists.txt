@@ -1,0 +1,21 @@
+add_subdirectory(Commands)
+
+set(MSCL_MICROSTRAIN_RTK_FILES
+    "${CMAKE_CURRENT_LIST_DIR}/RTKNode.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/RTKNode.h"
+)
+
+# Filter and add the source files to the target
+set(MSCL_MICROSTRAIN_RTK_SOURCES ${MSCL_MICROSTRAIN_RTK_FILES})
+list(FILTER MSCL_MICROSTRAIN_RTK_SOURCES INCLUDE REGEX "^.*\\.(c|cpp)$")
+target_sources("${MSCL_CPP_TARGET}" PRIVATE
+    ${MSCL_MICROSTRAIN_RTK_SOURCES}
+)
+
+# Filter and add the header files to the target using file sets
+set(MSCL_MICROSTRAIN_RTK_HEADERS ${MSCL_MICROSTRAIN_RTK_FILES})
+list(FILTER MSCL_MICROSTRAIN_RTK_HEADERS INCLUDE REGEX "^.*\\.(h|hpp)$")
+target_sources("${MSCL_CPP_TARGET}" PUBLIC
+    FILE_SET "${MSCL_HEADER_FILE_SET}"
+    FILES ${MSCL_MICROSTRAIN_RTK_HEADERS}
+)

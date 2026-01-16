@@ -1,0 +1,84 @@
+/*****************************************************************************************
+**          Copyright(c) 2015-2026 MicroStrain by HBK. All rights reserved.             **
+**                                                                                      **
+**    MIT Licensed. See the included LICENSE file for a copy of the full MIT License.   **
+*****************************************************************************************/
+
+#pragma once
+
+#include "mscl/Communication/Connection_Impl.h"
+
+namespace mscl
+{
+    //Class: SerialConnection
+    //    A <Connection_Impl> derived class that represents a serial connection.
+    class SerialConnection final : public Connection_Impl<boost::asio::serial_port>
+    {
+        friend Connection Connection::Serial(const std::string& port, uint32 baudRate);
+
+        SerialConnection();                                        //default constructor disabled
+        SerialConnection(const SerialConnection&);                //copy constructor disabled
+        SerialConnection& operator=(const SerialConnection&);    //assignment operator disabled
+
+        //Constructor: SerialConnection
+        //    Initializes the SerialConnection object.
+        //
+        //Parameters:
+        //    port - The actual string name of the COM port (ex. "COM26")
+        //    baudRate - The baud rate at which to open the COM port.
+        //
+        //Exceptions:
+        //    - <Error_InvalidSerialPort>: the specified com port is invalid
+        //    - <Error_Connection>: failed to get or set com port parameters
+        explicit SerialConnection(const std::string& port, uint32 baudRate);
+
+    public:
+        //Destructor: ~SerialConnection
+        //    Destroys the SerialConnection object
+        ~SerialConnection() override = default;
+
+    private:
+        //Variable: m_port
+        //    The string name of the port (ex. "COM26")
+        std::string m_port;
+
+        //Variable: m_baudRate
+        //    The baud rate of the connection
+        uint32 m_baudRate;
+
+    public:
+        //Function: description
+        //    Gets a description of the connection as a string
+        //
+        //Returns:
+        //    A description of the connection
+        std::string description() override;
+
+        //Function: port
+        //    Gets a name of the connection port
+        //
+        //Returns:
+        //    The port name of the connection
+        std::string port() const override;
+
+        //API Function: updateBaudRate
+        //  Updates the serial connection baud rate.
+        //  Important: The connection to the port will be closed and re-opened at the new baud rate.
+        //
+        //Parameters:
+        //  baudRate - the baud rate at which to reestablish the connection
+        //
+        //Exceptions:
+        //  - <Error_Connection>: a connection error has occurred, such as the device being unplugged.
+        void updateBaudRate(uint32 baudRate) override;
+
+    private:
+        //Function: establishConnection
+        //    Initializes and opens the current connection
+        //
+        //Exceptions:
+        //    - <Error_InvalidSerialPort>: the specified com port is invalid
+        //    - <Error_Connection>: failed to get or set com port parameters
+        void establishConnection() override;
+    };
+} // namespace mscl

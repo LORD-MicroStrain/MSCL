@@ -1,0 +1,16 @@
+{
+  "name": "mscl-python@MSCL_PYTHON_VERSION_COMBINED@",
+  "version": "1.0.0",
+  "builtin-baseline": "@MSCL_VCPKG_BASELINE_VERSION@",
+  "dependencies": [
+    {
+      "name": "python@MSCL_PYTHON_MAJOR_VERSION@"
+    }
+  ],
+  "overrides": [
+    {
+      "name": "python@MSCL_PYTHON_MAJOR_VERSION@",
+      "version": "@MSCL_PYTHON_LATEST_VERSION@#@MSCL_PYTHON_LATEST_PORT@"
+    }
+  ]
+}

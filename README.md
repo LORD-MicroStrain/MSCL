@@ -1,9 +1,9 @@
 # MSCL - The MicroStrain Communication Library
 
-MSCL is developed by [MicroStrain](https://microstrain.com) in Williston, VT. It was created to make it simple to interact with our
-[Wireless](https://www.microstrain.com/wireless), and [Inertial](https://www.microstrain.com/inertial) sensors.
+MSCL is developed by [MicroStrain](https://www.hbkworld.com/en/Campaign/microstrain-by-hbk) in Williston, VT. It was created to make it simple to interact with our
+[Wireless](https://www.hbkworld.com/en/products/instruments/wireless-daq-systems), and [Inertial](https://www.hbkworld.com/en/products/transducers/inertial-sensors) sensors.
 
-[![GitHub tag status](https://img.shields.io/github/checks-status/LORD-MicroStrain/MSCL/v67.1.0?label=v67.1.0)](https://github.com/LORD-MicroStrain/MSCL/releases/v67.1.0/) &nbsp;
+[![GitHub tag status](https://img.shields.io/github/checks-status/LORD-MicroStrain/MSCL/v68.0.0?label=v68.0.0)](https://github.com/LORD-MicroStrain/MSCL/releases/v68.0.0/) &nbsp;
 [![GitHub tag status](https://img.shields.io/github/checks-status/LORD-MicroStrain/MSCL/latest?label=latest)](https://github.com/LORD-MicroStrain/MSCL/releases/latest/)
 
 ### Support/Issues
@@ -22,11 +22,11 @@ For projects using our inertial product lines check out our new lightweight C/C+
 Release notes and all downloadable assets can be found on our [releases page](https://github.com/LORD-MicroStrain/MSCL/releases) or from the
 links below.
 
-[Offline Documentation](https://github.com/LORD-MicroStrain/MSCL/releases/download/v67.1.0/MSCL_Documentation_v67.1.0.zip)</br>
-[Offline Example Code](https://github.com/LORD-MicroStrain/MSCL/releases/download/v67.1.0/MSCL_Examples_v67.1.0.zip)
+[Offline Documentation](https://github.com/LORD-MicroStrain/MSCL/releases/download/v68.0.0/MSCL-Documentation-v68.0.0.zip)</br>
+[Offline Example Code](https://github.com/LORD-MicroStrain/MSCL/releases/download/v68.0.0/MSCL-Examples-v68.0.0.zip)
 
 Please see our [releases](https://github.com/LORD-MicroStrain/MSCL/releases) page for all of our release notes and packages.</br>
-Packages for the current release, <b>v67.1.0</b>, can be found [here](https://github.com/LORD-MicroStrain/MSCL/releases/tag/v67.1.0)</br>
+Packages for the current release, <b>v68.0.0</b>, can be found [here](https://github.com/LORD-MicroStrain/MSCL/releases/tag/v68.0.0)</br>
 Latest pre-release packages can be found [here](https://github.com/LORD-MicroStrain/MSCL/releases/tag/latest)</br>
 
 ## Supported Pre-Built Binaries/Packages
@@ -52,15 +52,7 @@ Latest pre-release packages can be found [here](https://github.com/LORD-MicroStr
     <td> C++ Static (.lib) x86 </td>
   </tr>
   <tr align="center">
-    <td rowspan="6"> Python </td>
-    <td> Python 2.7 x64 </td>
-    <td> Python 2.7 x86 </td>
-  </tr>
-  <tr align="center">
-    <td> Python 3.9 x64 </td>
-    <td> Python 3.9 x86 </td>
-  </tr>
-  <tr align="center">
+    <td rowspan="3"> Python </td>
     <td> Python 3.10 x64 </td>
     <td> Python 3.10 x86 </td>
   </tr>
@@ -71,10 +63,6 @@ Latest pre-release packages can be found [here](https://github.com/LORD-MicroStr
   <tr align="center">
     <td> Python 3.12 x64 </td>
     <td> Python 3.12 x86 </td>
-  </tr>
-  <tr align="center">
-    <td> Python 3.13 x64 </td>
-    <td> Python 3.13 x86 </td>
   </tr>
   <tr align="center">
     <td> .NET </td>
@@ -108,17 +96,7 @@ Latest pre-release packages can be found [here](https://github.com/LORD-MicroStr
     <td> C++ Static (.a) armhf </td>
   </tr>
   <tr align="center">
-    <td rowspan="6"> Python </td>
-    <td> Python 2.7 x64 </td>
-    <td> Python 2.7 arm64 </td>
-    <td> Python 2.7 armhf </td>
-  </tr>
-  <tr align="center">
-    <td> Python 3.9 x64 </td>
-    <td> Python 3.9 arm64 </td>
-    <td> Python 3.9 armhf </td>
-  </tr>
-  <tr align="center">
+    <td rowspan="3"> Python </td>
     <td> Python 3.10 x64 </td>
     <td> Python 3.10 arm64 </td>
     <td> Python 3.10 armhf </td>
@@ -133,11 +111,6 @@ Latest pre-release packages can be found [here](https://github.com/LORD-MicroStr
     <td> Python 3.12 arm64 </td>
     <td> Python 3.12 armhf </td>
   </tr>
-  <tr align="center">
-    <td> Python 3.13 x64 </td>
-    <td> Python 3.13 arm64 </td>
-    <td> Python 3.13 armhf </td>
-  </tr>
 </table>
 
 ### RPM:
@@ -150,8 +123,8 @@ from source.
 If the pre-built packages aren't available on your platform, you can build MSCL from source.
 
 Instructions can be found here:</br>
-[Building MSCL on Windows](BuildScripts/buildReadme_Windows.md)</br>
-[Building MSCL on Linux](BuildScripts/buildReadme_Linux.md)
+[Building MSCL on Windows](scripts/buildReadme_Windows.md)</br>
+[Building MSCL on Linux](scripts/buildReadme_Linux.md)
 
 ---
 
@@ -159,7 +132,7 @@ Instructions can be found here:</br>
 
 MSCL documentation can now be found [here](https://github.com/LORD-MicroStrain/MSCL_documentation)
 
-[Example Code](MSCL_Examples)
+[Example Code](examples)
 
 * Note: LabVIEW example code is provided in the [LabVIEW-MSCL VI package](https://github.com/LORD-MicroStrain/LabVIEW-MSCL).
 
@@ -174,4 +147,4 @@ Boost - see the [License_Boost.txt](License_Boost.txt) file in the source distri
 
 MSCL is released under the MIT License - see the [LICENSE](LICENSE) file in the source distribution.
 
-Copyright (c) 2015-2025 MicroStrain by HBK. All Rights Reserved.
+Copyright (c) 2015-2026 MicroStrain by HBK. All Rights Reserved.

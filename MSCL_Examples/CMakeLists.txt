@@ -1,3 +1,0 @@
-add_subdirectory(Inertial)
-add_subdirectory(Wireless)
-add_subdirectory(Displacement)
