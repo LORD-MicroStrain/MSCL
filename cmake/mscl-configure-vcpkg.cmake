@@ -98,7 +98,7 @@ set(VCPKG_CHECK_FILENAME "${MSCL_VCPKG_DIR}/.gitignore")
 
 if(GIT_FOUND)
     # Make a lock file
-    set(VCPKG_LOCK_FILE "${MSCL_VCPKG_DIR}/downloads/.lock")
+    set(VCPKG_LOCK_FILE "${CMAKE_CURRENT_LIST_DIR}/../_deps/vcpkg.lock")
 
     # Check if the submodule directory exists and is populated
     if(NOT EXISTS "${VCPKG_CHECK_FILENAME}")
