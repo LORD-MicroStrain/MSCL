@@ -92,6 +92,12 @@ project_dir="${script_dir}/.."
 
 pushd "${project_dir}"
 
+# Jenkins causes detached HEAD states occasionally. Fix that problem here
+if [ "$(git rev-parse --abbrev-ref HEAD)" = "HEAD" ]; then
+  echo "Detached HEAD detected, checking out ${target} branch..."
+  git checkout -B "${target}"
+fi
+
 # Make sure the tags are fetched
 git fetch --tags
 

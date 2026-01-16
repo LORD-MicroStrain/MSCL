@@ -114,6 +114,12 @@ chmod 700 "${git_askpass_file}"
 
 pushd "${project_dir}"
 
+# Jenkins causes detached HEAD states occasionally. Fix that problem here
+if [ "$(git rev-parse --abbrev-ref HEAD)" = "HEAD" ]; then
+  echo "Detached HEAD detected, checking out ${target} branch..."
+  git checkout -B "${target}"
+fi
+
 # Find the commit that this project is built on
 mscl_commit="$(git rev-parse HEAD)"
 
