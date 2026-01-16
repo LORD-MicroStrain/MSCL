@@ -34,6 +34,9 @@ def checkoutRepo() {
       recursiveSubmodules: true,
       reference: '',
       trackingSubmodules: false
+    ],[
+      $class: 'LocalBranch',
+      localBranch: BRANCH_NAME_REAL,
     ]],
     submoduleCfg: []
   ])
