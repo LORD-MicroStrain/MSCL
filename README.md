@@ -23,7 +23,6 @@ Release notes and all downloadable assets can be found on our [releases page](ht
 links below.
 
 [Offline Documentation](https://github.com/LORD-MicroStrain/MSCL/releases/download/v68.0.0/MSCL-Documentation-v68.0.0.zip)</br>
-[Offline Example Code](https://github.com/LORD-MicroStrain/MSCL/releases/download/v68.0.0/MSCL-Examples-v68.0.0.zip)
 
 Please see our [releases](https://github.com/LORD-MicroStrain/MSCL/releases) page for all of our release notes and packages.</br>
 Packages for the current release, <b>v68.0.0</b>, can be found [here](https://github.com/LORD-MicroStrain/MSCL/releases/tag/v68.0.0)</br>
@@ -52,15 +51,7 @@ Latest pre-release packages can be found [here](https://github.com/LORD-MicroStr
     <td> C++ Static (.lib) x86 </td>
   </tr>
   <tr align="center">
-    <td rowspan="3"> Python </td>
-    <td> Python 3.10 x64 </td>
-    <td> Python 3.10 x86 </td>
-  </tr>
-  <tr align="center">
-    <td> Python 3.11 x64 </td>
-    <td> Python 3.11 x86 </td>
-  </tr>
-  <tr align="center">
+    <td> Python </td>
     <td> Python 3.12 x64 </td>
     <td> Python 3.12 x86 </td>
   </tr>
@@ -96,17 +87,7 @@ Latest pre-release packages can be found [here](https://github.com/LORD-MicroStr
     <td> C++ Static (.a) armhf </td>
   </tr>
   <tr align="center">
-    <td rowspan="3"> Python </td>
-    <td> Python 3.10 x64 </td>
-    <td> Python 3.10 arm64 </td>
-    <td> Python 3.10 armhf </td>
-  </tr>
-  <tr align="center">
-    <td> Python 3.11 x64 </td>
-    <td> Python 3.11 arm64 </td>
-    <td> Python 3.11 armhf </td>
-  </tr>
-  <tr align="center">
+    <td> Python </td>
     <td> Python 3.12 x64 </td>
     <td> Python 3.12 arm64 </td>
     <td> Python 3.12 armhf </td>

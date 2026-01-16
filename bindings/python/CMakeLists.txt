@@ -37,7 +37,6 @@ if(MSCL_BUILD_PYTHON3)
 
     # List of supported Python3 versions
     set(MSCL_SUPPORTED_PYTHON3_VERSIONS
-        "3.11"
         "3.12"
     )
 
