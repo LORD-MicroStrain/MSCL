@@ -1,7 +1,7 @@
 # MSCL - The MicroStrain Communication Library
 
-MSCL is developed by [MicroStrain](https://microstrain.com) in Williston, VT. It was created to make it simple to interact with our
-[Wireless](https://www.microstrain.com/wireless), and [Inertial](https://www.microstrain.com/inertial) sensors.
+MSCL is developed by [MicroStrain](https://www.hbkworld.com/en/Campaign/microstrain-by-hbk) in Williston, VT. It was created to make it simple to interact with our
+[Wireless](https://www.hbkworld.com/en/products/instruments/wireless-daq-systems), and [Inertial](https://www.hbkworld.com/en/products/transducers/inertial-sensors) sensors.
 
 [![GitHub tag status](https://img.shields.io/github/checks-status/LORD-MicroStrain/MSCL/v67.1.0?label=v67.1.0)](https://github.com/LORD-MicroStrain/MSCL/releases/v67.1.0/) &nbsp;
 [![GitHub tag status](https://img.shields.io/github/checks-status/LORD-MicroStrain/MSCL/latest?label=latest)](https://github.com/LORD-MicroStrain/MSCL/releases/latest/)
@@ -147,4 +147,4 @@ Boost - see the [License_Boost.txt](License_Boost.txt) file in the source distri
 
 MSCL is released under the MIT License - see the [LICENSE](LICENSE) file in the source distribution.
 
-Copyright (c) 2015-2025 MicroStrain by HBK. All Rights Reserved.
+Copyright (c) 2015-2026 MicroStrain by HBK. All Rights Reserved.

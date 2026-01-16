@@ -59,6 +59,12 @@ string(TIMESTAMP MSCL_CURRENT_YEAR "%Y")
 # Include some utilities used for MicroStrain projects
 include(microstrain-utilities)
 
+# Update the copyright in the license and readme files if needed
+microstrain_update_copyright_in_files(FILES
+    "${CMAKE_CURRENT_LIST_DIR}/LICENSE"
+    "${CMAKE_CURRENT_LIST_DIR}/README.md"
+)
+
 # Detect if this is a x64 or x86 build
 microstrain_get_architecture(MSCL_ARCH_NAME)
 if(${MSCL_ARCH_NAME} STREQUAL "x64")

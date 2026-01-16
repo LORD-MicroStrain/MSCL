@@ -70,6 +70,12 @@ source_group(
     FILES ${MSCL_SOURCES} ${MSCL_HEADERS}
 )
 
+# Update the copyright in all of the source files if needed
+microstrain_update_copyright_in_files(FILES
+    ${MSCL_SOURCES}
+    ${MSCL_HEADERS}
+)
+
 target_include_directories("${MSCL_CPP_TARGET}" PUBLIC
     "$<BUILD_INTERFACE:${MSCL_INCLUDE_DIR}>"           # Include directory for building
     "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>" # Include directory for installations
