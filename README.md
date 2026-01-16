@@ -52,15 +52,7 @@ Latest pre-release packages can be found [here](https://github.com/LORD-MicroStr
     <td> C++ Static (.lib) x86 </td>
   </tr>
   <tr align="center">
-    <td rowspan="6"> Python </td>
-    <td> Python 2.7 x64 </td>
-    <td> Python 2.7 x86 </td>
-  </tr>
-  <tr align="center">
-    <td> Python 3.9 x64 </td>
-    <td> Python 3.9 x86 </td>
-  </tr>
-  <tr align="center">
+    <td rowspan="3"> Python </td>
     <td> Python 3.10 x64 </td>
     <td> Python 3.10 x86 </td>
   </tr>
@@ -71,10 +63,6 @@ Latest pre-release packages can be found [here](https://github.com/LORD-MicroStr
   <tr align="center">
     <td> Python 3.12 x64 </td>
     <td> Python 3.12 x86 </td>
-  </tr>
-  <tr align="center">
-    <td> Python 3.13 x64 </td>
-    <td> Python 3.13 x86 </td>
   </tr>
   <tr align="center">
     <td> .NET </td>
@@ -108,17 +96,7 @@ Latest pre-release packages can be found [here](https://github.com/LORD-MicroStr
     <td> C++ Static (.a) armhf </td>
   </tr>
   <tr align="center">
-    <td rowspan="6"> Python </td>
-    <td> Python 2.7 x64 </td>
-    <td> Python 2.7 arm64 </td>
-    <td> Python 2.7 armhf </td>
-  </tr>
-  <tr align="center">
-    <td> Python 3.9 x64 </td>
-    <td> Python 3.9 arm64 </td>
-    <td> Python 3.9 armhf </td>
-  </tr>
-  <tr align="center">
+    <td rowspan="3"> Python </td>
     <td> Python 3.10 x64 </td>
     <td> Python 3.10 arm64 </td>
     <td> Python 3.10 armhf </td>
@@ -132,11 +110,6 @@ Latest pre-release packages can be found [here](https://github.com/LORD-MicroStr
     <td> Python 3.12 x64 </td>
     <td> Python 3.12 arm64 </td>
     <td> Python 3.12 armhf </td>
-  </tr>
-  <tr align="center">
-    <td> Python 3.13 x64 </td>
-    <td> Python 3.13 arm64 </td>
-    <td> Python 3.13 armhf </td>
   </tr>
 </table>
 

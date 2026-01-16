@@ -90,6 +90,59 @@ endif()
 
 set(MSCL_VCPKG_DIR "${CMAKE_CURRENT_LIST_DIR}/../deps/vcpkg")
 
+find_package(Git QUIET)
+
+# Name of a common file to check if it exists to know the submodule was checked out
+# gitignore is a good option since it will always exist
+set(VCPKG_CHECK_FILENAME "${MSCL_VCPKG_DIR}/.gitignore")
+
+if(GIT_FOUND)
+    # Make a lock file
+    set(VCPKG_LOCK_FILE "${MSCL_VCPKG_DIR}/downloads/.lock")
+
+    # Check if the submodule directory exists and is populated
+    if(NOT EXISTS "${VCPKG_CHECK_FILENAME}")
+        # Attempt to lock the file so we can print a status message on the lock
+        file(LOCK "${VCPKG_LOCK_FILE}" GUARD FILE RESULT_VARIABLE VCPKG_IS_LOCKED TIMEOUT 1)
+
+        # The try-lock will timeout (not 0) if another config is already updating the submodule
+        if(NOT "${VCPKG_IS_LOCKED}" STREQUAL "0")
+            message(STATUS "vcpkg submodule is already being updated. Waiting for the lock to release...")
+        endif()
+        unset(VCPKG_IS_LOCKED)
+
+        # Release the try-lock to proceed to update the submodule
+        file(LOCK "${VCPKG_LOCK_FILE}" RELEASE)
+
+        # Acquire lock to serialize updates across parallel configurations
+        file(LOCK "${VCPKG_LOCK_FILE}" GUARD FILE TIMEOUT 600)
+
+        # Double-check after acquiring lock
+        if(NOT EXISTS "${VCPKG_CHECK_FILENAME}")
+            message(STATUS "vcpkg submodule not found, updating submodules...")
+
+            execute_process(
+                COMMAND ${GIT_EXECUTABLE} submodule update --init --recursive
+                WORKING_DIRECTORY "${CMAKE_CURRENT_LIST_DIR}/.."
+                RESULT_VARIABLE SUBMODULE_UPDATE_RESULT
+            )
+
+            file(LOCK "${VCPKG_LOCK_FILE}" RELEASE)
+
+            if(NOT SUBMODULE_UPDATE_RESULT EQUAL "0")
+                message(FATAL_ERROR "git submodule update --init --recursive failed with ${SUBMODULE_UPDATE_RESULT}")
+            endif()
+        endif()
+
+        unset(VCPKG_LOCK_FILE)
+    endif()
+endif()
+
+# Check if the submodule directory exists and is populated
+if(NOT EXISTS "${VCPKG_CHECK_FILENAME}")
+    message(FATAL_ERROR "The vcpkg submodule was not checked out! Please update submodules and try again")
+endif()
+
 # Prefer vcpkg if we can find it. Fallback if CMake presets aren't used
 if(NOT DEFINED CMAKE_TOOLCHAIN_FILE)
     # Different vcpkg roots depending on OS
