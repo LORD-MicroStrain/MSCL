@@ -480,7 +480,7 @@ pipeline {
                     --artifacts "\$(find \$(pwd) -type f)" \
                     --target "${env.BRANCH_NAME}" \
                     --release "latest" \
-                    --docs-zip "\$(find \$(pwd) -type f -name 'MSCL-Documentation_*.zip' | sort | uniq)" \
+                    --docs-zip "\$(find \$(pwd) -type f -name 'MSCL-Documentation-*.zip' | sort | uniq)" \
                     --generate-notes
                 """
               }
@@ -498,7 +498,7 @@ pipeline {
                     --artifacts "\$(find \$(pwd) -type f)" \
                     --target "${env.BRANCH_NAME}" \
                     --release "\$(cd ${WORKSPACE} && git describe --match 'v*' --abbrev=0 --tags HEAD)" \
-                    --docs-zip "\$(find \$(pwd) -type f -name 'MSCL-Documentation_*.zip' | sort | uniq)"
+                    --docs-zip "\$(find \$(pwd) -type f -name 'MSCL-Documentation-*.zip' | sort | uniq)"
                 """
               }
             }

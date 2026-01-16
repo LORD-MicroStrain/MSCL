@@ -39,7 +39,8 @@ ___
     - Updated CMake compatibility from 3.16 to 3.23
     - Updated Swig compatibility from 4.0.0 to 4.4.1
     - Updated Natural Docs compatibility from 2.0.2 to 2.3.1
-    - Updated Python3 supported/tested versions from 3.9–3.13 to 3.10–3.12
+    - Updated Python3 supported/tested versions from 3.9–3.13 to 3.11–3.12
+      - Python3.10 cannot be pre-installed using vcpkg and must be installed by the user
     - Python 2.7 cannot be pre-installed using vcpkg and must be installed by the user
     - Updated Turtle compatibility from 1.3.0 to 2.0.0
   - Restructured project files and configurations
