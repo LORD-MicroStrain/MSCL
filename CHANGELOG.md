@@ -15,6 +15,8 @@ REMOVED - A function/class has been removed.
 ___
 
 ## Forthcoming
+
+## 68.0.0 - 2026-01-16
 - Wireless
     - Added support for the following models:
       - SG-Link-200-OEM, full bridge 128 Hz filter, internal antenna
