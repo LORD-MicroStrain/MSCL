@@ -75,8 +75,11 @@ build_dir="${project_dir}/build_prerelease"
 mkdir -p "${build_dir}"
 
 # Configure a basic cmake project so we can check the version
-cmake -S "${project_dir}" -B "${build_dir}" -DCMAKE_BUILD_TYPE="Release" \
-  || echo "" # Failures are OK. Project version is added to the cache immediately
+# Turn off vcpkg so the build fails/configures quickly since we're only looking for the version
+cmake -S "${project_dir}" -B "${build_dir}" \
+  -DCMAKE_BUILD_TYPE:STRING="Release" \
+  -DMSCL_USE_VCPKG:BOOL=OFF \
+  || echo "" # Failures are OK. Project version is added to the cache immediately after the project() call
 
 # Only continue the prerelease if the project version changed on develop
 pushd "${build_dir}"
