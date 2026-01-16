@@ -14,7 +14,7 @@ include(mscl-configure-vcpkg)
 cmake_minimum_required(VERSION 3.23)
 project("MSCL"
     LANGUAGES CXX
-    VERSION 67.1.0
+    VERSION 68.0.0
 )
 
 # Enable the use of organizing projects into folders for IDEs that support it
