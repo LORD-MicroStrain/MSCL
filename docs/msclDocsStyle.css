@@ -1,0 +1,113 @@
+﻿/* Custom Style Overrides - Only modified rules from Default.css */
+
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,400italic,500,500italic,700,700italic,300,300italic);
+
+:root {
+    --color-hbk-dark-blue: #00335a;
+    --color-hbk-grey-blue: #006c8e;
+}
+
+html {
+    font-family: 'Roboto', sans-serif;
+}
+
+#NDJavaScriptRequiredNotice {
+    font-family: 'Roboto', sans-serif;
+}
+
+#NDHeader {
+    background-color: var(--color-hbk-grey-blue);
+}
+
+.DarkTheme #NDHeader, .BlackTheme #NDHeader {
+    background: none;
+    background-color: var(--color-hbk-dark-blue);
+}
+
+#HTitle {
+    font-family: 'Roboto', sans-serif;
+}
+
+#HSubtitle {
+    font-family: 'Roboto', sans-serif;
+}
+
+#NDSearchField {
+    font-family: 'Roboto', sans-serif;
+}
+
+#NDSearchResults {
+    font-family: 'Roboto', sans-serif;
+}
+
+#MTabTitle {
+    font-family: 'Roboto', sans-serif;
+}
+
+.MEntry {
+    font-family: 'Roboto', sans-serif;
+}
+
+.SuEntry {
+    font-family: 'Roboto', sans-serif;
+}
+
+.SuEntry.TClass, .SuEntry.TInterface, .SuEntry.TStruct, .SuEntry.TSection, .SuEntry.TDatabase, .SuEntry.TDatabaseTable, .SuEntry.TFile.first {
+    font-family: 'Roboto', sans-serif;
+}
+
+.SuEntry.TGroup {
+    font-family: 'Roboto', sans-serif;
+}
+
+.CTopic {
+    font-family: 'Roboto', sans-serif;
+}
+
+.CTitle {
+    font-family: 'Roboto', sans-serif;
+}
+
+.CHeading {
+    font-family: 'Roboto', sans-serif;
+}
+
+.td.CDLEntry {
+    font-family: 'Roboto', sans-serif;
+}
+
+.CPName {
+    font-family: 'Roboto', sans-serif;
+}
+
+a.CPAdditionalChildrenNotice:link, a.CPAdditionalChildrenNotice:visited, a.CPAdditionalChildrenNotice:hover, a.CPAdditionalChildrenNotice:active {
+    font-family: 'Roboto', sans-serif;
+}
+
+.TTSummary {
+    font-family: 'Roboto', sans-serif;
+}
+
+#NDFooter {
+    font-family: 'Roboto', sans-serif;
+}
+
+.NDHomePage body {
+    background: none;
+}
+
+.HTitle {
+    font-family: 'Roboto', sans-serif;
+}
+
+.HSubtitle {
+    font-family: 'Roboto', sans-serif;
+}
+
+.HFooter {
+    font-family: 'Roboto', sans-serif;
+}
+
+.IE6 .SeEntry {
+    font-family: 'Roboto', sans-serif;
+}

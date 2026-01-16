@@ -1,0 +1,26 @@
+@PACKAGE_INIT@
+
+# Include the correct library by architecture
+if(CMAKE_SIZEOF_VOID_P EQUAL 4)
+    include("${CMAKE_CURRENT_LIST_DIR}/x86/@MSCL_CSHARP_MANAGED_EXPORT_TARGET_NAME@.cmake")
+    include("${CMAKE_CURRENT_LIST_DIR}/x86/@MSCL_CSHARP_EXPORT_TARGET_NAME@.cmake")
+else()
+    include("${CMAKE_CURRENT_LIST_DIR}/x64/@MSCL_CSHARP_MANAGED_EXPORT_TARGET_NAME@.cmake")
+    include("${CMAKE_CURRENT_LIST_DIR}/x64/@MSCL_CSHARP_EXPORT_TARGET_NAME@.cmake")
+endif()
+
+# Setup the library variable
+set(@MSCL_CSHARP_MANAGED_TARGET_UPPER@_LIBRARY "@MSCL_CSHARP_MANAGED_TARGET@")
+set(@MSCL_CSHARP_TARGET_UPPER@_LIBRARY "@MSCL_CSHARP_TARGET@")
+
+# Include the MSCL Managed reference utilities script
+# This allows use of the mscl_managed_add_references function
+include(${CMAKE_CURRENT_LIST_DIR}/@MSCL_CSHARP_MANAGED_REF_UTILS_FILENAME@)
+
+include(FindPackageHandleStandardArgs)
+find_package_handle_standard_args(
+    "@MSCL_CSHARP_MANAGED_TARGET@"
+    REQUIRED_VARS
+        @MSCL_CSHARP_MANAGED_TARGET_UPPER@_LIBRARY
+        @MSCL_CSHARP_TARGET_UPPER@_LIBRARY
+)

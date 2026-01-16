@@ -1,0 +1,64 @@
+@PACKAGE_INIT@
+
+# Include the correct library by architecture
+if(CMAKE_SIZEOF_VOID_P EQUAL 4)
+    include("${CMAKE_CURRENT_LIST_DIR}/x86/@PACKAGE_NAME@-targets.cmake")
+else()
+    include("${CMAKE_CURRENT_LIST_DIR}/x64/@PACKAGE_NAME@-targets.cmake")
+endif()
+
+# Create an alias for the target library
+add_library(@LIBRARY_NAME_ALIAS@ ALIAS @PACKAGE_NAMESPACE@::@LIBRARY_NAME@)
+@ADDITIONAL_LIBRARY_ALIAS@
+
+# Setup the library variable
+set(@LIBRARY_NAME_UPPER@_LIBRARY @PACKAGE_NAMESPACE@::@LIBRARY_NAME_ALIAS@)
+set(@LIBRARY_NAME_UPPER@_LIBRARIES ${@LIBRARY_NAME_UPPER@_LIBRARY})
+
+# Setup the include directories
+get_target_property(@LIBRARY_NAME_UPPER@_INCLUDE_DIR @LIBRARY_NAME_ALIAS@ INTERFACE_INCLUDE_DIRECTORIES)
+set_and_check(@LIBRARY_NAME_UPPER@_INCLUDE_DIR ${@LIBRARY_NAME_UPPER@_INCLUDE_DIR})
+set_and_check(@LIBRARY_NAME_UPPER@_INCLUDE_DIRS ${@LIBRARY_NAME_UPPER@_INCLUDE_DIR})
+
+# Consumers of MSCL need to use the precompiled header in their project
+# Configure that for them here
+target_precompile_headers(@PACKAGE_NAMESPACE@::@LIBRARY_NAME@ INTERFACE
+    "${@LIBRARY_NAME_UPPER@_INCLUDE_DIR}/mscl/stdafx.h"
+)
+
+# Find/configure some dependencies
+include(CMakeFindDependencyMacro)
+
+# Find the proper linking version of Boost
+set(Boost_USE_STATIC_LIBS @Boost_USE_STATIC_LIBS@)
+
+# Boost is required for linking the pre-built library
+find_dependency("Boost"
+    @Boost_VERSION@ EXACT
+    REQUIRED
+    COMPONENTS @Boost_REQUESTED_COMPONENTS@
+    CONFIG
+)
+
+# OpenSSL is required for linking if the pre-built library used it
+if(@MSCL_WITH_SSL@)
+    # OpenSSL doesn't clear its variables properly for recurring find_package calls
+    # This variable needs to be cleared so OPENSSL_ROOT_DIR can then be used properly
+    unset(OPENSSL_INCLUDE_DIR CACHE)
+
+    # Find the proper linking version of OpenSSL
+    set(OPENSSL_USE_STATIC_LIBS @OPENSSL_USE_STATIC_LIBS@)
+
+    find_dependency("OpenSSL"
+        @OPENSSL_VERSION@ EXACT
+        REQUIRED
+    )
+endif()
+
+include(FindPackageHandleStandardArgs)
+find_package_handle_standard_args(
+    @LIBRARY_NAME_UPPER@
+    REQUIRED_VARS
+        @LIBRARY_NAME_UPPER@_LIBRARY
+        @LIBRARY_NAME_UPPER@_INCLUDE_DIR
+)

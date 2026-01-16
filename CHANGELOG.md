@@ -29,6 +29,22 @@ ___
     - Moved CV7-GNSS/INS to correction source for PPS
     - Removes reserved value when reading CMD_EF_LEVER_ARM_OFFSET_REF
 - Appends -dirty to MSCL_GIT_COMMIT if there are changes in the repository
+- Project Configuration
+  - Added package management through vcpkg
+  - Updated project dependencies and toolchain
+    - Updated Boost compatibility from 1.68.0 to 1.90.0
+    - Updated OpenSSL compatibility from 1.1.0f to 3.6.0
+    - Updated CMake compatibility from 3.16 to 3.23
+    - Updated Swig compatibility from 4.0.0 to 4.4.1
+    - Updated Natural Docs compatibility from 2.0.2 to 2.3.1
+    - Updated Python3 supported/tested versions from 3.9–3.13 to 3.10–3.12
+    - Python 2.7 cannot be pre-installed using vcpkg and must be installed by the user
+    - Updated Turtle compatibility from 1.3.0 to 2.0.0
+  - Restructured project files and configurations
+  - Improved build system for cross-platform compatibility
+  - Renamed CMake targets for consistency
+    - Split static and dynamic C++ library building to depend on BUILD_SHARED_LIBS
+  - Improved CMake find module generation
 
 ## 67.1.0 - 2025-03-27
 - Wireless
