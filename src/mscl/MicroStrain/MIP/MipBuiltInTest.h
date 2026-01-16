@@ -1054,7 +1054,7 @@ namespace mscl
     //API Class: CV7ContinuousBIT
     //  Continuous Built-In Test flag data
     //
-    //  See the CV7 <Built-in Test: https://s3.amazonaws.com/files.microstrain.com/CV7+Online/user_manual_content/additional_features/Built-in%20Test.htm>
+    //  See the CV7 <Built-in Test: https://files.microstrain.com/CV7+Online/user_manual_content/additional_features/Built-in%20Test.htm>
     //  documentation for more information
     class CV7ContinuousBIT : public ContinuousBIT
     {
@@ -2082,7 +2082,7 @@ namespace mscl
     //API Class: GQ7ContinuousBIT
     //  Continuous Built-In Test flag data
     //
-    //  See the GQ7 <Built-in Test: https://s3.amazonaws.com/files.microstrain.com/GQ7+User+Manual/user_manual_content/additional_features/Built-in%20Test.htm>
+    //  See the GQ7 <Built-in Test: https://files.microstrain.com/GQ7+User+Manual/user_manual_content/additional_features/Built-in%20Test.htm>
     //  documentation for more information
     class GQ7ContinuousBIT : public ContinuousBIT
     {

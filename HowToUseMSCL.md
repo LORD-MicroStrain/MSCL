@@ -3,7 +3,7 @@
 ## Drivers
 
 Make sure you have the Windows/Linux drivers for our products installed. If you have installed our desktop software,
-[SensorConnect](https://www.microstrain.com/software/sensorconnect) on Windows, then the drivers were installed with it. If you want to install the
+[SensorConnect](https://www.hbkworld.com/en/products/software/inertial-sensor-software/sensorconnect) on Windows, then the drivers were installed with it. If you want to install the
 drivers separately, please visit our [drivers page](https://github.com/LORD-MicroStrain/Drivers).
 
 ## Windows
