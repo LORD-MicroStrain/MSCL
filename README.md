@@ -22,8 +22,8 @@ For projects using our inertial product lines check out our new lightweight C/C+
 Release notes and all downloadable assets can be found on our [releases page](https://github.com/LORD-MicroStrain/MSCL/releases) or from the
 links below.
 
-[Offline Documentation](https://github.com/LORD-MicroStrain/MSCL/releases/download/v68.0.0/MSCL_Documentation_v68.0.0.zip)</br>
-[Offline Example Code](https://github.com/LORD-MicroStrain/MSCL/releases/download/v68.0.0/MSCL_Examples_v68.0.0.zip)
+[Offline Documentation](https://github.com/LORD-MicroStrain/MSCL/releases/download/v68.0.0/MSCL-Documentation-v68.0.0.zip)</br>
+[Offline Example Code](https://github.com/LORD-MicroStrain/MSCL/releases/download/v68.0.0/MSCL-Examples-v68.0.0.zip)
 
 Please see our [releases](https://github.com/LORD-MicroStrain/MSCL/releases) page for all of our release notes and packages.</br>
 Packages for the current release, <b>v68.0.0</b>, can be found [here](https://github.com/LORD-MicroStrain/MSCL/releases/tag/v68.0.0)</br>
