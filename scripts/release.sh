@@ -219,7 +219,7 @@ unzip "${docs_zip}" -d "${docs_release_dir}"
 
 # Move all of the documentation contents into the root directory
 mv "${docs_release_dir}/mscl/Documentation/"* "${docs_release_dir}"
-rmdir "${docs_release_dir}/Documentation"
+rmdir "${docs_release_dir}/mscl/Documentation"
 
 documentation_readme="${docs_dir}/README.md"
 
