@@ -66,6 +66,11 @@ while [[ $# -gt 0 ]]; do
       shift # past argument
       shift # past value
       ;;
+    --build-dir)
+      build_dir="$2"
+      shift # past argument
+      shift # past value
+      ;;
     --generate-notes)
       generate_notes_flag="--generate-notes"
       shift # past argument
@@ -75,6 +80,7 @@ while [[ $# -gt 0 ]]; do
       ;;
   esac
 done
+
 if [ -z "${artifacts}" ] || [ -z "${docs_zip}" ] || [ -z "${release_name}" ] || [ -z "${target}" ]; then
   echo "Script must be called with --target, --docs-zip, --artifacts and --release"
   exit 1
@@ -90,6 +96,10 @@ fi
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" &> /dev/null && pwd)"
 project_dir="${script_dir}/.."
 
+if [ -z "${build_dir}" ]; then
+  build_dir="${project_dir}/build"
+fi
+
 pushd "${project_dir}"
 
 # Jenkins causes detached HEAD states occasionally. Fix that problem here
@@ -102,7 +112,7 @@ fi
 git fetch --tags
 
 if [ "${target}" == "master" ]; then
-  pushd "${project_dir}/build_ubuntu_amd64"
+  pushd "${build_dir}"
 
   github_release_version=$(git describe --tags --match "v*" --abbrev=0 HEAD)
   project_release_version="v$(cmake --system-information | awk -F= '$1~/CMAKE_PROJECT_VERSION:STATIC/{print$2}')"

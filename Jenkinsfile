@@ -498,7 +498,8 @@ pipeline {
                     --artifacts "\$(find \$(pwd) -type f)" \
                     --target "${env.BRANCH_NAME}" \
                     --release "\$(cd ${WORKSPACE} && git describe --match 'v*' --abbrev=0 --tags HEAD)" \
-                    --docs-zip "\$(find \$(pwd) -type f -name 'MSCL-Documentation-*.zip' | sort | uniq)"
+                    --docs-zip "\$(find \$(pwd) -type f -name 'MSCL-Documentation-*.zip' | sort | uniq)" \
+                    --build-dir "${WORKSPACE}/build_linux_amd64"
                 """
               }
             }
