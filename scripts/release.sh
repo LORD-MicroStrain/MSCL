@@ -115,7 +115,22 @@ if [ "${target}" == "master" ]; then
   pushd "${build_dir}"
 
   github_release_version=$(git describe --tags --match "v*" --abbrev=0 HEAD)
+
+  # Use the CMakeCache.txt in the current build directory, if it exists,
+  # otherwise, attempt to find it in sub-directories like Debug or Release
+  if [ ! -f "CMakeCache.txt" ]; then
+    cmake_cache_file=$(find . -maxdepth 2 -name CMakeCache.txt | head -n 1)
+    if [ -n "${cmake_cache_file}" ]; then
+      cd "$(dirname "${cmake_cache_file}")"
+    fi
+  fi
+
   project_release_version="v$(cmake --system-information | awk -F= '$1~/CMAKE_PROJECT_VERSION:STATIC/{print$2}')"
+
+  if [ "${project_release_version}" == "v" ]; then
+    echo "Could not find a valid project version. Check that a CMakeCache.txt exists"
+    exit 1
+  fi
 
   popd
 
