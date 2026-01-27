@@ -1,36 +1,33 @@
 # MSCL - The MicroStrain Communication Library
 
-MSCL is developed by [MicroStrain](https://www.hbkworld.com/en/Campaign/microstrain-by-hbk) in Williston, VT. It was created to make it simple to interact with our
-[Wireless](https://www.hbkworld.com/en/products/instruments/wireless-daq-systems), and [Inertial](https://www.hbkworld.com/en/products/transducers/inertial-sensors) sensors.
+MSCL is developed by [MicroStrain](https://www.hbkworld.com/en/Campaign/microstrain-by-hbk) in Williston, VT. Its purpose is to
+serve as a simple user-friendly API to interact with our [Wireless](https://www.hbkworld.com/en/products/instruments/wireless-daq-systems), and
+[Inertial](https://www.hbkworld.com/en/products/transducers/inertial-sensors) sensors.
 
 [![GitHub tag status](https://img.shields.io/github/checks-status/LORD-MicroStrain/MSCL/v68.0.0?label=v68.0.0)](https://github.com/LORD-MicroStrain/MSCL/releases/v68.0.0/) &nbsp;
 [![GitHub tag status](https://img.shields.io/github/checks-status/LORD-MicroStrain/MSCL/latest?label=latest)](https://github.com/LORD-MicroStrain/MSCL/releases/latest/)
 
 ### Support/Issues
 
-If you have any questions or run into any issues, please let us know! [MicroStrain Support Portal](https://support.microstrain.com)
+If you have any questions or run into any issues, please let us know!
+[MicroStrain Support Portal](https://support.microstrain.com)
 
-Also have a look at our [FAQs](FAQs.md) for common issues.
+Also, have a look at our [FAQs](guides/FAQ.md) for common issues.
 
 ### Inertial Successor API
 
-For projects using our inertial product lines check out our new lightweight C/C++ API, [MIP SDK](https://github.com/LORD-MicroStrain/mip_sdk)
-
----
+For projects using our inertial product lines check out our new lightweight
+C/C++ API, [MIP SDK](https://github.com/LORD-MicroStrain/mip_sdk)
 
 ## Downloads
-Release notes and all downloadable assets can be found on our [releases page](https://github.com/LORD-MicroStrain/MSCL/releases) or from the
-links below.
 
-[Offline Documentation](https://github.com/LORD-MicroStrain/MSCL/releases/download/v68.0.0/MSCL-Documentation-v68.0.0.zip)</br>
-
-Please see our [releases](https://github.com/LORD-MicroStrain/MSCL/releases) page for all of our release notes and packages.</br>
-Packages for the current release, <b>v68.0.0</b>, can be found [here](https://github.com/LORD-MicroStrain/MSCL/releases/tag/v68.0.0)</br>
-Latest pre-release packages can be found [here](https://github.com/LORD-MicroStrain/MSCL/releases/tag/latest)</br>
+Please see our [releases](../../releases) page for all of our release notes and packages.</br>
+Packages for the current release, <b>v68.0.0</b>, can be found [here](../../releases/tag/v68.0.0)</br>
+Latest pre-release packages can be found [here](../../releases/tag/latest)</br>
 
 ## Supported Pre-Built Binaries/Packages
 
-### Windows:
+#### Windows
 
 <table>
   <colgroup/>
@@ -62,7 +59,7 @@ Latest pre-release packages can be found [here](https://github.com/LORD-MicroStr
   </tr>
 </table>
 
-### Debian:
+#### Debian
 
 <table>
   <colgroup/>
@@ -94,38 +91,53 @@ Latest pre-release packages can be found [here](https://github.com/LORD-MicroStr
   </tr>
 </table>
 
-### RPM:
+#### RPM
 
-We are no longer providing pre-built RPM downloads. If you wish to continue using MSCL on RPM systems please see the instructions listed below to build
-from source.
+We are no longer providing pre-built RPM downloads.</br>
+If you wish to continue using MSCL on RPM systems, please see
+[Building From Source](#building-from-source) below for more information
 
-### Building From Source:
+## Bindings
 
-If the pre-built packages aren't available on your platform, you can build MSCL from source.
+MSCL provides bindings for both .NET and Python
 
-Instructions can be found here:</br>
-[Building MSCL on Windows](scripts/buildReadme_Windows.md)</br>
-[Building MSCL on Linux](scripts/buildReadme_Linux.md)
+#### Python
 
----
+MSCL provides bindings for the latest supported version of Python in vcpkg at
+the time of release. If you need a different version of Python, please see the
+build [instructions](guides/Build.md) for more information on how to build Python bindings
 
-### Documentation
+## Project Integration
 
-MSCL documentation can now be found [here](https://github.com/LORD-MicroStrain/MSCL_documentation)
+The best approach to using MSCL is integrating it into your project with the
+pre-built packages following the integration [guide](guides/Integration.md)
 
-[Example Code](examples)
+## Building From Source
+
+If the pre-built packages aren't available on your platform, or you prefer to
+build MSCL from source yourself, you can do so with the build [instructions](guides/Build.md)
+
+## Documentation
+
+MSCL has both [online](https://lord-microstrain.github.io/MSCL_documentation) and [offline](../../releases/download/v68.0.0/MSCL-Documentation-v68.0.0.zip) documentation
+
+## Examples
+
+MSCL has an array of [examples](examples) for all supported languages
 
 * Note: LabVIEW example code is provided in the [LabVIEW-MSCL VI package](https://github.com/LORD-MicroStrain/LabVIEW-MSCL).
 
-#### Included Libraries
+## Tests
 
-OpenSSL - This product includes software developed by the [OpenSSL Project](https://www.openssl.org/) for use in the OpenSSL Toolkit - see the
-[License_OpenSSL.txt](License_OpenSSL.txt) file in the source distribution.
+MSCL has a suite of unit [tests](tests) to ensure the library functions as expected
 
-Boost - see the [License_Boost.txt](License_Boost.txt) file in the source distribution.
+## License
 
-#### License
+MSCL is released under the MIT [license](LICENSE)
 
-MSCL is released under the MIT License - see the [LICENSE](LICENSE) file in the source distribution.
+## Third-Party Notices
 
-Copyright (c) 2015-2026 MicroStrain by HBK. All Rights Reserved.
+MSCL uses additional libraries as part of the project and has separate licensing
+
+- [OpenSSL](License_OpenSSL.txt)
+- [Boost](License_Boost.txt)

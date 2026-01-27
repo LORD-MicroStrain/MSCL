@@ -1,4 +1,4 @@
-# MSCL Examples Readme
+# MSCL Examples
 
 Example projects are provided for some MSCL use cases. This does not encompass all features of MSCL.
 Please refer to the [MSCL documentation](https://lord-microstrain.github.io/MSCL/Documentation/MSCL%20API%20Documentation/index.html) for more details.
