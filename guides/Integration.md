@@ -1,8 +1,8 @@
 # MSCL Project Integration
 
-Integrating MSCL into your project allows you to communicate with MicroStrain
-Wireless, Inertial, and Displacement sensors. The recommended approach is using
-**CMake**, but manual integration is also supported.
+Integrating MSCL into your project allows you to communicate with and configure
+MicroStrain Wireless, Inertial, and Displacement sensors. The recommended
+approach is using **CMake**, but manual integration is also supported.
 
 ---
 
@@ -45,6 +45,18 @@ target_include_directories(my_app PRIVATE ${MSCL_INCLUDE_DIRS})
 target_precompile_headers(my_app PRIVATE "${MSCL_INCLUDE_DIR}/mscl/stdafx.h")
 ```
 
+#### Available CMake Variables
+
+For consistency across different integration methods, source built or installed
+packages (`mscl-config.cmake`), the following CMake variables are always
+available:
+
+- `MSCL_LIBRARY`: Name of the MSCL library to link against.
+- `MSCL_INCLUDE_DIR`: Path to the MSCL include directory.
+- `MSCL_LIBRARIES`: List of MSCL libraries to link against (including MSCL
+   itself).
+- `MSCL_INCLUDE_DIRS`: List of MSCL include directories.
+
 ### 3. C# (.NET) Integration
 
 For C# projects, MSCL provides an `MSCL_Managed` package.
@@ -79,7 +91,7 @@ If you are not using CMake, you must manually configure your compiler and linker
 1.  **Include Paths**: Add the following to your compiler's include search paths:
     - `<MSCL_ROOT>/src` (if using source) or `<MSCL_INSTALL>/include`
       (if using installed headers).
-    - **Boost** include directory (v1.68.0+).
+    - **Boost** include directory (v1.70.0+).
     - **OpenSSL** include directory (if using SSL).
 
 2.  **Compiler Definitions**:
@@ -87,39 +99,36 @@ If you are not using CMake, you must manually configure your compiler and linker
     - `MSCL_WITH_WEBSOCKETS` (to enable WebSocket support).
 
 3.  **Linking**:
-    - Link against the MSCL library (`MSCL.lib` on Windows, `libmscl.so` on
+    - Link against the MSCL library (`MSCL.lib` on Windows, `libMSCL.so` on
       Linux).
-    - Link against **Boost** libraries: `system`, `filesystem`, `date_time`,
-      `regex`.
-    - Link against **OpenSSL** libraries: `ssl`, `crypto` (if `MSCL_WITH_SSL` is
-      defined).
-    - **System Libraries (Windows)**: `ws2_32.lib`, `crypt32.lib`,
-      `setupapi.lib`.
+
+### C# (.NET) Integration
+
+1.  **Add Reference**: In your IDE (like Visual Studio), add a reference to
+    `MSCL_Managed.dll`.
+2.  **Runtime Dependency**: Ensure `MSCL.dll` (the native C++ library) is
+    present in the same directory as your application's executable at runtime.
+3.  **Platform**: Ensure your project targets the correct architecture (`x64` or
+    `x86`) to match the MSCL binaries.
 
 ### Python Integration
 
-Python integration does not strictly require CMake. You just need the `mscl.py`
-and `_mscl` extension module.
+Python integration does not strictly require CMake. You just need the `MSCL.py`
+and `_MSCL` extension module.
 
-1.  **Locate Files**: Find `mscl.py` and the compiled extension (`_mscl.pyd` on
-    Windows or `_mscl.so` on Linux).
-    * Note: The MSCL Python bindings are packaged using the respective Python
-      site-packages or dist-packages directories and can be installed directly
-      into those directories
+1.  **Locate Files**: Find `MSCL.py` and the compiled extension (`_MSCL.pyd` on
+    Windows or `_MSCL.so` on Linux).
 2.  **Add to Path**:
     - **Method A (Recommended)**: Copy these files into your project directory
-      or into a standard Python `site-packages` directory.
+      or into a standard Python `site-packages` or `dist-packages` directory.
+      * Note: The MSCL Python bindings are packaged using the respective Python
+        `site-packages` or `dist-packages` directories and can be installed
+        directly into those directories
     - **Method B (Manual Path)**: Add the path to the directory containing these
       files in your Python script:
 
     ```python
     import sys
     sys.path.append('/path/to/mscl/python/bindings')
-    import mscl
+    import MSCL as mscl
     ```
-
-### C# (.NET) Integration
-
-1.  **Add Reference**: In your IDE (like Visual Studio), add a reference to `MSCL_Managed.dll`.
-2.  **Runtime Dependency**: Ensure `MSCL.dll` (the native C++ library) is present in the same directory as your application's executable at runtime.
-3.  **Platform**: Ensure your project targets the correct architecture (`x64` or `x86`) to match the MSCL binaries.
