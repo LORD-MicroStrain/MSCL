@@ -69,7 +69,7 @@ your system.
 ## Using the Bindings
 
 ### Python
-After building, you will find `mscl.py` and `_mscl.pyd` (Windows) or `_mscl.so`
+After building, you will find `MSCL.py` and `_MSCL.pyd` (Windows) or `_MSCL.so`
 (Linux) in the build output directory.
 
 ### C# (.NET)
