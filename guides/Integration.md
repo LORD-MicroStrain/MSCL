@@ -104,8 +104,7 @@ If you are not using CMake, you must manually configure your compiler and linker
 
 ### C# (.NET) Integration
 
-1.  **Add Reference**: In your IDE (like Visual Studio), add a reference to
-    `MSCL_Managed.dll`.
+1.  **Add Reference**: In your IDE, add a reference to `MSCL_Managed.dll`.
 2.  **Runtime Dependency**: Ensure `MSCL.dll` (the native C++ library) is
     present in the same directory as your application's executable at runtime.
 3.  **Platform**: Ensure your project targets the correct architecture (`x64` or
