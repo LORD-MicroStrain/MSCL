@@ -26,7 +26,8 @@ function(mscl_install_examples)
 
     foreach(SUBDIRECTORY IN LISTS SUBDIRECTORIES)
         # Keep the same directory structure for installation
-        file(RELATIVE_PATH EXAMPLE_INSTALL_DIR "${CMAKE_SOURCE_DIR}" "${SUBDIRECTORY}")
+        # The directory itself is also installed, so get the relative path to the parent
+        file(RELATIVE_PATH EXAMPLE_INSTALL_DIR "${CMAKE_SOURCE_DIR}" "${SUBDIRECTORY}/..")
 
         # Install the source files for packaging
         install(
