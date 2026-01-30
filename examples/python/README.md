@@ -4,7 +4,7 @@ This directory contains Python example projects for MSCL.
 
 ## Prerequisites
 
-- **MSCL Python Library**: You must have `MSCL.py` and the native module 
+- **MSCL Python Library**: You must have `MSCL.py` and the native module
   `_MSCL.pyd` (Windows) or `_MSCL.so` (Linux).
 - **Python**: A compatible Python version.
 
@@ -23,11 +23,13 @@ To run the Python examples:
    `PYTHONPATH` environment variable.
 
    #### Windows
+
    ```powershell
    $env:PYTHONPATH += ";C:/path/to/mscl/python/binding"
    ```
 
    #### Linux
+
    ```shell
    export PYTHONPATH=$PYTHONPATH:/path/to/mscl/python/binding
    ```
@@ -42,7 +44,7 @@ directory as the example script or into your site-packages/dist-packages.
 
 ## Running with CMake
 
-CMake can be used to set up a wrapper that automatically configures the 
+CMake can be used to set up a wrapper that automatically configures the
 `PYTHONPATH` to run the examples against the built MSCL library. This only works
 as part of the main MSCL project.
 
@@ -80,11 +82,13 @@ Build the Python example targets:
 *Note: Replace 3.12 with your Python version as needed*
 
 #### Windows
+
 ```powershell
-cmake --build build --config Release --target MSCL-Python3.12-Wireless-Example --parallel $env:NUMBER_OF_PROCESSORS 
+cmake --build build --config Release --target MSCL-Python3.12-Wireless-Example --parallel $env:NUMBER_OF_PROCESSORS
 ```
 
 #### Linux
+
 ```shell
 cmake --build build --target MSCL-Python3.12-Wireless-Example --parallel $(nproc)
 ```

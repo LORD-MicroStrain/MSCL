@@ -44,27 +44,31 @@ your system.
 
 1. Enable the desired binding in your CMake configuration:
 
-    #### Linux
-    ```shell
-       cmake -S . -B build -DCMAKE_BUILD_TYPE:STRING=Release -DMSCL_BUILD_PYTHON3:BOOL=ON -DMSCL_BUILD_CSHARP:BOOL=ON
-    ```
+   #### Windows
 
-    #### Windows
    ```powershell
-      cmake -S . -B build -DMSCL_BUILD_PYTHON3:BOOL=ON -DMSCL_BUILD_CSHARP:BOOL=ON
+   cmake -S . -B build -DMSCL_BUILD_PYTHON3:BOOL=ON -DMSCL_BUILD_CSHARP:BOOL=ON
    ```
+
+    #### Linux
+
+    ```shell
+    cmake -S . -B build -DCMAKE_BUILD_TYPE:STRING=Release -DMSCL_BUILD_PYTHON3:BOOL=ON
+    ```
 
 2. Build the project:
 
-   #### Linux
-      ```shell
-      cmake --build build
-      ```
+   #### Windows
 
-    #### Windows
-      ```powershell
-      cmake --build build --config Release
-      ```
+   ```powershell
+   cmake --build build --config Release --parallel $env:NUMBER_OF_PROCESSORS
+   ```
+
+   #### Linux
+
+   ```shell
+   cmake --build build --parallel $(nproc)
+   ```
 
 ## Using the Bindings
 

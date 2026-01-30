@@ -36,40 +36,50 @@ already exist on the system.
 ## Building and Running Tests
 
 1. Enable tests in your CMake configuration:
+
    #### Windows
+
    ```powershell
    cmake -S . -B build -DMSCL_BUILD_TESTS:BOOL=ON
    ```
 
    #### Linux
+
    ```shell
    cmake -S . -B build -DCMAKE_BUILD_TYPE:STRING=Debug -DMSCL_BUILD_TESTS:BOOL=ON
    ```
 
 2. Build the tests:
+
    #### Windows
+
    ```powershell
    cmake --build build --config Debug --target MSCL-Tests --parallel $env:NUMBER_OF_PROCESSORS
    ```
 
    #### Linux
+
    ```shell
    cmake --build build --target MSCL-Tests --parallel $(nproc)
    ```
 
 3. Run the tests:
+
    ```shell
    cd build
    ctest -C Debug
    ```
 
    Alternatively, you can run the test executable directly:
+
    #### Windows
+
    ```powershell
    ./build/tests/Debug/MSCL-Tests.exe
    ```
 
    #### Linux
+
    ```shell
    ./build/Debug/tests/MSCL-Tests
    ```

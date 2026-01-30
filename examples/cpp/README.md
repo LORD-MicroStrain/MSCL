@@ -19,11 +19,13 @@ options used to configure the project
 Set the MSCL installation root directory using `MSCL_ROOT_DIR`:
 
 #### Windows
+
 ```powershell
 cmake -S . -B build -DMSCL_ROOT_DIR="C:/path/to/mscl/install"
 ```
 
 #### Linux
+
 ```shell
 cmake -S . -B build -DCMAKE_BUILD_TYPE:STRING=Release -DMSCL_ROOT_DIR="/path/to/mscl/install"
 ```
@@ -33,11 +35,13 @@ cmake -S . -B build -DCMAKE_BUILD_TYPE:STRING=Release -DMSCL_ROOT_DIR="/path/to/
 Enable the examples using `MSCL_BUILD_EXAMPLES`:
 
 #### Windows
+
 ```powershell
 cmake -S . -B build -DMSCL_BUILD_EXAMPLES:BOOL=ON
 ```
 
 #### Linux
+
 ```shell
 cmake -S . -B build -DCMAKE_BUILD_TYPE:STRING=Release -DMSCL_BUILD_EXAMPLES:BOOL=ON
 ```
@@ -50,11 +54,13 @@ Build the C++ example targets:
 - `MSCL-Cpp-Wireless-Example`: The wireless example.
 
 #### Windows
+
 ```powershell
-cmake --build build --config Release --target MSCL-Cpp-Wireless-Example --parallel $env:NUMBER_OF_PROCESSORS 
+cmake --build build --config Release --target MSCL-Cpp-Wireless-Example --parallel $env:NUMBER_OF_PROCESSORS
 ```
 
 #### Linux
+
 ```shell
 cmake --build build --target MSCL-Cpp-Wireless-Example --parallel $(nproc)
 ```

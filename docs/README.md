@@ -42,7 +42,7 @@ above are optional to allow MSCL to find Natural Docs before downloading it.
    - `MSCL-Docs`: A master target that builds all documentation.
 
    ```powershell
-   cmake --build build --config Release --target MSCL-Docs
+   cmake --build build --config Release --target MSCL-Docs --parallel $env:NUMBER_OF_PROCESSORS
    ```
 
 ## Output

@@ -32,15 +32,21 @@ Latest pre-release packages can be found [here](../../releases/tag/latest)</br>
 
 ## Supported Packages
 
-#### Windows
+MSCL is built and tested for the following list of systems and architectures.
+Refer to the build [instructions](guides/Build.md) for more information on
+building MSCL from source if your system configuration isn't listed.
+
+### Windows (MSVC)
 
 MSCL is supported on Windows for both x64 and x86 architectures, including all
-supported [bindings](bindings)
+supported [bindings](bindings/README.md)
+
+### Linux
 
 #### Debian
 
-MSCL is supported on Debian for x64, ARM64 and ARMhf (ARM32) architectures,
-including Python [bindings](bindings)
+MSCL is supported on Debian for x64 (x86_64), ARM64 (aarch64) and ARM32 (armv8l)
+architectures, including Python [bindings](bindings/README.md)
 
 #### RPM
 
@@ -64,20 +70,22 @@ build MSCL from source yourself, you can do so with the build
 
 MSCL has both [online](https://lord-microstrain.github.io/MSCL_documentation)
 and [offline](../../releases/download/v68.0.0/MSCL-Documentation-v68.0.0.zip)
-documentation. For information on building the documentation from source, see
-the [docs](docs) directory.
+documentation.</br>
+See the documentation build [instructions](docs/README.md) for information on
+building the documentation from source.
 
 ## Examples
 
-MSCL has an array of [examples](examples) for all supported languages
+MSCL has an array of [examples](examples/README.md) for all supported languages
 
 * Note: LabVIEW example code is provided in the
 [LabVIEW-MSCL VI package](https://github.com/LORD-MicroStrain/LabVIEW-MSCL).
 
 ## Tests
 
-MSCL has a suite of unit tests to ensure the library functions as expected. See
-the [tests](tests) directory for more information on building and running tests.
+MSCL has a suite of unit tests to ensure the library functions as expected.</br>
+See the testing [instructions](tests/README.md) for more information on building
+and running tests.
 
 ## License
 

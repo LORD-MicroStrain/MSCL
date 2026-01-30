@@ -40,9 +40,8 @@ Build the C# example targets:
 - `MSCL-CSharp-Inertial-Example`: The inertial example.
 - `MSCL-CSharp-Wireless-Example`: The wireless example.
 
-
 ```powershell
-cmake --build build --config Release --target MSCL-CSharp-Wireless-Example --parallel $env:NUMBER_OF_PROCESSORS 
+cmake --build build --config Release --target MSCL-CSharp-Wireless-Example --parallel $env:NUMBER_OF_PROCESSORS
 ```
 
 ## Building without CMake (Manual)

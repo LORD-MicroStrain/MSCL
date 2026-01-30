@@ -50,5 +50,5 @@ node.readWriteRetries(3);
 ### I'm attempting to connect to a device on Linux, and I'm getting a Connection error.
 
 The /dev/tty* devices usually have a group of `dialout`. You will either need to
-make sure you own the device you are accessing, or add your user to the 
+make sure you own the device you are accessing, or add your user to the
 `dialout` group (`usermod -a -G dialout YOUR_USER_NAME`).

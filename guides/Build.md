@@ -39,26 +39,32 @@ git submodule update --recursive
 ### Build Steps
 
 1.  **Configure the project**:
-    #### Windows
-    ```powershell
-    cmake -S . -B build -DMSCL_BUILD_EXAMPLES:BOOL=ON
-    ```
 
-    #### Linux
-    ```shell
-    cmake -S . -B build -DCMAKE_BUILD_TYPE:STRING=Release -DMSCL_BUILD_EXAMPLES:BOOL=ON
-    ```
+   #### Windows
+
+   ```powershell
+   cmake -S . -B build -DMSCL_BUILD_EXAMPLES:BOOL=ON
+   ```
+
+   #### Linux
+
+   ```shell
+   cmake -S . -B build -DCMAKE_BUILD_TYPE:STRING=Release -DMSCL_BUILD_EXAMPLES:BOOL=ON
+   ```
 
 2.  **Build the project**:
-    #### Windows
-    ```powershell
-    cmake --build build --config Release --parallel $env:NUMBER_OF_PROCESSORS
-    ```
 
-    #### Linux
-    ```shell
-    cmake --build build --parallel $(nproc)
-    ```
+   #### Windows
+
+   ```powershell
+   cmake --build build --config Release --parallel $env:NUMBER_OF_PROCESSORS
+   ```
+
+   #### Linux
+
+   ```shell
+   cmake --build build --parallel $(nproc)
+   ```
 
 ### CMake Options
 
