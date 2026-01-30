@@ -35,12 +35,12 @@ Latest pre-release packages can be found [here](../../releases/tag/latest)</br>
 #### Windows
 
 MSCL is supported on Windows for both x64 and x86 architectures, including all
-supported [bindings](#bindings)
+supported [bindings](bindings)
 
 #### Debian
 
 MSCL is supported on Debian for x64, ARM64 and ARMhf (ARM32) architectures,
-including Python [bindings](#bindings)
+including Python [bindings](bindings)
 
 #### RPM
 
@@ -48,11 +48,6 @@ We are no longer providing RPM packages.</br>
 If you wish to continue using MSCL on RPM systems, please see
 build [instructions](guides/Build.md) for more information on how to build an
 RPM package
-
-### Bindings
-
-MSCL provides bindings for both .NET and Python. For more information on
-building and configuring bindings, see the [bindings](bindings) directory.
 
 ## Project Integration
 
