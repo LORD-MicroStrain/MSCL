@@ -147,15 +147,15 @@ MSCL features such as examples, language bindings, tests, and documentation have
 their own sets of configuration variables. See the relevant directory READMEs
 for more information.
 
-| Option                     | Description                         | Default |
-|:---------------------------|:------------------------------------|:--------|
-| `MSCL_BUILD_EXAMPLES`      | Build Python 3 bindings.            | `OFF`   |
-| `MSCL_BUILD_PYTHON3`       | Build Python 3 bindings.            | `OFF`   |
-| `MSCL_BUILD_PYTHON2`       | Build Python 2 bindings (legacy).   | `OFF`   |
-| `MSCL_BUILD_CSHARP`        | Build C# bindings (Windows only).   | `OFF`   |
-| `MSCL_BUILD_TESTS`         | Build the unit test suite.          | `OFF`   |
-| `MSCL_BUILD_DOCUMENTATION` | Build documentation (Windows only). | `OFF`   |
-| `MSCL_BUILD_PACKAGE`       | Enable packaging support (CPack).   | `OFF`   |
+| Option                     | Description                           | Default |
+|:---------------------------|:--------------------------------------|:--------|
+| `MSCL_BUILD_EXAMPLES`      | Enables all examples.                 | `OFF`   |
+| `MSCL_BUILD_PYTHON3`       | Enables Python 3 bindings.            | `OFF`   |
+| `MSCL_BUILD_PYTHON2`       | Enables Python 2 bindings (legacy).   | `OFF`   |
+| `MSCL_BUILD_CSHARP`        | ENables C# bindings (Windows only).   | `OFF`   |
+| `MSCL_BUILD_TESTS`         | Enables the unit test suite.          | `OFF`   |
+| `MSCL_BUILD_DOCUMENTATION` | Enables documentation (Windows only). | `OFF`   |
+| `MSCL_BUILD_PACKAGE`       | Enables packaging support (CPack).    | `OFF`   |
 
 - For detailed **Binding** information, see the bindings
   [instructions](../bindings/README.md).

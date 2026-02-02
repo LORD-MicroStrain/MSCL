@@ -5,6 +5,12 @@ all features of MSCL. Please refer to the
 [MSCL documentation](https://hbk-microstrain.github.io/MSCL-Documentation)
 for more details.
 
+#### CMake Options
+
+| Option                | Description           | Default |
+|:----------------------|:----------------------|:--------|
+| `MSCL_BUILD_EXAMPLES` | Enables all examples. | `OFF`   |
+
 ## Examples by Language
 
 - [**C++**](cpp/README.md) - Examples using the C++ MSCL library.
