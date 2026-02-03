@@ -214,12 +214,13 @@ def configureProject(Map config) {
 
   // Determine boolean values for each component based on platform and build type
   def buildCSharp         = isStatic && isWindows ? 'ON' : 'OFF'
-  def buildCSharpExamples = buildCSharp           ? 'ON' : 'OFF'
   def buildCppExamples    = isStatic              ? 'ON' : 'OFF'
   def buildPython3        = isStatic              ? 'ON' : 'OFF'
-  def buildPythonExamples = buildPython3          ? 'ON' : 'OFF'
   def buildTests          = isStatic              ? 'ON' : 'OFF'
   def buildShared         = !isStatic             ? 'ON' : 'OFF'
+
+  def buildCSharpExamples = buildCSharp
+  def buildPythonExamples = buildPython3
 
   // Add all of the configuration options
   args.addAll([
