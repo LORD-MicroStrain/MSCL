@@ -15,6 +15,7 @@ REMOVED - A function/class has been removed.
 ___
 
 ## Forthcoming
+- Updated build/configuration instructions to match new project structure
 
 ## 68.0.0 - 2026-01-16
 - Wireless
