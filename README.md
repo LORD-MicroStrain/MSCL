@@ -7,7 +7,7 @@ with our [Wireless](https://www.hbkworld.com/en/products/instruments/wireless-da
 and [Inertial](https://www.hbkworld.com/en/products/transducers/inertial-sensors)
 sensors.
 
-[![GitHub tag status](https://img.shields.io/github/checks-status/LORD-MicroStrain/MSCL/v68.0.0?label=v68.0.0)](https://github.com/LORD-MicroStrain/MSCL/releases/v68.0.0/) &nbsp;
+[![GitHub tag status](https://img.shields.io/github/checks-status/LORD-MicroStrain/MSCL/v68.1.0?label=v68.1.0)](https://github.com/LORD-MicroStrain/MSCL/releases/v68.1.0/) &nbsp;
 [![GitHub tag status](https://img.shields.io/github/checks-status/LORD-MicroStrain/MSCL/latest?label=latest)](https://github.com/LORD-MicroStrain/MSCL/releases/latest/)
 
 ### Support
@@ -26,8 +26,8 @@ lightweight C/C++ API, [MIP SDK](https://github.com/LORD-MicroStrain/mip_sdk)
 
 Please see our [releases](../../releases) page for all of our release notes and
 packages</br>
-Packages for the current release, <b>v68.0.0</b>, can be found
-[here](../../releases/tag/v68.0.0)</br>
+Packages for the current release, <b>v68.1.0</b>, can be found
+[here](../../releases/tag/v68.1.0)</br>
 Latest pre-release packages can be found [here](../../releases/tag/latest)</br>
 
 ## Supported Packages
@@ -69,7 +69,7 @@ build MSCL from source yourself, you can do so with the build
 ## Documentation
 
 MSCL has both [online](https://lord-microstrain.github.io/MSCL_documentation)
-and [offline](../../releases/download/v68.0.0/MSCL-Documentation-v68.0.0.zip)
+and [offline](../../releases/download/v68.1.0/MSCL-Documentation-v68.1.0.zip)
 documentation.</br>
 See the documentation build [instructions](docs/README.md) for information on
 building the documentation from source.

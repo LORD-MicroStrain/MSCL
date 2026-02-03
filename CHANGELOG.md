@@ -15,6 +15,8 @@ REMOVED - A function/class has been removed.
 ___
 
 ## Forthcoming
+
+## 68.1.0 - 2026-02-03
 - Updated build/configuration instructions to match new project structure
 
 ## 68.0.0 - 2026-01-16
