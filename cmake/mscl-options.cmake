@@ -6,9 +6,15 @@ option(MSCL_USE_VCPKG "Option to use vcpkg to download/install some dependencies
 option(BUILD_SHARED_LIBS "Whether or not to build the shared version of the library." OFF)
 option(MSCL_BUILD_PYTHON2 "Whether to build the python 2 bindings." OFF)
 option(MSCL_BUILD_PYTHON3 "Whether to build the python 3 bindings." OFF)
+option(MSCL_BUILD_PYTHON_EXAMPLES "Whether to build the Python examples" OFF)
 option(MSCL_LINK_STATIC_DEPS "Whether to link the dependencies statically. Please note that this means that OpenSSL and Boost must be built with -fPIC on Linux" ON)
 option(MSCL_BUILD_TESTS "Whether to build the unit tests." OFF)
 option(MSCL_WITH_SSL "Whether or not to compile the library with SSL support" ON)
+
+# Verify at least 1 Python version is enabled if building the Python examples
+if(MSCL_BUILD_PYTHON_EXAMPLES AND NOT (MSCL_BUILD_PYTHON2 OR MSCL_BUILD_PYTHON3))
+    message(FATAL_ERROR "Enabling 'MSCL_BUILD_PYTHON_EXAMPLES' requires 'MSCL_BUILD_PYTHON2' or 'MSCL_BUILD_PYTHON3' to be on")
+endif()
 
 # Allow the user to use a pre-installed version of Boost
 option(MSCL_DOWNLOAD_BOOST "MSCL can download Boost if not already installed. Set Boost_ROOT to the Boost directory if this is turned off" ON)
