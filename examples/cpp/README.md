@@ -32,18 +32,18 @@ cmake -S . -B build -DCMAKE_BUILD_TYPE:STRING=Release -DMSCL_ROOT_DIR="/path/to/
 
 ### Configuration through the MSCL project
 
-Enable the examples using `MSCL_BUILD_EXAMPLES`:
+Enable the examples using `MSCL_BUILD_CPP_EXAMPLES`:
 
 #### Windows
 
 ```powershell
-cmake -S . -B build -DMSCL_BUILD_EXAMPLES:BOOL=ON
+cmake -S . -B build -DMSCL_BUILD_CPP_EXAMPLES:BOOL=ON
 ```
 
 #### Linux
 
 ```shell
-cmake -S . -B build -DCMAKE_BUILD_TYPE:STRING=Release -DMSCL_BUILD_EXAMPLES:BOOL=ON
+cmake -S . -B build -DCMAKE_BUILD_TYPE:STRING=Release -DMSCL_BUILD_CPP_EXAMPLES:BOOL=ON
 ```
 
 ### Building the example

@@ -213,19 +213,23 @@ def configureProject(Map config) {
   }
 
   // Determine boolean values for each component based on platform and build type
-  def buildCSharp   = isStatic && isWindows ? 'ON' : 'OFF'
-  def buildExamples = isStatic              ? 'ON' : 'OFF'
-  def buildPython3  = isStatic              ? 'ON' : 'OFF'
-  def buildTests    = isStatic              ? 'ON' : 'OFF'
-  def buildShared   = !isStatic             ? 'ON' : 'OFF'
+  def buildCSharp         = isStatic && isWindows ? 'ON' : 'OFF'
+  def buildCSharpExamples = buildCSharp           ? 'ON' : 'OFF'
+  def buildCppExamples    = isStatic              ? 'ON' : 'OFF'
+  def buildPython3        = isStatic              ? 'ON' : 'OFF'
+  def buildPythonExamples = buildPython3          ? 'ON' : 'OFF'
+  def buildTests          = isStatic              ? 'ON' : 'OFF'
+  def buildShared         = !isStatic             ? 'ON' : 'OFF'
 
   // Add all of the configuration options
   args.addAll([
     "-DBUILD_SHARED_LIBS:BOOL=${buildShared}",
     "-DMSCL_BUILD_CSHARP:BOOL=${buildCSharp}",
+    "-DMSCL_BUILD_CSHARP_EXAMPLES:BOOL=${buildCSharpExamples}",
     "-DMSCL_BUILD_DOCUMENTATION:BOOL=${buildDocs}",
-    "-DMSCL_BUILD_EXAMPLES:BOOL=${buildExamples}",
+    "-DMSCL_BUILD_CPP_EXAMPLES:BOOL=${buildCppExamples}",
     "-DMSCL_BUILD_PYTHON3:BOOL=${buildPython3}",
+    "-DMSCL_BUILD_PYTHON_EXAMPLES:BOOL=${buildPythonExamples}",
     "-DMSCL_BUILD_TESTS:BOOL=${buildTests}"
   ])
 

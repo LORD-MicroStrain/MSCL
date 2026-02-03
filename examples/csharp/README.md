@@ -27,10 +27,10 @@ cmake -S . -B build -DMSCL_MANAGED_ROOT_DIR="C:/path/to/mscl/install/dotnet"
 
 ### Configuration through the MSCL project
 
-Enable C# using `MSCL_BUILD_CSHARP` and the examples using `MSCL_BUILD_EXAMPLES`:
+Enable C# using `MSCL_BUILD_CSHARP` and the examples using `MSCL_BUILD_CSHARP_EXAMPLES`:
 
 ```powershell
-cmake -S . -B build -DMSCL_BUILD_CSHARP:BOOL=ON -DMSCL_BUILD_EXAMPLES:BOOL=ON
+cmake -S . -B build -DMSCL_BUILD_CSHARP:BOOL=ON -DMSCL_BUILD_CSHARP_EXAMPLES:BOOL=ON
 ```
 
 ### Building the example

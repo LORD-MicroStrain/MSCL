@@ -58,18 +58,18 @@ The following options need to be set:
 - `MSCL_BUILD_PYTHON2`: Required to build Python2 bindings (`ON`).
 - `MSCL_PYTHON2_REQUESTED_VERSION`: Optional to override the Python2 version
   (`"2.7"`).
-- `MSCL_BUILD_EXAMPLES`: Enable building the examples (`ON`).
+- `MSCL_BUILD_PYTHON_EXAMPLES`: Enable building the Python examples (`ON`).
 
 #### Windows
 
 ```powershell
-cmake -S . -B build -DMSCL_BUILD_PYTHON3:BOOL=ON -DMSCL_BUILD_EXAMPLES:BOOL=ON
+cmake -S . -B build -DMSCL_BUILD_PYTHON3:BOOL=ON -DMSCL_BUILD_PYTHON_EXAMPLES:BOOL=ON
 ```
 
 #### Linux
 
 ```shell
-cmake -S . -B build  -DCMAKE_BUILD_TYPE:STRING=Release -DMSCL_BUILD_PYTHON3:BOOL=ON -DMSCL_BUILD_EXAMPLES:BOOL=ON
+cmake -S . -B build  -DCMAKE_BUILD_TYPE:STRING=Release -DMSCL_BUILD_PYTHON3:BOOL=ON -DMSCL_BUILD_PYTHON_EXAMPLES:BOOL=ON
 ```
 
 ### Building the example

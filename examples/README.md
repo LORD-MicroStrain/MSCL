@@ -7,9 +7,11 @@ for more details.
 
 #### CMake Options
 
-| Option                | Description           | Default |
-|:----------------------|:----------------------|:--------|
-| `MSCL_BUILD_EXAMPLES` | Enables all examples. | `OFF`   |
+| Option                       | Description                         | Default |
+|:-----------------------------|:------------------------------------|:--------|
+| `MSCL_BUILD_CPP_EXAMPLES`    | Enables C++ examples.               | `OFF`   |
+| `MSCL_BUILD_CSHARP_EXAMPLES` | Enables C# examples. (Windows only) | `OFF`   |
+| `MSCL_BUILD_PYTHON_EXAMPLES` | Enables Python examples.            | `OFF`   |
 
 ## Examples by Language
 

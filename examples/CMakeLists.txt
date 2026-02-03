@@ -53,12 +53,14 @@ microstrain_append_cmake_folder()
 set(MSCL_EXAMPLES_ALL_TARGET "${PROJECT_NAME}-Examples")
 add_custom_target("${MSCL_EXAMPLES_ALL_TARGET}")
 
-add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/cpp")
+if(MSCL_BUILD_CPP_EXAMPLES)
+    add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/cpp")
+endif()
 
-if(MSCL_BUILD_CSHARP)
+if(MSCL_BUILD_CSHARP_EXAMPLES)
     add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/csharp")
 endif()
 
-if(MSCL_BUILD_PYTHON)
+if(MSCL_BUILD_PYTHON_EXAMPLES)
     add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/python")
 endif()
