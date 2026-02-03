@@ -40,6 +40,11 @@ find_dependency("Boost"
     CONFIG
 )
 
+# Link Boost as a required dependency
+target_link_libraries(@LIBRARY_NAME_UPPER@_LIBRARY PUBLIC
+    ${Boost_LIBRARIES}
+)
+
 # OpenSSL is required for linking if the pre-built library used it
 if(@MSCL_WITH_SSL@)
     # OpenSSL doesn't clear its variables properly for recurring find_package calls
@@ -52,6 +57,12 @@ if(@MSCL_WITH_SSL@)
     find_dependency("OpenSSL"
         @OPENSSL_VERSION@ EXACT
         REQUIRED
+    )
+
+    # Link OpenSSL as a required dependency
+    target_link_libraries(@LIBRARY_NAME_UPPER@_LIBRARY PUBLIC
+        "OpenSSL::SSL"
+        "OpenSSL::Crypto"
     )
 endif()
 

@@ -16,6 +16,9 @@ ___
 
 ## Forthcoming
 
+## 68.1.0 - 2026-02-03
+- Updated build/configuration instructions to match new project structure
+
 ## 68.0.0 - 2026-01-16
 - Wireless
     - Added support for the following models:

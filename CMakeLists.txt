@@ -14,7 +14,7 @@ include(mscl-configure-vcpkg)
 cmake_minimum_required(VERSION 3.23)
 project("MSCL"
     LANGUAGES CXX
-    VERSION 68.0.0
+    VERSION 68.1.0
 )
 
 # Enable the use of organizing projects into folders for IDEs that support it
@@ -78,12 +78,34 @@ set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 # Parse some flags
 # These are all ON/OFF flags. For example, -DBUILD_SHARED_LIBS="ON"
 option(MSCL_WITH_WEBSOCKETS "Whether or not to compile the library with Websocket support" ON)
-option(MSCL_BUILD_EXAMPLES "Whether to build the examples." OFF)
+option(MSCL_BUILD_CPP_EXAMPLES "Whether to build the C++ examples" OFF)
 option(MSCL_BUILD_PACKAGE "Whether to build a package from the resulting binaries" OFF)
 
 if(WIN32)
     option(MSCL_BUILD_CSHARP "Whether to build the C# bindings. Only supported on Windows" OFF)
+    option(MSCL_BUILD_CSHARP_EXAMPLES "Whether to build the C# examples" OFF)
+
+    if(MSCL_BUILD_CSHARP_EXAMPLES AND NOT MSCL_BUILD_CSHARP)
+        message(WARNING "'MSCL_BUILD_CSHARP_EXAMPLES' is ON but 'MSCL_BUILD_CSHARP' is not. Enabling 'MSCL_BUILD_CSHARP'")
+        set(MSCL_BUILD_CSHARP ON)
+    endif()
+
     option(MSCL_BUILD_DOCUMENTATION "Whether to build the documentation" OFF)
+else()
+    if(MSCL_BUILD_CSHARP)
+        message(WARNING "'MSCL_BUILD_CSHARP' is enabled but not supported. Disabling")
+        set(MSCL_BUILD_CSHARP OFF)
+    endif()
+
+    if(MSCL_BUILD_CSHARP_EXAMPLES)
+        message(WARNING "'MSCL_BUILD_CSHARP_EXAMPLES' is enabled but not supported. Disabling")
+        set(MSCL_BUILD_CSHARP_EXAMPLES OFF)
+    endif()
+
+    if(MSCL_BUILD_DOCUMENTATION)
+        message(WARNING "'MSCL_BUILD_DOCUMENTATION' is enabled but not supported. Disabling")
+        set(MSCL_BUILD_DOCUMENTATION OFF)
+    endif()
 endif()
 
 # Use Git to find the version and commit of this repo
@@ -182,7 +204,7 @@ if(MSCL_BUILD_PYTHON OR MSCL_BUILD_CSHARP)
 endif()
 
 # Build the examples
-if(MSCL_BUILD_EXAMPLES)
+if(MSCL_BUILD_CPP_EXAMPLES OR MSCL_BUILD_CSHARP_EXAMPLES OR MSCL_BUILD_PYTHON_EXAMPLES)
     add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/examples")
 endif()
 
