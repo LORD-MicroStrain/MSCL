@@ -1,3 +1,7 @@
+# MSCL has moved! Please go [here](https://github.com/HBK-MicroStrain/MSCL) for the current MSCL project
+
+---
+
 # MSCL - The MicroStrain Communication Library
 
 MSCL is developed by
